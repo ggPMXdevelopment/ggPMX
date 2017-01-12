@@ -1,10 +1,9 @@
 Package: ggPMX
-Title: Novartis R package template
-Description: R package template with some example functionality.
-Version: 1.0-0
-Date: 2016-09-08
-Authors@R: c(person("Workstream", "R package template", email="replace_your_package_ORG@dl.mgd.novartis.com", role="cre")
-           ,person("Sebastian", "Weber", email="sebastian.weber@novartis.com", role="aut")
+Title: to be determined
+Description: A tool to facilitate diagnostic plots for NLME models 
+Version: 0.0-0
+Date: 2017-01-11
+Authors@R: c(person("Workstream", "ggPMX development team", email="replace_your_package_ORG@dl.mgd.novartis.com", role="cre")
            ,person("Inga", "Ludwig", email="inga.ludwig@novartis.com", role="ctb")
 	   )
 Depends:
