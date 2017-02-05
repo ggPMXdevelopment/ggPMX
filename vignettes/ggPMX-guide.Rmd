@@ -1,0 +1,197 @@
+---
+title: "ggPMX - User guide"
+author: "Amine Gassem"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r load_pacakge,echo=FALSE}
+
+library(ggPMX)
+#WORK_DIR <- "../ggpmx_files/inputs"
+WORK_DIR <- file.path(system.file(package="ggPMX"), "testdata", "theophylline", "Monolix")
+
+```
+
+## Introduction
+
+This document serves as the main overview of the `ggPMX` package. It explains the hows and whys of the design decisions using clear examples.
+
+
+## Basic workflow
+
+- Generate inputs files for ggPMX package and store them in the same location.
+- Create a controller: this object contain different data sets , plots and other object like report settings and default plot settings.
+- Use the controller populated ( with different plots and other objects) to create custom reports.
+- (Optional) Use `set_plot` to generate new plots.
+- (Optional) Use `update` to modify the controller objects: plots/data sets. (not yet implemented.)
+
+## The controller
+
+A diagnostic session starts by creating controller using `pmx`. This is a general container that define data configuration but may also contain generated objects like plots and tables. 
+A list of pre-built configurations can be listed using :
+
+```{r list_configs}
+configs()
+```
+
+Then we can instatntiate a **standing** (the name of the config) controller using:
+```{r init_controller}
+ctr <- pmx(config = "standing",sys = "mlx",directory = WORK_DIR)
+```
+
+This is can be simplified by :
+
+- Setting the working directory using ggPMX options at the begining of the session. This is a good practice in genarel to set global variables in the begining of the session.
+- Using the MONOLIX controller.
+
+```{r init_work_dir}
+pmxOptions(work_dir=WORK_DIR)
+ctr <- pmx_mlx(config = "standing")
+
+```
+
+
+## Source
+
+Behind the scene, When we initialize the controller it will create a source containing all data sets. The source is configured using a configuration object. In the previous example, we have just give the name of the configuration. `ggPMX` will use this name to guess the full path of the configuration file and load the corresponding data sets.
+
+### Source configuration file
+
+Source configuration are `yaml` file. `ymal` is human readable format. This is standard way to set configuration files and it is used in many popular R packages ( `rmarkdown`, `htmlwidgets`). This is also the way how the DESCRIPTION file of a package is defined. 
+
+Basically, a source is a list of data sets. Each data set may contain one of the following fileds: 
+
+- **label** : The name of the data set. This is can be helpful in the reporting.
+- **file**  : the name of the file where to extract data
+- **names**(Optional) : key value format of the columns/variable names. We can also set names as a character vector to set all column names.
+- **reader**(Optional): In case of complex file, a custom reader function should be provided to tell the parser how to load the file. For the moment, only internal function can be used. This feature should be extended to allow advanced users to define their custom parser.
+
+Here an example of yaml configuration used to read the model predictions of MONOLIX.
+We indicate :
+
+- The file name 
+- The custom reader used to read this special file 
+- The names to do the mapping between  MONOLIX/ggPMX naming conventions. Note that the upper names for variables are used by convention within ggPMX package.
+
+```{r,eval=FALSE}
+    label : model predictions
+    file  : MLX_predictions.txt
+    reader  : read_mlx_pred
+    names:
+      id: ID
+      time: TIME
+      y1: DV
+      poppred: PRED
+      npde: NPDE
+```
+
+
+
+### Load the configuration
+
+In practice no need to load the configuration. This is done internally within the controller. In some cases it can be interesting to load the configuration and modify some attributes like columns names for example:
+
+```{r load_conf}
+
+conf <- load_config("standing",sys = "mlx")
+conf
+
+```
+
+`conf` is a list containing a the configuration of each data set and plots. 
+We can change this configuration object by accessing the object as a list object. 
+
+For example here to change the mapping from `c("time","TIME")` to `c("time1","TIME")` We can do something like :
+```{r change_mapping}
+
+conf$data$mod_pred$names$time <- NULL
+conf$data$mod_pred$names$time1 <- "TIME"
+
+```
+
+We will make this easier in next versions by defining wrappers function withing the controller.  
+
+
+```{r change_mapping_future,eval=FALSE}
+
+# The following does not run - TODO: Fix it
+#ctr %>% rename("time","time1")
+#ctr %>% rename("mod_pred","time","time1")
+
+```
+
+## Plots
+
+
+section TODO later
+
+### Graphical parameters 
+
+section TODO later
+
+### Basic plot
+
+section TODO later
+
+### Residual plot
+
+section TODO later
+
+### Individual plot
+
+section TODO later
+
+### Distribution plot
+
+section TODO later
+
+## Complete example
+
+In this example , we are : 
+
+- Initializing the working dir 
+- Creating the controller using the **standing** configuration
+- Adding a new plot
+- Printing all the plots
+
+
+```{r complete_example,warning=FALSE}
+library(ggPMX)
+
+## define a working dir
+# Example that points to file in user's work directory
+# Commented because the vignette will not build if it is on:
+# pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
+
+
+## create a controller using a built-in configuration
+ctr <- pmx_mlx(config = "standing")
+
+## add a new plot
+ctr %>%
+   set_plot(ptype="DIS",
+            pname="distri_box",
+            type="box",
+            has.shrink=TRUE,
+            has.jitter=FALSE)
+
+## return all plots
+lapply(ctr %>% plot_names,
+       function(x){
+        if(x=="indiv") return(ctr%>%get_plot(x,c(2,4)))
+         ctr %>% get_plot(x)
+       })
+
+
+
+```
+
+
+
+
+## Where next 
