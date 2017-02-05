@@ -10,7 +10,7 @@
 configs <-
   function(sys="mlx"){
     sys <- tolower(sys)
-    template_dir <- file.path(path.package("ggPMX"),"templates",sys)
+    template_dir <- file.path(system.file(package="ggPMX"),"templates",sys)
     res <- if(dir.exists(template_dir)){
       template_name <- list.dirs(template_dir,full.names = FALSE,recursive = FALSE)
       if(length(template_name)==0)return(NULL)

@@ -1,14 +1,22 @@
 Package: ggPMX
 Title: to be determined
-Description: A tool to facilitate diagnostic plots for NLME models 
-Version: 0.0-0
-Date: 2017-01-11
-Authors@R: c(person("Workstream", "ggPMX development team", email="replace_your_package_ORG@dl.mgd.novartis.com", role="cre")
-           ,person("Inga", "Ludwig", email="inga.ludwig@novartis.com", role="ctb")
+Description: A ggplot2-based tool to facilitate diagnostic plots for NLME models 
+Version: 0.3.0
+Date: 2017-02-05
+Authors@R: c(person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="cre")
+           ,person("Names to be", "Added", email="author.name@novartis.com", role="ctb")
 	   )
 Depends:
     R (>= 3.2.3)
 Imports:
+    data.table, 
+    yaml, 
+    ggthemes, 
+    R6, 
+    gtable, 
+    ggplot2 (>= 2.2.0),
+    magrittr, 
+    stringr,
     assertthat,
     checkmate
 License: file LICENSE
@@ -18,5 +26,5 @@ Suggests:
     knitr,
     testthat (>= 0.11.0)
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
-SVN: $Revision: 232 $, $Date: 2016-03-10 10:09:31 +0100 (Thu, 10 Mar 2016) $
+RoxygenNote: 6.0.0
+NeedsCompilation: no

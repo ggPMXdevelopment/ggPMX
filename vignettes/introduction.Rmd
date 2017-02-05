@@ -37,20 +37,20 @@ library("ggPMX")
 # TODO: Replace the following code by some working example of how to read 
 #       NONMEM/Monolix outputs
 
-# Calculate the sum of 1 and 2
-sum12 <- add(1, 2)
-sum12
-# Do also some subtraction
-subtract(2, 1)
+# # Calculate the sum of 1 and 2
+# sum12 <- add(1, 2)
+# sum12
+# # Do also some subtraction
+# subtract(2, 1)
 ```
 
 2. Generating a full report with some standard diagnostic plots:
 
 ```{r, results="asis", echo=TRUE}
-# Retrieve the dataset 1 data item at position sum12
-retrieve_data(sum12)
-# Retrieve the dataset 2 data item at position sum12
-retrieve_data(sum12, dataset=2)
+# # Retrieve the dataset 1 data item at position sum12
+# retrieve_data(sum12)
+# # Retrieve the dataset 2 data item at position sum12
+# retrieve_data(sum12, dataset=2)
 ```
 
 3. TODO: Step by step populate further sections

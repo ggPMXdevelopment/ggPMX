@@ -27,7 +27,7 @@ add_draft <- function(label="DRAFT",size,color){
 #' @examples
 #' abbrev("VPC")
 abbrev <- function(param) {
-  keys_file <- file.path(path.package("ggPMX"),"init","abbrev.yaml")
+  keys_file <- file.path(system.file(package="ggPMX"),"init","abbrev.yaml")
   keys <- yaml.load_file(keys_file)
   if(missing(param)) keys
   else  keys[[param]]

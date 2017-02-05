@@ -84,7 +84,7 @@ print.pmx_gpar <- function(x, ...) {
   ## graphical parametrs
 
   ## join with default values
-  default_yaml <- file.path(path.package("ggPMX"),"init","gpar.yaml")
+  default_yaml <- file.path(system.file(package="ggPMX"),"init","gpar.yaml")
   default_gpars <- yaml.load_file(default_yaml)
   l_left_join(default_gpars,gpars)
 }
