@@ -1,6 +1,6 @@
 ---
-title: "Getting started with ggPMX"
-author: "Inga Ludwig, to be added"
+title: "Getting started with ggPMX (main vignette for CSV)"
+author: "Inga Ludwig - please do not edit without checking back!"
 date: "`r Sys.Date()`"
 output: html_vignette
 ---
@@ -26,52 +26,54 @@ plots from non-linear mixed effect model outputs.
 TODO: Add some more description here.  
 
 Outlined below are the main steps of analyses of NLME models that are supported 
-by ggPMX:
+by ggPMX:  
 
-1. Reading of standard outputs from the main softwares used for NLME modelling
+TODO: Check the below work flow and rearrange unit tests, if needed.
+
+1. Read standard outputs from the main softwares used for NLME modelling
 in Pharmatometrics (NONMEM/Monolix):
-
 ```{r, results="asis", echo=TRUE}
 library("ggPMX")
 
-# TODO: Replace the following code by some working example of how to read 
-#       NONMEM/Monolix outputs
+# Load standard configuration
+conf <- load_config("standing", sys="mlx")
+conf
 
-# # Calculate the sum of 1 and 2
-# sum12 <- add(1, 2)
-# sum12
-# # Do also some subtraction
-# subtract(2, 1)
+# Init controller object from (test) data
+ctr <- pmx(conf, directory=file.path(system.file(package="ggPMX"), 
+                                     "testdata", "theophylline", "Monolix"))
 ```
 
-2. Generating a full report with some standard diagnostic plots:
+2. Set graphics parameters:
 
 ```{r, results="asis", echo=TRUE}
-# # Retrieve the dataset 1 data item at position sum12
-# retrieve_data(sum12)
-# # Retrieve the dataset 2 data item at position sum12
-# retrieve_data(sum12, dataset=2)
+# TODO: Check if this step makes sense as a standalone (--> move to misc if not)
 ```
 
-3. TODO: Step by step populate further sections
+3. Generate standard set of individual plots:
 
+```{r, results="asis", echo=TRUE}
+lapply(ctr %>% plot_names,
+       function(x){
+         if(x=="indiv") 
+           return(ctr %>% get_plot(x, c(2, 4)))
+         ctr %>% get_plot(x)
+         })
+```
+
+TODO: Populate further steps:  
+
+* Generating a full report with some standard diagnostic plots
+* Generate an individual plot
+* Store individual plots
 
 ### References
 
-TODO: Update the following references:  
-
-[1] Weber S, _SciSW-R (Scientific Software in R)_. 2016; Doc.No: SciSW-R_WK_DOC001,
-DiARy location: *Cabinets/Dit Asset Repository Systems/S/SciSW-R (Scientific Software in R)/SystemDevelopment & Specifications/Software Development/SciSW-R_WK_DOC001 Support Document* (also included in this package, see `inst/doc/`)  
-[2] Wickham H, _R packages_. 2015; http://r-pkgs.had.co.nz/  
-[3] Wickham H, _Advanced R_. 2015; http://adv-r.had.co.nz/  
-[4] R Development Core Team, _Writing R Extensions_; https://cran.r-project.org/doc/manuals/r-release/R-exts.html  
-[5] Collins-Sussman B et. al., _Version Control with Subversion_. 2011; http://svnbook.red-bean.com/en/1.6/index.html  
+TODO: Update the following references (if needed)  
 
 ### R Session Info
 
 ```{r}
-# Finally, it is good practice to include session info
-# information in the vignette:
 sessionInfo()
 date()
 ```
