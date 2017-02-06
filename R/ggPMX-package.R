@@ -28,11 +28,9 @@
 #' @import data.table
 #' @importFrom R6 R6Class
 #' @importFrom ggplot2 %+replace% 
-#' @importFrom ggplot2 FacetWrap 
 #' @importFrom ggplot2 element_text 
 #' @importFrom ggplot2 facet_wrap
 #' @importFrom ggplot2 ggplot_build 
-#' @importFrom ggplot2 ggproto
 #' @importFrom ggplot2 theme
 #' @importFrom ggthemes theme_gdocs
 #' @importFrom gtable gtable_add_cols

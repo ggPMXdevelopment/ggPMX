@@ -56,7 +56,7 @@ facet_wrap_paginate <- function(facets, nrow = NULL, ncol = NULL, scales = "fixe
 #' @importFrom gtable gtable_add_rows gtable_add_cols
 #' @export
 FacetWrapPaginate <-
-  ggproto("FacetWrapPaginate", FacetWrap,
+  ggplot2::ggproto("FacetWrapPaginate", ggplot2::FacetWrap,
           setup_params = function(data, params) {
             modifyList(
               params,
