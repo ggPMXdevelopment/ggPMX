@@ -15,11 +15,11 @@
 pmx <-
   function(config,sys,directory){
     if(missing(directory))
-       directory <- getPmxOption("work_dir")
+      directory <- getPmxOption("work_dir")
     if(is.null(directory))
       stop("Please set a directory argument or set global work_dir option")
     if(!inherits(config,"pmxConfig"))
-    config <- load_config(config,sys)
+      config <- load_config(config,sys)
     pmxClass$new(directory,config)
   }
 
@@ -54,16 +54,16 @@ pmx_mlx <-
 
 #'
 set_plot <- function(ctr,ptype,pname,...){
-
+  
   conf <-
     switch(ptype,
-     IND=individual(...),
-     DIS=distrib(...),
-     RES=residual(...)
+           IND=individual(...),
+           DIS=distrib(...),
+           RES=residual(...)
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
-
+  
   ctr$add_plot(conf,pname)
   invisible(ctr)
 }
@@ -81,7 +81,7 @@ set_plot <- function(ctr,ptype,pname,...){
 get_plot <- function(ctr,nplot,npage){
   xx <- ctr$get_plot(nplot)
   if(inherits(xx,"list"))
-     xx[npage]
+    xx[npage]
   else xx
 }
 
@@ -95,7 +95,7 @@ get_plot <- function(ctr,nplot,npage){
 
 plot_names <- function(ctr){
   ctr$plots()
-
+  
 }
 
 
@@ -120,84 +120,117 @@ update_plot <- function(ctr,pname,...){
 #' @importFrom R6 R6Class
 pmxClass <- R6::R6Class(
   "pmxClass",
-
+  
   # Private methods ------------------------------------------------------------
   private = list(
     .data_path="",
     .plots=list(),
     .plots_configs= list()
   ),
-
+  
   # Public methods -------------------------------------------------------------
   public = list(
     data  = NULL,
     config= NULL,
-    initialize = function(data_path,config) {
-      if (missing(data_path) || missing(data_path))
-        stop("Expecting source path(directory ) and a config path", call. = FALSE)
-      private$.data_path <- data_path
-      self$config <- config
-      self$data <- load_source( sys=config$sys,private$.data_path ,self$config$data)
-      self$post_load()
-
-      for ( nn in names(self$config$plots)){
-         x <- self$config$plots[[nn]]
-         x$pname <- tolower(nn)
-         do.call(set_plot,c(ctr=self,x))
-       }
-
-    },
-
-    ## show print
-    print = function(){
-      cat("\npmx object:\n")
-      cat("data path: ",private$.data_path ,"\n")
-      print(self$config)
-
-    },
+    initialize = function(data_path, config)
+      pmx_initialize(self, private, data_path, config),
+    
+    print = function(data_path, config)
+      pmx_print(self, private),
+    
     # Operations ---------------------------------------------------------------
-    add_plot=function(x,pname){
-      if(missing(pname))
-        pname <- tolower(paste(x$aess,collapse="_"))
-      private$.plots_configs[[pname]] <- x
-      vv <- vapply(self$data,function(y)all(as.character(x$aess) %in% names(y)),TRUE)
-      dname <- names(self$data)[vv]
-      private$.plots[[pname]] <- plot_pmx(x,dx=self$data[[dname]])
-      invisible(self)
-    },
-    update_plot=function(pname,...){
-      config <- private$.plots_configs[[pname]]
-      old_class <- class(config)
-      x <- l_left_join(config,...)
-      class(x$gp) <- class(config$gp)
-      self$remove_plot(pname)
-      self$add_plot(x,pname,...)
-
-    },
-    remove_plot=function(pname,...){
-      private$.plots_configs[[pname]] <- NULL
-      private$.plots[[pname]] <- NULL
-      invisible(self)
-    },
-    get_config = function(pname){
-      pname <- tolower(pname)
-      private$.plots_configs[[pname]]
-    },
-    get_plot = function(pname){
-      pname <- tolower(pname)
-      private$.plots[[pname]]
-    },
-    plots = function(){
-      names(private$.plots)
-    },
-    post_load = function(){
-      self$data <- post_load(self$data,self$config$sys,self$config$plots)
-
-    }
-
+    add_plot = function(x, pname)
+      pmx_add_plot(self, private, x, pname),
+    
+    update_plot = function(pname, ...)
+      pmx_update_plot(self, private, pname, ...),
+    
+    remove_plot = function(pname, ...)
+      pmx_remove_plot(self, private, pname, ...),
+    
+    get_config = function(pname)
+      pmx_get_config(self, private, pname),
+    
+    get_plot = function(pname)
+      pmx_get_plot(self, private, pname),
+    
+    plots = function()
+      pmx_plots(self, private),
+    
+    post_load = function()
+      pmx_post_load(self, private)
   )
 )
 
+pmx_initialize <- function(self, private, data_path, config) {
+  if (missing(data_path) || missing(data_path))
+    stop("Expecting source path(directory ) and a config path", 
+         call. = FALSE)
+  private$.data_path <- data_path
+  self$config <- config
+  self$data <- load_source(sys=config$sys, private$.data_path, 
+                           self$config$data)
+  self$post_load()
+  
+  for ( nn in names(self$config$plots)){
+    x <- self$config$plots[[nn]]
+    x$pname <- tolower(nn)
+    do.call(set_plot,c(ctr=self,x))
+  }
+  
+}
+
+pmx_print <- function(self, private){
+  cat("\npmx object:\n")
+  cat("data path: ",private$.data_path ,"\n")
+  print(self$config)
+  
+}
+
+pmx_add_plot <- function(self, private, x, pname){
+  if(missing(pname))
+    pname <- tolower(paste(x$aess,collapse="_"))
+  private$.plots_configs[[pname]] <- x
+  vv <- vapply(self$data,function(y)all(as.character(x$aess) %in% names(y)),TRUE)
+  dname <- names(self$data)[vv]
+  private$.plots[[pname]] <- plot_pmx(x,dx=self$data[[dname]])
+  invisible(self)
+}
+
+pmx_update_plot <- function(self, private, pname, ...){
+  config <- private$.plots_configs[[pname]]
+  old_class <- class(config)
+  x <- l_left_join(config,...)
+  class(x$gp) <- class(config$gp)
+  self$remove_plot(pname)
+  self$add_plot(x,pname,...)
+  
+}
+
+pmx_remove_plot <- function(self, private, pname, ...){
+  private$.plots_configs[[pname]] <- NULL
+  private$.plots[[pname]] <- NULL
+  invisible(self)
+}
+
+pmx_get_config <- function(self, private, pname){
+  pname <- tolower(pname)
+  private$.plots_configs[[pname]]
+}
+
+pmx_get_plot = function(self, private, pname){
+  pname <- tolower(pname)
+  private$.plots[[pname]]
+}
+
+pmx_plots = function(self, private){
+  names(private$.plots)
+}
+
+pmx_post_load = function(self, private){
+  self$data <- post_load(self$data,self$config$sys,self$config$plots)
+  
+}
 
 #' Print pmxClass object
 #'
@@ -208,6 +241,6 @@ pmxClass <- R6::R6Class(
 #' @export
 
 print.pmxClass <- function(x,...){
- x$print()
+  x$print()
 }
 
