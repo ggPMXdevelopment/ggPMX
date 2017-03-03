@@ -192,6 +192,7 @@ pmx_add_plot <- function(self, private, x, pname){
     pname <- tolower(paste(x$aess,collapse="_"))
   private$.plots_configs[[pname]] <- x
   vv <- vapply(self$data,function(y)all(as.character(x$aess) %in% names(y)),TRUE)
+  if(!any(vv)){return(invisible(self))}
   dname <- names(self$data)[vv]
   private$.plots[[pname]] <- plot_pmx(x,dx=self$data[[dname]])
   invisible(self)
