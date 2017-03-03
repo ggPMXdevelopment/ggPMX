@@ -15,7 +15,7 @@ mod_pred :
     names:
       id: ID
       time: TIME
-      y1: DV
+      'y\d*': DV
       poppred: PRED
       npde: NPDE
 ind_pred :
