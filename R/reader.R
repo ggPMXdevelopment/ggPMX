@@ -23,7 +23,7 @@ read_mlx_pred <- function(path,x){
   ## mean start columns
   col_stars <- grep("*",names(xx),fixed=TRUE,value=TRUE)
   ncol_stars <- toupper(gsub("ind","I",gsub("_.*","",col_stars)))
-  nn <- c(x$names,setNames(ncol_stars,col_stars))
+  nn <- c(x$names,setNames(ncol_stars,gsub("\\*", "\\\\*", col_stars)))
   match_names <- vapply(names(nn), 
                         function(x){
                           out <- which(grepl(x, names(xx)))
