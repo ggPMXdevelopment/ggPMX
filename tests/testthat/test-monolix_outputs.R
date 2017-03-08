@@ -18,5 +18,23 @@ for(i in 1:length(monolix_data[["PK"]])){
       ctr %>% get_plot(plotName)
     }
   )
+
+  testthat::test_that(
+    paste0("canPlotDISfor", names(monolix_data[["PK"]][i])), 
+    {
+      plotName <- paste0("testDIS", names(monolix_data[["PK"]][i]))
+      ctr %>% set_plot(ptype="DIS", pname = plotName)
+      ctr %>% get_plot(plotName)
+    }
+  )
+
+  testthat::test_that(
+    paste0("canPlotRESfor", names(monolix_data[["PK"]][i])), 
+    {
+      plotName <- paste0("testRES", names(monolix_data[["PK"]][i]))
+      ctr %>% set_plot(ptype="RES", pname = plotName)
+      ctr %>% get_plot(plotName)
+    }
+  )
   
 }
