@@ -32,3 +32,15 @@ abbrev <- function(param) {
   if(missing(param)) keys
   else  keys[[param]]
 }
+
+#' @export
+plotTester <- function() {
+  appDir <- system.file("shiny-helpers", "plotting-app", 
+                        package = "ggPMX")
+  if (appDir == "") {
+    stop("Could not find example directory. Try re-installing `ggPMX`.", 
+         call. = FALSE)
+  }
+  
+  shiny::runApp(appDir, display.mode = "normal")
+}
