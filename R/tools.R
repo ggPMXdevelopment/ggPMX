@@ -42,5 +42,5 @@ plotTester <- function() {
          call. = FALSE)
   }
   
-  shiny::runApp(appDir, display.mode = "normal")
+  runApp(appDir, display.mode = "normal")
 }
