@@ -8,7 +8,9 @@ for(i in 1:length(monolix_data[["PK"]])){
   # define ctr
   testthat::test_that(
     paste0("canSetControllerFor", resName), {
-      ctr <- pmx_mlx("standing")
+      expect_silent(
+        ctr <- pmx_mlx("standing")
+      )
     })
   
   testthat::test_that(
