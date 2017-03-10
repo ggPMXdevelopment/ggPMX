@@ -189,7 +189,8 @@ pmx_print <- function(self, private){
 
 pmx_add_plot <- function(self, private, x, pname){
   if(missing(pname))
-    pname <- tolower(paste(x$aess,collapse="_"))
+    pname <- paste(x$aess,collapse="_")
+  pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   vv <- vapply(self$data,function(y)all(as.character(x$aess) %in% names(y)),TRUE)
   if(!any(vv)){return(invisible(self))}
