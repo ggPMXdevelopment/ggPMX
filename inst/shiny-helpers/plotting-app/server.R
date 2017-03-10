@@ -1,5 +1,4 @@
 function(input, output) {
-  output$distPlot <- renderPlot({
-    hist(rnorm(input$obs))
-  })
+  ggplt <- callModule(ggData, "ggid")
+  output$plot <- renderPlot(ggplt())
 }
