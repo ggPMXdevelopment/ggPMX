@@ -7,15 +7,17 @@ ggData <- function(input, output, session) {
   })
   
   # The controller
-  ctr <- reactive({
-    pmx(config = "standing",sys = "mlx",directory = userdirectory())
-  })
-  
-  # Return the reactive that yields the ggplot
-  return(ctr)
+  observe({
+    pmxOptions(work_dir = userdirectory())
+    ctr <- pmx_mlx("standing")
+  }, priority = 100L)
 }
 
 function(input, output) {
   ggplt <- callModule(ggData, "ggid")
-  output$plot <- renderPlot(ggplt() %>% get_plot("indiv"))
+  output$plot <- renderPlot({
+    browser()
+    ggplt() %>% get_plot("indiv")
+  }
+  )
 }
