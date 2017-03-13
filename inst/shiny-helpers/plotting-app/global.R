@@ -27,3 +27,5 @@ source_monolix_data <- function(){
 }
 
 monolix_data <- source_monolix_data()
+pmxOptions(work_dir = monolix_data[["PK"]][[1]])
+ctr <- pmx_mlx("standing")
