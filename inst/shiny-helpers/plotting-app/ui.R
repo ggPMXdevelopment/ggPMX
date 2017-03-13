@@ -16,13 +16,11 @@ fluidPage(
   fluidRow(
     wellPanel(
       column(3,
-             h4("Diamonds Explorer"),
-             sliderInput('sampleSize', 'Sample Size', 
-                         min=1, max=nrow(dataset), value=min(1000, nrow(dataset)), 
-                         step=500, round=0),
-             br(),
-             checkboxInput('jitter', 'Jitter'),
-             checkboxInput('smooth', 'Smooth')
+             h4("Labels"),
+             textInput("titleLabel", "Title"),
+             textInput("subTitleLabel", "Subtitle"),
+             textInput("xLabel", "xLab"),
+             textInput("yLabel", "yLab")
       ),
       column(4, offset = 1,
              selectInput('x', 'X', names(dataset)),
