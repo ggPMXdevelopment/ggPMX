@@ -1,5 +1,6 @@
 library(shiny)
 library(ggPMX)
+library(ggplot2)
 source_monolix_data <- function(){
   monolix_dir <- Sys.getenv("PMXTESTDATA")
   if(identical(monolix_dir, "")){
@@ -30,3 +31,4 @@ monolix_data <- source_monolix_data()
 monolix_data[["PK"]][["PKGDATA"]] <- WORK_DIR <- file.path(system.file(package="ggPMX"), "testdata", "theophylline", "Monolix")
 pmxOptions(work_dir = monolix_data[["PK"]][[1]])
 ctr <- pmx_mlx("standing")
+dataset <- diamonds
