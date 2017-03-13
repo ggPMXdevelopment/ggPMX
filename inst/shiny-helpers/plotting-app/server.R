@@ -17,6 +17,11 @@ function(input, output, session) {
     ctr <<- pmx_mlx("standing")
   }, priority = 100L)
   
+  # pmx parameters
+  # observe({
+  #   ctr %>% update_plot(ctr, isolate(plottype()))
+  # }, priority = 10L)
+  
   output$plottypes <- renderUI({
     userdirectory()
     selectInput("plttype", "Choose a plottype:", 
