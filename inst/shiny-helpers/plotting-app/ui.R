@@ -16,11 +16,7 @@ fluidPage(
   fluidRow(
     wellPanel(
       column(3,
-             h4("Labels"),
-             textInput("titleLabel", "Title"),
-             textInput("subTitleLabel", "Subtitle"),
-             textInput("xLabel", "xLab"),
-             textInput("yLabel", "yLab")
+             uiOutput("labels")
       ),
       column(3,
              h4("Has Smooth options"),
@@ -54,11 +50,13 @@ fluidPage(
       column(3,
              h4("Is Draft"),
              checkboxInput("isdraft", label = "Is Draft?", 
-                           value = FALSE),
+                           value = TRUE),
              conditionalPanel(
                "input.isdraft == true",
-               textInput("hasbandlabel", "Label", "DRAFT"),
-               textInput("hasbandcolor", "Color", "grey50")
+               numericInput("isdraftsize", "Size", 
+                            value = 20L, step = 1L),
+               textInput("isdraftlabel", "Label", "DRAFT"),
+               textInput("isdraftcolor", "Color", "grey50")
              )
       )
     )
