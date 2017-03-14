@@ -26,6 +26,20 @@ function(input, output, session) {
       conf$gp[["draft"]]<- list(size = input$isdraftsize, 
                               label = input$isdraftlabel,
                               color = input$isdraftcolor)
+    }else{
+      conf$gp[["is.draft"]] <- FALSE
+    }
+    if(!is.null(input$titleLabel)){
+      conf$gp$labels[["title"]] <- input$titleLabel
+    }
+    if(!is.null(input$subTitleLabel)){
+      conf$gp$labels[["subtitle"]] <- input$subTitleLabel
+    }
+    if(!is.null(input$xLabel)){
+      conf$gp$labels[["x"]] <- input$xLabel
+    }
+    if(!is.null(input$yLabel)){
+      conf$gp$labels[["y"]] <- input$yLabel
     }
     conf
   })
