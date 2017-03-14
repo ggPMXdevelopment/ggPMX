@@ -35,19 +35,39 @@ function(input, output, session) {
       conf$gp$labels[["y"]] <- input$yLabel
     }
     
+    # SMOOTH OPTIONS
+    if(!is.null(input$hassmooth)){
+      conf$gp$has.smooth <- input$hassmooth
+      if(input$hassmooth){
+        conf$gp[["smooth"]]<- list(se = input$hassmoothse, 
+                                   linetype = input$hassmoothlinetype, 
+                                   size = input$hassmoothsize, 
+                                   method = "loess")
+      }
+    }
+    
+    # BAND OPTIONS
+    if(!is.null(input$hasband)){
+      conf$gp$has.band <- input$hasband
+      if(input$hasband){
+        conf$gp[["band"]]<- list(y = input$hasbandband, 
+                                 linetype = input$hasbandlinetype, 
+                                 size = input$hasbandsize)
+      }
+    }
+    
     # DRAFT OPTIONS
     if(!is.null(input$isdraft)){
+      conf$gp[["is.draft"]] <- input$isdraft
       if(input$isdraft){
-        conf$gp[["is.draft"]] <- TRUE
         conf$gp[["draft"]]<- list(size = input$isdraftsize, 
                                   label = input$isdraftlabel,
                                   color = input$isdraftcolor)
-      }else{
-        conf$gp[["is.draft"]] <- FALSE
       }
     }
-      conf
-    })
+    
+    conf
+  })
   
   observeEvent(plotpars(), {
     ctr$remove_plot(isolate(plottype()))
@@ -158,5 +178,4 @@ function(input, output, session) {
     )
     
   })
-  }
-  
+}
