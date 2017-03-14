@@ -1,4 +1,5 @@
 function(input, output, session) {
+  rv <- reactiveValues(updateplot = 0)
   # The selected directory, if any
   userdirectory <- reactive({
     # If no file is selected, don't do anything
@@ -18,9 +19,23 @@ function(input, output, session) {
   }, priority = 100L)
   
   # pmx parameters
-  # observe({
-  #   ctr %>% update_plot(ctr, isolate(plottype()))
-  # }, priority = 10L)
+  plotpars <- reactive({
+    conf <- ctr$get_config(plottype())
+    if(input$isdraft){
+      conf$gp[["is.draft"]] <- TRUE
+      conf$gp[["draft"]]<- list(size = input$isdraftsize, 
+                              label = input$isdraftlabel,
+                              color = input$isdraftcolor)
+    }
+    conf
+  })
+  
+  observeEvent(plotpars(), {
+    ctr$remove_plot(isolate(plottype()))
+    ctr$add_plot(plotpars(), isolate(plottype()))
+    # ctr %>% update_plot(pname = isolate(plottype()), plotpars())
+    rv$updateplot <- rv$updateplot + 1
+  }, priority = 100L)
   
   output$plottypes <- renderUI({
     userdirectory()
@@ -31,7 +46,23 @@ function(input, output, session) {
   output$plot <- renderPlot({
     validate(need(input$mlpath, "Please choose a dataset"), 
              need(input$plttype, "Please choose a plot type"))
-    ctr %>% get_plot(plottype())
+    # introduce depence on plotpars
+    rv$updateplot
+    nn <- plottype()
+    if(nn=="indiv") return(ctr%>%get_plot(nn,c(2,4)))
+    ctr %>% get_plot(nn)
   }
   )
+  
+  output$labels <- renderUI({
+    # introduce dependency on input$plttype
+    conf <- ctr$get_config(plottype())
+    tagList(
+      h4("Labels"),
+      textInput("titleLabel", "Title", conf$gp$labels["title"]),
+      textInput("subTitleLabel", "Subtitle", conf$gp$labels["subtitle"]),
+      textInput("xLabel", "xLab", conf$gp$labels["x"]),
+      textInput("yLabel", "yLab", conf$gp$labels["y"])
+    )
+  })
 }
