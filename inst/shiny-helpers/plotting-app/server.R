@@ -21,14 +21,7 @@ function(input, output, session) {
   # pmx parameters
   plotpars <- reactive({
     conf <- ctr$get_config(plottype())
-    if(input$isdraft){
-      conf$gp[["is.draft"]] <- TRUE
-      conf$gp[["draft"]]<- list(size = input$isdraftsize, 
-                                label = input$isdraftlabel,
-                                color = input$isdraftcolor)
-    }else{
-      conf$gp[["is.draft"]] <- FALSE
-    }
+    # LABEL OPTIONS
     if(!is.null(input$titleLabel)){
       conf$gp$labels[["title"]] <- input$titleLabel
     }
@@ -41,8 +34,20 @@ function(input, output, session) {
     if(!is.null(input$yLabel)){
       conf$gp$labels[["y"]] <- input$yLabel
     }
-    conf
-  })
+    
+    # DRAFT OPTIONS
+    if(!is.null(input$isdraft)){
+      if(input$isdraft){
+        conf$gp[["is.draft"]] <- TRUE
+        conf$gp[["draft"]]<- list(size = input$isdraftsize, 
+                                  label = input$isdraftlabel,
+                                  color = input$isdraftcolor)
+      }else{
+        conf$gp[["is.draft"]] <- FALSE
+      }
+    }
+      conf
+    })
   
   observeEvent(plotpars(), {
     ctr$remove_plot(isolate(plottype()))
@@ -132,4 +137,26 @@ function(input, output, session) {
     
   })
   
-}
+  output$draft <- renderUI({
+    conf <- ctr$get_config(plottype())
+    tagList(
+      h4("Is Draft"),
+      column(4, offset = 1, 
+             checkboxInput("isdraft", label = "Is Draft?", 
+                           value = conf$gp$is.draft)
+      ),
+      column(4, offset = 1,
+             conditionalPanel(
+               "input.isdraft == true",
+               numericInput("isdraftsize", "Size", 
+                            value = conf$gp$draft$size, step = 1L),
+               textInput("isdraftlabel", "Label", conf$gp$draft$label),
+               textInput("isdraftcolor", "Color", conf$gp$draft$color)
+             )
+             
+      )
+    )
+    
+  })
+  }
+  
