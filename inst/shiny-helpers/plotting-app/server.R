@@ -20,7 +20,8 @@ function(input, output, session) {
   
   # pmx parameters
   plotpars <- reactive({
-    conf <- ctr$get_config(plottype())
+    userdirectory()
+    conf <- ctr$get_config(isolate(plottype()))
     # LABEL OPTIONS
     if(!is.null(input$titleLabel)){
       conf$gp$labels[["title"]] <- input$titleLabel
