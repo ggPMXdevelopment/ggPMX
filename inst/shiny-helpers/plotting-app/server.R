@@ -73,10 +73,14 @@ function(input, output, session) {
     conf <- ctr$get_config(plottype())
     tagList(
       h4("Labels"),
-      textInput("titleLabel", "Title", conf$gp$labels["title"]),
-      textInput("subTitleLabel", "Subtitle", conf$gp$labels["subtitle"]),
-      textInput("xLabel", "xLab", conf$gp$labels["x"]),
-      textInput("yLabel", "yLab", conf$gp$labels["y"])
+      column(4, offset = 1, 
+             textInput("titleLabel", "Title", conf$gp$labels["title"]),
+             textInput("subTitleLabel", "Subtitle", conf$gp$labels["subtitle"])
+      ),
+      column(4, offset = 1, 
+             textInput("xLabel", "xLab", conf$gp$labels["x"]),
+             textInput("yLabel", "yLab", conf$gp$labels["y"])
+      )
     )
   })
 }
