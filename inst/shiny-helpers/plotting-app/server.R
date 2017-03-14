@@ -24,8 +24,8 @@ function(input, output, session) {
     if(input$isdraft){
       conf$gp[["is.draft"]] <- TRUE
       conf$gp[["draft"]]<- list(size = input$isdraftsize, 
-                              label = input$isdraftlabel,
-                              color = input$isdraftcolor)
+                                label = input$isdraftlabel,
+                                color = input$isdraftcolor)
     }else{
       conf$gp[["is.draft"]] <- FALSE
     }
@@ -83,4 +83,53 @@ function(input, output, session) {
       )
     )
   })
+  
+  output$smooth <- renderUI({
+    conf <- ctr$get_config(plottype())
+    tagList(
+      h4("Has Smooth options"),
+      column(4, offset = 1, 
+             checkboxInput("hassmooth", label = "Has smooth?", 
+                           value = conf$gp$has.smooth)
+      ),
+      column(4, offset = 1,
+             conditionalPanel(
+               "input.hassmooth == true",
+               checkboxInput("hassmoothse", label = "SE?", 
+                             value = conf$gp$smooth$se),
+               numericInput("hassmoothlinetype", "Line Type", 
+                            value = conf$gp$smooth$linetype),
+               numericInput("hassmoothsize", "Size", 
+                            value = conf$gp$smooth$size, step = 0.1)
+             )
+             
+      )
+    )
+  })
+  
+  output$band <- renderUI({
+    conf <- ctr$get_config(plottype())
+    tagList(
+      h4("Has Band"),
+      column(4, offset = 1, 
+             checkboxInput("hasband", label = "Has band?", 
+                           value = conf$gp$has.band)
+      ),
+      column(4, offset = 1,
+             conditionalPanel(
+               "input.hasband == true",
+               sliderInput("hasbandband", label = "Band", 
+                           step = 1L, value = conf$gp$band$y, 
+                           min = -10L, max = 10L),
+               numericInput("hasbandlinetype", "Line Type", 
+                            value = conf$gp$band$linetype),
+               numericInput("hasbandsize", "Size", 
+                            value = conf$gp$band$size, step = 0.1)
+             )
+             
+      )
+    )
+    
+  })
+  
 }
