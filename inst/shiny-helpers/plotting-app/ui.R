@@ -22,12 +22,21 @@ fluidPage(
              textInput("xLabel", "xLab"),
              textInput("yLabel", "yLab")
       ),
-      column(4, offset = 1,
-             selectInput('x', 'X', names(dataset)),
-             selectInput('y', 'Y', names(dataset), names(dataset)[[2]]),
-             selectInput('color', 'Color', c('None', names(dataset)))
+      column(3,
+             h4("Has Smooth options"),
+             checkboxInput("hassmooth", label = "Has smooth?", 
+                           value = FALSE),
+             conditionalPanel(
+               "input.hassmooth == true",
+               checkboxInput("hassmoothse", label = "SE?", 
+                             value = FALSE),
+               numericInput("hassmoothlinetype", "Line Type", 
+                            value = 2L),
+               numericInput("hassmoothsize", "Size", 
+                            value = 0.5, step = 0.1)
+             )
       ),
-      column(4,
+      column(3,
              selectInput('facet_row', 'Facet Row', c(None='.', names(dataset))),
              selectInput('facet_col', 'Facet Column', c(None='.', names(dataset)))
       )
