@@ -68,7 +68,7 @@ load_config <- function(x, sys){
 #' S3 method print pmxConfig object
 #'
 #' @param x pmxConfig object
-#' @param ...
+#' @param ... addtional arguments to pass to print (ununsed currently)
 #'
 #' @return invisible object
 #' @export
