@@ -26,6 +26,27 @@ test_that("can load data set", {
                      "VAR", "EFFECT", "FUN"))
 })
 
+test_that("errors work in load data set", {
+  names. <- names(reader_help$conf$data)
+  datasets <- reader_help$conf$data[names.]
+  path <- reader_help$wd
+  sys <- reader_help$conf$sys
+  datasets$par_est$file <- c("\\.txt")
+  with_mock(
+    `base::grep` = function(pattern, ...){
+      if(identical(pattern, "mlx")){
+        return("nonexistant file")
+      }else{
+        return(list.files(path, full.names = TRUE))
+      }
+    }, 
+    expect_error(
+      load_data_set(datasets$par_est, path, sys), "FILE DOES NOT exist"
+    )
+  )
+  
+})
+
 test_that("can exclude data set", {
   exclude <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
                          dconf = reader_help$conf$data, 
