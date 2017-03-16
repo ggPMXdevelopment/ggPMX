@@ -77,7 +77,7 @@ load_data_set <- function(x, path, sys){
       fpath <- grep(sys, fpath, ignore.case = TRUE, value=TRUE)
   }
   if(!file.exists(fpath)){
-    cat(sprintf(" %s FILE DO NOT exist under %s", x[["file"]], path))
+    stop(sprintf(" %s FILE DOES NOT exist under %s", x[["file"]], path))
     return(NULL)
   }
   
@@ -91,7 +91,7 @@ load_data_set <- function(x, path, sys){
     data.table::setnames(ds,
                          tolower(names(x[["names"]])),
                          as.character(x[["names"]]))
-    ds <- ds[,as.character(x[["names"]]), with = FALSE]
+    ds <- ds[, as.character(x[["names"]]), with = FALSE]
   }
   ds
 }
