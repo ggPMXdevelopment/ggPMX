@@ -78,7 +78,6 @@ print.pmx_gpar <- function(x, ...) {
   invisible(x)
 }
 
-#'@import yaml
 .valid_pmx_gpar <- function(gpars) {
   ## TDOD add assertions about
   ## graphical parametrs

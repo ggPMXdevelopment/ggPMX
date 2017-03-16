@@ -11,10 +11,10 @@
 #'
 #' @examples
 #' add_draft("DRAFT",size=5,color="grey50")
-add_draft <- function(label="DRAFT",size,color){
-  annotate('text',label=label,size=size,
-           colour=color,family='Courier',
-           x=Inf,y=-Inf,hjust=1.2,vjust=-1.2)
+add_draft <- function(label = "DRAFT", size, color){
+  ggplot2::annotate('text', label = label, size = size,
+           colour = color, family = 'Courier',
+           x = Inf, y = -Inf, hjust = 1.2 , vjust = -1.2)
 }
 
 #' Give the whole abbreviation definition
@@ -26,7 +26,8 @@ add_draft <- function(label="DRAFT",size,color){
 #' @examples
 #' abbrev("VPC")
 abbrev <- function(param) {
-  keys_file <- file.path(system.file(package="ggPMX"),"init","abbrev.yaml")
+  keys_file <- file.path(system.file(package = "ggPMX"), "init", 
+                         "abbrev.yaml")
   keys <- yaml.load_file(keys_file)
   if(missing(param)) keys
   else  keys[[param]]
