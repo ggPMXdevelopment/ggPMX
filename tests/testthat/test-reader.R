@@ -26,6 +26,20 @@ test_that("can load data set", {
                      "VAR", "EFFECT", "FUN"))
 })
 
+test_that("can exclude data set", {
+  exclude <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
+                         dconf = reader_help$conf$data, 
+                         exclude = "ind_pred")
+  expect_identical(names(exclude), c("par_est", "mod_pred"))
+})
+
+test_that("can include data set", {
+  include <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
+                         dconf = reader_help$conf$data, 
+                         include = "ind_pred")
+  expect_identical(names(include), "ind_pred")
+})
+
 test_that("can read mlx ind", {
   
 })
