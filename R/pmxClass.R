@@ -137,8 +137,8 @@ pmxClass <- R6::R6Class(
     initialize = function(data_path, config)
       pmx_initialize(self, private, data_path, config),
     
-    print = function(data_path, config)
-      pmx_print(self, private),
+    print = function(data_path, config, ...)
+      pmx_print(self, private, ...),
     
     # Operations ---------------------------------------------------------------
     add_plot = function(x, pname)
@@ -182,10 +182,10 @@ pmx_initialize <- function(self, private, data_path, config) {
   
 }
 
-pmx_print <- function(self, private){
+pmx_print <- function(self, private, ...){
   cat("\npmx object:\n")
   cat("data path: ", private$.data_path , "\n")
-  print(self$config)
+  print(self$config, ...)
   
 }
 
@@ -246,12 +246,12 @@ pmx_post_load <- function(self, private){
 #' Print pmxClass object
 #'
 #' @param x pmxClass object
-#' @param ...
+#' @param ... additinal arguments to pass to print
 #'
 #' @return print object to screen
 #' @export
 
 print.pmxClass <- function(x, ...){
-  x$print()
+  x$print(...)
 }
 
