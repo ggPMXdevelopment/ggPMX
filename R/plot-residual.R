@@ -13,28 +13,28 @@
 #' @export
 #' @seealso \code{\link{plot_pmx.residual}}
 
-residual <- function(x,y,labels=NULL,point=NULL,...){
+residual <- function(x, y, labels = NULL, point = NULL, ...){
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
   stopifnot(!missing(y))
-  aess <- list(x=x,y=y)
+  aess <- list(x = x, y = y)
   default_labels <- list(
-    title=paste(aess,collapse=" versus "),
-    subtitle="",
-    x =abbrev(aess[["x"]]),
-    y=abbrev(aess[["y"]])
+    title=paste(aess, collapse = " versus "),
+    subtitle = "",
+    x = abbrev(aess[["x"]]),
+    y = abbrev(aess[["y"]])
   )
-  labels <- l_left_join(default_labels,labels)
-  default_point <- list(shape= 1,color= "black",size= 1)
-  point <- l_left_join(default_point,point)
+  labels <- l_left_join(default_labels, labels)
+  default_point <- list(shape = 1, color = "black", size = 1)
+  point <- l_left_join(default_point, point)
 
   structure(
     list(
-      aess=aess,
-      point=point,
-      gp=pmx_gpar(labels=labels,...)
-    ),class=c("residual","pmx_gpar"))
+      aess = aess,
+      point = point,
+      gp = pmx_gpar(labels = labels, ...)
+    ),class=c("residual", "pmx_gpar"))
 }
 
 
@@ -49,16 +49,16 @@ residual <- function(x,y,labels=NULL,point=NULL,...){
 #' @seealso \code{\link{residual}}
 #' @family plot_pmx
 #' @export
-plot_pmx.residual <- function(x,dx){
+plot_pmx.residual <- function(x, dx){
   stopifnot(is.pmx_gpar(x))
   with(x,
        {
          p <-
-           ggplot(dx, with(aess,aes_string(x, y)))+
-           with(point,geom_point(shape=shape, color=color))
+           ggplot2::ggplot(dx, with(aess, ggplot2::aes_string(x, y)))+
+           with(point, geom_point(shape = shape, color = color))
          if("z" %in% names(gp))
-         p <- p + facet_wrap(as.formula(paste('~',gp$z)))
-         p <- plot_pmx(gp,p)
+         p <- p + ggplot2::facet_wrap(as.formula(paste('~' , gp$z)))
+         p <- plot_pmx(gp, p)
          p
        })
 }
