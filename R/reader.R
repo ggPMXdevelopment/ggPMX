@@ -128,9 +128,9 @@ post_load <- function(dxs, sys, dplot){
     vv <- names(dxs$ind_pred)[vapply(dxs$ind_pred, is.integer, TRUE)]
     ## prepare data set for stratification
     dxs$mod_pred <-
-      data.table::merge(dxs$mod_pred,
-                        unique(dxs$ind_pred[, vv, with = FALSE]),
-                        by = "ID")
+      merge(dxs$mod_pred,
+            unique(dxs$ind_pred[, vv, with = FALSE]),
+            by = "ID")
     ## add shrinkage data set
     dxs[["shrink"]] <- 
       shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)

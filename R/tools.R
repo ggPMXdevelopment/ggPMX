@@ -33,6 +33,10 @@ abbrev <- function(param) {
   else  keys[[param]]
 }
 
+#' Shiny application to test ggPMX plots
+#'
+#' @return This function does not return. It is a wrapper for runApp. 
+#' Interrupt R to stop the application (usually by pressing Ctrl+C or Esc).
 #' @export
 plotTester <- function() {
   appDir <- system.file("shiny-helpers", "plotting-app", 

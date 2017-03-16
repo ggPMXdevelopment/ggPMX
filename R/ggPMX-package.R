@@ -34,6 +34,6 @@
 #' @importFrom stringr str_trim
 #' @importFrom utils read.table
 #' @importFrom yaml yaml.load_file
-#' @importFrom data.table setDT setnames fread melt tstrsplit melt.data.table
+#' @importFrom data.table setDT setnames fread melt tstrsplit
 #' @importFrom data.table melt.data.table :=
 NULL
