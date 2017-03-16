@@ -10,7 +10,6 @@ test_that("can print configs", {
   expect_output(print(conf), "There are 2 configs for mlx system ")
 })
 
-
 test_that("can load configs", {
   conf <- configs()
   cfig <- load_config(conf$name[1], "mlx")
