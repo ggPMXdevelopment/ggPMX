@@ -1,6 +1,6 @@
 Package: ggPMX
 Title: to be determined
-Description: A ggplot2-based tool to facilitate diagnostic plots for NLME models
+Description: A ggplot2-based tool to facilitate diagnostic plots for NLME models.
 Version: 0.3.0
 Authors@R: c(person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="cre")
            ,person("Names to be", "Added", email="author.name@novartis.com", role="ctb")
