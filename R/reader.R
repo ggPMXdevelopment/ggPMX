@@ -67,10 +67,11 @@ read_mlx_par_est <- function(path,x){
 #' @return data.table
 #' @export
 #' @import data.table
-load_data_set <- function(x,path,sys){
+load_data_set <- function(x, path, sys){
   fpath <- file.path(path,x[["file"]])
   if(!file.exists(fpath)){
-    fpath <- grep(x[["file"]],list.files(path,full=TRUE),value=TRUE)
+    fpath <- grep(x[["file"]],list.files(path, full.names = TRUE), 
+                  value=TRUE)
     if(length(fpath)>1)
       fpath <- grep(sys,fpath,ignore.case = TRUE,value=TRUE)
   }
