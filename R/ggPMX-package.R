@@ -27,7 +27,7 @@
 #' @importFrom ggplot2 %+replace% element_text facet_wrap ggplot_build 
 #' @importFrom ggplot2 theme ggplot aes_string geom_point geom_smooth
 #' @importFrom ggplot2 geom_hline labs annotate aes geom_histogram
-#' @importFrom ggplot2 geom_line 
+#' @importFrom ggplot2 geom_line ggproto
 #' @importFrom ggthemes theme_gdocs
 #' @importFrom gtable gtable_add_cols gtable_add_rows
 #' @importFrom magrittr %>%
