@@ -1,9 +1,10 @@
 function(input, output, session) {
-  rv <- reactiveValues(updateplot = 0)
+  rv <- reactiveValues(updateplot = 0, updatedir = 0)
   # The selected directory, if any
   userdirectory <- reactive({
     # If no file is selected, don't do anything
     validate(need(input$mlpath, message = FALSE))
+    isolate(rv$updatedir <- rv$updatedir + 1)
     input$mlpath
   })
   
@@ -20,7 +21,7 @@ function(input, output, session) {
   
   # pmx parameters
   plotpars <- reactive({
-    userdirectory()
+    rv$updatedir
     conf <- ctr$get_config(isolate(plottype()))
     # LABEL OPTIONS
     if(!is.null(input$titleLabel)){
