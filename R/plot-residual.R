@@ -14,7 +14,6 @@
 #' @seealso \code{\link{plot_pmx.residual}}
 
 residual <- function(x,y,labels=NULL,point=NULL,...){
-
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -47,7 +46,6 @@ residual <- function(x,y,labels=NULL,point=NULL,...){
 
 #'
 #' @return ggplot2 object
-#' @import ggplot2
 #' @seealso \code{\link{residual}}
 #' @family plot_pmx
 #' @export

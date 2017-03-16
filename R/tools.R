@@ -23,7 +23,6 @@ add_draft <- function(label="DRAFT",size,color){
 #'
 #' @return characater abbreviation defintion
 #' @export
-#' @import yaml
 #' @examples
 #' abbrev("VPC")
 abbrev <- function(param) {
@@ -42,5 +41,5 @@ plotTester <- function() {
          call. = FALSE)
   }
   
-  runApp(appDir, display.mode = "normal")
+  shiny::runApp(appDir, display.mode = "normal")
 }

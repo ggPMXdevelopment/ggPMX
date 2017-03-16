@@ -23,9 +23,6 @@
 #' 
 #' @name ggPMX
 #' @docType package
-#' @import assertthat
-#' @import checkmate
-#' @import data.table
 #' @importFrom R6 R6Class
 #' @importFrom ggplot2 %+replace% 
 #' @importFrom ggplot2 element_text 
