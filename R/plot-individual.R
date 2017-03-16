@@ -46,6 +46,7 @@ individual <- function(labels,has.curve=TRUE,facets=list(ncol=3,nrow=4),...){
 plot_pmx.individual <-
   function(x,dx,include){
     stopifnot(is.pmx_gpar(x))
+    ID <- NULL
     ##reshape data to the long format
     if(!missing(include))
       dx <- setDT(dx)[ID %in% include]
