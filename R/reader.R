@@ -6,15 +6,15 @@
 #' @return data.table object
 
 #' @export
-read_mlx_ind_est <- function(path,x){
+read_mlx_ind_est <- function(path, x){
   ds <- fread(path)
-  ds <- ds[,!grep("^V[0-9]+",names(ds)),with=FALSE]
-  setnames(ds,tolower(names(ds)))
+  ds <- ds[, !grep("^V[0-9]+", names(ds)), with = FALSE]
+  data.table::setnames(ds, tolower(names(ds)))
   
-  ds <- melt(ds,measure=grep("_.*_",names(ds)))
-  setnames(ds,toupper(gsub("_|[0-9]+","",names(ds))))
+  ds <- data.table::melt(ds, measure = grep("_.*_", names(ds)))
+  data.table::setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
   VARIABLE <- NULL
-  ds[,c("VAR","EFFECT","FUN"):=tstrsplit(VARIABLE,"_")]
+  ds[,c("VAR", "EFFECT", "FUN") := data.table::tstrsplit(VARIABLE, "_")]
   
 }
 
@@ -26,12 +26,12 @@ read_mlx_ind_est <- function(path,x){
 #' @return data.table object
 
 #' @export
-read_mlx_pred <- function(path,x){
+read_mlx_pred <- function(path, x){
   xx <- fread(path)
-  setnames(xx,tolower(names(xx)))
+  data.table::setnames(xx, tolower(names(xx)))
   ## mean start columns
-  col_stars <- grep("*",names(xx),fixed=TRUE,value=TRUE)
-  ncol_stars <- toupper(gsub("ind","I",gsub("_.*","",col_stars)))
+  col_stars <- grep("*", names(xx), fixed = TRUE, value = TRUE)
+  ncol_stars <- toupper(gsub("ind", "I", gsub("_.*", "", col_stars)))
   nn <- c(x$names, stats::setNames(ncol_stars,
                                    gsub("\\*", "\\\\*", col_stars)))
   match_names <- vapply(names(nn), 
@@ -42,7 +42,7 @@ read_mlx_pred <- function(path,x){
                         integer(1), USE.NAMES = FALSE)
   setnames(xx,names(xx)[match_names[!is.na(match_names)]],
            as.character(nn[!is.na(match_names)]))
-  xx[,as.character(nn[!is.na(match_names)]),with=FALSE]
+  xx[, as.character(nn[!is.na(match_names)]), with = FALSE]
 }
 
 
@@ -54,10 +54,10 @@ read_mlx_pred <- function(path,x){
 #' @return data.table object
 #' @importFrom utils read.table
 #' @export
-read_mlx_par_est <- function(path,x){
-  xx <- setDT(read.table(path,sep=";",header=TRUE))
+read_mlx_par_est <- function(path, x){
+  xx <- data.table::setDT(read.table(path, sep = ";", header = TRUE))
   if("names" %in% names(x))
-    setnames(xx,x[["names"]])
+    setnames(xx, x[["names"]])
   xx
 }
 
@@ -69,27 +69,29 @@ read_mlx_par_est <- function(path,x){
 #' @return data.table
 #' @export
 load_data_set <- function(x, path, sys){
-  fpath <- file.path(path,x[["file"]])
+  fpath <- file.path(path, x[["file"]])
   if(!file.exists(fpath)){
-    fpath <- grep(x[["file"]],list.files(path, full.names = TRUE), 
-                  value=TRUE)
-    if(length(fpath)>1)
-      fpath <- grep(sys,fpath,ignore.case = TRUE,value=TRUE)
+    fpath <- grep(x[["file"]], list.files(path, full.names = TRUE), 
+                  value = TRUE)
+    if(length(fpath) > 1)
+      fpath <- grep(sys, fpath, ignore.case = TRUE, value=TRUE)
   }
   if(!file.exists(fpath)){
-    cat(sprintf(" %s FILE DO NOT exist under %s",x[["file"]],path))
+    cat(sprintf(" %s FILE DO NOT exist under %s", x[["file"]], path))
     return(NULL)
   }
   
   
-  if(exists("reader",x))
-    return(do.call(x[["reader"]],list(fpath,x)))
+  if(exists("reader", x))
+    return(do.call(x[["reader"]], list(fpath, x)))
   ds <- fread(fpath)
-  ds <- ds[,!grep("^V[0-9]+",names(ds)),with=FALSE]
-  setnames(ds,tolower(names(ds)))
+  ds <- ds[,!grep("^V[0-9]+", names(ds)), with = FALSE]
+  data.table::setnames(ds,tolower(names(ds)))
   if("names" %in% names(x)){
-    setnames(ds,tolower(names(x[["names"]])),as.character(x[["names"]]))
-    ds <- ds[,as.character(x[["names"]]),with=FALSE]
+    data.table::setnames(ds,
+                         tolower(names(x[["names"]])),
+                         as.character(x[["names"]]))
+    ds <- ds[,as.character(x[["names"]]), with = FALSE]
   }
   ds
 }
@@ -105,32 +107,33 @@ load_data_set <- function(x, path, sys){
 #'
 #' @return list of data.table
 #' @export
-load_source <- function(sys,path,dconf,include,exclude){
+load_source <- function(sys, path, dconf, include, exclude){
   names. <- names(dconf)
   if(!missing(include)) names. <- include
-  if(!missing(exclude)) names. <- setdiff(names.,exclude)
+  if(!missing(exclude)) names. <- setdiff(names., exclude)
   
   datasets <- dconf[names.]
   dxs <- lapply(datasets,
                 load_data_set,
-                path=path,
-                sys=sys)
+                path = path,
+                sys = sys)
   dxs
 }
 
 
-post_load <- function(dxs,sys,dplot){
+post_load <- function(dxs, sys, dplot){
   mm <- unlist(dplot)
-  if(sys=="mlx"){
+  if(sys == "mlx"){
     ## add startification column
-    vv <- names(dxs$ind_pred)[vapply(dxs$ind_pred,is.integer,T)]
+    vv <- names(dxs$ind_pred)[vapply(dxs$ind_pred, is.integer, TRUE)]
     ## prepare data set for stratification
     dxs$mod_pred <-
-      merge(dxs$mod_pred,
-            unique(dxs$ind_pred[,vv,with=FALSE]),
-            by="ID")
+      data.table::merge(dxs$mod_pred,
+                        unique(dxs$ind_pred[, vv, with = FALSE]),
+                        by = "ID")
     ## add shrinkage data set
-    dxs[["shrink"]] <- shrinkage(dxs[["par_est"]],dxs[["ind_pred"]],sys = sys)
+    dxs[["shrink"]] <- 
+      shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)
   }
   dxs
 }
