@@ -80,8 +80,3 @@ test_that("can include data set", {
                          include = "ind_pred")
   expect_identical(names(include), "ind_pred")
 })
-
-test_that("can read mlx ind", {
-  
-})
-
