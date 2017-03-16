@@ -13,14 +13,14 @@
 #'
 
 pmx <-
-  function(config,sys,directory){
+  function(config, sys, directory){
     if(missing(directory))
       directory <- getPmxOption("work_dir")
     if(is.null(directory))
       stop("Please set a directory argument or set global work_dir option")
     if(!inherits(config,"pmxConfig"))
-      config <- load_config(config,sys)
-    pmxClass$new(directory,config)
+      config <- load_config(config, sys)
+    pmxClass$new(directory, config)
   }
 
 #' Wrapper to pmx constructor
@@ -32,8 +32,8 @@ pmx <-
 #' @export
 
 pmx_mlx <-
-  function(config,directory){
-    pmx(config,"mlx",directory)
+  function(config, directory){
+    pmx(config, "mlx", directory)
   }
 
 
@@ -53,18 +53,18 @@ pmx_mlx <-
 #' @export
 
 #'
-set_plot <- function(ctr,ptype,pname,...){
+set_plot <- function(ctr, ptype, pname, ...){
   
   conf <-
     switch(ptype,
-           IND=individual(...),
-           DIS=distrib(...),
-           RES=residual(...)
+           IND = individual(...),
+           DIS = distrib(...),
+           RES = residual(...)
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
   
-  ctr$add_plot(conf,pname)
+  ctr$add_plot(conf, pname)
   invisible(ctr)
 }
 
@@ -78,9 +78,9 @@ set_plot <- function(ctr,ptype,pname,...){
 #' @return ggplot object
 #' @export
 
-get_plot <- function(ctr,nplot,npage){
+get_plot <- function(ctr, nplot, npage){
   xx <- ctr$get_plot(nplot)
-  if(inherits(xx,"list"))
+  if(inherits(xx, "list"))
     xx[npage]
   else xx
 }
@@ -125,15 +125,15 @@ pmxClass <- R6::R6Class(
   
   # Private methods ------------------------------------------------------------
   private = list(
-    .data_path="",
-    .plots=list(),
-    .plots_configs= list()
+    .data_path = "",
+    .plots = list(),
+    .plots_configs = list()
   ),
   
   # Public methods -------------------------------------------------------------
   public = list(
     data  = NULL,
-    config= NULL,
+    config = NULL,
     initialize = function(data_path, config)
       pmx_initialize(self, private, data_path, config),
     
@@ -177,27 +177,29 @@ pmx_initialize <- function(self, private, data_path, config) {
   for ( nn in names(self$config$plots)){
     x <- self$config$plots[[nn]]
     x$pname <- tolower(nn)
-    do.call(set_plot,c(ctr=self,x))
+    do.call(set_plot, c(ctr = self, x))
   }
   
 }
 
 pmx_print <- function(self, private){
   cat("\npmx object:\n")
-  cat("data path: ",private$.data_path ,"\n")
+  cat("data path: ", private$.data_path , "\n")
   print(self$config)
   
 }
 
 pmx_add_plot <- function(self, private, x, pname){
   if(missing(pname))
-    pname <- paste(x$aess,collapse="_")
+    pname <- paste(x$aess, collapse="_")
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
-  vv <- vapply(self$data,function(y)all(as.character(x$aess) %in% names(y)),TRUE)
+  vv <- vapply(self$data, function(y){
+    all(as.character(x$aess) %in% names(y))
+  }, TRUE)
   if(!any(vv)){return(invisible(self))}
   dname <- names(self$data)[vv]
-  private$.plots[[pname]] <- plot_pmx(x,dx=self$data[[dname]])
+  private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   invisible(self)
 }
 
@@ -237,7 +239,7 @@ pmx_plots <- function(self, private){
 }
 
 pmx_post_load <- function(self, private){
-  self$data <- post_load(self$data,self$config$sys,self$config$plots)
+  self$data <- post_load(self$data, self$config$sys, self$config$plots)
   
 }
 
@@ -249,7 +251,7 @@ pmx_post_load <- function(self, private){
 #' @return print object to screen
 #' @export
 
-print.pmxClass <- function(x,...){
+print.pmxClass <- function(x, ...){
   x$print()
 }
 
