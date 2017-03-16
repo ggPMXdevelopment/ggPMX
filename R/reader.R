@@ -1,3 +1,11 @@
+#' Read MONOLIX individual parameters
+#'
+#' @param path character path to the file
+#' @param x dataset object
+#'
+#' @return data.table object
+
+#' @export
 read_mlx_ind_est <- function(path,x){
   ds <- fread(path)
   ds <- ds[,!grep("^V[0-9]+",names(ds)),with=FALSE]
