@@ -34,7 +34,7 @@ residual <- function(x, y, labels = NULL, point = NULL, ...){
       aess = aess,
       point = point,
       gp = pmx_gpar(labels = labels, ...)
-    ),class=c("residual", "pmx_gpar"))
+    ), class=c("residual", "pmx_gpar"))
 }
 
 

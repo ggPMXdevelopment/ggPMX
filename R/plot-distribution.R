@@ -70,7 +70,7 @@ plot_pmx.distrib <- function(x, dx){
     
     if(has.shrink){
       dx.etas <- merge(dx.etas, shrink, by = "EFFECT")[
-        ,lfacet := sprintf('%s: with shrinkage %s%%', EFFECT, 
+        , lfacet := sprintf('%s: with shrinkage %s%%', EFFECT, 
                            round(SHRINK*100))]
       
     }else dx.etas[, lfacet := EFFECT]
@@ -103,7 +103,7 @@ plot_pmx.distrib <- function(x, dx){
         with(facets, ggplot2::facet_wrap(~lfacet, scales = scales, 
                                          nrow = nrow))
     }
-    plot_pmx(gp,p)
+    plot_pmx(gp, p)
   })
   p
   

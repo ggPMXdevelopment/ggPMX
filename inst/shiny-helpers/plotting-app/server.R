@@ -90,7 +90,7 @@ function(input, output, session) {
     # introduce depence on plotpars
     rv$updateplot
     nn <- plottype()
-    if(nn=="indiv") return(ctr%>%get_plot(nn,c(2,4)))
+    if(nn == "indiv") return(ctr %>% get_plot(nn, c(2, 4)))
     ctr %>% get_plot(nn)
   }
   )

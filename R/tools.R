@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-#' add_draft("DRAFT",size=5,color="grey50")
+#' add_draft("DRAFT", size = 5, color = "grey50")
 add_draft <- function(label = "DRAFT", size, color){
   ggplot2::annotate('text', label = label, size = size,
            colour = color, family = 'Courier',
