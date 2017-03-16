@@ -50,9 +50,9 @@ load_config <- function(x,sys){
   if(inherits(x,"character")){
     configs. <- configs(sys)
     cpath <- configs.[configs.$name==x,"path"]
-    ifile <- list.files(cpath,full=TRUE,pattern="ipmx")
+    ifile <- list.files(cpath, full.names = TRUE, pattern="ipmx")
     iconfig <- yaml.load_file(ifile)
-    pfile <- list.files(cpath,full=TRUE,pattern="ppmx")
+    pfile <- list.files(cpath, full.names = TRUE, pattern="ppmx")
     pconfig <- yaml.load_file(pfile)
     config <- list(data=iconfig,plots=pconfig)
     config$sys <- sys
