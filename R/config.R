@@ -29,7 +29,7 @@ configs <-
 
 #' S3 method to print configs
 #' @param x object of class configs
-#' @param ...
+#' @param ... pass additonal options (not used presently)
 #' @return print result
 #' @export
 print.configs <- function(x,...){
