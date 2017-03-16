@@ -105,12 +105,14 @@ plot_names <- function(ctr){
 #' @param ctr  \code{pmxClass} controller object
 #' @param pname characater the plot name to update
 #' @param ... others graphical parametrs given to set the plot
+#' @param  pmxgpar a object of class pmx_gpar possibly the output of the
+#' \code{\link{pmx_gpar}} function.
 #'
 #' @return ggplot object
 #' @export
 
-update_plot <- function(ctr,pname,...){
-  ctr$update_plot(pname,...)
+update_plot <- function(ctr, pname, ..., pmxgpar = NULL){
+  ctr$update_plot(pname, ..., pmxgpar = pmxgpar)
 }
 
 
@@ -142,8 +144,8 @@ pmxClass <- R6::R6Class(
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
     
-    update_plot = function(pname, ...)
-      pmx_update_plot(self, private, pname, ...),
+    update_plot = function(pname, ..., pmxgpar = NULL)
+      pmx_update_plot(self, private, pname, ..., pmxgpar = pmxgpar),
     
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
@@ -199,13 +201,18 @@ pmx_add_plot <- function(self, private, x, pname){
   invisible(self)
 }
 
-pmx_update_plot <- function(self, private, pname, ...){
+pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
+  # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   config <- private$.plots_configs[[pname]]
   old_class <- class(config)
-  x <- l_left_join(config,...)
+  x <- if(is.null(pmx_gpar)){
+    l_left_join(config, ...)
+  }else{
+    l_left_join(config, pmxgpar)
+  }
   class(x$gp) <- class(config$gp)
   self$remove_plot(pname)
-  self$add_plot(x,pname,...)
+  self$add_plot(x, pname)
   
 }
 
@@ -220,16 +227,16 @@ pmx_get_config <- function(self, private, pname){
   private$.plots_configs[[pname]]
 }
 
-pmx_get_plot = function(self, private, pname){
+pmx_get_plot <- function(self, private, pname){
   pname <- tolower(pname)
   private$.plots[[pname]]
 }
 
-pmx_plots = function(self, private){
+pmx_plots <- function(self, private){
   names(private$.plots)
 }
 
-pmx_post_load = function(self, private){
+pmx_post_load <- function(self, private){
   self$data <- post_load(self$data,self$config$sys,self$config$plots)
   
 }
