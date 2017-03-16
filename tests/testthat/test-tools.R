@@ -7,3 +7,10 @@ test_that("Can call plot tester", {
   )
   expect_identical(res, "hello")
 })
+
+test_that("plot tester error functions", {
+  with_mock(
+    `base::system.file` = function(...){""},
+    expect_error(plotTester(), "Could not find example directory")
+  )
+})
