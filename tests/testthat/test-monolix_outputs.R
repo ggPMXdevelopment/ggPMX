@@ -2,7 +2,7 @@ context("monolix_outputs")
 
 monolix_data <- source_monolix_data()
 
-for(i in 1:length(monolix_data[["PK"]])){
+for(i in seq_along(monolix_data[["PK"]])){
   pmxOptions(work_dir = monolix_data[["PK"]][[i]])
   resName <- names(monolix_data[["PK"]][i])
   # define ctr
