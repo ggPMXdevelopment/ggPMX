@@ -93,7 +93,7 @@ print.pmx_gpar <- function(x, ...) {
 #' Method for subsetting "pmx_gpar" objects
 #'
 #' @param x pmx_gpar object
-#' @param index can be charcater/integer of element
+#' @param index can be character/integer of element
 #' @param ... other parameter (not used just for generic)
 #'
 #' @return if exists the parameter description
