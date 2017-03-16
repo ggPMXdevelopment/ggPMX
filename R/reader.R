@@ -78,7 +78,6 @@ load_data_set <- function(x, path, sys){
   }
   if(!file.exists(fpath)){
     stop(sprintf(" %s FILE DOES NOT exist under %s", x[["file"]], path))
-    return(NULL)
   }
   
   
