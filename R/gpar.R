@@ -26,29 +26,29 @@
 pmx_gpar <-
   function(
     labels,
-    axis.title =c(size = 12),
-    axis.text=c(size = 14),
-    ranges=NULL,
-    has.smooth=TRUE,
-    smooth=list(se=FALSE,linetype=2,size=1.5,method='loess'),
-    has.band=TRUE,
-    band=list(y=c(-2,2),linetype=2,size=0.5),
-    is.draft=TRUE,
-    draft=list(size=20,label="DRAFT",color='grey50'),
+    axis.title = c(size = 12),
+    axis.text = c(size = 14),
+    ranges = NULL,
+    has.smooth = TRUE,
+    smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess'),
+    has.band = TRUE,
+    band = list(y = c(-2, 2), linetype = 2, size = 0.5),
+    is.draft = TRUE,
+    draft = list(size = 20, label = "DRAFT", color = 'grey50'),
     discrete=FALSE,
     ...) {
     gp <- .valid_pmx_gpar(list(
-      labels=labels,
-      axis.title =axis.title,
-      axis.text=axis.text,
-      ranges=ranges,
-      has.smooth=has.smooth,
-      smooth=smooth,
-      has.band=has.band,
-      band=band,
-      is.draft=is.draft,
-      draft=draft,
-      discrete=discrete,
+      labels = labels,
+      axis.title = axis.title,
+      axis.text = axis.text,
+      ranges = ranges,
+      has.smooth = has.smooth,
+      smooth = smooth,
+      has.band = has.band,
+      band = band,
+      is.draft = is.draft,
+      draft = draft,
+      discrete = discrete,
       ...))
     class(gp) <- "pmx_gpar"
     gp
@@ -83,9 +83,10 @@ print.pmx_gpar <- function(x, ...) {
   ## graphical parametrs
 
   ## join with default values
-  default_yaml <- file.path(system.file(package="ggPMX"),"init","gpar.yaml")
+  default_yaml <- 
+    file.path(system.file(package="ggPMX"), "init", "gpar.yaml")
   default_gpars <- yaml.load_file(default_yaml)
-  l_left_join(default_gpars,gpars)
+  l_left_join(default_gpars, gpars)
 }
 
 
@@ -101,7 +102,7 @@ print.pmx_gpar <- function(x, ...) {
   if (length(x) == 0)
     return(pmx_gpar())
   maxn <- do.call("max", lapply(x, length))
-  newgp <- lapply(x, rep, length.out=maxn)
+  newgp <- lapply(x, rep, length.out = maxn)
   newgp <- lapply(X = newgp, FUN = "[", index, ...)
   class(newgp) <- "pmx_gpar"
   newgp
