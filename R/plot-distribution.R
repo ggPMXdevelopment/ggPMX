@@ -59,12 +59,12 @@ distrib <- function(
 #' @family plot_pmx
 #' @seealso \code{\link{distrib}}
 #'
-plot_pmx.distrib <- function(x,dx){
+plot_pmx.distrib <- function(x, dx){
 
   stopifnot(is.pmx_gpar(x))
 
-
-  dx.etas <- dx[VAR=="eta" & grepl("mean",FUN)]
+  VAR <- NULL; FUN <- NULL
+  dx.etas <- dx[VAR == "eta" & grepl("mean", FUN)]
 
   p <- with(x,{
 

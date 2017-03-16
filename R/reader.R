@@ -13,6 +13,7 @@ read_mlx_ind_est <- function(path,x){
   
   ds <- melt(ds,measure=grep("_.*_",names(ds)))
   setnames(ds,toupper(gsub("_|[0-9]+","",names(ds))))
+  VARIABLE <- NULL
   ds[,c("VAR","EFFECT","FUN"):=tstrsplit(VARIABLE,"_")]
   
 }
@@ -31,7 +32,8 @@ read_mlx_pred <- function(path,x){
   ## mean start columns
   col_stars <- grep("*",names(xx),fixed=TRUE,value=TRUE)
   ncol_stars <- toupper(gsub("ind","I",gsub("_.*","",col_stars)))
-  nn <- c(x$names,setNames(ncol_stars,gsub("\\*", "\\\\*", col_stars)))
+  nn <- c(x$names, stats::setNames(ncol_stars,
+                                   gsub("\\*", "\\\\*", col_stars)))
   match_names <- vapply(names(nn), 
                         function(x){
                           out <- which(grepl(x, names(xx)))
