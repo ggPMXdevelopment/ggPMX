@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
     
-```{r load_pacakge,echo=FALSE}
+```{r load_pacakge, echo=FALSE}
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -41,7 +41,7 @@ configs()
 
 Then we can instatntiate a **standing** (the name of the config) controller using:
 ```{r init_controller}
-ctr <- pmx(config = "standing",sys = "mlx",directory = WORK_DIR)
+ctr <- pmx(config = "standing", sys = "mlx", directory = WORK_DIR)
 ```
 
 This is can be simplified by :
@@ -78,7 +78,7 @@ We indicate :
 - The custom reader used to read this special file 
 - The names to do the mapping between  MONOLIX/ggPMX naming conventions. Note that the upper names for variables are used by convention within ggPMX package.
 
-```{r,eval=FALSE}
+```{r, eval=FALSE}
     label : model predictions
     file  : MLX_predictions.txt
     reader  : read_mlx_pred
@@ -98,7 +98,7 @@ In practice no need to load the configuration. This is done internally within th
 
 ```{r load_conf}
 
-conf <- load_config("standing",sys = "mlx")
+conf <- load_config("standing", sys = "mlx")
 conf
 
 ```
@@ -117,7 +117,7 @@ conf$data$mod_pred$names$time1 <- "TIME"
 We will make this easier in next versions by defining wrappers function withing the controller.  
 
 
-```{r change_mapping_future,eval=FALSE}
+```{r change_mapping_future, eval=FALSE}
 
 # The following does not run - TODO: Fix it
 #ctr %>% rename("time","time1")
@@ -160,7 +160,7 @@ In this example , we are :
 - Printing all the plots
 
 
-```{r complete_example,warning=FALSE}
+```{r complete_example, warning=FALSE}
 library(ggPMX)
 
 ## define a working dir
@@ -183,7 +183,7 @@ ctr %>%
 ## return all plots
 lapply(ctr %>% plot_names,
        function(x){
-        if(x=="indiv") return(ctr%>%get_plot(x,c(2,4)))
+        if(x=="indiv") return(ctr%>%get_plot(x, c(2, 4)))
          ctr %>% get_plot(x)
        })
 

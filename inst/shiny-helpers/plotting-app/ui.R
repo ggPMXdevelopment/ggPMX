@@ -10,7 +10,7 @@ fluidPage(
              uiOutput("plottypes")
            )
     ),
-    column(9,plotOutput("plot"))
+    column(9, plotOutput("plot"))
   ), 
   h4("Graphical Options"),
   fluidRow(

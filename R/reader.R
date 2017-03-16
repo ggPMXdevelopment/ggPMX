@@ -14,7 +14,7 @@ read_mlx_ind_est <- function(path, x){
   ds <- data.table::melt(ds, measure = grep("_.*_", names(ds)))
   data.table::setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
   VARIABLE <- NULL
-  ds[,c("VAR", "EFFECT", "FUN") := data.table::tstrsplit(VARIABLE, "_")]
+  ds[, c("VAR", "EFFECT", "FUN") := data.table::tstrsplit(VARIABLE, "_")]
   
 }
 
@@ -40,7 +40,7 @@ read_mlx_pred <- function(path, x){
                           if(length(out) == 0L){NA}else{out}
                         }, 
                         integer(1), USE.NAMES = FALSE)
-  setnames(xx,names(xx)[match_names[!is.na(match_names)]],
+  setnames(xx, names(xx)[match_names[!is.na(match_names)]],
            as.character(nn[!is.na(match_names)]))
   xx[, as.character(nn[!is.na(match_names)]), with = FALSE]
 }
@@ -85,7 +85,7 @@ load_data_set <- function(x, path, sys){
     return(do.call(x[["reader"]], list(fpath, x)))
   ds <- fread(fpath)
   ds <- ds[,!grep("^V[0-9]+", names(ds)), with = FALSE]
-  data.table::setnames(ds,tolower(names(ds)))
+  data.table::setnames(ds, tolower(names(ds)))
   if("names" %in% names(x)){
     data.table::setnames(ds,
                          tolower(names(x[["names"]])),

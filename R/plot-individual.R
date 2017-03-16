@@ -23,13 +23,13 @@ individual <- function(labels, has.curve = TRUE,
   structure(list(
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
-    point = list(shape = 2,color = "grey50",size = 1),
+    point = list(shape = 2, color = "grey50", size = 1),
     has.curves = has.curve,
     facets = facets,
     gp = pmx_gpar(labels = labels, ...)
 
 
-  ),class=c("individual", "pmx_gpar"))
+  ), class = c("individual", "pmx_gpar"))
 }
 
 
@@ -71,7 +71,7 @@ plot_pmx.individual <-
            npages <- ceiling(with(facets, 
                                   length(unique(dat$ID) / nrow / ncol)))
            with(facets,
-                lapply(seq_len(npages) ,function(i)
+                lapply(seq_len(npages), function(i)
                   p <- p + facet_wrap_paginate(~ID, ncol = ncol, 
                                                nrow = nrow, page = i)
                 ))
