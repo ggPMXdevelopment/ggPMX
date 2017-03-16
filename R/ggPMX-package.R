@@ -35,5 +35,5 @@
 #' @importFrom utils read.table
 #' @importFrom yaml yaml.load_file
 #' @importFrom data.table setDT setnames fread melt tstrsplit melt.data.table
-#' @importFrom data.table melt.data.table
+#' @importFrom data.table melt.data.table :=
 NULL
