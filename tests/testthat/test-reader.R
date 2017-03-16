@@ -52,15 +52,19 @@ test_that("load data set functions when reader does not exist", {
   datasets <- reader_help$conf$data[names.]
   path <- reader_help$wd
   sys <- reader_help$conf$sys
+  names(datasets$mod_pred$names) <- c("id", "time", "y1", "poppred", 
+                                      "npde")
   with_mock(
     `data.table::fread` = function(...){
       data.table::setDT(
-        data.frame(id = 1, time = 2, dv = 3, pred = 4, npde = 5)
+        data.frame(id = 1, time = 2, y1 = 3, poppred = 4, npde = 5,
+                   V3 = 6)
       )
-    }, 
+    },
+    `base::exists` = function(...){FALSE},
     res <- load_data_set(datasets$mod_pred, path, sys)
   )
-  expect_identical(names(res), c("ID", "TIME", "NPDE"))
+  expect_identical(names(res), c("ID", "TIME", "DV", "PRED", "NPDE"))
 })
 
 test_that("can exclude data set", {
