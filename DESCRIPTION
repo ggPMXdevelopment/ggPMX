@@ -19,8 +19,9 @@ Imports:
     magrittr,
     stringr,
     assertthat,
-    checkmate
-License: AGPL-3
+    checkmate,
+    shiny
+License: file LICENSE
 LazyData: true
 Suggests:
     rmarkdown,
