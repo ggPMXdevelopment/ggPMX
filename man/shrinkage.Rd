@@ -7,9 +7,9 @@
 shrinkage(par_est, ind_pred, sys = "mlx", fun = "sd")
 }
 \arguments{
-\item{par_est}{data set}
+\item{par_est}{parameters estimation data}
 
-\item{ind_pred}{data set}
+\item{ind_pred}{individual estimation data}
 
 \item{sys}{data system}
 
