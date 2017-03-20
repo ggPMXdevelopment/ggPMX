@@ -1,5 +1,4 @@
 #' Read MONOLIX individual parameters
-#'
 #' @param path character path to the file
 #' @param x dataset object
 #'
