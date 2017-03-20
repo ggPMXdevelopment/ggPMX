@@ -10,9 +10,10 @@ test_that("test shrinkage for standing config", {
                 load_data_set,
                 path = path,
                 sys = sys)
-  
-  expect_silent(shrinkage(dxs[["par_est"]],dxs[["ind_pred"]]))
-  
+  res <- shrinkage(dxs[["par_est"]],dxs[["ind_pred"]])
+  expect_is(res,"data.frame")
+  expect_equal(colnames(res),c("EFFECT","SHRINK"))
+  expect_true(all(res$VALUE<1))
   
 })
 
