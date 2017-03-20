@@ -148,7 +148,17 @@ section TODO later
 
 ### Distribution plot
 
-section TODO later
+```{r , distribut}
+library(ggPMX)
+
+ctr %>% set_plot("DIS",pname = "distr1",type="box")
+
+ctr %>% get_plot("distri")
+
+ctr %>% get_plot("distr1")
+
+```
+
 
 ## Complete example
 

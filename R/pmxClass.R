@@ -207,12 +207,13 @@ pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   config <- private$.plots_configs[[pname]]
   old_class <- class(config)
-  x <- if(is.null(pmx_gpar)){
-    l_left_join(config, ...)
+  x <- if(is.null(pmxgpar)){
+    l_left_join(config, list(...))
   }else{
     l_left_join(config, pmxgpar)
   }
   class(x$gp) <- class(config$gp)
+  class(x) <- old_class
   self$remove_plot(pname)
   self$add_plot(x, pname)
   
