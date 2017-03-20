@@ -1,3 +1,4 @@
+
 # ggPMX #
 
 `ggPMX` is an R package that helps to generate standard model diagnostic plots within PMX activities. 
@@ -20,3 +21,9 @@ CRAN:
 ```R
 # Not on CRAN yet.
 ```
+=======
+## ggPMX
+
+
+## Installation
+
