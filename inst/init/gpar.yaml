@@ -1,0 +1,30 @@
+labels: ~
+axis.title: 12.0
+axis.text: 14.0
+ranges:
+  'y':
+  - -2.5
+  - 2.5
+  x:
+  - 0
+  - 24
+has.smooth: yes
+smooth:
+  se: no
+  linetype: 2.0
+  size: 1.5
+  method: loess
+has.band: yes
+band:
+  'y':
+  - -2.0
+  - 2.0
+  linetype: 2.0
+  size: 0.5
+is.draft: yes
+draft:
+  size: 20.0
+  label: DRAFT
+  color: grey50
+discrete: no
+

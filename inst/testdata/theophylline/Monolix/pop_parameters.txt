@@ -1,0 +1,80 @@
+******************************************************************
+*      oral1_project.mlxtran
+*      October 26, 2016 at 17:04:47
+*      Monolix version: 4.4.0
+******************************************************************
+
+Estimation of the population parameters
+
+                 parameter     s.e. (lin)   r.s.e.(%)   p-value 
+ka_pop         :    0.289        0.021           7              
+V_pop          :     2.29         0.13           6              
+beta_V_tWT0    :    0.181         0.13          74        0.18  
+Cl_pop         :    0.314        0.026           8              
+beta_Cl_tWT0   :   -0.161         0.22         136        0.46  
+beta_Cl_tAGE0  :  -0.0572         0.08         140        0.48  
+beta_Cl_SEX_1  :   -0.101        0.079          78         0.2  
+beta_Cl_STUD_2 :    0.122        0.072          59        0.09  
+
+omega_ka       :      0.1        0.075          75              
+omega_V        :   0.0394         0.11         280              
+omega_Cl       :    0.225        0.026          11              
+
+b              :     0.29       0.0097           3              
+
+______________________________________________
+correlation matrix of the estimates(linearization)
+
+ka_pop              1                      
+V_pop            0.91       1                   
+beta_V_tWT0     -0.02   -0.16       1                
+Cl_pop           0.02    0.05   -0.03       1             
+beta_Cl_tWT0    -0.01   -0.04    0.15    -0.2       1          
+beta_Cl_tAGE0   -0.01   -0.01       0   -0.06    0.11       1       
+beta_Cl_SEX_1   -0.03   -0.03    0.01   -0.81    0.15    0.08       1    
+beta_Cl_STUD_2   0.01    0.01      -0    -0.6   -0.12   -0.01    0.28       1 
+
+Eigenvalues (min, max, max/min): 0.071  2.2  31
+
+omega_ka      1          
+omega_V   -0.85       1       
+omega_Cl   0.01   -0.01       1    
+b         -0.05   -0.08   -0.03       1 
+
+Eigenvalues (min, max, max/min): 0.15  1.8  13
+
+_______________
+Estimation of the population parameters by groups
+
+                       parameter     s.e. (lin)   r.s.e.(%) 
+Cl_(SEX=0*, STUD=1*) :   0.314         0.026          8     
+Cl_(SEX=1 , STUD=1*) :   0.284         0.014          5     
+Cl_(SEX=0*, STUD=2 ) :   0.355         0.025          7     
+Cl_(SEX=1 , STUD=2 ) :   0.321         0.019          6     
+
+Numerical covariates
+	tWT0 = log(WT0)-log(75)  		
+	tAGE0 = log(AGE0)-log(45)		
+
+Categorical covariates
+	SEX
+ 		Reference group: 0 
+		Other groups:  1
+		
+	STUD
+ 		Reference group: 1 
+		Other groups:  2
+		
+
+Population parameters and Fisher Information Matrix estimation...
+
+Elapsed time is 45.8 seconds. 
+CPU time is 16.6 seconds. 
+______________________________________________________________
+
+Log-likelihood Estimation by linearization
+
+-2 x log-likelihood:                   2798.93 
+Akaike Information Criteria   (AIC):   2822.93 
+Bayesian Information Criteria (BIC):   2845.88 
+______________________________________________________________

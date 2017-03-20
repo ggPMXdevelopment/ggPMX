@@ -1,0 +1,25 @@
+par_est  :
+    label : parameter estimates
+    file  : estimates.txt
+    reader  : read_mlx_par_est
+    names:
+      - PARAM
+      - VALUE
+      - SE
+      - RSE
+      - PVALUE
+mod_pred :
+    label : model predictions
+    file  : predictions.txt
+    reader  : read_mlx_pred
+    names:
+      id: ID
+      time: TIME
+      '^y\d*$': DV
+      poppred: PRED
+      npde: NPDE
+ind_pred :
+    label : invidual estimates of random effects
+    file  : indiv_eta.txt
+    reader  : read_mlx_ind_est
+

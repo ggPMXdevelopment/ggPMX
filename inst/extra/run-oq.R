@@ -1,7 +1,7 @@
 # Script to perform the Operation Qualification
 # ---------------------------------------------
 #
-# EDIT THE TESTS TO BE PERFORMED AS DESCRIBED BELOW UNDER 'RUNNING PACKAGE TESTS'.
+# Do not edit without checking back with Inga.
 
 library(testthat)
 library(ggPMX)
@@ -14,10 +14,10 @@ print(packageDescription("ggPMX"))
 cat("RUNNING PACKAGE TESTS:\n")
 # Run each section separately to get subsequent numbering per section
 # of the TAP reporter; execution order must be aligned with steps described 
-# in the vignette
-for(test in c("examples1", # Step 1: Arithmetic operations
-              "examples2", # Step 2: Data lookup
-              # Add further tests as a comma-separated list here
+# in the main vignette (introduction.Rmd)
+for(test in c("test-reader", # Step 1: Read data, using standard configuration
+              "test-gpar",   # Step 2: Set graphics settings
+              "test-plot",   # Step 3: generate standard plots
               "misc"      # Additional tests
               )) {  
     test_package("ggPMX", filter=test, reporter="tap")
