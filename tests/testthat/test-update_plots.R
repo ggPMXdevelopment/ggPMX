@@ -26,3 +26,9 @@ test_that("can remove DIS plot", {
   ctr$remove_plot("distr1")
   expect_false("distr1" %in% ctr$plots())
 })
+
+test_that("can update IND plot", {
+  ctr <- helpers$ctr
+  ctr %>% set_plot("IND", pname = "indiv1")
+  expect_true("indiv1" %in% ctr$plots())
+})
