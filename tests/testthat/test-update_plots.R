@@ -7,7 +7,7 @@ test_that("can update DIS plot", {
   expect_true("distr1" %in% ctr$plots())
   p <- ctr %>% get_plot("distr1")
   oldconf <- ctr$get_config("distr1")
-  expect_true(oldconf$has.shrink)
+  expect_false(oldconf$has.shrink)
   shrink <- data.frame(EFFECT = c("cl", "ka", "v"), 
                        SHRINK = c(0.1, 0.2, 0.7), 
                        stringsAsFactors = FALSE)
@@ -17,7 +17,7 @@ test_that("can update DIS plot", {
     shrink = shrink
   )
   newconf <- ctr$get_config("distr1")
-  expect_identical(newconf$shrink, as.list(shrink))
+  expect_identical(newconf$shrink, shrink)
   
 })
 
