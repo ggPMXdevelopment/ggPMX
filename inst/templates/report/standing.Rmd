@@ -1,0 +1,47 @@
+---
+output: html_document
+params:
+   dir: dummy
+   status: Draft
+   pathOutput: dummy
+   pathScripts: dummy
+   pathModels: dummy
+   name: dummy
+   irun: dummy
+   docx: dummy
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r controller,echo=FALSE}
+library(ggPMX)
+WORK_DIR <- file.path(system.file(package="ggPMX"), "testdata", "theophylline", "Monolix")
+pmxOptions(work_dir=WORK_DIR)
+ctr <- pmx_mlx(config = "standing")
+```
+PK NVA237 - model qualification run `r params$irun`
+=============================
+
+Novartis   
+Confidential  
+
+
+### Normalized prediction distribution error versus time
+```{r time_npde,fig.width=6, fig.height=3, echo=FALSE, message=FALSE}
+ctr %>% get_plot("time_npde")
+```
+
+
+
+#### Normalized prediction distribution error versus population predictions   
+```{r pred_npde,fig.width=6, fig.height=3, echo=FALSE, message=FALSE}
+ctr %>% get_plot("pred_npde")
+```
+
+
+
+
+# Random effects 
+
