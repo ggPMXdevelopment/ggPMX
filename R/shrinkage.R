@@ -13,7 +13,7 @@
 shrinkage <-
   function(par_est, ind_pred, sys="mlx", fun="sd"){
     PARAM <- NULL; EFFECT <- NULL; VAR <- NULL; FUN <- NULL
-    VALUE.ETA <- NULL; VALUE.OMEGA <- NULL
+    VALUE_ETA <- NULL; VALUE_OMEGA <- NULL
     dx1 <- 
       par_est[grepl("omega", PARAM)][
         , c("VAR","EFFECT") := tstrsplit(PARAM, "_")]
