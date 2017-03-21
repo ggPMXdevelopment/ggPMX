@@ -46,3 +46,9 @@ test_that("can remove IND plot", {
   expect_false("indiv1" %in% ctr$plots())
 })
 
+test_that("can update RES plot", {
+  
+})
+
+test_that("can remove RES plot", {
+})
