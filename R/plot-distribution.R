@@ -16,7 +16,7 @@ distrib <- function(
   has.jitter = TRUE,
   jitter = list(shape = 2, color = "grey50", width = 1),
   facets = list(scales = "free", nrow = 3),
-  type = c("box", "hist"),
+  type = c("box", "histo"),
   has.shrink = FALSE,
   ...){
   
@@ -25,8 +25,8 @@ distrib <- function(
   assert_that(is_list(facets))
   type <- match.arg(type)
   assert_that(is_logical(has.shrink))
-
-    if(missing(labels))
+  
+  if(missing(labels))
     labels <- list(
       title = "EBE distribution",
       subtitle = "(MLX)",
@@ -78,7 +78,7 @@ plot_pmx.distrib <- function(x, dx){
     if(has.shrink){
       dx.etas <- merge(dx.etas, shrink, by = "EFFECT")[
         , lfacet := sprintf('%s: with shrinkage %s%%', EFFECT, 
-                           round(SHRINK*100))]
+                            round(SHRINK*100))]
       
     }else dx.etas[, lfacet := EFFECT]
     
