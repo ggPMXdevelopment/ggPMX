@@ -53,7 +53,10 @@ pmx_mlx <-
 #' @export
 
 #'
-set_plot <- function(ctr, ptype, pname, ...){
+set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
+  assert_that(is_pmxclass(ctr))
+  assert_that(is_string_or_null(pname))
+  ptype <- match.arg(ptype)
   
   conf <-
     switch(ptype,
@@ -72,13 +75,16 @@ set_plot <- function(ctr, ptype, pname, ...){
 #' Get plot object
 #'
 #' @param ctr  \code{pmxClass} controller object
-#' @param nplot characater the plot name
+#' @param nplot character the plot name
 #' @param npage integer or integer vector, set page number in case of multi pages plot
 #'
 #' @return ggplot object
 #' @export
 
 get_plot <- function(ctr, nplot, npage){
+  assert_that(is_pmxclass(ctr))
+  assert_that(is_string(nplot))
+  assert_that(is_integer_or_null(npage))
   xx <- ctr$get_plot(nplot)
   if(inherits(xx, "list"))
     xx[npage]
@@ -94,8 +100,8 @@ get_plot <- function(ctr, nplot, npage){
 #' @export
 
 plot_names <- function(ctr){
+  assert_that(is_pmxclass(ctr))
   ctr$plots()
-  
 }
 
 
@@ -103,7 +109,7 @@ plot_names <- function(ctr){
 #' Get plot object
 #'
 #' @param ctr  \code{pmxClass} controller object
-#' @param pname characater the plot name to update
+#' @param pname character the plot name to update
 #' @param ... others graphical parametrs given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.
@@ -112,6 +118,8 @@ plot_names <- function(ctr){
 #' @export
 
 update_plot <- function(ctr, pname, ..., pmxgpar = NULL){
+  assert_that(is_pmxclass(ctr))
+  assert_that(is_string(pname))
   ctr$update_plot(pname, ..., pmxgpar = pmxgpar)
 }
 
@@ -133,6 +141,7 @@ update_plot <- function(ctr, pname, ..., pmxgpar = NULL){
 #' get_plot_config("distr1")
 #' }
 get_plot_config <- function(ctr,pname){
+  assert_that(is_pmxclass(ctr))
   ctr$get_config(pname)
 }
 
