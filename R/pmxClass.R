@@ -239,7 +239,12 @@ pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
   config <- private$.plots_configs[[pname]]
   old_class <- class(config)
   x <- if(is.null(pmxgpar)){
-    l_left_join(config, list(...))
+    newopts <- list(...)
+    hl <- newopts[names(newopts) %in% names(config)]
+    gpl <- newopts[!names(newopts) %in% names(config)]
+    hl$gp <- gpl 
+    
+    l_left_join(config, hl)
   }else{
     l_left_join(config, pmxgpar)
   }
