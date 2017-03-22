@@ -1,14 +1,17 @@
 ---
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 params:
-   dir: dummy
-   status: Draft
-   pathOutput: dummy
-   pathScripts: dummy
-   pathModels: dummy
-   name: dummy
-   irun: dummy
-   docx: dummy
+  dir: dummy
+  docx: dummy
+  irun: dummy
+  name: dummy
+  pathModels: dummy
+  pathOutput: dummy
+  pathScripts: dummy
+  status: Draft
 ---
 
 ```{r setup, include=FALSE}
@@ -27,6 +30,7 @@ PK NVA237 - model qualification run `r params$irun`
 Novartis   
 Confidential  
 
+# Predictions
 
 ### Normalized prediction distribution error versus time
 ```{r time_npde,fig.width=6, fig.height=3, echo=FALSE, message=FALSE}
