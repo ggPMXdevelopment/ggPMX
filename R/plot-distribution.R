@@ -16,7 +16,7 @@ distrib <- function(
   has.jitter = TRUE,
   jitter = list(shape = 2, color = "grey50", width = 1),
   facets = list(scales = "free", nrow = 3),
-  type = c("box", "histo"),
+  type = c("box", "hist"),
   has.shrink = FALSE,
   ...){
   assert_that(is_logical(has.jitter))
