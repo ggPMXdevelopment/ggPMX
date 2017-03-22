@@ -17,7 +17,7 @@ test_that("can update DIS plot", {
     shrink = shrink
   )
   newconf <- ctr$get_config("distr1")
-  expect_identical(newconf$shrink, shrink)
+  expect_identical(newconf$gp$shrink, shrink)
   
 })
 
