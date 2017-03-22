@@ -38,3 +38,18 @@ assertthat::on_failure(is_ggplot) <-  function(call, env) {
   paste0(deparse(call$x), " is not an object of class 'ggplot'.")
 }
 
+is_logical <- function(x){
+  is.logical(x)
+}
+
+assertthat::on_failure(is_logical) <- function(call, env) {
+  paste0(deparse(call$x), " should be an logical vector.")
+}
+
+is_list <- function(x){
+  is.list(x)
+}
+
+assertthat::on_failure(is_list) <- function(call, env){
+  paste0(deparse(call$x), " is not a list")
+}
