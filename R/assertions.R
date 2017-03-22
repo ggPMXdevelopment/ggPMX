@@ -53,3 +53,11 @@ is_list <- function(x){
 assertthat::on_failure(is_list) <- function(call, env){
   paste0(deparse(call$x), " is not a list")
 }
+
+is_list_or_null <- function(x){
+  is.list(x) || is.null(x)
+}
+
+assertthat::on_failure(is_list_or_null) <- function(call, env){
+  paste0(deparse(call$x), " is not a list or NULL")
+}

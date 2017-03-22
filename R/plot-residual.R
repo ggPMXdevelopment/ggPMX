@@ -25,10 +25,12 @@ residual <- function(x, y, labels = NULL, point = NULL, ...){
     x = abbrev(aess[["x"]]),
     y = abbrev(aess[["y"]])
   )
+  assert_that(is_list_or_null(labels))
+  
   labels <- l_left_join(default_labels, labels)
   default_point <- list(shape = 1, color = "black", size = 1)
   point <- l_left_join(default_point, point)
-
+  
   structure(
     list(
       aess = aess,
@@ -50,14 +52,14 @@ residual <- function(x, y, labels = NULL, point = NULL, ...){
 #' @family plot_pmx
 #' @export
 plot_pmx.residual <- function(x, dx){
-  stopifnot(is.pmx_gpar(x))
+  assert_that(is_pmx_gpar(x))
   with(x,
        {
          p <-
            ggplot2::ggplot(dx, with(aess, ggplot2::aes_string(x, y)))+
            with(point, geom_point(shape = shape, color = color))
          if("z" %in% names(gp))
-         p <- p + ggplot2::facet_wrap(as.formula(paste('~' , gp$z)))
+           p <- p + ggplot2::facet_wrap(as.formula(paste('~' , gp$z)))
          p <- plot_pmx(gp, p)
          p
        })

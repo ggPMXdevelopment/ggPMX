@@ -19,7 +19,6 @@ distrib <- function(
   type = c("box", "histo"),
   has.shrink = FALSE,
   ...){
-  
   assert_that(is_logical(has.jitter))
   assert_that(is_list(jitter))
   assert_that(is_list(facets))
@@ -33,6 +32,7 @@ distrib <- function(
       x = "Etas",
       y = "",
       legend = "Random effect")
+  assert_that(is_list(labels))
   
   structure(list(
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
