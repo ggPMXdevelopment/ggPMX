@@ -12,7 +12,7 @@ that can be easily integrated in a single report.
 }
 \details{
 \itemize{
-\item Get data from different system and create a data source using \code{\link{pmx_source}}
+\item Get data from different system and create a data source
 \item Plot many plots using the generic plot method \code{\link{plot_pmx}}.
 }
 

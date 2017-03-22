@@ -117,6 +117,25 @@ update_plot <- function(ctr, pname, ..., pmxgpar = NULL){
 
 
 
+#' Get the plot config name
+#'
+#' @param ctr the controller object 
+#' @param pname the plot name 
+#'
+#' @return the config object
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pmxOptions(work_dir=WORK_DIR)
+#' ctr <- pmx_mlx(config = "standing")
+#' ctr %>% set_plot("IND", pname = "indiv1")
+#' get_plot_config("distr1")
+#' }
+get_plot_config <- function(ctr,pname){
+  ctr$get_config(pname)
+}
+
 
 # pmxSource (R6 Class) ------------------------------------------------------------
 #' @importFrom R6 R6Class
