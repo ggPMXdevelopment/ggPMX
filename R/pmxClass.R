@@ -81,7 +81,10 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
 #' @return ggplot object
 #' @export
 
-get_plot <- function(ctr, nplot, npage){
+get_plot <- function(ctr, nplot, npage = NULL){
+  if(is.numeric(npage)){
+    npage <- as.integer(npage)
+  }
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(nplot))
   assert_that(is_integer_or_null(npage))
