@@ -10,6 +10,8 @@
 #'
 #' @return ggplot2 object
 plot_pmx.pmx_gpar <- function(gpar, p){
+  assert_that(is_pmx_gpar(gpar))
+  assert_that(is_ggplot(p))
   ## smoothing
   p <- with(gpar, {
     if(has.smooth){

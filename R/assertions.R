@@ -26,7 +26,15 @@ is_pmxconfig <- function(x) {
   inherits(x, "pmxConfig")
 }
 
-assertthat::on_failure(is_configs) <-  function(call, env) {
+assertthat::on_failure(is_pmxconfig) <-  function(call, env) {
   paste0(deparse(call$x), " is not an object of class 'pmxConfig'.")
+}
+
+is_ggplot <- function(x){
+  ggplot2::is.ggplot(x)
+}
+
+assertthat::on_failure(is_ggplot) <-  function(call, env) {
+  paste0(deparse(call$x), " is not an object of class 'ggplot'.")
 }
 
