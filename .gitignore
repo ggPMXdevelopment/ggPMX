@@ -4,4 +4,4 @@
 .Ruserdata
 *.Rproj
 man
-man/*.Rd
+man/*
