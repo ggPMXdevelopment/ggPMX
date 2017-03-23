@@ -36,4 +36,5 @@
 #' @importFrom yaml yaml.load_file
 #' @importFrom data.table setDT setnames fread melt tstrsplit
 #' @importFrom data.table melt.data.table :=
+#' @importFrom assertthat assert_that
 NULL

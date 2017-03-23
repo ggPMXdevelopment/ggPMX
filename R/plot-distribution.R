@@ -14,11 +14,17 @@
 distrib <- function(
   labels,
   has.jitter = TRUE,
-  jitter=list(shape = 2, color = "grey50", width = 1),
-  facets=list(scales = "free", nrow = 3),
-  type = "box",
+  jitter = list(shape = 2, color = "grey50", width = 1),
+  facets = list(scales = "free", nrow = 3),
+  type = c("box", "hist"),
   has.shrink = FALSE,
   ...){
+  assert_that(is_logical(has.jitter))
+  assert_that(is_list(jitter))
+  assert_that(is_list(facets))
+  type <- match.arg(type)
+  assert_that(is_logical(has.shrink))
+  
   if(missing(labels))
     labels <- list(
       title = "EBE distribution",
@@ -26,6 +32,7 @@ distrib <- function(
       x = "Etas",
       y = "",
       legend = "Random effect")
+  assert_that(is_list(labels))
   
   structure(list(
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
@@ -61,7 +68,7 @@ distrib <- function(
 #'
 plot_pmx.distrib <- function(x, dx){
   
-  stopifnot(is.pmx_gpar(x))
+  assert_that(is_pmx_gpar(x))
   
   VAR <- NULL; FUN <- NULL
   dx.etas <- dx[VAR == "eta" & grepl("mean", FUN)]
@@ -71,7 +78,7 @@ plot_pmx.distrib <- function(x, dx){
     if(has.shrink){
       dx.etas <- merge(dx.etas, shrink, by = "EFFECT")[
         , lfacet := sprintf('%s: with shrinkage %s%%', EFFECT, 
-                           round(SHRINK*100))]
+                            round(SHRINK*100))]
       
     }else dx.etas[, lfacet := EFFECT]
     

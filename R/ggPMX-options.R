@@ -9,8 +9,8 @@
 #' @param default Value to be returned if the option is not currently set.
 #' @export
 getPmxOption <- function(name, default = NULL) {
-  # Make sure to use named (not numeric) indexing
-  name <- as.character(name)
+  
+  assert_that(is_string(name))
 
   if (name %in% names(.globals$options))
     .globals$options[[name]]

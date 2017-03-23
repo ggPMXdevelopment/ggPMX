@@ -74,6 +74,7 @@ is.pmx_gpar <- function(x) {
 #' @export
 
 print.pmx_gpar <- function(x, ...) {
+  assert_that(is_pmx_gpar(x))
   print(unclass(x), ...)
   invisible(x)
 }
