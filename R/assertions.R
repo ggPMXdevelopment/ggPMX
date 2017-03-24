@@ -85,3 +85,11 @@ is_integer_or_null <- function(x){
 assertthat::on_failure(is_integer_or_null) <- function(call, env) {
   paste0(deparse(call$x), " should be an integer value or NULL.")
 }
+
+is_language_or_string <- function(x) {
+  is.language(x) || is_string(x)
+}
+
+assertthat::on_failure(is_language_or_string) <-  function(call, env) {
+  paste0(deparse(call$x), " should be an expression or a string")
+}
