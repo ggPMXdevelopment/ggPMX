@@ -11,7 +11,7 @@ test_that("can update DIS plot", {
   shrink <- data.frame(EFFECT = c("cl", "ka", "v"), 
                        SHRINK = c(0.1, 0.2, 0.7), 
                        stringsAsFactors = FALSE)
-  ctr %>% update_plot(
+  ctr %>% pmx_update(
     "distr1",
     has.shrink = TRUE,
     shrink = shrink
@@ -35,7 +35,7 @@ test_that("can update IND plot", {
   oldconf <- ctr$get_config("indiv1")
   expect_true(oldconf$gp$has.band)
   
-  ctr %>% update_plot("indiv1", has.band = FALSE)
+  ctr %>% pmx_update("indiv1", has.band = FALSE)
   newconf <- ctr$get_config("indiv1")
   expect_false(newconf$gp$has.band)
 })

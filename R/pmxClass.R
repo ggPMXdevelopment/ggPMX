@@ -109,7 +109,7 @@ plot_names <- function(ctr){
 
 
 
-#' Get plot object
+#' Update plot object
 #'
 #' @param ctr  \code{pmxClass} controller object
 #' @param pname character the plot name to update
@@ -117,15 +117,14 @@ plot_names <- function(ctr){
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.
 #'
-#' @return ggplot object
+#' @return controller object with the plot updated
 #' @export
 
-update_plot <- function(ctr, pname, ..., pmxgpar = NULL){
+pmx_update <- function(ctr, pname, ..., pmxgpar = NULL){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
   ctr$update_plot(pname, ..., pmxgpar = pmxgpar)
 }
-
 
 
 #' Get the plot config name
