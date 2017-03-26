@@ -3,5 +3,6 @@
 .RData
 .Ruserdata
 *.Rproj
-man
+man/
 man/*
+man/*Rd
