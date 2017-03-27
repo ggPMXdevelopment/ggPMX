@@ -179,8 +179,18 @@ library(ggPMX)
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
 
 
-## create a controller using a built-in configuration
+
+#WORK_DIR <- "../ggpmx_files/inputs"
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+WORK_DIR <-  file.path(theophylline, "Monolix")
+input_file <- file.path(theophylline,"data_pk.csv")
+pmxOptions(
+  work_dir=WORK_DIR,
+  input=input_file,
+  dv="Y")
+
 ctr <- pmx_mlx(config = "standing")
+
 
 ## add a new plot
 ctr %>%
