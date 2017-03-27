@@ -13,14 +13,18 @@
 #'
 
 pmx <-
-  function(config, sys, directory){
+  function(config, sys, directory,input){
     if(missing(directory))
       directory <- getPmxOption("work_dir")
+    if(missing(input))
+      input <- getPmxOption("input")
     if(is.null(directory))
       stop("Please set a directory argument or set global work_dir option")
+    if(is.null(input))
+      stop("Please set a input argument or set global input option")
     if(!inherits(config,"pmxConfig"))
       config <- load_config(config, sys)
-    pmxClass$new(directory, config)
+    pmxClass$new(directory,input, config)
   }
 
 #' Wrapper to pmx constructor
@@ -32,8 +36,8 @@ pmx <-
 #' @export
 
 pmx_mlx <-
-  function(config, directory){
-    pmx(config, "mlx", directory)
+  function(config, directory,input){
+    pmx(config, "mlx", directory,input)
   }
 
 
@@ -156,6 +160,7 @@ pmxClass <- R6::R6Class(
   # Private methods ------------------------------------------------------------
   private = list(
     .data_path = "",
+    .input="",
     .plots = list(),
     .plots_configs = list()
   ),
@@ -164,8 +169,9 @@ pmxClass <- R6::R6Class(
   public = list(
     data  = NULL,
     config = NULL,
-    initialize = function(data_path, config)
-      pmx_initialize(self, private, data_path, config),
+    input=NULL,
+    initialize = function(data_path, input,config)
+      pmx_initialize(self, private, data_path, input,config),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -194,13 +200,15 @@ pmxClass <- R6::R6Class(
   )
 )
 
-pmx_initialize <- function(self, private, data_path, config) {
+pmx_initialize <- function(self, private, data_path,input, config) {
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
   private$.data_path <- data_path
+  private$.input <- input
   self$config <- config
-  self$data <- load_source(sys=config$sys, private$.data_path, 
+  self$input <- read_input(input)
+  self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
   self$post_load()
   
@@ -219,16 +227,22 @@ pmx_print <- function(self, private, ...){
   
 }
 
+
+## TODO change the way how we choose the data
+## USE AN EXPLICIT METHOD
+## data_set(s) for res,data_set(s) for IND,..
 pmx_add_plot <- function(self, private, x, pname){
   if(missing(pname))
     pname <- paste(x$aess, collapse="_")
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
-  vv <- vapply(self$data, function(y){
-    all(as.character(x$aess) %in% names(y))
-  }, TRUE)
-  if(!any(vv)){return(invisible(self))}
-  dname <- names(self$data)[vv]
+  ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
+  dname <- switch(
+    ptype,
+    RES="mod_pred",
+    IND="ind_pred",
+    DIS="ind_pred")
+  
   private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   invisible(self)
 }
@@ -275,7 +289,7 @@ pmx_plots <- function(self, private){
 }
 
 pmx_post_load <- function(self, private){
-  self$data <- post_load(self$data, self$config$sys, self$config$plots)
+  self$data <- post_load(self$data, self$input,self$config$sys, self$config$plots)
   
 }
 

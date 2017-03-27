@@ -22,7 +22,6 @@ ind_pred :
     label : invidual estimates of random effects
     file  : indiv_eta.txt
     reader  : read_mlx_ind_est
-
 finegrid :
     label : finegrid
     file  : finegrid.txt
@@ -31,5 +30,5 @@ finegrid :
       id: ID
       time: TIME
       poppred: PRED
-      npde: NPDE
+      indpred_mode: IPRED
 

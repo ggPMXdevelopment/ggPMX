@@ -17,6 +17,22 @@ read_mlx_ind_est <- function(path, x){
   
 }
 
+
+#' Read MONOLIX input data 
+#'
+#' @param ipath path +filename to the input file
+#' 
+#' @return data.table well formatted
+#' @import data.table
+#' @export
+#'
+read_input <- function(ipath,dv=NULL,covariates=""){
+  xx <- fread(ipath)
+  setnames(xx, toupper(names(xx)))
+  if(!is.null(dv))setnames(xx,dv,"DV")
+  
+}
+
 #' Read MONOLIX model predictions
 #'
 #' @param path character path to the file
@@ -119,9 +135,22 @@ load_source <- function(sys, path, dconf, include, exclude){
   dxs
 }
 
+input_finegrid <- function(input,finegrid,covariates=NULL)
+{
+  dx <- rbind(finegrid,input,fill=TRUE)
+  dx <- dx[order(ID,TIME)]
+  if(!is.null(covariates))
+    dx[,(covariates):=lapply(.SD,na.locf),.SDcols=covariates]
+  dx[TIME>0]
+}
 
-post_load <- function(dxs, sys, dplot){
-  mm <- unlist(dplot)
+
+post_load <- function(dxs,input, sys, dplot,...){
+  ## merge finegrid with input data 
+  dxs[["ind_pred"]] <- 
+    if(!is.null(dxs[["finegrid"]])) input_finegrid(dxs[["finegrid"]],input,...)
+  else  dxs$ind_pred 
+  
   if(sys == "mlx"){
     ## add startification column
     vv <- names(dxs$ind_pred)[vapply(dxs$ind_pred, is.integer, TRUE)]
@@ -134,6 +163,7 @@ post_load <- function(dxs, sys, dplot){
     dxs[["shrink"]] <- 
       shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)
   }
+
   dxs
 }
 
