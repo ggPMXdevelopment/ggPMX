@@ -30,6 +30,7 @@ read_input <- function(ipath,dv=NULL,covariates=""){
   xx <- fread(ipath)
   setnames(xx, toupper(names(xx)))
   if(!is.null(dv))setnames(xx,dv,"DV")
+  xx
   
 }
 
@@ -44,6 +45,7 @@ read_input <- function(ipath,dv=NULL,covariates=""){
 read_mlx_pred <- function(path, x){
   xx <- fread(path)
   data.table::setnames(xx, tolower(names(xx)))
+  if(!is.null(x$strict)) xx <- xx[,names(x$names),with=FALSE]
   ## mean start columns
   col_stars <- grep("*", names(xx), fixed = TRUE, value = TRUE)
   ncol_stars <- toupper(gsub("ind", "I", gsub("_.*", "", col_stars)))
@@ -147,18 +149,16 @@ input_finegrid <- function(input,finegrid,covariates=NULL)
 
 post_load <- function(dxs,input, sys, dplot,...){
   ## merge finegrid with input data 
-  dxs[["ind_pred"]] <- 
+  dxs[["IND"]] <- 
     if(!is.null(dxs[["finegrid"]])) input_finegrid(dxs[["finegrid"]],input,...)
-  else  dxs$ind_pred 
+  else  dxs[["mod_pred"]] 
   
   if(sys == "mlx"){
     ## add startification column
     vv <- names(dxs$ind_pred)[vapply(dxs$ind_pred, is.integer, TRUE)]
     ## prepare data set for stratification
     dxs$mod_pred <-
-      merge(dxs$mod_pred,
-            unique(dxs$ind_pred[, vv, with = FALSE]),
-            by = "ID")
+      merge(dxs$mod_pred[,!"DV",with=FALSE],input,by=c("ID","TIME"))
     ## add shrinkage data set
     dxs[["shrink"]] <- 
       shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)

@@ -13,18 +13,20 @@
 #'
 
 pmx <-
-  function(config, sys, directory,input){
+  function(config, sys, directory,input,dv){
     if(missing(directory))
       directory <- getPmxOption("work_dir")
     if(missing(input))
       input <- getPmxOption("input")
+    if(missing(dv))
+      dv <- getPmxOption("dv")
     if(is.null(directory))
       stop("Please set a directory argument or set global work_dir option")
     if(is.null(input))
       stop("Please set a input argument or set global input option")
     if(!inherits(config,"pmxConfig"))
       config <- load_config(config, sys)
-    pmxClass$new(directory,input, config)
+    pmxClass$new(directory,input, dv,config)
   }
 
 #' Wrapper to pmx constructor
@@ -170,8 +172,9 @@ pmxClass <- R6::R6Class(
     data  = NULL,
     config = NULL,
     input=NULL,
-    initialize = function(data_path, input,config)
-      pmx_initialize(self, private, data_path, input,config),
+    dv=NULL,
+    initialize = function(data_path, input,dv,config)
+      pmx_initialize(self, private, data_path, input,dv,config),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -200,14 +203,15 @@ pmxClass <- R6::R6Class(
   )
 )
 
-pmx_initialize <- function(self, private, data_path,input, config) {
+pmx_initialize <- function(self, private, data_path,input, dv,config) {
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
   private$.data_path <- data_path
   private$.input <- input
   self$config <- config
-  self$input <- read_input(input)
+  self$dv <- dv
+  self$input <- read_input(input,self$dv)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
   self$post_load()
@@ -240,7 +244,7 @@ pmx_add_plot <- function(self, private, x, pname){
   dname <- switch(
     ptype,
     RES="mod_pred",
-    IND="ind_pred",
+    IND="IND",
     DIS="ind_pred")
   
   private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])

@@ -26,6 +26,7 @@ finegrid :
     label : finegrid
     file  : finegrid.txt
     reader  : read_mlx_pred
+    strict: True
     names:
       id: ID
       time: TIME
