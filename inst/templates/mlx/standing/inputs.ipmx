@@ -23,3 +23,13 @@ ind_pred :
     file  : indiv_eta.txt
     reader  : read_mlx_ind_est
 
+finegrid :
+    label : finegrid
+    file  : finegrid.txt
+    reader  : read_mlx_pred
+    names:
+      id: ID
+      time: TIME
+      poppred: PRED
+      npde: NPDE
+

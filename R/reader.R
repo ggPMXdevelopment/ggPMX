@@ -75,8 +75,9 @@ load_data_set <- function(x, path, sys){
     if(length(fpath) > 1)
       fpath <- grep(sys, fpath, ignore.case = TRUE, value=TRUE)
   }
-  if(!file.exists(fpath)){
-    stop(sprintf(" %s FILE DOES NOT exist under %s", x[["file"]], path))
+  if(length(fpath)==0  || !file.exists(fpath)){
+    warning(sprintf(" %s FILE DOES NOT exist under %s", x[["file"]], path))
+    return(NULL)
   }
   
   
