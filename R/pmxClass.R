@@ -7,6 +7,8 @@
 #' @param sys the system name can be MLX/NM/OTHERS
 #' @param directory where the files are located. This is an optional parameter by default pmw will look
 #' in \code{work_dir} pmx options: \code{getPmxOptions("work_dir")}
+#' @param input the input file
+#' @param dv the dv parameter
 #' @return a pmxClass object
 #' @export
 #' @examples
@@ -24,6 +26,8 @@ pmx <-
       stop("Please set a directory argument or set global work_dir option")
     if(is.null(input))
       stop("Please set a input argument or set global input option")
+    if(is.null(dv))
+      stop("Please set a dv argument or set global dv option")
     if(!inherits(config,"pmxConfig"))
       config <- load_config(config, sys)
     pmxClass$new(directory, input, dv, config)
@@ -33,13 +37,15 @@ pmx <-
 #'
 #' @param config the config name
 #' @param directory the data directory (working diectory)
+#' @param input the input file
+#' @param dv the dv parameter
 #'
 #' @return \code{pmxClass} object
 #' @export
 
 pmx_mlx <-
-  function(config, directory, input){
-    pmx(config, "mlx", directory, input)
+  function(config, directory, input, dv){
+    pmx(config, "mlx", directory, input, dv)
   }
 
 
