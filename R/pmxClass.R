@@ -16,19 +16,10 @@
 
 pmx <-
   function(config, sys, directory, input, dv){
-    if(missing(directory))
-      directory <- getPmxOption("work_dir")
-    if(missing(input))
-      input <- getPmxOption("input")
-    if(missing(dv))
-      dv <- getPmxOption("dv")
-    if(is.null(directory))
-      stop("Please set a directory argument or set global work_dir option")
-    if(is.null(input))
-      stop("Please set a input argument or set global input option")
-    if(is.null(dv))
-      stop("Please set a dv argument or set global dv option")
-    if(!inherits(config,"pmxConfig"))
+    directory <- checkPmxOption(directory, "work_dir")
+    input <- checkPmxOption(input, "input")
+    dv <- checkPmxOption(dv, "dv")
+    if(!inherits(config, "pmxConfig"))
       config <- load_config(config, sys)
     pmxClass$new(directory, input, dv, config)
   }
