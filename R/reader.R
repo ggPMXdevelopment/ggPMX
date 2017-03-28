@@ -26,10 +26,10 @@ read_mlx_ind_est <- function(path, x){
 #' @import data.table
 #' @export
 #'
-read_input <- function(ipath,dv=NULL,covariates=""){
+read_input <- function(ipath, dv = NULL, covariates = ""){
   xx <- fread(ipath)
   setnames(xx, toupper(names(xx)))
-  if(!is.null(dv))setnames(xx,dv,"DV")
+  if(!is.null(dv))setnames(xx, dv, "DV")
   xx
   
 }
@@ -45,7 +45,7 @@ read_input <- function(ipath,dv=NULL,covariates=""){
 read_mlx_pred <- function(path, x){
   xx <- fread(path)
   data.table::setnames(xx, tolower(names(xx)))
-  if(!is.null(x$strict)) xx <- xx[,names(x$names),with=FALSE]
+  if(!is.null(x$strict)) xx <- xx[, names(x$names), with = FALSE]
   ## mean start columns
   col_stars <- grep("*", names(xx), fixed = TRUE, value = TRUE)
   ncol_stars <- toupper(gsub("ind", "I", gsub("_.*", "", col_stars)))
@@ -137,28 +137,32 @@ load_source <- function(sys, path, dconf, include, exclude){
   dxs
 }
 
-input_finegrid <- function(input,finegrid,covariates=NULL)
+input_finegrid <- function(input, finegrid, covariates = NULL)
 {
-  dx <- rbind(finegrid,input,fill=TRUE)
-  dx <- dx[order(ID,TIME)]
+  dx <- rbind(finegrid, input, fill = TRUE)
+  dx <- dx[order(ID, TIME)]
   if(!is.null(covariates))
-    dx[,(covariates):=lapply(.SD,na.locf),.SDcols=covariates]
-  dx[TIME>0]
+    dx[, (covariates) := lapply(.SD, na.locf), .SDcols = covariates]
+  dx[TIME > 0]
 }
 
 
-post_load <- function(dxs,input, sys, dplot,...){
+post_load <- function(dxs, input, sys, dplot,...){
   ## merge finegrid with input data 
   dxs[["IND"]] <- 
-    if(!is.null(dxs[["finegrid"]])) input_finegrid(dxs[["finegrid"]],input,...)
-  else  dxs[["mod_pred"]] 
+    if(!is.null(dxs[["finegrid"]])){
+      input_finegrid(dxs[["finegrid"]], input,...)
+    }else{
+      dxs[["mod_pred"]] 
+    }  
   
   if(sys == "mlx"){
     ## add startification column
     vv <- names(dxs$ind_pred)[vapply(dxs$ind_pred, is.integer, TRUE)]
     ## prepare data set for stratification
     dxs$mod_pred <-
-      merge(dxs$mod_pred[,!"DV",with=FALSE],input,by=c("ID","TIME"))
+      merge(dxs$mod_pred[, !"DV", with = FALSE], input, 
+            by = c("ID", "TIME"))
     ## add shrinkage data set
     dxs[["shrink"]] <- 
       shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)

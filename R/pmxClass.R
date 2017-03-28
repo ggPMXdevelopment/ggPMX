@@ -13,7 +13,7 @@
 #'
 
 pmx <-
-  function(config, sys, directory,input,dv){
+  function(config, sys, directory, input, dv){
     if(missing(directory))
       directory <- getPmxOption("work_dir")
     if(missing(input))
@@ -26,7 +26,7 @@ pmx <-
       stop("Please set a input argument or set global input option")
     if(!inherits(config,"pmxConfig"))
       config <- load_config(config, sys)
-    pmxClass$new(directory,input, dv,config)
+    pmxClass$new(directory, input, dv, config)
   }
 
 #' Wrapper to pmx constructor
@@ -38,8 +38,8 @@ pmx <-
 #' @export
 
 pmx_mlx <-
-  function(config, directory,input){
-    pmx(config, "mlx", directory,input)
+  function(config, directory, input){
+    pmx(config, "mlx", directory, input)
   }
 
 
@@ -148,7 +148,7 @@ pmx_update <- function(ctr, pname, ..., pmxgpar = NULL){
 #' ctr %>% set_plot("IND", pname = "indiv1")
 #' get_plot_config("distr1")
 #' }
-get_plot_config <- function(ctr,pname){
+get_plot_config <- function(ctr, pname){
   assert_that(is_pmxclass(ctr))
   ctr$get_config(pname)
 }
@@ -173,8 +173,8 @@ pmxClass <- R6::R6Class(
     config = NULL,
     input=NULL,
     dv=NULL,
-    initialize = function(data_path, input,dv,config)
-      pmx_initialize(self, private, data_path, input,dv,config),
+    initialize = function(data_path, input, dv, config)
+      pmx_initialize(self, private, data_path, input, dv, config),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -203,7 +203,7 @@ pmxClass <- R6::R6Class(
   )
 )
 
-pmx_initialize <- function(self, private, data_path,input, dv,config) {
+pmx_initialize <- function(self, private, data_path, input, dv, config) {
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
@@ -211,7 +211,7 @@ pmx_initialize <- function(self, private, data_path,input, dv,config) {
   private$.input <- input
   self$config <- config
   self$dv <- dv
-  self$input <- read_input(input,self$dv)
+  self$input <- read_input(input, self$dv)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
   self$post_load()
@@ -293,7 +293,8 @@ pmx_plots <- function(self, private){
 }
 
 pmx_post_load <- function(self, private){
-  self$data <- post_load(self$data, self$input,self$config$sys, self$config$plots)
+  self$data <- post_load(self$data, self$input, self$config$sys, 
+                         self$config$plots)
   
 }
 
