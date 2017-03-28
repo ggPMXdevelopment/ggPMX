@@ -24,6 +24,7 @@ test_that("can load data set", {
                    c("ID", "EVID", "TWT", "TAGE", "SEX", "STUD", 
                      "VARIABLE", "VALUE", 
                      "VAR", "EFFECT", "FUN"))
+  expect_identical(names(dxs$finegrid), c("ID", "TIME", "PRED", "IPRED"))
 })
 
 test_that("errors work in load data set", {
@@ -40,7 +41,7 @@ test_that("errors work in load data set", {
         return(list.files(path, full.names = TRUE))
       }
     }, 
-    expect_error(
+    expect_warning(
       load_data_set(datasets$par_est, path, sys), "FILE DOES NOT exist"
     )
   )
@@ -71,7 +72,7 @@ test_that("can exclude data set", {
   exclude <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
                          dconf = reader_help$conf$data, 
                          exclude = "ind_pred")
-  expect_identical(names(exclude), c("par_est", "mod_pred"))
+  expect_identical(names(exclude), c("par_est", "mod_pred", "finegrid"))
 })
 
 test_that("can include data set", {
