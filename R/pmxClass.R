@@ -69,7 +69,8 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
-  
+  ctr[["config"]][["plots"]][[toupper(pname)]] <- 
+    c(ptype = ptype, list(...))
   ctr$add_plot(conf, pname)
   invisible(ctr)
 }

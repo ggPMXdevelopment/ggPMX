@@ -13,7 +13,11 @@ vignette: >
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
-WORK_DIR <- file.path(system.file(package="ggPMX"), "testdata", "theophylline", "Monolix")
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                          "theophylline")
+WORK_DIR <- file.path(theophylline, "Monolix")
+input_file <- file.path(theophylline, "data_pk.csv")
+
 
 ```
 
@@ -41,7 +45,8 @@ configs()
 
 Then we can instatntiate a **standing** (the name of the config) controller using:
 ```{r init_controller}
-ctr <- pmx(config = "standing", sys = "mlx", directory = WORK_DIR)
+ctr <- pmx(config = "standing", sys = "mlx", directory = WORK_DIR, 
+           input = input_file, dv = "Y")
 ```
 
 This is can be simplified by :
@@ -50,7 +55,10 @@ This is can be simplified by :
 - Using the MONOLIX controller.
 
 ```{r init_work_dir}
-pmxOptions(work_dir=WORK_DIR)
+pmxOptions(
+  work_dir = WORK_DIR, 
+  input = input_file, 
+  dv = "Y")
 ctr <- pmx_mlx(config = "standing")
 
 ```
@@ -151,7 +159,7 @@ section TODO later
 ```{r , distribut}
 library(ggPMX)
 
-ctr %>% set_plot("DIS",pname = "distr1",type="box")
+ctr %>% set_plot("DIS", pname = "distr1", type = "box")
 
 ctr %>% get_plot("distri")
 
