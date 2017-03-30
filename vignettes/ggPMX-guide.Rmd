@@ -182,7 +182,7 @@ examples that follow.
 
 The `Distribution plot` plots the EBE distribution.
 
-```{r , distribut}
+```{r , distribut,  fig.width=7, fig.height=6, warning=FALSE}
 library(ggPMX)
 
 ctr %>% set_plot("DIS", pname = "distr1", type = "box")
@@ -193,10 +193,11 @@ ctr %>% get_plot("distri")
 
 #### Individual plot
 
-```{r , individual_plot}
+```{r , individual_plot,  fig.width=7, fig.height=6, warning=FALSE}
 library(ggPMX)
 
-ctr %>% set_plot("IND", pname = "indiv1")
+ctr %>% set_plot("IND", pname = "indiv1", 
+                 draft = list(size = 10, label = "DRAFT", color = "grey50"))
 
 ctr %>% get_plot("indiv1", c(2, 4))
 
@@ -208,7 +209,7 @@ ctr %>% get_plot("indiv1", c(2, 4))
 The `Residual plot` plots a residual Y versus an independant variable X.
 Examples of such are NPD vs EPRED, NPD vs TIME etc. 
 
-```{r , residual_plot}
+```{r , residual_plot,  fig.width=7, fig.height=6}
 library(ggPMX)
 
 ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
@@ -228,7 +229,7 @@ workflow using the `ggPMX` package. Steps taken include:
 - Printing all the plots
 
 
-```{r complete_example, warning=FALSE}
+```{r complete_example, warning=FALSE,  fig.width=7, fig.height=6}
 library(ggPMX)
 
 ## define a working dir
