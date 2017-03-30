@@ -2,14 +2,18 @@
 title: "ggPMX - User guide"
 author: "Amine Gassem"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 4
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
     
-```{r load_pacakge, echo=FALSE}
+```{r load_package, echo=FALSE}
+opts_chunk$set(out.width='100%')
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -29,29 +33,31 @@ This document serves as the main overview of the `ggPMX` package. It explains th
 ## Basic workflow
 
 - Generate inputs files for ggPMX package and store them in the same location.
-- Create a controller: this object contain different data sets , plots and other object like report settings and default plot settings.
-- Use the controller populated ( with different plots and other objects) to create custom reports.
+- Create a controller: this object contains a number of different data sets , plots and other object like report settings and default plot settings.
+- Use the controller (populated with different plots and other objects) to create custom reports.
 - (Optional) Use `set_plot` to generate new plots.
-- (Optional) Use `update` to modify the controller objects: plots/data sets. (not yet implemented.)
+- (Optional) Use `pmx_update` to modify the controller objects: plots/data sets.
+- (Optional) Use `pmx_filter` to filter data stored in the controller object.
 
 ## The controller
 
-A diagnostic session starts by creating controller using `pmx`. This is a general container that define data configuration but may also contain generated objects like plots and tables. 
-A list of pre-built configurations can be listed using :
+A diagnostic session starts by creating controller using `pmx`. The controller is a general container that defines data configuration but may also contain generated objects like plots and tables. The `pmx` takes a `configuration` as one of its arguments.
+A set of pre-built configurations can be listed using :
 
 ```{r list_configs}
 configs()
 ```
 
-Then we can instatntiate a **standing** (the name of the config) controller using:
+Then we can instantiate a **standing** (the name of the config) controller using:
 ```{r init_controller}
 ctr <- pmx(config = "standing", sys = "mlx", directory = WORK_DIR, 
            input = input_file, dv = "Y")
 ```
 
-This is can be simplified by :
+This is can be simplified by setting a number of global options and using the
+Monolix controller:
 
-- Setting the working directory using ggPMX options at the begining of the session. This is a good practice in genarel to set global variables in the begining of the session.
+- Setting the working directory using ggPMX options at the begining of the session. It is good practice in general to set global variables at the begining of the session.
 - Using the MONOLIX controller.
 
 ```{r init_work_dir}
@@ -66,11 +72,11 @@ ctr <- pmx_mlx(config = "standing")
 
 ## Source
 
-Behind the scene, When we initialize the controller it will create a source containing all data sets. The source is configured using a configuration object. In the previous example, we have just give the name of the configuration. `ggPMX` will use this name to guess the full path of the configuration file and load the corresponding data sets.
+Behind the scene, when the controller is initialized it will create a source containing all data sets. The source is configured using a configuration object. In the previous example, we just gave the name of the configuration. `ggPMX` will use this name to guess the full path of the configuration file and load the corresponding data sets.
 
 ### Source configuration file
 
-Source configuration are `yaml` file. `ymal` is human readable format. This is standard way to set configuration files and it is used in many popular R packages ( `rmarkdown`, `htmlwidgets`). This is also the way how the DESCRIPTION file of a package is defined. 
+Source configuration are `yaml` files. `ymal` is human readable format. This is standard way to set configuration files and it is used in many popular R packages (`rmarkdown`, `htmlwidgets`). This is also the way the DESCRIPTION file of a package is defined. 
 
 Basically, a source is a list of data sets. Each data set may contain one of the following fileds: 
 
@@ -84,7 +90,7 @@ We indicate :
 
 - The file name 
 - The custom reader used to read this special file 
-- The names to do the mapping between  MONOLIX/ggPMX naming conventions. Note that the upper names for variables are used by convention within ggPMX package.
+- The names to do the mapping between  MONOLIX/ggPMX naming conventions. Note that upper-case names for variables are used by convention within ggPMX package.
 
 ```{r, eval=FALSE}
     label : model predictions
@@ -102,7 +108,7 @@ We indicate :
 
 ### Load the configuration
 
-In practice no need to load the configuration. This is done internally within the controller. In some cases it can be interesting to load the configuration and modify some attributes like columns names for example:
+In practice there is no need to load the configuration. This is done internally within the controller. In some cases it can be interesting to load the configuration and modify some attributes like columns names for example:
 
 ```{r load_conf}
 
@@ -114,7 +120,7 @@ conf
 `conf` is a list containing a the configuration of each data set and plots. 
 We can change this configuration object by accessing the object as a list object. 
 
-For example here to change the mapping from `c("time","TIME")` to `c("time1","TIME")` We can do something like :
+For example to change the mapping from `c("time","TIME")` to `c("time1","TIME")` We can do something like :
 ```{r change_mapping}
 
 conf$data$mod_pred$names$time <- NULL
@@ -122,7 +128,7 @@ conf$data$mod_pred$names$time1 <- "TIME"
 
 ```
 
-We will make this easier in next versions by defining wrappers function withing the controller.  
+We will make this easier in next versions by defining wrappers function within the controller.  
 
 
 ```{r change_mapping_future, eval=FALSE}
@@ -135,50 +141,95 @@ We will make this easier in next versions by defining wrappers function withing 
 
 ## Plots
 
+The `ggPMX` package allows a number of different plotting types to be
+specified by the user. Currently these include the `Distribution plot`, the
+`Individual plot` and the `Residual plot`.
 
-section TODO later
+In the following sections it will be assummed that appropriate global options 
+have been set for the working directory, input file etc. and that a 
+suitable controller has been defined. For users looking to replicate plots
+a set up as follows can be assummed:
+
+```{r, eval=FALSE}
+library(ggPMX)
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                          "theophylline")
+WORK_DIR <- file.path(theophylline, "Monolix")
+input_file <- file.path(theophylline, "data_pk.csv")
+pmxOptions(
+  work_dir = WORK_DIR, 
+  input = input_file, 
+  dv = "Y")
+ctr <- pmx_mlx(config = "standing")
+
+```
+
 
 ### Graphical parameters 
 
-section TODO later
+Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function. A number of graphical paramters can be set for the different
+plot types. 
 
-### Basic plot
+```{r pmx_gpar_args}
+args(pmx_gpar)
+```
+More information can be found in the help document `?pmx_gpar` and in the 
+examples that follow.
 
-section TODO later
+### Plot types
 
-### Residual plot
+#### Distribution plot
 
-section TODO later
+The `Distribution plot` plots the EBE distribution.
 
-### Individual plot
-
-section TODO later
-
-### Distribution plot
-
-```{r , distribut}
+```{r , distribut,  fig.width=7, fig.height=6, warning=FALSE}
 library(ggPMX)
 
 ctr %>% set_plot("DIS", pname = "distr1", type = "box")
-
-ctr %>% get_plot("distri")
 
 ctr %>% get_plot("distr1")
 
 ```
 
+#### Individual plot
+
+```{r , individual_plot,  fig.width=7, fig.height=6, warning=FALSE}
+library(ggPMX)
+
+ctr %>% set_plot("IND", pname = "indiv1", 
+                 draft = list(size = 10, label = "DRAFT", color = "grey50"))
+
+ctr %>% get_plot("indiv1", c(2, 4))
+
+```
+
+
+#### Residual plot
+
+The `Residual plot` plots a residual Y versus an independant variable X.
+Examples of such are NPD vs EPRED, NPD vs TIME etc. 
+
+```{r , residual_plot,  fig.width=7, fig.height=6}
+library(ggPMX)
+
+ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
+
+ctr %>% get_plot("res1")
+
+```
 
 ## Complete example
 
-In this example , we are : 
+In this section we introduce a complete example that illustrates the
+workflow using the `ggPMX` package. Steps taken include: 
 
-- Initializing the working dir 
+- Initializing the working dir and related quantities
 - Creating the controller using the **standing** configuration
 - Adding a new plot
 - Printing all the plots
 
 
-```{r complete_example, warning=FALSE}
+```{r complete_example, warning=FALSE,  fig.width=7, fig.height=6}
 library(ggPMX)
 
 ## define a working dir
@@ -186,9 +237,6 @@ library(ggPMX)
 # Commented because the vignette will not build if it is on:
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
 
-
-
-#WORK_DIR <- "../ggpmx_files/inputs"
 theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
 WORK_DIR <-  file.path(theophylline, "Monolix")
 input_file <- file.path(theophylline,"data_pk.csv")
@@ -208,6 +256,11 @@ ctr %>%
             has.shrink=TRUE,
             has.jitter=FALSE)
 
+## update individual plots draft argument
+ctr %>% pmx_update("indiv", 
+                   draft = list(size = 10, label = "DRAFT", 
+                                color = "grey50"))
+
 ## return all plots
 lapply(ctr %>% plot_names,
        function(x){
@@ -222,4 +275,40 @@ lapply(ctr %>% plot_names,
 
 
 
-## Where next 
+## Additional considerations
+
+### Filtering data
+
+The `pmx_filter` function allows a user to filter a named data set.
+Here we filter on the condition that ID is less than or equal to five:
+
+```{r pmx_filter,  fig.width=7, fig.height=6}
+plotnames <- ctr %>% plot_names()
+ctr %>% 
+  pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
+  get_plot(plotnames[1])
+  
+
+```
+
+### Updating plots
+
+Plots can be updated using the `pmx_update` function. As an illustration compare the residual plot produced previously with an updated version:
+
+```{r update_plot,  fig.width=7, fig.height=6}
+
+library(ggPMX)
+
+ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
+
+p1 <- ctr %>% get_plot("res1")
+
+# remove bands
+p2 <- ctr %>% 
+  pmx_update("res1", has.band = FALSE, 
+             labels = list(title = "IPRED versus IWRES (no bands)")) %>% 
+  get_plot("res1")
+
+p1
+p2
+```

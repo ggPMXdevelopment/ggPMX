@@ -1,4 +1,5 @@
-## ----load_pacakge, echo=FALSE--------------------------------------------
+## ----load_package, echo=FALSE--------------------------------------------
+opts_chunk$set(out.width='100%')
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -54,17 +55,48 @@ conf$data$mod_pred$names$time1 <- "TIME"
 #  #ctr %>% rename("mod_pred","time","time1")
 #  
 
-## ---- distribut----------------------------------------------------------
+## ---- eval=FALSE---------------------------------------------------------
+#  library(ggPMX)
+#  theophylline <- file.path(system.file(package = "ggPMX"), "testdata",
+#                            "theophylline")
+#  WORK_DIR <- file.path(theophylline, "Monolix")
+#  input_file <- file.path(theophylline, "data_pk.csv")
+#  pmxOptions(
+#    work_dir = WORK_DIR,
+#    input = input_file,
+#    dv = "Y")
+#  ctr <- pmx_mlx(config = "standing")
+#  
+
+## ----pmx_gpar_args-------------------------------------------------------
+args(pmx_gpar)
+
+## ---- distribut,  fig.width=7, fig.height=6, warning=FALSE---------------
 library(ggPMX)
 
 ctr %>% set_plot("DIS", pname = "distr1", type = "box")
 
-ctr %>% get_plot("distri")
-
 ctr %>% get_plot("distr1")
 
 
-## ----complete_example, warning=FALSE-------------------------------------
+## ---- individual_plot,  fig.width=7, fig.height=6, warning=FALSE---------
+library(ggPMX)
+
+ctr %>% set_plot("IND", pname = "indiv1", 
+                 draft = list(size = 10, label = "DRAFT", color = "grey50"))
+
+ctr %>% get_plot("indiv1", c(2, 4))
+
+
+## ---- residual_plot,  fig.width=7, fig.height=6--------------------------
+library(ggPMX)
+
+ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
+
+ctr %>% get_plot("res1")
+
+
+## ----complete_example, warning=FALSE,  fig.width=7, fig.height=6---------
 library(ggPMX)
 
 ## define a working dir
@@ -72,9 +104,6 @@ library(ggPMX)
 # Commented because the vignette will not build if it is on:
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
 
-
-
-#WORK_DIR <- "../ggpmx_files/inputs"
 theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
 WORK_DIR <-  file.path(theophylline, "Monolix")
 input_file <- file.path(theophylline,"data_pk.csv")
@@ -94,6 +123,11 @@ ctr %>%
             has.shrink=TRUE,
             has.jitter=FALSE)
 
+## update individual plots draft argument
+ctr %>% pmx_update("indiv", 
+                   draft = list(size = 10, label = "DRAFT", 
+                                color = "grey50"))
+
 ## return all plots
 lapply(ctr %>% plot_names,
        function(x){
@@ -103,4 +137,29 @@ lapply(ctr %>% plot_names,
 
 
 
+
+## ----pmx_filter,  fig.width=7, fig.height=6------------------------------
+plotnames <- ctr %>% plot_names()
+ctr %>% 
+  pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
+  get_plot(plotnames[1])
+  
+
+
+## ----update_plot,  fig.width=7, fig.height=6-----------------------------
+
+library(ggPMX)
+
+ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
+
+p1 <- ctr %>% get_plot("res1")
+
+# remove bands
+p2 <- ctr %>% 
+  pmx_update("res1", has.band = FALSE, 
+             labels = list(title = "IPRED versus IWRES (no bands)")) %>% 
+  get_plot("res1")
+
+p1
+p2
 

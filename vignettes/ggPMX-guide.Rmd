@@ -13,7 +13,7 @@ vignette: >
 ---
     
 ```{r load_package, echo=FALSE}
-opts_chunk$set(out.width='100%')
+knitr::opts_chunk$set(out.width='100%')
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
