@@ -256,6 +256,11 @@ ctr %>%
             has.shrink=TRUE,
             has.jitter=FALSE)
 
+## update individual plots draft argument
+ctr %>% pmx_update("indiv", 
+                   draft = list(size = 10, label = "DRAFT", 
+                                color = "grey50"))
+
 ## return all plots
 lapply(ctr %>% plot_names,
        function(x){
