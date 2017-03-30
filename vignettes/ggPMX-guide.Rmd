@@ -277,7 +277,7 @@ lapply(ctr %>% plot_names,
 The `pmx_filter` function allows a user to filter a named data set.
 Here we filter on the condition that ID is less than or equal to five:
 
-```{r pmx_filter}
+```{r pmx_filter,  fig.width=7, fig.height=6}
 plotnames <- ctr %>% plot_names()
 ctr %>% 
   pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
