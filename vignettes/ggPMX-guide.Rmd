@@ -2,14 +2,17 @@
 title: "ggPMX - User guide"
 author: "Amine Gassem"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
     
-```{r load_pacakge, echo=FALSE}
+```{r load_package, echo=FALSE}
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
