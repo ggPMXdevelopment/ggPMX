@@ -196,23 +196,33 @@ ctr %>% get_plot("distri")
 ```{r , individual_plot}
 library(ggPMX)
 
-ctr %>% set_plot("DIS", pname = "indiv1")
+ctr %>% set_plot("IND", pname = "indiv1")
 
-ctr %>% get_plot("indiv1")
+ctr %>% get_plot("indiv1", c(2, 4))
 
 ```
 
 
 #### Residual plot
 
-section TODO later
+The `Residual plot` plots a residual Y versus an independant variable X.
+Examples of such are NPD vs EPRED, NPD vs TIME etc. 
 
+```{r , residual_plot}
+library(ggPMX)
+
+ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
+
+ctr %>% get_plot("res1")
+
+```
 
 ## Complete example
 
-In this example , we are : 
+In this section we introduce a complete example that illustrates the
+workflow using the `ggPMX` package. Steps taken include: 
 
-- Initializing the working dir 
+- Initializing the working dir and related quantities
 - Creating the controller using the **standing** configuration
 - Adding a new plot
 - Printing all the plots
@@ -226,9 +236,6 @@ library(ggPMX)
 # Commented because the vignette will not build if it is on:
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
 
-
-
-#WORK_DIR <- "../ggpmx_files/inputs"
 theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
 WORK_DIR <-  file.path(theophylline, "Monolix")
 input_file <- file.path(theophylline,"data_pk.csv")
@@ -262,4 +269,22 @@ lapply(ctr %>% plot_names,
 
 
 
-## Where next 
+## Additional considerations
+
+### Filtering data
+
+The `pmx_filter` function allows a user to filter a named data set.
+Here we filter on the condition that ID is less than or equal to five:
+
+```{r pmx_filter}
+plotnames <- ctr %>% plot_names()
+ctr %>% 
+  pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
+  get_plot(plotnames[1])
+  
+
+```
+
+### Updating plots
+
+Plots can be updated using the `pmx_update` function.
