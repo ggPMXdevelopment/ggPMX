@@ -293,4 +293,22 @@ ctr %>%
 
 ### Updating plots
 
-Plots can be updated using the `pmx_update` function.
+Plots can be updated using the `pmx_update` function. As an illustration compare the residual plot produced previously with an updated version:
+
+```{r update_plot,  fig.width=7, fig.height=6}
+
+library(ggPMX)
+
+ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
+
+p1 <- ctr %>% get_plot("res1")
+
+# remove bands
+p2 <- ctr %>% 
+  pmx_update("res1", has.band = FALSE, 
+             labels = list(title = "IPRED versus IWRES (no bands)")) %>% 
+  get_plot("res1")
+
+p1
+p2
+```
