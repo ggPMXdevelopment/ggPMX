@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
-    toc_depth: 3
+    toc_depth: 4
 vignette: >
   %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,6 +13,7 @@ vignette: >
 ---
     
 ```{r load_package, echo=FALSE}
+opts_chunk$set(out.width='100%')
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -140,26 +141,46 @@ We will make this easier in next versions by defining wrappers function within t
 
 ## Plots
 
+The `ggPMX` package allows a number of different plotting types to be
+specified by the user. Currently these include the `Distribution plot`, the
+`Individual plot` and the `Residual plot`.
 
-section TODO later
+In the following sections it will be assummed that appropriate global options 
+have been set for the working directory, input file etc. and that a 
+suitable controller has been defined. For users looking to replicate plots
+a set up as follows can be assummed:
+
+```{r, eval=FALSE}
+library(ggPMX)
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                          "theophylline")
+WORK_DIR <- file.path(theophylline, "Monolix")
+input_file <- file.path(theophylline, "data_pk.csv")
+pmxOptions(
+  work_dir = WORK_DIR, 
+  input = input_file, 
+  dv = "Y")
+ctr <- pmx_mlx(config = "standing")
+
+```
+
 
 ### Graphical parameters 
 
-section TODO later
+Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function. A number of graphical paramters can be set for the different
+plot types. 
 
-### Basic plot
+```{r pmx_gpar_args}
+args(pmx_gpar)
+```
+More information can be found in the help document `?pmx_gpar` and in the 
+examples that follow.
 
-section TODO later
+### Plot types
 
-### Residual plot
+#### Distribution plot
 
-section TODO later
-
-### Individual plot
-
-section TODO later
-
-### Distribution plot
+The `Distribution plot` plots the EBE distribution.
 
 ```{r , distribut}
 library(ggPMX)
@@ -168,9 +189,23 @@ ctr %>% set_plot("DIS", pname = "distr1", type = "box")
 
 ctr %>% get_plot("distri")
 
-ctr %>% get_plot("distr1")
+```
+
+#### Individual plot
+
+```{r , individual_plot}
+library(ggPMX)
+
+ctr %>% set_plot("DIS", pname = "indiv1")
+
+ctr %>% get_plot("indiv1")
 
 ```
+
+
+#### Residual plot
+
+section TODO later
 
 
 ## Complete example
