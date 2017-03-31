@@ -28,7 +28,7 @@ getPmxOption <- function(name, default = NULL) {
 
 #' Get or set ggPMX options
 #'
-#' \code{getPmxOption} retrieves the value of a Shiny option.
+#' \code{getPmxOption} retrieves the value of a ggPMX option.
 #' \code{ggPMXOptions} sets the value of ggPMX options; it can also be used to
 #' return a list of all currently-set ggPMX options.
 #'
