@@ -32,3 +32,28 @@ test_that("can get pmx class config", {
                   y = "Individual weighted residuals")
   expect_identical(conf$gp$labels, clabels)
 })
+
+test_that("can get data from controller", {
+  ctr <- pmx_mlx("standing")
+  peData <- ctr %>% get_data("par_est")
+  peNames <- c("PARAM", "VALUE", "SE", "RSE", "PVALUE")
+  expect_identical(names(peData), peNames)
+  
+  mpData <- ctr %>% get_data("mod_pred")
+  mpNames <- c("ID", "TIME", "PRED", "NPDE", "IPRED", "IWRES", "AMT", "DV",
+               "EVID", "WT0", "AGE0", "SEX", "STUD")
+  expect_identical(names(mpData), mpNames)
+  
+  ipData <- ctr %>% get_data("ind_pred")
+  ipNames <- c("ID", "EVID", "TWT", "TAGE", "SEX", "STUD", "VARIABLE", 
+               "VALUE", "VAR", "EFFECT", "FUN")
+  expect_identical(names(ipData), ipNames)
+  
+  fgData <- ctr %>% get_data("finegrid")
+  fgNames <- c("ID", "TIME", "PRED", "IPRED")
+  expect_identical(names(fgData), fgNames)
+  
+  sData <- ctr %>% get_data("shrink")
+  sNames <- c("EFFECT", "SHRINK")
+  expect_identical(names(sData), sNames)
+})
