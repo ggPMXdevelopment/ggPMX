@@ -10,6 +10,7 @@
 #' @param input the input file
 #' @param dv the dv parameter
 #' @return a pmxClass object
+#' @family pmxclass
 #' @export
 #' @examples
 #'
@@ -31,6 +32,7 @@ pmx <-
 #' @param input the input file
 #' @param dv the dv parameter
 #'
+#' @family pmxclass
 #' @return \code{pmxClass} object
 #' @export
 
@@ -52,6 +54,7 @@ pmx_mlx <-
 ##' @param pname plot name, if missing it will be created using function aestetics
 #' @param ... other plot parameters to configure \code{"pmx_gpar"}.
 #'
+#' @family pmxclass
 #' @return invisible ctr object
 #' @export
 
@@ -82,6 +85,7 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
 #' @param nplot character the plot name
 #' @param npage integer or integer vector, set page number in case of multi pages plot
 #'
+#' @family pmxclass
 #' @return ggplot object
 #' @export
 
@@ -103,6 +107,8 @@ get_plot <- function(ctr, nplot, npage = NULL){
 #' Get plot names
 #'
 #' @param ctr  \code{pmxClass} controller object
+#' 
+#' @family pmxclass
 #' @return list of plot names
 #' @export
 
@@ -117,10 +123,11 @@ plot_names <- function(ctr){
 #'
 #' @param ctr  \code{pmxClass} controller object
 #' @param pname character the plot name to update
-#' @param ... others graphical parametrs given to set the plot
+#' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.
 #'
+#' @family pmxclass
 #' @return controller object with the plot updated
 #' @export
 
@@ -136,6 +143,7 @@ pmx_update <- function(ctr, pname, ..., pmxgpar = NULL){
 #' @param ctr the controller object 
 #' @param pname the plot name 
 #'
+#' @family pmxclass
 #' @return the config object
 #' @export
 #'
@@ -157,6 +165,7 @@ get_plot_config <- function(ctr, pname){
 #' @param ctr the controller object 
 #' @param dataset the data set name
 #'
+#' @family pmxclass
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, dataset = c("par_est","mod_pred", 
@@ -315,6 +324,7 @@ pmx_post_load <- function(self, private){
 #' @param x pmxClass object
 #' @param ... additinal arguments to pass to print
 #'
+#' @family pmxclass functions
 #' @return print object to screen
 #' @export
 
