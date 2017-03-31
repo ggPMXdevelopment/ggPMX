@@ -48,7 +48,6 @@ individual <- function(labels, has.curve = TRUE,
 #' @export
 #' @seealso \code{\link{individual}}
 #' @family plot_pmx
-#' @importFrom ggforce facet_wrap_paginate
 #'
 plot_pmx.individual <-
   function(x, dx, include){
