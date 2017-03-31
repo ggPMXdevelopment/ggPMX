@@ -319,4 +319,14 @@ p2
 The `shrinkage` function allows $\eta$-shrinkage to be calculated using the parameter and individual estimation data. $\eta$-shrinkage is calculated as \[
 1-SD(\eta)/\omega 
 \]
-where $\eta$ are the between individual variation terms and $\omega$ is the population model estimate of the standard deviation in $\eta$.
+where $\eta$ are the between individual variation terms and $\omega$ is the population model estimate of the standard deviation in $\eta$. As an example we
+can calculate the shrinkage using the theophyline test data:
+
+```{r shrinkage}
+
+ctr <- pmx_mlx(config = "standing")
+parameter_data <- ctr %>% get_data("par_est")
+estimate_data <- ctr %>% get_data("ind_pred")
+shrinkage_estimates <- shrinkage(parameter_data, estimate_data)
+shrinkage_estimates
+```
