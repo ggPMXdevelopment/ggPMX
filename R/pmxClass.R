@@ -269,8 +269,8 @@ pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
   old_class <- class(config)
   x <- if(is.null(pmxgpar)){
     newopts <- list(...)
-    hl <- newopts[names(newopts) %in% names(config)]
-    gpl <- newopts[!names(newopts) %in% names(config)]
+    hl <- newopts[names(newopts) %in% unique(c(names(config), "shrink"))]
+    gpl <- newopts[!names(newopts) %in% unique(c(names(config), "shrink"))]
     hl$gp <- gpl 
     
     l_left_join(config, hl)
