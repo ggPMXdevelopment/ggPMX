@@ -1,5 +1,5 @@
 
-#' Create Graphic distribution object
+#' creates a graphic distribution object
 #'
 #' @param labels list of texts/titles used within the plot
 #' @param jitter list set jitter parameter

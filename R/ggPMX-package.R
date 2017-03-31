@@ -1,7 +1,7 @@
 #' ggPMX: A ggplt2 toolbox for Nonlinear Mixed-Effect Model graphical
 #'
 #' This package aims to generate diagnostic plots in a standard way. The tool reads data
-#' from many sources (MONOLIX,NONMEM,others) and generate standard grahics
+#' from many sources (MONOLIX,NONMEM,others) and generates standard grahics
 #' that can be easily integrated in a single report.
 #'
 #' \itemize{

@@ -7,6 +7,12 @@
 #'
 #' @param name Name of an option to get.
 #' @param default Value to be returned if the option is not currently set.
+#'
+#' @examples
+#' \dontrun{
+#' pmxOptions(myOption = 10)
+#' getPmxOption("myOption")
+#' }
 #' @export
 getPmxOption <- function(name, default = NULL) {
   
