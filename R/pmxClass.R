@@ -152,6 +152,20 @@ get_plot_config <- function(ctr, pname){
 }
 
 
+#' Get controller data set
+#'
+#' @param ctr the controller object 
+#' @param dataset the data set name
+#'
+#' @return a data.table of the named data set if available.
+#' @export
+get_data <- function(ctr, dataset = c("par_est","mod_pred", 
+                                      "ind_pred", "finegrid", "shrink")){
+  assert_that(is_pmxclass(ctr))
+  dataset <- match.arg(dataset)
+  ctr[["data"]][[dataset]]
+}
+
 # pmxSource (R6 Class) ------------------------------------------------------------
 #' @importFrom R6 R6Class
 pmxClass <- R6::R6Class(
