@@ -1,6 +1,6 @@
 
 
-#' List all vaiable config
+#' List configurations
 #' @param sys can be mlx, if missed all configurations will be listed
 #' @return names of the config
 #' @export

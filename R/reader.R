@@ -20,10 +20,9 @@ read_mlx_ind_est <- function(path, x){
 
 #' Read MONOLIX input data 
 #'
-#' @param ipath path +filename to the input file
+#' @param ipath full path of the input file
 #' 
 #' @return data.table well formatted
-#' @import data.table
 #' @export
 #'
 read_input <- function(ipath, dv = NULL, covariates = ""){

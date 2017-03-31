@@ -1,7 +1,7 @@
 
 #' Add draft layer annotation
 #'
-#' This is add the word draft to certain graphics.
+#' This function adds the word draft to certain graphics.
 #' @param label draft layer default to DRAFT
 #' @param size size of the annotation
 #' @param color color of the annotation default to grey50

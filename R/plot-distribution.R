@@ -8,7 +8,7 @@
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
-#' @return gdistribution object
+#' @return distrib object
 #' @seealso \code{\link{plot_pmx.distrib}}
 #' @export
 distrib <- function(
