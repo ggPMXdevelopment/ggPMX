@@ -313,3 +313,10 @@ p2 <- ctr %>%
 p1
 p2
 ```
+
+### Shrinkage
+
+The `shrinkage` function allows $\epsilon$-shrinkage to be calculated using the parameter and individual estimation data. $\epsilon$-shrinkage is calculated as \[
+1-SD(\epsilon)/\omega 
+\]
+where $\epsilon$ are the between individual variation terms and $\omega$ is the population model estimate of the standard deviation in $\epsilon$.
