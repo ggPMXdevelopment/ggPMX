@@ -54,7 +54,7 @@ pmx_gpar <-
     gp
   }
 
-#' Check if object is pmx_gpar class
+#' Check if an object is a pmx_gpar class
 #'
 #' @param x pmx_gpar object
 #'

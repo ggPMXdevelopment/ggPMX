@@ -1,6 +1,7 @@
 
-#' Create a pmx object data Source
-#'
+#' Create a pmx object
+#' 
+#' Create a pmx object from a data source
 #' @param config Can be either :
 #' The complete path for the configuration file, the name of configuration within the built-in
 #' list of configurations, or a configuration object.
@@ -138,7 +139,7 @@ pmx_update <- function(ctr, pname, ..., pmxgpar = NULL){
 }
 
 
-#' Get the plot config name
+#' Get the plot config by name
 #'
 #' @param ctr the controller object 
 #' @param pname the plot name 
@@ -149,7 +150,7 @@ pmx_update <- function(ctr, pname, ..., pmxgpar = NULL){
 #'
 #' @examples
 #' \dontrun{
-#' pmxOptions(work_dir=WORK_DIR)
+#' pmxOptions(work_dir = WORK_DIR)
 #' ctr <- pmx_mlx(config = "standing")
 #' ctr %>% set_plot("IND", pname = "indiv1")
 #' get_plot_config("distr1")

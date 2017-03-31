@@ -1,4 +1,4 @@
-#' filter data in pmx controller
+#' filter data in a pmx controller
 #'
 #' @param ctr A controller. An object of 'pmxClass'
 #' @param data_set A data_set within the controller to apply a filter to.
