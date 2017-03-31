@@ -316,7 +316,7 @@ p2
 
 ### Shrinkage
 
-The `shrinkage` function allows $\epsilon$-shrinkage to be calculated using the parameter and individual estimation data. $\epsilon$-shrinkage is calculated as \[
-1-SD(\epsilon)/\omega 
+The `shrinkage` function allows $\eta$-shrinkage to be calculated using the parameter and individual estimation data. $\eta$-shrinkage is calculated as \[
+1-SD(\eta)/\omega 
 \]
-where $\epsilon$ are the between individual variation terms and $\omega$ is the population model estimate of the standard deviation in $\epsilon$.
+where $\eta$ are the between individual variation terms and $\omega$ is the population model estimate of the standard deviation in $\eta$.
