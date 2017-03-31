@@ -9,7 +9,7 @@
 
 #'
 #' @return distrib object
-#' @seealso \code{\link{plot_pmx.distrib}}
+#' @family plot_pmx
 #' @export
 distrib <- function(
   labels,
@@ -63,8 +63,8 @@ distrib <- function(
 #'
 #' @return ggplot2 plot
 #' @export
-#' @family plot_pmx
 #' @seealso \code{\link{distrib}}
+#' @family plot_pmx
 #'
 plot_pmx.distrib <- function(x, dx){
   

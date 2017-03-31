@@ -8,6 +8,7 @@
 #'
 #' @return individual fit object
 #' @export
+#' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.individual}}
 #'
 #'
@@ -46,7 +47,6 @@ individual <- function(labels, has.curve = TRUE,
 #'
 #' @return a list of ggplot2
 #' @export
-#' @seealso \code{\link{individual}}
 #' @family plot_pmx
 #'
 plot_pmx.individual <-

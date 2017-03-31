@@ -8,6 +8,7 @@
 #' @param gpar object of pmx_gpar type
 #' @param p plot
 #'
+#' @family plot_pmx
 #' @return ggplot2 object
 plot_pmx.pmx_gpar <- function(gpar, p){
   assert_that(is_pmx_gpar(gpar))

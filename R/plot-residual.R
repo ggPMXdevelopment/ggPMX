@@ -11,6 +11,7 @@
 #'
 #' @return a residual object
 #' @export
+#' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.residual}}
 
 residual <- function(x, y, labels = NULL, point = NULL, ...){
