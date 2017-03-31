@@ -52,6 +52,9 @@ individual <- function(labels, has.curve = TRUE,
 plot_pmx.individual <-
   function(x, dx, include){
     assert_that(is_pmx_gpar(x))
+    if(!is.null(x[["filter"]])){
+      dx <- x[["filter"]](dx)
+    }
     
     ID <- NULL
     ##reshape data to the long format

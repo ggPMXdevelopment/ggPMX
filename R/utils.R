@@ -66,3 +66,16 @@ function (x)
 }
 
 
+local_filter <- 
+  function(pmx_exp){
+    e <- substitute(pmx_exp)
+    filter_ <-function(x){
+      r <- eval(e, x)
+      if (!is.logical( r )) 
+        stop("'expression' must evaluate to logical")
+      r <- r & !is.na( r )
+      
+      newData <- x[r]
+      newData
+    }
+  }

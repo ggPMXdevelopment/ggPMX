@@ -60,7 +60,8 @@ pmx_mlx <-
 #' @export
 
 #'
-set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
+set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, 
+                     filter = NULL, ...){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string_or_null(pname))
   ptype <- match.arg(ptype)
@@ -73,6 +74,10 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
+  if(!is.null(filter)){
+    filter <- local_filter(filter)
+    conf[["filter"]] <- filter
+  }
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))
   ctr$add_plot(conf, pname)

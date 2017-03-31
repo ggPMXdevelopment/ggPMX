@@ -56,6 +56,9 @@ plot_pmx.residual <- function(x, dx){
   assert_that(is_pmx_gpar(x))
   with(x,
        {
+         if(!is.null(x[["filter"]])){
+           dx <- x[["filter"]](dx)
+         }
          p <-
            ggplot2::ggplot(dx, with(aess, ggplot2::aes_string(x, y)))+
            with(point, geom_point(shape = shape, color = color))
