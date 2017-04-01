@@ -52,3 +52,19 @@ test_that("can update RES plot", {
 
 test_that("can remove RES plot", {
 })
+
+test_that("can update with filter", {
+  # set new plot
+  ctr <- helpers$ctr
+  ctr %>% set_plot("DIS", pname = "distr1", type = "box")
+  ctr %>% get_plot("distr1")
+  p <- ctr %>% get_plot("distr1")
+  pconf <- ggplot2::ggplot_build(p)
+  expect_identical(dim(pconf$data[[2]]), c(150L, 10L))
+  
+  # Update plot with filter
+  ctr %>% pmx_update("distr1", filter = ID < 10)
+  p <- ctr %>% get_plot("distr1")
+  pconf <- ggplot2::ggplot_build(p)
+  expect_identical(dim(pconf$data[[2]]), c(27L, 10L))
+})
