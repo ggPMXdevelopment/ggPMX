@@ -68,9 +68,9 @@ function (x)
 
 local_filter <- 
   function(pmx_exp){
-    e <- substitute(pmx_exp)
+    e <- as.expression(pmx_exp)
     filter_ <-function(x){
-      r <- eval(e, x)
+      r <- eval(parse(text = e), x)
       if (!is.logical( r )) 
         stop("'expression' must evaluate to logical")
       r <- r & !is.na( r )
