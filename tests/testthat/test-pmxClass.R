@@ -57,3 +57,20 @@ test_that("can get data from controller", {
   sNames <- c("EFFECT", "SHRINK")
   expect_identical(names(sData), sNames)
 })
+
+test_that("can set plot and filter", {
+  # set new plot
+  ctr <- pmx_mlx("standing")
+  ctr %>% set_plot("DIS", pname = "distr1", type = "box")
+  p <- ctr %>% get_plot("distr1")
+  pconf <- ggplot2::ggplot_build(p)
+  expect_identical(dim(pconf$data[[2]]), c(150L, 10L))
+  
+  # set plot and filter
+  ctr <- pmx_mlx("standing")
+  ctr %>% set_plot("DIS", pname = "distr2", filter = ID < 10, type = "box")
+  p <- ctr %>% get_plot("distr2")
+  pconf <- ggplot2::ggplot_build(p)
+  expect_identical(dim(pconf$data[[2]]), c(27L, 10L))
+})
+
