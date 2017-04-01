@@ -53,6 +53,7 @@ pmx_mlx <-
 ##'  \item{"RES"}{ Residual plot type :\code{\link{residual}}}
 ##' }
 ##' @param pname plot name, if missing it will be created using function aestetics
+##' @param filter optional filter which will be applied to plotting data
 #' @param ... other plot parameters to configure \code{"pmx_gpar"}.
 #'
 #' @family pmxclass
@@ -131,6 +132,7 @@ plot_names <- function(ctr){
 #'
 #' @param ctr  \code{pmxClass} controller object
 #' @param pname character the plot name to update
+#' @param filter optional filter which will be applied to plotting data
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.
