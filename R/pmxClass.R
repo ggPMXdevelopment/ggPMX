@@ -74,10 +74,12 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname,
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
-  if(!is.null(filter)){
+  if(!is.null(substitute(filter))){
+    filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
     conf[["filter"]] <- filter
   }
+  
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))
   ctr$add_plot(conf, pname)
@@ -137,10 +139,14 @@ plot_names <- function(ctr){
 #' @return controller object with the plot updated
 #' @export
 
-pmx_update <- function(ctr, pname, ..., pmxgpar = NULL){
+pmx_update <- function(ctr, pname, filter = NULL, ..., pmxgpar = NULL){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
-  ctr$update_plot(pname, ..., pmxgpar = pmxgpar)
+  if(!is.null(substitute(filter))){
+    filter <- deparse(substitute(filter))
+    filter <- local_filter(filter)
+  }
+  ctr$update_plot(pname, filter = filter, ..., pmxgpar = pmxgpar)
 }
 
 
@@ -210,8 +216,9 @@ pmxClass <- R6::R6Class(
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
     
-    update_plot = function(pname, ..., pmxgpar = NULL)
-      pmx_update_plot(self, private, pname, ..., pmxgpar = pmxgpar),
+    update_plot = function(pname, filter = NULL, ..., pmxgpar = NULL)
+      pmx_update_plot(self, private, pname, filter = filter,
+                      ..., pmxgpar = pmxgpar),
     
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
@@ -278,7 +285,7 @@ pmx_add_plot <- function(self, private, x, pname){
   invisible(self)
 }
 
-pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
+pmx_update_plot <- function(self, private, pname, filter, ..., pmxgpar){
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   config <- private$.plots_configs[[pname]]
   old_class <- class(config)
@@ -294,6 +301,9 @@ pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
   }
   class(x$gp) <- class(config$gp)
   class(x) <- old_class
+  if(!is.null(filter)){
+    x[["filter"]] <- filter
+  }
   self$remove_plot(pname)
   self$add_plot(x, pname)
   
