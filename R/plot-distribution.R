@@ -69,6 +69,9 @@ distrib <- function(
 plot_pmx.distrib <- function(x, dx){
   
   assert_that(is_pmx_gpar(x))
+  if(!is.null(x[["filter"]])){
+    dx <- x[["filter"]](dx)
+  }
   
   VAR <- NULL; FUN <- NULL
   dx.etas <- dx[VAR == "eta" & grepl("mean", FUN)]

@@ -53,6 +53,7 @@ pmx_mlx <-
 ##'  \item{"RES"}{ Residual plot type :\code{\link{residual}}}
 ##' }
 ##' @param pname plot name, if missing it will be created using function aestetics
+##' @param filter optional filter which will be applied to plotting data
 #' @param ... other plot parameters to configure \code{"pmx_gpar"}.
 #'
 #' @family pmxclass
@@ -60,7 +61,8 @@ pmx_mlx <-
 #' @export
 
 #'
-set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
+set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, 
+                     filter = NULL, ...){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string_or_null(pname))
   ptype <- match.arg(ptype)
@@ -73,6 +75,12 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, ...){
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
+  if(!is.null(substitute(filter))){
+    filter <- deparse(substitute(filter))
+    filter <- local_filter(filter)
+    conf[["filter"]] <- filter
+  }
+  
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))
   ctr$add_plot(conf, pname)
@@ -124,6 +132,7 @@ plot_names <- function(ctr){
 #'
 #' @param ctr  \code{pmxClass} controller object
 #' @param pname character the plot name to update
+#' @param filter optional filter which will be applied to plotting data
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.
@@ -132,10 +141,14 @@ plot_names <- function(ctr){
 #' @return controller object with the plot updated
 #' @export
 
-pmx_update <- function(ctr, pname, ..., pmxgpar = NULL){
+pmx_update <- function(ctr, pname, filter = NULL, ..., pmxgpar = NULL){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
-  ctr$update_plot(pname, ..., pmxgpar = pmxgpar)
+  if(!is.null(substitute(filter))){
+    filter <- deparse(substitute(filter))
+    filter <- local_filter(filter)
+  }
+  ctr$update_plot(pname, filter = filter, ..., pmxgpar = pmxgpar)
 }
 
 
@@ -205,8 +218,9 @@ pmxClass <- R6::R6Class(
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
     
-    update_plot = function(pname, ..., pmxgpar = NULL)
-      pmx_update_plot(self, private, pname, ..., pmxgpar = pmxgpar),
+    update_plot = function(pname, filter = NULL, ..., pmxgpar = NULL)
+      pmx_update_plot(self, private, pname, filter = filter,
+                      ..., pmxgpar = pmxgpar),
     
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
@@ -273,7 +287,7 @@ pmx_add_plot <- function(self, private, x, pname){
   invisible(self)
 }
 
-pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
+pmx_update_plot <- function(self, private, pname, filter, ..., pmxgpar){
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   config <- private$.plots_configs[[pname]]
   old_class <- class(config)
@@ -289,6 +303,9 @@ pmx_update_plot <- function(self, private, pname, ..., pmxgpar){
   }
   class(x$gp) <- class(config$gp)
   class(x) <- old_class
+  if(!is.null(filter)){
+    x[["filter"]] <- filter
+  }
   self$remove_plot(pname)
   self$add_plot(x, pname)
   
