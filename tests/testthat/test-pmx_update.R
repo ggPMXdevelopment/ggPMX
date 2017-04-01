@@ -67,4 +67,10 @@ test_that("can update with filter", {
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
   expect_identical(dim(pconf$data[[2]]), c(27L, 10L))
+  
+  # test can remove filter
+  ctr %>% pmx_update("distr1", filter = NULL)
+  p <- ctr %>% get_plot("distr1")
+  pconf <- ggplot2::ggplot_build(p)
+  expect_identical(dim(pconf$data[[2]]), c(150L, 10L))
 })
