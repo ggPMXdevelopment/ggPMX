@@ -78,8 +78,8 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname,
   if(!is.null(substitute(filter))){
     filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
-    conf[["filter"]] <- filter
   }
+  conf[["filter"]] <- filter
   
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))
@@ -183,7 +183,7 @@ get_plot_config <- function(ctr, pname){
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, data_set = c("par_est","mod_pred", 
-                                      "ind_pred", "finegrid", "shrink")){
+                                       "ind_pred", "finegrid", "shrink")){
   assert_that(is_pmxclass(ctr))
   data_set <- match.arg(data_set)
   ctr[["data"]][[data_set]]
@@ -303,9 +303,8 @@ pmx_update_plot <- function(self, private, pname, filter, ..., pmxgpar){
   }
   class(x$gp) <- class(config$gp)
   class(x) <- old_class
-  if(!is.null(filter)){
-    x[["filter"]] <- filter
-  }
+  x[["filter"]] <- filter
+  
   self$remove_plot(pname)
   self$add_plot(x, pname)
   
