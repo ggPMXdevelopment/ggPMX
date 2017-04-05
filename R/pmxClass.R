@@ -282,7 +282,7 @@ pmx_add_plot <- function(self, private, x, pname){
     RES="mod_pred",
     IND="IND",
     DIS="ind_pred")
-  
+  if(!is.null(self$data[[dname]]))
   private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   invisible(self)
 }

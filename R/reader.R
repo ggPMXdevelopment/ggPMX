@@ -163,6 +163,7 @@ post_load <- function(dxs, input, sys, dplot,...){
       merge(dxs$mod_pred[, !"DV", with = FALSE], input, 
             by = c("ID", "TIME"))
     ## add shrinkage data set
+    if(!is.null(dxs[["par_est"]]) && !is.null(dxs[["ind_pred"]]))
     dxs[["shrink"]] <- 
       shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)
   }
