@@ -11,7 +11,12 @@
 #' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.individual}}
 #'
-#'
+#'@examples
+#'## get individual plot using package default data set
+#'library(ggPMX)
+#'ctr <- pmx_mlx(config = "standing")
+#'## display the first page of the individual plot
+#'ctr %>% get_plot("indiv",1)
 individual <- function(labels, has.curve = TRUE, 
                        facets = list(ncol = 3, nrow = 4), 
                        ...){
