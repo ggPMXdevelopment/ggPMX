@@ -47,6 +47,8 @@ individual <- function(labels, has.curve = TRUE,
 #'
 #' @return a list of ggplot2
 #' @export
+#' @import ggplot2
+#' @import data.table
 #' @family plot_pmx
 #'
 plot_pmx.individual <-
@@ -56,34 +58,35 @@ plot_pmx.individual <-
       dx <- x[["filter"]](dx)
     }
     
-    ID <- NULL
     ##reshape data to the long format
     if(!missing(include))
-      dx <- data.table::setDT(dx)[ID %in% include]
-    dat <- data.table::melt.data.table(
-      dx,
-      id.vars=c("ID", "TIME", "DV"),
-      measure.vars = c("PRED", "IPRED"))
+      dx <- setDT(dx)[ID %in% include]
+    dat <- melt(dx,
+                id.vars=c("ID", "TIME", "DV"),
+                measure.vars = c("PRED", "IPRED"))
     ## plot
-    with(x,{
-      p <- ggplot2::ggplot(dat, ggplot2::aes(TIME, DV, 
-                                             linetype = variable)) +
-        with(point, ggplot2::geom_point(shape = shape, color = color, 
-                                        size = size))
+    get_page <- with(x,{
+      p <- ggplot(dat, ggplot2::aes(TIME, DV, linetype = variable)) +
+        with(point, geom_point(shape = shape, color = color, 
+                               size = size),na.rm=TRUE)
       if(has.curves)
-        p <- p + ggplot2::geom_line(ggplot2::aes(y = value), size = 1)
+        p <- p + geom_line(ggplot2::aes(y = value), size = 1,na.rm=TRUE)
       
       p <- plot_pmx(gp, p)
       
       ## split pages
       npages <- ceiling(with(facets, 
-                             length(unique(dat$ID) / nrow / ncol)))
-      with(facets,
-           lapply(seq_len(npages), function(i)
-             p <- p + facet_wrap_paginate(~ID, ncol = ncol, 
-                                          nrow = nrow, page = i)
-           ))
+                             length(unique(dx$ID)) / nrow / ncol))
+      with(facets, function(i)
+        if(i<=npages){
+          p + facet_wrap_paginate(~ID, ncol = ncol, 
+                                  nrow = nrow, page = i)
+        }
+      )
     })
+    
+    get_page
+    
     
   }
 

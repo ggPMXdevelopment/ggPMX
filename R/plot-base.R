@@ -7,6 +7,7 @@
 #' general settings like , smoothing, add band, labelling, theming,...
 #' @param gpar object of pmx_gpar type
 #' @param p plot
+#' @import ggplot2
 #'
 #' @family plot_pmx
 #' @return ggplot2 object
@@ -17,14 +18,14 @@ plot_pmx.pmx_gpar <- function(gpar, p){
   p <- with(gpar, {
     if(has.smooth){
       p <- p + with(smooth,
-                    ggplot2::geom_smooth(se=se, linetype=linetype,
-                                         size=size, method=method))
+                    geom_smooth(se=se, linetype=linetype,
+                                         size=size, method=method),na.rm=TRUE)
     }
 
     if(has.band){
       p <- p +
         with(band,
-             ggplot2::geom_hline(yintercept = y, 
+             geom_hline(yintercept = y, 
                                  linetype = linetype, 
                                  size = size))
     }
@@ -34,7 +35,7 @@ plot_pmx.pmx_gpar <- function(gpar, p){
                               title = title,
                               subtitle = subtitle))
     if("legend" %in% names(labels))
-      p <- p + with(labels, ggplot2::labs(fill = legend))
+      p <- p + with(labels, labs(fill = legend))
 
     ## limits
     if(!is.null(ranges$y))

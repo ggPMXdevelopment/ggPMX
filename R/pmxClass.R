@@ -106,8 +106,7 @@ get_plot <- function(ctr, nplot, npage = NULL){
   assert_that(is_string(nplot))
   assert_that(is_integer_or_null(npage))
   xx <- ctr$get_plot(nplot)
-  if(inherits(xx, "list"))
-    xx[npage]
+  if(is.function(xx))xx(npage)
   else xx
 }
 
