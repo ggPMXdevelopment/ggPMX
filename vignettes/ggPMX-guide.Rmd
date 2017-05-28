@@ -199,7 +199,8 @@ library(ggPMX)
 ctr %>% set_plot("IND", pname = "indiv1", 
                  draft = list(size = 10, label = "DRAFT", color = "grey50"))
 
-ctr %>% get_plot("indiv1", c(2, 4))
+ctr %>% get_plot("indiv1", 2)
+ctr %>% get_plot("indiv1", 4)
 
 ```
 
@@ -254,7 +255,7 @@ ctr %>%
    set_plot(ptype="DIS",
             pname="distri_box",
             type="box",
-            has.shrink=TRUE,
+            has.shrink=FALSE,
             has.jitter=FALSE)
 
 ## update individual plots draft argument
@@ -265,7 +266,7 @@ ctr %>% pmx_update("indiv",
 ## return all plots
 lapply(ctr %>% plot_names,
        function(x){
-        if(x=="indiv") return(ctr%>%get_plot(x, c(2, 4)))
+        if(x=="indiv") return(ctr%>%get_plot(x, c(2)))
          ctr %>% get_plot(x)
        })
 
