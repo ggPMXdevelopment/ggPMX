@@ -25,8 +25,9 @@ shrinkage <-
     dx <- merge(dx2, dx1, by = "EFFECT")
     setnames(dx, c("VALUE.x", "VALUE.y"), c("VALUE_ETA", "VALUE_OMEGA"))
     unique(
-      dx[, list(SHRINK = 1 - get(fun)(VALUE_ETA) / ifelse(fun=="sd",VALUE_OMEGA,VALUE_OMEGA^2)), EFFECT]
-    )
+           dx[, list(SHRINK = 1 - get(fun)(VALUE_ETA) / 
+                       ifelse(fun=="sd",VALUE_OMEGA,VALUE_OMEGA^2)), EFFECT]
+         )
     
   }
 
