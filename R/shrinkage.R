@@ -4,14 +4,14 @@
 #' @param par_est parameters estimation data 
 #' @param ind_pred individual estimation data
 #' @param sys data system
-#' @param fun can mean the sd or var
+#' @param fun can be either sd or var
 #'
 #' @return data.table computing the shrinkage by effect
 #' @importFrom stringr str_trim
 #' @export
 
 shrinkage <-
-  function(par_est, ind_pred, sys="mlx", fun="sd"){
+  function(par_est, ind_pred, sys="mlx", fun=c("sd","var")){
     PARAM <- NULL; EFFECT <- NULL; VAR <- NULL; FUN <- NULL
     VALUE_ETA <- NULL; VALUE_OMEGA <- NULL
     dx1 <- 
@@ -25,7 +25,7 @@ shrinkage <-
     dx <- merge(dx2, dx1, by = "EFFECT")
     setnames(dx, c("VALUE.x", "VALUE.y"), c("VALUE_ETA", "VALUE_OMEGA"))
     unique(
-      dx[, list(SHRINK = 1 - get(fun)(VALUE_ETA) / VALUE_OMEGA), EFFECT]
+      dx[, list(SHRINK = 1 - get(fun)(VALUE_ETA) / (if(fun=="sd")VALUE_OMEGA else VALUE_OMEGA^2)), EFFECT]
     )
     
   }
