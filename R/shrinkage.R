@@ -33,3 +33,43 @@ shrinkage <-
 
 
 
+shrinkage_data <-
+  function(ctr,sys="mlx", fun="sd") {
+  par_est <- ctr %>% get_data("par_est")
+  ind_pred <- ctr %>% get_data("ind_pred")
+  dx.etas <- ind_pred[VAR == "eta" & grepl("mean", FUN)]
+  shrink <- shrinkage(par_est, ind_pred, sys, fun)
+  dx <- merge(dx.etas, shrink, by = "EFFECT")
+}
+
+
+
+#' Create shrinkage layer
+#'
+#' @param ctr controller
+#'
+#' @return ggplot2 layer
+#' @import ggplot2
+#' @export
+shrinkage_layer <- 
+  function(ctr,type="hist",color="red",size=5,pos_=0.75,fun="sd",x_=0) {
+  dx = shrinkage_data(ctr=ctr,fun=fun)[, list(
+                   x=x_, 
+                   pos = max(VALUE) * pos_,
+                   label = sprintf('%s%%', 
+                                   round(SHRINK[1]*100))
+  ),EFFECT]
+  if(type=="box")
+    geom_text(data=dx,
+    aes(x=EFFECT,label = label, y = pos), color = color, size = size)
+  else  geom_text(data=dx,aes(x=x,y=pos, label=label),color = color, size = size)
+
+}
+
+
+
+
+
+
+
+
