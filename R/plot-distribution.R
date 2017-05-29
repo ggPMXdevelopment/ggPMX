@@ -65,6 +65,7 @@ distrib <- function(
 #' @export
 #' @seealso \code{\link{distrib}}
 #' @family plot_pmx
+#' @import ggplot2
 #'
 plot_pmx.distrib <- function(x, dx){
   
@@ -85,32 +86,32 @@ plot_pmx.distrib <- function(x, dx){
       
     }else dx.etas[, lfacet := EFFECT]
     
-    p <- ggplot2::ggplot(dx.etas, aes(EFFECT, fill = EFFECT))
+    p <- ggplot(dx.etas, aes(EFFECT, fill = EFFECT))
     if(type=="box"){
-      p <- p + ggplot2::geom_boxplot(aes(y = VALUE), outlier.shape = NA)
+      p <- p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
       if(has.jitter)
         p <- p +
           with(jitter,
-               ggplot2::geom_jitter(
-                 ggplot2::aes(y = VALUE),
+               geom_jitter(
+                 aes(y = VALUE),
                  shape = shape, color = color,
-                 position = ggplot2::position_jitter(width = width)
+                 position = position_jitter(width = width)
                ))
       if(has.shrink)
         p <- p +
-          ggplot2::geom_text(
+          geom_text(
             data = dx.etas[, list(pos = max(VALUE) * .75,
                                   label = sprintf('%s%%', 
                                                   round(SHRINK[1]*100))
             ),
             EFFECT],
-            ggplot2::aes(label = label, y = pos), color = "red", size = 5)
+            aes(label = label, y = pos), color = "red", size = 5)
       
       
       
     }else{
-      p <- p +  ggplot2::geom_histogram(ggplot2::aes(x = VALUE)) +
-        with(facets, ggplot2::facet_wrap(~lfacet, scales = scales, 
+      p <- p +  geom_histogram(aes(x = VALUE)) +
+        with(facets, facet_wrap(~lfacet, scales = scales, 
                                          nrow = nrow))
     }
     plot_pmx(gp, p)

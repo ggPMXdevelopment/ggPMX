@@ -54,7 +54,7 @@ pmx_mlx <-
 ##' }
 ##' @param pname plot name, if missing it will be created using function aestetics
 ##' @param filter optional filter which will be applied to plotting data
-#' @param ... other plot parameters to configure \code{"pmx_gpar"}.
+#' @param ... other plot parameters to configure \code{\link{pmx_gpar}}.
 #'
 #' @family pmxclass
 #' @return invisible ctr object
