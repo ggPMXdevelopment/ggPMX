@@ -86,7 +86,7 @@ print.pmxConfig <-
     if (exists("plots", x)) {
       cat(length(x$plots), "-- plots:\n")
       for(y in names(x$plots))
-        cat(y, "----type:", x$plots[[y]]$ptype, "\n")
+        cat(tolower(y), "----type:", x$plots[[y]]$ptype, "\n")
     }
     
     invisible(x)
