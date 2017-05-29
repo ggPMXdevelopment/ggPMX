@@ -10,6 +10,7 @@
 #' @export
 pmx_theme <- function(...) {
   theme_gdocs() +
-    theme(plot.subtitle=element_text( face="italic"))  %+replace%
+    theme(plot.subtitle=element_text( face="italic"),
+          strip.text = element_text(size=14))  %+replace%
     theme(...)
 }
