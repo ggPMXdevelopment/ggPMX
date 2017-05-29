@@ -3,14 +3,15 @@
 #' @param x dataset object
 #'
 #' @return data.table object
+#' @import data.table
 
 #' @export
 read_mlx_ind_est <- function(path, x){
-  ds <- fread(path)
+  ds <- pmx_fread(path)
   ds <- ds[, !grep("^V[0-9]+", names(ds)), with = FALSE]
   data.table::setnames(ds, tolower(names(ds)))
   
-  ds <- data.table::melt(ds, measure = grep("_.*_", names(ds)))
+  ds <- melt(ds, measure = grep("_.*_", names(ds)))
   data.table::setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
   VARIABLE <- NULL
   ds[, c("VAR", "EFFECT", "FUN") := data.table::tstrsplit(VARIABLE, "_")]
@@ -26,7 +27,7 @@ read_mlx_ind_est <- function(path, x){
 #' @export
 #'
 read_input <- function(ipath, dv = NULL, covariates = ""){
-  xx <- fread(ipath)
+  xx <- pmx_fread(ipath)
   setnames(xx, toupper(names(xx)))
   if(!is.null(dv))setnames(xx, dv, "DV")
   xx
@@ -42,7 +43,7 @@ read_input <- function(ipath, dv = NULL, covariates = ""){
 
 #' @export
 read_mlx_pred <- function(path, x){
-  xx <- fread(path)
+  xx <- pmx_fread(path)
   data.table::setnames(xx, tolower(names(xx)))
   if(!is.null(x$strict)) xx <- xx[, names(x$names), with = FALSE]
   ## mean start columns
@@ -100,7 +101,7 @@ load_data_set <- function(x, path, sys){
   
   if(exists("reader", x))
     return(do.call(x[["reader"]], list(fpath, x)))
-  ds <- fread(fpath)
+  ds <- pmx_fread(fpath)
   ds <- ds[,!grep("^V[0-9]+", names(ds)), with = FALSE]
   data.table::setnames(ds, tolower(names(ds)))
   if("names" %in% names(x)){

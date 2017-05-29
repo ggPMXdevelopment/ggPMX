@@ -32,3 +32,9 @@ abbrev <- function(param) {
   if(missing(param)) keys
   else  keys[[param]]
 }
+
+
+#' @importFrom data.table fread
+pmx_fread <- function(...){
+  fread(na.strings = c("NA","."),...)
+}
