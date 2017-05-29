@@ -23,8 +23,8 @@ residual <- function(x, y, labels = NULL, point = NULL, ...){
   default_labels <- list(
     title=paste(rev(aess), collapse = " versus "),
     subtitle = "",
-    x = abbrev(aess[["x"]]),
-    y = abbrev(aess[["y"]])
+    x = aess[["x"]],
+    y = aess[["y"]]
   )
   assert_that(is_list_or_null(labels))
   
