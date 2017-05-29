@@ -21,7 +21,7 @@ residual <- function(x, y, labels = NULL, point = NULL, ...){
   stopifnot(!missing(y))
   aess <- list(x = x, y = y)
   default_labels <- list(
-    title=paste(aess, collapse = " versus "),
+    title=paste(rev(aess), collapse = " versus "),
     subtitle = "",
     x = abbrev(aess[["x"]]),
     y = abbrev(aess[["y"]])
