@@ -32,9 +32,19 @@ getPmxOption <- function(name, default = NULL) {
 #' \code{ggPMXOptions} sets the value of ggPMX options; it can also be used to
 #' return a list of all currently-set ggPMX options.
 #'
-#' There is a global option set, which is available by default.
 #'
 #' @param ... Options to set, with the form \code{name = value}.
+#' 
+#' @details 
+#' There is a global option set, which is available by default.
+#' @section Options used in ggPMX:
+#' 
+#' \itemize{
+#' \item \code{work_dir:} {working directory}
+#' \item \code{input:} {path to modelling input file}
+#' \item \code{dv:} {measurable variable name}
+
+#' }
 #'
 #' @examples
 #' \dontrun{
