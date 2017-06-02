@@ -40,11 +40,12 @@ read_input <- function(ipath, dv = NULL, covariates = ""){
 #' @param x dataset object
 #'
 #' @return data.table object
+#' @import data.table
 
 #' @export
 read_mlx_pred <- function(path, x){
   xx <- pmx_fread(path)
-  data.table::setnames(xx, tolower(names(xx)))
+  setnames(xx, tolower(names(xx)))
   if(!is.null(x$strict)) xx <- xx[, names(x$names), with = FALSE]
   ## mean start columns
   col_stars <- grep("*", names(xx), fixed = TRUE, value = TRUE)
@@ -70,9 +71,10 @@ read_mlx_pred <- function(path, x){
 #'
 #' @return data.table object
 #' @importFrom utils read.table
+#' @import data.table
 #' @export
 read_mlx_par_est <- function(path, x){
-  xx <- data.table::setDT(read.table(path, sep = ";", header = TRUE))
+  xx <- setDT(read.table(path, sep = ";", header = TRUE))
   if("names" %in% names(x))
     setnames(xx, x[["names"]])
   xx
@@ -84,6 +86,7 @@ read_mlx_par_est <- function(path, x){
 #' @param path character path to the directory
 #'
 #' @return data.table
+#' @import data.table
 #' @export
 load_data_set <- function(x, path, sys){
   fpath <- file.path(path, x[["file"]])
@@ -105,9 +108,9 @@ load_data_set <- function(x, path, sys){
   ds <- ds[,!grep("^V[0-9]+", names(ds)), with = FALSE]
   data.table::setnames(ds, tolower(names(ds)))
   if("names" %in% names(x)){
-    data.table::setnames(ds,
-                         tolower(names(x[["names"]])),
-                         as.character(x[["names"]]))
+    setnames(ds,
+             tolower(names(x[["names"]])),
+             as.character(x[["names"]]))
     ds <- ds[, as.character(x[["names"]]), with = FALSE]
   }
   ds
@@ -165,10 +168,10 @@ post_load <- function(dxs, input, sys, dplot,...){
             by = c("ID", "TIME"))
     ## add shrinkage data set
     if(!is.null(dxs[["par_est"]]) && !is.null(dxs[["ind_pred"]]))
-    dxs[["shrink"]] <- 
+      dxs[["shrink"]] <- 
       shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)
   }
-
+  
   dxs
 }
 

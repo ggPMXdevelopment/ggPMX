@@ -6,6 +6,7 @@
 #' @param y y axis aesthetics
 #' @param labels list that contain title,subtitle, axis labels
 #' @param point geom point graphical parameters
+#' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -14,7 +15,7 @@
 #' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.residual}}
 
-residual <- function(x, y, labels = NULL, point = NULL, ...){
+residual <- function(x, y, labels = NULL, point = NULL,add_hline=TRUE, ...){
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -36,6 +37,7 @@ residual <- function(x, y, labels = NULL, point = NULL, ...){
     list(
       aess = aess,
       point = point,
+      add_hline=add_hline,
       gp = pmx_gpar(labels = labels, ...)
     ), class=c("residual", "pmx_gpar"))
 }
@@ -61,9 +63,8 @@ plot_pmx.residual <- function(x, dx){
          }
          p <-
            ggplot2::ggplot(dx, with(aess, ggplot2::aes_string(x, y)))+
-           with(point, geom_point(shape = shape, color = color))
-         if("z" %in% names(gp))
-           p <- p + ggplot2::facet_wrap(as.formula(paste('~' , gp$z)))
+           with(point, geom_point(shape = shape, color = color))+
+           if(add_hline)geom_hline(yintercept = 0)
          p <- plot_pmx(gp, p)
          p
        })
