@@ -156,20 +156,20 @@ post_load <- function(dxs, input, sys, dplot,...){
     if(!is.null(dxs[["finegrid"]])){
       input_finegrid(dxs[["finegrid"]], input,...)
     }else{
-      dxs[["mod_pred"]] 
+      dxs[["predictions"]] 
     }  
   
   if(sys == "mlx"){
     ## add startification column
-    vv <- names(dxs$ind_pred)[vapply(dxs$ind_pred, is.integer, TRUE)]
+    vv <- names(dxs$eta)[vapply(dxs$eta, is.integer, TRUE)]
     ## prepare data set for stratification
-    dxs$mod_pred <-
-      merge(dxs$mod_pred[, !"DV", with = FALSE], input, 
+    dxs$predictions <-
+      merge(dxs$predictions[, !"DV", with = FALSE], input, 
             by = c("ID", "TIME"))
     ## add shrinkage data set
-    if(!is.null(dxs[["par_est"]]) && !is.null(dxs[["ind_pred"]]))
+    if(!is.null(dxs[["estimates"]]) && !is.null(dxs[["eta"]]))
       dxs[["shrink"]] <- 
-      shrinkage(dxs[["par_est"]], dxs[["ind_pred"]], sys = sys)
+      shrinkage(dxs[["estimates"]], dxs[["eta"]], sys = sys)
   }
   
   dxs

@@ -1,8 +1,8 @@
 
 #' Compute shrinkage
 #'
-#' @param par_est parameters estimation data 
-#' @param ind_pred individual estimation data
+#' @param estimates parameters estimation data 
+#' @param eta individual estimation data
 #' @param sys data system
 #' @param fun can be either sd or var
 #'
@@ -11,16 +11,16 @@
 #' @export
 
 shrinkage <-
-  function(par_est, ind_pred, sys="mlx", fun=c("sd","var")){
+  function(estimates, eta, sys="mlx", fun=c("sd","var")){
     PARAM <- NULL; EFFECT <- NULL; VAR <- NULL; FUN <- NULL
     VALUE_ETA <- NULL; VALUE_OMEGA <- NULL
     dx1 <- 
-      par_est[grepl("omega", PARAM)][
+      estimates[grepl("omega", PARAM)][
         , c("VAR","EFFECT") := tstrsplit(PARAM, "_")]
     dx1 <- dx1[, c("EFFECT", "VAR") := list(str_trim(tolower(EFFECT)),  
                                             str_trim(VAR))]
     
-    dx2 <- ind_pred[VAR == "eta" & grepl("mean", FUN)]
+    dx2 <- eta[VAR == "eta" & grepl("mean", FUN)]
     
     dx <- merge(dx2, dx1, by = "EFFECT")
     setnames(dx, c("VALUE.x", "VALUE.y"), c("VALUE_ETA", "VALUE_OMEGA"))
@@ -36,10 +36,10 @@ shrinkage <-
 
 shrinkage_data <-
   function(ctr,sys="mlx", fun="sd") {
-  par_est <- ctr %>% get_data("par_est")
-  ind_pred <- ctr %>% get_data("ind_pred")
-  dx.etas <- ind_pred[VAR == "eta" & grepl("mean", FUN)]
-  shrink <- shrinkage(par_est, ind_pred, sys, fun)
+    estimates <- ctr %>% get_data("estimates")
+  eta <- ctr %>% get_data("eta")
+  dx.etas <- eta[VAR == "eta" & grepl("mean", FUN)]
+  shrink <- shrinkage(estimates, eta, sys, fun)
   dx <- merge(dx.etas, shrink, by = "EFFECT")
 }
 

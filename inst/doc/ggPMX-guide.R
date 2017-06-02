@@ -44,15 +44,15 @@ conf
 
 ## ----change_mapping------------------------------------------------------
 
-conf$data$mod_pred$names$time <- NULL
-conf$data$mod_pred$names$time1 <- "TIME"
+conf$data$predictions$names$time <- NULL
+conf$data$predictions$names$time1 <- "TIME"
 
 
 ## ----change_mapping_future, eval=FALSE-----------------------------------
 #  
 #  # The following does not run - TODO: Fix it
 #  #ctr %>% rename("time","time1")
-#  #ctr %>% rename("mod_pred","time","time1")
+#  #ctr %>% rename("predictions","time","time1")
 #  
 
 ## ---- eval=FALSE---------------------------------------------------------
@@ -141,7 +141,7 @@ lapply(ctr %>% plot_names,
 ## ----pmx_filter,  fig.width=7, fig.height=6------------------------------
 plotnames <- ctr %>% plot_names()
 ctr %>% 
-  pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
+  pmx_filter(data_set = "eta", ID <= 5) %>% 
   get_plot(plotnames[1])
   
 

@@ -181,8 +181,8 @@ get_plot_config <- function(ctr, pname){
 #' @family pmxclass
 #' @return a data.table of the named data set if available.
 #' @export
-get_data <- function(ctr, data_set = c("par_est","mod_pred", 
-                                       "ind_pred", "finegrid", "shrink")){
+get_data <- function(ctr, data_set = c("estimates","predictions", 
+                                       "eta", "finegrid", "shrink")){
   assert_that(is_pmxclass(ctr))
   data_set <- match.arg(data_set)
   ctr[["data"]][[data_set]]
@@ -278,9 +278,9 @@ pmx_add_plot <- function(self, private, x, pname){
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
   dname <- switch(
     ptype,
-    RES="mod_pred",
+    RES="predictions",
     IND="IND",
-    DIS="ind_pred")
+    DIS="eta")
   if(!is.null(self$data[[dname]]))
   private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   invisible(self)

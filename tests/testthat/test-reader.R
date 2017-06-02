@@ -16,11 +16,11 @@ test_that("can load data set", {
                 load_data_set,
                 path = path,
                 sys = sys)
-  expect_identical(names(dxs$par_est), 
+  expect_identical(names(dxs$estimates), 
                    c("PARAM", "VALUE", "SE", "RSE", "PVALUE"))
-  expect_identical(names(dxs$mod_pred), 
+  expect_identical(names(dxs$predictions), 
                    c("ID", "TIME", "DV", "PRED", "NPDE", "IPRED", "IWRES"))
-  expect_identical(names(dxs$ind_pred), 
+  expect_identical(names(dxs$eta), 
                    c("ID", "EVID", "TWT", "TAGE", "SEX", "STUD", 
                      "VARIABLE", "VALUE", 
                      "VAR", "EFFECT", "FUN"))
@@ -32,7 +32,7 @@ test_that("errors work in load data set", {
   datasets <- reader_help$conf$data[names.]
   path <- reader_help$wd
   sys <- reader_help$conf$sys
-  datasets$par_est$file <- c("\\.txt")
+  datasets$estimates$file <- c("\\.txt")
   with_mock(
     `base::grep` = function(pattern, ...){
       if(identical(pattern, "mlx")){
@@ -42,7 +42,7 @@ test_that("errors work in load data set", {
       }
     }, 
     expect_warning(
-      load_data_set(datasets$par_est, path, sys), "FILE DOES NOT exist"
+      load_data_set(datasets$estimates, path, sys), "FILE DOES NOT exist"
     )
   )
   
@@ -53,7 +53,7 @@ test_that("load data set functions when reader does not exist", {
   datasets <- reader_help$conf$data[names.]
   path <- reader_help$wd
   sys <- reader_help$conf$sys
-  names(datasets$mod_pred$names) <- c("id", "time", "y1", "poppred", 
+  names(datasets$predictions$names) <- c("id", "time", "y1", "poppred", 
                                       "npde")
   with_mock(
     `data.table::fread` = function(...){
@@ -63,7 +63,7 @@ test_that("load data set functions when reader does not exist", {
       )
     },
     `base::exists` = function(...){FALSE},
-    res <- load_data_set(datasets$mod_pred, path, sys)
+    res <- load_data_set(datasets$predictions, path, sys)
   )
   expect_identical(names(res), c("ID", "TIME", "DV", "PRED", "NPDE"))
 })
@@ -71,13 +71,13 @@ test_that("load data set functions when reader does not exist", {
 test_that("can exclude data set", {
   exclude <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
                          dconf = reader_help$conf$data, 
-                         exclude = "ind_pred")
-  expect_identical(names(exclude), c("par_est", "mod_pred", "finegrid"))
+                         exclude = "eta")
+  expect_identical(names(exclude), c("estimates", "predictions", "finegrid"))
 })
 
 test_that("can include data set", {
   include <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
                          dconf = reader_help$conf$data, 
-                         include = "ind_pred")
-  expect_identical(names(include), "ind_pred")
+                         include = "eta")
+  expect_identical(names(include), "eta")
 })

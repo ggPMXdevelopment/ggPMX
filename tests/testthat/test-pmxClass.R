@@ -35,16 +35,16 @@ test_that("can get pmx class config", {
 
 test_that("can get data from controller", {
   ctr <- pmx_mlx("standing")
-  peData <- ctr %>% get_data("par_est")
+  peData <- ctr %>% get_data("estimates")
   peNames <- c("PARAM", "VALUE", "SE", "RSE", "PVALUE")
   expect_identical(names(peData), peNames)
   
-  mpData <- ctr %>% get_data("mod_pred")
+  mpData <- ctr %>% get_data("predictions")
   mpNames <- c("ID", "TIME", "PRED", "NPDE", "IPRED", "IWRES", "AMT", "DV",
                "EVID", "WT0", "AGE0", "SEX", "STUD")
   expect_identical(names(mpData), mpNames)
   
-  ipData <- ctr %>% get_data("ind_pred")
+  ipData <- ctr %>% get_data("eta")
   ipNames <- c("ID", "EVID", "TWT", "TAGE", "SEX", "STUD", "VARIABLE", 
                "VALUE", "VAR", "EFFECT", "FUN")
   expect_identical(names(ipData), ipNames)

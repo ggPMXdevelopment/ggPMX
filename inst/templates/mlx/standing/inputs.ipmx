@@ -1,4 +1,4 @@
-par_est  :
+estimates  :
     label : parameter estimates
     file  : estimates.txt
     reader  : read_mlx_par_est
@@ -8,7 +8,7 @@ par_est  :
       - SE
       - RSE
       - PVALUE
-mod_pred :
+predictions :
     label : model predictions
     file  : predictions.txt
     reader  : read_mlx_pred
@@ -18,7 +18,7 @@ mod_pred :
       '^y\d*$': DV
       poppred: PRED
       npde: NPDE
-ind_pred :
+eta :
     label : invidual estimates of random effects
     file  : indiv_eta.txt
     reader  : read_mlx_ind_est

@@ -7,8 +7,8 @@
 #' @return Returns a pmx controller with a filtered data set.
 #' @export
 pmx_filter <- 
-  function(ctr, data_set = c("par_est","mod_pred", 
-                            "ind_pred", "finegrid", "shrink"), pmx_exp){
+  function(ctr, data_set = c("estimates","predictions", 
+                            "eta", "finegrid", "shrink"), pmx_exp){
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)
     assert_that(is_language_or_string(substitute(pmx_exp)))
