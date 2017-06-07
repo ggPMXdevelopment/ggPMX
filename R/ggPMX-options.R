@@ -40,16 +40,15 @@ getPmxOption <- function(name, default = NULL) {
 #' @section Options used in ggPMX:
 #' 
 #' \itemize{
-#' \item \code{work_dir:} {working directory}
+#' \item \code{work_dir:} {working directory containing input files}
 #' \item \code{input:} {path to modelling input file}
-#' \item \code{dv:} {measurable variable name}
+#' \item \code{dv:} {measurable variable name default to Y}
 
 #' }
 #'
 #' @examples
 #' \dontrun{
-#' pmxOptions(myOption = 10)
-#' getPmxOption("myOption")
+#' pmxOptions(work_dir = WORK_DIR, input = input_file, dv = "Y")
 #' }
 #' @export
 pmxOptions <- function(...) {
