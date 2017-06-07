@@ -5,6 +5,7 @@
 #' @param jitter list set jitter parameter
 #' @param facets list set the facet setting in case of histogram plot
 #' @param type box for boxplot or histogram
+#' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -18,12 +19,15 @@ distrib <- function(
   facets = list(scales = "free", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
+  dname = NULL,
   ...){
   assert_that(is_logical(has.jitter))
   assert_that(is_list(jitter))
   assert_that(is_list(facets))
   type <- match.arg(type)
   assert_that(is_logical(has.shrink))
+  assert_that(is_string_or_null(dname))
+  if(is.null(dname)) dname <- "eta"
   
   if(missing(labels))
     labels <- list(
@@ -43,6 +47,7 @@ distrib <- function(
     has.shrink = has.shrink,
     gp = pmx_gpar(
       labels = labels,
+      dname = dname,
       discrete = TRUE,
       has.smooth = FALSE,
       has.band = FALSE, ...)

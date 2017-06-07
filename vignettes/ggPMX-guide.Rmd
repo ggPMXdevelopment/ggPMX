@@ -312,7 +312,7 @@ Here we filter on the condition that ID is less than or equal to five:
 ```{r pmx_filter,  fig.width=7, fig.height=6}
 plotnames <- ctr %>% plot_names()
 ctr %>% 
-  pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
+  pmx_filter(data_set = "predictions", ID <= 5) %>% 
   get_plot(plotnames[1])
   
 
@@ -386,8 +386,8 @@ can calculate the shrinkage using the theophyline test data:
 ```{r shrinkage}
 
 ctr <- pmx_mlx(config = "standing")
-parameter_data <- ctr %>% get_data("par_est")
-estimate_data <- ctr %>% get_data("ind_pred")
+parameter_data <- ctr %>% get_data("estimates")
+estimate_data <- ctr %>% get_data("eta")
 shrinkage_estimates <- shrinkage(parameter_data, estimate_data)
 shrinkage_estimates
 ```

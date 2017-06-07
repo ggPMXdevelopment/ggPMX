@@ -4,6 +4,7 @@
 #' @param labels  plot tesxts. labels, axis,
 #' @param has.curve  logical if TRUE add predictions lines
 #' @param facets list facets settings nrow/ncol
+#' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object
@@ -19,9 +20,11 @@
 #'ctr %>% get_plot("indiv",1)
 individual <- function(labels, has.curve = TRUE, 
                        facets = list(ncol = 3, nrow = 4), 
+                       dname = NULL,
                        ...){
   assert_that(is_logical(has.curve))
   assert_that(is_list(facets))
+  assert_that(is_string_or_null(dname))
   if(missing(labels))
     labels <- list(
       title = "Individual fits",
@@ -29,6 +32,7 @@ individual <- function(labels, has.curve = TRUE,
       x = "Time after first dose (hours)",
       y = "ABC123 plasma concentration (ng/mL)")
   assert_that(is_list(labels))
+  if(is.null(dname)) dname <- "IND"
   
   structure(list(
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
@@ -36,7 +40,7 @@ individual <- function(labels, has.curve = TRUE,
     point = list(shape = 2, color = "grey50", size = 1),
     has.curves = has.curve,
     facets = facets,
-    gp = pmx_gpar(labels = labels, ...)
+    gp = pmx_gpar(labels = labels, dname=dname, ...)
     
     
   ), class = c("individual", "pmx_gpar"))

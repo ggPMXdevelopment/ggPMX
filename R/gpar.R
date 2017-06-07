@@ -26,6 +26,7 @@
 pmx_gpar <-
   function(
     labels,
+    dname,
     axis.title = c(size = 12),
     axis.text = c(size = 14),
     ranges = NULL,
@@ -39,6 +40,7 @@ pmx_gpar <-
     ...) {
     gp <- .valid_pmx_gpar(list(
       labels = labels,
+      dname = dname,
       axis.title = axis.title,
       axis.text = axis.text,
       ranges = ranges,

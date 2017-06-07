@@ -292,13 +292,13 @@ pmx_add_plot <- function(self, private, x, pname){
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
-  dname <- switch(
-    ptype,
-    RES="predictions",
-    IND="IND",
-    DIS="eta")
-  if(!is.null(self$data[[dname]]))
-  private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
+  dname <- x$gp$dname
+  if(!is.null(self$data[[dname]])) {
+    private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
+  } else {
+    # throw error - to be improved
+    stop("Error - invalid data set")
+  }
   invisible(self)
 }
 
