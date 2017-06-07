@@ -8,16 +8,32 @@
 #' @param sys the system name can be MLX/NM/OTHERS
 #' @param directory where the files are located. This is an optional parameter by default pmw will look
 #' in \code{work_dir} pmx options: \code{getPmxOptions("work_dir")}
-#' @param input the input file
-#' @param dv the dv parameter
+#' @param input \code{character} complete path to the modelling input file
+#' @param dv \code{character} the name of measurable variable used in the input modelling file
 #' @return a pmxClass object
-#' @family pmxclass
+#' @family pmxclass 
 #' @export
 #' @examples
+#'\dontrun{
 #'
+#'## Example to create the controller object:
+#' workdir <- "~/SVN/ggPMX_doc/USER_EXAMPLES/MLX/PK_NO_COVARIATE"
+#' WORK_DIR <- file.path(workdir, "RESULTS")
+#' input_file <- file.path(workdir, "oral_data.txt")
+
+#' ctr <- pmx(sys="mlx",
+#'            config = "standing", 
+#'            directory = WORK_DIR,input = input_file,dv="Y")
+#'## Better option is to use pmxOptions
+#'pmxOptions(work_dir = WORK_DIR, input = input_file, dv = "Y")
+#'## Now the latter call becomes
+#'ctr <- pmx(sys="mlx", config = "standing")
+#'## Or even simpler
+#'ctr1 <- pmx_mlx("standing")
+#'}
 
 pmx <-
-  function(config, sys, directory, input, dv){
+  function(config, sys=c("mlx","nm"), directory, input, dv){
     directory <- checkPmxOption(directory, "work_dir")
     input <- checkPmxOption(input, "input")
     dv <- checkPmxOption(dv, "dv")
