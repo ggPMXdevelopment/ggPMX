@@ -292,7 +292,7 @@ pmx_add_plot <- function(self, private, x, pname){
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
-  dname <- x$gp$dname
+  dname <- x$dname
   if(!is.null(self$data[[dname]])) {
     private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   } else {

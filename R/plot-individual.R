@@ -35,12 +35,13 @@ individual <- function(labels, has.curve = TRUE,
   if(is.null(dname)) dname <- "IND"
   
   structure(list(
+    dname=dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
     point = list(shape = 2, color = "grey50", size = 1),
     has.curves = has.curve,
     facets = facets,
-    gp = pmx_gpar(labels = labels, dname=dname, ...)
+    gp = pmx_gpar(labels = labels,  ...)
     
     
   ), class = c("individual", "pmx_gpar"))

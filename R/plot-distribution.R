@@ -39,6 +39,7 @@ distrib <- function(
   assert_that(is_list(labels))
   
   structure(list(
+    dname = dname,
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
     type = type,
     has.jitter = has.jitter,
@@ -47,7 +48,6 @@ distrib <- function(
     has.shrink = has.shrink,
     gp = pmx_gpar(
       labels = labels,
-      dname = dname,
       discrete = TRUE,
       has.smooth = FALSE,
       has.band = FALSE, ...)

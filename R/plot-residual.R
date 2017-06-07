@@ -38,10 +38,11 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
   
   structure(
     list(
+      dname=dname,
       aess = aess,
       point = point,
       add_hline=add_hline,
-      gp = pmx_gpar(dname=dname, labels = labels, ...)
+      gp = pmx_gpar( labels = labels, ...)
     ), class=c("residual", "pmx_gpar"))
 }
 
