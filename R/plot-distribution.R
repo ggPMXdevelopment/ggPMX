@@ -14,7 +14,7 @@
 distrib <- function(
   labels,
   has.jitter = TRUE,
-  jitter = list(shape = 2, color = "grey50", width = 1),
+  jitter = list(shape = 2, color = "grey50", width = 0.1),
   facets = list(scales = "free", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
@@ -86,7 +86,7 @@ plot_pmx.distrib <- function(x, dx){
       
     }else dx.etas[, lfacet := EFFECT]
     
-    p <- ggplot(dx.etas, aes(EFFECT, fill = EFFECT))
+    p <- ggplot(dx.etas, aes(EFFECT))
     if(type=="box"){
       p <- p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
       if(has.jitter)
@@ -95,7 +95,8 @@ plot_pmx.distrib <- function(x, dx){
                geom_jitter(
                  aes(y = VALUE),
                  shape = shape, color = color,
-                 position = position_jitter(width = width)
+                 position = 
+                   position_jitter(width = width,height = 0.1)
                ))
       if(has.shrink)
         p <- p +
