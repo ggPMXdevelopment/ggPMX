@@ -28,7 +28,7 @@ distrib <- function(
   if(missing(labels))
     labels <- list(
       title = "EBE distribution",
-      subtitle = "(MLX)",
+      subtitle = "",
       x = "Etas",
       y = "",
       legend = "Random effect")

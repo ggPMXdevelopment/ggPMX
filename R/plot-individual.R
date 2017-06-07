@@ -25,7 +25,7 @@ individual <- function(labels, has.curve = TRUE,
   if(missing(labels))
     labels <- list(
       title = "Individual fits",
-      subtitle = "(MLX)",
+      subtitle = "",
       x = "Time after first dose (hours)",
       y = "ABC123 plasma concentration (ng/mL)")
   assert_that(is_list(labels))
