@@ -9,7 +9,6 @@ magrittr::`%>%`
 #' @param recursive logical if TRUE do the merge in depth
 #'
 #' @return list
-#' @export
 l_left_join <-
   function (base_list, overlay_list, recursive = TRUE)
   {
