@@ -13,7 +13,7 @@ vignette: >
 ---
     
 ```{r load_package, echo=FALSE}
-opts_chunk$set(out.width='100%')
+knitr::opts_chunk$set(out.width='100%')
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -152,14 +152,6 @@ a set up as follows can be assummed:
 
 ```{r, eval=FALSE}
 library(ggPMX)
-theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
-                          "theophylline")
-WORK_DIR <- file.path(theophylline, "Monolix")
-input_file <- file.path(theophylline, "data_pk.csv")
-pmxOptions(
-  work_dir = WORK_DIR, 
-  input = input_file, 
-  dv = "Y")
 ctr <- pmx_mlx(config = "standing")
 
 ```
@@ -199,7 +191,8 @@ library(ggPMX)
 ctr %>% set_plot("IND", pname = "indiv1", 
                  draft = list(size = 10, label = "DRAFT", color = "grey50"))
 
-ctr %>% get_plot("indiv1", c(2, 4))
+ctr %>% get_plot("indiv1", 2)
+ctr %>% get_plot("indiv1", 4)
 
 ```
 
@@ -237,14 +230,6 @@ library(ggPMX)
 # Commented because the vignette will not build if it is on:
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
 
-theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
-WORK_DIR <-  file.path(theophylline, "Monolix")
-input_file <- file.path(theophylline,"data_pk.csv")
-pmxOptions(
-  work_dir=WORK_DIR,
-  input=input_file,
-  dv="Y")
-
 ctr <- pmx_mlx(config = "standing")
 
 
@@ -253,7 +238,7 @@ ctr %>%
    set_plot(ptype="DIS",
             pname="distri_box",
             type="box",
-            has.shrink=TRUE,
+            has.shrink=FALSE,
             has.jitter=FALSE)
 
 ## update individual plots draft argument
@@ -264,7 +249,7 @@ ctr %>% pmx_update("indiv",
 ## return all plots
 lapply(ctr %>% plot_names,
        function(x){
-        if(x=="indiv") return(ctr%>%get_plot(x, c(2, 4)))
+        if(x=="indiv") return(ctr%>%get_plot(x, c(2)))
          ctr %>% get_plot(x)
        })
 
@@ -276,20 +261,6 @@ lapply(ctr %>% plot_names,
 
 
 ## Additional considerations
-
-### Filtering data
-
-The `pmx_filter` function allows a user to filter a named data set.
-Here we filter on the condition that ID is less than or equal to five:
-
-```{r pmx_filter,  fig.width=7, fig.height=6}
-plotnames <- ctr %>% plot_names()
-ctr %>% 
-  pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
-  get_plot(plotnames[1])
-  
-
-```
 
 ### Updating plots
 
@@ -311,4 +282,95 @@ p2 <- ctr %>%
 
 p1
 p2
+```
+
+
+### Filtering data
+
+#### Global filtering
+
+The `pmx_filter` function allows a user to globally filter a named data set.
+Here we filter on the condition that ID is less than or equal to five:
+
+```{r pmx_filter,  fig.width=7, fig.height=6}
+plotnames <- ctr %>% plot_names()
+ctr %>% 
+  pmx_filter(data_set = "predictions", ID <= 5) %>% 
+  get_plot(plotnames[1])
+  
+
+```
+
+#### Local filtering
+
+An alternative to globally filtering the data for all plots is to apply
+filtered data for a given plot. This can be done in one of two ways; 
+via the `set_plot` function or using the `pmx_update` function. 
+
+##### set_plot
+
+With `set_plot` the intention is to create a brand new plot rather than
+ammending an existing one. For illustration we set the distribution plot
+shown earlier as a fresh plot:
+
+```{r local_filter_set_plot}
+ctr <- pmx_mlx(config = "standing")
+ctr %>% set_plot("DIS", pname = "distr1", type = "box")
+p <- ctr %>% get_plot("distr1")
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+```
+We can see that with the unfiltered data set we have 150 observations.
+Filtering the `ID` field so that we remove any ID's greater than 10:
+
+```{r local_filter_set_plot2,  fig.width=7, fig.height=6}
+
+ctr %>% set_plot("DIS", pname = "distr2", filter = ID < 10, type = "box")
+p <- ctr %>% get_plot("distr2")
+p
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+```
+
+we observe the effect of filtering on the ID both graphical comparing the above plot with the one produced previously and numerical looking at the new 
+dimensions of the data plotted.
+
+##### pmx_update
+
+The `pmx_update` can also take a filter expression to update a plot. 
+First lets work with the previous plot produced in the last section 
+`distr2`. Firstly lets reset the filter:
+
+```{r local_filter_pmx_update_reset,  fig.width=7, fig.height=6}
+ctr %>% pmx_update("distr2", filter = NULL)
+p <- ctr %>% get_plot("distr2")
+p
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+```
+
+now as in the `set_plot` example we can apply a filter in a similiar manner:
+
+```{r local_filter_pmx_update_filter,  fig.width=7, fig.height=6}
+ctr %>% pmx_update("distr2", filter = ID < 10)
+p <- ctr %>% get_plot("distr2")
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+```
+
+### Shrinkage
+
+The `shrinkage` function allows $\eta$-shrinkage to be calculated using the parameter and individual estimation data. $\eta$-shrinkage is calculated as \[
+1-SD(\eta)/\omega 
+\]
+where $\eta$ are the between individual variation terms and $\omega$ is the population model estimate of the standard deviation in $\eta$. As an example we
+can calculate the shrinkage using the theophyline test data:
+
+```{r shrinkage}
+
+ctr <- pmx_mlx(config = "standing")
+estimates <- ctr %>% get_data("estimates")
+eta <- ctr %>% get_data("eta")
+shrinkage_estimates <- shrinkage(estimates, eta)
+shrinkage_estimates
 ```

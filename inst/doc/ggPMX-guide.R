@@ -1,5 +1,5 @@
 ## ----load_package, echo=FALSE--------------------------------------------
-opts_chunk$set(out.width='100%')
+knitr::opts_chunk$set(out.width='100%')
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -44,27 +44,19 @@ conf
 
 ## ----change_mapping------------------------------------------------------
 
-conf$data$predictions$names$time <- NULL
-conf$data$predictions$names$time1 <- "TIME"
+conf$data$mod_pred$names$time <- NULL
+conf$data$mod_pred$names$time1 <- "TIME"
 
 
 ## ----change_mapping_future, eval=FALSE-----------------------------------
 #  
 #  # The following does not run - TODO: Fix it
 #  #ctr %>% rename("time","time1")
-#  #ctr %>% rename("predictions","time","time1")
+#  #ctr %>% rename("mod_pred","time","time1")
 #  
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  library(ggPMX)
-#  theophylline <- file.path(system.file(package = "ggPMX"), "testdata",
-#                            "theophylline")
-#  WORK_DIR <- file.path(theophylline, "Monolix")
-#  input_file <- file.path(theophylline, "data_pk.csv")
-#  pmxOptions(
-#    work_dir = WORK_DIR,
-#    input = input_file,
-#    dv = "Y")
 #  ctr <- pmx_mlx(config = "standing")
 #  
 
@@ -85,7 +77,8 @@ library(ggPMX)
 ctr %>% set_plot("IND", pname = "indiv1", 
                  draft = list(size = 10, label = "DRAFT", color = "grey50"))
 
-ctr %>% get_plot("indiv1", c(2, 4))
+ctr %>% get_plot("indiv1", 2)
+ctr %>% get_plot("indiv1", 4)
 
 
 ## ---- residual_plot,  fig.width=7, fig.height=6--------------------------
@@ -104,14 +97,6 @@ library(ggPMX)
 # Commented because the vignette will not build if it is on:
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
 
-theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
-WORK_DIR <-  file.path(theophylline, "Monolix")
-input_file <- file.path(theophylline,"data_pk.csv")
-pmxOptions(
-  work_dir=WORK_DIR,
-  input=input_file,
-  dv="Y")
-
 ctr <- pmx_mlx(config = "standing")
 
 
@@ -120,7 +105,7 @@ ctr %>%
    set_plot(ptype="DIS",
             pname="distri_box",
             type="box",
-            has.shrink=TRUE,
+            has.shrink=FALSE,
             has.jitter=FALSE)
 
 ## update individual plots draft argument
@@ -131,19 +116,11 @@ ctr %>% pmx_update("indiv",
 ## return all plots
 lapply(ctr %>% plot_names,
        function(x){
-        if(x=="indiv") return(ctr%>%get_plot(x, c(2, 4)))
+        if(x=="indiv") return(ctr%>%get_plot(x, c(2)))
          ctr %>% get_plot(x)
        })
 
 
-
-
-## ----pmx_filter,  fig.width=7, fig.height=6------------------------------
-plotnames <- ctr %>% plot_names()
-ctr %>% 
-  pmx_filter(data_set = "eta", ID <= 5) %>% 
-  get_plot(plotnames[1])
-  
 
 
 ## ----update_plot,  fig.width=7, fig.height=6-----------------------------
@@ -162,4 +139,48 @@ p2 <- ctr %>%
 
 p1
 p2
+
+## ----pmx_filter,  fig.width=7, fig.height=6------------------------------
+plotnames <- ctr %>% plot_names()
+ctr %>% 
+  pmx_filter(data_set = "predictions", ID <= 5) %>% 
+  get_plot(plotnames[1])
+  
+
+
+## ----local_filter_set_plot-----------------------------------------------
+ctr <- pmx_mlx(config = "standing")
+ctr %>% set_plot("DIS", pname = "distr1", type = "box")
+p <- ctr %>% get_plot("distr1")
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+
+## ----local_filter_set_plot2,  fig.width=7, fig.height=6------------------
+
+ctr %>% set_plot("DIS", pname = "distr2", filter = ID < 10, type = "box")
+p <- ctr %>% get_plot("distr2")
+p
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+
+## ----local_filter_pmx_update_reset,  fig.width=7, fig.height=6-----------
+ctr %>% pmx_update("distr2", filter = NULL)
+p <- ctr %>% get_plot("distr2")
+p
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+
+## ----local_filter_pmx_update_filter,  fig.width=7, fig.height=6----------
+ctr %>% pmx_update("distr2", filter = ID < 10)
+p <- ctr %>% get_plot("distr2")
+pconf <- ggplot2::ggplot_build(p)
+dim(pconf$data[[2]])
+
+## ----shrinkage-----------------------------------------------------------
+
+ctr <- pmx_mlx(config = "standing")
+estimates <- ctr %>% get_data("estimates")
+eta <- ctr %>% get_data("eta")
+shrinkage_estimates <- shrinkage(estimates, eta)
+shrinkage_estimates
 
