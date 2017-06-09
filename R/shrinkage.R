@@ -14,6 +14,7 @@ shrinkage <-
   function(estimates, eta, sys="mlx", fun=c("sd","var")){
     PARAM <- NULL; EFFECT <- NULL; VAR <- NULL; FUN <- NULL
     VALUE_ETA <- NULL; VALUE_OMEGA <- NULL
+    if(missing(fun))fun <- "sd"
     dx1 <- 
       estimates[grepl("omega", PARAM)][
         , c("VAR","EFFECT") := tstrsplit(PARAM, "_")]
@@ -24,10 +25,8 @@ shrinkage <-
     
     dx <- merge(dx2, dx1, by = "EFFECT")
     setnames(dx, c("VALUE.x", "VALUE.y"), c("VALUE_ETA", "VALUE_OMEGA"))
-    unique(
-           dx[, list(SHRINK = 1 - get(fun)(VALUE_ETA) / 
-                       ifelse(fun=="sd",VALUE_OMEGA,VALUE_OMEGA^2)), EFFECT]
-         )
+    dx[, list(SHRINK = 1 - get(fun)(VALUE_ETA) / 
+                       if(fun=="sd")VALUE_OMEGA else VALUE_OMEGA^2), "EFFECT,VALUE_OMEGA"]
     
   }
 
