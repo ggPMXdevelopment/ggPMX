@@ -2,10 +2,9 @@ Package: ggPMX
 Title: to be determined
 Description: A ggplot2-based tool to facilitate diagnostic plots for NLME
     models.
-Version: 0.5.0
-Authors@R: c(person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="cre")
-           ,person("Names to be", "Added", email="author.name@novartis.com", role="ctb")
-	   )
+Version: 0.5.1
+Authors@R: c(person("Amine Gassem", "AG STUDY", email="conatct@ag-study.com", role="cre")
+           ,c(person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="cre"))
 URL: http://www.github.com/someuser/somerepo
 BugReports: http://www.github.com/someuser/somerepo/issues
 Depends:
@@ -20,7 +19,7 @@ Imports:
     magrittr,
     stringr,
     assertthat,
-    checkmate,
+    checkmate
 License: file LICENSE
 LazyData: true
 Suggests:
