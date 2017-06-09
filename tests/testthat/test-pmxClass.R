@@ -26,10 +26,10 @@ test_that("can remove plot from pnmx class", {
 test_that("can get pmx class config", {
   ctr <- pmxClassHelpers$ctr
   cplots <- ctr %>% plot_names()
-  conf <- ctr$get_config(cplots[1])
-  clabels <- list(title = "IPRED versus IWRES", subtitle = "", 
-                  x = "Individual prediction", 
-                  y = "Individual weighted residuals")
+  conf <- ctr$get_config("time_npde")
+  clabels <- list(title = "NPDE versus TIME", subtitle = "", 
+                  x = "TIME", 
+                  y = "NPDE")
   expect_identical(conf$gp$labels, clabels)
 })
 

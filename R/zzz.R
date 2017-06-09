@@ -4,12 +4,5 @@
   theophylline <- file.path(libname, pkgname,"testdata", "theophylline")
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
-  pmxOptions(work_dir = WORK_DIR, input = input_file, dv = "Y",
-             CATS  =c("SEX"),
-             ## OCC   =c("OCC"),
-             CONTS =c("WTO","AGE0"),
-             STARTS="STUD")
-  
-
-
+  pmxOptions(work_dir = WORK_DIR, input = input_file, dv = "Y")
 }
