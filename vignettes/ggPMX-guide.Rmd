@@ -3,15 +3,16 @@ title: "ggPMX - User guide"
 author: "Amine Gassem"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette:
-    toc: true
-    toc_depth: 4
+    pdf_document:
+      number_sections: yes
+      toc: true
+      toc_depth: 4
 vignette: >
   %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-    
+\clearpage  
 ```{r load_package, echo=FALSE}
 knitr::opts_chunk$set(out.width='100%')
 
@@ -25,12 +26,12 @@ input_file <- file.path(theophylline, "data_pk.csv")
 
 ```
 
-## Introduction
+# Introduction
 
 This document serves as the main overview of the `ggPMX` package. It explains the hows and whys of the design decisions using clear examples.
 
 
-## Basic workflow
+# Basic workflow
 
 - Generate inputs files for ggPMX package and store them in the same location.
 - Create a controller: this object contains a number of different data sets , plots and other object like report settings and default plot settings.
@@ -39,7 +40,7 @@ This document serves as the main overview of the `ggPMX` package. It explains th
 - (Optional) Use `pmx_update` to modify the controller objects: plots/data sets.
 - (Optional) Use `pmx_filter` to filter data stored in the controller object.
 
-## The controller
+# The controller
 
 A diagnostic session starts by creating controller using `pmx`. The controller is a general container that defines data configuration but may also contain generated objects like plots and tables. The `pmx` takes a `configuration` as one of its arguments.
 A set of pre-built configurations can be listed using :
@@ -70,11 +71,11 @@ ctr <- pmx_mlx(config = "standing")
 ```
 
 
-## Source
+# Source
 
 Behind the scene, when the controller is initialized it will create a source containing all data sets. The source is configured using a configuration object. In the previous example, we just gave the name of the configuration. `ggPMX` will use this name to guess the full path of the configuration file and load the corresponding data sets.
 
-### Source configuration file
+## Source configuration file
 
 Source configuration are `yaml` files. `ymal` is human readable format. This is standard way to set configuration files and it is used in many popular R packages (`rmarkdown`, `htmlwidgets`). This is also the way the DESCRIPTION file of a package is defined. 
 
@@ -106,7 +107,7 @@ We indicate :
 
 
 
-### Load the configuration
+## Load the configuration
 
 In practice there is no need to load the configuration. This is done internally within the controller. In some cases it can be interesting to load the configuration and modify some attributes like columns names for example:
 
@@ -139,7 +140,7 @@ We will make this easier in next versions by defining wrappers function within t
 
 ```
 
-## Plots
+# Plots
 
 The `ggPMX` package allows a number of different plotting types to be
 specified by the user. Currently these include the `Distribution plot`, the
@@ -152,20 +153,12 @@ a set up as follows can be assummed:
 
 ```{r, eval=FALSE}
 library(ggPMX)
-theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
-                          "theophylline")
-WORK_DIR <- file.path(theophylline, "Monolix")
-input_file <- file.path(theophylline, "data_pk.csv")
-pmxOptions(
-  work_dir = WORK_DIR, 
-  input = input_file, 
-  dv = "Y")
 ctr <- pmx_mlx(config = "standing")
 
 ```
 
 
-### Graphical parameters 
+## Graphical parameters 
 
 Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function. A number of graphical paramters can be set for the different
 plot types. 
@@ -176,13 +169,13 @@ args(pmx_gpar)
 More information can be found in the help document `?pmx_gpar` and in the 
 examples that follow.
 
-### Plot types
+## Plot types
 
-#### Distribution plot
+### Distribution plot
 
 The `Distribution plot` plots the EBE distribution.
 
-```{r , distribut,  fig.width=7, fig.height=6, warning=FALSE}
+```{r , distribut,  fig.width=7, fig.height=6, warning=FALSE,message=FALSE}
 library(ggPMX)
 
 ctr %>% set_plot("DIS", pname = "distr1", type = "box")
@@ -191,9 +184,9 @@ ctr %>% get_plot("distr1")
 
 ```
 
-#### Individual plot
+### Individual plot
 
-```{r , individual_plot,  fig.width=7, fig.height=6, warning=FALSE}
+```{r , individual_plot,  fig.width=7, fig.height=6, warning=FALSE,message=FALSE}
 library(ggPMX)
 
 ctr %>% set_plot("IND", pname = "indiv1", 
@@ -205,12 +198,12 @@ ctr %>% get_plot("indiv1", 4)
 ```
 
 
-#### Residual plot
+### Residual plot
 
 The `Residual plot` plots a residual Y versus an independant variable X.
 Examples of such are NPD vs EPRED, NPD vs TIME etc. 
 
-```{r , residual_plot,  fig.width=7, fig.height=6}
+```{r , residual_plot,  fig.width=7, fig.height=6,message=FALSE}
 library(ggPMX)
 
 ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
@@ -219,7 +212,7 @@ ctr %>% get_plot("res1")
 
 ```
 
-## Complete example
+# Complete example
 
 In this section we introduce a complete example that illustrates the
 workflow using the `ggPMX` package. Steps taken include: 
@@ -237,15 +230,6 @@ library(ggPMX)
 # Example that points to file in user's work directory
 # Commented because the vignette will not build if it is on:
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
-
-theophylline <- file.path(system.file(package = "ggPMX"), 
-                          "testdata", "theophylline")
-WORK_DIR <-  file.path(theophylline, "Monolix")
-input_file <- file.path(theophylline,"data_pk.csv")
-pmxOptions(
-  work_dir=WORK_DIR,
-  input=input_file,
-  dv="Y")
 
 ctr <- pmx_mlx(config = "standing")
 
@@ -277,9 +261,9 @@ lapply(ctr %>% plot_names,
 
 
 
-## Additional considerations
+# Additional considerations
 
-### Updating plots
+## Updating plots
 
 Plots can be updated using the `pmx_update` function. As an illustration compare the residual plot produced previously with an updated version:
 
@@ -302,9 +286,9 @@ p2
 ```
 
 
-### Filtering data
+## Filtering data
 
-#### Global filtering
+### Global filtering
 
 The `pmx_filter` function allows a user to globally filter a named data set.
 Here we filter on the condition that ID is less than or equal to five:
@@ -312,19 +296,19 @@ Here we filter on the condition that ID is less than or equal to five:
 ```{r pmx_filter,  fig.width=7, fig.height=6}
 plotnames <- ctr %>% plot_names()
 ctr %>% 
-  pmx_filter(data_set = "ind_pred", ID <= 5) %>% 
+  pmx_filter(data_set = "predictions", ID <= 5) %>% 
   get_plot(plotnames[1])
   
 
 ```
 
-#### Local filtering
+### Local filtering
 
 An alternative to globally filtering the data for all plots is to apply
 filtered data for a given plot. This can be done in one of two ways; 
 via the `set_plot` function or using the `pmx_update` function. 
 
-##### set_plot
+#### set_plot
 
 With `set_plot` the intention is to create a brand new plot rather than
 ammending an existing one. For illustration we set the distribution plot
@@ -352,7 +336,7 @@ dim(pconf$data[[2]])
 we observe the effect of filtering on the ID both graphical comparing the above plot with the one produced previously and numerical looking at the new 
 dimensions of the data plotted.
 
-##### pmx_update
+#### pmx_update
 
 The `pmx_update` can also take a filter expression to update a plot. 
 First lets work with the previous plot produced in the last section 
@@ -375,7 +359,7 @@ pconf <- ggplot2::ggplot_build(p)
 dim(pconf$data[[2]])
 ```
 
-### Shrinkage
+## Shrinkage
 
 The `shrinkage` function allows $\eta$-shrinkage to be calculated using the parameter and individual estimation data. $\eta$-shrinkage is calculated as \[
 1-SD(\eta)/\omega 
@@ -386,8 +370,8 @@ can calculate the shrinkage using the theophyline test data:
 ```{r shrinkage}
 
 ctr <- pmx_mlx(config = "standing")
-parameter_data <- ctr %>% get_data("par_est")
-estimate_data <- ctr %>% get_data("ind_pred")
-shrinkage_estimates <- shrinkage(parameter_data, estimate_data)
-shrinkage_estimates
+estimates <- ctr %>% get_data("estimates")
+eta <- ctr %>% get_data("eta")
+shrinkage_estimates <- shrinkage(estimates, eta)
+knitr::kable(shrinkage_estimates,align = "c",caption="Shrinkagee result",digits = 2)
 ```
