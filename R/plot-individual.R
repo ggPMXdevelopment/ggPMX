@@ -82,11 +82,17 @@ plot_pmx.individual <-
       ## split pages
       npages <- ceiling(with(facets, 
                              length(unique(dx$ID)) / nrow / ncol))
-      with(facets, function(i)
-        if(i<=npages){
-          p + facet_wrap_paginate(~ID, ncol = ncol, 
-                                  nrow = nrow, page = i)
-        }
+      
+      with(facets, function(i){
+        res <- list()
+        if (is.null(i))i <- seq_len(npages)
+        i <- intersect(i,seq_len(npages))
+        res <- lapply(i,function(x)
+          p + facet_wrap_paginate(~ID, ncol = ncol, nrow = nrow, 
+                                  page = x)
+        )
+        res 
+      }
       )
     })
     

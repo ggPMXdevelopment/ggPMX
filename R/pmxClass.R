@@ -113,6 +113,18 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname,
 #' @family pmxclass
 #' @return ggplot object
 #' @export
+#' @examples 
+#' \dontrun{
+#' library(ggPMX)
+#' ctr <- pmx_mlx("standing")
+#' ## get all pages or some pages
+#' p1 <- ctr %>% get_plot("indiv")
+#' p2 <- ctr %>% get_plot("indiv",napge=1)
+#' p3 <- ctr %>% get_plot("indiv",napge=c(1,3))
+#' ## get distribution plot
+#' pdistri <- ctr %>% get_plot("distri")
+#' 
+#' }
 
 get_plot <- function(ctr, nplot, npage = NULL){
   if(is.numeric(npage)){
