@@ -8,9 +8,8 @@
 #' @export
 read_mlx_ind_est <- function(path, x){
   ds <- pmx_fread(path)
-  ds <- ds[, !grep("^V[0-9]+", names(ds)), with = FALSE]
+  ds <- ds[,grep("id|eta",tolower(names(ds))),with=FALSE]
   data.table::setnames(ds, tolower(names(ds)))
-  
   ds <- melt(ds, measure = grep("_.*_", names(ds)))
   data.table::setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
   VARIABLE <- NULL
