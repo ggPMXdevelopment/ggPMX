@@ -22,13 +22,15 @@ read_mlx_ind_est <- function(path, x){
 #'
 #' @param ipath full path of the input file
 #' 
-#' @return data.table well formatted
+#' @return data.table well formatted containing modelling input data
 #' @export
 #'
 read_input <- function(ipath, dv = NULL, covariates = ""){
   xx <- pmx_fread(ipath)
   setnames(xx, toupper(names(xx)))
-  if(!is.null(dv))setnames(xx, dv, "DV")
+  if(toupper(dv) %in% names(xx)) 
+    setnames(xx, toupper(dv), "DV")
+  else stop(sprintf("%s : is not a valid measurable variable",dv))
   xx
   
 }
