@@ -18,19 +18,28 @@ read_mlx_ind_est <- function(path, x){
 }
 
 
-#' Read MONOLIX input data 
+#' Read Modelling input data 
 #'
 #' @param ipath full path of the input file
 #' 
 #' @return data.table well formatted containing modelling input data
 #' @export
 #'
-read_input <- function(ipath, dv = NULL, covariates = ""){
+read_input <- function(ipath, dv = NULL,dvid, covariates = ""){
   xx <- pmx_fread(ipath)
   setnames(xx, toupper(names(xx)))
-  if(toupper(dv) %in% names(xx)) 
-    setnames(xx, toupper(dv), "DV")
+  dv <- toupper(dv)
+  dvid <- toupper(dvid)
+  if(dv %in% names(xx)) setnames(xx, dv, "DV")
   else stop(sprintf("%s : is not a valid measurable variable",dv))
+  if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
+  else xx[,DVID:=1]
+  if(length(covariates)>0){
+    covariates <- toupper(covariates)
+    if(any(!covariates %in% names(xx))) 
+      stop(sprintf("%s : is not a valid covariate variable\n",
+                   covariates[!covariates%in%names(xx)]))
+  }
   xx
   
 }
@@ -164,9 +173,15 @@ post_load <- function(dxs, input, sys, dplot,...){
     ## add startification column
     vv <- names(dxs$eta)[vapply(dxs$eta, is.integer, TRUE)]
     ## prepare data set for stratification
-    dxs$predictions <-
+    if(!"DVID" %in% names(dxs$predictions))
+      dxs$predictions[,DVID:=1]
+    mdx <- try(
       merge(dxs$predictions[, !"DV", with = FALSE], input, 
-            by = c("ID", "TIME"))
+            by = c("ID", "TIME","DVID"))
+    ,silent=TRUE)
+    if(inherits(mdx,"try-error"))
+      stop("error cannot merge predictions data with the modelling input")
+    dxs$predictions <- mdx
     ## add shrinkage data set
     if(!is.null(dxs[["estimates"]]) && !is.null(dxs[["eta"]]))
       dxs[["shrink"]] <- 

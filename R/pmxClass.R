@@ -10,6 +10,10 @@
 #' in \code{work_dir} pmx options: \code{getPmxOptions("work_dir")}
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
+#' @param dvid \code{character} observation type parameter
+#' @param cats \code{character} vector of categorical covariates
+#' @param conts \code{character} vector of continuous covariates
+#' @param occ \code{character} occasinal covariate variable name
 #' @return a pmxClass object
 #' @family pmxclass 
 #' @export
@@ -33,13 +37,17 @@
 #'}
 
 pmx <-
-  function(config, sys=c("mlx","nm"), directory, input, dv){
+  function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats,conts,occ){
     directory <- checkPmxOption(directory, "work_dir")
     input <- checkPmxOption(input, "input")
     dv <- checkPmxOption(dv, "dv")
+    dvid <- checkPmxOption(dvid, "dvid")
+    cats <- checkPmxOption(cats, "cats")
+    conts <- checkPmxOption(conts, "conts")
+    occ <- checkPmxOption(occ, "occ")
     if(!inherits(config, "pmxConfig"))
       config <- load_config(config, sys)
-    pmxClass$new(directory, input, dv, config)
+    pmxClass$new(directory, input, dv, config,dvid,cats,conts,occ)
   }
 
 #' Wrapper to pmx constructor
@@ -54,8 +62,8 @@ pmx <-
 #' @export
 
 pmx_mlx <-
-  function(config, directory, input, dv){
-    pmx(config, "mlx", directory, input, dv)
+  function(config, directory, input, dv,dvid,cats,conts,occ){
+    pmx(config, "mlx", directory, input, dv,dvid,cats,conts,occ)
   }
 
 
@@ -133,6 +141,7 @@ get_plot <- function(ctr, nplot, npage = NULL){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(nplot))
   assert_that(is_integer_or_null(npage))
+  assert_that(is_valid_plot_name(nplot,plot_names(ctr)))
   xx <- ctr$get_plot(nplot)
   if(is.function(xx))xx(npage)
   else xx
@@ -210,10 +219,12 @@ get_plot_config <- function(ctr, pname){
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, data_set = c("estimates","predictions", 
-                                       "eta", "finegrid", "shrink")){
+                                       "eta", "finegrid", "shrink",
+                                       "input")){
   assert_that(is_pmxclass(ctr))
   data_set <- match.arg(data_set)
-  ctr[["data"]][[data_set]]
+  if(data_set=="input")ctr[["input"]]
+  else  ctr[["data"]][[data_set]]
 }
 
 # pmxSource (R6 Class) ------------------------------------------------------------
@@ -225,6 +236,7 @@ pmxClass <- R6::R6Class(
   private = list(
     .data_path = "",
     .input="",
+    .covariates =NULL,
     .plots = list(),
     .plots_configs = list()
   ),
@@ -235,8 +247,9 @@ pmxClass <- R6::R6Class(
     config = NULL,
     input=NULL,
     dv=NULL,
-    initialize = function(data_path, input, dv, config)
-      pmx_initialize(self, private, data_path, input, dv, config),
+    dvid=NULL,cats=NULL,conts=NULL,occ=NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -266,7 +279,7 @@ pmxClass <- R6::R6Class(
   )
 )
 
-pmx_initialize <- function(self, private, data_path, input, dv, config) {
+pmx_initialize <- function(self, private, data_path, input, dv, config,dvid,cats,conts,occ) {
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
@@ -274,7 +287,13 @@ pmx_initialize <- function(self, private, data_path, input, dv, config) {
   private$.input <- input
   self$config <- config
   self$dv <- dv
-  self$input <- read_input(input, self$dv)
+  self$dvid <- dvid
+  self$cats <- cats
+  self$conts <- conts
+  self$occ <- occ
+  covs <- unique(c(cats,conts,occ))
+  private$.covariates <- covs[!is.na(covs) & covs!=""]
+  self$input <- read_input(input, self$dv,self$dvid,private$.covariates)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
   self$post_load()
