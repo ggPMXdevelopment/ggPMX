@@ -292,7 +292,7 @@ pmx_initialize <- function(self, private, data_path, input, dv, config,dvid,cats
   self$conts <- conts
   self$occ <- occ
   covs <- unique(c(cats,conts,occ))
-  private$.covariates <- covs[!is.na(covs) & covs!=""]
+  ##private$.covariates <- covs[!is.na(covs) & covs!=""]
   self$input <- read_input(input, self$dv,self$dvid,private$.covariates)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
