@@ -9,11 +9,22 @@
 read_mlx_ind_est <- function(path, x){
   ds <- pmx_fread(path)
   ds <- ds[,grep("id|eta",tolower(names(ds))),with=FALSE]
+  ds <- ds[,!grepl("*",tolower(names(ds)),fixed=TRUE),with=FALSE]
   data.table::setnames(ds, tolower(names(ds)))
-  ds <- melt(ds, measure = grep("_.*_", names(ds)))
+  measures <- grep("_.*_", names(ds))
+  ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]
+  ds <- melt(ds, measure = measures)
+  
   data.table::setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
-  VARIABLE <- NULL
-  ds[, c("VAR", "EFFECT", "FUN") := data.table::tstrsplit(VARIABLE, "_")]
+  ds[, c("VAR", "EFFECT", "FUN") := 
+    list(gsub("_.*","",VARIABLE),
+         gsub("eta_(.*)_.*","\\1",VARIABLE),
+         gsub(".*_","",VARIABLE))]
+  if(grepl("#",ds[1,ID],fixed=TRUE))
+    ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
+        c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+  
+  
   
 }
 
@@ -40,6 +51,8 @@ read_input <- function(ipath, dv = NULL,dvid, covariates = ""){
       stop(sprintf("%s : is not a valid covariate variable\n",
                    covariates[!covariates%in%names(xx)]))
   }
+  ## round time column for further merge
+  xx[,TIME:=round(TIME,4)]
   xx
   
 }
@@ -70,7 +83,10 @@ read_mlx_pred <- function(path, x){
                         integer(1), USE.NAMES = FALSE)
   setnames(xx, names(xx)[match_names[!is.na(match_names)]],
            as.character(nn[!is.na(match_names)]))
-  xx[, as.character(nn[!is.na(match_names)]), with = FALSE]
+  res <- xx[, as.character(nn[!is.na(match_names)]), with = FALSE]
+  if(grepl("#",res[1,ID],fixed=TRUE))
+    res[,c("ID","DVID") := tstrsplit(ID,"#")][,c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+  res
 }
 
 
@@ -154,9 +170,12 @@ input_finegrid <- function(input, finegrid, covariates = NULL)
 {
   dx <- rbind(finegrid, input, fill = TRUE)
   dx <- dx[order(ID, TIME)]
+  
+  dx <- dx[TIME>0][
+    ,c("DV","PRED","IPRED"):=lapply(.SD, zoo::na.locf), by=DVID,.SDcols = c("DV","PRED","IPRED")]
   if(!is.null(covariates))
     dx[, (covariates) := lapply(.SD, na.locf), .SDcols = covariates]
-  dx[TIME > 0]
+  dx
 }
 
 
@@ -164,7 +183,7 @@ post_load <- function(dxs, input, sys, dplot,...){
   ## merge finegrid with input data 
   dxs[["IND"]] <- 
     if(!is.null(dxs[["finegrid"]])){
-      input_finegrid(dxs[["finegrid"]], input,...)
+      input_finegrid(input,dxs[["finegrid"]],...)
     }else{
       dxs[["predictions"]] 
     }  

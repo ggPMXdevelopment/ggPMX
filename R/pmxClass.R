@@ -287,7 +287,7 @@ pmx_initialize <- function(self, private, data_path, input, dv, config,dvid,cats
   private$.input <- input
   self$config <- config
   self$dv <- dv
-  self$dvid <- dvid
+  self$dvid <- if(occ!="") occ else dvid
   self$cats <- cats
   self$conts <- conts
   self$occ <- occ
@@ -329,6 +329,7 @@ pmx_add_plot <- function(self, private, x, pname){
     IND="IND",
     DIS="eta")
   if(!is.null(self$data[[dname]]))
+  if(getPmxOption("verbose",FALSE)) cat("create plot:",pname,"\n")
   private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   invisible(self)
 }

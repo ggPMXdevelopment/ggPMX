@@ -66,17 +66,17 @@ plot_pmx.individual <-
     ##reshape data to the long format
     if(!missing(include))
       dx <- setDT(dx)[ID %in% include]
-    dat <- melt(dx,
-                id.vars=c("ID", "TIME", "DV"),
-                measure.vars = c("PRED", "IPRED"))
     ## plot
+    dx <- dx[DVID==1]
     get_page <- with(x,{
-      p <- ggplot(dat, ggplot2::aes(TIME, DV, linetype = variable)) +
-        with(point, geom_point(shape = shape, color = color, 
-                               size = size),na.rm=TRUE)
-      if(has.curves)
-        p <- p + geom_line(ggplot2::aes(y = value), size = 1,na.rm=TRUE)
+      p <- ggplot(dx, aes(TIME, DV))+
+        geom_line(aes(y=PRED),size=1)+
+        geom_line(aes(y=IPRED),size=1,linetype=2)+
+        with(point,geom_point(shape=shape,size=size))
       
+      # if(has.curves)
+      #   p <- p + geom_line(ggplot2::aes(y = value), size = 1,na.rm=TRUE)
+      # 
       p <- plot_pmx(gp, p)
       
       ## split pages
@@ -87,9 +87,11 @@ plot_pmx.individual <-
         res <- list()
         if (is.null(i))i <- seq_len(npages)
         i <- intersect(i,seq_len(npages))
-        res <- lapply(i,function(x)
+        res <- lapply(i,function(x){
+          cat("page:",x,"\n")
           p + facet_wrap_paginate(~ID, ncol = ncol, nrow = nrow, 
                                   page = x)
+        }
         )
         res 
       }

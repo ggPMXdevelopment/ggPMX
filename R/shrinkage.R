@@ -17,12 +17,9 @@ shrinkage <-
     if(missing(fun))fun <- "sd"
     dx1 <- 
       estimates[grepl("omega", PARAM)][
-        , c("VAR","EFFECT") := tstrsplit(PARAM, "_")]
-    dx1 <- dx1[, c("EFFECT", "VAR") := list(str_trim(tolower(EFFECT)),  
-                                            str_trim(VAR))]
-    
+        , c("VAR","EFFECT") := list("omega",gsub("(^ +)?omega_","",PARAM))]
     dx2 <- eta[VAR == "eta" & grepl("mean", FUN)]
-    
+    if(nrow(dx2)==0)dx2 <- eta[VAR == "eta" & grepl("mode", FUN)]
     dx <- merge(dx2, dx1, by = "EFFECT")
     setnames(dx, c("VALUE.x", "VALUE.y"), c("VALUE_ETA", "VALUE_OMEGA"))
     dx[, list(SHRINK = 1 - get(fun)(VALUE_ETA) / 
