@@ -40,9 +40,13 @@ getPmxOption <- function(name, default = NULL) {
 #' @section Options used in ggPMX:
 #' 
 #' \itemize{
-#' \item \code{work_dir:} {working directory containing input files}
-#' \item \code{input:} {path to modelling input file}
-#' \item \code{dv:} {measurable variable name default to Y}
+#' \item {\strong{work_dir:}} {working directory containing input files like estimates.txt, finedgrid,...}
+#' \item \strong{input:} {path to modelling input file}
+#' \item \strong{dv:} {measurable variable name default to Y}
+#' \item \strong{cats:}\emph{[Optional]} \code{character} {covariate categorical variables}
+#' \item \strong{conts:}\emph{[Optional]} {covariate continuous variables}
+#' \item \strong{occ:} \emph{[Optional]} {occasinal type variable}
+#' \item \strong{strats:} \emph{[Optional]} {extra variables names can be used for stratification}
 
 #' }
 #'

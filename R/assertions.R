@@ -93,3 +93,16 @@ is_language_or_string <- function(x) {
 assertthat::on_failure(is_language_or_string) <-  function(call, env) {
   paste0(deparse(call$x), " should be an expression or a string")
 }
+
+is_valid_plot_name <- function(x,plots) {
+  x %in% plots
+}
+
+assertthat::on_failure(is_valid_plot_name) <-  function(call, env) {
+ 
+  sprintf("%s is not a valid plot name\nvalid plots are: %s",
+          env$nplot, 
+          paste(env$ctr %>% plot_names(),collapse="--"))
+  
+}
+

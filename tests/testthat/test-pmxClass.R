@@ -2,7 +2,7 @@ context("Test pmxClass")
 pmxClassHelpers <- test_pmxClass_helpers()
 
 test_that("can create pmx class", {
-  ctr <- pmx_mlx("standing")
+  ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   expect_identical(
     ctr %>% plot_names(), 
@@ -11,12 +11,12 @@ test_that("can create pmx class", {
 })
 
 test_that("can print pmx class", {
-  ctr <- pmx_mlx("standing")
+  ctr <- pmxClassHelpers$ctr
   expect_output(print(ctr), "pmx object:")
 })
 
 test_that("can remove plot from pnmx class", {
-  ctr <- pmx_mlx("standing")
+  ctr <- pmxClassHelpers$ctr
   cplots <- ctr %>% plot_names()
   ctr$remove_plot(cplots[1])
   res <- setdiff(cplots, ctr %>% plot_names())
@@ -24,17 +24,17 @@ test_that("can remove plot from pnmx class", {
 })
 
 test_that("can get pmx class config", {
-  ctr <- pmx_mlx("standing")
+  ctr <- pmxClassHelpers$ctr
   cplots <- ctr %>% plot_names()
-  conf <- ctr$get_config(cplots[1])
-  clabels <- list(title = "IPRED versus IWRES", subtitle = "", 
-                  x = "Individual prediction", 
-                  y = "Individual weighted residuals")
+  conf <- ctr$get_config("time_npde")
+  clabels <- list(title = "NPDE versus TIME", subtitle = "", 
+                  x = "TIME", 
+                  y = "NPDE")
   expect_identical(conf$gp$labels, clabels)
 })
 
 test_that("can get data from controller", {
-  ctr <- pmx_mlx("standing")
+  ctr <- pmxClassHelpers$ctr
   peData <- ctr %>% get_data("estimates")
   peNames <- c("PARAM", "VALUE", "SE", "RSE", "PVALUE")
   expect_identical(names(peData), peNames)
@@ -60,7 +60,7 @@ test_that("can get data from controller", {
 
 test_that("can set plot and filter", {
   # set new plot
-  ctr <- pmx_mlx("standing")
+  ctr <- pmxClassHelpers$ctr
   ctr %>% set_plot("DIS", pname = "distr1", type = "box")
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)

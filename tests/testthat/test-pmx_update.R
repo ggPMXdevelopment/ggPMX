@@ -33,11 +33,11 @@ test_that("can update IND plot", {
   expect_silent(ctr %>% get_plot("indiv1", c(2, 4)))
   expect_true("indiv1" %in% ctr$plots())
   oldconf <- ctr$get_config("indiv1")
-  expect_true(oldconf$gp$has.band)
+  expect_false(oldconf$gp$has.band)
   
-  ctr %>% pmx_update("indiv1", has.band = FALSE)
+  ctr %>% pmx_update("indiv1", has.band = TRUE)
   newconf <- ctr$get_config("indiv1")
-  expect_false(newconf$gp$has.band)
+  expect_true(newconf$gp$has.band)
 })
 
 test_that("can remove IND plot", {

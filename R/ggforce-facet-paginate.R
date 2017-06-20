@@ -64,13 +64,14 @@ FacetWrapPaginate <-
   ggplot2::ggproto(
     "FacetWrapPaginate", ggplot2::FacetWrap,
     setup_params = function(data, params) {
+      if(!is.null(params$nrow)){
       modifyList(
         params,
         list(
           max_rows = params$nrow,
           nrow = NULL
         )
-      )
+      )      }else params
     },
     compute_layout = function(data, params) {
       layout <- FacetWrap$compute_layout(data, params)

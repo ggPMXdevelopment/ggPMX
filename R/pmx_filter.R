@@ -6,6 +6,13 @@
 #'
 #' @return Returns a pmx controller with a filtered data set.
 #' @export
+#' @examples 
+#' \dontrun{
+#' ## example of global filter
+#' ctr <- pmx_mlx("standing")
+#' ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME <2)
+#' ctr %>% get_data("prediction")
+#' }
 pmx_filter <- 
   function(ctr, data_set = c("estimates","predictions", 
                             "eta", "finegrid", "shrink"), pmx_exp){

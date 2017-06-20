@@ -2,7 +2,7 @@ context("Test filtering of controller data")
 pmxClassHelpers <- test_pmxClass_helpers()
 
 test_that("canFilterData", {
-  ctr <- pmx_mlx("standing")
+  ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   oldData <- ctr$data
   out <- ctr %>% pmx_filter(data_set = "eta", ID <= 5)
