@@ -40,7 +40,7 @@ test_that("can get data from controller", {
   expect_identical(names(peData), peNames)
   
   mpData <- ctr %>% get_data("predictions")
-  mpNames <- c("ID", "TIME", "PRED", "NPDE", "IPRED", "IWRES", "AMT", "DV",
+  mpNames <- c("ID", "TIME", "DVID","PRED", "NPDE", "IPRED", "IWRES", "AMT", "DV",
                "EVID", "WT0", "AGE0", "SEX", "STUD")
   expect_identical(names(mpData), mpNames)
   
@@ -54,7 +54,7 @@ test_that("can get data from controller", {
   expect_identical(names(fgData), fgNames)
   
   sData <- ctr %>% get_data("shrink")
-  sNames <- c("EFFECT", "SHRINK")
+  sNames <- c("EFFECT", "VALUE_OMEGA","SHRINK")
   expect_identical(names(sData), sNames)
 })
 

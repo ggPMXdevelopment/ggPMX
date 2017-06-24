@@ -12,7 +12,7 @@ test_that("test shrinkage for standing config", {
                 sys = sys)
   res <- shrinkage(dxs[["estimates"]], dxs[["eta"]])
   expect_is(res,"data.frame")
-  expect_equal(colnames(res), c("EFFECT", "SHRINK"))
+  expect_equal(colnames(res), c("EFFECT", "VALUE_OMEGA","SHRINK"))
   expect_true(all(res$VALUE < 1))
   
 })
