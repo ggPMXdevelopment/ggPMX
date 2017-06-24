@@ -70,12 +70,14 @@ distrib <- function(
 plot_pmx.distrib <- function(x, dx){
   
   assert_that(is_pmx_gpar(x))
+  assert_that(is.data.table(dx))
+
   if(!is.null(x[["filter"]])){
     dx <- x[["filter"]](dx)
   }
   
   VAR <- NULL; FUN <- NULL
-  dx.etas <- dx[VAR == "eta" & grepl("mean", FUN)]
+  dx.etas <- dx[VAR == "eta" & grepl("mode", FUN)]
   
   p <- with(x, {
     
