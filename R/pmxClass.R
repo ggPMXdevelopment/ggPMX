@@ -283,6 +283,7 @@ pmx_initialize <- function(self, private, data_path, input, dv, config,dvid,cats
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
+  if(missing(occ))occ=""
   private$.data_path <- data_path
   private$.input <- input
   self$config <- config
