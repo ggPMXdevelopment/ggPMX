@@ -24,6 +24,8 @@ read_mlx_ind_est <- function(path, x){
     ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
         c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
   
+  ds
+  
   
   
 }
@@ -170,11 +172,11 @@ input_finegrid <- function(input, finegrid, covariates = NULL)
 {
   dx <- rbind(finegrid, input, fill = TRUE)
   dx <- dx[order(ID, TIME)]
-  
-  dx <- dx[TIME>0][
-    ,c("DV","PRED","IPRED"):=lapply(.SD, zoo::na.locf), by=DVID,.SDcols = c("DV","PRED","IPRED")]
+  dx <- dx[TIME>0]
+  measures <- c("DV","PRED","IPRED")
+  dx[,(measures):=lapply(.SD, zoo::na.locf,na.rm=FALSE), by=DVID,.SDcols = measures]
   if(!is.null(covariates))
-    dx[, (covariates) := lapply(.SD, na.locf), .SDcols = covariates]
+    dx[, (covariates) := lapply(.SD, na.locf,na.rm=FALSE), .SDcols = covariates]
   dx
 }
 

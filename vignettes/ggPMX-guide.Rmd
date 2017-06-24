@@ -14,7 +14,7 @@ vignette: >
 ---
 \clearpage  
 ```{r load_package, echo=FALSE}
-knitr::opts_chunk$set(out.width='100%')
+knitr::opts_chunk$set(out.width='100%',warning=FALSE,message=FALSE)
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -51,7 +51,9 @@ configs()
 
 Then we can instantiate a **standing** (the name of the config) controller using:
 ```{r init_controller}
-ctr <- pmx(config = "standing", sys = "mlx", directory = WORK_DIR, 
+ctr <- pmx(
+  config = "standing", sys = "mlx", 
+           directory = WORK_DIR, 
            input = input_file, dv = "Y")
 ```
 
@@ -176,7 +178,6 @@ examples that follow.
 The `Distribution plot` plots the EBE distribution.
 
 ```{r , distribut,  fig.width=7, fig.height=6, warning=FALSE,message=FALSE}
-library(ggPMX)
 
 ctr %>% set_plot("DIS", pname = "distr1", type = "box")
 
@@ -193,7 +194,6 @@ ctr %>% set_plot("IND", pname = "indiv1",
                  draft = list(size = 10, label = "DRAFT", color = "grey50"))
 
 ctr %>% get_plot("indiv1", 2)
-ctr %>% get_plot("indiv1", 4)
 
 ```
 
