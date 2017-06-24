@@ -18,7 +18,7 @@
 #'## display the first page of the individual plot
 #'ctr %>% get_plot("indiv",1)
 individual <- function(labels, has.curve = TRUE, 
-                       facets = list(ncol = 3, nrow = 4), 
+                       facets = list(ncol = 3, nrow = 3), 
                        ...){
   assert_that(is_logical(has.curve))
   assert_that(is_list(facets))
@@ -67,7 +67,7 @@ plot_pmx.individual <-
     if(!missing(include))
       dx <- setDT(dx)[ID %in% include]
     ## plot
-    dx <- dx[DVID==1]
+    ## dx <- dx[DVID==1]
     get_page <- with(x,{
       p <- ggplot(dx, aes(TIME, DV))+
         geom_line(aes(y=PRED),size=1)+
