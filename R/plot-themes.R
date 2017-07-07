@@ -9,8 +9,7 @@
 #' @importFrom ggthemes theme_gdocs
 #' @export
 pmx_theme <- function(...) {
-  theme_gdocs() +
-    theme(plot.subtitle=element_text( face="italic"),
-          strip.text = element_text(size=14))  %+replace%
+  theme_bw() +
+    theme(strip.text = element_text(size=14))  %+replace%
     theme(...)
 }

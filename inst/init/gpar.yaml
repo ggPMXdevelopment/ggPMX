@@ -23,8 +23,8 @@ band:
   size: 0.5
 is.draft: yes
 draft:
-  size: 20.0
-  label: DRAFT
+  size: 10.0
+  label: 
   color: grey50
 discrete: no
 

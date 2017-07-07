@@ -34,7 +34,7 @@ pmx_gpar <-
     has.band = FALSE,
     band = list(y = c(-2, 2), linetype = 2, size = 0.5),
     is.draft = TRUE,
-    draft = list(size = 20, label = "DRAFT", color = 'grey50'),
+    draft = list(size = 10, label = "DRAFT", color = 'grey50'),
     discrete=FALSE,
     ...) {
     gp <- .valid_pmx_gpar(list(

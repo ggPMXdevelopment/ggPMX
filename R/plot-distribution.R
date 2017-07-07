@@ -14,7 +14,7 @@
 distrib <- function(
   labels,
   has.jitter = TRUE,
-  jitter = list(shape = 2, color = "grey50", width = 0.1),
+  jitter = list(shape = 1, color = "grey50", width = 0.1),
   facets = list(scales = "free", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
