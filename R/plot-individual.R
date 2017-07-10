@@ -2,7 +2,6 @@
 #' Create individual fits object
 #'
 #' @param labels  plot tesxts. labels, axis,
-#' @param has.curve  logical if TRUE add predictions lines
 #' @param facets list facets settings nrow/ncol
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
@@ -17,10 +16,9 @@
 #'ctr <- pmx_mlx(config = "standing")
 #'## display the first page of the individual plot
 #'ctr %>% get_plot("indiv",1)
-individual <- function(labels, has.curve = TRUE, 
+individual <- function(labels, 
                        facets = list(ncol = 3, nrow = 3), 
                        ...){
-  assert_that(is_logical(has.curve))
   assert_that(is_list(facets))
   if(missing(labels))
     labels <- list(
@@ -34,7 +32,6 @@ individual <- function(labels, has.curve = TRUE,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
     point = list(shape = 2, color = "grey50", size = 1),
-    has.curves = has.curve,
     facets = facets,
     gp = pmx_gpar(labels = labels, ...)
     
@@ -73,11 +70,7 @@ plot_pmx.individual <-
         geom_line(aes(y=IPRED),size=1)+
         geom_line(aes(y=PRED),size=1,linetype=2)+
         with(point,geom_point(shape=shape,size=size))
-      
-      # if(has.curves)
-      #   p <- p + geom_line(ggplot2::aes(y = value), size = 1,na.rm=TRUE)
-      # 
-      p <- plot_pmx(gp, p)
+        p <- plot_pmx(gp, p)
       
       ## split pages
       npages <- ceiling(with(facets, 
