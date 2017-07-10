@@ -43,11 +43,7 @@ test_that("can get data from controller", {
   mpNames <- c("ID", "TIME", "DVID","PRED", "NPDE", "IPRED", "IWRES", "AMT", "DV",
                "EVID", "WT0", "AGE0", "SEX", "STUD")
   expect_identical(names(mpData), mpNames)
-  
-  ipData <- ctr %>% get_data("eta")
-  ipNames <- c("ID", "EVID", "TWT", "TAGE", "SEX", "STUD", "VARIABLE", 
-               "VALUE", "VAR", "EFFECT", "FUN")
-  expect_identical(names(ipData), ipNames)
+
   
   fgData <- ctr %>% get_data("finegrid")
   fgNames <- c("ID", "TIME", "PRED", "IPRED")

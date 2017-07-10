@@ -20,10 +20,7 @@ test_that("can load data set", {
                    c("PARAM", "VALUE", "SE", "RSE", "PVALUE"))
   expect_identical(names(dxs$predictions), 
                    c("ID", "TIME", "DV", "PRED", "NPDE", "IPRED", "IWRES"))
-  expect_identical(names(dxs$eta), 
-                   c("ID", "EVID", "TWT", "TAGE", "SEX", "STUD", 
-                     "VARIABLE", "VALUE", 
-                     "VAR", "EFFECT", "FUN"))
+
   expect_identical(names(dxs$finegrid), c("ID", "TIME", "PRED", "IPRED"))
 })
 
