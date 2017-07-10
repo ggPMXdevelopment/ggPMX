@@ -67,7 +67,7 @@ plot_pmx.individual <-
     ## dx <- dx[DVID==1]
     get_page <- with(x,{
       p <- ggplot(dx, aes(TIME, DV))+
-        geom_line(aes(y=IPRED),size=1)+
+        geom_line(aes(y=IPRED),size=1,linetype=1)+
         geom_line(aes(y=PRED),size=1,linetype=2)+
         with(point,geom_point(shape=shape,size=size))
         p <- plot_pmx(gp, p)
