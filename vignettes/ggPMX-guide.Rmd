@@ -370,6 +370,7 @@ can calculate the shrinkage using the theophyline test data:
 ```{r shrinkage}
 
 ctr <- pmx_mlx(config = "standing")
+
 estimates <- ctr %>% get_data("estimates")
 eta <- ctr %>% get_data("eta")
 shrinkage_estimates <- shrinkage(estimates, eta)

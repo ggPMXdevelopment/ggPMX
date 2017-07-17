@@ -3,6 +3,7 @@
 #'
 #' @param labels  plot tesxts. labels, axis,
 #' @param facets list facets settings nrow/ncol
+#' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object
@@ -16,10 +17,13 @@
 #'ctr <- pmx_mlx(config = "standing")
 #'## display the first page of the individual plot
 #'ctr %>% get_plot("indiv",1)
-individual <- function(labels, 
-                       facets = list(ncol = 3, nrow = 3), 
+
+individual <- function(labels, has.curve = TRUE, 
+                       facets = list(ncol = 3, nrow = 4), 
+                       dname = NULL,
                        ...){
   assert_that(is_list(facets))
+  assert_that(is_string_or_null(dname))
   if(missing(labels))
     labels <- list(
       title = "Individual fits",
@@ -27,13 +31,15 @@ individual <- function(labels,
       x = "Time after first dose (hours)",
       y = "ABC123 plasma concentration (ng/mL)")
   assert_that(is_list(labels))
+  if(is.null(dname)) dname <- "IND"
   
   structure(list(
+    dname=dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
     point = list(shape = 2, color = "grey50", size = 1),
     facets = facets,
-    gp = pmx_gpar(labels = labels, ...)
+    gp = pmx_gpar(labels = labels,  ...)
     
     
   ), class = c("individual", "pmx_gpar"))

@@ -7,6 +7,7 @@
 #' @param labels list that contain title,subtitle, axis labels
 #' @param point geom point graphical parameters
 #' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
+#' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -15,7 +16,7 @@
 #' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.residual}}
 
-residual <- function(x, y, labels = NULL, point = NULL,add_hline=TRUE, ...){
+residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NULL, ...){
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -28,17 +29,20 @@ residual <- function(x, y, labels = NULL, point = NULL,add_hline=TRUE, ...){
     y = aess[["y"]]
   )
   assert_that(is_list_or_null(labels))
+  assert_that(is_string_or_null(dname))
   
   labels <- l_left_join(default_labels, labels)
   default_point <- list(shape = 1, color = "black", size = 1)
   point <- l_left_join(default_point, point)
+  if(is.null(dname)) dname <- "predictions"
   
   structure(
     list(
+      dname=dname,
       aess = aess,
       point = point,
       add_hline=add_hline,
-      gp = pmx_gpar(labels = labels, ...)
+      gp = pmx_gpar( labels = labels, ...)
     ), class=c("residual", "pmx_gpar"))
 }
 
