@@ -38,6 +38,8 @@ pmx_gpar <-
     discrete=FALSE,
     scale_log=c("","x","y"),
     ...) {
+    
+    scale_log <- match.arg(scale_log)
     gp <- .valid_pmx_gpar(list(
       labels = labels,
       axis.title = axis.title,
