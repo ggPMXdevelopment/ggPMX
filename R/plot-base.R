@@ -42,7 +42,9 @@ plot_pmx.pmx_gpar <- function(gpar, p){
       p <- p + scale_y_continuous(limits = ranges$y)
     if(!is.null(ranges$x) && !discrete)
       p <- p + scale_x_continuous(limits = ranges$x)
-
+    if(scale_log=="x") p <- p + scale_x_log10()
+    if(scale_log=="y") p <- p + scale_y_log10()
+    
     ## theming
     p <- p + pmx_theme()
     ## draft layer

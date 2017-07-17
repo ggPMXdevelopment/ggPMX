@@ -36,6 +36,7 @@ pmx_gpar <-
     is.draft = TRUE,
     draft = list(size = 10, label = "DRAFT", color = 'grey50'),
     discrete=FALSE,
+    scale_log=c("","x","y"),
     ...) {
     gp <- .valid_pmx_gpar(list(
       labels = labels,
@@ -49,6 +50,7 @@ pmx_gpar <-
       is.draft = is.draft,
       draft = draft,
       discrete = discrete,
+      scale_log=scale_log,
       ...))
     class(gp) <- "pmx_gpar"
     gp
