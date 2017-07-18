@@ -9,7 +9,7 @@
 read_mlx_ind_est <- function(path, x){
   ds <- pmx_fread(path)
   ds <- ds[,grep("id|eta",tolower(names(ds))),with=FALSE]
-  ds <- ds[,!grepl("*",tolower(names(ds)),fixed=TRUE),with=FALSE]
+  ds <- ds[,as.logical(!grepl("*",tolower(names(ds)),fixed=TRUE)),with=FALSE]
   data.table::setnames(ds, tolower(names(ds)))
   measures <- grep("_.*_", names(ds))
   ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]

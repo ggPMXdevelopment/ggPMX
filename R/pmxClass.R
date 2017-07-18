@@ -284,7 +284,7 @@ pmx_initialize <- function(self, private, data_path, input, dv, config,dvid,cats
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
-  if(missing(occ))occ=""
+  if(missing(occ) || is.na(occ)) occ <- ""
   private$.data_path <- data_path
   private$.input <- input
   self$config <- config
@@ -330,7 +330,7 @@ pmx_add_plot <- function(self, private, x, pname){
     private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   } else {
     # throw error - to be improved
-    stop("Error - invalid data set")
+    warning("Error - invalid data set")
   }
   invisible(self)
 }
