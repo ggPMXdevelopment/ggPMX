@@ -228,6 +228,45 @@ get_data <- function(ctr, data_set = c("estimates","predictions",
   else  ctr[["data"]][[data_set]]
 }
 
+
+#' Get controller category covariates
+#'
+#' @param ctr the controller object 
+#'
+#' @family pmxclass
+#' @return a charcater vector 
+#' @export
+get_cats <- function(ctr){
+  assert_that(is_pmxclass(ctr))
+  ctr$cats
+}
+
+
+#' Get controller continuous covariates
+#'
+#' @param ctr the controller object 
+#'
+#' @family pmxclass
+#' @return a charcater vector 
+#' @export
+get_conts <- function(ctr){
+  assert_that(is_pmxclass(ctr))
+  ctr$conts
+}
+
+
+#' Get controller occasional covariates
+#'
+#' @param ctr the controller object 
+#'
+#' @family pmxclass
+#' @return a charcater vector 
+#' @export
+get_occ <- function(ctr){
+  assert_that(is_pmxclass(ctr))
+  ctr$occ
+}
+
 # pmxSource (R6 Class) ------------------------------------------------------------
 #' @importFrom R6 R6Class
 pmxClass <- R6::R6Class(
