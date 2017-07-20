@@ -2,11 +2,7 @@
 title: "ggPMX - User guide"
 author: "Amine Gassem"
 date: "`r Sys.Date()`"
-output: 
-    pdf_document:
-      number_sections: yes
-      toc: true
-      toc_depth: 4
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
