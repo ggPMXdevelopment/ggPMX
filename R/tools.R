@@ -39,3 +39,7 @@ abbrev <- function(param) {
 pmx_fread <- function(...){
   fread(na.strings = c("NA","."),...)
 }
+
+is.formula <- function(x){
+  inherits(x,"formula")
+}

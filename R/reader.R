@@ -10,24 +10,9 @@ read_mlx_ind_est <- function(path, x){
   ds <- pmx_fread(path)
   ds <- ds[,grep("id|eta",tolower(names(ds))),with=FALSE]
   ds <- ds[,as.logical(!grepl("*",tolower(names(ds)),fixed=TRUE)),with=FALSE]
-  data.table::setnames(ds, tolower(names(ds)))
-  measures <- grep("_.*_", names(ds))
-  ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]
-  ds <- melt(ds, measure = measures)
-  
-  data.table::setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
-  ds[, c("VAR", "EFFECT", "FUN") := 
-    list(gsub("_.*","",VARIABLE),
-         gsub("eta_(.*)_.*","\\1",VARIABLE),
-         gsub(".*_","",VARIABLE))]
-  if(grepl("#",ds[1,ID],fixed=TRUE))
-    ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
-        c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
-  
+  setnames(ds, tolower(names(ds)))
+  setnames(ds,"id","ID")
   ds
-  
-  
-  
 }
 
 
@@ -38,7 +23,7 @@ read_mlx_ind_est <- function(path, x){
 #' @return data.table well formatted containing modelling input data
 #' @export
 #'
-read_input <- function(ipath, dv = NULL,dvid, covariates = ""){
+read_input <- function(ipath, dv = NULL,dvid, cats = "",conts=""){
   xx <- pmx_fread(ipath)
   setnames(xx, toupper(names(xx)))
   dv <- toupper(dv)
@@ -47,15 +32,26 @@ read_input <- function(ipath, dv = NULL,dvid, covariates = ""){
   else stop(sprintf("%s : is not a valid measurable variable",dv))
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
   else xx[,DVID:=1]
+  covariates <- unique(c(cats,conts))
   if(length(covariates)>0){
     covariates <- toupper(covariates)
     if(any(!covariates %in% names(xx))) 
       stop(sprintf("%s : is not a valid covariate variable\n",
                    covariates[!covariates%in%names(xx)]))
   }
+  if(length(cats)>0){
+    xx[,(cats) := lapply(.SD,as.factor),.SDcols=cats]
+  }
+  if(length(conts)>0){
+    xx[,(conts) := lapply(.SD,as.numeric),.SDcols=conts]
+  }
   ## round time column for further merge
   xx[,TIME:=round(TIME,4)]
-  xx
+  ## keep only potential used columns
+  cnames <- unique(c("ID","DV","DVID","TIME",cats,conts))
+  
+  
+  xx[,cnames,with=FALSE]
   
 }
 
@@ -181,6 +177,32 @@ input_finegrid <- function(input, finegrid, covariates = NULL)
 }
 
 
+post_load_eta <- function(ds,input,sys){
+ 
+  ## add DVID variable : merge key with the input 
+  if(grepl("#",ds[1,ID],fixed=TRUE))
+    ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
+                                             c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+  if(!"DVID" %in% names(ds))  ds[,DVID:=1]
+  ds <- try(
+    merge(ds, input, 
+          by = c("ID", "DVID"))
+    ,silent=TRUE)
+  
+  if(inherits(ds,"try-error"))
+    stop("error cannot merge eta data with the modelling input")
+  ## put in the long format 
+  measures <- grep("_.*_", names(ds))
+  ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]
+  ds <- melt(ds, measure = measures)
+  setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
+  ds[, c("VAR", "EFFECT", "FUN") := 
+       list(gsub("_.*","",VARIABLE),
+            gsub("eta_(.*)_.*","\\1",VARIABLE),
+            gsub(".*_","",VARIABLE))]
+  ds
+}
+
 post_load <- function(dxs, input, sys, dplot,...){
   ## merge finegrid with input data 
   dxs[["IND"]] <- 
@@ -199,10 +221,14 @@ post_load <- function(dxs, input, sys, dplot,...){
     mdx <- try(
       merge(dxs$predictions[, !"DV", with = FALSE], input, 
             by = c("ID", "TIME","DVID"))
-    ,silent=TRUE)
+      ,silent=TRUE)
     if(inherits(mdx,"try-error"))
       stop("error cannot merge predictions data with the modelling input")
     dxs$predictions <- mdx
+    ## prepare data set for stratification
+    dxs$eta <- post_load_eta(dxs$eta,input,sys)
+    
+    
     ## add shrinkage data set
     if(!is.null(dxs[["estimates"]]) && !is.null(dxs[["eta"]]))
       dxs[["shrink"]] <- 

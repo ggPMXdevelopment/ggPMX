@@ -84,6 +84,9 @@ plot_pmx.distrib <- function(x, dx){
   VAR <- NULL; FUN <- NULL
   dx.etas <- dx[VAR == "eta" & grepl("mode", FUN)]
   
+  strat.facet <- x[["strat.facet"]]
+  
+  
   p <- with(x, {
     
     if(has.shrink){
@@ -93,9 +96,16 @@ plot_pmx.distrib <- function(x, dx){
       
     }else dx.etas[, lfacet := EFFECT]
     
+    wrap_formula <- if(is.null(strat.facet)) as.formula("~lfacet") 
+                       else as.formula(paste(strat.facet,"lfacet",sep="~"))
+    
     p <- ggplot(dx.etas, aes(EFFECT))
     if(type=="box"){
       p <- p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
+      if(!is.null(strat.facet))
+        p <- p + facet_grid(as.formula(paste0("~",strat.facet)))
+        
+        
       if(has.jitter)
         p <- p +
           with(jitter,
@@ -119,7 +129,7 @@ plot_pmx.distrib <- function(x, dx){
       
     }else{
       p <- p +  geom_histogram(aes(x = VALUE)) +
-        with(facets, facet_wrap(~lfacet, scales = scales, 
+        with(facets, facet_wrap(wrap_formula, scales = scales, 
                                          nrow = nrow))
     }
     plot_pmx(gp, p)

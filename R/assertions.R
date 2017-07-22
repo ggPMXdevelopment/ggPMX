@@ -10,8 +10,25 @@ is_string_or_null <- function(x) {
   is_string(x) || is.null(x)
 }
 
+is_string_or_expression <- function(x) {
+  is_string(x) || is.expression(x)
+}
+
+is_string_or_formula_or_null <- function(x) {
+  is_string(x) || is.formula(x) || is.null(x)
+}
+
+assertthat::on_failure(is_string_or_formula_or_null) <-  function(call, env) {
+  paste0(deparse(call$x), " is not a formula or NULL")
+}
+
+
 assertthat::on_failure(is_string_or_null) <-  function(call, env) {
   paste0(deparse(call$x), " is not a string or NULL")
+}
+
+assertthat::on_failure(is_string_or_expression) <-  function(call, env) {
+  paste0(deparse(call$x), " is not a string or expression")
 }
 
 is_pmx_gpar <- function(x) {

@@ -37,7 +37,7 @@
 #'}
 
 pmx <-
-  function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats,conts,occ){
+  function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats,conts,occ,settings){
     directory <- checkPmxOption(directory, "work_dir")
     input <- checkPmxOption(input, "input")
     dv <- checkPmxOption(dv, "dv")
@@ -47,7 +47,7 @@ pmx <-
     occ <- checkPmxOption(occ, "occ")
     if(!inherits(config, "pmxConfig"))
       config <- load_config(config, sys)
-    pmxClass$new(directory, input, dv, config,dvid,cats,conts,occ)
+    pmxClass$new(directory, input, dv, config,dvid,cats,conts,occ,settings)
   }
 
 #' Wrapper to pmx constructor
@@ -62,8 +62,8 @@ pmx <-
 #' @export
 
 pmx_mlx <-
-  function(config, directory, input, dv,dvid,cats,conts,occ){
-    pmx(config, "mlx", directory, input, dv,dvid,cats,conts,occ)
+  function(config, directory, input, dv,dvid,cats,conts,occ,settings){
+    pmx(config, "mlx", directory, input, dv,dvid,cats,conts,occ,settings)
   }
 
 
@@ -86,10 +86,17 @@ pmx_mlx <-
 
 #'
 set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, 
-                     filter = NULL, ...){
+                     filter = NULL, strat.color=NULL,strat.facet=NULL,...){
   assert_that(is_pmxclass(ctr))
-  assert_that(is_string_or_null(pname))
   ptype <- match.arg(ptype)
+  assert_that(is_string_or_null(pname))
+  if(!is.null(filter))
+  assert_that(is_string_or_expression(filter))
+  assert_that(is_string_or_null(strat.color)) 
+  assert_that(is_string_or_formula_or_null(strat.facet)) 
+  
+  
+  
   
   conf <-
     switch(ptype,
@@ -104,6 +111,8 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname,
     filter <- local_filter(filter)
   }
   conf[["filter"]] <- filter
+  conf[["strat.color"]] <- strat.color
+  conf[["strat.facet"]] <- strat.facet
   
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))
@@ -229,7 +238,7 @@ get_data <- function(ctr, data_set = c("estimates","predictions",
 }
 
 
-#' Get controller category covariates
+#' Get category covariates
 #'
 #' @param ctr the controller object 
 #'
@@ -241,8 +250,21 @@ get_cats <- function(ctr){
   ctr$cats
 }
 
+#' Get covariates variables
+#'
+#' @param ctr the controller object 
+#'
+#' @family pmxclass
+#' @return a charcater vector 
+#' @export
+get_covariates <- function(ctr){
+  assert_that(is_pmxclass(ctr))
+  c(ctr$cats ,ctr$conts)
+}
 
-#' Get controller continuous covariates
+
+
+#' Get continuous covariates
 #'
 #' @param ctr the controller object 
 #'
@@ -288,8 +310,9 @@ pmxClass <- R6::R6Class(
     input=NULL,
     dv=NULL,
     dvid=NULL,cats=NULL,conts=NULL,occ=NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ),
+    settings=NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ,settings)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ,settings),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -319,11 +342,14 @@ pmxClass <- R6::R6Class(
   )
 )
 
-pmx_initialize <- function(self, private, data_path, input, dv, config,dvid,cats,conts,occ) {
+pmx_initialize <- function(self, private, data_path, input, dv, 
+                           config,dvid,cats,conts,occ,settings) {
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
   if(missing(occ) || is.na(occ)) occ <- ""
+  if(missing(settings)) settings <- NULL
+  
   private$.data_path <- data_path
   private$.input <- input
   self$config <- config
@@ -332,13 +358,14 @@ pmx_initialize <- function(self, private, data_path, input, dv, config,dvid,cats
   self$cats <- cats
   self$conts <- conts
   self$occ <- occ
-  covs <- unique(c(cats,conts,occ))
+  self$settings <- settings
+
   ##private$.covariates <- covs[!is.na(covs) & covs!=""]
-  self$input <- read_input(input, self$dv,self$dvid,private$.covariates)
+  self$input <- read_input(input, self$dv,self$dvid,cats,conts)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
   self$post_load()
-  
+  ## create all plots
   for ( nn in names(self$config$plots)){
     x <- self$config$plots[[nn]]
     x$pname <- tolower(nn)

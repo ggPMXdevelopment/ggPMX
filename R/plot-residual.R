@@ -62,14 +62,19 @@ plot_pmx.residual <- function(x, dx){
   assert_that(is_pmx_gpar(x))
   with(x,
        {
-         if(!is.null(x[["filter"]])){
+         if(!is.null(x[["filter"]]))
            dx <- x[["filter"]](dx)
-         }
-         p <-
-           ggplot2::ggplot(dx, with(aess, ggplot2::aes_string(x, y)))+
-           with(point, geom_point(shape = shape, color = color))+
-           if(add_hline)geom_hline(yintercept = 0)
-         p <- plot_pmx(gp, p)
+         strat.color <- x[["strat.color"]]
+         strat.facet <- x[["strat.facet"]]
+         p <- if(!is.null(strat.color))
+           ggplot(dx, with(aess, ggplot2::aes_string(x, y,color=strat.color)))+
+           with(point, geom_point(shape = shape))
+           else ggplot(dx, with(aess, ggplot2::aes_string(x, y)))+
+           with(point, geom_point(shape = shape, color = color))
+         if(add_hline) p <- p + geom_hline(yintercept = 0)
+         p <- plot_pmx(gp, p) 
+         if(!is.null(strat.facet))
+           p <- p + facet_grid(strat.facet)
          p
        })
 }
