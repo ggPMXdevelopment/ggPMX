@@ -85,6 +85,7 @@ plot_pmx.distrib <- function(x, dx){
   dx.etas <- dx[VAR == "eta" & grepl("mode", FUN)]
   
   strat.facet <- x[["strat.facet"]]
+  strat.color <- x[["strat.color"]]
   
   
   p <- with(x, {
@@ -101,9 +102,11 @@ plot_pmx.distrib <- function(x, dx){
     
     p <- ggplot(dx.etas, aes(EFFECT))
     if(type=="box"){
-      p <- p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
+      p <- if(is.null(strat.color))
+        p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
+      else  p + geom_boxplot(aes_string(y = "VALUE",fill=strat.color), outlier.shape = NA)
       if(!is.null(strat.facet))
-        p <- p + facet_grid(as.formula(paste0("~",strat.facet)))
+        p <- p + facet_wrap(strat.facet)
         
         
       if(has.jitter)
