@@ -17,6 +17,7 @@ vignette: >
   knitr::opts_chunk$set(out.width='100%',warning=FALSE,message=FALSE)
 ```
 
+# Use case
 
 ```{r create_controller_uc}
 library(ggPMX)
@@ -42,9 +43,9 @@ ctr <- pmx_mlx("standing")
 
 ```
 
-# stratification
+# Stratification
 
-## faceting stratification 
+## Residual plot: category covariates
 
 ```{r}
 
@@ -52,40 +53,36 @@ ctr %>% set_plot("RES","p1",x="IPRED",y="IWRES",strat.facet=SEX+ILOW~RACE+DISE)
 ctr %>% get_plot("p1")
 ```
 
-## color stratification 
+## Residual plot: continuous covariates
 ```{r}
 ctr %>% set_plot("RES","p2",x="IPRED",y="IWRES",strat.color="AGE0")
 ctr %>% get_plot("p2")
 ```
 
-## color+facet stratification 
+## Residual plot: Mix of category and continuous covariates
 ```{r}
 ctr %>% set_plot("RES","p3",x="IPRED",y="IWRES",strat.color="SEX",strat.facet=SEX~RACE)
 ctr %>% get_plot("p3")
 ```
 
-## color+facet stratification 
+## distribution plot: catgoery covariates
+ 
 ```{r}
 ctr %>% set_plot("DIS","p4", strat.facet=~SEX)
 ctr %>% get_plot("p4")
 ```
 
-## color+facet stratification 
+## distribution plot: Mix of catgoery covariates and color covariates
 ```{r}
 ctr %>% set_plot("DIS","p5", strat.facet=DISE~RACE,strat.color="SEX",
                  has.jitter=FALSE)
 ctr %>% get_plot("p5")
 ```
 
-## color+facet stratification 
+## distribution plot type histogram: catgoery covariates
 ```{r}
 ctr %>% set_plot("DIS","p6", strat.facet="SEX",type="hist")
 ctr %>% get_plot("p6")
 ```
 
-## color+facet stratification 
-```{r}
-ctr %>% set_plot("IND","p7", strat.facet=~SEX)
-ctr %>% get_plot("p7",1)
-```
 
