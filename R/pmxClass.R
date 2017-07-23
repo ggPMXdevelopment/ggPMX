@@ -68,6 +68,13 @@ pmx_mlx <-
   }
 
 
+formula_to_text <- function(form){
+  if(is.formula(form))
+    Reduce(paste, deparse(form))
+  else form
+  
+}
+
 #' Create a new plot  of the desired type
 #'
 #' @param ctr \code{pmxClass} controller object
@@ -111,8 +118,21 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname,
     filter <- local_filter(filter)
   }
   conf[["filter"]] <- filter
-  conf[["strat.color"]] <- strat.color
-  conf[["strat.facet"]] <- strat.facet
+  if(!is.null(strat.color)){
+    conf[["strat.color"]] <- strat.color
+    gp <- conf[["gp"]]
+    gp[["labels"]][["legend"]] <- strat.color
+    conf[["gp"]] <- gp
+    
+  }
+  if(!is.null(strat.facet)){
+    conf[["strat.facet"]] <- strat.facet
+    gp <- conf[["gp"]]
+    gp[["labels"]][["title"]] <- 
+      sprintf("%s by %s",
+              gp[["labels"]][["title"]],formula_to_text(strat.facet))
+    conf[["gp"]] <- gp
+  }
   
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))

@@ -28,7 +28,8 @@ distrib <- function(
   assert_that(is_logical(has.shrink))
   assert_that(is_string_or_null(dname))
   if(is.null(dname)) dname <- "eta"
-  
+
+
   if(missing(labels))
     labels <- list(
       title = "EBE distribution",
