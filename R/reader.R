@@ -10,7 +10,7 @@ read_mlx_ind_est <- function(path, x){
   ds <- pmx_fread(path)
   ds <- ds[,grep("id|eta",tolower(names(ds))),with=FALSE]
   ds <- ds[,as.logical(!grepl("*",tolower(names(ds)),fixed=TRUE)),with=FALSE]
-  setnames(ds,grep("id$",names(ds),ignore.case = TRUE,value=TRUE),"ID")
+  setnames(ds,grep("^id$",names(ds),ignore.case = TRUE,value=TRUE),"ID")
   ds
 }
 
@@ -22,11 +22,8 @@ read_mlx_ind_est <- function(path, x){
 #' @return data.table well formatted containing modelling input data
 #' @export
 #'
-read_input <- function(ipath, dv = NULL,dvid, cats = "",conts=""){
+read_input <- function(ipath, dv = NULL,dvid, cats = "",conts="",strats=""){
   xx <- pmx_fread(ipath)
-  setnames(xx, toupper(names(xx)))
-  dv <- toupper(dv)
-  dvid <- toupper(dvid)
   if(dv %in% names(xx)) setnames(xx, dv, "DV")
   else stop(sprintf("%s : is not a valid measurable variable",dv))
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
@@ -41,13 +38,17 @@ read_input <- function(ipath, dv = NULL,dvid, cats = "",conts=""){
   if(length(cats)>0){
     xx[,(cats) := lapply(.SD,as.factor),.SDcols=cats]
   }
+  if(length(strats)>0){
+    xx[,(strats) := lapply(.SD,as.factor),.SDcols=strats]
+  }
   if(length(conts)>0){
     xx[,(conts) := lapply(.SD,as.numeric),.SDcols=conts]
   }
   ## round time column for further merge
+  setnames(xx, grep("time",names(xx),ignore.case = TRUE,value=TRUE), "TIME")
   xx[,TIME:=round(TIME,4)]
   ## keep only potential used columns
-  cnames <- unique(c("ID","DV","DVID","TIME",cats,conts))
+  cnames <- unique(c("ID","DV","DVID","TIME",cats,conts,strats))
   
   
   xx[,cnames,with=FALSE]

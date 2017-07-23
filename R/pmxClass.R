@@ -37,7 +37,7 @@
 #'}
 
 pmx <-
-  function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats,conts,occ,settings){
+  function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats,conts,occ,strats,settings){
     directory <- checkPmxOption(directory, "work_dir")
     input <- checkPmxOption(input, "input")
     dv <- checkPmxOption(dv, "dv")
@@ -45,9 +45,10 @@ pmx <-
     cats <- checkPmxOption(cats, "cats")
     conts <- checkPmxOption(conts, "conts")
     occ <- checkPmxOption(occ, "occ")
+    strats <- checkPmxOption(strats, "strats")
     if(!inherits(config, "pmxConfig"))
       config <- load_config(config, sys)
-    pmxClass$new(directory, input, dv, config,dvid,cats,conts,occ,settings)
+    pmxClass$new(directory, input, dv, config,dvid,cats,conts,occ,strats,settings)
   }
 
 #' Wrapper to pmx constructor
@@ -62,8 +63,8 @@ pmx <-
 #' @export
 
 pmx_mlx <-
-  function(config, directory, input, dv,dvid,cats,conts,occ,settings){
-    pmx(config, "mlx", directory, input, dv,dvid,cats,conts,occ,settings)
+  function(config, directory, input, dv,dvid,cats,conts,occ,strats,settings){
+    pmx(config, "mlx", directory, input, dv,dvid,cats,conts,occ,strats,settings)
   }
 
 
@@ -250,6 +251,19 @@ get_cats <- function(ctr){
   ctr$cats
 }
 
+
+#' Get extra stratification variables
+#'
+#' @param ctr the controller object 
+#'
+#' @family pmxclass
+#' @return a charcater vector 
+#' @export
+get_strats <- function(ctr){
+  assert_that(is_pmxclass(ctr))
+  ctr$strats
+}
+
 #' Get covariates variables
 #'
 #' @param ctr the controller object 
@@ -310,9 +324,10 @@ pmxClass <- R6::R6Class(
     input=NULL,
     dv=NULL,
     dvid=NULL,cats=NULL,conts=NULL,occ=NULL,
+    strats=NULL,
     settings=NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ,settings)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ,settings),
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ,strats,settings)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ,strats,settings),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -343,12 +358,13 @@ pmxClass <- R6::R6Class(
 )
 
 pmx_initialize <- function(self, private, data_path, input, dv, 
-                           config,dvid,cats,conts,occ,settings) {
+                           config,dvid,cats,conts,occ,strats,settings) {
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
   if(missing(occ) || is.na(occ)) occ <- ""
   if(missing(settings)) settings <- NULL
+  if(missing(strats)) strats <- ""
   
   private$.data_path <- data_path
   private$.input <- input
@@ -358,10 +374,11 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$cats <- cats
   self$conts <- conts
   self$occ <- occ
+  self$strats <- strats
   self$settings <- settings
 
   ##private$.covariates <- covs[!is.na(covs) & covs!=""]
-  self$input <- read_input(input, self$dv,self$dvid,cats,conts)
+  self$input <- read_input(input, self$dv,self$dvid,cats,conts,strats)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
   self$post_load()
@@ -396,7 +413,7 @@ pmx_add_plot <- function(self, private, x, pname){
     private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   } else {
     # throw error - to be improved
-    warning("Error - invalid data set")
+    stop("Error - invalid data set")
   }
   invisible(self)
 }

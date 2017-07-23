@@ -6,9 +6,9 @@
   input_file <- file.path(theophylline, "data_pk.csv")
   pmxOptions(work_dir = WORK_DIR, 
              input = input_file, 
-             dv = "y",dvid="dvid",
-             conts = c("wt0","age0"),
-             cats=c("sex"),
+             dv = "Y",dvid="DVID",
+             conts = c("WT0","AGE0"),
+             cats=c("SEX"),
              occ="",
-             strats=c("stud"))
+             strats=c("STUD"))
 }

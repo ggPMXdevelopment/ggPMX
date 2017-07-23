@@ -35,13 +35,18 @@ test_that("can get pmx class config", {
 
 test_that("can get data from controller", {
   ctr <- pmxClassHelpers$ctr
+  inputData <- ctr %>% get_data("input")
+  inNames <- c("ID", "DV", "DVID", "TIME", "SEX", "WT0", "AGE0", "STUD")
+  expect_identical(names(inputData), inNames)
+  
+  
   peData <- ctr %>% get_data("estimates")
   peNames <- c("PARAM", "VALUE", "SE", "RSE", "PVALUE")
   expect_identical(names(peData), peNames)
   
   mpData <- ctr %>% get_data("predictions")
-  mpNames <- c("ID", "TIME", "DVID","PRED", "NPDE", "IPRED", "IWRES", "AMT", "DV",
-               "EVID", "WT0", "AGE0", "SEX", "STUD")
+  mpNames <- c("ID", "TIME", "DVID","PRED", "NPDE", "IPRED", "IWRES", "DV",
+                "SEX", "WT0", "AGE0", "STUD")
   expect_identical(names(mpData), mpNames)
 
   
@@ -60,7 +65,7 @@ test_that("can set plot and filter", {
   ctr %>% set_plot("DIS", pname = "distr1", type = "box")
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_identical(dim(pconf$data[[2]]), c(150L, 10L))
+  expect_identical(dim(pconf$data[[2]]), c(1800L, 10L))
   
   # set plot and filter
   ctr <- pmx_mlx("standing")
