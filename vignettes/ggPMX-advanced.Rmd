@@ -1,6 +1,6 @@
 ---
-title: "ggPMX stratification"
-author: "Vignette Author"
+title: "Advanced ggPMX"
+author: "Amine Gassem"
 date: "`r Sys.Date()`"
 output:
   prettydoc::html_pretty:
@@ -11,68 +11,81 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 \clearpage  
-```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
+```{r general_chunk, echo=FALSE,warning=FALSE,message=FALSE}
+  knitr::opts_chunk$set(out.width='100%',warning=FALSE,message=FALSE)
+```
+
+
+```{r create_controller_uc}
 library(ggPMX)
-params. <- 
-  list(
-       wd = "~/SVN/ggPMX_doc/USER_EXAMPLES/MLX//PK_WITH_COVARIATE_IOV/1_popPK_model", 
-       type = "PK", 
-       input = "PKdata_ggPMX.csv", 
-       dv = "DV", 
-       dvid = "ytype", 
-       occ = "ISS",
-       cats = "SEX;RACE;DISE;ILOW", 
-       conts = "AGE0;WT0;HT0;TRT",
-       strats=NULL)
 
-with(params.,
-     pmxOptions(
-       work_dir=file.path(wd,"RESULTS"),
-       input=file.path(wd,input),
-       dv=dv,
-       dvid=dvid,
-       cats=unlist(strsplit(cats,";")),
-       conts=unlist(strsplit(conts,";")),
-       occ=occ,
-       strats=""
-     )
+uc.name <-  "1_popPK_model"
+data_file <-  "PKdata_ggPMX.csv"
+
+uc.dir <- file.path(system.file(package = "ggPMX"), "testdata", 
+                    uc.name)
+wd.mlx <- file.path(uc.dir, "Monolix")
+input_file <- file.path(uc.dir, data_file)
+
+pmxOptions(
+  work_dir = wd.mlx, 
+  input = input_file, 
+  dv = "DV", 
+  dvid = "ytype", 
+  occ = "ISS",
+  cats = c("SEX","RACE","DISE","ILOW"), 
+  conts = c("AGE0","WT0","HT0","TRT")
 )
-
-settings <-  
-  list(
-    draft=FALSE, 
-    strats = "SEX")
+ctr <- pmx_mlx("standing")
 
 ```
 
-```{r}
-ctr <- pmx_mlx("standing", settings=settings)
+# stratification
+
 ## faceting stratification 
+
+```{r}
+
 ctr %>% set_plot("RES","p1",x="IPRED",y="IWRES",strat.facet=SEX+ILOW~RACE+DISE)
+ctr %>% get_plot("p1")
+```
+
 ## color stratification 
+```{r}
 ctr %>% set_plot("RES","p2",x="IPRED",y="IWRES",strat.color="AGE0")
-## color+facet stratification 
-ctr %>% set_plot("RES","p3",x="IPRED",y="IWRES",strat.color="SEX",strat.facet=SEX~RACE)
+ctr %>% get_plot("p2")
+```
 
 ## color+facet stratification 
-ctr %>% set_plot("DIS","p4", strat.facet=~SEX)
+```{r}
+ctr %>% set_plot("RES","p3",x="IPRED",y="IWRES",strat.color="SEX",strat.facet=SEX~RACE)
+ctr %>% get_plot("p3")
+```
+
 ## color+facet stratification 
+```{r}
+ctr %>% set_plot("DIS","p4", strat.facet=~SEX)
+ctr %>% get_plot("p4")
+```
+
+## color+facet stratification 
+```{r}
 ctr %>% set_plot("DIS","p5", strat.facet=DISE~RACE,strat.color="SEX",
                  has.jitter=FALSE)
-## color+facet stratification 
-ctr %>% set_plot("DIS","p6", strat.facet="SEX",type="hist")
-## color+facet stratification 
-ctr %>% set_plot("IND","p7", strat.facet=~SEX)
-ctr %>% get_plot("p1")
-ctr %>% get_plot("p2")
-ctr %>% get_plot("p3")
-ctr %>% get_plot("p4")
 ctr %>% get_plot("p5")
+```
+
+## color+facet stratification 
+```{r}
+ctr %>% set_plot("DIS","p6", strat.facet="SEX",type="hist")
 ctr %>% get_plot("p6")
+```
+
+## color+facet stratification 
+```{r}
+ctr %>% set_plot("IND","p7", strat.facet=~SEX)
 ctr %>% get_plot("p7",1)
-
-
-
 ```
 

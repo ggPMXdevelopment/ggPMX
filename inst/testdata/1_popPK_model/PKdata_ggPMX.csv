@@ -1,0 +1,958 @@
+ID,AGE0,WT0,HT0,BMI0,SEX,RACE,DISE,TRT,TRT_NAME,CMT,EVID,DV,UNIT,MDV,BLOQ,AMT,ADM,TINF,NTIM,NTIM1,DAY,ND,TIMEUNIT,DESC,TIME,VARNAME,YTYPE,TRT_TYPE,ILOW,ISS,DOSE
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,4.06863836447825,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,1,1,0,mg,1,0,1.4,1,0.18125,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,635.419857753298,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.184041666666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,311.760011678231,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,186.774337755064,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),2.00695833333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,91.3902314905656,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.99654166666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,10.4078193283515,ng/mL,1,1,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,4.61579338061211,ng/mL,1,1,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,7.20695545226839,ng/mL,1,1,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),20,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,15.7360684539007,ng/mL,1,1,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,5.79171904635448,ng/mL,1,1,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0416666666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,14.7887918378059,ng/mL,1,1,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9930416666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,2.94894945293855,ng/mL,1,1,0,0,0,1656,1656,70,70,Hours,Drug concentration (free plasma drug),69.0104166666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1053,42,48.1,162,18.328,2,1,1,0.03,0.03 mg/kg i.v.,2,0,20.446857729192,ng/mL,1,1,0,0,0,2280,2280,96,NaN,Hours,Drug concentration (free plasma drug),94.9979166666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.4
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,19.8383987904356,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00416666666666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,1,1,0,mg,1,0,1.9,1,0.18125,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,547.099443207157,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.181958333333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,363.416520700336,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.993041666666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,212.778005675904,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),2.00695833333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,117.04545287973,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.99166666666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,49.4935659474864,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.01595833333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,0.77441590985811,ng/mL,1,1,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0104166666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,6.16437922629835,ng/mL,1,1,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9930416666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,11.5084433061492,ng/mL,1,1,0,0,0,648,648,26,28,Hours,Drug concentration (free plasma drug),24.9965416666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,19.9376641590233,ng/mL,1,1,0,0,0,816,816,33,35,Hours,Drug concentration (free plasma drug),31.9916666666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,14.8116956576786,ng/mL,1,1,0,0,0,984,984,40,42,Hours,Drug concentration (free plasma drug),39,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,6.20480243160515,ng/mL,1,1,0,0,0,1152,1152,47,49,Hours,Drug concentration (free plasma drug),45.9992916666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,15.5794295505359,ng/mL,1,1,0,0,0,1320,1320,54,56,Hours,Drug concentration (free plasma drug),53,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,6.43525519221051,ng/mL,1,1,0,0,0,1488,1488,61,63,Hours,Drug concentration (free plasma drug),59.9992916666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,9.7536679493543,ng/mL,1,1,0,0,0,1656,1656,68,70,Hours,Drug concentration (free plasma drug),67.1270833333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,16.6107508468561,ng/mL,1,1,0,0,0,1824,1824,75,77,Hours,Drug concentration (free plasma drug),73.9992916666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,1.55316634431386,ng/mL,1,1,0,0,0,2520,2520,104,105,Hours,Drug concentration (free plasma drug),103,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1054,53,62.1,170,21.488,2,1,1,0.03,0.03 mg/kg i.v.,2,0,10.2944549342993,ng/mL,1,1,0,0,0,3120,3120,131,NaN,Hours,Drug concentration (free plasma drug),130.009708333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.9
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,0.631062472305304,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,1,1,0,mg,1,0,1.8,1,0.181958333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,675.767051145886,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.182625,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,405.255354361225,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.998625,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,268.078005827697,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.98470833333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,152.926375331505,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.001375,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,97.6585604988166,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.99304166666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,44.5993548119451,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.982625,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,21.3282095026958,ng/mL,1,1,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.986125,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,7.41688423545631,ng/mL,1,1,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.0020833333333,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,12.2945623768495,ng/mL,1,1,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0055416666667,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,22.2057297297446,ng/mL,1,1,0,0,0,1488,1488,64,63,Hours,Drug concentration (free plasma drug),63,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1055,55,61.4,170,21.246,2,1,1,0.03,0.03 mg/kg i.v.,2,0,15.1137303121056,ng/mL,1,1,0,0,0,1848,1848,78,NaN,Hours,Drug concentration (free plasma drug),77.017375,Drug concentration (free plasma drug),1,i.v.,1,1,1.8
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,23.7964287965562,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,1,1,0,mg,1,0,5.3,1,0.190291666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,1869.1952946147,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.192375,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,1142.46353175612,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00345833333333,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,971.843834782464,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.97916666666667,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,549.331294221713,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.03470833333333,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,314.295724334198,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.98470833333333,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,112.7513471647,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.998625,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,55.7901533268969,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9965416666667,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,16.6156849131364,ng/mL,1,1,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,9.03166043030674,ng/mL,1,1,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,16.157355637578,ng/mL,1,1,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0069583333333,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,23.1957655601362,ng/mL,1,1,0,0,0,1656,1656,71,70,Hours,Drug concentration (free plasma drug),69.9979166666667,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,15.8307533064302,ng/mL,1,1,0,0,0,2328,2328,98,98,Hours,Drug concentration (free plasma drug),96.9930416666667,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1057,59,52.5,160,20.508,2,1,1,0.1,0.1 mg/kg i.v.,2,0,2.04804621723825,ng/mL,1,1,0,0,0,2664,2664,112,NaN,Hours,Drug concentration (free plasma drug),111.002083333333,Drug concentration (free plasma drug),1,i.v.,1,1,5.3
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,10.7785670490566,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00416666666666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,1,1,0,mg,1,0,7,1,0.185416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,2434.32716132484,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.1875,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,1741.33551113511,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.997208333333333,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,1206.12610291648,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.97429166666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,700.413232222029,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.01529166666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,504.496477399286,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.95904166666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,240.814308157567,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.9590416666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,114.00081711363,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9590416666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,77.9141456582797,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9652916666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,48.6131930953378,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),33.9590416666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,6.97884880940377,ng/mL,1,1,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.923625,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,10.1596895546672,ng/mL,1,1,0,0,0,1656,1656,70,70,Hours,Drug concentration (free plasma drug),68.9527916666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,5.10348561020566,ng/mL,1,1,0,0,0,2328,2328,100,98,Hours,Drug concentration (free plasma drug),98.9555416666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,0.13217121054019,ng/mL,1,1,0,0,0,3024,3024,128,126,Hours,Drug concentration (free plasma drug),126.972208333333,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,6.48106203149008,ng/mL,1,1,0,0,0,3696,3696,154,154,Hours,Drug concentration (free plasma drug),152.963875,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,21.6671754796121,ng/mL,1,1,0,0,0,4368,4368,182,182,Hours,Drug concentration (free plasma drug),180.963208333333,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,17.7362156904203,ng/mL,1,1,0,0,0,5040,5040,210,210,Hours,Drug concentration (free plasma drug),208.966666666667,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1058,48,69.7,162,26.558,2,1,1,0.1,0.1 mg/kg i.v.,2,0,18.9704292688253,ng/mL,1,1,0,0,0,NaN,NaN,288,NaN,Hours,Drug concentration (free plasma drug),286.96875,Drug concentration (free plasma drug),1,i.v.,1,1,7
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,21.4520368537128,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00416666666666667,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,1,1,0,mg,1,0,8.9,1,0.180541666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,2926.22716633022,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.182625,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,1711.84291272722,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00208333333333,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,1216.94200857429,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),2.00416666666667,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,676.235898902728,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.025,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,326.157370156312,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.02083333333333,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,120.031725796955,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0208333333333,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,48.0517742041844,ng/mL,0,0,0,0,0,480,480,20,21,Hours,Drug concentration (free plasma drug),19.0208333333333,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,0.0085168545623153,ng/mL,1,1,0,0,0,648,648,29,28,Hours,Drug concentration (free plasma drug),28.0208333333333,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,21.2245657267762,ng/mL,1,1,0,0,0,816,816,36,35,Hours,Drug concentration (free plasma drug),35.0180416666667,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,4.40587664567981,ng/mL,1,1,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0152916666667,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,8.47647604081557,ng/mL,1,1,0,0,0,1152,1152,49,49,Hours,Drug concentration (free plasma drug),48.0208333333333,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,10.8065565040499,ng/mL,1,1,0,0,0,1824,1824,77,77,Hours,Drug concentration (free plasma drug),76.0166666666667,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,18.8903379601166,ng/mL,1,1,0,0,0,2520,2520,105,105,Hours,Drug concentration (free plasma drug),104.019458333333,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,13.6499569466442,ng/mL,1,1,0,0,0,3192,3192,133,133,Hours,Drug concentration (free plasma drug),132.024291666667,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1059,38,88.8,161,34.258,2,1,1,0.1,0.1 mg/kg i.v.,2,0,9.27249010685842,ng/mL,1,1,0,0,0,3504,3504,147,NaN,Hours,Drug concentration (free plasma drug),146.024291666667,Drug concentration (free plasma drug),1,i.v.,1,1,8.9
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,10.6008593768896,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.013875,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,1,1,0,mg,1,0,16.89,1,0.181958333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,5601.02268561375,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.182625,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,4184.33615988679,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.993041666666667,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,2774.07210632651,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.97708333333333,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,1546.91094547176,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.99720833333333,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,1048.77668876204,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.96529166666667,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,356.792086846202,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.951375,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,151.466675243246,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.99375,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,70.6931922440156,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9409583333333,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,0.0315764360830442,ng/mL,1,1,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),33.957625,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,11.8484514965706,ng/mL,1,1,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9472083333333,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,15.0117201267271,ng/mL,1,1,0,0,0,1152,1152,49,49,Hours,Drug concentration (free plasma drug),47.951375,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,6.81041414542781,ng/mL,1,1,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),54.9617916666667,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,6.78013763881996,ng/mL,1,1,0,0,0,1992,1992,84,84,Hours,Drug concentration (free plasma drug),82.95,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,6.58807624968945,ng/mL,1,1,0,0,0,2688,2688,112,112,Hours,Drug concentration (free plasma drug),110.951375,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,18.3661082151302,ng/mL,1,1,0,0,0,3360,3360,140,140,Hours,Drug concentration (free plasma drug),138.95,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,3.08042111253742,ng/mL,1,1,0,0,0,4032,4032,168,168,Hours,Drug concentration (free plasma drug),166.951375,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1060,60,56.3,157,22.841,2,1,1,0.3,0.3 mg/kg i.v.,2,0,10.4314032345198,ng/mL,1,1,0,0,0,4704,4704,196,196,Hours,Drug concentration (free plasma drug),194.972916666667,Drug concentration (free plasma drug),1,i.v.,1,1,16.89
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,11.1339290887755,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00345833333333333,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,1,1,0,mg,1,0,19.3,1,0.170125,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,5668.52825110184,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.175,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,4418.47089261445,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.997208333333333,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,3336.0877904661,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.95833333333333,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,2151.53260320639,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.97916666666667,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,1697.25619398693,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,786.630789933883,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.9979166666667,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,596.115309575122,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),20,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,315.088072552502,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9992916666667,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,203.630409307134,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0097083333333,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,159.067375151571,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.007625,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,87.7658524487864,ng/mL,0,0,0,0,0,1152,1152,49,49,Hours,Drug concentration (free plasma drug),48.0055416666667,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,19.0493612662765,ng/mL,1,1,0,0,0,1824,1824,77,77,Hours,Drug concentration (free plasma drug),75.998625,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,0.752705320859691,ng/mL,1,1,0,0,0,2520,2520,105,105,Hours,Drug concentration (free plasma drug),104.003458333333,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,5.12657894023574,ng/mL,1,1,0,0,0,3192,3192,133,133,Hours,Drug concentration (free plasma drug),132.004875,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,15.5931605084791,ng/mL,1,1,0,0,0,3864,3864,160,161,Hours,Drug concentration (free plasma drug),158.997208333333,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,0.896689604823499,ng/mL,1,1,0,0,0,4536,4536,198,189,Hours,Drug concentration (free plasma drug),196.998625,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1061,52,64.2,168,22.747,2,1,1,0.3,0.3 mg/kg i.v.,2,0,21.6215414770778,ng/mL,1,1,0,0,0,5496,5496,230,NaN,Hours,Drug concentration (free plasma drug),228.986791666667,Drug concentration (free plasma drug),1,i.v.,1,1,19.3
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,7.78037969461377,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00416666666666667,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,1,1,0,mg,1,0,25.7,1,0.182625,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,5858.57728408784,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.186125,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,4107.32649342855,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.999291666666667,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,2636.47784333235,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),2.00345833333333,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,1427.89261396778,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,956.388098830657,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00695833333333,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,242.598152999838,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0020833333333,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,97.7830452987663,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9958333333333,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,19.7229427205814,ng/mL,1,1,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.0027916666667,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,3.23504525787436,ng/mL,1,1,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0034583333333,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,22.40076458953,ng/mL,1,1,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9972083333333,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,23.3632232762116,ng/mL,1,1,0,0,0,1656,1656,73,70,Hours,Drug concentration (free plasma drug),72.079875,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1063,62,85.8,174,28.339,1,1,1,0.3,0.3 mg/kg i.v.,2,0,0.766028396415807,ng/mL,1,1,0,0,0,1992,1992,84,NaN,Hours,Drug concentration (free plasma drug),83.0007083333333,Drug concentration (free plasma drug),1,i.v.,1,1,25.7
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,20.7626447635979,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,1,1,0,mg,1,0,65.3,1,0.184708333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,19548.5712269964,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.185416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,16956.8568625326,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00345833333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,10459.0196611003,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),2.02779166666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,7389.59817582554,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.00345833333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,5242.80139346869,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00345833333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,2119.37306067376,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0034583333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,1092.72349471873,ng/mL,0,0,0,0,0,480,480,20,21,Hours,Drug concentration (free plasma drug),19.0041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,638.705359514761,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.0083333333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,409.036398220094,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.007625,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,289.513015592705,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.00625,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,175.613009725385,ng/mL,0,0,0,0,0,1152,1152,49,49,Hours,Drug concentration (free plasma drug),48.0104166666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,105.405580995624,ng/mL,0,0,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),55.004875,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,58.4532792840197,ng/mL,0,0,0,0,0,1488,1488,63,63,Hours,Drug concentration (free plasma drug),62.0007083333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,56.8546325421976,ng/mL,0,0,0,0,0,1656,1656,70,70,Hours,Drug concentration (free plasma drug),69.0055416666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,22.2322179148065,ng/mL,1,1,0,0,0,2328,2328,98,98,Hours,Drug concentration (free plasma drug),97.0291666666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,16.9304870941144,ng/mL,1,1,0,0,0,3024,3024,126,126,Hours,Drug concentration (free plasma drug),125.007625,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,6.8266087299708,ng/mL,1,1,0,0,0,3696,3696,154,NaN,Hours,Drug concentration (free plasma drug),153.008333333333,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,13.5792247141998,ng/mL,1,1,0,0,0,4368,4368,187,NaN,Hours,Drug concentration (free plasma drug),186.005541666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1065,64,65.3,163,24.578,2,1,1,1,1.0 mg/kg i.v.,2,0,3.23846097348049,ng/mL,1,1,0,0,0,5040,5040,215,NaN,Hours,Drug concentration (free plasma drug),214.002791666667,Drug concentration (free plasma drug),1,i.v.,2,1,65.3
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,17.1465462983324,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00970833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,1,1,0,mg,1,0,80.8,1,0.185416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,23492.5217095868,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.185416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,16560.8715438374,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,11895.4537472866,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.99445833333333,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,8420.27318660356,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.998625,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,6381.01240422365,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00695833333333,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,3431.88723367109,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,1834.96699997245,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9916666666667,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,1241.35686206039,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9972083333333,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,878.896917899616,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),33.988875,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,623.957790966622,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9958333333333,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,178.472802769896,ng/mL,0,0,0,0,0,1656,1656,70,70,Hours,Drug concentration (free plasma drug),69.001375,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,20.8453191244679,ng/mL,1,1,0,0,0,2328,2328,100,98,Hours,Drug concentration (free plasma drug),98.9979166666667,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,17.7106732835045,ng/mL,1,1,0,0,0,3024,3024,126,126,Hours,Drug concentration (free plasma drug),125.004166666667,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,12.7848266889928,ng/mL,1,1,0,0,0,3696,3696,154,NaN,Hours,Drug concentration (free plasma drug),152.99375,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,2.05892087536105,ng/mL,1,1,0,0,0,4368,4368,183,NaN,Hours,Drug concentration (free plasma drug),181.997916666667,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1066,64,80.8,169,28.29,1,1,1,1,1.0 mg/kg i.v.,2,0,19.1171864746164,ng/mL,1,1,0,0,0,5040,5040,206,NaN,Hours,Drug concentration (free plasma drug),204.993041666667,Drug concentration (free plasma drug),1,i.v.,2,1,80.8
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,23.245715365489,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,1,1,0,mg,1,0,91,1,0.181958333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,24780.7736559019,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.181958333333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,15022.7781794369,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.0125,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,11802.5917469974,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.98820833333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,7566.49056882411,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.00904166666667,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,5579.27873020008,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.004875,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,2198.4202128261,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.9992916666667,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,1159.41394515901,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),20.0041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,638.913694594224,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.0034583333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,370.517481988973,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0034583333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,242.88821891135,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9895833333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,66.6275807731002,ng/mL,0,0,0,0,0,1656,1656,70,70,Hours,Drug concentration (free plasma drug),68.9979166666667,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,0.207990155551103,ng/mL,1,1,0,0,0,2328,2328,98,98,Hours,Drug concentration (free plasma drug),97.0034583333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,23.2945791681394,ng/mL,1,1,0,0,0,3024,3024,126,126,Hours,Drug concentration (free plasma drug),125.002791666667,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,7.49077641989656,ng/mL,1,1,0,0,0,3696,3696,154,NaN,Hours,Drug concentration (free plasma drug),153.00625,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,11.039559079582,ng/mL,1,1,0,0,0,4368,4368,182,NaN,Hours,Drug concentration (free plasma drug),181,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1067,49,91,163,34.25,2,1,1,1,1.0 mg/kg i.v.,2,0,23.7248393791828,ng/mL,1,1,0,0,0,5040,5040,210,NaN,Hours,Drug concentration (free plasma drug),209.020833333333,Drug concentration (free plasma drug),1,i.v.,2,1,91
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,13.7899960836686,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,227.1,1,0.184041666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,50813.2660328672,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.184708333333333,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,32502.3194939299,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.996541666666667,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,21263.722184747,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.99654166666667,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,13242.7723631246,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.004875,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,10269.1300425638,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.99791666666667,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,3910.41393986913,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.99375,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,2783.15434721084,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9916666666667,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,1630.17429876638,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,826.974118292625,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0027916666667,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,464.252285090488,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9972083333333,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,357.645466232714,ng/mL,0,0,0,0,0,1152,1152,48,49,Hours,Drug concentration (free plasma drug),46.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,160.84585644156,ng/mL,0,0,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),54.9875,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,123.265733889805,ng/mL,0,0,0,0,0,1488,1488,63,63,Hours,Drug concentration (free plasma drug),61.9944583333333,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,20.7774701540533,ng/mL,1,1,0,0,0,2160,2160,92,91,Hours,Drug concentration (free plasma drug),91,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,22.9887407627846,ng/mL,1,1,0,0,0,2856,2856,121,NaN,Hours,Drug concentration (free plasma drug),120.000708333333,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,13.0153749656089,ng/mL,1,1,0,0,0,3528,3528,149,NaN,Hours,Drug concentration (free plasma drug),147.998625,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,23.4753064911688,ng/mL,1,1,0,0,0,4200,4200,177,NaN,Hours,Drug concentration (free plasma drug),175.995833333333,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1068,59,75.7,187,21.648,1,1,1,3,3.0 mg/kg i.v.,2,0,22.1998259338856,ng/mL,1,1,0,0,0,4872,4872,205,NaN,Hours,Drug concentration (free plasma drug),203.990958333333,Drug concentration (free plasma drug),1,i.v.,2,1,227.1
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,13.4181787731027,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.007625,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,243.3,1,0.184041666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,78408.4302975441,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.184041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,44186.540034926,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,32823.8747907792,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.97779166666667,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,21319.0506909786,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.01041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,15030.7011093864,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00070833333333,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,6273.0487547602,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.00625,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,4919.06619075393,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9992916666667,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,3179.92452892442,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.004875,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,2001.4987490503,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,1068.24473226476,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0083333333333,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,814.75840194121,ng/mL,0,0,0,0,0,1152,1152,49,49,Hours,Drug concentration (free plasma drug),47.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,175.670663289533,ng/mL,0,0,0,0,0,1824,1824,77,77,Hours,Drug concentration (free plasma drug),76.0034583333333,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,48.1773129348505,ng/mL,0,0,0,0,0,2520,2520,105,105,Hours,Drug concentration (free plasma drug),104,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,23.8672565400201,ng/mL,1,1,0,0,0,3192,3192,133,NaN,Hours,Drug concentration (free plasma drug),131.989583333333,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,17.6521390863212,ng/mL,1,1,0,0,0,3864,3864,161,NaN,Hours,Drug concentration (free plasma drug),160,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1069,47,81.1,166,29.431,2,1,1,3,3.0 mg/kg i.v.,2,0,16.41763372804,ng/mL,1,1,0,0,0,4536,4536,189,NaN,Hours,Drug concentration (free plasma drug),187.995125,Drug concentration (free plasma drug),1,i.v.,2,1,243.3
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,10.7949308616307,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,196.8,1,0.182625,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,64428.1705844506,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.190958333333333,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,40932.6186727506,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00345833333333,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,26540.6048215743,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),2.00416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,16323.0132307351,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.99654166666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,10706.4037517612,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00345833333333,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,4228.41518254877,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,2550.23111615592,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.9992916666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,1201.01007625198,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.001375,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,676.095649093631,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0034583333333,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,336.667717391306,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0090416666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,61.7121049810558,ng/mL,0,0,0,0,0,1656,1656,70,70,Hours,Drug concentration (free plasma drug),69.0055416666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,8.58615970595362,ng/mL,1,1,0,0,0,2328,2328,98,98,Hours,Drug concentration (free plasma drug),97.0027916666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,13.4483623808051,ng/mL,1,1,0,0,0,3024,3024,126,NaN,Hours,Drug concentration (free plasma drug),125.002791666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,16.667016891473,ng/mL,1,1,0,0,0,3696,3696,154,NaN,Hours,Drug concentration (free plasma drug),153.000708333333,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,17.0857245522478,ng/mL,1,1,0,0,0,4368,4368,182,NaN,Hours,Drug concentration (free plasma drug),181.010416666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1070,27,65.6,166,23.806,2,1,1,3,3.0 mg/kg i.v.,2,0,20.2712307485229,ng/mL,1,1,0,0,0,4680,4680,196,NaN,Hours,Drug concentration (free plasma drug),194.965291666667,Drug concentration (free plasma drug),1,i.v.,2,1,196.8
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,0.493562053781742,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,928,1,0.18125,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,272738.007419124,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.1875,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,181610.604570888,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00345833333333,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,120342.060378503,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),2,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,81970.1255166807,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),4.00695833333333,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,52062.9785920808,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.001375,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,19032.0852959303,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0020833333333,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,4836.23381349672,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.998625,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,2410.78482796628,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0090416666667,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,1242.25908971521,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,647.248598648888,ng/mL,0,0,0,0,0,1152,1152,49,49,Hours,Drug concentration (free plasma drug),47.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,374.577999787101,ng/mL,0,0,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),54.992375,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,155.270661937989,ng/mL,0,0,0,0,0,1488,1488,63,63,Hours,Drug concentration (free plasma drug),62.0069583333333,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,16.6991390286888,ng/mL,1,1,0,0,0,2160,2160,91,NaN,Hours,Drug concentration (free plasma drug),90.0007083333333,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,4.26137702166888,ng/mL,1,1,0,0,0,2856,2856,119,NaN,Hours,Drug concentration (free plasma drug),117.997916666667,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,20.7351259736079,ng/mL,1,1,0,0,0,3528,3528,147,NaN,Hours,Drug concentration (free plasma drug),146,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,19.2156020583403,ng/mL,1,1,0,0,0,4200,4200,175,NaN,Hours,Drug concentration (free plasma drug),174,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1072,51,92.8,181,28.326,1,1,1,10,10.0 mg/kg i.v.,2,0,13.1753091835199,ng/mL,1,1,0,0,0,NaN,NaN,189,NaN,Hours,Drug concentration (free plasma drug),187.986125,Drug concentration (free plasma drug),1,i.v.,2,1,928
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,15.0020226903627,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00345833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,649,1,0.181958333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,233151.599124097,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.182625,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,139523.20529863,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.999291666666667,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,109638.521476046,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.98125,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,54578.3366416979,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.99583333333333,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,39934.608225271,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.986125,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,17606.3494280483,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0430416666667,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,10513.0826102386,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),19.998625,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,5750.44919721006,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9992916666667,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,3000.18051249965,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),33.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,2175.06395746637,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9958333333333,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,1058.8021251332,ng/mL,0,0,0,0,0,1152,1152,49,49,Hours,Drug concentration (free plasma drug),47.9944583333333,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,228.258923186052,ng/mL,0,0,0,0,0,1824,1824,78,NaN,Hours,Drug concentration (free plasma drug),77.0041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,54.6376737641514,ng/mL,0,0,0,0,0,2520,2520,107,NaN,Hours,Drug concentration (free plasma drug),105.999291666667,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,10.7136848851819,ng/mL,1,1,0,0,0,3192,3192,134,NaN,Hours,Drug concentration (free plasma drug),133,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,13.1787995846209,ng/mL,1,1,0,0,0,3864,3864,162,NaN,Hours,Drug concentration (free plasma drug),160.999291666667,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1073,42,64.9,156,26.668,2,1,1,10,10.0 mg/kg i.v.,2,0,12.7712225994738,ng/mL,1,1,0,0,0,4536,4536,191,NaN,Hours,Drug concentration (free plasma drug),189.988875,Drug concentration (free plasma drug),1,i.v.,2,1,649
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,6.2023526532064,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00416666666666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,954,1,0.184041666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,285809.918792736,ng/mL,0,0,0,0,0,4,4,1,1,Hours,Drug concentration (free plasma drug),0.184041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,213263.143691033,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00208333333333,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,149940.424909756,ng/mL,0,0,0,0,0,48,48,3,3,Hours,Drug concentration (free plasma drug),1.98125,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,81712.9158802061,ng/mL,0,0,0,0,0,96,96,5,5,Hours,Drug concentration (free plasma drug),3.99929166666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,62676.5489995004,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00904166666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,32140.6773192423,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0020833333333,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,20014.0628235435,ng/mL,0,0,0,0,0,480,480,21,21,Hours,Drug concentration (free plasma drug),20,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,13522.0749299698,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9972083333333,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,6827.13885510919,ng/mL,0,0,0,0,0,816,816,35,35,Hours,Drug concentration (free plasma drug),34.0069583333333,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,3994.51690480993,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),40.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,2857.91993903416,ng/mL,0,0,0,0,0,1152,1152,49,NaN,Hours,Drug concentration (free plasma drug),47.995125,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,1618.69269605944,ng/mL,0,0,0,0,0,1320,1320,56,NaN,Hours,Drug concentration (free plasma drug),55.0020833333333,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,1144.72211070095,ng/mL,0,0,0,0,0,1488,1488,63,NaN,Hours,Drug concentration (free plasma drug),62.0020833333333,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,296.299639068307,ng/mL,0,0,0,0,0,2160,2160,91,NaN,Hours,Drug concentration (free plasma drug),90,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,103.531407491801,ng/mL,0,0,0,0,0,2856,2856,119,NaN,Hours,Drug concentration (free plasma drug),118.005541666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,9.50735706617592,ng/mL,1,1,0,0,0,3528,3528,147,NaN,Hours,Drug concentration (free plasma drug),146.005541666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1075,55,95.4,169,33.402,2,1,1,10,10.0 mg/kg i.v.,2,0,3.14221365335759,ng/mL,1,1,0,0,0,4200,4200,176,NaN,Hours,Drug concentration (free plasma drug),174.996541666667,Drug concentration (free plasma drug),1,i.v.,2,1,954
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,5.66678295688959,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0104166666666667,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,1,1,0,mg,1,0,51,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,13.2656129265275,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,18.4590589508828,ng/mL,1,1,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,363.667536316853,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1381.2010697805,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3.023625,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1342.82409878089,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.0375,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,658.253828686254,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0055416666667,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,205.60249509443,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.0152916666667,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,61.3800880311762,ng/mL,0,0,0,0,0,984,984,43,42,Hours,Drug concentration (free plasma drug),42.0242916666667,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,22.2511474018,ng/mL,1,1,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),55.013875,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1076,54,84,165,30.854,2,1,1,0.6,0.6 mg/kg s.c.,2,0,2.87860889618375,ng/mL,1,1,0,0,0,1992,1992,84,84,Hours,Drug concentration (free plasma drug),83.0069583333333,Drug concentration (free plasma drug),1,s.c.,1,1,51
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,17.0596601733643,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.013875,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,1,1,0,mg,1,0,46.5,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,21.3964253504548,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,32.7249037792776,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,265.564701416144,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.989583333333333,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1193.50897146064,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.988875,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1354.47589747071,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.98470833333333,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,765.922527119803,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0027916666667,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,289.465491023943,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9930416666667,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,169.509230093669,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0159583333333,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,86.480228495613,ng/mL,0,0,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),54.9972083333333,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1077,58,77.8,162,29.645,2,1,1,0.6,0.6 mg/kg s.c.,2,0,19.4356500308565,ng/mL,1,1,0,0,0,1992,1992,84,84,Hours,Drug concentration (free plasma drug),82.9965416666667,Drug concentration (free plasma drug),1,s.c.,1,1,46.5
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,10.9723790448611,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,1,1,0,mg,1,0,42,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,20.2369031476834,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,497.610602733065,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1249.8251545209,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1768.43155846076,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3.004875,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1510.60674165326,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.998625,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,701.667622056708,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.011125,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,143.600424756005,ng/mL,0,0,0,0,0,648,648,31,28,Hours,Drug concentration (free plasma drug),30.0020833333333,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,29.5563764728408,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0034583333333,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,9.3988650877983,ng/mL,1,1,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),55.0041666666667,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1078,54,71,166,25.766,2,1,1,0.6,0.6 mg/kg s.c.,2,0,21.9286265012953,ng/mL,1,1,0,0,0,1992,1992,84,84,Hours,Drug concentration (free plasma drug),83.079875,Drug concentration (free plasma drug),1,s.c.,1,1,42
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,9.61904737374272,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.017375,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,1,1,0,mg,1,0,39,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,67.8871974816264,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,393.425261150313,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.252083333333333,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1094.54358202711,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1774.67688321513,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.96595833333333,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,1721.57037388267,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.88541666666667,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,629.84475193774,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.8979166666667,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,105.09471333227,ng/mL,0,0,0,0,0,648,648,30,28,Hours,Drug concentration (free plasma drug),28.9972083333333,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,18.6929089648353,ng/mL,1,1,0,0,0,984,984,44,42,Hours,Drug concentration (free plasma drug),42.9069583333333,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,7.16827212198059,ng/mL,1,1,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),55.0895833333333,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1079,28,63.8,173,21.317,2,1,1,0.6,0.6 mg/kg s.c.,2,0,6.69327508804131,ng/mL,1,1,0,0,0,1992,1992,84,84,Hours,Drug concentration (free plasma drug),83.011125,Drug concentration (free plasma drug),1,s.c.,1,1,39
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,5.12088862663167,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,1,1,0,mg,1,0,31.5,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,19.5505575167882,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,7.72896238267375,ng/mL,1,1,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,229.790461876151,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,677.639343930203,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,545.732259910862,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00345833333333,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,368.626939619615,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.001375,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,124.017040447977,ng/mL,0,0,0,0,0,648,648,29,28,Hours,Drug concentration (free plasma drug),28.0027916666667,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,43.4522860209922,ng/mL,0,0,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0104166666667,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,9.74022306674846,ng/mL,1,1,0,0,0,1320,1320,56,56,Hours,Drug concentration (free plasma drug),54.9965416666667,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1080,59,53.3,155,22.185,2,88,1,0.6,0.6 mg/kg s.c.,2,0,3.28722071955238,ng/mL,1,1,0,0,0,1992,1992,86,84,Hours,Drug concentration (free plasma drug),85.0041666666667,Drug concentration (free plasma drug),1,s.c.,1,1,31.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,21.1266482847387,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,1,1,0,mg,1,0,55.5,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,5.66597540541714,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,106.339304595988,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.252083333333333,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,526.111048009222,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,1593.08848623194,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3.04445833333333,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,1319.10994733156,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.045125,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,624.675661053864,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.032625,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,142.364644430367,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.96875,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,20.5818456971939,ng/mL,1,1,0,0,0,984,984,42,42,Hours,Drug concentration (free plasma drug),41.0729166666667,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,4.24416146349679,ng/mL,1,1,0,0,0,1320,1320,60,56,Hours,Drug concentration (free plasma drug),58.9632083333333,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1081,48,91.3,178,28.816,1,1,1,0.6,0.6 mg/kg s.c.,2,0,22.7028278992536,ng/mL,1,1,0,0,0,1992,1992,84,84,Hours,Drug concentration (free plasma drug),82.992375,Drug concentration (free plasma drug),1,s.c.,1,1,55.5
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,18.9427744965857,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,1,1,0,mg,1,0,141,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,54.4758597397595,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,310.120904272397,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,1835.64273458642,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.01179166666667,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,7709.3769614849,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3.004875,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,8556.51297230965,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.03470833333333,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,6270.4949111757,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.013875,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1082,54,70.2,174,23.187,2,1,1,2,2 mg/kg s.c.,2,0,1821.91683599114,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.007625,Drug concentration (free plasma drug),1,s.c.,2,1,141
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,21.9364933260386,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,1,1,0,mg,1,0,195,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,54.1897538034255,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,331.063797944838,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,1322.69417081869,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,3413.16781910211,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.97220833333333,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,2766.64179546492,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.95833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,1015.9548219058,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.9604166666667,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1083,55,97.7,189,27.351,1,1,1,2,2 mg/kg s.c.,2,0,226.773929641719,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),26.9597083333333,Drug concentration (free plasma drug),1,s.c.,2,1,195
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,3.80344514346813,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.007625,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,1,1,0,mg,1,0,196.5,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,61.0936113405108,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,517.41402953846,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,3149.21964381809,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,10059.8752107401,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.98541666666667,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,8452.40979622731,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.013875,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,3128.16103773308,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13.0083333333333,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1084,56,98.5,180,30.401,1,1,1,2,2 mg/kg s.c.,2,0,825.335229895779,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.0055416666667,Drug concentration (free plasma drug),1,s.c.,2,1,196.5
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,2.34513241578344,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,1,1,0,mg,1,0,132,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,127.430887040784,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,1003.24404956236,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,4642.42334309929,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,12842.5096164259,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3.001375,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,8518.76066016497,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00345833333333,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,4192.8553525952,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.9930416666667,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1085,57,66.1,171,22.605,1,2,1,2,2 mg/kg s.c.,2,0,1347.83272163548,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.011125,Drug concentration (free plasma drug),1,s.c.,2,1,132
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,3.96744232476545,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,1,1,0,mg,1,0,157.5,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,295.612172638339,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,2775.28438802509,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,8211.36411798286,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,9043.29762739257,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3.01595833333333,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,4902.21965856066,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),6.00554166666667,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,1675.75586320842,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),13,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1086,40,79,181,24.114,1,1,1,2,2 mg/kg s.c.,2,0,356.274530499856,ng/mL,0,0,0,0,0,648,648,28,28,Hours,Drug concentration (free plasma drug),27.051375,Drug concentration (free plasma drug),1,s.c.,2,1,157.5
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,13.9921029839202,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,1,1,0,mg,1,0,129,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,249.281832519932,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0902916666666667,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,1227.07202280974,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,5476.27421737692,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,9025.65752869157,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.93333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,7207.35292321258,ng/mL,0,0,0,0,0,144,144,7,7,Hours,Drug concentration (free plasma drug),5.9375,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,4304.35633664735,ng/mL,0,0,0,0,0,312,312,14,14,Hours,Drug concentration (free plasma drug),12.923625,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1087,58,64.3,166,23.334,2,1,1,2,2 mg/kg s.c.,2,0,1459.11231233222,ng/mL,0,0,0,0,0,648,648,29,28,Hours,Drug concentration (free plasma drug),27.9145833333333,Drug concentration (free plasma drug),1,s.c.,2,1,129
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,5.54862274913273,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00970833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,57.5516401332624,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,793.974665164292,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,2863.75424166767,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,4433.37299433754,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.97291666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,3247.06594713818,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.99095833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,1467.5552901891,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9791666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,13.9895833333333,Drug dose,0,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,2217.13377470932,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),28.0166666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28.0208333333333,Drug dose,0,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,2856.22682759587,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.9604166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,41.986125,Drug dose,0,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,2880.65433011355,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.976375,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,55.9895833333333,Drug dose,0,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,3158.30021474451,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.96875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,70,Drug dose,0,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,4016.43565496356,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.0833333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,3982.50274657166,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.25,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,6818.21280512823,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),71,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,7645.9458689115,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),73.0395833333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,6018.17254517985,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),75.9979166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,2458.57723284886,ng/mL,0,0,0,0,0,NaN,2016,86,85,Hours,Drug concentration (free plasma drug),85.0492916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,1679.75606237119,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),97.9840416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,461.522512615903,ng/mL,0,0,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),126.042375,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,123.267141787724,ng/mL,0,0,0,0,0,NaN,3696,155,155,Hours,Drug concentration (free plasma drug),153.970833333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1088,59,94.1,186,27.2,1,1,1,60,60 mg s.c.,2,0,42.5825403748357,ng/mL,0,0,0,0,0,NaN,NaN,178,NaN,Hours,Drug concentration (free plasma drug),177.055541666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,3.33360127331851,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00904166666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,1.95565750024773,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,342.399695561721,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,1158.00931181869,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,2518.46043344947,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.97570833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,2051.32269420805,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.98470833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,626.9485109399,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9958333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14.0034583333333,Drug dose,0,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,908.507181514417,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.9555416666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,27.9722083333333,Drug dose,0,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,912.270637149691,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.9757083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,41.9895833333333,Drug dose,0,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,848.296087085969,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.9680416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,55.9895833333333,Drug dose,0,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,928.061490788818,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.9305416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,69.9479166666667,Drug dose,0,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,1012.97844521922,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.0284583333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,1218.44585436104,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.1958333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,2214.60222305327,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),70.9465416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,2907.31867641227,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),72.9277916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,2441.94855243385,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),75.936125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,988.670694617349,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),84.0097083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,246.725539318276,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),97.9972083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,15.7153370612682,ng/mL,1,1,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),126,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,14.6162883638091,ng/mL,1,1,0,0,0,NaN,3696,155,155,Hours,Drug concentration (free plasma drug),153.959708333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1089,54,80.7,178,25.47,1,1,1,60,60 mg s.c.,2,0,2.58031239284618,ng/mL,1,1,0,0,0,NaN,NaN,179,NaN,Hours,Drug concentration (free plasma drug),177.958333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,15.8925655208736,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0117916666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,3.33476226309214,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,227.312710727762,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,840.191417143484,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,1483.63612851441,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.9875,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,1601.58261826947,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.94029166666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,859.048778299054,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),14.0208333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14.03125,Drug dose,0,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,2151.15051307313,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),28.0027916666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28.0208333333333,Drug dose,0,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,2217.95301491389,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),42.011125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,42.0208333333333,Drug dose,0,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,2554.59550251127,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),56.0104166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56.03125,Drug dose,0,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,2836.90950020039,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.9992916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,70.013875,Drug dose,0,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,2883.62879968276,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.0972083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,3383.45156883076,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.263875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,4148.56781447477,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),71.0097083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,7350.91492049858,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),73.017375,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,5846.86118105868,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),75.9791666666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,3555.54753198195,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),83.982625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,1190.23513665412,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),98.00625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,378.547279837953,ng/mL,0,0,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),125.993041666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,67.1480141638637,ng/mL,0,0,0,0,0,NaN,3696,155,155,Hours,Drug concentration (free plasma drug),153.996541666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1090,60,63.9,169,22.373,2,1,1,60,60 mg s.c.,2,0,5.29793205280597,ng/mL,1,1,0,0,0,NaN,NaN,182,NaN,Hours,Drug concentration (free plasma drug),180.982625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,0.768138891751799,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00904166666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,5.06228596116574,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,13.2491469777229,ng/mL,1,1,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,310.982513141257,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1633.50251171857,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.98195833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1456.56956041317,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.03054166666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,767.70526135745,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9742916666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14,Drug dose,0,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1504.36090784295,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.9805416666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28,Drug dose,0,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1695.6755929252,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.9757083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,42,Drug dose,0,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1713.74395876913,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.9757083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56,Drug dose,0,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1595.38326675979,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.9625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,69.9895833333333,Drug dose,0,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1667.83262743362,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.0729166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,2025.55667558583,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.2395833333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,3894.20490688338,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),70.979875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,5646.00642598454,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),72.9805416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,3842.90015826838,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),75.9757083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,1800.84601405355,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),84.1194583333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,722.848365243117,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),98.0958333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,105.31401557732,ng/mL,0,0,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),126.079875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,16.3434579609188,ng/mL,1,1,0,0,0,NaN,3696,155,155,Hours,Drug concentration (free plasma drug),154.085416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1091,55,102,182,30.793,1,1,1,60,60 mg s.c.,2,0,6.17464716524322,ng/mL,1,1,0,0,0,NaN,NaN,182,NaN,Hours,Drug concentration (free plasma drug),181.076375,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,16.8924769509759,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0159583333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,9.79816457041787,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,690.718871006951,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,2244.60055941649,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,3498.66843181168,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.98541666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,2096.09774373823,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.017375,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,424.96298726511,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),14.0104166666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14.017375,Drug dose,0,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,723.290514368315,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),28.045125,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28.0555416666667,Drug dose,0,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,699.819769836291,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),42.0125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,42.017375,Drug dose,0,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,795.322585236296,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),56.013875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56.0208333333333,Drug dose,0,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,1009.20275041362,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.9958333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,70.0104166666667,Drug dose,0,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,1019.92493557884,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.1041666666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,1478.06576184859,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.2604166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,4168.60800058084,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),71.0069583333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,4367.69610178753,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),73.3708333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,2553.89001489806,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),76.1833333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,1013.31188818919,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),84.0597083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,196.166773879025,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),98.0277916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,18.7839870915728,ng/mL,1,1,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),126.070125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1092,55,81.5,190,22.576,1,1,1,60,60 mg s.c.,2,0,1.10772321717648,ng/mL,1,1,0,0,0,NaN,3696,155,155,Hours,Drug concentration (free plasma drug),154.079875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,15.473630896893,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,0.811747571680616,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,142.868616841218,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1330.06745948289,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,2923.83657728384,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.99166666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1962.58213881611,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.97779166666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,709.900208288937,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9930416666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14,Drug dose,0,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1031.18122180101,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.9784583333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28.0104166666667,Drug dose,0,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1219.20981381886,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.9847083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,42.017375,Drug dose,0,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,994.736699950308,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.975,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56,Drug dose,0,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1075.75710304853,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.982625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,70.0104166666667,Drug dose,0,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1091.64166902995,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.09375,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1400.83658093906,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.2604166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,3038.21529920667,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),71.0104166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,5106.36336119638,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),73.0104166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,3171.87919998813,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),76.0520833333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,1216.16697290208,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),83.986125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,370.733652134408,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),97.9902916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,33.1769043065855,ng/mL,0,0,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),126.060416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1093,59,83.1,165,30.523,1,1,1,60,60 mg s.c.,2,0,10.8106471519529,ng/mL,1,1,0,0,0,NaN,3696,155,155,Hours,Drug concentration (free plasma drug),154.05,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,15.2722101024081,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0117916666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,6.25067385371232,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,22.4278486859201,ng/mL,1,1,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,340.710017887753,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.993041666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,1071.48437541393,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.97570833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,1166.90662640319,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.97220833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,283.566031770032,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9909583333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14,Drug dose,0,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,620.460026305654,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.95625,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,27.9791666666667,Drug dose,0,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,708.205935923875,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.961125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,41.9791666666667,Drug dose,0,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,710.815252109238,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.982625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56,Drug dose,0,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,776.881356562977,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),70.0034583333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,70.0104166666667,Drug dose,0,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,793.888464301635,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.09375,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,894.089916138531,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.2604166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,1472.09955778676,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),71.0104166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,2385.2157643172,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),72.970125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,1946.90072428284,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),76.01875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,754.776570156988,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),84.0007083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,249.947026482468,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),97.9680416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,23.0829150556833,ng/mL,1,1,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),126.048625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1094,56,87.4,167,31.339,2,1,1,60,60 mg s.c.,2,0,6.12108159169151,ng/mL,1,1,0,0,0,NaN,3696,155,155,Hours,Drug concentration (free plasma drug),154.047916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,16.4008130202352,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0166666666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,12.251026436229,ng/mL,1,1,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,690.248131032378,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,2050.19326125421,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.999291666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,2762.45824911828,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.98470833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1820.39574984384,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.98404166666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,670.620473934044,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.986125,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14,Drug dose,0,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1047.12886464809,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.9722083333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28,Drug dose,0,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1022.03647445167,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),42.0208333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,42.03125,Drug dose,0,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1350.28008073172,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),56.0083333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56.013875,Drug dose,0,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1347.93949136994,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.986125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,70.0034583333333,Drug dose,0,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1365.00343210303,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.0867916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1534.7742427594,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.25,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,2111.71571809301,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),71.0027916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,2927.30537296091,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),72.982625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1868.37997537784,ng/mL,0,0,0,0,0,NaN,1824,78,77,Hours,Drug concentration (free plasma drug),76.988875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,1150.50719565018,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),84.0090416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,324.321834580997,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),97.995125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1095,51,103.6,186,29.946,2,1,1,60,60 mg s.c.,2,0,55.7272126712196,ng/mL,0,0,0,0,0,NaN,3024,127,127,Hours,Drug concentration (free plasma drug),125.989583333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,9.77752086864987,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00970833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,56.7050427062937,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,330.689335806149,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,1341.55920648198,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.998625,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,3009.68125188215,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.99791666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,2546.3768079475,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.017375,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,1439.22288054387,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9909583333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14,Drug dose,0,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,2290.08078231845,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.9930416666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28.0104166666667,Drug dose,0,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,2570.7988462222,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.9742916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,42,Drug dose,0,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,0,2,0,NaN,1344,57,57,Hours,Drug dose,55.625,Drug dose,0,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,2563.59499046364,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.970125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,0,2,0,NaN,1680,71,71,Hours,Drug dose,69.625,Drug dose,0,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,1028.28942786524,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),70.0117916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,394.841800284146,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),84.0222083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1096,47,66.3,158,26.558,2,1,1,60,60 mg s.c.,2,0,184.288510988435,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),98.0430416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,6.84657319462947,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0104166666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,90.9257823426564,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,1574.78633960565,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,4271.51332612697,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.996541666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,4405.02908227887,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),3,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,2496.53569605025,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.036125,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,790.635605952726,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),14.0333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,14.0416666666667,Drug dose,0,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,1112.44017216866,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),28.0242916666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,28.0382083333333,Drug dose,0,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,964.805006444887,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),42.0229166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,42.0395833333333,Drug dose,0,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,997.899355669005,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),56.0097083333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56.0277916666667,Drug dose,0,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,975.511854340622,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),70.0020833333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,70.0208333333333,Drug dose,0,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,1514.90431758295,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.1041666666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,2002.27123824426,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.2708333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,3888.21122102638,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),71.0208333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,4749.239085545,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),72.9944583333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,2957.76399412861,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),76.011125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,1099.44960537725,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),84.029875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1097,56,79.6,177,25.408,1,1,1,60,60 mg s.c.,2,0,349.433926815329,ng/mL,0,0,0,0,0,NaN,2352,99,99,Hours,Drug concentration (free plasma drug),98.026375,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,15.1026849148863,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0257083333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,120.207696404775,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.086125,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,854.485958582296,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,2779.94276655891,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,4190.36917595006,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.98054166666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,3277.85182066628,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.97570833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,1116.61737713795,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9583333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,13.9722083333333,Drug dose,0,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,1563.11197348434,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.9416666666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,27.9729166666667,Drug dose,0,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,1781.76043935519,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.923625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,41.9416666666667,Drug dose,0,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,2303.41478791733,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.9145833333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,55.9347083333333,Drug dose,0,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,2442.32016779133,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.9333333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,69.9617916666667,Drug dose,0,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,3327.77895075913,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.045125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,5083.75082958333,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.2117916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,7685.27973570374,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),70.9583333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,6971.63026599896,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),72.948625,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,5315.63312871309,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),75.9465416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1098,34,73.8,171,25.239,2,1,1,60,60 mg s.c.,2,0,2692.20756589028,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),83.936125,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,10.5290257743321,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,271.854827083038,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,1457.87425789136,ng/mL,0,0,0,0,0,6,6,1,1,Hours,Drug concentration (free plasma drug),0.25,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,3370.30120033436,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,3656.79452293768,ng/mL,0,0,0,0,0,72,72,4,4,Hours,Drug concentration (free plasma drug),2.97570833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,2033.83193510355,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.98195833333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,519.21134281822,ng/mL,0,0,0,0,0,NaN,336,15,15,Hours,Drug concentration (free plasma drug),13.9854166666667,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,336,15,15,Hours,Drug dose,13.9944583333333,Drug dose,0,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,799.253017086949,ng/mL,0,0,0,0,0,NaN,672,29,29,Hours,Drug concentration (free plasma drug),27.9597083333333,Drug concentration (free plasma drug),1,s.c.,2,1,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,672,29,29,Hours,Drug dose,27.9729166666667,Drug dose,0,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,611.398963969815,ng/mL,0,0,0,0,0,NaN,1008,43,43,Hours,Drug concentration (free plasma drug),41.9652916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1008,43,43,Hours,Drug dose,41.9895833333333,Drug dose,0,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,779.812895431906,ng/mL,0,0,0,0,0,NaN,1344,57,57,Hours,Drug concentration (free plasma drug),55.9895833333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1344,57,57,Hours,Drug dose,56.0104166666667,Drug dose,0,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,782.889084337666,ng/mL,0,0,0,0,0,0,0,71,71,Hours,Drug concentration (free plasma drug),69.9354166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,1,1,0,mg,1,0,60,2,0,NaN,1680,71,71,Hours,Drug dose,69.9492916666667,Drug dose,0,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,1169.25092007292,ng/mL,0,0,0,0,0,2,2,71,71,Hours,Drug concentration (free plasma drug),70.0333333333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,2132.99972945201,ng/mL,0,0,0,0,0,6,6,71,71,Hours,Drug concentration (free plasma drug),70.1992916666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,3995.95162925343,ng/mL,0,0,0,0,0,24,24,72,72,Hours,Drug concentration (free plasma drug),70.9479166666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,4453.19632615914,ng/mL,0,0,0,0,0,72,72,74,74,Hours,Drug concentration (free plasma drug),72.9444583333333,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,2826.99515062409,ng/mL,0,0,0,0,0,NaN,1824,77,77,Hours,Drug concentration (free plasma drug),75.938875,Drug concentration (free plasma drug),1,s.c.,2,2,60
+1099,47,85.2,177,27.195,1,1,1,60,60 mg s.c.,2,0,828.963040002717,ng/mL,0,0,0,0,0,NaN,2016,85,85,Hours,Drug concentration (free plasma drug),83.9680416666667,Drug concentration (free plasma drug),1,s.c.,2,2,60
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,9.84249684477578,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00970833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,267,1,0.082625,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,88427.7006977881,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,55384.0843752225,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,20058.09885366,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.02779166666667,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,8625.29682902738,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),13.0208333333333,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,5538.73621170375,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),20.013875,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,805.930529640779,ng/mL,0,0,0,0,0,NaN,984,43,42,Hours,Drug concentration (free plasma drug),42.0034583333333,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,40.0724237763213,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.0159583333333,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,17.0119832662486,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),110.985416666667,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,0.27945976092396,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),138.895833333333,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2036,42,89,172,30.084,2,1,2,3,3.0 mg/kg i.v.,2,0,6.91204249293504,ng/mL,1,1,0,0,0,NaN,4008,169,168,Hours,Drug concentration (free plasma drug),168.034708333333,Drug concentration (free plasma drug),1,i.v.,2,1,267
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,12.3295470715655,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00554166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,224.1,1,0.0847083333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,80137.8512556966,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0847083333333333,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,54955.3356254255,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,14665.7458179335,ng/mL,0,0,0,0,0,NaN,144,8,7,Hours,Drug concentration (free plasma drug),6.93125,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,7009.18085300568,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),13.0972083333333,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,3731.06776490811,ng/mL,0,0,0,0,0,NaN,480,20,21,Hours,Drug concentration (free plasma drug),18.9965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,473.996682929211,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),40.9409583333333,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,89.2641711281644,ng/mL,0,0,0,0,0,NaN,1488,62,63,Hours,Drug concentration (free plasma drug),60.954875,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,23.3904440365252,ng/mL,1,1,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),82.9520833333333,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,14.5309275231668,ng/mL,1,1,0,0,0,NaN,2664,111,112,Hours,Drug concentration (free plasma drug),109.953458333333,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,20.192919872595,ng/mL,1,1,0,0,0,NaN,3336,139,140,Hours,Drug concentration (free plasma drug),137.961125,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2037,56,74.7,167,26.785,2,1,2,3,3.0 mg/kg i.v.,2,0,4.08182056521858,ng/mL,1,1,0,0,0,NaN,4008,168,168,Hours,Drug concentration (free plasma drug),166.954875,Drug concentration (free plasma drug),1,i.v.,2,1,224.1
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,11.5299988432841,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0104166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,169.8,1,0.0840416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,60990.3187469908,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0840416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,36610.737581259,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00208333333333,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,17536.7456556559,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.888875,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,8734.97104269449,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.9166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,5559.63443954335,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),19.8958333333333,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,1371.62066489429,ng/mL,0,0,0,0,0,NaN,984,41,42,Hours,Drug concentration (free plasma drug),40.0875,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,455.838831675948,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),61.8819583333333,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,5.18848680286508,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),110.920125,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,8.54264954529846,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),138.901375,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2039,32,56.6,173,18.911,2,1,2,3,3.0 mg/kg i.v.,2,0,31.2930640885641,ng/mL,0,0,0,0,0,NaN,4008,167,168,Hours,Drug concentration (free plasma drug),166.010416666667,Drug concentration (free plasma drug),1,i.v.,2,1,169.8
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,0.945679537262804,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00695833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,237,1,0.0840416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,73662.208473636,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0840416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,44501.6046122622,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00345833333333,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,14873.6710156315,ng/mL,0,0,0,0,0,NaN,144,8,7,Hours,Drug concentration (free plasma drug),7.02083333333333,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,5235.53579601715,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),20,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,1545.2894591411,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),41.042375,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,570.93679092287,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),61.9930416666667,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,202.071803105837,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.0715416666667,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,65.4610540210678,ng/mL,0,0,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),111.006958333333,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,7.35599519611101,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),139.013875,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2040,47,79,174,26.093,2,1,2,3,3.0 mg/kg i.v.,2,0,10.9690829485908,ng/mL,1,1,0,0,0,NaN,4008,168,168,Hours,Drug concentration (free plasma drug),167.04375,Drug concentration (free plasma drug),1,i.v.,2,1,237
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,6.57768958155922,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.013875,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,618,1,0.0833333333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,196280.671352945,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0840416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,124043.958390387,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,53958.6173932054,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.01041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,24373.9497592507,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.9680416666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,12570.555258348,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),19.954875,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,2688.39417319119,ng/mL,0,0,0,0,0,NaN,984,41,42,Hours,Drug concentration (free plasma drug),39.8972083333333,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,542.590379311662,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),61.954875,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,117.119274723626,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),82.9791666666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,16.7198374892343,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),110.982625,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,7.80551776243622,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),138.982625,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,11.2033069541649,ng/mL,1,1,0,0,0,NaN,4008,168,168,Hours,Drug concentration (free plasma drug),166.986125,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2041,44,61.8,171,21.135,2,1,2,10,10.0 mg/kg i.v.,2,0,14.2071164026794,ng/mL,1,1,0,0,0,NaN,NaN,195,NaN,Hours,Drug concentration (free plasma drug),193.910416666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,5.08362568237609,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00279166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,857,1,0.0867916666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,294347.388599202,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0875,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,169713.95417177,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,63271.8141802427,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.97916666666667,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,31293.8617415347,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.9833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,15652.6373177076,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),19.9930416666667,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,4742.83231750504,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),40.9930416666667,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,1055.14258058658,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),62.013875,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,435.875523209125,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),82.9757083333333,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,141.936939819246,ng/mL,0,0,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),110.975708333333,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,50.3545872929493,ng/mL,0,0,0,0,0,NaN,3336,135,140,Hours,Drug concentration (free plasma drug),133.988208333333,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2042,61,85.7,167,30.729,2,1,2,10,10.0 mg/kg i.v.,2,0,7.6904565428254,ng/mL,1,1,0,0,0,NaN,4008,168,168,Hours,Drug concentration (free plasma drug),166.974291666667,Drug concentration (free plasma drug),1,i.v.,2,1,857
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,4.32637012421944,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0104166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,528.5,1,0.0902916666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,151097.465797877,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0909583333333333,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,122388.70105671,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.993041666666667,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,45570.1432020075,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.013875,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,15294.9645966401,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),13.017375,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,8541.20680123707,ng/mL,0,0,0,0,0,NaN,480,19,21,Hours,Drug concentration (free plasma drug),17.9882083333333,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,2000.75023414935,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),41.03125,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,555.972414402936,ng/mL,0,0,0,0,0,NaN,1488,60,63,Hours,Drug concentration (free plasma drug),59.0257083333333,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,82.2477151095587,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.0166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,1.21618536002848,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),110.996541666667,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,12.914352769443,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),139.0625,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2043,44,52.85,161,20.389,2,1,2,10,10.0 mg/kg i.v.,2,0,15.4608201758381,ng/mL,1,1,0,0,0,NaN,4008,168,168,Hours,Drug concentration (free plasma drug),167.059041666667,Drug concentration (free plasma drug),1,i.v.,2,1,528.5
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,17.0728360154066,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00345833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,677,1,0.0854166666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,216134.762606616,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0854166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,128235.255771997,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,58276.3117369562,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.01945833333333,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,21652.9184414406,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),13.0694583333333,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,13404.0653249029,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),20.0520833333333,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,3850.97692686198,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),41.0208333333333,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,964.01866649508,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),62.0416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,400.241958169711,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.1194583333333,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,81.0553639540162,ng/mL,0,0,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),111.065958333333,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,16.8233111636563,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),139.0625,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2045,65,67.7,161,26.118,2,1,2,10,10.0 mg/kg i.v.,2,0,10.5931959084148,ng/mL,1,1,0,0,0,NaN,4008,168,168,Hours,Drug concentration (free plasma drug),166.986125,Drug concentration (free plasma drug),1,i.v.,2,1,677
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,19.3130339571795,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00345833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,740,1,0.0833333333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,196764.447409308,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0840416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,125205.257672798,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,47189.5736906297,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.04445833333333,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,24322.7867434918,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.951375,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,15471.3685514845,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),19.9479166666667,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,3828.32552147219,ng/mL,0,0,0,0,0,NaN,984,43,42,Hours,Drug concentration (free plasma drug),42.0659583333333,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,1081.61606959876,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),62.0507083333333,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,476.650505811347,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.0965416666667,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,83.2322759296739,ng/mL,0,0,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),111.065958333333,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,23.6944252930139,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),139.050708333333,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2047,47,74,168,26.219,2,1,2,10,10.0 mg/kg i.v.,2,0,22.5564506994468,ng/mL,1,1,0,0,0,NaN,4008,175,168,Hours,Drug concentration (free plasma drug),174.018041666667,Drug concentration (free plasma drug),1,i.v.,2,1,740
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,18.0298139627831,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00345833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,264.3,1,0.0840416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,67364.6985700135,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0847083333333333,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,52080.3361944581,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,10045.0218159834,ng/mL,0,0,0,0,0,NaN,144,9,7,Hours,Drug concentration (free plasma drug),7.96875,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,3652.91513798852,ng/mL,0,0,0,0,0,NaN,312,15,14,Hours,Drug concentration (free plasma drug),13.9409583333333,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,2147.21750165017,ng/mL,0,0,0,0,0,NaN,480,22,21,Hours,Drug concentration (free plasma drug),20.9340416666667,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,320.441884685248,ng/mL,0,0,0,0,0,NaN,984,44,42,Hours,Drug concentration (free plasma drug),42.9652916666667,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,68.0077933365359,ng/mL,0,0,0,0,0,NaN,1488,64,63,Hours,Drug concentration (free plasma drug),62.9617916666667,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,5.66949930915936,ng/mL,1,1,0,0,0,NaN,1992,85,84,Hours,Drug concentration (free plasma drug),83.963875,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,5.56225308233311,ng/mL,1,1,0,0,0,NaN,2664,113,112,Hours,Drug concentration (free plasma drug),111.951375,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2049,53,88.1,177,28.121,1,1,2,3,3.0 mg/kg i.v.,2,0,10.0262506587449,ng/mL,1,1,0,0,0,NaN,3336,141,140,Hours,Drug concentration (free plasma drug),139.954166666667,Drug concentration (free plasma drug),1,i.v.,2,1,264.3
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,9.24726172017968,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00345833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,663.5,1,0.0840416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,171276.700389315,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0840416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,126663.754068722,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,13556.4799511614,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.93404166666667,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,2863.92624002826,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.936125,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,1099.79704983839,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),19.9305416666667,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,93.8068552113661,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),41.0208333333333,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,14.3153330432495,ng/mL,1,1,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),61.9270833333333,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,22.0107296312251,ng/mL,1,1,0,0,0,NaN,1992,83,84,Hours,Drug concentration (free plasma drug),82.0242916666667,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,19.5902355931141,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),110.934041666667,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2050,53,66.35,170,22.958,2,1,2,10,10.0 mg/kg i.v.,2,0,8.28235380354378,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),138.923625,Drug concentration (free plasma drug),1,i.v.,2,1,663.5
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,10.2776611598273,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00416666666666667,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,666,1,0.0833333333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,244715.701973258,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0840416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,163327.678937507,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,41253.4267924329,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,13315.0807219481,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),13.0270833333333,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,7096.1229071063,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),20.0194583333333,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,1218.40659822005,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),41.0590416666667,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,252.223599322137,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),62.0242916666667,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,50.3868064995592,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.0555416666667,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,14.8184558304343,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),111.027791666667,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2051,70,66.6,170,23.045,2,1,2,10,10.0 mg/kg i.v.,2,0,20.3899494646295,ng/mL,1,1,0,0,0,NaN,3336,137,140,Hours,Drug concentration (free plasma drug),136.047916666667,Drug concentration (free plasma drug),1,i.v.,2,1,666
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,10.4133656437844,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0117916666666667,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,1,1,0,mg,1,0,153.6,1,0.086125,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,50311.7897156128,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0916666666666667,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,29574.0472611321,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),0.997916666666667,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,8360.60413181972,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.00554166666667,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,3263.62014886781,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.9708333333333,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,1125.58289175172,ng/mL,0,0,0,0,0,NaN,480,23,21,Hours,Drug concentration (free plasma drug),21.9617916666667,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,176.50298576951,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),40.9583333333333,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,3.71380925358262,ng/mL,1,1,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),61.9458333333333,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,11.678722660692,ng/mL,1,1,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),82.9652916666667,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2052,51,51.2,162,19.509,2,1,2,3,3.0 mg/kg i.v.,2,0,12.7144677650722,ng/mL,1,1,0,0,0,NaN,2664,115,112,Hours,Drug concentration (free plasma drug),113.970125,Drug concentration (free plasma drug),1,i.v.,2,1,153.6
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,9.34275723049621,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00970833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,770,1,0.0840416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,285385.407731536,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0847083333333333,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,173623.080127165,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.017375,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,62570.2451878107,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.03820833333333,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,26785.1311625363,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.9944583333333,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,14483.0480367188,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),20.045125,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,3237.74187315925,ng/mL,0,0,0,0,0,NaN,984,41,42,Hours,Drug concentration (free plasma drug),40.0382083333333,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,1131.46633129468,ng/mL,0,0,0,0,0,NaN,1488,55,63,Hours,Drug concentration (free plasma drug),54.0465416666667,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,128.918751152784,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.0208333333333,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,9.20391196239152,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),111.029875,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2053,65,77,165,28.283,2,1,2,10,10.0 mg/kg i.v.,2,0,20.2816694506291,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),139.013875,Drug concentration (free plasma drug),1,i.v.,2,1,770
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,12.9009664876495,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00904166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,781,1,0.0833333333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,254860.61129578,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0833333333333333,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,144851.379515551,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,52145.2608692504,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.107625,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,17167.2250348131,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),13.1354166666667,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,11779.2042963665,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),20.045125,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,2463.62384312476,ng/mL,0,0,0,0,0,NaN,984,43,42,Hours,Drug concentration (free plasma drug),42.0520833333333,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,661.261185963493,ng/mL,0,0,0,0,0,NaN,1488,64,63,Hours,Drug concentration (free plasma drug),63.0972083333333,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,175.550355871628,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),83.0659583333333,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2055,70,78.1,182,23.578,1,1,2,10,10.0 mg/kg i.v.,2,0,34.2386854296866,ng/mL,0,0,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),111.09375,Drug concentration (free plasma drug),1,i.v.,2,1,781
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,20.3169161504442,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0319583333333333,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,618,1,0.0840416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,200220.319633091,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0958333333333333,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,121337.033046343,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.001375,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,38131.4969207377,ng/mL,0,0,0,0,0,NaN,144,8,7,Hours,Drug concentration (free plasma drug),7.01179166666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,12692.8806590823,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),12.942375,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,4812.56635629501,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),19.9409583333333,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,701.115405567967,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),41.0729166666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2057,25,61.8,172,20.89,2,1,2,10,10.0 mg/kg i.v.,2,0,157.57581277047,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),61.9402916666667,Drug concentration (free plasma drug),1,i.v.,2,1,618
+2058,56,93.2,175,30.433,2,1,2,10,10.0 mg/kg i.v.,2,0,0.868419946048798,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.0180416666666667,Drug concentration (free plasma drug),1,i.v.,2,1,932
+2058,56,93.2,175,30.433,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,932,1,0.0833333333333333,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,932
+2058,56,93.2,175,30.433,2,1,2,10,10.0 mg/kg i.v.,2,0,283586.458526929,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0854166666666667,Drug concentration (free plasma drug),1,i.v.,2,1,932
+2058,56,93.2,175,30.433,2,1,2,10,10.0 mg/kg i.v.,2,0,203883.323365801,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1,Drug concentration (free plasma drug),1,i.v.,2,1,932
+2058,56,93.2,175,30.433,2,1,2,10,10.0 mg/kg i.v.,2,0,65907.5837154584,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),5.992375,Drug concentration (free plasma drug),1,i.v.,2,1,932
+2058,56,93.2,175,30.433,2,1,2,10,10.0 mg/kg i.v.,2,0,32408.784194138,ng/mL,0,0,0,0,0,NaN,312,14,14,Hours,Drug concentration (free plasma drug),13.013875,Drug concentration (free plasma drug),1,i.v.,2,1,932
+2058,56,93.2,175,30.433,2,1,2,10,10.0 mg/kg i.v.,2,0,19559.2323128257,ng/mL,0,0,0,0,0,NaN,480,21,21,Hours,Drug concentration (free plasma drug),20,Drug concentration (free plasma drug),1,i.v.,2,1,932
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,13.6942759380838,ng/mL,1,1,0,0,0,0,0,1,1,Hours,Drug concentration (free plasma drug),-0.00345833333333333,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,1,1,0,mg,1,0,685,1,0.0840416666666667,NaN,0,1,1,Hours,Drug dose,0,Drug dose,0,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,228179.551489676,ng/mL,0,0,0,0,0,2,2,1,1,Hours,Drug concentration (free plasma drug),0.0847083333333333,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,160821.8388793,ng/mL,0,0,0,0,0,24,24,2,2,Hours,Drug concentration (free plasma drug),1.00208333333333,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,51961.1879396048,ng/mL,0,0,0,0,0,NaN,144,7,7,Hours,Drug concentration (free plasma drug),6.017375,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,20423.5156619399,ng/mL,0,0,0,0,0,NaN,312,15,14,Hours,Drug concentration (free plasma drug),13.951375,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,10688.3152698294,ng/mL,0,0,0,0,0,NaN,480,22,21,Hours,Drug concentration (free plasma drug),20.9742916666667,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,1961.14806284307,ng/mL,0,0,0,0,0,NaN,984,42,42,Hours,Drug concentration (free plasma drug),40.9930416666667,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,502.860228280469,ng/mL,0,0,0,0,0,NaN,1488,63,63,Hours,Drug concentration (free plasma drug),61.986125,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,129.675087224567,ng/mL,0,0,0,0,0,NaN,1992,84,84,Hours,Drug concentration (free plasma drug),82.986125,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,9.55479942027294,ng/mL,1,1,0,0,0,NaN,2664,112,112,Hours,Drug concentration (free plasma drug),110.960416666667,Drug concentration (free plasma drug),1,i.v.,2,1,685
+2060,63,68.5,177,21.865,2,1,2,10,10.0 mg/kg i.v.,2,0,5.06999760732949,ng/mL,1,1,0,0,0,NaN,3336,140,140,Hours,Drug concentration (free plasma drug),138.965291666667,Drug concentration (free plasma drug),1,i.v.,2,1,685
