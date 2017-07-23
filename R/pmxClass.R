@@ -91,8 +91,7 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname,
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
-  if(!is.null(filter))
-  assert_that(is_string_or_expression(filter))
+  ## assert_that(is_string_or_expression(filter))
   assert_that(is_string_or_null(strat.color)) 
   assert_that(is_string_or_formula_or_null(strat.facet)) 
   
