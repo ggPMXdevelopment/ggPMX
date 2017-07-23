@@ -41,11 +41,11 @@ pmx <-
     directory <- checkPmxOption(directory, "work_dir")
     input <- checkPmxOption(input, "input")
     dv <- checkPmxOption(dv, "dv")
-    dvid <- checkPmxOption(dvid, "dvid")
-    cats <- checkPmxOption(cats, "cats")
-    conts <- checkPmxOption(conts, "conts")
-    occ <- checkPmxOption(occ, "occ")
-    strats <- checkPmxOption(strats, "strats")
+    dvid <- checkPmxOption(dvid, "dvid","DVID")
+    cats <- checkPmxOption(cats, "cats","")
+    conts <- checkPmxOption(conts, "conts","")
+    occ <- checkPmxOption(occ, "occ","")
+    strats <- checkPmxOption(strats, "strats","")
     if(!inherits(config, "pmxConfig"))
       config <- load_config(config, sys)
     pmxClass$new(directory, input, dv, config,dvid,cats,conts,occ,strats,settings)
@@ -272,7 +272,7 @@ get_strats <- function(ctr){
 #' @export
 get_covariates <- function(ctr){
   assert_that(is_pmxclass(ctr))
-  c(ctr$cats ,ctr$conts)
+  unique(c(ctr$cats ,ctr$conts))
 }
 
 
@@ -363,7 +363,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
          call. = FALSE)
   if(missing(occ) || is.na(occ)) occ <- ""
   if(missing(settings)) settings <- NULL
-  if(missing(strats)) strats <- ""
   
   private$.data_path <- data_path
   private$.input <- input

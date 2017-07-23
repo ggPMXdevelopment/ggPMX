@@ -13,17 +13,18 @@ vignette: >
 ---
 \clearpage  
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
-
+library(ggPMX)
 params. <- 
-  list(case = "1_popPK_model", 
-       wd = "/home/agstudy/SVN/ggPMX_doc/USER_EXAMPLES/MLX//PK_WITH_COVARIATE_IOV/1_popPK_model", 
+  list(
+       wd = "~/SVN/ggPMX_doc/USER_EXAMPLES/MLX//PK_WITH_COVARIATE_IOV/1_popPK_model", 
        type = "PK", 
        input = "PKdata_ggPMX.csv", 
        dv = "DV", 
        dvid = "ytype", 
        occ = "ISS",
        cats = "SEX;RACE;DISE;ILOW", 
-       conts = "AGE0;WT0;HT0;TRT")
+       conts = "AGE0;WT0;HT0;TRT",
+       strats=NULL)
 
 with(params.,
      pmxOptions(
@@ -33,7 +34,8 @@ with(params.,
        dvid=dvid,
        cats=unlist(strsplit(cats,";")),
        conts=unlist(strsplit(conts,";")),
-       occ=occ
+       occ=occ,
+       strats=""
      )
 )
 

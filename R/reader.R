@@ -22,34 +22,38 @@ read_mlx_ind_est <- function(path, x){
 #' @return data.table well formatted containing modelling input data
 #' @export
 #'
-read_input <- function(ipath, dv = NULL,dvid, cats = "",conts="",strats=""){
+read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
   xx <- pmx_fread(ipath)
   if(dv %in% names(xx)) setnames(xx, dv, "DV")
   else stop(sprintf("%s : is not a valid measurable variable",dv))
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
   else xx[,DVID:=1]
+  ## round time column for further merge
+  setnames(xx, grep("^time$",names(xx),ignore.case = TRUE,value=TRUE), "TIME")
+  xx[,TIME:=round(TIME,4)]
+  
   covariates <- unique(c(cats,conts))
-  if(length(covariates)>0){
-    covariates <- toupper(covariates)
+  if(length(covariates[covariates!=""])){
+    covariates <- covariates[covariates!=""]
     if(any(!covariates %in% names(xx))) 
       stop(sprintf("%s : is not a valid covariate variable\n",
                    covariates[!covariates%in%names(xx)]))
   }
-  if(length(cats)>0){
+  if(length(cats[cats!=""])>0){
+    cats <- cats[cats!=""]
     xx[,(cats) := lapply(.SD,as.factor),.SDcols=cats]
   }
-  if(length(strats)>0){
+  if(length(strats[strats!=""])>0){
+    strats <- strats[strats!=""]
     xx[,(strats) := lapply(.SD,as.factor),.SDcols=strats]
   }
-  if(length(conts)>0){
+  if(length(conts[conts!=""])>0){
+    conts <- conts[conts!=""]
     xx[,(conts) := lapply(.SD,as.numeric),.SDcols=conts]
   }
-  ## round time column for further merge
-  setnames(xx, grep("time",names(xx),ignore.case = TRUE,value=TRUE), "TIME")
-  xx[,TIME:=round(TIME,4)]
   ## keep only potential used columns
   cnames <- unique(c("ID","DV","DVID","TIME",cats,conts,strats))
-  
+  cnames <- cnames[cnames!=""]
   
   xx[,cnames,with=FALSE]
   

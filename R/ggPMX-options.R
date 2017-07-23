@@ -57,8 +57,11 @@ getPmxOption <- function(name, default = NULL) {
 #' @export
 pmxOptions <- function(...) {
   newOpts <- list(...)
-  
   if (length(newOpts) > 0) {
+    if("template_dir" %in% names(newOpts) )
+      .globals$options <- newOpts
+    else .globals$options <- .globals$options["template_dir"]
+    
     .globals$options <- dropNulls.(mergeVectors.(.globals$options, newOpts))
     invisible(.globals$options)
   } else {
@@ -67,10 +70,10 @@ pmxOptions <- function(...) {
 }
 
 
-checkPmxOption <- function(value, pmxname){
+checkPmxOption <- function(value, pmxname,default=NULL){
   call <- match.call()
   if(missing(value))
-    value <- getPmxOption(pmxname)
+    value <- getPmxOption(pmxname,default)
   if(is.null(value))
     stop(
       sprintf("Please set a %s argument or set global %s option", 
