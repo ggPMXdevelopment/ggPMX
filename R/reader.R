@@ -24,6 +24,9 @@ read_mlx_ind_est <- function(path, x){
 #'
 read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
   xx <- pmx_fread(ipath)
+  
+  setnames(xx, grep("^id$",names(xx),ignore.case = TRUE,value=TRUE), "ID")
+  
   if(dv %in% names(xx)) setnames(xx, dv, "DV")
   else stop(sprintf("%s : is not a valid measurable variable",dv))
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
