@@ -1,15 +1,14 @@
 ---
 title: "Advanced ggPMX"
 author: "Amine Gassem"
-date: "`r Sys.Date()`"
+date: '`r Sys.Date()`'
 output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  pdf_document:
+    highlight: null
+    number_sections: yes
+  knitr:::html_vignette:
+    fig_caption: yes
+    toc: yes
 ---
 
 \clearpage  
