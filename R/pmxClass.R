@@ -93,7 +93,7 @@ formula_to_text <- function(form){
 #' @export
 
 #'
-set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname, 
+set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname, 
                      filter = NULL, strat.color=NULL,strat.facet=NULL,...){
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
@@ -104,12 +104,12 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES"), pname,
   
   
   
-  
   conf <-
     switch(ptype,
            IND = individual(...),
            DIS = distrib(...),
-           RES = residual(...)
+           RES = residual(...),
+           ECORREL=ecorrel(...)
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]

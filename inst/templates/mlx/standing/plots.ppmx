@@ -17,3 +17,5 @@ DISTRI:
 INDIV:
   ptype: IND
   ranges: ~
+ETA_CORREL:
+  ptype: ECORREL
