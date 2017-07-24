@@ -1,19 +1,17 @@
 context("Test shrinkage computation")
-reader_help <- reader_helpers()
+pmxClassHelpers <- test_pmxClass_helpers()
+
 
 test_that("test shrinkage for standing config", {
-  names. <- names(reader_help$conf$data)
-  datasets <- reader_help$conf$data[names.]
-  path <- reader_help$wd
-  sys <- reader_help$conf$sys
-  dxs <- lapply(datasets,
-                load_data_set,
-                path = path,
-                sys = sys)
-  res <- shrinkage(dxs[["estimates"]], dxs[["eta"]])
+  
+  ctr <- pmxClassHelpers$ctr
+  expect_is(ctr, "pmxClass")
+  est_ <- ctr %>% get_data("estimates")
+  eta_ <- ctr %>% get_data("eta")
+  res <- shrinkage(est_,eta_)
   expect_is(res,"data.frame")
   expect_equal(colnames(res), c("EFFECT", "VALUE_OMEGA","SHRINK"))
-  expect_true(all(res$VALUE < 1))
-  
+  expect_true(all(res$SHRNK < 1))
+
 })
 
