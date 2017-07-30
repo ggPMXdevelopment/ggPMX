@@ -382,6 +382,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
   if(missing(occ) || is.na(occ)) occ <- ""
+  if(missing(cats) || is.na(cats)) cats <- ""
+  if(missing(conts) || is.na(conts)) conts <- ""
+  if(missing(strats) || is.na(strats)) strats <- ""
   if(missing(settings)) settings <- NULL
   
   private$.data_path <- data_path
@@ -394,9 +397,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$occ <- occ
   self$strats <- strats
   self$settings <- settings
-
+  
   ##private$.covariates <- covs[!is.na(covs) & covs!=""]
-  self$input <- read_input(input, self$dv,self$dvid,cats,conts,strats)
+  self$input <- read_input(input, self$dv,self$dvid,self$cats,self$conts,self$strats)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data)
   self$post_load()
@@ -431,7 +434,8 @@ pmx_add_plot <- function(self, private, x, pname){
     private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   } else {
     # throw error - to be improved
-    stop("Error - invalid data set")
+    private$.plots[[pname]] <- NULL
+    message(sprintf("Error - invalid data set: %s",pname))
   }
   invisible(self)
 }
@@ -497,4 +501,3 @@ pmx_post_load <- function(self, private){
 print.pmxClass <- function(x, ...){
   x$print(...)
 }
-
