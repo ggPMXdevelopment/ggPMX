@@ -185,7 +185,7 @@ input_finegrid <- function(input, finegrid, covariates = NULL)
 
 
 post_load_eta <- function(ds,input,sys){
- 
+  
   ## add DVID variable : merge key with the input 
   if(grepl("#",ds[1,ID],fixed=TRUE))
     ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
@@ -233,7 +233,8 @@ post_load <- function(dxs, input, sys, dplot,...){
       stop("error cannot merge predictions data with the modelling input")
     dxs$predictions <- mdx
     ## prepare data set for stratification
-    dxs$eta <- post_load_eta(dxs$eta,input,sys)
+    if(!is.null(dxs$eta))
+      dxs$eta <- post_load_eta(dxs$eta,input,sys)
     
     
     ## add shrinkage data set
@@ -244,5 +245,3 @@ post_load <- function(dxs, input, sys, dplot,...){
   
   dxs
 }
-
-
