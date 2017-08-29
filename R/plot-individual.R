@@ -18,7 +18,7 @@
 #'## display the first page of the individual plot
 #'ctr %>% get_plot("indiv",1)
 
-individual <- function(labels, has.curve = TRUE, 
+individual <- function(labels, 
                        facets = list(ncol = 3, nrow = 4), 
                        dname = NULL,
                        ...){
