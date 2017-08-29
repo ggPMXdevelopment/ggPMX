@@ -31,5 +31,9 @@ pmx_filter <-
     
     newData <- oldData[r]
     ctr[["data"]][[data_set]] <- newData
+    
+    ## update all plots after global filtering
+    for ( nn in ctr %>% plot_names())
+       ctr %>% pmx_update(pname = nn)
     ctr
   }
