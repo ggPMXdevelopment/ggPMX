@@ -199,6 +199,8 @@ plot_names <- function(ctr){
 #' @param ctr  \code{pmxClass} controller object
 #' @param pname character the plot name to update
 #' @param filter optional filter which will be applied to plotting data
+#' @param strat.color optional stratification parameter
+#' @param strat.color optional stratification parameter
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.
@@ -207,14 +209,19 @@ plot_names <- function(ctr){
 #' @return controller object with the plot updated
 #' @export
 
-pmx_update <- function(ctr, pname, filter = NULL, ..., pmxgpar = NULL){
+pmx_update <- function(ctr, pname, filter = NULL,strat.color=NULL,strat.facet=NULL, ..., pmxgpar = NULL){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
   if(!is.null(substitute(filter))){
     filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
   }
-  ctr$update_plot(pname, filter = filter, ..., pmxgpar = pmxgpar)
+  assert_that(is_string_or_null(strat.color)) 
+  assert_that(is_string_or_formula_or_null(strat.facet)) 
+  
+  ctr$update_plot(
+    pname, filter = filter,strat.color=strat.color,
+    strat.facet=strat.facet, ..., pmxgpar = pmxgpar)
 }
 
 
@@ -355,9 +362,12 @@ pmxClass <- R6::R6Class(
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
     
-    update_plot = function(pname, filter = NULL, ..., pmxgpar = NULL)
+    update_plot = function(pname, filter = NULL,strat.facet=NULL,strat.color=NULL,
+                           ..., pmxgpar = NULL){
       pmx_update_plot(self, private, pname, filter = filter,
-                      ..., pmxgpar = pmxgpar),
+                      strat.color=strat.color, strat.facet = strat.facet,
+                      ..., pmxgpar = pmxgpar)
+      },
     
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
@@ -440,23 +450,37 @@ pmx_add_plot <- function(self, private, x, pname){
   invisible(self)
 }
 
-pmx_update_plot <- function(self, private, pname, filter, ..., pmxgpar){
+pmx_update_plot <- function(self, private, pname, filter,strat.facet,strat.color, ..., pmxgpar){
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
-  config <- private$.plots_configs[[pname]]
-  old_class <- class(config)
-  x <- if(is.null(pmxgpar)){
-    newopts <- list(...)
-    hl <- newopts[names(newopts) %in% unique(c(names(config), "shrink"))]
-    gpl <- newopts[!names(newopts) %in% unique(c(names(config), "shrink"))]
+  x <- private$.plots_configs[[pname]]
+  old_class <- class(x)
+  old_class_gp <- class(x$gp)
+  
+  ## update graphical parameters 
+  if(!is.null(pmxgpar)) x <- l_left_join(x, pmxgpar)
+  newopts <- list(...)
+  if(length(newopts)>0){
+    hl <- newopts[names(newopts) %in% unique(c(names(x), "shrink"))]
+    gpl <- newopts[!names(newopts) %in% unique(c(names(x), "shrink"))]
     hl$gp <- gpl 
-    
-    l_left_join(config, hl)
-  }else{
-    l_left_join(config, pmxgpar)
+    x <- l_left_join(x, hl)
   }
-  class(x$gp) <- class(config$gp)
-  class(x) <- old_class
+  ## filtering  
   x[["filter"]] <- filter
+  ## stratification  
+  if(!is.null(strat.color)){
+    x[["strat.color"]] <- strat.color
+    x[["labels"]][["legend"]] <- strat.color
+  }
+  if(!is.null(strat.facet)){
+    x[["strat.facet"]] <- strat.facet
+    x[["labels"]][["title"]] <- 
+      sprintf("%s by %s",
+              x$gp[["labels"]][["title"]],formula_to_text(strat.facet))
+  }
+  
+  class(x$gp) <- old_class_gp
+  class(x) <- old_class
   
   self$remove_plot(pname)
   self$add_plot(x, pname)

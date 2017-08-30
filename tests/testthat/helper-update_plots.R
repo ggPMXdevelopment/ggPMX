@@ -6,7 +6,11 @@ helper_updateplots <- function(){
   pmxOptions(
     work_dir = WORK_DIR,
     input = input_file,
-    dv = "Y"
+    dv = "Y",dvid="DVID",
+    conts = c("WT0","AGE0"),
+    cats=c("SEX"),
+    occ="",
+    strats=c("STUD")
   )
   ctr <- pmx_mlx(config = "standing")
   list(ctr = ctr, wd = WORK_DIR, input = input_file)

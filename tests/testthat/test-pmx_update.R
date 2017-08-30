@@ -74,3 +74,14 @@ test_that("can update with filter", {
   pconf <- ggplot2::ggplot_build(p)
   expect_identical(dim(pconf$data[[2]]), c(1800L, 10L))
 })
+
+
+test_that("can update facet stratification", {
+  # set new plot
+  ctr <- helpers$ctr
+  ctr %>% pmx_update("distri",strat.facet ="SEX")
+  p <- ctr %>% get_plot("distri")
+  pconf <- ggplot2::ggplot_build(p)
+  expect_true("SEX" %in% names(pconf$layout$panel_layout))
+  
+  })
