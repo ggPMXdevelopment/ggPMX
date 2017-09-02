@@ -2,8 +2,17 @@ is_string <- function(x) {
   is.character(x) && length(x) == 1 && !is.na(x)
 }
 
+is_character_or_null <- function(x) {
+  (is.character(x) && all(!is.na(x)) ) || is.null(x)
+}
+
+
 assertthat::on_failure(is_string) <-  function(call, env) {
   paste0(deparse(call$x), " is not a string")
+}
+
+assertthat::on_failure(is_character_or_null) <-  function(call, env) {
+  paste0(deparse(call$x), " is not a valid character vector")
 }
 
 is_string_or_null <- function(x) {

@@ -1,4 +1,15 @@
 
+check_argument <- function(value,pmxname){
+  call <- match.call()
+  if(missing(value) || is.null(value))
+    stop(
+      sprintf("Please set a %s argument", 
+              deparse(call$value), pmxname)
+    )
+  value
+}
+
+
 #' Create a pmx object
 #' 
 #' Create a pmx object from a data source
@@ -6,14 +17,14 @@
 #' The complete path for the configuration file, the name of configuration within the built-in
 #' list of configurations, or a configuration object.
 #' @param sys the system name can be MLX/NM/OTHERS
-#' @param directory where the files are located. This is an optional parameter by default pmw will look
-#' in \code{work_dir} pmx options: \code{getPmxOptions("work_dir")}
+#' @param directory where the files are located. 
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
 #' @param dvid \code{character} observation type parameter
-#' @param cats \code{character} vector of categorical covariates
-#' @param conts \code{character} vector of continuous covariates
-#' @param occ \code{character} occasinal covariate variable name
+#' @param cats \emph{[Optional]}\code{character} vector of categorical covariates
+#' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
+#' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
+#' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @return a pmxClass object
 #' @family pmxclass 
 #' @export
@@ -29,23 +40,27 @@
 #'            config = "standing", 
 #'            directory = WORK_DIR,input = input_file,dv="Y")
 #'## Better option is to use pmxOptions
-#'pmxOptions(work_dir = WORK_DIR, input = input_file, dv = "Y")
 #'## Now the latter call becomes
-#'ctr <- pmx(sys="mlx", config = "standing")
+#'ctr <- pmx(sys="mlx", config = "standing",work_dir = WORK_DIR, input = input_file, dv = "Y")
 #'## Or even simpler
 #'ctr1 <- pmx_mlx("standing")
 #'}
 
 pmx <-
-  function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats,conts,occ,strats,settings){
-    directory <- checkPmxOption(directory, "work_dir")
-    input <- checkPmxOption(input, "input")
-    dv <- checkPmxOption(dv, "dv")
-    dvid <- checkPmxOption(dvid, "dvid","DVID")
-    cats <- checkPmxOption(cats, "cats","")
-    conts <- checkPmxOption(conts, "conts","")
-    occ <- checkPmxOption(occ, "occ","")
-    strats <- checkPmxOption(strats, "strats","")
+  function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats=NULL,conts=NULL,occ=NULL,strats=NULL,
+           settings=NULL){
+    directory <- check_argument(directory, "work_dir")
+    input <- check_argument(input, "input")
+    dv <- check_argument(dv, "dv")
+    dvid <- check_argument(dvid, "dvid")
+    if(missing(cats)) cats <- ""
+    assert_that(is_character_or_null(cats))
+    if(missing(conts)) conts <- ""
+    assert_that(is_character_or_null(conts))
+    if(missing(occ)) occ <- ""
+    assert_that(is_character_or_null(occ))
+    if(missing(strats)) strats <- ""
+    assert_that(is_character_or_null(strats))
     if(!inherits(config, "pmxConfig"))
       config <- load_config(config, sys)
     pmxClass$new(directory, input, dv, config,dvid,cats,conts,occ,strats,settings)
@@ -236,7 +251,6 @@ pmx_update <- function(ctr, pname, filter = NULL,strat.color=NULL,strat.facet=NU
 #'
 #' @examples
 #' \dontrun{
-#' pmxOptions(work_dir = WORK_DIR)
 #' ctr <- pmx_mlx(config = "standing")
 #' ctr %>% set_plot("IND", pname = "indiv1")
 #' get_plot_config("distr1")
@@ -445,7 +459,9 @@ pmx_add_plot <- function(self, private, x, pname){
   } else {
     # throw error - to be improved
     private$.plots[[pname]] <- NULL
-    message(sprintf("Error - invalid data set: %s",pname))
+    message(sprintf("Error - INVALID DATA SET NAME: %s. \n %s %s",
+                pname,"This will  not stop the controller", 
+                      "initialization but some plots may not work as expected"))
   }
   invisible(self)
 }

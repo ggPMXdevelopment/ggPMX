@@ -14,7 +14,7 @@ test_that("individual plot: get single page", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   p <- ctr %>% get_plot("indiv",2)
-  expect_equal(length(p),1)
+  expect_true(inherits(p,"ggplot"))
   
 })
 
@@ -51,7 +51,7 @@ test_that("Create a plot with not valid dname throw error", {
   
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
-  expect_error(
+  expect_message(
     ctr %>% set_plot("DIS", pname = "distr1", type = "box",dname="xxx")
   )
   

@@ -68,7 +68,6 @@ test_that("can set plot and filter", {
   expect_identical(dim(pconf$data[[2]]), c(1800L, 10L))
   
   # set plot and filter
-  ctr <- pmx_mlx("standing")
   ctr %>% set_plot("DIS", pname = "distr2", filter = ID < 10, type = "box")
   p <- ctr %>% get_plot("distr2")
   pconf <- ggplot2::ggplot_build(p)

@@ -40,19 +40,12 @@ getPmxOption <- function(name, default = NULL) {
 #' @section Options used in ggPMX:
 #' 
 #' \itemize{
-#' \item {\strong{work_dir:}} {working directory containing input files like estimates.txt, finedgrid,...}
-#' \item \strong{input:} {path to modelling input file}
-#' \item \strong{dv:} {measurable variable name default to Y}
-#' \item \strong{cats:}\emph{[Optional]} \code{character} {covariate categorical variables}
-#' \item \strong{conts:}\emph{[Optional]} {covariate continuous variables}
-#' \item \strong{occ:} \emph{[Optional]} {occasinal type variable}
-#' \item \strong{strats:} \emph{[Optional]} {extra variables names can be used for stratification}
-
+#' \item {\strong{template_dir:}} {path to template directory}
 #' }
 #'
 #' @examples
 #' \dontrun{
-#' pmxOptions(work_dir = WORK_DIR, input = input_file, dv = "Y")
+#' pmxOptions(template_dir=PATH_TO_CUSTOM_CONFIGURATION)
 #' }
 #' @export
 pmxOptions <- function(...) {
