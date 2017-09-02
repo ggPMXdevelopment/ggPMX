@@ -92,7 +92,7 @@ plot_pmx.individual <-
                                   page = x)
         }
         )
-        res 
+        if(length(res)==1)res[[1]] else res 
       }
       )
     })
