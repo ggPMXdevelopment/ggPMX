@@ -74,7 +74,7 @@ plot_pmx.ecorrel <- function(x, dx){
     dx <- x[["filter"]](dx)
   }
   
-  data_plot <- dcast(dx[,list(ID,VARIABLE,VALUE)],ID~VARIABLE,fun.aggregate = max)[,-"ID",with=F]
+  data_plot <- dcast(dx[,list(ID,VARIABLE,VALUE)],ID~VARIABLE,fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]
   
   p <- with(x, {
     ggpairs(
