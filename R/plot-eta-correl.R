@@ -20,6 +20,7 @@ ecorrel <- function(title,dname=NULL,...){
   structure(list(
     dname = dname,
     labels=labels,
+    point = list(shape = 2, color = "grey50", size = 1),
     gp = pmx_gpar(
       labels=labels,
       discrete = FALSE,
@@ -29,12 +30,13 @@ ecorrel <- function(title,dname=NULL,...){
   ), class =c("ecorrel", "pmx_gpar"))
 }
 
-lower.plot <- function(data, mapping, method = "loess", gp) {
+lower.plot <- function(data, mapping, method = "loess", gp,point) {
   p <- 
     ggplot(data = data, mapping = mapping) +
-    geom_point(alpha=0.5) +
+    with(point,geom_point(shape=shape,size=size,color=color))+
     geom_smooth(method = method, se=FALSE, size=1,color='black')
   plot_pmx(gp, p)
+
 }
 
 diag.plot <- function(data, mapping, gp) {
@@ -79,7 +81,7 @@ plot_pmx.ecorrel <- function(x, dx){
   p <- with(x, {
     ggpairs(
       data_plot, 
-      lower = list(continuous = wrap(lower.plot, method = "loess",gp=gp)),
+      lower = list(continuous = wrap(lower.plot, method = "loess",gp=gp,point=point)),
       diag = list(continuous = wrap(diag.plot,gp=gp)),
       upper = list(continuous = wrap(upper.plot,gp=gp)),
       title = labels$title,
