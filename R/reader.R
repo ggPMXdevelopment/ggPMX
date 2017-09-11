@@ -134,7 +134,7 @@ load_data_set <- function(x, path, sys){
       fpath <- grep(sys, fpath, ignore.case = TRUE, value=TRUE)
   }
   if(length(fpath)==0  || !file.exists(fpath)){
-    warning(sprintf(" %s FILE DOES NOT exist under %s", x[["file"]], path))
+    message(sprintf(" %s FILE DOES NOT exist under %s", x[["file"]], path))
     return(NULL)
   }
   
@@ -222,6 +222,7 @@ post_load <- function(dxs, input, sys, dplot,...){
     if(!is.null(dxs[["finegrid"]])){
       input_finegrid(input,dxs[["finegrid"]],...)
     }else{
+      message("No finegrid file: we use instead predictions.txt for individual plots")
       dxs[["predictions"]] 
     }  
   

@@ -457,11 +457,9 @@ pmx_add_plot <- function(self, private, x, pname){
   if(!is.null(self$data[[dname]])) {
     private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
   } else {
-    # throw error - to be improved
+    # throw error message
     private$.plots[[pname]] <- NULL
-    message(sprintf("Error - INVALID DATA SET NAME: %s. \n %s %s",
-                pname,"This will  not stop the controller", 
-                      "initialization but some plots may not work as expected"))
+    message(sprintf("No data %s provided for plot %s",sprintf('%s',dname),sprintf('%s',pname)))
   }
   invisible(self)
 }
