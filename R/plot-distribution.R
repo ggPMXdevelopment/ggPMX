@@ -7,6 +7,8 @@
 #' @param type box for boxplot or histogram
 #' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
+#' @param has.shrink \code{logical} if TRUE add shrinkage layer
+#' @param has.jitter \code{logical} if TRUE add jitter operator for points
 
 #'
 #' @return distrib object

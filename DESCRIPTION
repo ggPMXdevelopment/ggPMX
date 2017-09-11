@@ -19,7 +19,9 @@ Imports:
     magrittr,
     stringr,
     assertthat,
-    checkmate
+    checkmate,
+    GGally,
+    zoo
 License: file LICENSE
 LazyData: true
 Suggests:

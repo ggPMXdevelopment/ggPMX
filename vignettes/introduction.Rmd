@@ -36,12 +36,12 @@ in Pharmatometrics (NONMEM/Monolix):
 library("ggPMX")
 
 # Load standard configuration
-conf <- load_config("standing", sys="mlx")
-conf
 
-# Init controller object from (test) data
-ctr <- pmx(conf, directory=file.path(system.file(package="ggPMX"), 
-                                     "testdata", "theophylline", "Monolix"))
+ctr <- pmx(
+  config = "standing", sys = "mlx", 
+           directory = WORK_DIR, 
+           input = input_file, dv = "Y", 
+           dvid ="DVID")
 ```
 
 2. Set graphics parameters:

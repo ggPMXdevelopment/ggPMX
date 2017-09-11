@@ -38,7 +38,7 @@ test_that("errors work in load data set", {
         return(list.files(path, full.names = TRUE))
       }
     }, 
-    expect_warning(
+    expect_message(
       load_data_set(datasets$estimates, path, sys), "FILE DOES NOT exist"
     )
   )

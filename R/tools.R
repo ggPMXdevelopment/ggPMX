@@ -5,6 +5,8 @@
 #' @param label draft layer default to DRAFT
 #' @param size size of the annotation
 #' @param color color of the annotation default to grey50
+#' @param x \code{numeric} x coordinate of the draft label 
+#' @param y \code{numeric} y coordinate of the draft label 
 #'
 #' @return ggplot2 annotation
 #' @export
@@ -42,4 +44,25 @@ pmx_fread <- function(...){
 
 is.formula <- function(x){
   inherits(x,"formula")
+}
+
+
+#' Creates pmx controller using default package data
+#'
+#' @return pmx controller
+#' @export
+#'
+#' @examples
+#' pmx_ctr()
+pmx_ctr <- function(){
+  theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                            "theophylline")
+  WORK_DIR <- file.path(theophylline, "Monolix")
+  input_file <- file.path(theophylline, "data_pk.csv")
+  
+  pmx_mlx(
+    config = "standing", 
+    directory = WORK_DIR, 
+    input = input_file, dv = "Y", 
+    dvid ="DVID")
 }

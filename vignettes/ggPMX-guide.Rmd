@@ -50,7 +50,8 @@ Then we can instantiate a **standing** (the name of the config) controller using
 ctr <- pmx(
   config = "standing", sys = "mlx", 
            directory = WORK_DIR, 
-           input = input_file, dv = "Y")
+           input = input_file, dv = "Y", 
+           dvid ="DVID")
 ```
 
 This is can be simplified by setting a number of global options and using the
@@ -60,11 +61,11 @@ Monolix controller:
 - Using the MONOLIX controller.
 
 ```{r init_work_dir}
-pmxOptions(
-  work_dir = WORK_DIR, 
-  input = input_file, 
-  dv = "Y")
-ctr <- pmx_mlx(config = "standing")
+ctr <- pmx_mlx(
+  config = "standing", 
+           directory = WORK_DIR, 
+           input = input_file, dv = "Y", 
+           dvid ="DVID")
 
 ```
 
@@ -184,8 +185,6 @@ ctr %>% get_plot("distr1")
 ### Individual plot
 
 ```{r , individual_plot,  fig.width=7, fig.height=6, warning=FALSE,message=FALSE}
-library(ggPMX)
-
 ctr %>% set_plot("IND", pname = "indiv1", 
                  draft = list(size = 10, label = "DRAFT", color = "grey50"))
 
@@ -200,8 +199,6 @@ The `Residual plot` plots a residual Y versus an independant variable X.
 Examples of such are NPD vs EPRED, NPD vs TIME etc. 
 
 ```{r , residual_plot,  fig.width=7, fig.height=6,message=FALSE}
-library(ggPMX)
-
 ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
 
 ctr %>% get_plot("res1")
@@ -227,7 +224,11 @@ library(ggPMX)
 # Commented because the vignette will not build if it is on:
 # pmxOptions(work_dir="/home/agstudy/projects/r/ggPMX/ggPMX_files/inputs")
 
-ctr <- pmx_mlx(config = "standing")
+ctr <- pmx(
+  config = "standing", sys = "mlx", 
+           directory = WORK_DIR, 
+           input = input_file, dv = "Y", 
+           dvid ="DVID")
 
 
 ## add a new plot
@@ -311,7 +312,12 @@ ammending an existing one. For illustration we set the distribution plot
 shown earlier as a fresh plot:
 
 ```{r local_filter_set_plot}
-ctr <- pmx_mlx(config = "standing")
+
+ctr <- pmx(
+  config = "standing", sys = "mlx", 
+           directory = WORK_DIR, 
+           input = input_file, dv = "Y", 
+           dvid ="DVID")
 ctr %>% set_plot("DIS", pname = "distr1", type = "box")
 p <- ctr %>% get_plot("distr1")
 pconf <- ggplot2::ggplot_build(p)
@@ -365,7 +371,12 @@ can calculate the shrinkage using the theophyline test data:
 
 ```{r shrinkage}
 
-ctr <- pmx_mlx(config = "standing")
+
+ctr <- pmx(
+  config = "standing", sys = "mlx", 
+           directory = WORK_DIR, 
+           input = input_file, dv = "Y", 
+           dvid ="DVID")
 
 estimates <- ctr %>% get_data("estimates")
 eta <- ctr %>% get_data("eta")

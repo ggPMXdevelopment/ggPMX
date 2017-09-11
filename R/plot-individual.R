@@ -14,9 +14,12 @@
 #'@examples
 #'## get individual plot using package default data set
 #'library(ggPMX)
-#'ctr <- pmx_mlx(config = "standing")
+#'ctr <- pmx_ctr()
 #'## display the first page of the individual plot
 #'ctr %>% get_plot("indiv",1)
+# display all pages ( default)
+#'ctr %>% get_plot("indiv")
+
 
 individual <- function(labels, 
                        facets = list(ncol = 3, nrow = 4), 
@@ -61,6 +64,7 @@ individual <- function(labels,
 #'
 plot_pmx.individual <-
   function(x, dx, include){
+    ID <- NULL
     assert_that(is_pmx_gpar(x))
     if(!is.null(x[["filter"]])){
       dx <- x[["filter"]](dx)

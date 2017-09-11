@@ -25,6 +25,7 @@ check_argument <- function(value,pmxname){
 #' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
 #' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
+#' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
 #' @return a pmxClass object
 #' @family pmxclass 
 #' @export
@@ -67,13 +68,19 @@ pmx <-
   }
 
 #' Wrapper to pmx constructor
-#'
-#' @param config the config name
-#' @param directory the data directory (working diectory)
-#' @param input the input file
-#' @param dv the dv parameter
-#'
-#' @family pmxclass
+#' @param config Can be either :
+#' The complete path for the configuration file, the name of configuration within the built-in
+#' list of configurations, or a configuration object.
+#' @param directory where the files are located. 
+#' @param input \code{character} complete path to the modelling input file
+#' @param dv \code{character} the name of measurable variable used in the input modelling file
+#' @param dvid \code{character} observation type parameter
+#' @param cats \emph{[Optional]}\code{character} vector of categorical covariates
+#' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
+#' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
+#' @param strats \emph{[Optional]}\code{character} extra stratification variables
+#' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
+#' @family pmxclass 
 #' @return \code{pmxClass} object
 #' @export
 
@@ -101,6 +108,8 @@ formula_to_text <- function(form){
 ##' }
 ##' @param pname plot name, if missing it will be created using function aestetics
 ##' @param filter optional filter which will be applied to plotting data
+##' @param strat.facet \code{formula} define categorical stratification as formula
+##' @param strat.color \code{character}
 #' @param ... other plot parameters to configure \code{\link{pmx_gpar}}.
 #'
 #' @family pmxclass
@@ -214,8 +223,8 @@ plot_names <- function(ctr){
 #' @param ctr  \code{pmxClass} controller object
 #' @param pname character the plot name to update
 #' @param filter optional filter which will be applied to plotting data
-#' @param strat.color optional stratification parameter
-#' @param strat.color optional stratification parameter
+#' @param strat.facet \code{formula} optional stratification parameter
+#' @param strat.color \code{character} optional stratification parameter
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.

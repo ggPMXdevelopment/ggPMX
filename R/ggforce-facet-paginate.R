@@ -17,19 +17,7 @@
 #' @export
 #' @importFrom ggplot2 facet_wrap ggproto
 #'
-#' @examples
-#' # Calculate the number of pages with 9 panels per page
-#' n_pages <- ceiling(
-#'   length(levels(diamonds$cut)) * length(levels(diamonds$clarity)) / 9
-#' )
-#'
-#' # Draw each page
-#' for (i in seq_len(n_pages)) {
-#'   ggplot(diamonds) +
-#'     geom_point(aes(carat, price), alpha = 0.1) +
-#'     facet_wrap_paginate(~cut:clarity, ncol = 3, nrow = 3, page = i)
-#' }
-#'
+
 facet_wrap_paginate <- function(facets, nrow = NULL, ncol = NULL,
                                 scales = "fixed", shrink = TRUE,
                                 labeller = "label_value", as.table = TRUE,
@@ -189,12 +177,6 @@ FacetWrapPaginate <-
 #'
 #' @export
 #' @importFrom ggplot2 ggplot_build
-#'
-#' @examples
-#' p <- ggplot(diamonds) +
-#'     geom_point(aes(carat, price), alpha = 0.1) +
-#'     facet_wrap_paginate(~cut:clarity, ncol = 3, nrow = 3, page = 1)
-#' n_pages(p)
 #'
 n_pages <- function(plot) {
   page <- ggplot_build(plot)$layout$panel_layout$page

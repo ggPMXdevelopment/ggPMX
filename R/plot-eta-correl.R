@@ -68,7 +68,8 @@ upper.plot <- function(data, mapping, gp) {
 #' @import GGally
 #'
 plot_pmx.ecorrel <- function(x, dx){
-  
+  ## avoid RCMDCHECK warning
+  ID <- VARIABLE <- VALUE <- NULL
   assert_that(is_pmx_gpar(x))
   assert_that(is.data.table(dx))
   

@@ -12,8 +12,8 @@
 
 shrinkage <-
   function(estimates, eta, sys="mlx", fun=c("sd","var")){
-    PARAM <- NULL; EFFECT <- NULL; VAR <- NULL; FUN <- NULL
-    VALUE_ETA <- NULL; VALUE_OMEGA <- NULL
+    PARAM <-  EFFECT <- VAR <- FUN <- NULL
+    VALUE_ETA <- VALUE_OMEGA <- NULL
     if(missing(fun))fun <- "sd"
     dx1 <- 
       estimates[grepl("omega", PARAM)][
@@ -32,6 +32,7 @@ shrinkage <-
 
 shrinkage_data <-
   function(ctr,sys="mlx", fun="sd") {
+   VAR <- FUN <- NULL
     estimates <- ctr %>% get_data("estimates")
   eta <- ctr %>% get_data("eta")
   dx.etas <- eta[VAR == "eta" & grepl("mean", FUN)]
@@ -44,22 +45,32 @@ shrinkage_data <-
 #' Create shrinkage layer
 #'
 #' @param ctr controller
+#' @param type \code{character}
+#' @param color \code{character} shrinkage text color
+#' @param fun \code{character} sd or var functions
+#' @param size \code{numeric} text size
+#' @param y_ \code{numeric} y text position
+#' @param x_ \code{numeric} x text position
+#' 
 #'
 #' @return ggplot2 layer
 #' @import ggplot2
 #' @export
 shrinkage_layer <- 
-  function(ctr,type="hist",color="red",size=5,pos_=0.75,fun="sd",x_=0) {
+  function(ctr,type=c("hist","box"),color="red",size=5,x_=0,y_=0.75,fun=c("sd","var")) {
+  ## 
+  EFFECT <- VALUE <- SHRINK <- NULL
+  label <- c <- pos <- NULL
   dx = shrinkage_data(ctr=ctr,fun=fun)[, list(
-                   x=x_, 
-                   pos = max(VALUE) * pos_,
-                   label = sprintf('%s%%', 
+                   "x"=x_, 
+                   "pos"= max(VALUE) * y_,
+                   "label" = sprintf('%s%%', 
                                    round(SHRINK[1]*100))
   ),EFFECT]
   if(type=="box")
     geom_text(data=dx,
     aes(x=EFFECT,label = label, y = pos), color = color, size = size)
-  else  geom_text(data=dx,aes(x=x,y=pos, label=label),color = color, size = size)
+  else  geom_text(data=dx,aes_string(x="x",y="pos", label="label"),color = color, size = size)
 
 }
 

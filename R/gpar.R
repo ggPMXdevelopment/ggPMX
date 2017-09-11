@@ -11,6 +11,7 @@
 #' @param is.draft logical if TRUE add draft layer
 #' @param draft draft layer parameters
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
+#' @param scale_log \code{character} define the how to apply scale log, can be x,y,both or none of them
 #' @param ... extra arguments (not used yet)
 #'
 #'

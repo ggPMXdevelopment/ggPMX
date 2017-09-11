@@ -9,7 +9,13 @@ output:
   knitr:::html_vignette:
     fig_caption: yes
     toc: yes
+vignette: >
+  %\VignetteIndexEntry{ggPMX: User guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
+
 
 \clearpage  
 ```{r general_chunk, echo=FALSE,warning=FALSE,message=FALSE}
@@ -29,8 +35,8 @@ uc.dir <- file.path(system.file(package = "ggPMX"), "testdata",
 wd.mlx <- file.path(uc.dir, "Monolix")
 input_file <- file.path(uc.dir, data_file)
 
-pmxOptions(
-  work_dir = wd.mlx, 
+ctr <- pmx_mlx("standing",
+  director = wd.mlx, 
   input = input_file, 
   dv = "DV", 
   dvid = "ytype", 
@@ -38,7 +44,7 @@ pmxOptions(
   cats = c("SEX","RACE","DISE","ILOW"), 
   conts = c("AGE0","WT0","HT0","TRT")
 )
-ctr <- pmx_mlx("standing")
+
 
 ```
 
