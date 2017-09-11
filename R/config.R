@@ -56,6 +56,8 @@ load_config <- function(x, sys = c("mlx", "nm")){
   configs. <- configs(sys)
   cpath <- configs.[configs.$name == x, "path"]
   ifile <- list.files(cpath, full.names = TRUE, pattern = "ipmx")
+  if(length(ifile)==0)
+    stop(sprintf("No configuration found for: %s",x))
   iconfig <- yaml.load_file(ifile)
   pfile <- list.files(cpath, full.names = TRUE, pattern = "ppmx")
   pconfig <- yaml.load_file(pfile)

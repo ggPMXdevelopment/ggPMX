@@ -18,3 +18,11 @@ test_that("can print loaded config", {
   cfig <- load_config(conf$name[1], "mlx")
   expect_output(print(cfig), "configuration Object")
 })
+
+
+test_that("raise error if bad config name is provided", {
+  expect_error(load_config("BAD_CONFIG_NAME"))
+})
+
+
+
