@@ -28,7 +28,13 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
   setnames(xx, grep("^id$",names(xx),ignore.case = TRUE,value=TRUE), "ID")
   
   if(dv %in% names(xx)) setnames(xx, dv, "DV")
-  else stop(sprintf("%s : is not a valid measurable variable",dv))
+  else {
+    dv.names <- paste(setdiff(names(xx),c("ID","id","time","TIME")),collapse=" or ")
+    dv.names <- sprintf("'%s'",dv.names)
+    err.msg <- sprintf("%s : is not a valid measurable variable
+                        suggested names are : %s",dv,dv.names)
+    stop(err.msg)
+  }
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
   else xx[,DVID:=1]
   ## round time column for further merge
