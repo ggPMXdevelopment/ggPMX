@@ -65,6 +65,7 @@ distrib <- function(
 #'
 #' @param x distribution object
 #' @param dx data set
+#' @param ... not used for the moment
 
 
 
@@ -75,7 +76,7 @@ distrib <- function(
 #' @family plot_pmx
 #' @import ggplot2
 #'
-plot_pmx.distrib <- function(x, dx){
+plot_pmx.distrib <- function(x, dx,...){
   
   assert_that(is_pmx_gpar(x))
   assert_that(is.data.table(dx))

@@ -55,6 +55,7 @@ individual <- function(labels,
 #' @param x individual object
 #' @param dx data set
 #' @param include list of individual ID to plot, if missing all ID will be plotted
+#' @param ... not used for the moment
 #'
 #' @return a list of ggplot2
 #' @export
@@ -63,7 +64,7 @@ individual <- function(labels,
 #' @family plot_pmx
 #'
 plot_pmx.individual <-
-  function(x, dx, include){
+  function(x, dx, include,...){
     ID <- NULL
     assert_that(is_pmx_gpar(x))
     if(!is.null(x[["filter"]])){

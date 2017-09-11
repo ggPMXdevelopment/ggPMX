@@ -189,7 +189,7 @@ load_source <- function(sys, path, dconf, include, exclude){
 }
 #' Merge input and fingrid data sets
 #'
-#' @param input\code{data.table} input data set
+#' @param input \code{data.table} input data set
 #' @param finegrid \code{data.table} finegrid data set
 #' @param covariates \code{character} covariates names vector (optional)
 #' @return data.table

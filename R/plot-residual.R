@@ -52,13 +52,14 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
 #'
 #' @param x residual object
 #' @param dx data set
+#' @param ... not used for the moment
 
 #'
 #' @return ggplot2 object
 #' @seealso \code{\link{residual}}
 #' @family plot_pmx
 #' @export
-plot_pmx.residual <- function(x, dx){
+plot_pmx.residual <- function(x, dx,...){
   assert_that(is_pmx_gpar(x))
   with(x,
        {

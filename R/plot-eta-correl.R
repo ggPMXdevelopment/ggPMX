@@ -60,6 +60,7 @@ upper.plot <- function(data, mapping, gp) {
 #'
 #' @param x distribution object
 #' @param dx data set
+#' @param ... not used for the moment
 #' @return ggpairs plot
 #' @export
 #' @seealso \code{\link{distrib}}
@@ -67,7 +68,7 @@ upper.plot <- function(data, mapping, gp) {
 #' @import ggplot2
 #' @import GGally
 #'
-plot_pmx.ecorrel <- function(x, dx){
+plot_pmx.ecorrel <- function(x, dx,...){
   ## avoid RCMDCHECK warning
   ID <- VARIABLE <- VALUE <- NULL
   assert_that(is_pmx_gpar(x))
