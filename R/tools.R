@@ -63,6 +63,10 @@ default_ctr <- function(){
   pmx_mlx(
     config = "standing", 
     directory = WORK_DIR, 
-    input = input_file, dv = "Y", 
-    dvid ="DVID")
+    input = input_file, 
+    dv = "Y", 
+    dvid ="DVID",
+    cats=c("SEX"),
+    conts=c("WT0","AGE0"),
+    strats="STUD")
 }

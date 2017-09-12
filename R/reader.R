@@ -222,7 +222,7 @@ post_load_eta <- function(ds,input,sys){
   ## add DVID variable : merge key with the input 
   if(grepl("#",ds[1,ID],fixed=TRUE))
     ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
-                                             c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+          c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
   if(!"DVID" %in% names(ds))  ds[,DVID:=1]
   ds <- try(
     merge(ds, input, 
@@ -235,7 +235,7 @@ post_load_eta <- function(ds,input,sys){
   measures <- grep("_.*_", names(ds))
   ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]
   ds <- melt(ds, measure = measures)
-  setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
+  setnames(ds, toupper(names(ds)))
   ## keep only mean or mode variable
   ds[grep("(mode|mean)$",VARIABLE)]
   ## reshape columns for easier filtering
