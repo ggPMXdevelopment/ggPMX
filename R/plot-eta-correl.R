@@ -4,11 +4,12 @@
 #'
 #' @param title character the plot title
 #' @param dname name of dataset to be used
+#' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' byd efault
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @return ecorrel object
 #' @family plot_pmx
 #' @export
-ecorrel <- function(title,dname=NULL,...){
+ecorrel <- function(title,dname=NULL,type.eta=c("mode","mean"),...){
   assert_that(is_string_or_null(dname))
   if(is.null(dname)) dname <- "eta"
   if(missing(title)) title <- "Correlation random effect"
@@ -21,6 +22,7 @@ ecorrel <- function(title,dname=NULL,...){
     dname = dname,
     labels=labels,
     point = list(shape = 2, color = "grey50", size = 1),
+    type.eta =  match.arg(type.eta),
     gp = pmx_gpar(
       labels=labels,
       discrete = FALSE,
@@ -70,13 +72,18 @@ upper.plot <- function(data, mapping, gp) {
 #'
 plot_pmx.ecorrel <- function(x, dx,...){
   ## avoid RCMDCHECK warning
-  ID <- VARIABLE <- VALUE <- NULL
+  ID <- VARIABLE <- VALUE <- FUN <- NULL
   assert_that(is_pmx_gpar(x))
   assert_that(is.data.table(dx))
   
   if(!is.null(x[["filter"]])){
     dx <- x[["filter"]](dx)
   }
+  
+  ## filter by type of eta 
+  dx <- dx[FUN==x$type.eta]
+  if(nrow(dx)==0)
+    stop("Now rows find for eta of type ",x$type.eta,"\n")
   
   data_plot <- dcast(dx[,list(ID,VARIABLE,VALUE)],ID~VARIABLE,fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]
   

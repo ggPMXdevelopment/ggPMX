@@ -53,8 +53,8 @@ is.formula <- function(x){
 #' @export
 #'
 #' @examples
-#' pmx_ctr()
-pmx_ctr <- function(){
+#' default_ctr()
+default_ctr <- function(){
   theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
                             "theophylline")
   WORK_DIR <- file.path(theophylline, "Monolix")

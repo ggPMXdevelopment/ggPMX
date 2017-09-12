@@ -229,9 +229,12 @@ post_load_eta <- function(ds,input,sys){
   ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]
   ds <- melt(ds, measure = measures)
   setnames(ds, toupper(gsub("_|[0-9]+", "", names(ds))))
+  ## keep only mean or mode variable
+  ds[grep("(mode|mean)$",VARIABLE)]
+  ## reshape columns for easier filtering
   ds[, c("VAR", "EFFECT", "FUN") := 
        list(gsub("_.*","",VARIABLE),
-            gsub("eta_(.*)_.*","\\1",VARIABLE),
+            gsub("eta_(.*)_(mode|mean)","\\1",VARIABLE),
             gsub(".*_","",VARIABLE))]
   ds
 }
