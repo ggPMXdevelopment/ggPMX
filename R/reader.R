@@ -1,12 +1,13 @@
 #' Read MONOLIX individual parameters
 #' @param path character path to the file
 #' @param x dataset object
+#' @param ... extra paramter not used 
 #'
 #' @return data.table object
 #' @import data.table
 
 #' @export
-read_mlx_ind_est <- function(path, x){
+read_mlx_ind_est <- function(path, x,...){
   ds <- pmx_fread(path)
   ds <- ds[,grep("id|eta",tolower(names(ds))),with=FALSE]
   ds <- ds[,as.logical(!grepl("*",tolower(names(ds)),fixed=TRUE)),with=FALSE]
@@ -79,33 +80,39 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
 #'
 #' @param path character path to the file
 #' @param x dataset object
+#' @param ... extra paramter not used
 #'
 #' @return data.table object
 #' @import data.table
 
 #' @export
-read_mlx_pred <- function(path, x){
+read_mlx_pred <- function(path, x,...){
   
   ID <- DVID <- NULL
   xx <- pmx_fread(path)
   setnames(xx, tolower(names(xx)))
   if(!is.null(x$strict)) xx <- xx[, names(x$names), with = FALSE]
-  ## mean start columns
-  col_stars <- grep("*", names(xx), fixed = TRUE, value = TRUE)
-  ncol_stars <- toupper(gsub("ind", "I", gsub("_.*", "", col_stars)))
-  nn <- c(x$names, stats::setNames(ncol_stars,
-                                   gsub("\\*", "\\\\*", col_stars)))
-  match_names <- vapply(names(nn), 
-                        function(x){
-                          out <- which(grepl(x, names(xx)))
-                          if(length(out) == 0L){NA}else{out}
-                        }, 
-                        integer(1), USE.NAMES = FALSE)
-  setnames(xx, names(xx)[match_names[!is.na(match_names)]],
-           as.character(nn[!is.na(match_names)]))
-  res <- xx[, as.character(nn[!is.na(match_names)]), with = FALSE]
+  ## use configuration columns
+  ids <-which(names(x$names) %in% names(xx))
+  nn <- x$names[ids]
+  if(!"indpred_mode" %in% names(nn)){
+    if("indpred_mean" %in% names(xx)){
+      message("predictions: NO indpred_mode found use inpred_mean instead")
+      nn[["indpred_mode"]] <- NULL 
+      nn[["indpred_mean"]] <- "IPRED"
+    }else{
+      message("predictions: NO indpred_mode neither indpred_mean found")
+      return(NULL)
+    }
+  }
+  ## select columns
+  res <- setnames(xx[,names(nn),with=FALSE],as.character(nn))
+  
   if(grepl("#",res[1,ID],fixed=TRUE))
     res[,c("ID","DVID") := tstrsplit(ID,"#")][,c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+  
+  if(!"DVID" %in% names(res)) res[,"DVID" :=1]
+    
   res
 }
 
@@ -114,12 +121,13 @@ read_mlx_pred <- function(path, x){
 #'
 #' @param path character path to the file
 #' @param x dataset object
+#' @param ... extra parameter not used 
 #'
 #' @return data.table object
 #' @importFrom utils read.table
 #' @import data.table
 #' @export
-read_mlx_par_est <- function(path, x){
+read_mlx_par_est <- function(path, x,...){
   xx <- setDT(read.table(path, sep = ";", header = TRUE))
   if("names" %in% names(x))
     setnames(xx, x[["names"]])
@@ -135,7 +143,7 @@ read_mlx_par_est <- function(path, x){
 #' @return data.table
 #' @import data.table
 #' @export
-load_data_set <- function(x, path, sys){
+load_data_set <- function(x, path, sys,...){
   fpath <- file.path(path, x[["file"]])
   if(!file.exists(fpath)){
     fpath <- grep(x[["file"]], list.files(path, full.names = TRUE), 
@@ -150,7 +158,7 @@ load_data_set <- function(x, path, sys){
   
   
   if(exists("reader", x))
-    return(do.call(x[["reader"]], list(fpath, x)))
+    return(do.call(x[["reader"]], list(fpath, x,...)))
   ds <- pmx_fread(fpath)
   ds <- ds[,!grep("^V[0-9]+", names(ds)), with = FALSE]
   data.table::setnames(ds, tolower(names(ds)))
@@ -172,19 +180,18 @@ load_data_set <- function(x, path, sys){
 #' @param include list of data sets to load,
 #' if missed ( the default behavior) load all sources.
 #' @param exclude list of data sets to exclude from loading
+#' @param ... any extra parameters for readers
 #'
 #' @return list of data.table
 #' @export
-load_source <- function(sys, path, dconf, include, exclude){
+load_source <- function(sys, path, dconf, include, exclude,...){
   names. <- names(dconf)
-  if(!missing(include)) names. <- include
-  if(!missing(exclude)) names. <- setdiff(names., exclude)
+  
   
   datasets <- dconf[names.]
-  dxs <- lapply(datasets,
-                load_data_set,
-                path = path,
-                sys = sys)
+  dxs <- lapply(datasets,function(x){
+    load_data_set(x,  path = path,  sys = sys,...)
+  })
   dxs
 }
 #' Merge input and fingrid data sets
@@ -254,12 +261,8 @@ post_load <- function(dxs, input, sys, dplot,...){
   if(sys == "mlx"){
     ## add startification column
     vv <- names(dxs$eta)[vapply(dxs$eta, is.integer, TRUE)]
-    ## prepare data set for stratification
-    if(!"DVID" %in% names(dxs$predictions))
-      dxs$predictions[,DVID:=1]
     mdx <- try(
-      merge(dxs$predictions[, !"DV", with = FALSE], input, 
-            by = c("ID", "TIME","DVID"))
+      merge(dxs$predictions, input,by = c("ID", "TIME","DVID"))
       ,silent=TRUE)
     if(inherits(mdx,"try-error"))
       stop("error cannot merge predictions data with the modelling input")

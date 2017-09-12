@@ -15,9 +15,9 @@ predictions :
     names:
       id: ID
       time: TIME
-      '^y\d*$': DV
       poppred: PRED
       npde: NPDE
+      indpred_mode: IPRED
 eta :
     label : invidual estimates of random effects
     file  : indiv_eta.txt
@@ -26,10 +26,10 @@ finegrid :
     label : finegrid
     file  : finegrid.txt
     reader  : read_mlx_pred
-    strict: True
     names:
       id: ID
       time: TIME
       poppred: PRED
+      npde: NPDE
       indpred_mode: IPRED
 
