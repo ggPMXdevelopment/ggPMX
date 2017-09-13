@@ -60,16 +60,29 @@ distrib <- function(
 
 
 
+is.formula <- function(x) inherits(x, "formula")
+
+wrap_formula <- function(x)
+{
+  str <- "~lfacet"
+  if(is.character(x) && length(x)==1)
+    str <- sprintf( "%s ~ lfacet", x)
+  
+  if(length(x)==3 && is.formula(x))
+    str <- sprintf( "%s ~ %s + lfacet", deparse(x[[2]]),
+                    deparse(x[[3]]))
+  
+  if(length(x)==2 && is.formula(x))
+    str <- sprintf( "%s ~ lfacet", deparse(x[[2]]))
+  return(formula(str))
+}
+
 
 #' Plot EBE distribution
 #'
 #' @param x distribution object
 #' @param dx data set
 #' @param ... not used for the moment
-
-
-
-#'
 #' @return ggplot2 plot
 #' @export
 #' @seealso \code{\link{distrib}}
@@ -91,6 +104,9 @@ plot_pmx.distrib <- function(x, dx,...){
   strat.facet <- x[["strat.facet"]]
   strat.color <- x[["strat.color"]]
   
+  wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet)
+   else formula("~lfacet")
+  
   
   p <- with(x, {
     
@@ -101,16 +117,12 @@ plot_pmx.distrib <- function(x, dx,...){
       
     }else dx.etas[, lfacet := EFFECT]
     
-    wrap_formula <- if(is.null(strat.facet)) as.formula("~lfacet") 
-                       else as.formula(paste(strat.facet,"lfacet",sep="~"))
-    
     p <- ggplot(dx.etas, aes(EFFECT))
     if(type=="box"){
       p <- if(is.null(strat.color))
         p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
       else  p + geom_boxplot(aes_string(y = "VALUE",fill=strat.color), outlier.shape = NA)
-      if(!is.null(strat.facet))
-        p <- p + facet_wrap(strat.facet)
+     
         
         
       if(has.jitter)
@@ -136,7 +148,7 @@ plot_pmx.distrib <- function(x, dx,...){
       
     }else{
       p <- p +  geom_histogram(aes(x = VALUE)) +
-        with(facets, facet_wrap(wrap_formula, scales = scales, 
+        with(facets, facet_wrap(wrap.formula , scales = scales, 
                                          nrow = nrow))
     }
     plot_pmx(gp, p)

@@ -47,14 +47,14 @@ is.formula <- function(x){
 }
 
 
-#' Creates pmx controller using default package data
+#' Creates pmx controller using theophylline data
 #'
 #' @return pmx controller
 #' @export
 #'
 #' @examples
-#' default_ctr()
-default_ctr <- function(){
+#' theophylline()
+theophylline <- function(){
   theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
                             "theophylline")
   WORK_DIR <- file.path(theophylline, "Monolix")

@@ -74,8 +74,11 @@ plot_pmx.residual <- function(x, dx,...){
            with(point, geom_point(shape = shape, color = color))
          if(add_hline) p <- p + geom_hline(yintercept = 0)
          p <- plot_pmx(gp, p) 
-         if(!is.null(strat.facet))
+         if(!is.null(strat.facet)){
+           if(is.character(strat.facet))
+             strat.facet <- formula(paste0("~",strat.facet))
            p <- p + facet_grid(strat.facet)
+         }
          p
        })
 }

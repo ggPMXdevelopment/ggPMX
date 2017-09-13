@@ -125,8 +125,7 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname,
   ## assert_that(is_string_or_expression(filter))
   assert_that(is_string_or_null(strat.color)) 
   assert_that(is_string_or_formula_or_null(strat.facet)) 
-  
-  
+ 
   
   conf <-
     switch(ptype,
@@ -242,6 +241,9 @@ pmx_update <- function(ctr, pname, filter = NULL,strat.color=NULL,strat.facet=NU
   }
   assert_that(is_string_or_null(strat.color)) 
   assert_that(is_string_or_formula_or_null(strat.facet)) 
+  
+ 
+  
   
   ctr$update_plot(
     pname, filter = filter,strat.color=strat.color,

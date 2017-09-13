@@ -14,7 +14,7 @@
 #'@examples
 #'## get individual plot using package default data set
 #'library(ggPMX)
-#'ctr <- default_ctr()
+#'ctr <- theophylline()
 #'## display the first page of the individual plot
 #'ctr %>% get_plot("indiv",1)
 # display all pages ( default)
