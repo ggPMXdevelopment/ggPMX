@@ -534,7 +534,7 @@ pmx_plots <- function(self, private){
 
 pmx_post_load <- function(self, private){
   self$data <- post_load(self$data, self$input, self$config$sys, 
-                         self$config$plots)
+                         self$config$plots,covariates=get_covariates(self))
   
 }
 

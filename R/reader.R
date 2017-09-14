@@ -206,14 +206,12 @@ input_finegrid <- function(input, finegrid, covariates = NULL)
 {
   ## this for check purpose
   ID <- TIME <- DVID <- NULL
-  dx <- rbind(finegrid, input, fill = TRUE)
-  dx <- dx[order(ID, TIME)]
-  dx <- dx[TIME>0]
+  if(is.null(finegrid))return(NULL)
+  dx <- rbind(finegrid, input, fill = TRUE)[TIME>0]
   measures <- c("DV","PRED","IPRED")
-  dx[,(measures):=lapply(.SD, na.locf,na.rm=FALSE), by=DVID,.SDcols = measures]
-  if(!is.null(covariates))
-    dx[, (covariates) := lapply(.SD, na.locf,na.rm=FALSE), .SDcols = covariates]
-  dx
+  if(!is.null(covariates))measures <- c(measures,covariates)
+  dx[,(measures):=lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
+  ## dx[!is.na(DV)]
 }
 
 
@@ -250,23 +248,22 @@ post_load <- function(dxs, input, sys, dplot,...){
   ## avoid RCMDCHECK
   DVID <- ID <- NULL
   ## merge finegrid with input data 
-  dxs[["IND"]] <- 
-    if(!is.null(dxs[["finegrid"]])){
-      input_finegrid(input,dxs[["finegrid"]],...)
-    }else{
-      message("No finegrid file: we use instead predictions.txt for individual plots")
-      dxs[["predictions"]] 
-    }  
-  
   if(sys == "mlx"){
     ## add startification column
     vv <- names(dxs$eta)[vapply(dxs$eta, is.integer, TRUE)]
     mdx <- try(
-      merge(dxs$predictions, input,by = c("ID", "TIME","DVID"))
+      merge(  dxs$predictions, input,by = c("ID", "TIME","DVID"))
       ,silent=TRUE)
     if(inherits(mdx,"try-error"))
       stop("error cannot merge predictions data with the modelling input")
     dxs$predictions <- mdx
+    dxs[["finegrid"]] <- input_finegrid(input,dxs[["finegrid"]],...)
+    dxs[["IND"]] <-  dxs[["finegrid"]] 
+    if(is.null(dxs[["IND"]])){
+        message("No finegrid file: we use instead predictions.txt for individual plots")
+        dxs[["IND"]] <- dxs[["predictions"]] 
+      }  
+    
     ## prepare data set for stratification
     if(!is.null(dxs$eta))
       dxs$eta <- post_load_eta(dxs$eta,input,sys)
