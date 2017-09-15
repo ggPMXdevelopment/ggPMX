@@ -16,12 +16,12 @@ test_that("can load data set", {
                 load_data_set,
                 path = path,
                 sys = sys)
-  expect_identical(names(dxs$estimates), 
+  expect_identical(names(dxs[["estimates"]]), 
                    c("PARAM", "VALUE", "SE", "RSE", "PVALUE"))
-  expect_identical(names(dxs$predictions), 
-                   c("ID", "TIME", "DV", "PRED", "NPDE", "IPRED", "IWRES"))
+  expect_identical(names(dxs[["predictions"]]), 
+                   c("ID", "TIME", "PRED", "NPDE", "IPRED", "IWRES","DVID"))
 
-  expect_identical(names(dxs$finegrid), c("ID", "TIME", "PRED", "IPRED"))
+  expect_identical(names(dxs[["finegrid"]]), c("ID", "TIME", "PRED", "IPRED","DVID"))
 })
 
 test_that("errors work in load data set", {
@@ -45,36 +45,3 @@ test_that("errors work in load data set", {
   
 })
 
-test_that("load data set functions when reader does not exist", {
-  names. <- names(reader_help$conf$data)
-  datasets <- reader_help$conf$data[names.]
-  path <- reader_help$wd
-  sys <- reader_help$conf$sys
-  names(datasets$predictions$names) <- c("id", "time", "y1", "poppred", 
-                                      "npde")
-  with_mock(
-    `data.table::fread` = function(...){
-      data.table::setDT(
-        data.frame(id = 1, time = 2, y1 = 3, poppred = 4, npde = 5,
-                   V3 = 6)
-      )
-    },
-    `base::exists` = function(...){FALSE},
-    res <- load_data_set(datasets$predictions, path, sys)
-  )
-  expect_identical(names(res), c("ID", "TIME", "DV", "PRED", "NPDE"))
-})
-
-test_that("can exclude data set", {
-  exclude <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
-                         dconf = reader_help$conf$data, 
-                         exclude = "eta")
-  expect_identical(names(exclude), c("estimates", "predictions", "finegrid"))
-})
-
-test_that("can include data set", {
-  include <- load_source(sys = reader_help$conf$sys, path = reader_help$wd, 
-                         dconf = reader_help$conf$data, 
-                         include = "eta")
-  expect_identical(names(include), "eta")
-})

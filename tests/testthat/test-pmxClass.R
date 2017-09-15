@@ -49,10 +49,9 @@ test_that("can get data from controller", {
                 "SEX", "WT0", "AGE0", "STUD")
   expect_identical(names(mpData), mpNames)
 
-  
   fgData <- ctr %>% get_data("finegrid")
   fgNames <- c("ID", "TIME", "PRED", "IPRED")
-  expect_identical(names(fgData), fgNames)
+  expect_true(all(fgNames %in% names(fgData)))
   
   sData <- ctr %>% get_data("shrink")
   sNames <- c("EFFECT", "VALUE_OMEGA","SHRINK")

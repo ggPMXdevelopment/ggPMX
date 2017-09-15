@@ -62,8 +62,14 @@ distrib <- function(
 
 is.formula <- function(x) inherits(x, "formula")
 
-wrap_formula <- function(x)
-{
+#' merge facets formula with new formula
+#'
+#' @param x \code{formula} object 
+#'
+#' @return \code{formula} object
+#' @importFrom stats formula
+
+wrap_formula <- function(x){
   str <- "~lfacet"
   if(is.character(x) && length(x)==1)
     str <- sprintf( "%s ~ lfacet", x)

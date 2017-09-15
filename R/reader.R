@@ -105,6 +105,8 @@ read_mlx_pred <- function(path, x,...){
       return(NULL)
     }
   }
+  
+
   ## select columns
   res <- setnames(xx[,names(nn),with=FALSE],as.character(nn))
   
@@ -138,7 +140,8 @@ read_mlx_par_est <- function(path, x,...){
 #'
 #' @param x data set config
 #' @param path character path to the directory
-#' @param sys \code{character} mlx or nm 
+#' @param sys \code{character} mlx or nm
+#' @param ... extra parameter passed to special readers 
 #'
 #' @return data.table
 #' @import data.table
@@ -177,14 +180,11 @@ load_data_set <- function(x, path, sys,...){
 #' @param sys type cane mlx/nom
 #' @param path \code{character} directory path containing all sources.
 #' @param dconf configuration object
-#' @param include list of data sets to load,
-#' if missed ( the default behavior) load all sources.
-#' @param exclude list of data sets to exclude from loading
 #' @param ... any extra parameters for readers
 #'
 #' @return list of data.table
 #' @export
-load_source <- function(sys, path, dconf, include, exclude,...){
+load_source <- function(sys, path, dconf,...){
   names. <- names(dconf)
   
   
@@ -192,88 +192,5 @@ load_source <- function(sys, path, dconf, include, exclude,...){
   dxs <- lapply(datasets,function(x){
     load_data_set(x,  path = path,  sys = sys,...)
   })
-  dxs
-}
-#' Merge input and fingrid data sets
-#'
-#' @param input \code{data.table} input data set
-#' @param finegrid \code{data.table} finegrid data set
-#' @param covariates \code{character} covariates names vector (optional)
-#' @return data.table
-#' @importFrom zoo na.locf
-
-input_finegrid <- function(input, finegrid, covariates = NULL)
-{
-  ## this for check purpose
-  ID <- TIME <- DVID <- NULL
-  if(is.null(finegrid))return(NULL)
-  dx <- rbind(finegrid, input, fill = TRUE)[TIME>0]
-  measures <- c("DV","PRED","IPRED")
-  if(!is.null(covariates))measures <- c(measures,covariates)
-  dx[,(measures):=lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
-  ## dx[!is.na(DV)]
-}
-
-
-post_load_eta <- function(ds,input,sys){
-  ID <- DVID <- VARIABLE <- NULL
-  ## add DVID variable : merge key with the input 
-  if(grepl("#",ds[1,ID],fixed=TRUE))
-    ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
-          c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
-  if(!"DVID" %in% names(ds))  ds[,DVID:=1]
-  ds <- try(
-    merge(ds, input, 
-          by = c("ID", "DVID"))
-    ,silent=TRUE)
-  
-  if(inherits(ds,"try-error"))
-    stop("error cannot merge eta data with the modelling input")
-  ## put in the long format 
-  measures <- grep("_.*_", names(ds))
-  ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]
-  ds <- melt(ds, measure = measures)
-  setnames(ds, toupper(names(ds)))
-  ## keep only mean or mode variable
-  ds[grep("(mode|mean)$",VARIABLE)]
-  ## reshape columns for easier filtering
-  ds[, c("VAR", "EFFECT", "FUN") := 
-       list(gsub("_.*","",VARIABLE),
-            gsub("eta_(.*)_(mode|mean)","\\1",VARIABLE),
-            gsub(".*_","",VARIABLE))]
-  ds
-}
-
-post_load <- function(dxs, input, sys, dplot,...){
-  ## avoid RCMDCHECK
-  DVID <- ID <- NULL
-  ## merge finegrid with input data 
-  if(sys == "mlx"){
-    ## add startification column
-    vv <- names(dxs$eta)[vapply(dxs$eta, is.integer, TRUE)]
-    mdx <- try(
-      merge(  dxs$predictions, input,by = c("ID", "TIME","DVID"))
-      ,silent=TRUE)
-    if(inherits(mdx,"try-error"))
-      stop("error cannot merge predictions data with the modelling input")
-    dxs$predictions <- mdx
-    dxs[["finegrid"]] <- input_finegrid(input,dxs[["finegrid"]],...)
-    dxs[["IND"]] <-  dxs[["finegrid"]] 
-    if(is.null(dxs[["IND"]])){
-        message("No finegrid file: we use instead predictions.txt for individual plots")
-        dxs[["IND"]] <- dxs[["predictions"]] 
-      }  
-    
-    ## prepare data set for stratification
-    if(!is.null(dxs$eta))
-      dxs$eta <- post_load_eta(dxs$eta,input,sys)
-    
-    
-    ## add shrinkage data set
-    if(!is.null(dxs[["estimates"]]) && !is.null(dxs[["eta"]]))
-      dxs[["shrink"]] <- 
-      shrinkage(dxs[["estimates"]], dxs[["eta"]], sys = sys)
-  }
-  
   dxs
 }

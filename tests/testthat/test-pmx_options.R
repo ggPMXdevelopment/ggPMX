@@ -14,7 +14,6 @@ test_that("can set option", {
 
 test_that("Initiating controlers work with and without specification of covariates",{
   
-  
   theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
                             "theophylline")
   WORK_DIR <- file.path(theophylline, "Monolix")

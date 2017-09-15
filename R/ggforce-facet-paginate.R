@@ -44,7 +44,6 @@ facet_wrap_paginate <- function(facets, nrow = NULL, ncol = NULL,
 
 #' Extend facet_wrap using ggproto
 #' @format NULL
-#' @usage NULL
 #' @importFrom ggplot2 ggproto FacetWrap
 #' @importFrom gtable gtable_add_rows gtable_add_cols
 #' @export

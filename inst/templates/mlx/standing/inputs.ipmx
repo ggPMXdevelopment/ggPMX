@@ -18,6 +18,7 @@ predictions :
       poppred: PRED
       npde: NPDE
       indpred_mode: IPRED
+      indwres_mode: IWRES
 eta :
     label : invidual estimates of random effects
     file  : indiv_eta.txt
