@@ -51,7 +51,7 @@ plot_pmx.pmx_gpar <- function(gpar, p){
     p <- p + pmx_theme()
     ## draft layer
     if(is.draft)
-      p <- p + with(draft, add_draft(label, size, color))
+      p <- p + with(draft, add_draft(label, size, color,x,y))
     p
   })
   p
