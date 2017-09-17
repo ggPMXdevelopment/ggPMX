@@ -37,6 +37,7 @@ individual <- function(labels,
   if(is.null(dname)) dname <- "IND"
   
   structure(list(
+    ptype="IND",
     dname=dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
@@ -54,7 +55,6 @@ individual <- function(labels,
 
 #' @param x individual object
 #' @param dx data set
-#' @param include list of individual ID to plot, if missing all ID will be plotted
 #' @param ... not used for the moment
 #'
 #' @return a list of ggplot2
@@ -64,16 +64,8 @@ individual <- function(labels,
 #' @family plot_pmx
 #'
 plot_pmx.individual <-
-  function(x, dx, include,...){
+  function(x, dx,...){
     ID <- NULL
-    assert_that(is_pmx_gpar(x))
-    if(!is.null(x[["filter"]])){
-      dx <- x[["filter"]](dx)
-    }
-    
-    ##reshape data to the long format
-    if(!missing(include))
-      dx <- setDT(dx)[ID %in% include]
     ## plot
     ## dx <- dx[DVID==1]
     get_page <- with(x,{
@@ -81,7 +73,7 @@ plot_pmx.individual <-
         geom_line(aes(y=IPRED),size=1,linetype=1)+
         geom_line(aes(y=PRED),size=1,linetype=2)+
         with(point,geom_point(shape=shape,size=size,color=color))
-        p <- plot_pmx(gp, p)
+      p <- plot_pmx(gp, p)
       
       ## split pages
       npages <- ceiling(with(facets, 

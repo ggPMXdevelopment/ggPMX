@@ -14,7 +14,7 @@
 #' @examples
 #' add_draft("DRAFT", size = 5, color = "grey50")
 add_draft <- function(label = "DRAFT", size=10, color="grey50",x = Inf, y = -Inf){
-  ggplot2::annotate('text', label = label, size = size,
+  annotate('text', label = label, size = size,
            colour = color, family = 'Courier',
            x = x, y = y,
             hjust = 1.2 , vjust = -1.2)

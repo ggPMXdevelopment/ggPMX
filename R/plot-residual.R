@@ -38,6 +38,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
   
   structure(
     list(
+      ptype="RES",
       dname=dname,
       aess = aess,
       point = point,
@@ -60,13 +61,13 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
 #' @family plot_pmx
 #' @export
 plot_pmx.residual <- function(x, dx,...){
-  assert_that(is_pmx_gpar(x))
   with(x,
        {
-         if(!is.null(x[["filter"]]))
-           dx <- x[["filter"]](dx)
          strat.color <- x[["strat.color"]]
          strat.facet <- x[["strat.facet"]]
+         
+         
+         
          p <- if(!is.null(strat.color))
            ggplot(dx, with(aess, ggplot2::aes_string(x, y,color=strat.color)))+
            with(point, geom_point(shape = shape))

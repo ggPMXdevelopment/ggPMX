@@ -83,7 +83,6 @@ pmx <-
 #' @family pmxclass 
 #' @return \code{pmxClass} object
 #' @export
-
 pmx_mlx <-
   function(config, directory, input, dv,dvid,cats,conts,occ,strats,settings){
     pmx(config, "mlx", directory, input, dv,dvid,cats,conts,occ,strats,settings)
@@ -125,13 +124,13 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname,
   ## assert_that(is_string_or_expression(filter))
   assert_that(is_string_or_null(strat.color)) 
   assert_that(is_string_or_formula_or_null(strat.facet)) 
- 
+  
   
   conf <-
     switch(ptype,
-           IND = individual(...),
-           DIS = distrib(...),
-           RES = residual(...),
+           IND=individual(...),
+           DIS=distrib(...),
+           RES=residual(...),
            ECORREL=ecorrel(...)
     )
   if(ptype=="DIS" && conf$has.shrink)
@@ -359,7 +358,7 @@ pmxClass <- R6::R6Class(
       pmx_update_plot(self, private, pname, filter = filter,
                       strat.color=strat.color, strat.facet = strat.facet,
                       ..., pmxgpar = pmxgpar)
-      },
+    },
     
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
@@ -422,6 +421,49 @@ pmx_print <- function(self, private, ...){
 }
 
 
+pmx_transform <- function(x,dx,trans,direction){
+  cols_res <- function(x){
+    with(x,{
+      switch(
+        direction,
+        x=aess$x,
+        y=aess$y,
+        xy=c(aess$x,aess$y)
+      )
+    })
+  }
+  
+  cols_ind <- function(x){
+    switch(
+      direction,
+      x="TIME",
+      y=c("PRED","IPRED"),
+      xy=c("TIME","PRED","IPRED")
+    )
+  }
+  
+  cols_dis <- function(x){
+    switch(
+      direction,
+      x="VLAUE",
+      y=c("PRED","IPRED"),
+      xy=c("TIME","PRED","IPRED")
+    )
+  }
+  
+  cols <- switch(
+    class(x),
+    RES=cols_res(x),
+    IND=cols_ind(x),
+    DIS=cols_dis(x)
+  )
+  
+  
+  dx[,(cols):=lapply(.SD,trans),.SDcols =cols]
+} 
+
+
+
 ## TODO change the way how we choose the data
 ## USE AN EXPLICIT METHOD
 ## data_set(s) for res,data_set(s) for IND,..
@@ -433,7 +475,12 @@ pmx_add_plot <- function(self, private, x, pname){
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
   dname <- x$dname
   if(!is.null(self$data[[dname]])) {
-    private$.plots[[pname]] <- plot_pmx(x, dx = self$data[[dname]])
+    dx <- self$data[[dname]]
+    if(!is.null(x[["filter"]])) dx <- x[["filter"]](dx)
+    
+    assert_that(is_pmx_gpar(x))
+    assert_that(is.data.table(dx))
+    private$.plots[[pname]] <- plot_pmx(x, dx = dx)
   } else {
     # throw error message
     private$.plots[[pname]] <- NULL

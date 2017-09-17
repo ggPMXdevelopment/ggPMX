@@ -30,8 +30,8 @@ distrib <- function(
   assert_that(is_logical(has.shrink))
   assert_that(is_string_or_null(dname))
   if(is.null(dname)) dname <- "eta"
-
-
+  
+  
   if(missing(labels))
     labels <- list(
       title = "EBE distribution",
@@ -42,6 +42,7 @@ distrib <- function(
   assert_that(is_list(labels))
   
   structure(list(
+    ptype="DIS",
     dname = dname,
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
     type = type,
@@ -69,19 +70,83 @@ is.formula <- function(x) inherits(x, "formula")
 #' @return \code{formula} object
 #' @importFrom stats formula
 
-wrap_formula <- function(x){
-  str <- "~lfacet"
+wrap_formula <- function(x,default="lfacet"){
+  str <- sprintf("~ %s",default)
   if(is.character(x) && length(x)==1)
-    str <- sprintf( "%s ~ lfacet", x)
+    str <- sprintf( "%s ~ %s", x,default)
   
   if(length(x)==3 && is.formula(x))
-    str <- sprintf( "%s ~ %s + lfacet", deparse(x[[2]]),
-                    deparse(x[[3]]))
+    str <- sprintf( "%s ~ %s + %s", deparse(x[[2]]),
+                    deparse(x[[3]]),default)
   
   if(length(x)==2 && is.formula(x))
-    str <- sprintf( "%s ~ lfacet", deparse(x[[2]]))
+    str <- sprintf( "%s ~ %s", deparse(x[[2]]),default)
   return(formula(str))
 }
+
+jitter_layer <- function(jitter){
+  with(jitter,
+       geom_jitter(
+         aes_string(x="EFFECT",y = "VALUE"),
+         shape = shape, color = color,
+         position = 
+           position_jitter(width = width,height = 0.1)
+       ))
+}
+
+distrib.hist <- function(dx,strat.facet,strat.color,facets){
+  wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet,"EFFECT")
+  else formula("~EFFECT")
+  
+  p <-   ggplot(data = dx) +
+  if(!is.null(strat.color))
+     geom_histogram(aes_string(x = "VALUE",fill=strat.color),
+                                   position = "dodge") 
+  else geom_histogram(aes_string(x = "VALUE")) 
+  
+  p + with(facets, facet_wrap(wrap.formula , scales = scales,
+                            nrow = nrow))
+  
+  
+  
+}
+
+distrib.box <- function(dx,strat.color,strat.facet,x){
+  p <- ggplot(data = dx) +
+    geom_boxplot(aes(x=EFFECT, y = VALUE), outlier.shape = NA) 
+ 
+  if(!is.null(strat.color))
+  p <-  ggplot(data = dx) +
+      geom_boxplot(aes_string(x="EFFECT",y = "VALUE",fill=strat.color),
+                 outlier.shape = NA,position = "dodge")
+  
+  if(!is.null(strat.facet))
+   p <-  p + with(x$facets, facet_wrap(strat.facet , scales = scales,
+                              nrow = nrow))
+  
+  if(x$has.jitter) p <- p + jitter_layer(x$jitter )
+  
+  p
+  
+  
+}
+
+
+
+
+plot_distribution <- function(x,dx,...){
+  
+  VAR <- FUN <- NULL
+  dx.etas <- dx[VAR == "eta" & grepl("mode", FUN)]
+  strat.facet <- x[["strat.facet"]]
+  strat.color <- x[["strat.color"]]
+  p <- if(x$type=="box")distrib.box(dx.etas,strat.color,strat.facet,x)
+  else distrib.hist(dx.etas,strat.facet,strat.color,x$facets)
+  plot_pmx(x$gp, p)
+}
+
+
+
 
 
 #' Plot EBE distribution
@@ -97,68 +162,60 @@ wrap_formula <- function(x){
 #'
 plot_pmx.distrib <- function(x, dx,...){
   
-  assert_that(is_pmx_gpar(x))
-  assert_that(is.data.table(dx))
-
-  if(!is.null(x[["filter"]])){
-    dx <- x[["filter"]](dx)
-  }
+  plot_distribution(x,dx,...)
   
-  VAR <- NULL; FUN <- NULL
-  dx.etas <- dx[VAR == "eta" & grepl("mode", FUN)]
-  
-  strat.facet <- x[["strat.facet"]]
-  strat.color <- x[["strat.color"]]
-  
-  wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet)
-   else formula("~lfacet")
-  
-  
-  p <- with(x, {
-    
-    if(has.shrink){
-      dx.etas <- merge(dx.etas, shrink, by = "EFFECT")[
-        , lfacet := sprintf('%s: with shrinkage %s%%', EFFECT, 
-                            round(SHRINK*100))]
-      
-    }else dx.etas[, lfacet := EFFECT]
-    
-    p <- ggplot(dx.etas, aes(EFFECT))
-    if(type=="box"){
-      p <- if(is.null(strat.color))
-        p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
-      else  p + geom_boxplot(aes_string(y = "VALUE",fill=strat.color), outlier.shape = NA)
-     
-        
-        
-      if(has.jitter)
-        p <- p +
-          with(jitter,
-               geom_jitter(
-                 aes(y = VALUE),
-                 shape = shape, color = color,
-                 position = 
-                   position_jitter(width = width,height = 0.1)
-               ))
-      if(has.shrink)
-        p <- p +
-          geom_text(
-            data = dx.etas[, list(pos = max(VALUE) * .75,
-                                  label = sprintf('%s%%', 
-                                                  round(SHRINK[1]*100))
-            ),
-            EFFECT],
-            aes(label = label, y = pos), color = "red", size = 5)
-      
-      
-      
-    }else{
-      p <- p +  geom_histogram(aes(x = VALUE)) +
-        with(facets, facet_wrap(wrap.formula , scales = scales, 
-                                         nrow = nrow))
-    }
-    plot_pmx(gp, p)
-  })
-  p
+  # strat.facet <- x[["strat.facet"]]
+  # strat.color <- x[["strat.color"]]
+  # 
+  # wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet)
+  #  else formula("~lfacet")
+  # 
+  # 
+  # p <- with(x, {
+  #   
+  #   if(has.shrink){
+  #     dx.etas <- merge(dx.etas, shrink, by = "EFFECT")[
+  #       , lfacet := sprintf('%s: with shrinkage %s%%', EFFECT, 
+  #                           round(SHRINK*100))]
+  #     
+  #   }else dx.etas[, lfacet := EFFECT]
+  #   
+  #   p <- ggplot(dx.etas, aes(EFFECT))
+  #   if(type=="box"){
+  #     p <- if(is.null(strat.color))
+  #       p + geom_boxplot(aes(y = VALUE), outlier.shape = NA)
+  #     else  p + geom_boxplot(aes_string(y = "VALUE",fill=strat.color), outlier.shape = NA)
+  #    
+  #       
+  #       
+  #     if(has.jitter)
+  #       p <- p +
+  #         with(jitter,
+  #              geom_jitter(
+  #                aes(y = VALUE),
+  #                shape = shape, color = color,
+  #                position = 
+  #                  position_jitter(width = width,height = 0.1)
+  #              ))
+  #     if(has.shrink)
+  #       p <- p +
+  #         geom_text(
+  #           data = dx.etas[, list(pos = max(VALUE) * .75,
+  #                                 label = sprintf('%s%%', 
+  #                                                 round(SHRINK[1]*100))
+  #           ),
+  #           EFFECT],
+  #           aes(label = label, y = pos), color = "red", size = 5)
+  #     
+  #     
+  #     
+  #   }else{
+  #     p <- p +  geom_histogram(aes(x = VALUE)) +
+  #       with(facets, facet_wrap(wrap.formula , scales = scales, 
+  #                                        nrow = nrow))
+  #   }
+  #   plot_pmx(gp, p)
+  # })
+  # p
   
 }

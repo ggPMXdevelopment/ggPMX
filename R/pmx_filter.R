@@ -23,14 +23,14 @@ pmx_filter <-
       pmx_exp <- expression(pmx_exp)
     }
     oldData <- ctr[["data"]][[data_set]]
-    e <- substitute(pmx_exp)
-    r <- eval(e, oldData, parent.frame())
-    if (!is.logical(r)) 
-      stop("'expression' must evaluate to logical")
-    r <- r & !is.na(r)
-    
-    newData <- oldData[r]
-    ctr[["data"]][[data_set]] <- newData
+    # e <- substitute(pmx_exp)
+    # r <- eval(e, oldData, parent.frame())
+    # if (!is.logical(r)) 
+    #   stop("'expression' must evaluate to logical")
+    # r <- r & !is.na(r)
+    # 
+    # newData <- oldData[r]
+    ctr[["data"]][[data_set]] <-local_filter(pmx_exp)(oldData)
     
     ## update all plots after global filtering
     for ( nn in ctr %>% plot_names())

@@ -24,6 +24,7 @@ ecorrel <- function(title,dname=NULL,type.eta=c("mode","mean"),...){
     point = list(shape = 2, color = "grey50", size = 1),
     type.eta =  match.arg(type.eta),
     gp = pmx_gpar(
+      ptype="ECORREL",
       labels=labels,
       discrete = FALSE,
       has.smooth = FALSE,
@@ -73,13 +74,8 @@ upper.plot <- function(data, mapping, gp) {
 plot_pmx.ecorrel <- function(x, dx,...){
   ## avoid RCMDCHECK warning
   ID <- VARIABLE <- VALUE <- FUN <- NULL
-  assert_that(is_pmx_gpar(x))
-  assert_that(is.data.table(dx))
   
-  if(!is.null(x[["filter"]])){
-    dx <- x[["filter"]](dx)
-  }
-  
+ 
   ## filter by type of eta 
   dx <- dx[FUN==x$type.eta]
   if(nrow(dx)==0)
