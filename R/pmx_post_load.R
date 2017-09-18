@@ -67,11 +67,7 @@ post_load <- function(dxs, input, sys, dplot,...){
     if(!is.null(dxs[["eta"]]))
       dxs[["eta"]] <- post_load_eta(dxs[["eta"]],input,sys)
     
-    
-    ## add shrinkage data set
-    if(!is.null(dxs[["estimates"]]) && !is.null(dxs[["eta"]]))
-      dxs[["shrink"]] <- 
-      shrinkage(dxs[["estimates"]], dxs[["eta"]], sys = sys)
+
   }
   
   dxs

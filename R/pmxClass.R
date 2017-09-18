@@ -468,6 +468,7 @@ pmx_transform <- function(x,dx,trans,direction){
 ## USE AN EXPLICIT METHOD
 ## data_set(s) for res,data_set(s) for IND,..
 pmx_add_plot <- function(self, private, x, pname){
+  assert_that(is_pmx_gpar(x))
   if(missing(pname))
     pname <- paste(x$aess, collapse="_")
   pname <- tolower(pname)
@@ -476,10 +477,22 @@ pmx_add_plot <- function(self, private, x, pname){
   dname <- x$dname
   if(!is.null(self$data[[dname]])) {
     dx <- self$data[[dname]]
-    if(!is.null(x[["filter"]])) dx <- x[["filter"]](dx)
-    
-    assert_that(is_pmx_gpar(x))
     assert_that(is.data.table(dx))
+    if(!is.null(x[["filter"]])) dx <- x[["filter"]](dx)
+    if(ptype=="DIS"){
+      VAR <- FUN <- NULL
+      dx <- dx[VAR == "eta" & grepl("mode", FUN)]
+      if(x$has.shrink){
+        
+        grp <- c(x[["strat.facet"]],x[["strat.color"]])
+        grp <- as.character(unlist(lapply(grp,as.list)))
+        grp <- intersect(grp,names(dx))
+        
+        x[["shrink.dx"]] <- shrinkage(
+          self$data[["estimates"]],self$data[["eta"]],
+          fun = x$shrink$fun,by=grp)
+      }
+    }
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
   } else {
     # throw error message
