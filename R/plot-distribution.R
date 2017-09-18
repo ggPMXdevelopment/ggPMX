@@ -122,8 +122,8 @@ distrib.box <- function(dx,strat.color,strat.facet,x){
     geom_boxplot(aes(x=EFFECT, y = VALUE), outlier.shape = NA) 
   
   if(!is.null(strat.color))
-    p <-  ggplot(data = dx) +
-      geom_boxplot(aes_string(x="EFFECT",y = "VALUE",fill=strat.color),
+    p <-  ggplot(data = dx,aes_string(fill=strat.color)) +
+      geom_boxplot(aes_string(x="EFFECT",y = "VALUE"),
                    outlier.shape = NA,position = position_dodge(width = 0.9))
   
   if(!is.null(strat.facet))
@@ -148,10 +148,10 @@ shrinkage_layer <-
    x_ <- shrink$x
    y_ <- shrink$y
    res <-   geom_text(data=dx,
-        aes(x=EFFECT,y=0,
+        aes(x=EFFECT,y=POS,
             label = sprintf('%s%%',round(SHRINK*100))),
         color = shrink$color, size = shrink$size,
-        position = position_dodge(width = shrink$dodge),vjust=shrink$vjust) 
+        position = position_dodge(width = 0.9),vjust=shrink$vjust) 
    if(type=="hist")
       res <- geom_text(data=dx,
                       x=x_,y=y_,
