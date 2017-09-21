@@ -23,6 +23,11 @@ is_string_or_expression <- function(x) {
   is_string(x) || is.expression(x)
 }
 
+is_string_or_expression_or_null <- function(x) {
+  is_string(x) || is.expression(x) || is.null(x)
+}
+
+
 is_string_or_formula_or_null <- function(x) {
   is_string(x) || is.formula(x) || is.null(x)
 }
@@ -35,6 +40,11 @@ assertthat::on_failure(is_string_or_formula_or_null) <-  function(call, env) {
 assertthat::on_failure(is_string_or_null) <-  function(call, env) {
   paste0(deparse(call$x), " is not a string or NULL")
 }
+
+assertthat::on_failure(is_string_or_expression_or_null) <-  function(call, env) {
+  paste0(deparse(call$x), " is not a string or expression or NULL")
+}
+
 
 assertthat::on_failure(is_string_or_expression) <-  function(call, env) {
   paste0(deparse(call$x), " is not a string or expression")
@@ -131,4 +141,13 @@ assertthat::on_failure(is_valid_plot_name) <-  function(call, env) {
           paste(env$ctr %>% plot_names(),collapse="--"))
   
 }
+
+assertthat::on_failure(is_valid_plot_name) <-  function(call, env) {
+  
+  sprintf("%s is not a valid plot name\nvalid plots are: %s",
+          env$nplot, 
+          paste(env$ctr %>% plot_names(),collapse="--"))
+  
+}
+
 
