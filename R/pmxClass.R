@@ -116,12 +116,13 @@ formula_to_text <- function(form){
 #' @return invisible ctr object
 #' @export
 set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname, 
-                     filter = NULL, strat.color=NULL,strat.facet=NULL,trans=NULL,...){
+                     filter =NULL, strat.color=NULL,strat.facet=NULL,trans=NULL,...){
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
   assert_that(is_string_or_null(strat.color)) 
   assert_that(is_string_or_formula_or_null(strat.facet)) 
+  
   
   
   conf <-
@@ -131,18 +132,23 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname,
            RES=residual(...),
            ECORREL=ecorrel(...)
     )
+  if(!is.null(substitute(filter))){
+    filter <- deparse(substitute(filter))
+    filter <- local_filter(filter)
+  }
+  conf[["filter"]] <- filter
+  conf[["trans"]] <- trans
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
   
-   ## stratification  
+  ## stratification  
   if(!is.null(strat.color)) conf[["strat.color"]] <- strat.color
   if(!is.null(strat.facet)) conf[["strat.facet"]] <- strat.facet
   
   
-  
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))
-  ctr$add_plot(conf, pname,filter,trans)
+  ctr$add_plot(conf, pname)
   invisible(ctr)
 }
 
@@ -334,14 +340,15 @@ pmxClass <- R6::R6Class(
       pmx_print(self, private, ...),
     
     # Operations ---------------------------------------------------------------
-    add_plot = function(x, pname,filter,trans)
-      pmx_add_plot(self, private, x, pname,filter,trans),
+    add_plot = function(x, pname)
+      pmx_add_plot(self, private, x, pname),
     
-    update_plot = function(pname, filter = NULL,strat.facet=NULL,strat.color=NULL,
+    update_plot = function(pname, strat.facet=NULL,strat.color=NULL,
+                           filter=NULL,trans=NULL,
                            ..., pmxgpar = NULL){
-      pmx_update_plot(self, private, pname, filter = filter,
+      pmx_update_plot(self, private, pname,
                       strat.color=strat.color, strat.facet = strat.facet,
-                      ..., pmxgpar = pmxgpar)
+                       filter,trans,..., pmxgpar = pmxgpar)
     },
     
     remove_plot = function(pname, ...)
@@ -407,9 +414,9 @@ pmx_print <- function(self, private, ...){
 
 pmx_transform <- function(x,dx,trans,direction){
   if(is.character(trans)){
-      params <- strsplit(trans,"_")[[1]]
-      trans <- params[1]
-      direction <- params[2]
+    params <- strsplit(trans,"_")[[1]]
+    trans <- params[1]
+    direction <- params[2]
   }
   cols_res <- function(x){
     with(x,{
@@ -456,14 +463,14 @@ pmx_transform <- function(x,dx,trans,direction){
 ## TODO change the way how we choose the data
 ## USE AN EXPLICIT METHOD
 ## data_set(s) for res,data_set(s) for IND,..
-pmx_add_plot <- function(self, private, x, pname,filter=NULL,trans=NULL){
+pmx_add_plot <- function(self, private, x, pname){
   assert_that(is_pmx_gpar(x))
   if(missing(pname))
     pname <- paste(x$aess, collapse="_")
   
   ##assert_that(is_string_or_expression_or_null(filter))
   
-
+  
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
@@ -471,11 +478,8 @@ pmx_add_plot <- function(self, private, x, pname,filter=NULL,trans=NULL){
   if(!is.null(self$data[[dname]])) {
     dx <- self$data[[dname]]
     assert_that(is.data.table(dx))
-    if(!is.null(substitute(filter))) {
-      filter <- deparse(substitute(filter))
-      filter <- local_filter(filter)
-      x[["filter"]] <- filter
-      dx <- filter(dx)
+    if(!is.null(x[["filter"]])) {
+        dx <- x[["filter"]](dx)
     }
     ## stratification 
     
@@ -491,9 +495,8 @@ pmx_add_plot <- function(self, private, x, pname,filter=NULL,trans=NULL){
                 x$gp[["labels"]][["title"]],formula_to_text(x[["strat.facet"]]))
     }
     
-    if(!is.null(trans)) {
-      x[["trans"]] <- trans
-      dx <- pmx_transform(x,dx,trans)
+    if(!is.null( x[["trans"]])) {
+      dx <- pmx_transform(x,dx, x[["trans"]])
     }
     
     if(ptype=="DIS"){

@@ -23,13 +23,6 @@ pmx_filter <-
       pmx_exp <- expression(pmx_exp)
     }
     oldData <- ctr[["data"]][[data_set]]
-    # e <- substitute(pmx_exp)
-    # r <- eval(e, oldData, parent.frame())
-    # if (!is.logical(r)) 
-    #   stop("'expression' must evaluate to logical")
-    # r <- r & !is.na(r)
-    # 
-    # newData <- oldData[r]
     ctr[["data"]][[data_set]] <-local_filter(pmx_exp)(oldData)
     
     ## update all plots after global filtering
@@ -53,26 +46,27 @@ pmx_filter <-
 #' @return controller object with the plot updated
 #' @export
 
-pmx_update <- function(ctr, pname, filter = NULL,strat.color=NULL,strat.facet=NULL, ..., pmxgpar = NULL){
+pmx_update <- function(ctr, pname,strat.color=NULL,strat.facet=NULL,  filter = NULL,trans=NULL,..., pmxgpar = NULL){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
+  assert_that(is_string_or_null(strat.color)) 
+  assert_that(is_string_or_formula_or_null(strat.facet)) 
+  
+  ## filtering  
   if(!is.null(substitute(filter))){
     filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
   }
-  assert_that(is_string_or_null(strat.color)) 
-  assert_that(is_string_or_formula_or_null(strat.facet)) 
-  
-  
   
   
   ctr$update_plot(
-    pname, filter = filter,strat.color=strat.color,
-    strat.facet=strat.facet, ..., pmxgpar = pmxgpar)
+    pname,strat.color=strat.color,
+    strat.facet=strat.facet,filter=filter,trans=trans, ..., pmxgpar = pmxgpar)
 }
 
 
-pmx_update_plot <- function(self, private, pname, filter,strat.facet,strat.color, ..., pmxgpar){
+pmx_update_plot <- function(self, private, pname, strat.facet,strat.color, filter=NULL,trans=NULL,
+                            ..., pmxgpar){
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   x <- private$.plots_configs[[pname]]
   old_class <- class(x)
@@ -87,19 +81,14 @@ pmx_update_plot <- function(self, private, pname, filter,strat.facet,strat.color
     hl$gp <- gpl 
     x <- l_left_join(x, hl)
   }
-  ## filtering  
+  
+ 
   x[["filter"]] <- filter
+  ## transformation
+  x[["trans"]] <- trans
   ## stratification  
-  if(!is.null(strat.color)){
-    x[["strat.color"]] <- strat.color
-    x[["labels"]][["legend"]] <- strat.color
-  }
-  if(!is.null(strat.facet)){
-    x[["strat.facet"]] <- strat.facet
-    x[["labels"]][["title"]] <- 
-      sprintf("%s by %s",
-              x$gp[["labels"]][["title"]],formula_to_text(strat.facet))
-  }
+  if(!is.null(strat.color)) x[["strat.color"]] <- strat.color
+  if(!is.null(strat.facet)) x[["strat.facet"]] <- strat.facet
   
   class(x$gp) <- old_class_gp
   class(x) <- old_class
