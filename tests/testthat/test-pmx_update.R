@@ -8,17 +8,7 @@ test_that("can update DIS plot", {
   p <- ctr %>% get_plot("distr1")
   oldconf <- ctr$get_config("distr1")
   expect_false(oldconf$has.shrink)
-  shrink <- data.frame(EFFECT = c("cl", "ka", "v"), 
-                       SHRINK = c(0.1, 0.2, 0.7), 
-                       stringsAsFactors = FALSE)
-  ctr %>% pmx_update(
-    "distr1",
-    has.shrink = TRUE,
-    shrink = shrink
-  )
-  newconf <- ctr$get_config("distr1")
-  expect_identical(newconf$shrink, shrink)
-  
+ 
 })
 
 test_that("can remove DIS plot", {

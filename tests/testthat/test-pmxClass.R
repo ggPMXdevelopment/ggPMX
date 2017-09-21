@@ -53,9 +53,6 @@ test_that("can get data from controller", {
   fgNames <- c("ID", "TIME", "PRED", "IPRED")
   expect_true(all(fgNames %in% names(fgData)))
   
-  sData <- ctr %>% get_data("shrink")
-  sNames <- c("EFFECT", "VALUE_OMEGA","SHRINK")
-  expect_identical(names(sData), sNames)
 })
 
 test_that("can set plot and filter", {

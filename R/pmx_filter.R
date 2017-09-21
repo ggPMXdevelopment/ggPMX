@@ -15,19 +15,24 @@
 #' }
 pmx_filter <- 
   function(ctr, data_set = c("estimates","predictions", 
-                            "eta", "finegrid", "shrink"), pmx_exp){
+                             "eta", "finegrid", "shrink"), pmx_exp){
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)
     assert_that(is_language_or_string(substitute(pmx_exp)))
     if(is_string(substitute(pmx_exp))){
       pmx_exp <- expression(pmx_exp)
     }
-    oldData <- ctr[["data"]][[data_set]]
-    ctr[["data"]][[data_set]] <-local_filter(pmx_exp)(oldData)
     
-    ## update all plots after global filtering
-    for ( nn in ctr %>% plot_names())
-       ctr %>% pmx_update(pname = nn)
+    if(!is.null(substitute(pmx_exp))){
+      filter <- deparse(substitute(pmx_exp))
+      filter <- local_filter(filter)
+      oldData <- ctr[["data"]][[data_set]]
+      ctr[["data"]][[data_set]] <-filter(oldData)
+      ## update all plots after global filtering
+      for ( nn in ctr %>% plot_names())
+        ctr %>% pmx_update(pname = nn)
+    }      
+    
     ctr
   }
 
@@ -82,7 +87,7 @@ pmx_update_plot <- function(self, private, pname, strat.facet,strat.color, filte
     x <- l_left_join(x, hl)
   }
   
- 
+  
   x[["filter"]] <- filter
   ## transformation
   x[["trans"]] <- trans
