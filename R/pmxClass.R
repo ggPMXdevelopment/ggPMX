@@ -109,19 +109,17 @@ formula_to_text <- function(form){
 ##' @param filter optional filter which will be applied to plotting data
 ##' @param strat.facet \code{formula} define categorical stratification as formula
 ##' @param strat.color \code{character}
+##' @param trans \code{list}{transformation operator}
 #' @param ... other plot parameters to configure \code{\link{pmx_gpar}}.
 #'
 #' @family pmxclass
 #' @return invisible ctr object
 #' @export
-
-#'
 set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname, 
-                     filter = NULL, strat.color=NULL,strat.facet=NULL,...){
+                     filter = NULL, strat.color=NULL,strat.facet=NULL,trans=NULL,...){
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
-  ## assert_that(is_string_or_expression(filter))
   assert_that(is_string_or_null(strat.color)) 
   assert_that(is_string_or_formula_or_null(strat.facet)) 
   
@@ -135,30 +133,16 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname,
     )
   if(ptype=="DIS" && conf$has.shrink)
     conf$shrink <- ctr$data[["shrink"]]
-  if(!is.null(substitute(filter))){
-    filter <- deparse(substitute(filter))
-    filter <- local_filter(filter)
-  }
-  conf[["filter"]] <- filter
-  if(!is.null(strat.color)){
-    conf[["strat.color"]] <- strat.color
-    gp <- conf[["gp"]]
-    gp[["labels"]][["legend"]] <- strat.color
-    conf[["gp"]] <- gp
-    
-  }
-  if(!is.null(strat.facet)){
-    conf[["strat.facet"]] <- strat.facet
-    gp <- conf[["gp"]]
-    gp[["labels"]][["title"]] <- 
-      sprintf("%s by %s",
-              gp[["labels"]][["title"]],formula_to_text(strat.facet))
-    conf[["gp"]] <- gp
-  }
+  
+   ## stratification  
+  if(!is.null(strat.color)) conf[["strat.color"]] <- strat.color
+  if(!is.null(strat.facet)) conf[["strat.facet"]] <- strat.facet
+  
+  
   
   ctr[["config"]][["plots"]][[toupper(pname)]] <- 
     c(ptype = ptype, list(...))
-  ctr$add_plot(conf, pname)
+  ctr$add_plot(conf, pname,filter,trans)
   invisible(ctr)
 }
 
@@ -350,8 +334,8 @@ pmxClass <- R6::R6Class(
       pmx_print(self, private, ...),
     
     # Operations ---------------------------------------------------------------
-    add_plot = function(x, pname)
-      pmx_add_plot(self, private, x, pname),
+    add_plot = function(x, pname,filter,trans)
+      pmx_add_plot(self, private, x, pname,filter,trans),
     
     update_plot = function(pname, filter = NULL,strat.facet=NULL,strat.color=NULL,
                            ..., pmxgpar = NULL){
@@ -422,6 +406,11 @@ pmx_print <- function(self, private, ...){
 
 
 pmx_transform <- function(x,dx,trans,direction){
+  if(is.character(trans)){
+      params <- strsplit(trans,"_")[[1]]
+      trans <- params[1]
+      direction <- params[2]
+  }
   cols_res <- function(x){
     with(x,{
       switch(
@@ -445,21 +434,21 @@ pmx_transform <- function(x,dx,trans,direction){
   cols_dis <- function(x){
     switch(
       direction,
-      x="VLAUE",
-      y=c("PRED","IPRED"),
-      xy=c("TIME","PRED","IPRED")
+      x=c("VALUE"),
+      y=c("VALUE"),
+      xy=c("VALUE")
     )
   }
   
   cols <- switch(
-    class(x),
+    x[["ptype"]],
     RES=cols_res(x),
     IND=cols_ind(x),
     DIS=cols_dis(x)
   )
   
   
-  dx[,(cols):=lapply(.SD,trans),.SDcols =cols]
+  dx[,(cols):=lapply(.SD,get(trans)),.SDcols =cols]
 } 
 
 
@@ -467,10 +456,14 @@ pmx_transform <- function(x,dx,trans,direction){
 ## TODO change the way how we choose the data
 ## USE AN EXPLICIT METHOD
 ## data_set(s) for res,data_set(s) for IND,..
-pmx_add_plot <- function(self, private, x, pname){
+pmx_add_plot <- function(self, private, x, pname,filter=NULL,trans=NULL){
   assert_that(is_pmx_gpar(x))
   if(missing(pname))
     pname <- paste(x$aess, collapse="_")
+  
+  ##assert_that(is_string_or_expression_or_null(filter))
+  
+
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
@@ -478,7 +471,31 @@ pmx_add_plot <- function(self, private, x, pname){
   if(!is.null(self$data[[dname]])) {
     dx <- self$data[[dname]]
     assert_that(is.data.table(dx))
-    if(!is.null(x[["filter"]])) dx <- x[["filter"]](dx)
+    if(!is.null(substitute(filter))) {
+      filter <- deparse(substitute(filter))
+      filter <- local_filter(filter)
+      x[["filter"]] <- filter
+      dx <- filter(dx)
+    }
+    ## stratification 
+    
+    
+    if(!is.null(x[["strat.color"]])){
+      gp <- x[["gp"]]
+      gp[["labels"]][["legend"]] <- x[["strat.color"]]
+      x[["gp"]] <- gp
+    }
+    if(!is.null(x[["strat.facet"]])){
+      x[["labels"]][["title"]] <- 
+        sprintf("%s by %s",
+                x$gp[["labels"]][["title"]],formula_to_text(x[["strat.facet"]]))
+    }
+    
+    if(!is.null(trans)) {
+      x[["trans"]] <- trans
+      dx <- pmx_transform(x,dx,trans)
+    }
+    
     if(ptype=="DIS"){
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
@@ -501,8 +518,6 @@ pmx_add_plot <- function(self, private, x, pname){
   }
   invisible(self)
 }
-
-
 
 pmx_remove_plot <- function(self, private, pname, ...){
   private$.plots_configs[[pname]] <- NULL

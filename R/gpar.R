@@ -55,7 +55,7 @@ pmx_gpar <-
       discrete = discrete,
       scale_log=scale_log,
       ...))
-    class(gp) <- "pmx_gpar"
+    class(gp) <- c("pmx_gpar","list")
     gp
   }
 
