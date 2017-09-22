@@ -68,6 +68,12 @@ plot_pmx.individual <-
     ID <- NULL
     ## plot
     ## dx <- dx[DVID==1]
+    strat.facet <- x[["strat.facet"]]
+    strat.color <- x[["strat.color"]]
+    
+    wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet,"ID")
+    else formula("~ID")
+    
     get_page <- with(x,{
       p <- ggplot(dx, aes(TIME, DV))+
         geom_line(aes(y=IPRED),size=1,linetype=1)+
@@ -85,7 +91,7 @@ plot_pmx.individual <-
         i <- intersect(i,seq_len(npages))
         res <- lapply(i,function(x){
           cat("page:",x,"\n")
-          p + facet_wrap_paginate(~ID, ncol = ncol, nrow = nrow, 
+          p + facet_wrap_paginate(wrap.formula, ncol = ncol, nrow = nrow, 
                                   page = x)
         }
         )
