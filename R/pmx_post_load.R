@@ -6,17 +6,24 @@
 #' @return data.table
 #' @importFrom zoo na.locf
 
-input_finegrid <- function(input, finegrid, covariates = NULL)
+input_finegrid <- function(input, finegrid, covariates = NULL,strats=NULL)
 {
   ## this for R CMD check purpose
   ID <- TIME <- DVID <- NULL
   if(is.null(finegrid))return(NULL)
-  dx <- rbind(finegrid, input, fill = TRUE)[TIME>0]
-  measures <- c("DV","PRED","IPRED")
+  input[,source:="in"]
+  dx <- rbind(finegrid,input,fill=TRUE)[order(DVID,ID,TIME)]
+  
+  measures <- c("DV")
   if(!is.null(covariates) && all(nzchar(covariates)))
     measures <- c(measures,covariates)
-  dx[order(ID,DVID,TIME)][,(measures):=
-                            lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
+  if(!is.null(strats) && all(nzchar(strats)))
+    measures <- c(measures,strats)
+  
+  dx[,(measures):=
+       lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
+  
+  dx[is.na(source) & TIME>=0][,source:=NULL]
 }
 
 
@@ -67,7 +74,7 @@ post_load <- function(dxs, input, sys, dplot,...){
     if(!is.null(dxs[["eta"]]))
       dxs[["eta"]] <- post_load_eta(dxs[["eta"]],input,sys)
     
-
+    
   }
   
   dxs
