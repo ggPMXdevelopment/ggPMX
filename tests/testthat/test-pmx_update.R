@@ -20,7 +20,7 @@ test_that("can remove DIS plot", {
 test_that("can update IND plot", {
   ctr <- helpers$ctr
   ctr %>% set_plot("IND", pname = "indiv1")
-  expect_output(ctr %>% get_plot("indiv1", c(2, 4)))
+  expect_is(ctr %>% get_plot("indiv1", c(2, 4)),"list")
   expect_true("indiv1" %in% ctr$plots())
   oldconf <- ctr$get_config("indiv1")
   expect_false(oldconf$gp$has.band)
@@ -69,8 +69,9 @@ test_that("can update with filter", {
 test_that("can update facet stratification", {
   # set new plot
   ctr <- helpers$ctr
-  ctr %>% pmx_update("distri",strat.facet ="SEX")
-  p <- ctr %>% get_plot("distri")
+  p <- ctr %>% 
+    pmx_update("ebe_hist",strat.facet ="SEX") %>%
+    get_plot("ebe_hist")
   pconf <- ggplot2::ggplot_build(p)
   expect_true("SEX" %in% names(pconf$layout$panel_layout))
   

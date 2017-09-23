@@ -36,10 +36,12 @@ c("Plot of observations versus individual predictions", "RES","dv_ipred"),
 c("Plot of absolute individual weighted residuals versus individual predictions","RES","abs_iwres_dv"),
 c("Plot of individual weighted residuals (IWRES) versus individual predictions","RES","iwres_ipred"),
 c("Plots of observations and model predictions per individual","IND","indiv"),
+c("Distribution of EBE histogram","DIS","hist_ebe"),
+c("Distribution of EBE boxplot","DIS","box_ebe"),
 c("Distribution and quantile-quantile plot of IWRES","QQ","qq_iwres"),
 c("Visual predictive check (VPC)","VPC","vpc"),
-c("Distribution and correlation structure of estimated inter-individual random effects (ETA)","ECORREL","eta_correl"),
-c("Relationships between estimated inter-individual random effects (ETA) and covariates","DIS","distri"))
+c("Distribution and correlation structure (ETA)","ECORREL","eta_correl"),
+c("Relationships between (ETA) and covariates","ECORREL","eta_correl1"))
 colnames(out) <- c("Plot Name","ggPMX type","ggPMX name")
 knitr::kable(out)
 ```
@@ -56,52 +58,61 @@ In this vignette, we will use theophylline data.
 
 ##  Start point: create a controller 
 
-Within `ggPMX`, the first thing to do is to create a controller. This is a central object that will contain all session objects: data configuration, plots configuration, data sets , plots and template.
+Within `ggPMX`, the first thing to do is to create a controller. 
 
-To create a controller using `theophylline` use case, just call:
+To create a controller using `theophylline` we call the helper function:
 ```{r theophylline_ctr}
 ctr <- theophylline()
 ```
-*We are using a wrapper here to avoid all initilisations details. Though, We will see later how to create a controller using custom user data.*
-
-Let's first understand what happened behind the scene. The ctr is an object of class `r class(ctr)[1]`. It implements the S3method `print`. Taping in the console:
+Let's discover the controller content by printing to the console:
 ```{r display ctr}
 ctr
 ```
-- The data path indicates the working directory that contains the modelling input data and different Modelling output files.
-- Each controller contains a configuration object defined using templates.
-- The sys indicates the system used to create the model: Here we are using Monolix
-- The controller uses here 4 files:
-- The controller  6 plots:
+We get mainly 3 tables:
 
-1. `RES` **residual** plot
-2. `DIS` **distribution** plot
-3. `IND` **individual** plot
-4. `ECORREL` **Correlation** plot
+- Table of the controller configutration 
+- Table of data sets
+- Table of plots. 
+
+**Note that**:
+
+* We will go in depeth through the controller details when we create a controller using custom data.
+* The ctr is an object of class `r class(ctr)[1]`. It behaves like a container that stores: 
+    + data configuration, 
+    + plots configuration
+    + data sets
+    + plots
+    + templates path.
+    + report
 
 ## Get Plots
 
-The controller is an `R6` object that stores all plots. We can int:
+The controller is a container that stores all plots. To get the list of plots:
 
-```{r list_plots}
-ctr %>% plot_names()
+```{r plot_lists}
+ctr %>% plot_names
 ```
 Note here the use of piping 
 
-We use `get_plot` and the name of the plot to print (plot) it:
-```{r print_plots}
+To view a particular plot we call `get_plot` with the name of the plot:
+```{r get_ipred_iwres}
 ctr %>% get_plot("ipred_iwres")
 ```
 
-In case of individual plots :
+
+In case of individual plots, We can pass in addition the number of page to plot to `get_plot`:
 
 ```{r ind_plots}
-
-ctr %>% get_plot("indiv",1)
-
+ctr %>% get_plot("indiv",npage = 2)
 ```
 
-## Used data
+`get_plot` returns a standard `ggplot2` object that you can ucstomize using and valid `ggplot2` operation. Here for example: 
+
+```{r ebe_plots}
+ctr %>% get_plot("ebe_hist")
+ctr %>% get_plot("ebe_box")
+```
+
 
 # ggPMX main functions
 

@@ -10,10 +10,15 @@ PRED_NPDE:
   ptype: RES
   x: PRED
   'y': NPDE
-DISTRI:
+EBE_HIST:
   ptype: DIS
   ranges: ~
   type: hist
+EBE_BOX:
+  ptype: DIS
+  ranges: ~
+  type: box
+  'has.jitter': false
 INDIV:
   ptype: IND
   ranges: ~

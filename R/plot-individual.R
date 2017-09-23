@@ -90,7 +90,6 @@ plot_pmx.individual <-
         if (is.null(i))i <- seq_len(npages)
         i <- intersect(i,seq_len(npages))
         res <- lapply(i,function(x){
-          cat("page:",x,"\n")
           p + facet_wrap_paginate(wrap.formula, ncol = ncol, nrow = nrow, 
                                   page = x)
         }

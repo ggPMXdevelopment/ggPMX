@@ -6,7 +6,7 @@ test_that("can create pmx class", {
   expect_is(ctr, "pmxClass")
   expect_identical(
     ctr %>% plot_names(), 
-    c("ipred_iwres", "time_npde", "pred_npde", "distri", "indiv","eta_correl")
+    c("ipred_iwres", "time_npde", "pred_npde", "ebe_hist","ebe_box", "indiv","eta_correl")
   )
 })
 

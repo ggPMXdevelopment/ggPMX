@@ -22,7 +22,7 @@ input_finegrid <- function(input, finegrid, covariates = NULL,strats=NULL)
   
   dx[,(measures):=
        lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
-  
+  input[,source:=NULL]
   dx[is.na(source) & TIME>=0][,source:=NULL]
 }
 

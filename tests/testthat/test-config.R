@@ -16,7 +16,8 @@ test_that("can load configs", {
 test_that("can print loaded config", {
   conf <- configs()
   cfig <- load_config(conf$name[1], "mlx")
-  expect_output(print(cfig), "configuration Object")
+  expect_output(print(cfig), "data_name")
+  expect_output(print(cfig), "plot_name")
 })
 
 
