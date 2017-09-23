@@ -403,10 +403,25 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   }
   
 }
-
+#' @importFrom knitr kable
 pmx_print <- function(self, private, ...){
   cat("\npmx object:\n")
-  cat("data path: ", private$.data_path , "\n")
+  ctr_table <- 
+  rbind(
+    c("working directory",
+      gsub(path.package("ggPMX"),"",private$.data_path)),
+    c("Modelling input",basename(private$.input)),
+    c("dv",self$dv),
+    c("dvid",self$dvid),
+    c("cats",paste(self %>% get_cats,collapse = ",")),
+    c("conts",paste(self %>% get_conts,collapse = ",")),
+    c("strats",paste(self %>% get_strats,collapse = ","))
+  )
+  colnames(ctr_table) <- c("PARAM","VALUE")
+  
+  print(kable(ctr_table))
+        
+
   print(self$config, ...)
   
 }

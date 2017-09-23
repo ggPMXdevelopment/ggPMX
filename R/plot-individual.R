@@ -22,7 +22,7 @@
 
 
 individual <- function(labels, 
-                       facets = list(ncol = 3, nrow = 4), 
+                       facets = list(ncol = 2, nrow = 2), 
                        dname = NULL,
                        ...){
   assert_that(is_list(facets))

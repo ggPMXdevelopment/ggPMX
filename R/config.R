@@ -74,21 +74,26 @@ load_config <- function(x, sys = c("mlx", "nm")){
 #' @param ... addtional arguments to pass to print (ununsed currently)
 #'
 #' @return invisible object
+#' @importFrom knitr kable
 #' @export
 print.pmxConfig <-
   function(x, ...){
     assert_that(is_pmxconfig(x))
-    cat("configuration Object\n")
-    cat("-- sys is ", x$sys, "\n")
     if (exists("data", x)) {
-      cat(length(x$data), "-- data sets :\n")
-      for(y in x$data)cat("----", y$label, ":", y$file, "\n")
+      datas_table <- data.table(
+        data_name=names(x$data),
+        data_file=sapply(x$data,"[[","file"),
+        data_label=sapply(x$data,"[[","label"))
+                                
+      print(kable(datas_table),format = "latex",caption = "List of data sets:")
     }
     
     if (exists("plots", x)) {
-      cat(length(x$plots), "-- plots:\n")
-      for(y in names(x$plots))
-        cat(tolower(y), "----type:", x$plots[[y]]$ptype,"---data set:" ,x$plots[[y]]$dname,"\n")
+      plots_table <- data.table(
+        plot_name=tolower(names(x$plots)),
+        plot_type=sapply(x$plots,"[[","ptype"))
+      
+      print(kable(plots_table),format = "latex",caption = "List of plots:")
     }
     
     invisible(x)

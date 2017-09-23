@@ -1,0 +1,120 @@
+---
+title: "ggPMX - User guide"
+author: "Amine Gassem"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{ggPMX: User guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+\clearpage  
+```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width='100%',warning=FALSE,message=FALSE)
+library(ggPMX)
+```
+
+
+
+# Introduction
+
+ggPMX is an R package that generates standard model diagnostic plots and tables used in PMX activities.
+This vignette introduces the ggPMX syntax, how to initialize a controller using package data , display plots, update existing plots , filter data , stratification and many others details. 
+
+# Plots table
+
+The main target of ggPMX is to create a report containing the following plots: 
+
+```{r plots_list,echo=FALSE}
+
+out <- rbind(
+c("Plot of weighted residuals versus population predictions","RES","wres_ppred"),
+c("Plot of weighted residuals versus time","RES","wres_time"),
+c("Plot of IWRES versus time","RES","iwres_time"),
+c("Plot of observations versus population predictions", "RES","dv_ppred"),
+c("Plot of observations versus individual predictions", "RES","dv_ipred"),
+c("Plot of absolute individual weighted residuals versus individual predictions","RES","abs_iwres_dv"),
+c("Plot of individual weighted residuals (IWRES) versus individual predictions","RES","iwres_ipred"),
+c("Plots of observations and model predictions per individual","IND","indiv"),
+c("Distribution and quantile-quantile plot of IWRES","QQ","qq_iwres"),
+c("Visual predictive check (VPC)","VPC","vpc"),
+c("Distribution and correlation structure of estimated inter-individual random effects (ETA)","ECORREL","eta_correl"),
+c("Relationships between estimated inter-individual random effects (ETA) and covariates","DIS","distri"))
+colnames(out) <- c("Plot Name","ggPMX type","ggPMX name")
+knitr::kable(out)
+```
+
+
+
+
+# theophylline Use case 
+
+In this vignette, we will use theophylline data. 
+
+*PS: (TODO add some description of the data here, PK case,...)*
+
+
+##  Start point: create a controller 
+
+Within `ggPMX`, the first thing to do is to create a controller. This is a central object that will contain all session objects: data configuration, plots configuration, data sets , plots and template.
+
+To create a controller using `theophylline` use case, just call:
+```{r theophylline_ctr}
+ctr <- theophylline()
+```
+*We are using a wrapper here to avoid all initilisations details. Though, We will see later how to create a controller using custom user data.*
+
+Let's first understand what happened behind the scene. The ctr is an object of class `r class(ctr)[1]`. It implements the S3method `print`. Taping in the console:
+```{r display ctr}
+ctr
+```
+- The data path indicates the working directory that contains the modelling input data and different Modelling output files.
+- Each controller contains a configuration object defined using templates.
+- The sys indicates the system used to create the model: Here we are using Monolix
+- The controller uses here 4 files:
+- The controller  6 plots:
+
+1. `RES` **residual** plot
+2. `DIS` **distribution** plot
+3. `IND` **individual** plot
+4. `ECORREL` **Correlation** plot
+
+## Get Plots
+
+The controller is an `R6` object that stores all plots. We can int:
+
+```{r list_plots}
+ctr %>% plot_names()
+```
+Note here the use of piping 
+
+We use `get_plot` and the name of the plot to print (plot) it:
+```{r print_plots}
+ctr %>% get_plot("ipred_iwres")
+```
+
+In case of individual plots :
+
+```{r ind_plots}
+
+ctr %>% get_plot("indiv",1)
+
+```
+
+## Used data
+
+# ggPMX main functions
+
+`ggPMX` implements few functions to generate diagnostic plots:
+
+1. `pmx` creates a controller.
+2. `plot_names` lists controller plots
+3. `get_data` lists controller data
+3. `get_plot` prints a plot
+4. `set_plot` creates a new plot
+5. `pmx_update` updates controller to modify an an existing plot
+6. `pmx_filter` filters data stored in the controller object.
+
+The design of the package is around the central object the controller that we can introspect (pipe) it using the `%>%`. 
+
+
