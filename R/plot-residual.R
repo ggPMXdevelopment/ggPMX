@@ -15,6 +15,25 @@
 #' @export
 #' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.residual}}
+#' @details 
+#' Some parameters are a list of parameters :
+#' 
+#' \strong{point} is a list that contains:
+#' \itemize{
+#' \item {\strong{shape:}} {default to 1}
+#' \item {\strong{color:}} {default to black}
+#' \item {\strong{size:}} {default to 1}
+#' }
+#' 
+#' \strong{labels} is a list that contains:
+#' \itemize{
+#' \item {\strong{title:}} {plot title default to AES_X versue AES_Y}
+#' \item {\strong{title:}} {plot subtitle default empty}
+#' \item {\strong{x:}} {x axis label default to AES_X}
+#' \item {\strong{y:}} {y axis label default to AES_Y}
+#' }
+
+
 
 residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NULL, ...){
   ## default labels parameters
