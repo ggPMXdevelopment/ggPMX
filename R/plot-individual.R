@@ -12,13 +12,20 @@
 #' @seealso \code{\link{plot_pmx.individual}}
 #' @details 
 #' 
-#' #' \strong{labels} is a list that contains:
+#'\strong{labels} is a list that contains:
 #' \itemize{
 #' \item {\strong{title:}} {plot title default "Individual fits"}
-#' \item {\strong{title:}} {plot subtitle default empty}
+#' \item {\strong{subtitle:}} {plot subtitle default empty}
 #' \item {\strong{x:}} {x axis label default to "Time after first dose (hours)"}
 #' \item {\strong{y:}} {y axis label default to "ABC123 plasma concentration (ng/mL)"}
 #' }
+#' 
+#'\strong{facets} is a list that contains:
+#' \itemize{
+#' \item {\strong{nrow:}} {number of facets row default to 2}
+#' \item {\strong{ncol:}} {number of facets columns default to 2}
+#' }
+
 #'
 #'@examples
 #'## get individual plot using package default data set

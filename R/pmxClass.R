@@ -166,8 +166,10 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname,
 #' \dontrun{
 #' library(ggPMX)
 #' ctr <- pmx_mlx("standing")
+#' p1 <- ctr %>% get_plot("ipred_iwres")
 #' ## get all pages or some pages
-#' p1 <- ctr %>% get_plot("indiv")
+#' p2 <- ctr %>% get_plot("indiv")
+#' ## returns one page of individual plot
 #' p2 <- ctr %>% get_plot("indiv",napge=1)
 #' p3 <- ctr %>% get_plot("indiv",napge=c(1,3))
 #' ## get distribution plot

@@ -13,6 +13,17 @@
 #'
 #' @return distrib object
 #' @family plot_pmx
+#' @details 
+#' 
+#' \strong{labels} is a list that contains:
+#' \itemize{
+#' \item {\strong{title:}} {plot title default "EBE distribution"}
+#' \item {\strong{subtitle:}} {plot subtitle default empty}
+#' \item {\strong{x:}} {x axis label default to "Etas"}
+#' \item {\strong{y:}} {y axis label default to empty}
+#' \item {\strong{legend:}} {legend titile default to "random Effect"}
+#' }
+#'
 #' @export
 distrib <- function(
   labels,
