@@ -577,3 +577,21 @@ pmx_post_load <- function(self, private){
 print.pmxClass <- function(x, ...){
   x$print(...)
 }
+
+
+
+#' Creates a deep copy of the controller
+#'
+#' @param ctr \code{pmxClass} object
+#'
+#' @return an object of \code{pmxClass} deep copy
+#' @export
+#'
+#' @examples
+#'  ctr <- theophylline()
+#'  cctr <- ctr %>% pmx_copy
+#'  ## Any chnage in the ctr has no side effect in the ctr and vice versa 
+pmx_copy <- function(ctr){
+  assert_that(is_pmxclass(ctr))
+  ctr$clone()
+}
