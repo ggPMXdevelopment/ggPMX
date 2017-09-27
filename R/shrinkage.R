@@ -28,7 +28,7 @@ shrinkage <-
       coef <- if(fun=="sd")VALUE_OMEGA else VALUE_OMEGA^2
       shrink <- 1 - get(fun)(VALUE) / coef 
       
-      list(SHRINK=shrink,POS=median(VALUE))
+      list(SHRINK=shrink,POS=max(VALUE))
     }, grp]
     
   }

@@ -32,7 +32,7 @@ distrib <- function(
   facets = list(scales = "free_y", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
-  shrink=list(fun="sd",size=5,color="green",vjust=0,dodge=0.9,x=0,y=0),
+  shrink=list(fun="sd",size=5,color="black",vjust=0,dodge=0.9,x=0,y=0),
   dname = NULL,
   ...){
   assert_that(is_logical(has.jitter))
@@ -160,13 +160,13 @@ shrinkage_layer <-
    y_ <- shrink$y
    res <-   geom_text(data=dx,
         aes(x=EFFECT,y=POS,
-            label = sprintf('%s%%',round(SHRINK*100))),
+            label = sprintf('shrinkage=%s%%',round(SHRINK*100))),
         color = shrink$color, size = shrink$size,
         position = position_dodge(width = 0.9),vjust=shrink$vjust) 
    if(type=="hist")
       res <- geom_text(data=dx,
                       x=x_,y=y_,
-            aes(label = sprintf('%s%%',round(SHRINK*100))),
+            aes(label = sprintf('shrinkage=%s%%',round(SHRINK*100))),
         color = shrink$color, size = shrink$size,vjust=shrink$vjust)
    res
 
