@@ -1,15 +1,37 @@
-IPRED_IWRES:
+ABS_IWRES_IPRED:
   ptype: RES
   x: IPRED
   'y': IWRES
-TIME_NPDE:
+  trans: abs_y
+  labels:
+    title: '|IWRES| versus IPRED'
+IWRES_IPRED:
+  ptype: RES
+  x: IPRED
+  'y': IWRES
+NPDE_TIME:
   ptype: RES
   x: TIME
   'y': NPDE
-PRED_NPDE:
+  
+IWRES_TIME:
+  ptype: RES
+  x: TIME
+  'y': IWRES
+NPDE_PRED:
   ptype: RES
   x: PRED
   'y': NPDE
+DV_PRED:
+  ptype: RES
+  x: PRED
+  'y': DV
+DV_IPRED:
+  ptype: RES
+  x: IPRED
+  'y': DV
+  
+  
 EBE_HIST:
   ptype: DIS
   ranges: ~

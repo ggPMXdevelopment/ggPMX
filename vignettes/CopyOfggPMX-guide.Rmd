@@ -2,7 +2,7 @@
 title: "ggPMX - User guide"
 author: "Amine Gassem"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_document
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +18,10 @@ library(ggPMX)
 
 # Introduction
 
-ggPMX is an R package that generates standard model diagnostic plots and tables used in PMX activities.
+The `ggPMX` package generates standard model diagnostic plots and tables used in PMX activities.
+
+The package aims to automate plot and report generation. 
+
 This vignette introduces the ggPMX syntax, how to initialize a controller using package data , display plots, update existing plots , filter data , stratification and many others details. 
 
 # Plots table
@@ -28,10 +31,10 @@ The main target of ggPMX is to create a report containing the following plots:
 ```{r plots_list,echo=FALSE}
 
 out <- rbind(
-c("Plot of weighted residuals versus population predictions","RES","wres_ppred"),
-c("Plot of weighted residuals versus time","RES","wres_time"),
+c("Plot of weighted residuals versus population predictions","RES","npde_pred"),
+c("Plot of weighted residuals versus time","RES","npde_time"),
 c("Plot of IWRES versus time","RES","iwres_time"),
-c("Plot of observations versus population predictions", "RES","dv_ppred"),
+c("Plot of observations versus population predictions", "RES","dv_pred"),
 c("Plot of observations versus individual predictions", "RES","dv_ipred"),
 c("Plot of absolute individual weighted residuals versus individual predictions","RES","abs_iwres_dv"),
 c("Plot of individual weighted residuals (IWRES) versus individual predictions","RES","iwres_ipred"),
@@ -39,9 +42,10 @@ c("Plots of observations and model predictions per individual","IND","indiv"),
 c("Distribution of EBE histogram","DIS","hist_ebe"),
 c("Distribution of EBE boxplot","DIS","box_ebe"),
 c("Distribution and quantile-quantile plot of IWRES","QQ","qq_iwres"),
-c("Visual predictive check (VPC)","VPC","vpc"),
 c("Distribution and correlation structure (ETA)","ECORREL","eta_correl"),
-c("Relationships between (ETA) and covariates","ECORREL","eta_correl1"))
+c("Relationships between (ETA) and covariates","ECORREL","eta_correl1"),
+c("Visual predictive check (VPC)","VPC","vpc"))
+
 colnames(out) <- c("Plot Name","ggPMX type","ggPMX name")
 knitr::kable(out)
 ```
@@ -49,18 +53,19 @@ knitr::kable(out)
 
 
 
-# theophylline Use case 
+# Package data 
 
-In this vignette, we will use theophylline data. 
-
+In prder to esent the package features , the package comes with built in data. 
+This vignette, we will use theophylline data. 
 *PS: (TODO add some description of the data here, PK case,...)*
 
 
-##  Start point: create a controller 
+# ggpMX: basics
 
+## Create a controller
 Within `ggPMX`, the first thing to do is to create a controller. 
+To create a controller using `theophylline` data we call the helper function:
 
-To create a controller using `theophylline` we call the helper function:
 ```{r theophylline_ctr}
 ctr <- theophylline()
 ```
@@ -70,13 +75,13 @@ ctr
 ```
 We get mainly 3 tables:
 
-- Table of the controller configutration 
+- Table of the controller configuration 
 - Table of data sets
 - Table of plots. 
 
 **Note that**:
 
-* We will go in depeth through the controller details when we create a controller using custom data.
+* We will go in depth through the controller construction details when we create a controller using custom data.
 * The ctr is an object of class `r class(ctr)[1]`. It behaves like a container that stores: 
     + data configuration, 
     + plots configuration
@@ -96,7 +101,7 @@ Note here the use of piping
 
 To view a particular plot we call `get_plot` with the name of the plot:
 ```{r get_ipred_iwres}
-ctr %>% get_plot("ipred_iwres")
+ctr %>% get_plot("iwres_ipred")
 ```
 
 
@@ -106,9 +111,9 @@ In case of individual plots, We can pass in addition the number of page to plot 
 ctr %>% get_plot("indiv",npage = 2)
 ```
 
-`get_plot` returns a standard `ggplot2` object that you can ucstomize using and valid `ggplot2` operation. Here for example: 
+`get_plot` returns a standard `ggplot2` object that you can customize using any valid `ggplot2` operation. Here for example we are combining 2 versions of the distribution plot:
 
-```{r ebe_plots}
+```{r ebe_plots, out.width='.49\\linewidth', fig.width=3, fig.height=3,fig.show='hold',fig.align='center'}
 ctr %>% get_plot("ebe_hist")
 ctr %>% get_plot("ebe_box")
 ```
@@ -118,14 +123,24 @@ ctr %>% get_plot("ebe_box")
 
 `ggPMX` implements few functions to generate diagnostic plots:
 
-1. `pmx` creates a controller.
-2. `plot_names` lists controller plots
-3. `get_data` lists controller data
-3. `get_plot` prints a plot
-4. `set_plot` creates a new plot
-5. `pmx_update` updates controller to modify an an existing plot
-6. `pmx_filter` filters data stored in the controller object.
+1. `pmx` , `pmx_mlx` to create a controller.
+2. `plot_names` to list controller plots.
+3. `get_data` to list controller data.
+3. `get_plot` to print a plot.
+4. `set_plot` to create a new plot.
+5. `pmx_update` to update an existing plot.
+6. `pmx_filter` To filter globally session data.
 
-The design of the package is around the central object the controller that we can introspect (pipe) it using the `%>%`. 
+The design of the package is around the central object the controller. that we can introspect (pipe) it using the `%>%`. 
 
 
+
+## Appendix: All Theophylline plots
+
+Here the list of all plots based on theophylline data set. 
+```{r thoellyine_plots, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,echo=FALSE}
+for(x  in ctr %>% plot_names) print(ctr %>% get_plot(x))
+
+
+
+```
