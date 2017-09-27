@@ -5,8 +5,10 @@ test_that("can create pmx class", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   expect_identical(
-    ctr %>% plot_names(), 
-    c("ipred_iwres", "time_npde", "pred_npde", "ebe_hist","ebe_box", "indiv","eta_correl")
+    ctr %>% plot_names, 
+    c("abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time", 
+      "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "indiv", 
+      "eta_correl")
   )
 })
 
@@ -26,7 +28,7 @@ test_that("can remove plot from pnmx class", {
 test_that("can get pmx class config", {
   ctr <- pmxClassHelpers$ctr
   cplots <- ctr %>% plot_names()
-  conf <- ctr$get_config("time_npde")
+  conf <- ctr$get_config("npde_time")
   clabels <- list(title = "NPDE versus TIME", subtitle = "", 
                   x = "TIME", 
                   y = "NPDE")
