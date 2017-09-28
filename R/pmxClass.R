@@ -115,7 +115,8 @@ formula_to_text <- function(form){
 #' @family pmxclass
 #' @return invisible ctr object
 #' @export
-set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname, 
+set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV"), 
+                     pname, 
                      filter =NULL, strat.color=NULL,strat.facet=NULL,trans=NULL,...){
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
@@ -130,7 +131,8 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ECORREL"), pname,
            IND=individual(...),
            DIS=distrib(...),
            RES=residual(...),
-           ECORREL=ecorrel(...)
+           ETA_PAIRS=eta_pairs(...),
+           ETA_COV=eta_cov(...)
     )
   if(!is.null(substitute(filter))){
     filter <- deparse(substitute(filter))
@@ -205,6 +207,25 @@ plot_names <- function(ctr){
   assert_that(is_pmxclass(ctr))
   ctr$plots()
 }
+
+#' Get plots description
+#'
+#' @param ctr  \code{pmxClass} controller object
+#' 
+#' @family pmxclass
+#' @return data.frame of plots
+#' @export
+
+plots <- function(ctr){
+  assert_that(is_pmxclass(ctr))
+  x <- ctr$config
+  if (exists("plots", x)) {
+     data.table(
+      plot_name=tolower(names(x$plots)),
+      plot_type=sapply(x$plots,"[[","ptype"))
+  }
+}
+
 
 
 
@@ -529,6 +550,10 @@ pmx_add_plot <- function(self, private, x, pname){
           self$data[["estimates"]],self$data[["eta"]],
           fun = x$shrink$fun,by=grp)
       }
+    }
+    if(ptype=="ETA_COV"){
+      x[["cats"]] <- self %>% get_cats
+      x[["conts"]] <- self %>% get_conts
     }
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
   } else {

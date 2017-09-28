@@ -30,8 +30,6 @@ DV_IPRED:
   ptype: RES
   x: IPRED
   'y': DV
-  
-  
 EBE_HIST:
   ptype: DIS
   ranges: ~
@@ -44,5 +42,12 @@ EBE_BOX:
 INDIV:
   ptype: IND
   ranges: ~
-ETA_CORREL:
-  ptype: ECORREL
+ETA_MATRIX:
+  ptype: ETA_PAIRS
+ETA_CATS:
+  ptype: ETA_COV
+  type: cats
+ETA_CONTS:
+  ptype: ETA_COV
+  type: conts
+

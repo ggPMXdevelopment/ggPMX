@@ -9,7 +9,7 @@
 #' @return ecorrel object
 #' @family plot_pmx
 #' @export
-ecorrel <- function(title,dname=NULL,type.eta=c("mode","mean"),...){
+eta_pairs <- function(title,dname=NULL,type.eta=c("mode","mean"),...){
   assert_that(is_string_or_null(dname))
   if(is.null(dname)) dname <- "eta"
   if(missing(title)) title <- "Correlation random effect"
@@ -30,7 +30,7 @@ ecorrel <- function(title,dname=NULL,type.eta=c("mode","mean"),...){
       has.smooth = FALSE,
       has.band = FALSE, ...)
     
-  ), class =c("ecorrel", "pmx_gpar"))
+  ), class =c("eta_pairs", "pmx_gpar"))
 }
 
 lower.plot <- function(data, mapping, method = "loess", gp,point) {
@@ -71,7 +71,7 @@ upper.plot <- function(data, mapping, gp) {
 #' @import ggplot2
 #' @import GGally
 #'
-plot_pmx.ecorrel <- function(x, dx,...){
+plot_pmx.eta_pairs <- function(x, dx,...){
   ## avoid RCMDCHECK warning
   ID <- VARIABLE <- VALUE <- FUN <- NULL
   

@@ -36,14 +36,15 @@ c("Plot of weighted residuals versus time","RES","npde_time"),
 c("Plot of IWRES versus time","RES","iwres_time"),
 c("Plot of observations versus population predictions", "RES","dv_pred"),
 c("Plot of observations versus individual predictions", "RES","dv_ipred"),
-c("Plot of absolute individual weighted residuals versus individual predictions","RES","abs_iwres_dv"),
+c("Plot of absolute individual weighted residuals versus individual predictions","RES","abs_iwres_ipred"),
 c("Plot of individual weighted residuals (IWRES) versus individual predictions","RES","iwres_ipred"),
 c("Plots of observations and model predictions per individual","IND","indiv"),
-c("Distribution of EBE histogram","DIS","hist_ebe"),
-c("Distribution of EBE boxplot","DIS","box_ebe"),
+c("Distribution of EBE histogram","DIS","ebe_hist"),
+c("Distribution of EBE boxplot","DIS","ebe_box"),
 c("Distribution and quantile-quantile plot of IWRES","QQ","qq_iwres"),
-c("Distribution and correlation structure (ETA)","ECORREL","eta_correl"),
-c("Relationships between (ETA) and covariates","ECORREL","eta_correl1"),
+c("Distribution and correlation structure (ETA)","ECORREL","eta_matrix"),
+c("Relationships between (ETA) and categorical covariates","ECORREL","eta_cats"),
+c("Relationships between (ETA) and continuous covariates","ECORREL","eta_conts"),
 c("Visual predictive check (VPC)","VPC","vpc"))
 
 colnames(out) <- c("Plot Name","ggPMX type","ggPMX name")
@@ -138,9 +139,23 @@ The design of the package is around the central object the controller. that we c
 ## Appendix: All Theophylline plots
 
 Here the list of all plots based on theophylline data set. 
-```{r thoellyine_plots, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,echo=FALSE}
-for(x  in ctr %>% plot_names) print(ctr %>% get_plot(x))
 
-
-
+###??Residual plots
+```{r th_plots_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,echo=FALSE}
+yy <- ctr %>% plots
+yy <- as.character(unlist(yy[yy$plot_type=="RES","plot_name"]))
+for(x  in yy) print(ctr %>% get_plot(x))
 ```
+### Individual plots
+```{r th_plots_ind, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,echo=FALSE}
+yy <- ctr %>% plots
+yy <- as.character(unlist(yy[yy$plot_type=="IND","plot_name"]))
+for(x  in yy) print(ctr %>% get_plot(x))
+```
+### Eta plots
+```{r th_plots_others, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,echo=FALSE}
+yy <- ctr %>% plots
+yy <- as.character(unlist(yy[!yy$plot_type %in% c("IND","RES"),"plot_name"]))
+for(x  in yy) print(ctr %>% get_plot(x))
+```
+
