@@ -87,23 +87,26 @@ eta_cov <- function(
 plot_pmx.eta_cov <- function(x, dx,...){
   p <- if(x$type=="cats"){
     cats  <- x[["cats"]]
-    dx.cats <- dx[,c(cats,"VALUE","EFFECT"),with=FALSE]
-    ggplot(melt(dx.cats,measure.vars = cats)) + 
-      geom_boxplot(aes(x=value,y=VALUE)) +
-      facet_grid(EFFECT~variable,scales = "free")
+    if(all(nzchar(x[["cats"]]))){
+      dx.cats <- dx[,c(cats,"VALUE","EFFECT"),with=FALSE]
+      ggplot(melt(dx.cats,measure.vars = cats)) + 
+        geom_boxplot(aes(x=value,y=VALUE)) +
+        facet_grid(EFFECT~variable,scales = "free")
+    }
   }else{
     conts <- x[["conts"]]
-    dx.conts <- dx[,c(conts,"VALUE"),with=FALSE]
-    dx.conts <- melt(dx.conts,id="VALUE")
-    dx.conts[,value:=log10(value)-mean(log10(value)),variable]
-    
-    ggplot(dx.conts,aes(x=value,y=VALUE)) + 
-      geom_point() +
-      facet_grid(~variable,scales="free_x") +
-      geom_smooth(method = "lm",se=FALSE)
+    if(all(nzchar(x[["conts"]]))){
+      dx.conts <- dx[,c(conts,"VALUE"),with=FALSE]
+      dx.conts <- melt(dx.conts,id="VALUE")
+      dx.conts[,value:=log10(value)-mean(log10(value)),variable]
+      
+      ggplot(dx.conts,aes(x=value,y=VALUE)) + 
+        geom_point() +
+        facet_grid(~variable,scales="free_x") +
+        geom_smooth(method = "lm",se=FALSE)
+    }
   }
-  
-  plot_pmx(x$gp, p)
+  if(!is.null(p)) plot_pmx(x$gp, p)
 }
 
 

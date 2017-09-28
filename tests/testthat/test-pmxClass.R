@@ -8,7 +8,7 @@ test_that("can create pmx class", {
     ctr %>% plot_names, 
     c("abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time", 
       "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "indiv", 
-      "eta_correl")
+      "eta_matrix", "eta_cats", "eta_conts")
   )
 })
 

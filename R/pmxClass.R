@@ -260,8 +260,7 @@ get_plot_config <- function(ctr, pname){
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, data_set = c("estimates","predictions", 
-                                       "eta", "finegrid", "shrink",
-                                       "input")){
+                                       "eta", "finegrid", "input")){
   assert_that(is_pmxclass(ctr))
   data_set <- match.arg(data_set)
   if(data_set=="input")ctr[["input"]]
@@ -609,8 +608,15 @@ print.pmxClass <- function(x, ...){
 #'
 #' @param ctr \code{pmxClass} object
 #'
-#' @return an object of \code{pmxClass} deep copy
+#' @return an object of \code{pmxClass}
 #' @export
+#' @details 
+#' 
+#' The controller is an `R6` object, it behaves like a reference object.  
+#' Some functions ( methods) can have a side effect on the controller and modify it internally. 
+#' Technically speaking we talk about chaining not piping here. However , 
+#' using \code{pmx_copy} user can work on a copy of the controller.
+
 #'
 #' @examples
 #'  ctr <- theophylline()

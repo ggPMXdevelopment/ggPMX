@@ -18,7 +18,6 @@ test_that("Initiating controlers work with and without specification of covariat
                             "theophylline")
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
-  
   ctr <- pmx_mlx(
     "standing", 
     directory =  WORK_DIR, 
@@ -26,7 +25,7 @@ test_that("Initiating controlers work with and without specification of covariat
     dv = "Y",
     dvid="DVID"
   )
-  expect_equal(ctr %>% get_covariates(),"")
+  expect_equal(ctr %>% get_covariates,"")
   uc.name <-  "1_popPK_model"
   data_file <-  "PKdata_ggPMX.csv"
   
@@ -45,7 +44,7 @@ test_that("Initiating controlers work with and without specification of covariat
     conts = c("AGE0","WT0","HT0","TRT")
   )
   
-  expect_equal(ctr %>% get_covariates(),
+  expect_equal(ctr %>% get_covariates,
                c("SEX", "RACE", "DISE", "ILOW", "AGE0", "WT0", "HT0", "TRT"))
   
   
