@@ -115,7 +115,7 @@ formula_to_text <- function(form){
 #' @family pmxclass
 #' @return invisible ctr object
 #' @export
-set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV"), 
+set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV","PMX_QQ"), 
                      pname, 
                      filter =NULL, strat.color=NULL,strat.facet=NULL,trans=NULL,...){
   assert_that(is_pmxclass(ctr))
@@ -132,7 +132,9 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV"),
            DIS=distrib(...),
            RES=residual(...),
            ETA_PAIRS=eta_pairs(...),
-           ETA_COV=eta_cov(...)
+           ETA_COV=eta_cov(...),
+           PMX_QQ=pmx_qq(...)
+           
     )
   if(!is.null(substitute(filter))){
     filter <- deparse(substitute(filter))
@@ -140,8 +142,8 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV"),
   }
   conf[["filter"]] <- filter
   conf[["trans"]] <- trans
-  if(ptype=="DIS" && conf$has.shrink)
-    conf$shrink <- ctr$data[["shrink"]]
+  # if(ptype=="DIS" && conf$has.shrink)
+  #   conf$shrink <- ctr$data[["shrink"]]
   
   ## stratification  
   if(!is.null(strat.color)) conf[["strat.color"]] <- strat.color
@@ -531,11 +533,9 @@ pmx_add_plot <- function(self, private, x, pname){
         sprintf("%s by %s",
                 x$gp[["labels"]][["title"]],formula_to_text(x[["strat.facet"]]))
     }
-    
     if(!is.null( x[["trans"]])) {
       dx <- pmx_transform(x,dx, x[["trans"]])
     }
-    
     if(ptype=="DIS"){
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
@@ -555,6 +555,10 @@ pmx_add_plot <- function(self, private, x, pname){
       x[["conts"]] <- self %>% get_conts
     }
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
+    
+   
+    
+    
   } else {
     # throw error message
     private$.plots[[pname]] <- NULL

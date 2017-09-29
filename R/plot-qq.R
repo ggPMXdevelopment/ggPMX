@@ -1,5 +1,7 @@
 
 
+
+
 #' creates an eta_cov object to plot ebe versus covariates
 #'
 #' @param labels list of texts/titles used within the plot
@@ -20,38 +22,37 @@
 #' }
 #'
 #' @export
-eta_cov <- function(
+pmx_qq <- function(
+  x,
   labels,
-  type = c("cats", "conts"),
   dname = NULL,
-  point = NULL,
+  point=NULL,
   ...){
-  type <- match.arg(type)
   assert_that(is_string_or_null(dname))
-  if(is.null(dname)) dname <- "eta"
+  if(is.null(dname)) dname <- "predictions"
   
   
   if(missing(labels))
     labels <- list(
-      title = "EBE vs. covariates",
-      x = "",
-      y = "")
+      title = sprintf("QQ plot: %s",x)
+      )
+  labels$y <- ""
+  labels$x <- ""
   assert_that(is_list(labels))
   default_point <- list(shape = 1, color = "black", size = 1)
   point <- l_left_join(default_point, point)
-  
   labels$subtitle <- ""
   structure(list(
-    ptype="ETA_COV",
+    ptype="PMX_QQ",
+    x=x,
     dname = dname,
-    type=type,
     point=point,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
       has.smooth = FALSE)
     
-  ), class =c("eta_cov", "pmx_gpar"))
+  ), class =c("pmx_qq", "pmx_gpar"))
 }
 
 
@@ -84,30 +85,18 @@ eta_cov <- function(
 #' @family plot_pmx
 #' @import ggplot2
 #'
-plot_pmx.eta_cov <- function(x, dx,...){
-  p <- if(x$type=="cats"){
-    cats  <- x[["cats"]]
-    if(all(nzchar(x[["cats"]]))){
-      dx.cats <- dx[,c(cats,"VALUE","EFFECT"),with=FALSE]
-      ggplot(melt(dx.cats,measure.vars = cats)) + 
-        geom_boxplot(aes(x=value,y=VALUE)) +
-        facet_grid(EFFECT~variable,scales = "free")
-    }
+plot_pmx.pmx_qq <- function(x, dx,...){
+  p <- ggplot(dx, aes_string(sample=x$x))+
+    geom_abline()+
+    with(x$point,geom_point(stat='qq',shape = shape, color = color, size = size))+
+    coord_cartesian(xlim=c(-4,4),ylim=c(-4,4))
+  if(!is.null( x[["strat.facet"]])){
+    if(is.character(strat.facet))
+      strat.facet <- formula(paste0("~", x[["strat.facet"]]))
+    p <- p + facet_grid(strat.facet)
   }
-  else{
-    conts <- x[["conts"]]
-    if(all(nzchar(x[["conts"]]))){
-      dx.conts <- dx[,c(conts,"VALUE"),with=FALSE]
-      dx.conts <- melt(dx.conts,id="VALUE")
-      dx.conts[,value:=log10(value)-mean(log10(value)),variable]
-      with(x,{
-        ggplot(dx.conts,aes(x=value,y=VALUE)) + 
-          with(point, geom_point(shape = shape, color = color))+
-          facet_grid(~variable,scales="free_x")
-      })}
-  }
-  if(!is.null(p)) plot_pmx(x$gp, p)
-  
+    if(!is.null(p)) p <- plot_pmx(x$gp, p)
+  p
 }
 
 

@@ -62,7 +62,7 @@ knitr::kable(out)
 
 # Package data 
 
-In prder to esent the package features , the package comes with built in data. 
+In order to present the package features , the package comes with built in data. 
 This vignette, we will use theophylline data. 
 *PS: (TODO add some description of the data here, PK case,...)*
 

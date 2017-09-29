@@ -5,6 +5,7 @@ ABS_IWRES_IPRED:
   trans: abs_y
   labels:
     title: '|IWRES| versus IPRED'
+    'y': '|IWRES|'
 IWRES_IPRED:
   ptype: RES
   x: IPRED
@@ -50,4 +51,10 @@ ETA_CATS:
 ETA_CONTS:
   ptype: ETA_COV
   type: conts
+IWRES_QQ:
+  ptype: PMX_QQ
+  x: IWRES
+NPDE_QQ:
+  ptype: PMX_QQ
+  x: NPDE
 
