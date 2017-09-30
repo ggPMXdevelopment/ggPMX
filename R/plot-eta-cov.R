@@ -24,7 +24,6 @@ eta_cov <- function(
   labels,
   type = c("cats", "conts"),
   dname = NULL,
-  point = NULL,
   ...){
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
@@ -37,15 +36,11 @@ eta_cov <- function(
       x = "",
       y = "")
   assert_that(is_list(labels))
-  default_point <- list(shape = 1, color = "black", size = 1)
-  point <- l_left_join(default_point, point)
-  
   labels$subtitle <- ""
   structure(list(
     ptype="ETA_COV",
     dname = dname,
     type=type,
-    point=point,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -90,24 +85,24 @@ plot_pmx.eta_cov <- function(x, dx,...){
     if(all(nzchar(x[["cats"]]))){
       dx.cats <- dx[,c(cats,"VALUE","EFFECT"),with=FALSE]
       ggplot(melt(dx.cats,measure.vars = cats)) + 
-        geom_boxplot(aes(x=value,y=VALUE)) +
-        facet_grid(EFFECT~variable,scales = "free")
+        geom_boxplot(aes_string(x="value",y="VALUE")) +
+        facet_grid(as.formula("EFFECT~variable"),scales = "free")
     }
-  }
-  else{
+  }else{
+    value <- variable <- NULL
     conts <- x[["conts"]]
     if(all(nzchar(x[["conts"]]))){
       dx.conts <- dx[,c(conts,"VALUE"),with=FALSE]
       dx.conts <- melt(dx.conts,id="VALUE")
       dx.conts[,value:=log10(value)-mean(log10(value)),variable]
-      with(x,{
-        ggplot(dx.conts,aes(x=value,y=VALUE)) + 
-          with(point, geom_point(shape = shape, color = color))+
-          facet_grid(~variable,scales="free_x")
-      })}
+      
+      ggplot(dx.conts,aes_string(x="value",y="VALUE")) + 
+        geom_point() +
+        facet_grid(as.formula("~variable"),scales="free_x") +
+        geom_smooth(method = "lm",se=FALSE)
+    }
   }
   if(!is.null(p)) plot_pmx(x$gp, p)
-  
 }
 
 

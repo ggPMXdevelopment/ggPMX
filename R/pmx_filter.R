@@ -43,6 +43,7 @@ pmx_filter <-
 #' @param filter optional filter which will be applied to plotting data
 #' @param strat.facet \code{formula} optional stratification parameter
 #' @param strat.color \code{character} optional stratification parameter
+#' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
 #' \code{\link{pmx_gpar}} function.
@@ -50,8 +51,21 @@ pmx_filter <-
 #' @family pmxclass
 #' @return controller object with the plot updated
 #' @export
+#' @details 
+#' 
+#' \strong{trans} is a transformation that user can apply to x, or y coordinates. The transformation 
+#' is applied to the data before the plotting. This gives more felxiblilty to the user and also conserves 
+#' all static positions like annotations ( draft specially)
+#' 
+#' For example:
+#' 
+#'  var_x apply variance to x coordinates the variance function
+#'  
+#'  var_xy apply variance to both 
+#' This mechanism is applied internally to scale log.   
 
-pmx_update <- function(ctr, pname,strat.color=NULL,strat.facet=NULL,  filter = NULL,trans=NULL,..., pmxgpar = NULL){
+pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,  
+                       filter = NULL, trans=NULL,..., pmxgpar = NULL){
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
   assert_that(is_string_or_null(strat.color)) 

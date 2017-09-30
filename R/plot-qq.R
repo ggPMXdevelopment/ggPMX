@@ -4,9 +4,10 @@
 
 #' creates an eta_cov object to plot ebe versus covariates
 #'
+#' @param x \code{character} variable name to sample
 #' @param labels list of texts/titles used within the plot
-#' @param type box for cats or conts
 #' @param dname name of dataset to be used
+#' @param point \code{list}
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -21,6 +22,13 @@
 #' \item {\strong{y:}} {y axis label default to empty}
 #' }
 #'
+#'#' \strong{point} is a list that contains:
+#' \itemize{
+#' \item {\strong{shape:}} {default to 1}
+#' \item {\strong{color:}} {default to black}
+#' \item {\strong{size:}} {default to 1}
+#' }
+#' 
 #' @export
 pmx_qq <- function(
   x,

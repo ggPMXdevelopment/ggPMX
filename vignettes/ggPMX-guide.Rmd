@@ -11,7 +11,7 @@ vignette: >
 \clearpage  
 
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
-knitr::opts_chunk$set(out.width='100%',warning=FALSE,message=FALSE)
+knitr::opts_chunk$set(out.width='100%',warning=FALSE,message=FALSE,eval=FALSE)
 
 library(ggPMX)
 #WORK_DIR <- "../ggpmx_files/inputs"
@@ -185,7 +185,7 @@ ctr %>% get_plot("distr1")
 
 ### Individual plot
 
-```{r , individual_plot,  fig.width=7, fig.height=6, warning=FALSE,message=FALSE}
+```{r , individual_plot,  fig.width=7, fig.height=6, warning=FALSE,message=FALSE,eval=FALSE}
 ctr %>% set_plot("IND", pname = "indiv1", 
                  draft = list(size = 10, label = "DRAFT", color = "grey50"))
 
@@ -199,7 +199,7 @@ ctr %>% get_plot("indiv1", 2)
 The `Residual plot` plots a residual Y versus an independant variable X.
 Examples of such are NPD vs EPRED, NPD vs TIME etc. 
 
-```{r , residual_plot,  fig.width=7, fig.height=6,message=FALSE}
+```{r , residual_plot,  fig.width=7, fig.height=6,message=FALSE,eval=FALSE}
 ctr %>% set_plot("RES", pname = "res1", y = "IWRES", x = "IPRED")
 
 ctr %>% get_plot("res1")
@@ -217,7 +217,7 @@ workflow using the `ggPMX` package. Steps taken include:
 - Printing all the plots
 
 
-```{r complete_example, warning=FALSE,  fig.width=7, fig.height=6}
+```{r complete_example, warning=FALSE,  fig.width=7, fig.height=6,eval=FALSE}
 library(ggPMX)
 
 ## define a working dir
@@ -265,7 +265,7 @@ lapply(ctr %>% plot_names,
 
 Plots can be updated using the `pmx_update` function. As an illustration compare the residual plot produced previously with an updated version:
 
-```{r update_plot,  fig.width=7, fig.height=6}
+```{r update_plot,  fig.width=7, fig.height=6,eval=FALSE}
 
 library(ggPMX)
 
@@ -291,7 +291,7 @@ p2
 The `pmx_filter` function allows a user to globally filter a named data set.
 Here we filter on the condition that ID is less than or equal to five:
 
-```{r pmx_filter,  fig.width=7, fig.height=6}
+```{r pmx_filter,  fig.width=7, fig.height=6,eval=FALSE}
 plotnames <- ctr %>% plot_names()
 ctr %>% 
   pmx_filter(data_set = "predictions", ID <= 5) %>% 

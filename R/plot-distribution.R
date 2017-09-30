@@ -8,6 +8,7 @@
 #' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @param has.shrink \code{logical} if TRUE add shrinkage layer
+#' @param shrink \code{list} list of parameters to tune the shrinkage
 #' @param has.jitter \code{logical} if TRUE add jitter operator for points
 
 #'
@@ -23,6 +24,14 @@
 #' \item {\strong{y:}} {y axis label default to empty}
 #' \item {\strong{legend:}} {legend titile default to "random Effect"}
 #' }
+#' \strong{shrink} is a list that contains:
+#' \itemize{
+#' \item {\strong{fun:}} {shrinkage function can be \code{sd} or \code{var}}
+#' \item {\strong{size:}} {shrinkage text size}
+#' \item {\strong{color:}} {shrinkage text color}
+#' \item {\strong{vjust:}} {shrinkage position vertical adjustment}
+#' }
+#'
 #'
 #' @export
 distrib <- function(
@@ -32,7 +41,7 @@ distrib <- function(
   facets = list(scales = "free_y", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
-  shrink=list(fun="sd",size=5,color="black",vjust=0,dodge=0.9,x=0,y=0),
+  shrink=list(fun="sd",size=5,color="black",vjust=0),
   dname = NULL,
   ...){
   assert_that(is_logical(has.jitter))
@@ -79,22 +88,23 @@ is.formula <- function(x) inherits(x, "formula")
 
 #' merge facets formula with new formula
 #'
-#' @param x \code{formula} object 
+#' @param x \code{formula} object
+#' @param origin the origin formula defualt to ~lfacets 
 #'
 #' @return \code{formula} object
 #' @importFrom stats formula
 
-wrap_formula <- function(x,default="lfacet"){
-  str <- sprintf("~ %s",default)
+wrap_formula <- function(x,origin="lfacet"){
+  str <- sprintf("~ %s",origin)
   if(is.character(x) && length(x)==1)
-    str <- sprintf( "%s ~ %s", x,default)
+    str <- sprintf( "%s ~ %s", x,origin)
   
   if(length(x)==3 && is.formula(x))
     str <- sprintf( "%s ~ %s + %s", deparse(x[[2]]),
-                    deparse(x[[3]]),default)
+                    deparse(x[[3]]),origin)
   
   if(length(x)==2 && is.formula(x))
-    str <- sprintf( "%s ~ %s", deparse(x[[2]]),default)
+    str <- sprintf( "%s ~ %s", deparse(x[[2]]),origin)
   return(formula(str))
 }
 
@@ -129,6 +139,8 @@ distrib.hist <- function(dx,strat.facet,strat.color,x){
 }
 
 distrib.box <- function(dx,strat.color,strat.facet,x){
+  
+  EFFECT <- VALUE <- NULL
   p <- ggplot(data = dx) +
     geom_boxplot(aes(x=EFFECT, y = VALUE), outlier.shape = NA) 
   
@@ -155,7 +167,7 @@ distrib.box <- function(dx,strat.color,strat.facet,x){
 shrinkage_layer <- 
   function(dx,shrink,type="hist") {
     ## 
-   SHRINK <- NULL
+   SHRINK <- EFFECT <- POS <- NULL
    x_ <- shrink$x
    y_ <- shrink$y
    res <-   geom_text(data=dx,

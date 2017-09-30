@@ -3,6 +3,7 @@
 #' @param input \code{data.table} input data set
 #' @param finegrid \code{data.table} finegrid data set
 #' @param covariates \code{character} covariates names vector (optional)
+#' @param strats \code{chracter} stratification no covariates varaibles
 #' @return data.table
 #' @importFrom zoo na.locf
 

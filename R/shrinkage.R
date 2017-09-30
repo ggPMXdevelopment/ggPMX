@@ -4,6 +4,7 @@
 #' @param estimates parameters estimation data 
 #' @param eta individual estimation data
 #' @param fun can be either sd or var
+#' @param by \code{character} vector to group by before shrinkage
 #'
 #' @return data.table computing the shrinkage by effect
 #' @importFrom stringr str_trim
@@ -12,7 +13,7 @@
 shrinkage <-
   function(estimates, eta, fun=c("sd","var"),by=""){
     PARAM <-  EFFECT <- VAR <- FUN <- NULL
-    VALUE_ETA <- VALUE_OMEGA <- NULL
+    VALUE_ETA <- VALUE_OMEGA <- VALUE <- NULL
     if(missing(fun))fun <- "sd"
     dx1 <- 
       estimates[grepl("omega", PARAM)][
