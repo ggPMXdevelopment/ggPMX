@@ -8,7 +8,8 @@ test_that("can create pmx class", {
     ctr %>% plot_names, 
     c("abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time", 
       "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "indiv", 
-      "eta_matrix", "eta_cats", "eta_conts")
+      "eta_matrix", "eta_cats", "eta_conts",
+      "iwres_qq"        ,"npde_qq" )
   )
 })
 
@@ -70,5 +71,32 @@ test_that("can set plot and filter", {
   p <- ctr %>% get_plot("distr2")
   pconf <- ggplot2::ggplot_build(p)
   expect_identical(dim(pconf$data[[2]]), c(324L, 10L))
+})
+
+
+test_that("can disable draft for all plots",{
+  theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                                    "theophylline")
+  WORK_DIR <- file.path(theophylline, "Monolix")
+  input_file <- file.path(theophylline, "data_pk.csv")
+  
+  ctr <- 
+    pmx_mlx(
+      config = "standing", 
+      directory = WORK_DIR, 
+      input = input_file, 
+      dv = "Y", 
+      dvid ="DVID",
+      cats=c("SEX"),
+      conts=c("WT0","AGE0"),
+      strats="STUD",
+      settings = list(is.draft=FALSE))
+  
+  is_draft <- vapply(ctr%>% plot_names,
+         function(p){
+           conf <- ctr %>%get_plot_config(p)
+           conf$gp[["is.draft"]]
+         },TRUE)
+  expect_false(any(is_draft))
 })
 

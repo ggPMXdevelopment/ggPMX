@@ -25,10 +25,17 @@ check_argument <- function(value,pmxname){
 #' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
 #' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
-#' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
+#' @param settings \emph{[Optional]}\code{list} list of global settings parameters 
+#' shared between all plots
 #' @return a pmxClass object
 #' @family pmxclass 
 #' @export
+#' @details 
+#' 
+#' \strong{setting} is a list of global settings shared between all plots. it contains:
+#' \itemize{
+#' \item {\strong{is.draft:}} {\code{logical} if set to FALSE any plot is without draft annotation}
+#' }
 #' @examples
 #'\dontrun{
 #'
@@ -381,6 +388,8 @@ pmxClass <- R6::R6Class(
     get_config = function(pname)
       pmx_get_config(self, private, pname),
     
+    set_config = function(pname,new)
+      pmx_set_config(self, private, pname,new),
     get_plot = function(pname)
       pmx_get_plot(self, private, pname),
     
@@ -554,6 +563,14 @@ pmx_add_plot <- function(self, private, x, pname){
       x[["cats"]] <- self %>% get_cats
       x[["conts"]] <- self %>% get_conts
     }
+    
+    if(!is.null(self$settings)){
+      if("is.draft" %in% names(self$settings))
+        x$gp$is.draft <- self$settings$is.draft
+      
+    }
+    
+    self$set_config(pname,x)
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
     
    
@@ -577,6 +594,12 @@ pmx_get_config <- function(self, private, pname){
   pname <- tolower(pname)
   private$.plots_configs[[pname]]
 }
+
+pmx_set_config <- function(self,private, pname,new){
+  pname <- tolower(pname)
+  private$.plots_configs[[pname]] <- new
+}
+
 
 pmx_get_plot <- function(self, private, pname){
   pname <- tolower(pname)
