@@ -2,20 +2,15 @@
 title: "ggPMX - User guide"
 author: "Amine Gassem"
 date: '`r Sys.Date()`'
-output:
-  html_document:
-    toc: yes
-    toc_depth: '3'
+output: 
   pdf_document:
     keep_tex: yes
     number_sections: yes
     toc: yes
-    toc_depth: 3
-  word_document:
-    toc: yes
-    toc_depth: '3'
-vignette: "%\\VignetteIndexEntry{ggPMX: User guide} \n%\\VignetteEngine{knitr::rmarkdown}
-  \n%\\VignetteEncoding{UTF-8}\n"
+vignette: >
+  %\VignetteIndexEntry{ggPMX: User guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 \clearpage  
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
@@ -40,21 +35,21 @@ The main target of ggPMX is to create a report containing the following plots:
 ```{r plots_list,echo=FALSE}
 
 out <- rbind(
-c("Plot of weighted residuals versus population predictions","RES","npde_pred"),
-c("Plot of weighted residuals versus time","RES","npde_time"),
-c("Plot of IWRES versus time","RES","iwres_time"),
-c("Plot of observations versus population predictions", "RES","dv_pred"),
-c("Plot of observations versus individual predictions", "RES","dv_ipred"),
-c("Plot of absolute individual weighted residuals versus individual predictions","RES","abs_iwres_ipred"),
-c("Plot of individual weighted residuals (IWRES) versus individual predictions","RES","iwres_ipred"),
-c("Plots of observations and model predictions per individual","IND","indiv"),
-c("Distribution of EBE histogram","DIS","ebe_hist"),
-c("Distribution of EBE boxplot","DIS","ebe_box"),
-c("Distribution and quantile-quantile plot of IWRES","QQ","qq_iwres"),
-c("Distribution and correlation structure (ETA)","ETA_PAIRS","eta_matrix"),
-c("Relationships between (ETA) and categorical covariates","ETA_COV","eta_cats"),
-c("Relationships between (ETA) and continuous covariates","ETA_COV","eta_conts"),
-c("Visual predictive check (VPC)","VPC","vpc"))
+  c("Plot of weighted residuals versus population predictions","RES","npde_pred"),
+  c("Plot of weighted residuals versus time","RES","npde_time"),
+  c("Plot of IWRES versus time","RES","iwres_time"),
+  c("Plot of observations versus population predictions", "RES","dv_pred"),
+  c("Plot of observations versus individual predictions", "RES","dv_ipred"),
+  c("Plot of absolute individual weighted residuals versus individual predictions","RES","abs_iwres_ipred"),
+  c("Plot of individual weighted residuals (IWRES) versus individual predictions","RES","iwres_ipred"),
+  c("Plots of observations and model predictions per individual","IND","indiv"),
+  c("Distribution of EBE histogram","DIS","ebe_hist"),
+  c("Distribution of EBE boxplot","DIS","ebe_box"),
+  c("Distribution and quantile-quantile plot of IWRES","QQ","qq_iwres"),
+  c("Distribution and correlation structure (ETA)","ETA_PAIRS","eta_matrix"),
+  c("Relationships between (ETA) and categorical covariates","ETA_COV","eta_cats"),
+  c("Relationships between (ETA) and continuous covariates","ETA_COV","eta_conts"),
+  c("Visual predictive check (VPC)","VPC","vpc"))
 
 colnames(out) <- c("Plot Name","ggPMX type","ggPMX name")
 knitr::kable(out)
@@ -93,12 +88,12 @@ We get mainly 3 tables:
 
 * We will go in depth through the controller construction details when we create a controller using custom data.
 * The ctr is an object of class `r class(ctr)[1]`. It behaves like a container that stores: 
-    + data configuration, 
-    + plots configuration
-    + data sets
-    + plots
-    + templates path.
-    + report
++ data configuration, 
++ plots configuration
++ data sets
++ plots
++ templates path.
++ report
 
 ## Get Plots
 
@@ -174,17 +169,17 @@ A diagnostic session starts by creating controller using `pmx` or one of its wra
 ```{r init_ctr}
 
 theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
-                            "theophylline")
-  WORK_DIR <- file.path(theophylline, "Monolix")
-  input_file <- file.path(theophylline, "data_pk.csv")
-  
-  ctr <- pmx(
-    sys="mlx",
-    config = "standing", 
-    directory = WORK_DIR, 
-    input = input_file, 
-    dv = "Y", 
-    dvid ="DVID")
+                          "theophylline")
+WORK_DIR <- file.path(theophylline, "Monolix")
+input_file <- file.path(theophylline, "data_pk.csv")
+
+ctr <- pmx(
+  sys="mlx",
+  config = "standing", 
+  directory = WORK_DIR, 
+  input = input_file, 
+  dv = "Y", 
+  dvid ="DVID")
 
 ```
 
@@ -202,39 +197,39 @@ Here we set all **mandatory** arguments:
 Besides the mandatory fields to initialize a controller, user can set optional parameters related to covariates 
 
 ```{r init_ctr_covar}
-  ctr <- pmx_mlx(
-    config = "standing", 
-    directory = WORK_DIR, 
-    input = input_file, 
-    dv = "Y", 
-    dvid ="DVID",
-    cats=c("SEX"),
-    conts=c("WT0","AGE0"),
-    strats="STUD")
+ctr <- pmx_mlx(
+  config = "standing", 
+  directory = WORK_DIR, 
+  input = input_file, 
+  dv = "Y", 
+  dvid ="DVID",
+  cats=c("SEX"),
+  conts=c("WT0","AGE0"),
+  strats="STUD")
 
 ```
 
 We can access different covariates using helpers functions:
 
 ```{r get_covar}
- ctr %>% get_cats
- ctr %>% get_conts
- ctr %>% get_strats
- ctr %>% get_covariates
+ctr %>% get_cats
+ctr %>% get_conts
+ctr %>% get_strats
+ctr %>% get_covariates
 ```
 
 ## Plot types
 
 `ggPMX` comes with a list of plot types. This is not to be confused with plot names. 
 ```{r plot_types}
- ctr %>% plots
+ctr %>% plots
 ```
 
-  + **RES** : residual plots
-  + **IND** : individual plots
-  + **DIS** : Distribution of EBE histogram and boxplot
-  + **ETA_PAIRS**: ETA Distribution and correlation structure
-  + **ETA_COV**: Relationships between ETA and continuous or categorical covaraites
++ **RES** : residual plots
++ **IND** : individual plots
++ **DIS** : Distribution of EBE histogram and boxplot
++ **ETA_PAIRS**: ETA Distribution and correlation structure
++ **ETA_COV**: Relationships between ETA and continuous or categorical covaraites
 
 Each plot type can be used to create one or many plots. 
 
@@ -265,9 +260,9 @@ p2
 ## Create a new plot 
 To create a new plot we use `set_plot` function. We set :
 
-  + The plot type
-  + the plot name
-  + the plot type specific parameters
++ The plot type
++ the plot name
++ the plot type specific parameters
 
 ### New residual plot
 ```{r new_res_plot}
@@ -291,7 +286,7 @@ see `?distib` for the list of all parameters to create a new individual plot.
 ctr %>% 
   set_plot("IND", pname = "ind1") %>%
   get_plot("ind1",4) #" get the fourth page
-  
+
 
 ```
 see `??individual` for the list of all parameters to create a new individual plot.
@@ -338,21 +333,48 @@ Here the list of all plots based on theophylline data set.
 
 ## Residual plots
 ```{r th_plots_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
-yy <- ctr %>% plots
-yy <- as.character(unlist(yy[yy$plot_type=="RES","plot_name"]))
-for(x  in yy) print(ctr %>% get_plot(x))
+## helper function to print plot by type 
+pmx_plot_type <- function(type){
+  yy <- ctr %>% plots
+  plot_names <-yy[yy$plot_type==type][["plot_name"]]
+  invisible(lapply(plot_names,function(x)print(ctr %>% get_plot(x))))
+}
+
+
+pmx_plot_type("RES")
 ```
 
 ## Individual plots
 ```{r th_plots_ind, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+
 yy <- ctr %>% plots
-yy <- as.character(unlist(yy[yy$plot_type=="IND","plot_name"]))
-for(x  in yy) print(ctr %>% get_plot(x))
+plots_pages <- ctr %>% get_plot("indiv")
+invisible(lapply(plots_pages, print))
+```
+
+## Distribution plots
+```{r th_plots_dis, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+pmx_plot_type("DIS")
+```
+
+## QQ plots
+```{r th_plots_qq, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+pmx_plot_type("PMX_QQ")
 ```
 
 ## EBE plots
-```{r th_plots_others, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
-yy <- ctr %>% plots
-yy <- as.character(unlist(yy[!yy$plot_type %in% c("IND","RES"),"plot_name"]))
-for(x  in yy) print(ctr %>% get_plot(x))
+
+### Distribution and correlation structure of estimated inter-individual random effects (ETA)
+
+```{r th_plots_ebe1, message=FALSE}
+pmx_plot_type("ETA_PAIRS")
+
 ```
+
+### Relationships between estimated inter-individual random effects (ETA) and covariates
+
+```{r th_plots_ebe2,  out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+
+pmx_plot_type("ETA_COV")
+```
+
