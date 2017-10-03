@@ -406,10 +406,10 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(data_path) || missing(data_path))
     stop("Expecting source path(directory ) and a config path", 
          call. = FALSE)
-  if(missing(occ) || is.na(occ) || is.null(occ)) occ <- ""
-  if(missing(cats) || is.na(cats) || is.null(cats)) cats <- ""
-  if(missing(conts) || is.na(conts) || is.null(conts)) conts <- ""
-  if(missing(strats) || is.na(strats) || is.null(strats)) strats <- ""
+  if(missing(occ) || is.null(occ) || is.na(occ)) occ <- ""
+  if(missing(cats) || is.null(cats) || is.na(cats)) cats <- ""
+  if(missing(conts) || is.null(conts) || is.na(conts)) conts <- ""
+  if(missing(strats) || is.null(strats) || is.na(strats)) strats <- ""
   if(missing(settings)) settings <- NULL
   
   private$.data_path <- data_path
@@ -417,10 +417,10 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$config <- config
   self$dv <- dv
   self$dvid <- if(occ!="") occ else dvid
-  self$cats <- cats
-  self$conts <- conts
-  self$occ <- occ
-  self$strats <- strats
+  self$cats <- toupper(cats)
+  self$conts <- toupper(conts)
+  self$occ <- toupper(occ)
+  self$strats <- toupper(strats)
   self$settings <- settings
   
   ##private$.covariates <- covs[!is.na(covs) & covs!=""]

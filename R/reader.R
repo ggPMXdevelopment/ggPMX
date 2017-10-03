@@ -34,7 +34,7 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
   xx <- pmx_fread(ipath)
   
   setnames(xx, grep("^id$",names(xx),ignore.case = TRUE,value=TRUE), "ID")
-  
+ 
   if(dv %in% names(xx)) setnames(xx, dv, "DV")
   else {
     dv.names <- paste(setdiff(names(xx),c("ID","id","time","TIME")),collapse=" or ")
@@ -48,7 +48,9 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
   ## round time column for further merge
   setnames(xx, grep("^time$",names(xx),ignore.case = TRUE,value=TRUE), "TIME")
   xx[,TIME:=round(TIME,4)]
-  
+
+  setnames(xx,toupper(names(xx)))
+    
   covariates <- unique(c(cats,conts))
   if(length(covariates[covariates!=""])){
     covariates <- covariates[covariates!=""]
@@ -68,12 +70,9 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
     conts <- conts[conts!=""]
     xx[,(conts) := lapply(.SD,as.numeric),.SDcols=conts]
   }
-  ## keep only potential used columns
-  cnames <- unique(c("ID","DV","DVID","TIME",cats,conts,strats))
-  cnames <- cnames[cnames!=""]
   
-  xx[,cnames,with=FALSE]
-  
+  xx
+
 }
 
 #' Read MONOLIX model predictions
