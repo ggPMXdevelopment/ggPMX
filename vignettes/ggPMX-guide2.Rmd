@@ -28,6 +28,12 @@ The package aims to automate plot and report generation.
 
 This vignette introduces the ggPMX syntax, how to initialize a controller using package data , display plots, update existing plots , filter data , stratification and many others details. 
 
+# Architecture
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('./ggPMX_arch.png')
+```
+
+
 # Plots table
 
 The main target of ggPMX is to create a report containing the following plots: 
