@@ -76,3 +76,22 @@ test_that("can update facet stratification", {
   expect_true("SEX" %in% names(pconf$layout$panel_layout))
   
   })
+
+
+test_that("can update indivual plot labels",{
+  
+  
+  ctr <- helpers$ctr
+  
+  # Change x- and y-labels
+  p2 <- ctr %>%
+    pmx_update(
+      "indiv",
+      labels=list(x="Time (days)", y="Free serum concentration (nmol)")) %>%
+    get_plot("indiv",npage=1)
+  expect_identical(
+  list(x=p2$labels$x,
+       y=p2$labels$y),
+  list(x="Time (days)", y="Free serum concentration (nmol)"))
+  
+})

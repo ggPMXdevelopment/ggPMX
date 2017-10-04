@@ -40,8 +40,7 @@ test_that("can get data from controller", {
   ctr <- pmxClassHelpers$ctr
   inputData <- ctr %>% get_data("input")
   inNames <- c("ID", "DV", "DVID", "TIME", "SEX", "WT0", "AGE0", "STUD")
-  expect_identical(names(inputData), inNames)
-  
+  expect_true( all(inNames %in% names(inputData)))
   
   peData <- ctr %>% get_data("estimates")
   peNames <- c("PARAM", "VALUE", "SE", "RSE", "PVALUE")
@@ -50,7 +49,7 @@ test_that("can get data from controller", {
   mpData <- ctr %>% get_data("predictions")
   mpNames <- c("ID", "TIME", "DVID","PRED", "NPDE", "IPRED", "IWRES", "DV",
                 "SEX", "WT0", "AGE0", "STUD")
-  expect_identical(names(mpData), mpNames)
+  expect_true(all( mpNames %in% names(mpData)))
 
   fgData <- ctr %>% get_data("finegrid")
   fgNames <- c("ID", "TIME", "PRED", "IPRED")

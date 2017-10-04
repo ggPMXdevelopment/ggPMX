@@ -4,7 +4,7 @@ test_that("pmx_gpar defaults are well setted", {
   gpars <- ggPMX::pmx_gpar(labels = list(title = "hello"))
   expect_identical(
     gpars$draft, 
-    list(size = 10, label = "DRAFT", color = "grey50",x=Inf,y=-Inf)
+    list(size = 5, label = "DRAFT", color = "grey50",x=Inf,y=-Inf)
   )
   expect_identical(
     gpars$smooth, 

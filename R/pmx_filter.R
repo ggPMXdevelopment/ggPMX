@@ -97,6 +97,7 @@ pmx_update_plot <- function(self, private, pname, strat.facet,strat.color, filte
   if(length(newopts)>0){
     hl <- newopts[names(newopts) %in% unique(c(names(x), "shrink"))]
     gpl <- newopts[!names(newopts) %in% unique(c(names(x), "shrink"))]
+    if("labels" %in% names(newopts)) gpl$labels <- newopts[["labels"]]
     hl$gp <- gpl 
     x <- l_left_join(x, hl)
   }
