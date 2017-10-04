@@ -15,12 +15,8 @@ input_finegrid <- function(input, finegrid, covariates = NULL,strats=NULL)
   input[,source:="in"]
   dx <- rbind(finegrid,input,fill=TRUE)[order(DVID,ID,TIME)]
   
-  measures <- c("DV")
-  if(!is.null(covariates) && all(nzchar(covariates)))
-    measures <- c(measures,covariates)
-  if(!is.null(strats) && all(nzchar(strats)))
-    measures <- c(measures,strats)
-  
+  measures <- setdiff(names(input),c("ID","DVID","DV","TIME","source"))
+  if(length(measures)>0)
   dx[,(measures):=
        lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
   input[,source:=NULL]

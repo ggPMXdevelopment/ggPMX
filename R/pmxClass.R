@@ -571,6 +571,7 @@ pmx_add_plot <- function(self, private, x, pname){
     }
     
     self$set_config(pname,x)
+    x$input <- self %>% get_data("input")
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
     
    
