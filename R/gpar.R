@@ -35,7 +35,7 @@ pmx_gpar <-
     has.band = FALSE,
     band = list(y = c(-2, 2), linetype = 2, size = 0.5),
     is.draft = TRUE,
-    draft = list(size = 10, label = "DRAFT", color = 'grey50',x = Inf, y = -Inf),
+    draft = list(size = 5, label = "DRAFT", color = 'grey50',x = Inf, y = -Inf),
     discrete=FALSE,
     scale_log=c("","x","y"),
     ...) {
