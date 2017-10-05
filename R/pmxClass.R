@@ -543,7 +543,8 @@ pmx_add_plot <- function(self, private, x, pname){
                 x$gp[["labels"]][["title"]],formula_to_text(x[["strat.facet"]]))
     }
     if(!is.null( x[["trans"]])) {
-      dx <- pmx_transform(x,dx, x[["trans"]])
+      dx1 <- copy(dx)
+      dx <- pmx_transform(x,dx1, x[["trans"]])
     }
     if(ptype=="DIS"){
       VAR <- FUN <- NULL
@@ -563,13 +564,11 @@ pmx_add_plot <- function(self, private, x, pname){
       x[["cats"]] <- self %>% get_cats
       x[["conts"]] <- self %>% get_conts
     }
-    
     if(!is.null(self$settings)){
       if("is.draft" %in% names(self$settings))
         x$gp$is.draft <- self$settings$is.draft
       
     }
-    
     self$set_config(pname,x)
     x$input <- self %>% get_data("input")
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
