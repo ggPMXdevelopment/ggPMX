@@ -11,9 +11,10 @@ ranges:
 has.smooth: yes
 smooth:
   se: no
-  linetype: 2.0
+  linetype: 1.0
   size: 1.5
   method: loess
+  color: red
 has.band: yes
 band:
   'y':
@@ -27,4 +28,9 @@ draft:
   label: 
   color: grey50
 discrete: no
+has.identity_line: no 
+identity_line:
+  color: blue
+  intercept: 0
+
 

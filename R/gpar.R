@@ -31,13 +31,15 @@ pmx_gpar <-
     axis.text = c(size = 14),
     ranges = NULL,
     has.smooth = FALSE,
-    smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess'),
+    smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess',color="red"),
     has.band = FALSE,
-    band = list(y = c(-2, 2), linetype = 2, size = 0.5),
+    band = list(y = c(-2, 2), linetype = 2, size = 0.5,color="black"),
     is.draft = TRUE,
     draft = list(size = 5, label = "DRAFT", color = 'grey50',x = Inf, y = -Inf),
     discrete=FALSE,
     scale_log=c("","x","y"),
+    has.identity_line=FALSE,
+    identity_line=list(intercept=0,color="blue"),
     ...) {
     
     scale_log <- match.arg(scale_log)
@@ -54,6 +56,8 @@ pmx_gpar <-
       draft = draft,
       discrete = discrete,
       scale_log=scale_log,
+      has.identity_line=has.identity_line,
+      identity_line=identity_line,
       ...))
     class(gp) <- c("pmx_gpar","list")
     gp

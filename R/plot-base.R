@@ -20,40 +20,49 @@ plot_pmx.pmx_gpar <- function(gpar, p){
   p <- with(gpar, {
     if(has.smooth){
       p <- p + with(smooth,
-                    geom_smooth(se=se, linetype=linetype,
-                                         size=size, method=method),na.rm=TRUE)
+                    geom_smooth(se=se, 
+                                linetype=linetype,
+                                size=size, 
+                                method=method,color=color
+                    ),na.rm=TRUE)
     }
-
+    
     if(has.band){
       p <- p +
         with(band,
              geom_hline(yintercept = y, 
-                                 linetype = linetype, 
-                                 size = size))
+                        color=color,
+                        linetype = linetype, 
+                        size = size))
     }
     ## labels:title,axis,subtitle...
     p <- p + with(labels, ggplot2::labs(x = x,
-                              y = y,
-                              title = title,
-                              subtitle = subtitle))
+                                        y = y,
+                                        title = title,
+                                        subtitle = subtitle))
     if("legend" %in% names(labels))
       p <- p + with(labels, labs(fill = legend))
-
+    
     ## limits
     if(!is.null(ranges$y))
       p <- p + scale_y_continuous(limits = ranges$y)
     if(!is.null(ranges$x) && !discrete)
       p <- p + scale_x_continuous(limits = ranges$x)
     
-
+    
     ## theming
     p <- p + pmx_theme()
     ## draft layer
     if(is.draft){
-       p <- p + with(draft, add_draft(label, size, color,x,y))
+      p <- p + with(draft, add_draft(label, size, color,x,y))
+    }
+    
+    ## draft layer
+    if(has.identity_line){
+      p <- p + with(identity_line, geom_abline(intercept=intercept,color=color))
     }
     p
   })
   p
-
+  
 }
