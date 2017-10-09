@@ -33,6 +33,11 @@ This vignette introduces the ggPMX syntax, how to initialize a controller using 
 knitr::include_graphics('./ggPMX_arch.png')
 ```
 
+3 layers:
+
+- Reading data based on user configuration and input template. 
+- Feature layer: Allows user to customize plots, add new plots
+- Generating plots and reports.
 
 # Plots table
 

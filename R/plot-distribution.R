@@ -41,7 +41,9 @@ distrib <- function(
   facets = list(scales = "free_y", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
-  shrink=list(fun="sd",size=5,color="black",vjust=0),
+  shrink=list(
+    fun="sd",size=5,color="black",
+    x_=-Inf,y_=Inf, hjust=-1,vjust=5),
   dname = NULL,
   ...){
   assert_that(is_logical(has.jitter))
@@ -146,8 +148,8 @@ distrib.box <- function(dx,strat.color,strat.facet,x){
   
   if(!is.null(strat.color))
     p <-  ggplot(data = dx,aes_string(fill=strat.color)) +
-      geom_boxplot(aes_string(x="EFFECT",y = "VALUE"),
-                   outlier.shape = NA,position = position_dodge(width = 0.9))
+    geom_boxplot(aes_string(x="EFFECT",y = "VALUE"),
+                 outlier.shape = NA,position = position_dodge(width = 0.9))
   
   if(!is.null(strat.facet))
     p <-  p + with(x$facets, facet_wrap(strat.facet , scales = scales,
@@ -167,21 +169,21 @@ distrib.box <- function(dx,strat.color,strat.facet,x){
 shrinkage_layer <- 
   function(dx,shrink,type="hist") {
     ## 
-   SHRINK <- EFFECT <- POS <- NULL
-   x_ <- shrink$x
-   y_ <- shrink$y
-   res <-   geom_text(data=dx,
-        aes(x=EFFECT,y=POS,
-            label = sprintf('shrinkage=%s%%',round(SHRINK*100))),
-        color = shrink$color, size = shrink$size,
-        position = position_dodge(width = 0.9),vjust=shrink$vjust) 
-   if(type=="hist")
-      res <- geom_text(data=dx,
-                      x=x_,y=y_,
-            aes(label = sprintf('shrinkage=%s%%',round(SHRINK*100))),
-        color = shrink$color, size = shrink$size,vjust=shrink$vjust)
-   res
-
+    SHRINK <- EFFECT <- POS <- NULL
+    res <-   geom_text(data=dx,
+                       aes(x=EFFECT,y=POS,
+                           label = sprintf('shrinkage=%s%%',round(SHRINK*100))),
+                       color = shrink$color, size = shrink$size,
+                       position = position_dodge(width = 0.9)) 
+    if(type=="hist")
+      res <- 
+      with(shrink,annotate(geom="text",
+               label = sprintf('shrinkage=%s%%',round(dx$SHRINK*100)),
+               x=x_,y=y_,hjust=hjust,vjust=vjust,
+               color=color))
+               
+    res
+    
   }
 
 

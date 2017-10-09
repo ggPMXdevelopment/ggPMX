@@ -40,6 +40,9 @@
 individual <- function(labels, 
                        facets = list(ncol = 2, nrow = 2), 
                        dname = NULL,
+                       line_ipred = list(linetype = 2, color = "grey50", size = 1),
+                       line_pred = list(linetype = 1 , color = "grey50", size = 1),
+                       point = list(shape = 20, color = "black", size = 4),
                        ...){
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
@@ -57,7 +60,9 @@ individual <- function(labels,
     dname=dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
-    point = list(shape = 2, color = "grey50", size = 1),
+    point = point,
+    line_ipred=line_ipred,
+    line_pred=line_pred,
     facets = facets,
     gp = pmx_gpar(labels = labels,  ...)
     
@@ -92,8 +97,8 @@ plot_pmx.individual <-
     
     get_page <- with(x,{
       p <- ggplot(dx, aes(TIME, DV))+
-        geom_line(aes(y=IPRED),size=1,linetype=1)+
-        geom_line(aes(y=PRED),size=1,linetype=2)+
+        with(line_ipred,geom_line(aes(y=IPRED),size=size,linetype=linetype,color=color))+
+        with(line_pred,geom_line(aes(y=PRED),size=size,linetype=linetype,color=color))+
         with(point,geom_point(data=input,shape=shape,size=size,color=color))
       p <- plot_pmx(gp, p)
       

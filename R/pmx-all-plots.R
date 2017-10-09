@@ -1,34 +1,8 @@
 #' DV vs PRED plot
-#'
-#' @param labels list that contain title,subtitle, axis labels
-#' @param point geom point graphical parameters
-#' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
-#' @param dname name of dataset to be used
-#' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
-
-#'
-#' @return a ggplot2 object
+#' @inherit residual
+#' @inheritDotParams pmx_update filter:trans
 #' @export
-#' @family plot_pmx
-#' @seealso \code{\link{plot_pmx.residual}}
-#' @details 
-#' Some parameters are a list of parameters :
-#' 
-#' \strong{point} is a list that contains:
-#' \itemize{
-#' \item {\strong{shape:}} {default to 1}
-#' \item {\strong{color:}} {default to black}
-#' \item {\strong{size:}} {default to 1}
-#' }
-#' 
-#' \strong{labels} is a list that contains:
-#' \itemize{
-#' \item {\strong{title:}} {plot title default to "DV vs PRED"}
-#' \item {\strong{subtitle:}} {plot subtitle default empty}
-#' \item {\strong{x:}} {x axis label "PRED"}
-#' \item {\strong{y:}} {y axis label "DV"}
-#' }
-dv_pred <- function(
+pmx_plot_dv_pred <- function(
   ctr,
   labels = list(
     title="DV vs PRED",
@@ -54,16 +28,17 @@ dv_pred <- function(
   
   cctr %>%
     pmx_update(
-        "dv_pred",
-        labels=labels,
-        point=point,
-        add_hline=add_hline,
-        dname=dname,
-        has.smooth=has.smooth,
-        smooth=smooth,
-        has.identity_line=has.identity_line,
-        identity_line=identity_line
-      )
+      "dv_pred",
+      labels=labels,
+      point=point,
+      add_hline=add_hline,
+      dname=dname,
+      has.smooth=has.smooth,
+      smooth=smooth,
+      has.identity_line=has.identity_line,
+      identity_line=identity_line,
+      ...
+    )
   
   p <- cctr %>%  get_plot("dv_pred")
   rm(cctr)
@@ -71,5 +46,251 @@ dv_pred <- function(
 }
 
 
-# ctr <- theophylline()
-# ctr %>% dv_pred
+
+
+#' IWRES vs IPRED plot
+#'
+
+#' @inheritParams residual
+#' @inheritDotParams pmx_update filter:trans
+#' @export
+#'
+#' @return ggplot2 plot
+#' @export
+#'
+
+pmx_plot_iwres_ipred <- function(
+  ctr,
+  labels = list(
+    title="IWRES vs IPRED",
+    subtitle = "",
+    x = "IWRES",
+    y = "Individual predictions"
+  ), 
+  point = list(shape = 1, color = "black", size = 1), 
+  add_hline=TRUE, 
+  dname="predictions",
+  has.smooth=TRUE,
+  smooth=list(se=FALSE,color="red",linetype=1),
+  ...){
+  
+  
+  stopifnot(is_pmxclass(ctr))
+  cctr <- pmx_copy(ctr) 
+  assert_that(is_list_or_null(labels))
+  assert_that(is_string_or_null(dname))
+  assert_that(is.list(point))
+  
+  cctr %>%
+    pmx_update(
+      "iwres_ipred",
+      labels=labels,
+      point=point,
+      add_hline=add_hline,
+      dname=dname,
+      has.smooth=has.smooth,
+      smooth=smooth
+    )
+  
+  p <- cctr %>%  get_plot("iwres_ipred")
+  rm(cctr)
+  p
+}
+
+
+#' IWRES vs TIME plot
+
+#' @inheritParams residual
+#' @inheritDotParams pmx_update filter:trans
+#' @export
+#'
+#' @return ggplot2 plot
+#' @export
+#'
+
+pmx_plot_iwres_time <- function(
+  ctr,
+  labels = list(
+    title="IWRES vs TIME",
+    subtitle = "",
+    x = "TIME",
+    y = "Individual predictions"
+  ), 
+  point = list(shape = 1, color = "black", size = 1), 
+  add_hline=TRUE, 
+  dname="predictions",
+  has.smooth=TRUE,
+  smooth=list(se=FALSE,color="red",linetype=1),
+  ...){
+  
+  
+  stopifnot(is_pmxclass(ctr))
+  cctr <- pmx_copy(ctr) 
+  assert_that(is_list_or_null(labels))
+  assert_that(is_string_or_null(dname))
+  assert_that(is.list(point))
+  
+  cctr %>%
+    pmx_update(
+      "iwres_time",
+      labels=labels,
+      point=point,
+      add_hline=add_hline,
+      dname=dname,
+      has.smooth=has.smooth,
+      smooth=smooth
+    )
+  
+  p <- cctr %>%  get_plot("iwres_time")
+  rm(cctr)
+  p
+}
+
+
+
+#' Eta matrix plot
+#'
+#' @param ctr the controller
+#' @inheritParams eta_pairs
+#'
+#' @return ggplot2 pbject
+#' @export
+pmx_plot_eta_matrix <- 
+  function(ctr,
+           title= "Correlations of random effects",
+           dname="eta",
+           type.eta="mode",
+           text_color="black",...){
+  
+  stopifnot(is_pmxclass(ctr))
+  cctr <- pmx_copy(ctr) 
+  
+  cctr %>%
+    pmx_update(
+      "eta_matrix",
+      title=title,
+      dname=dname,
+      type.eta=type.eta,
+      text_color=text_color,
+      ...)
+  
+  p <- cctr %>%  get_plot("eta_matrix")
+  rm(cctr)
+  p
+  
+}
+
+
+
+#' Distribution box plot
+
+#' @inherit distrib
+#' @inheritDotParams pmx_update
+#' @export
+pmx_plot_ebe_box <- 
+  function(ctr,
+           labels,
+           has.jitter = FALSE,
+           jitter = list(shape = 1, color = "grey50", width = 0.1),
+           has.shrink = TRUE,
+           shrink=list(fun="sd",size=4,color="black"),
+           dname = NULL,
+           ...){
+    stopifnot(is_pmxclass(ctr))
+    cctr <- pmx_copy(ctr) 
+    
+    assert_that(is_logical(has.jitter))
+    assert_that(is_list(jitter))
+    assert_that(is_logical(has.shrink))
+    assert_that(is_list(shrink))
+    assert_that(is_string_or_null(dname))
+    if(is.null(dname)) dname <- "eta"
+    
+    
+    cctr %>%
+      pmx_update(
+        "ebe_box",
+        type="box",
+        has.jitter = has.jitter,
+        jitter = jitter,
+        has.shrink = has.shrink,
+        shrink=shrink,
+        dname = dname,
+        ...
+      )
+    
+    p <- cctr %>%  get_plot("ebe_box")
+    rm(cctr)
+    p
+  }
+
+#' Distribution histogram plot
+#' @inherit distrib
+#' @inheritDotParams pmx_update
+#' @export
+pmx_plot_ebe_hist <- 
+  function(
+    ctr,
+    labels,
+    facets = list(scales = "free_y", nrow = 3),
+    has.shrink = TRUE,
+    shrink=list(
+      fun="sd",size=4,color="black",
+      x_=-Inf,y_=Inf,
+      hjust=-0.5,vjust=2),
+    dname = NULL,
+    ...){
+    stopifnot(is_pmxclass(ctr))
+    cctr <- pmx_copy(ctr) 
+    
+    assert_that(is_list(facets))
+    assert_that(is_logical(has.shrink))
+    assert_that(is_list(shrink))
+    assert_that(is_string_or_null(dname))
+    if(is.null(dname)) dname <- "eta"
+    
+    
+    cctr %>%
+      pmx_update(
+        "ebe_hist",
+        type="hist",
+        facets = facets,
+        has.shrink = has.shrink,
+        shrink=shrink,
+        dname = dname,
+        ...
+      )
+    
+    p <- cctr %>%  get_plot("ebe_hist")
+    rm(cctr)
+    p
+  }
+
+
+
+
+#' Individual plot
+#' @inherit individual
+#' @inheritDotParams pmx_update
+#' @export
+pmx_plot_individual <- 
+  function(
+    ctr,
+    npage,
+    ...){
+    stopifnot(is_pmxclass(ctr))
+    cctr <- pmx_copy(ctr) 
+    
+    cctr %>%
+      pmx_update(
+        "indiv",
+         ...
+      )
+    
+    p <- cctr %>%  get_plot("indiv",npage)
+    rm(cctr)
+    p
+    
+    
+  }
+    

@@ -9,10 +9,11 @@
 #' @return ecorrel object
 #' @family plot_pmx
 #' @export
-eta_pairs <- function(title,dname=NULL,type.eta=c("mode","mean"),...){
+eta_pairs <- function(title,dname=NULL,type.eta=c("mode","mean"),
+                      text_color="black",...){
   assert_that(is_string_or_null(dname))
   if(is.null(dname)) dname <- "eta"
-  if(missing(title)) title <- "Correlation random effect"
+  if(missing(title)) title <- "Correlations of random effects"
   labels <- list(
     title = title,
     subtitle ="",
@@ -21,8 +22,9 @@ eta_pairs <- function(title,dname=NULL,type.eta=c("mode","mean"),...){
   structure(list(
     dname = dname,
     labels=labels,
-    point = list(shape = 2, color = "grey50", size = 1),
+    point = list(shape = 1, color = "grey50", size = 1),
     type.eta =  match.arg(type.eta),
+    text_color=text_color,
     gp = pmx_gpar(
       ptype="ECORREL",
       labels=labels,
@@ -48,8 +50,8 @@ diag.plot <- function(data, mapping, gp) {
 }
 
 
-upper.plot <- function(data, mapping, gp) {
-  p <-  ggally_cor(data = data, mapping = mapping) 
+upper.plot <- function(data, mapping, gp,text_color) {
+  p <-  ggally_cor(data = data, mapping = mapping,colour=text_color) 
   plot_pmx(gp, p)
 }
 
@@ -81,14 +83,14 @@ plot_pmx.eta_pairs <- function(x, dx,...){
   if(nrow(dx)==0)
     stop("Now rows find for eta of type ",x$type.eta,"\n")
   
-  data_plot <- dcast(dx[,list(ID,VARIABLE,VALUE)],ID~VARIABLE,fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]
+  data_plot <- dcast(dx[,list(ID,EFFECT,VALUE)],ID~EFFECT,fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]
   
   p <- with(x, {
     ggpairs(
       data_plot, 
       lower = list(continuous = wrap(lower.plot, method = "loess",gp=gp,point=point)),
       diag = list(continuous = wrap(diag.plot,gp=gp)),
-      upper = list(continuous = wrap(upper.plot,gp=gp)),
+      upper = list(continuous = wrap(upper.plot,gp=gp,text_color=text_color)),
       title = labels$title,
       xlab=labels$x,
       ylab=labels$y)
