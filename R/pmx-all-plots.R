@@ -1,3 +1,7 @@
+
+
+# DV vs PRED plot --------------------------------------------------------------
+
 #' DV vs PRED plot
 #' @inherit residual
 #' @inheritDotParams pmx_update filter:trans
@@ -46,19 +50,15 @@ pmx_plot_dv_pred <- function(
 }
 
 
+# IWRES vs IPRED plot --------------------------------------------------------------
 
 
 #' IWRES vs IPRED plot
-#'
-
 #' @inheritParams residual
 #' @inheritDotParams pmx_update filter:trans
 #' @export
-#'
 #' @return ggplot2 plot
 #' @export
-#'
-
 pmx_plot_iwres_ipred <- function(
   ctr,
   labels = list(
@@ -97,17 +97,15 @@ pmx_plot_iwres_ipred <- function(
   p
 }
 
+# IWRES vs TIME plot --------------------------------------------------------------
+
 
 #' IWRES vs TIME plot
-
 #' @inheritParams residual
 #' @inheritDotParams pmx_update filter:trans
 #' @export
-#'
 #' @return ggplot2 plot
 #' @export
-#'
-
 pmx_plot_iwres_time <- function(
   ctr,
   labels = list(
@@ -146,13 +144,12 @@ pmx_plot_iwres_time <- function(
   p
 }
 
+# Eta matrix plot --------------------------------------------------------------
 
 
 #' Eta matrix plot
-#'
 #' @param ctr the controller
 #' @inheritParams eta_pairs
-#'
 #' @return ggplot2 pbject
 #' @export
 pmx_plot_eta_matrix <- 
@@ -180,10 +177,9 @@ pmx_plot_eta_matrix <-
   
 }
 
+# Distribution boxplot --------------------------------------------------------------
 
-
-#' Distribution box plot
-
+#' Distribution boxplot
 #' @inherit distrib
 #' @inheritDotParams pmx_update
 #' @export
@@ -223,6 +219,9 @@ pmx_plot_ebe_box <-
     rm(cctr)
     p
   }
+
+# Distribution histogram plot --------------------------------------------------------------
+
 
 #' Distribution histogram plot
 #' @inherit distrib
@@ -266,6 +265,7 @@ pmx_plot_ebe_hist <-
     p
   }
 
+# Individual plot --------------------------------------------------------------
 
 
 
@@ -293,4 +293,84 @@ pmx_plot_individual <-
     
     
   }
+
+# eta cats plot --------------------------------------------------------------
+
+#' Relationships between (ETA) and categorical covariates
+#' @inheritDotParams pmx_update
+#' @export
+pmx_plot_eta_cats <- 
+  function(ctr,
+           ...){
     
+    stopifnot(is_pmxclass(ctr))
+    cctr <- pmx_copy(ctr) 
+    
+    cctr %>%
+      pmx_update(
+        "eta_cats",
+        ...
+      )
+    
+    p <- cctr %>%  get_plot("eta_cats")
+    rm(cctr)
+    p
+    
+  }
+
+# eta conts plot --------------------------------------------------------------
+
+#' Relationships between (ETA) and continuous covariates
+#' @inheritDotParams pmx_update
+#' @export
+pmx_plot_eta_conts <- 
+  function(ctr,
+           ...){
+    
+    stopifnot(is_pmxclass(ctr))
+    cctr <- pmx_copy(ctr) 
+    
+    cctr %>%
+      pmx_update(
+        "eta_conts",
+        ...
+      )
+    
+    p <- cctr %>%  get_plot("eta_conts")
+    rm(cctr)
+    p
+    
+  }
+
+
+
+# Quantile-quantile plot of IWRES --------------------------------------------------------------
+
+#' Quantile-quantile plot of IWRES
+#' @inheritDotParams pmx_update
+#' @export
+pmx_plot_iwres_qq <- 
+  function(ctr,
+           labels = list(
+             title="",
+             subtitle = "",
+             x = "Standard Normal Quantiles",
+             y = "IWRES Quantiles"
+           ),
+           ...){
+    
+    stopifnot(is_pmxclass(ctr))
+    cctr <- pmx_copy(ctr) 
+    
+    cctr %>%
+      pmx_update(
+        "iwres_qq",
+        labels=labels,
+        ...
+      )
+    
+    p <- cctr %>%  get_plot("iwres_qq")
+    rm(cctr)
+    p
+    
+  }

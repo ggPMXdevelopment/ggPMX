@@ -43,7 +43,7 @@ pmx_qq <- function(
   if(missing(labels))
     labels <- list(
       title = sprintf("QQ plot: %s",x)
-      )
+    )
   labels$y <- ""
   labels$x <- ""
   assert_that(is_list(labels))
@@ -103,7 +103,8 @@ plot_pmx.pmx_qq <- function(x, dx,...){
       strat.facet <- formula(paste0("~", x[["strat.facet"]]))
     p <- p + facet_grid(strat.facet)
   }
-    if(!is.null(p)) p <- plot_pmx(x$gp, p)
+  
+  if(!is.null(p)) p <- plot_pmx(x$gp, p)
   p
 }
 
