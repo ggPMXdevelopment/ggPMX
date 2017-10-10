@@ -1,0 +1,48 @@
+---
+title: "ggPMX standing report"
+author: "TODO"
+date: "October 9, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggPMX)
+```
+
+
+# Overview
+
+
+# Init controller
+
+```{r init_controller}
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                            "theophylline")
+  WORK_DIR <- file.path(theophylline, "Monolix")
+  input_file <- file.path(theophylline, "data_pk.csv")
+  
+  ctr <- pmx_mlx(
+    config = "standing", 
+    directory = WORK_DIR, 
+    input = input_file, 
+    dv = "Y", 
+    dvid ="DVID",
+    cats=c("SEX"),
+    conts=c("WT0","AGE0"),
+    strats="STUD")
+
+```
+
+
+
+# Plots
+
+## Observations verus Predictions
+
+```{r dv_pred}
+
+ctr %>% pmx_plot_dv_pred
+
+```

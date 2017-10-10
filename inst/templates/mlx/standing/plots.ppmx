@@ -10,19 +10,20 @@ IWRES_IPRED:
   ptype: RES
   x: IPRED
   'y': IWRES
-NPDE_TIME:
-  ptype: RES
-  x: TIME
-  'y': NPDE
-  
 IWRES_TIME:
   ptype: RES
   x: TIME
   'y': IWRES
+
+NPDE_TIME:
+  ptype: RES
+  x: TIME
+  'y': NPDE
 NPDE_PRED:
   ptype: RES
   x: PRED
   'y': NPDE
+
 DV_PRED:
   ptype: RES
   x: PRED
@@ -31,6 +32,7 @@ DV_IPRED:
   ptype: RES
   x: IPRED
   'y': DV
+
 EBE_HIST:
   ptype: DIS
   ranges: ~
@@ -40,17 +42,21 @@ EBE_BOX:
   ranges: ~
   type: box
   'has.jitter': false
+  
 INDIV:
   ptype: IND
   ranges: ~
+  
 ETA_MATRIX:
   ptype: ETA_PAIRS
+  
 ETA_CATS:
   ptype: ETA_COV
   type: cats
 ETA_CONTS:
   ptype: ETA_COV
   type: conts
+  
 IWRES_QQ:
   ptype: PMX_QQ
   x: IWRES
