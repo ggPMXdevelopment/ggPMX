@@ -2,12 +2,10 @@
 #'
 #' @param input \code{data.table} input data set
 #' @param finegrid \code{data.table} finegrid data set
-#' @param covariates \code{character} covariates names vector (optional)
-#' @param strats \code{chracter} stratification no covariates varaibles
 #' @return data.table
 #' @importFrom zoo na.locf
 
-input_finegrid <- function(input, finegrid, covariates = NULL,strats=NULL)
+input_finegrid <- function(input, finegrid)
 {
   ## this for R CMD check purpose
   ID <- TIME <- DVID <- NULL
@@ -17,23 +15,26 @@ input_finegrid <- function(input, finegrid, covariates = NULL,strats=NULL)
   
   measures <- setdiff(names(input),c("ID","DVID","DV","TIME","source"))
   if(length(measures)>0)
-  dx[,(measures):=
-       lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
+    dx[,(measures):=
+         lapply(.SD, na.locf,na.rm=FALSE), by="ID,DVID",.SDcols = measures]
   input[,source:=NULL]
   dx[is.na(source) & TIME>=0][,source:=NULL]
 }
 
 
-post_load_eta <- function(ds,input,sys){
+post_load_eta <- function(ds,input,sys,occ){
   ID <- DVID <- VARIABLE <- NULL
   ## add DVID variable : merge key with the input 
   if(grepl("#",ds[1,ID],fixed=TRUE))
-    ds[,c("ID","DVID") := tstrsplit(ID,"#")][, 
-                                             c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+    ds[,c("ID","DVID") := tstrsplit(ID,"#")][,
+        c("ID","DVID") :=list(as.integer(ID),as.integer(DVID))]
   if(!"DVID" %in% names(ds))  ds[,DVID:=1]
+  
+  keys <- c("ID", "DVID")
+  if(occ!="") keys <- c(keys,occ)
   ds <- try(
     merge(ds, input, 
-          by = c("ID", "DVID"))
+          by = keys)
     ,silent=TRUE)
   
   if(inherits(ds,"try-error"))
@@ -53,23 +54,30 @@ post_load_eta <- function(ds,input,sys){
   ds
 }
 
-post_load <- function(dxs, input, sys, dplot,...){
+post_load <- function(dxs, input, sys, dplot,occ){
   ## avoid RCMDCHECK
   DVID <- ID <- NULL
   ## merge finegrid with input data 
   if(sys == "mlx"){
-    dxs[["predictions"]]  <- merge(dxs[["predictions"]], input,by = c("ID", "TIME","DVID"))
+    keys <- c("ID", "TIME","DVID")
+    if(occ!="")keys <- c(keys,occ)
+    
+    dxs[["predictions"]]  <- 
+      merge(dxs[["predictions"]], input,
+            by = keys)
     if(!is.null(dxs[["finegrid"]])){
-      dxs[["finegrid"]] <- input_finegrid(input,dxs[["finegrid"]],...)
+      dxs[["finegrid"]] <- input_finegrid(input,dxs[["finegrid"]])
       dxs[["IND"]] <-  dxs[["finegrid"]] 
     }else{
-      message("No finegrid file: we use instead predictions.txt for individual plots")
+      message("
+        NO FINEGRID FILE: 
+        we will use instead predictions.txt for individual plots")
       dxs[["IND"]] <- dxs[["predictions"]] 
     }  
     
     ## prepare data set for stratification
     if(!is.null(dxs[["eta"]]))
-      dxs[["eta"]] <- post_load_eta(dxs[["eta"]],input,sys)
+      dxs[["eta"]] <- post_load_eta(dxs[["eta"]],input,sys,occ)
     
     
   }

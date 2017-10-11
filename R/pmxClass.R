@@ -229,7 +229,7 @@ plots <- function(ctr){
   assert_that(is_pmxclass(ctr))
   x <- ctr$config
   if (exists("plots", x)) {
-     data.table(
+    data.table(
       plot_name=tolower(names(x$plots)),
       plot_type=sapply(x$plots,"[[","ptype"))
   }
@@ -379,7 +379,7 @@ pmxClass <- R6::R6Class(
                            ..., pmxgpar = NULL){
       pmx_update_plot(self, private, pname,
                       strat.color=strat.color, strat.facet = strat.facet,
-                       filter,trans,..., pmxgpar = pmxgpar)
+                      filter,trans,..., pmxgpar = pmxgpar)
     },
     
     remove_plot = function(pname, ...)
@@ -440,21 +440,21 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 pmx_print <- function(self, private, ...){
   cat("\npmx object:\n")
   ctr_table <- 
-  rbind(
-    c("working directory",
-      gsub(path.package("ggPMX"),"",private$.data_path)),
-    c("Modelling input",basename(private$.input)),
-    c("dv",self$dv),
-    c("dvid",self$dvid),
-    c("cats",paste(self %>% get_cats,collapse = ",")),
-    c("conts",paste(self %>% get_conts,collapse = ",")),
-    c("strats",paste(self %>% get_strats,collapse = ","))
-  )
+    rbind(
+      c("working directory",
+        gsub(path.package("ggPMX"),"",private$.data_path)),
+      c("Modelling input",basename(private$.input)),
+      c("dv",self$dv),
+      c("dvid",self$dvid),
+      c("cats",paste(self %>% get_cats,collapse = ",")),
+      c("conts",paste(self %>% get_conts,collapse = ",")),
+      c("strats",paste(self %>% get_strats,collapse = ","))
+    )
   colnames(ctr_table) <- c("PARAM","VALUE")
   
   print(kable(ctr_table))
-        
-
+  
+  
   print(self$config, ...)
   
 }
@@ -527,7 +527,7 @@ pmx_add_plot <- function(self, private, x, pname){
     dx <- self$data[[dname]]
     assert_that(is.data.table(dx))
     if(!is.null(x[["filter"]])) {
-        dx <- x[["filter"]](dx)
+      dx <- x[["filter"]](dx)
     }
     ## stratification 
     
@@ -573,7 +573,7 @@ pmx_add_plot <- function(self, private, x, pname){
     x$input <- self %>% get_data("input")
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
     
-   
+    
     
     
   } else {
@@ -611,8 +611,10 @@ pmx_plots <- function(self, private){
 }
 
 pmx_post_load <- function(self, private){
-  self$data <- post_load(self$data, self$input, self$config$sys, 
-                         self$config$plots,covariates=get_covariates(self),strats=get_strats(self))
+  self$data <- post_load(
+    self$data, self$input, self$config$sys, 
+    self$config$plots,
+    occ       =get_occ(self))
   
 }
 
