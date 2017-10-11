@@ -39,7 +39,6 @@ test_that("Initiating controlers work with and without specification of covariat
     input = input_file, 
     dv = "DV", 
     dvid = "ytype", 
-    occ = "ISS",
     cats = c("SEX","RACE","DISE","ILOW"), 
     conts = c("AGE0","WT0","HT0","TRT")
   )

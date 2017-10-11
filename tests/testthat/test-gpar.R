@@ -8,7 +8,8 @@ test_that("pmx_gpar defaults are well setted", {
   )
   expect_identical(
     gpars$smooth, 
-    list(se = FALSE, linetype = 2, size = 1.5, method = "loess")
+    list(se = FALSE, linetype = 2, size = 1.5, method = "loess",
+         color="red")
   )
   
 })
