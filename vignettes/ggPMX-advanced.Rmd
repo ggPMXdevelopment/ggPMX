@@ -40,7 +40,7 @@ ctr <- pmx_mlx("standing",
   input = input_file, 
   dv = "DV", 
   dvid = "ytype", 
-  occ = "ISS",
+  ##occ = "ISS",
   cats = c("SEX","RACE","DISE","ILOW"), 
   conts = c("AGE0","WT0","HT0","TRT")
 )

@@ -63,8 +63,7 @@ post_load <- function(dxs, input, sys, dplot,occ){
     if(occ!="")keys <- c(keys,occ)
     
     dxs[["predictions"]]  <- 
-      merge(dxs[["predictions"]], input,
-            by = keys)
+      merge(dxs[["predictions"]], input, by=keys)
     if(!is.null(dxs[["finegrid"]])){
       dxs[["finegrid"]] <- input_finegrid(input,dxs[["finegrid"]])
       dxs[["IND"]] <-  dxs[["finegrid"]] 
