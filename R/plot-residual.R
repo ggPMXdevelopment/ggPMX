@@ -77,27 +77,27 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
 #' @family plot_pmx
 #' @export
 plot_pmx.residual <- function(x, dx,...){
-  with(x,
-       {
-         strat.color <- x[["strat.color"]]
-         strat.facet <- x[["strat.facet"]]
-         
-         
-         
-         p <- if(!is.null(strat.color))
-           ggplot(dx, with(aess, ggplot2::aes_string(x, y,color=strat.color)))+
-           with(point, geom_point(shape = shape))
-           else ggplot(dx, with(aess, ggplot2::aes_string(x, y)))+
-           with(point, geom_point(shape = shape, color = color))
-         if(add_hline) p <- p + geom_hline(yintercept = 0)
-         p <- plot_pmx(gp, p) 
-         if(!is.null(strat.facet)){
-           if(is.character(strat.facet))
-             strat.facet <- formula(paste0("~",strat.facet))
-           p <- p + facet_grid(strat.facet)
-         }
-         p
-       })
+  with(x,{
+   
+    p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
+    
+    p <- p+  with(point, geom_point(shape = shape, color = color))
+    if(add_hline) p <- p + geom_hline(yintercept = 0)
+    p <- plot_pmx(gp, p)
+   
+    strat.color <- x[["strat.color"]]
+    strat.facet <- x[["strat.facet"]]
+    if(!is.null(strat.color))
+      p <- p  %+%  geom_point(
+        with(point,aes_string(color=strat.color)))
+ 
+    if(!is.null(strat.facet)){
+      if(is.character(strat.facet))
+        strat.facet <- formula(paste0("~",strat.facet))
+      p <- p + facet_grid(strat.facet)
+    }
+    p
+  })
 }
 
 

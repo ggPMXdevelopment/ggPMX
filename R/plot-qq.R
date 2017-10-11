@@ -96,13 +96,21 @@ pmx_qq <- function(
 plot_pmx.pmx_qq <- function(x, dx,...){
   p <- ggplot(dx, aes_string(sample=x$x))+
     geom_abline()+
-    with(x$point,geom_point(stat='qq',shape = shape, color = color, size = size))+
-    coord_cartesian(xlim=c(-4,4),ylim=c(-4,4))
-  if(!is.null( x[["strat.facet"]])){
+    with(x$point,
+         geom_point(stat='qq',shape = shape, color = color, 
+                    size = size))
+
+  strat.color <- x[["strat.color"]]
+  strat.facet <- x[["strat.facet"]]
+  
+  if(!is.null(strat.color))
+    p <- p  %+%  geom_point(stat='qq',aes_string(color=strat.color))
+  if(!is.null(strat.facet)){
     if(is.character(strat.facet))
-      strat.facet <- formula(paste0("~", x[["strat.facet"]]))
+      strat.facet <- formula(paste0("~",strat.facet))
     p <- p + facet_grid(strat.facet)
   }
+  
   
   if(!is.null(p)) p <- plot_pmx(x$gp, p)
   p

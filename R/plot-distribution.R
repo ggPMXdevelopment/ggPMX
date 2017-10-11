@@ -41,6 +41,7 @@ distrib <- function(
   facets = list(scales = "free_y", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
+  binwidth=1/30,
   shrink=list(
     fun="sd",size=5,color="black",
     x_=-Inf,y_=Inf, hjust=-1,vjust=5),
@@ -73,6 +74,7 @@ distrib <- function(
     has.jitter = has.jitter,
     jitter = jitter,
     facets = facets,
+    binwidth=binwidth,
     has.shrink = has.shrink,
     shrink=shrink,
     gp = pmx_gpar(
@@ -124,13 +126,13 @@ distrib.hist <- function(dx,strat.facet,strat.color,x){
   wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet,"EFFECT")
   else formula("~EFFECT")
   
-  p <-   ggplot(data = dx) +
-    if(!is.null(strat.color))
-      geom_histogram(aes_string(x = "VALUE",fill=strat.color),
-                     position = "dodge") 
-  else geom_histogram(aes_string(x = "VALUE")) 
-  
-  
+  p <-   ggplot(data = dx,aes_string(x = "VALUE")) + 
+    with(x,geom_histogram(binwidth=binwidth))
+  if(!is.null(strat.color))
+    p <- p  %+% with(x,geom_histogram(
+      aes_string(fill=strat.color),
+      position = "dodge",
+      binwidth=binwidth))
   p <- p + with(x$facets, facet_wrap(wrap.formula , scales = scales,
                                      nrow = nrow))
   
@@ -180,7 +182,7 @@ shrinkage_layer <-
       with(shrink,annotate(geom="text",
                label = sprintf('shrinkage=%s%%',round(dx$SHRINK*100)),
                x=x_,y=y_,hjust=hjust,vjust=vjust,
-               color=color))
+               color=color,inherit.aes=FALSE))
                
     res
     

@@ -551,8 +551,7 @@ pmx_add_plot <- function(self, private, x, pname){
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
       if(x$has.shrink){
         
-        grp <- c(x[["strat.facet"]],x[["strat.color"]])
-        grp <- as.character(unlist(lapply(grp,as.list)))
+        grp <- as.character(unlist(lapply(x[["strat.facet"]],as.list)))
         grp <- intersect(grp,names(dx))
         
         x[["shrink.dx"]] <- shrinkage(
