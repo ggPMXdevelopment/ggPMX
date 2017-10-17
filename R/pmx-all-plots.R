@@ -89,7 +89,8 @@ pmx_plot_iwres_ipred <- function(
       add_hline=add_hline,
       dname=dname,
       has.smooth=has.smooth,
-      smooth=smooth
+      smooth=smooth,
+      ...
     )
   
   p <- cctr %>%  get_plot("iwres_ipred")
