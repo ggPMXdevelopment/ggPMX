@@ -22,7 +22,8 @@ Imports:
     checkmate,
     GGally,
     zoo,
-    knitr
+    knitr,
+    rmarkdown
 License: file LICENSE
 LazyData: true
 Suggests:
