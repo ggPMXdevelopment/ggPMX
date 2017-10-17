@@ -6,11 +6,11 @@
 #' @param facets list set the facet setting in case of histogram plot
 #' @param type box for boxplot or histogram
 #' @param dname name of dataset to be used
-#' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @param has.shrink \code{logical} if TRUE add shrinkage layer
 #' @param shrink \code{list} list of parameters to tune the shrinkage
 #' @param has.jitter \code{logical} if TRUE add jitter operator for points
-
+#' @param binwidth \code{numeric} The width of the bins. default is 1/30
+#' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return distrib object
 #' @family plot_pmx
