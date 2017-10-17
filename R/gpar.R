@@ -10,6 +10,8 @@
 #' @param band horizontal band parameters
 #' @param is.draft logical if TRUE add draft layer
 #' @param draft draft layer parameters
+#' @param has.identity_line \code{logical} if TRUE add y=x line
+#' @param identity_line \code{list} y=x aes properties
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
 #' @param scale_log \code{character} define the how to apply scale log, can be x,y,both or none of them
 #' @param ... extra arguments (not used yet)
