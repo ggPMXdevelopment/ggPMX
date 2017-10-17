@@ -35,7 +35,7 @@ pmx_gpar <-
     has.smooth = FALSE,
     smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess',color="red"),
     has.band = FALSE,
-    band = list(y = c(-2, 2), linetype = 2, size = 0.5,color="black"),
+    band = list(y = c(-2, 2), linetype = 1, size = 0.5,color="black"),
     is.draft = TRUE,
     draft = list(size = 5, label = "DRAFT", color = 'grey50',x = Inf, y = -Inf),
     discrete=FALSE,

@@ -145,6 +145,106 @@ pmx_plot_iwres_time <- function(
   p
 }
 
+
+# NPDE vs TIME plot --------------------------------------------------------------
+
+#' NPDE vs TIME plot
+#' @inherit residual
+#' @inheritDotParams pmx_update filter:trans
+#' @export
+pmx_plot_npde_time <- function(
+  ctr,
+  labels = list(
+    title="NPDE vs TIME",
+    subtitle = "",
+    x = "TIME",
+    y = "NPDE"
+  ), 
+  point = list(shape = 1, color = "black", size = 1), 
+  add_hline=TRUE, 
+  has.band=TRUE, 
+  dname="predictions",
+  has.smooth=TRUE,
+  smooth=list(se=FALSE,color="red",linetype=2),
+  ...){
+  
+  
+  stopifnot(is_pmxclass(ctr))
+  cctr <- pmx_copy(ctr) 
+  assert_that(is_list_or_null(labels))
+  assert_that(is_string_or_null(dname))
+  assert_that(is.list(point))
+  
+  cctr %>%
+    pmx_update(
+      "npde_time",
+      labels=labels,
+      point=point,
+      add_hline=add_hline,
+      dname=dname,
+      has.smooth=has.smooth,
+      smooth=smooth,
+      has.band=has.band,
+      ...
+    )
+  
+  p <- cctr %>%  get_plot("npde_time")
+  rm(cctr)
+  p
+}
+
+
+
+
+# NPDE vs PRED plot --------------------------------------------------------------
+
+#' NPDE vs PRED plot
+#' @inherit residual
+#' @inheritDotParams pmx_update filter:trans
+#' @export
+pmx_plot_npde_pred<- function(
+  ctr,
+  labels = list(
+    title="NPDE vs IPRED",
+    subtitle = "",
+    x = "IPRED",
+    y = "NPDE"
+  ), 
+  point = list(shape = 1, color = "black", size = 1), 
+  add_hline=TRUE, 
+  has.band=TRUE, 
+  dname="predictions",
+  has.smooth=TRUE,
+  smooth=list(se=FALSE,color="red",linetype=2),
+  ...){
+  
+  
+  stopifnot(is_pmxclass(ctr))
+  cctr <- pmx_copy(ctr) 
+  assert_that(is_list_or_null(labels))
+  assert_that(is_string_or_null(dname))
+  assert_that(is.list(point))
+  
+  cctr %>%
+    pmx_update(
+      "npde_pred",
+      labels=labels,
+      point=point,
+      add_hline=add_hline,
+      dname=dname,
+      has.smooth=has.smooth,
+      smooth=smooth,
+      has.band=has.band,
+      ...
+    )
+  
+  p <- cctr %>%  get_plot("npde_pred")
+  rm(cctr)
+  p
+}
+
+
+
 # Eta matrix plot --------------------------------------------------------------
 
 
