@@ -112,7 +112,9 @@ read_mlx_pred <- function(path, x,...){
   if(grepl("#",res[1,ID],fixed=TRUE))
     res[,c("ID","DVID") := tstrsplit(ID,"#")][,c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
   
-  if(!"DVID" %in% names(res)) res[,"DVID" :=1]
+  dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
+  if(!dvid %in% names(res)) res[,"DVID" :=1]
+  else setnames(res,dvid,"DVID")
     
   res
 }

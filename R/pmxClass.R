@@ -426,7 +426,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   ##private$.covariates <- covs[!is.na(covs) & covs!=""]
   self$input <- read_input(input, self$dv,self$dvid,self$cats,self$conts,self$strats)
   self$data <- load_source(sys=config$sys,  private$.data_path,
-                           self$config$data)
+                           self$config$data,dvid=self$dvid)
   self$post_load()
   ## create all plots
   for ( nn in names(self$config$plots)){
