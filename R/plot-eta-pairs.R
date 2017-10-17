@@ -6,6 +6,7 @@
 #' @param dname name of dataset to be used
 #' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' byd efault
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
+#' @param text_color color of the correlation text in the upper matrix
 #' @return ecorrel object
 #' @family plot_pmx
 #' @export
@@ -41,7 +42,7 @@ lower.plot <- function(data, mapping, method = "loess", gp,point) {
     with(point,geom_point(shape=shape,size=size,color=color))+
     geom_smooth(method = method, se=FALSE, size=1,color='black')
   plot_pmx(gp, p)
-
+  
 }
 
 diag.plot <- function(data, mapping, gp) {
@@ -75,15 +76,17 @@ upper.plot <- function(data, mapping, gp,text_color) {
 #'
 plot_pmx.eta_pairs <- function(x, dx,...){
   ## avoid RCMDCHECK warning
-  ID <- VARIABLE <- VALUE <- FUN <- NULL
+  ID <- EFFECT <- VALUE <- FUN <- NULL
   
- 
+  
   ## filter by type of eta 
   dx <- dx[FUN==x$type.eta]
   if(nrow(dx)==0)
     stop("Now rows find for eta of type ",x$type.eta,"\n")
   
-  data_plot <- dcast(dx[,list(ID,EFFECT,VALUE)],ID~EFFECT,fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]
+  data_plot <- 
+    dcast(dx[,list(ID,EFFECT,VALUE)],ID~EFFECT,
+          fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]
   
   p <- with(x, {
     ggpairs(
