@@ -563,6 +563,13 @@ pmx_add_plot <- function(self, private, x, pname){
       x[["cats"]] <- self %>% get_cats
       x[["conts"]] <- self %>% get_conts
     }
+    if(ptype=="ETA_PAIRS"){
+      if(x$has.shrink){
+        x[["shrink.dx"]] <- shrinkage(
+          self$data[["estimates"]],self$data[["eta"]],
+          fun = x$shrink$fun)
+      }
+    }
     if(!is.null(self$settings)){
       if("is.draft" %in% names(self$settings))
         x$gp$is.draft <- self$settings$is.draft

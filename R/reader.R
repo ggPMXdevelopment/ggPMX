@@ -9,8 +9,9 @@
 #' @export
 read_mlx_ind_est <- function(path, x,...){
   ds <- pmx_fread(path)
-  ds <- ds[,grep("id|eta",tolower(names(ds))),with=FALSE]
-  ds <- ds[,as.logical(!grepl("*",tolower(names(ds)),fixed=TRUE)),with=FALSE]
+  nn <- grep("^id|^eta_.*_(mode|mean)$",names(ds),
+             ignore.case = TRUE,value=TRUE)
+  ds <- ds[,nn,with=FALSE]
   setnames(ds,grep("^id$",names(ds),ignore.case = TRUE,value=TRUE),"ID")
   ds
 }
