@@ -183,7 +183,7 @@ plot_pmx.eta_pairs <- function(x, dx,...){
     ggmatrix(plots ,
              title = labels$title,
              xAxisLabels=nn,
-             yAxisLabels=if(has.shrink) c("",nn) else nn,
+             yAxisLabels=if(has.shrink) c("Shrinkage",nn) else nn,
              showYAxisPlotLabels=TRUE,
              switch="both",
              xlab=labels$x,
@@ -215,22 +215,29 @@ print.pmx_eta_matrix <- function (x, newpage = is.null(vp), vp = NULL, ...) {
   }
   grDevices::recordGraphics(requireNamespace("GGally", quietly = TRUE),
                             list(), getNamespace("GGally"))
-  gtable <- ggmatrix_gtable(x, ...)
-  if(x$has.shrink)
-    gtable <- gtable_remove_grobs(gtable, "axis-l-1")
+  eta_gtable <- ggmatrix_gtable(x, ...)
+  if(x$has.shrink){
+    eta_gtable <- gtable_remove_grobs(eta_gtable, "axis-l-1")
+    strip_l_1 <- gtable::gtable_filter(eta_gtable,"strip-l-1")
+    strip_l_1$grobs[[1]]$grobs[[1]]$children$GRID.stripGrob.395$children$GRID.text.394$rot=0
+    strip_l_1$grobs[[1]]$grobs[[1]]$children$GRID.stripGrob.395$children$GRID.text.394$hjust =-0.03
+    matches <- grepl("strip-l-1", eta_gtable$layout$name, fixed = TRUE)
+    eta_gtable$grobs[[which(matches)]] <- strip_l_1
+    
+  }
   
   # must be done after gtable, as gtable calls many ggplot2::print.ggplot methods
   ggplot2_set_last_plot(x)
   
   if (is.null(vp)) {
-    grid.draw(gtable)
+    grid.draw(eta_gtable)
   } else {
     if (is.character(vp)) {
       seekViewport(vp)
     } else {
       pushViewport(vp)
     }
-    grid.draw(gtable)
+    grid.draw(eta_gtable)
     upViewport()
   }
   invisible(data)
