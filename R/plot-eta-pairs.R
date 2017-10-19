@@ -17,9 +17,8 @@ eta_pairs <- function(
   text_color="black",
   has.shrink=TRUE,
   smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess',color="red"),
-  point = list(shape = 1, color = "grey50", size = 1),
-  shrink=list(
-    fun="sd",size=5,color="black", hjust=-1,vjust=5),
+  point = list(shape = 1, color = "grey50", size = 1,colour="black"),
+  shrink=list(fun="sd",size=5),
   ...){
   assert_that(is_string_or_null(dname))
   if(is.null(dname)) dname <- "eta"
@@ -32,7 +31,7 @@ eta_pairs <- function(
   structure(list(
     dname = dname,
     labels=labels,
-    point = list(shape = 1, color = "grey50", size = 1),
+    point = point,
     type.eta =  match.arg(type.eta),
     text_color=text_color,
     has.shrink=has.shrink,
@@ -126,6 +125,22 @@ gtable_remove_grobs <- function(table, names, ...)
 
 
 
+plot_shrink <- 
+  function(x,shrink.dx,shrink){
+  label <- shrink.dx[
+      EFFECT==x,
+      sprintf("%s%%",round(SHRINK*100))
+      ]
+  params <- c(label=label,shrink)
+  do.call(ggally_text,params[names(params)!="fun"]) + 
+  ## ggally_text(label=label)+  
+  theme_bw()+
+  theme(panel.border = element_blank(), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+  }
+
+
 #' Plot random effect correlation plot
 #'
 #' @param x distribution object
@@ -162,19 +177,7 @@ plot_pmx.eta_pairs <- function(x, dx,...){
     
     if(has.shrink){
       dd <- x[["shrink.dx"]]
-      ll <- 
-        lapply(nn,
-               function(x){
-                 ggally_text(
-                   label=shrink.dx[
-                     EFFECT==x,
-                     sprintf("%s%%",round(SHRINK*100))
-                     ])+
-                   theme_bw()+
-                   theme(panel.border = element_blank(), 
-                         panel.grid.major = element_blank(),
-                         panel.grid.minor = element_blank())
-               })
+      ll <- lapply(nn,plot_shrink,shrink.dx,shrink)
       plots <- c(ll,plots)
     }
     
@@ -194,11 +197,11 @@ plot_pmx.eta_pairs <- function(x, dx,...){
   p$has.shrink <- x$has.shrink
   attributes(p)$class <- c("pmx_eta_matrix","gg", "ggmatrix")
   p +
-  theme(
-    strip.background = element_rect(fill = "white"), 
-    strip.placement = "outside",
-    strip.text = element_text( face = "bold",size=12)
-  )
+    theme(
+      strip.background = element_rect(fill = "white"), 
+      strip.placement = "outside",
+      strip.text = element_text( face = "bold",size=12)
+    )
 }
 
 
