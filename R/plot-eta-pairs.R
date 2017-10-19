@@ -11,7 +11,9 @@
 #' @family plot_pmx
 #' @export
 eta_pairs <- function(
-  title,dname=NULL,type.eta=c("mode","mean"),
+  title,
+  dname=NULL,
+  type.eta=c("mode","mean"),
   text_color="black",
   has.shrink=TRUE,
   smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess',color="red"),
@@ -104,11 +106,23 @@ upper.plot <- function(data, x,y, text_color,gp) {
   
   ll <- c(uppers,diags,lowers)
   
-  ll[unlist(as.list(mat))]
+  ll[unlist(as.list(t(mat)))]
 }
 
 
 
+#' Remove named elements from gtable
+#'
+#' @param table The table from which grobs should be removed
+#' @param names A character vector of the grob names (as listed in \code{table$layout})
+#'   that should be removed
+#' @param ... Other parameters passed through to \code{gtable_filter}.
+
+gtable_remove_grobs <- function(table, names, ...)
+{
+  kept_names <- table$layout$name[!(table$layout$name %in% names)]
+  gtable::gtable_filter(table, paste(kept_names, sep="", collapse="|"), ...)
+}
 
 
 
@@ -151,9 +165,14 @@ plot_pmx.eta_pairs <- function(x, dx,...){
       ll <- 
         lapply(nn,
                function(x){
-                 ggally_text(label=shrink.dx[EFFECT==x,round(SHRINK*100)])+
+                 ggally_text(
+                   label=shrink.dx[
+                     EFFECT==x,
+                     sprintf("%s%%",round(SHRINK*100))
+                     ])+
                    theme_bw()+
-                   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                   theme(panel.border = element_blank(), 
+                         panel.grid.major = element_blank(),
                          panel.grid.minor = element_blank())
                })
       plots <- c(ll,plots)
@@ -161,6 +180,10 @@ plot_pmx.eta_pairs <- function(x, dx,...){
     
     ggmatrix(plots ,
              title = labels$title,
+             xAxisLabels=nn,
+             yAxisLabels=if(has.shrink) c("",nn) else nn,
+             showYAxisPlotLabels=TRUE,
+             switch="both",
              xlab=labels$x,
              ylab=labels$y,
              byrow=TRUE,
@@ -168,26 +191,47 @@ plot_pmx.eta_pairs <- function(x, dx,...){
              ncol=length(nn),
              yProportions=if(has.shrink)c(1,rep(5,length(nn))))
   })
-  
-  # p <- with(x, {
-  #   ggpairs(
-  #     data_plot, 
-  #     lower = list(continuous = wrap(lower.plot, method = "loess",gp=gp,point=point)),
-  #     diag = list(continuous = wrap(diag.plot,gp=gp)),
-  #     upper = list(continuous = wrap(upper.plot,gp=gp,text_color=text_color)),
-  #     switch="y",
-  #     labeller = function (labels, multi_line = TRUE) 
-  #     {
-  #       if(names(labels)== "Var1" && x$has.shrink) 
-  #         dd <- x[["shrink.dx"]]
-  #       browser()
-  #       labels$Var1 <- paste(labels$Var1,"10%",sep="\n")
-  #       labels
-  #       
-  #     },
-  #     ...)
-  #   
-  # })
-  p
-  
+  p$has.shrink <- x$has.shrink
+  attributes(p)$class <- c("pmx_eta_matrix","gg", "ggmatrix")
+  p +
+  theme(
+    strip.background = element_rect(fill = "white"), 
+    strip.placement = "outside",
+    strip.text = element_text( face = "bold",size=12)
+  )
 }
+
+
+ggplot2_set_last_plot <- utils::getFromNamespace("set_last_plot", "ggplot2")
+#' @export
+#' @method print pmx_eta_matrix
+#' @importFrom grid gpar grid.layout grid.newpage grid.text grid.rect popViewport pushViewport viewport grid.draw
+
+print.pmx_eta_matrix <- function (x, newpage = is.null(vp), vp = NULL, ...) {
+  if (newpage) {
+    grid.newpage()
+  }
+  grDevices::recordGraphics(requireNamespace("GGally", quietly = TRUE),
+                            list(), getNamespace("GGally"))
+  gtable <- ggmatrix_gtable(x, ...)
+  if(x$has.shrink)
+    gtable <- gtable_remove_grobs(gtable, "axis-l-1")
+  
+  # must be done after gtable, as gtable calls many ggplot2::print.ggplot methods
+  ggplot2_set_last_plot(x)
+  
+  if (is.null(vp)) {
+    grid.draw(gtable)
+  } else {
+    if (is.character(vp)) {
+      seekViewport(vp)
+    } else {
+      pushViewport(vp)
+    }
+    grid.draw(gtable)
+    upViewport()
+  }
+  invisible(data)
+}
+
+
