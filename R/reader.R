@@ -13,6 +13,20 @@ read_mlx_ind_est <- function(path, x,...){
              ignore.case = TRUE,value=TRUE)
   ds <- ds[,nn,with=FALSE]
   setnames(ds,grep("^id$",names(ds),ignore.case = TRUE,value=TRUE),"ID")
+  ## remove all null variables 
+  ## NO RANDOM EFFECT
+  ## TODO : treat case where we have epsilon as random effect
+  valid_cols <- 
+    c("ID",
+      ds[, setdiff(names(ds), c("ID")), with = FALSE][,names(.SD)[colSums(.SD)!=0]]
+    )
+  ds <- ds[,valid_cols,with=FALSE]
+  ## remove hash
+  if(grepl("#",ds[1,ID],fixed=TRUE))
+    ds[,c("ID","DVID") := tstrsplit(ID,"#")
+       ][,
+         c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+  
   ds
 }
 

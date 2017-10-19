@@ -165,7 +165,6 @@ plot_pmx.eta_pairs <- function(x, dx,...){
   data_plot <- 
     dcast(dx[,list(ID,EFFECT,VALUE)],ID~EFFECT,
           fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]
-  data_plot<- data_plot[,colSums(data_plot)!=0,with=FALSE]
   nn <- colnames(data_plot)
   p <- with(x,{
     
