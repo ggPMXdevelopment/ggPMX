@@ -31,11 +31,11 @@ read_mlx_ind_est <- function(path, x,...){
 #'
 read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
   
-  DVID <- TIME <- NULL
+  DVID <- TIME <- EVID <- MDV <- NULL 
   xx <- pmx_fread(ipath)
   
   setnames(xx, grep("^id$",names(xx),ignore.case = TRUE,value=TRUE), "ID")
- 
+  
   if(dv %in% names(xx)) setnames(xx, dv, "DV")
   else {
     dv.names <- paste(setdiff(names(xx),c("ID","id","time","TIME")),collapse=" or ")
@@ -49,9 +49,9 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
   ## round time column for further merge
   setnames(xx, grep("^time$",names(xx),ignore.case = TRUE,value=TRUE), "TIME")
   xx[,TIME:=round(TIME,4)]
-
+  
   setnames(xx,toupper(names(xx)))
-    
+  
   covariates <- unique(c(cats,conts))
   if(length(covariates[covariates!=""])){
     covariates <- covariates[covariates!=""]
@@ -71,9 +71,10 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
     conts <- conts[conts!=""]
     xx[,(conts) := lapply(.SD,as.numeric),.SDcols=conts]
   }
+  if(all(c("MDV","EVID") %in% names(xx)))
+    xx[!(EVID==1 & MDV==1)]
+  else   xx
   
-  xx
-
 }
 
 #' Read MONOLIX model predictions
@@ -106,7 +107,7 @@ read_mlx_pred <- function(path, x,...){
     }
   }
   
-
+  
   ## select columns
   res <- setnames(xx[,names(nn),with=FALSE],as.character(nn))
   
@@ -116,7 +117,7 @@ read_mlx_pred <- function(path, x,...){
   dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
   if(!dvid %in% names(res)) res[,"DVID" :=1]
   else setnames(res,dvid,"DVID")
-    
+  
   res
 }
 
