@@ -129,7 +129,7 @@ read_mlx_pred <- function(path, x,...){
     res[,c("ID","DVID") := tstrsplit(ID,"#")][,c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
   
   dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
-  if(!dvid %in% names(res)) res[,"DVID" :=1]
+  if(is.null(dvid) || !dvid %in% names(res)) res[,"DVID" :=1]
   else setnames(res,dvid,"DVID")
   
   res
