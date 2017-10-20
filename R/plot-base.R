@@ -8,7 +8,6 @@
 #' @param gpar object of pmx_gpar type
 #' @param p plot
 #' @import ggplot2
-#'
 #' @family plot_pmx
 #' @return ggplot2 object
 plot_pmx.pmx_gpar <- function(gpar, p){
@@ -59,7 +58,9 @@ plot_pmx.pmx_gpar <- function(gpar, p){
     
     ## draft layer
     if(has.identity_line){
-      p <- p + with(identity_line, geom_abline(intercept=intercept,color=color))
+      p <- p + with(
+        identity_line, 
+        geom_abline(intercept=intercept,color=color))
     }
     p
   })

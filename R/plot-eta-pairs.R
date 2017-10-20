@@ -70,7 +70,8 @@ upper.plot <- function(data, x,y, text_color,gp) {
 
 
 
-.plot_matrix <- function(dx,text_color=text_color,point=point,smooth=smooth,gp){
+.plot_matrix <- 
+  function(dx,text_color=text_color,point=point,smooth=smooth,gp){
   nn <- colnames(dx)
   mat <- outer(nn,nn,paste,sep="_")
   uppers <- 
@@ -127,6 +128,8 @@ gtable_remove_grobs <- function(table, names, ...)
 
 plot_shrink <- 
   function(x,shrink.dx,shrink){
+    
+    EFFECT <- SHRINK <- NULL
   label <- shrink.dx[
       EFFECT==x,
       sprintf("%s%%",round(SHRINK*100))
@@ -207,8 +210,7 @@ plot_pmx.eta_pairs <- function(x, dx,...){
 ggplot2_set_last_plot <- utils::getFromNamespace("set_last_plot", "ggplot2")
 #' @export
 #' @method print pmx_eta_matrix
-#' @importFrom grid gpar grid.layout grid.newpage grid.text grid.rect popViewport pushViewport viewport grid.draw
-
+#' @import grid 
 print.pmx_eta_matrix <- function (x, newpage = is.null(vp), vp = NULL, ...) {
   if (newpage) {
     grid.newpage()
@@ -240,7 +242,6 @@ print.pmx_eta_matrix <- function (x, newpage = is.null(vp), vp = NULL, ...) {
     grid.draw(eta_gtable)
     upViewport()
   }
-  invisible(data)
 }
 
 
