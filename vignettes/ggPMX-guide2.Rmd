@@ -3,13 +3,13 @@ title: "ggPMX - User guide"
 author: "Amine Gassem, Irina Baltcheva"
 date: '`r Sys.Date()`'
 output:
+  html_document:
+    toc: yes
+    toc_depth: '3'
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
-    toc: yes
-    toc_depth: '3'
-  html_document:
     toc: yes
     toc_depth: '3'
   word_document:
@@ -193,7 +193,11 @@ The controller is a container that stores all plots. To get the list of plots, w
 ```{r plot_lists}
 ctr %>% plot_names
 ```
-Note here the use of piping. An alternative way to display the names of the existing plots is by printing the content of the controller as done in the previous section.
+Note here the use of piping. An alternative way to display the names of the existing plots is by printing the content of the controller as done in the previous section. or to use :
+
+```{r plots}
+ctr %>% plots
+```
 
 ## Plot types 
 
@@ -247,14 +251,7 @@ ctr %>% get_data("predictions")
 ctr %>% get_data("finegrid")
 ```
 
-Here an example of filtering input data in a sugar syntax manner (??). 
 
-```{r dx_sugar_syntax}
-
-input <- ctr %>% get_data("input")
-input[DV>350 & TIME>0  & ID==1 & SEX==1]
-
-```
 
 ## View plots with `get_plot()`
 To view a particular plot we call the function `get_plot()` with the name of the plot as the first (mandatory) argument, where the name has to correspond to one of the plot_names above: 
@@ -322,6 +319,11 @@ ctr %>% pmx_update("indiv",
                   labels=list(title="My individuals"))
 ctr %>% get_plot("indiv",npage=1)
 ```
+or even simpler by using `pmx_plot_individual`:
+
+```{r indiv_plots_update_defualt, fig.height=3, fig.width=5, fig.align='center'}
+ctr %>% pmx_plot_individual(npage=1,labels=list(title="My individuals"))
+```
 
 ### Change grid size of individual plots 
 In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
@@ -332,6 +334,14 @@ ctr %>% pmx_update("indiv",
                   labels=list(title="My individual plots grid"))
 ctr %>% get_plot("indiv",npage=1)
 ```
+or even simpler by using `pmx_plot_individual`:
+
+```{r indiv_plots_grid_default, fig.height=3.5, fig.width=6, fig.align='center'}
+ctr %>% pmx_plot_individual(npage=1,
+                  facets=list(nrow=2,ncol=4),
+                  point=list(shape=4,color="red"),
+                  labels=list(title="My individual plots grid"))
+```
 
 ### Change labels
 The following code gives an example of how to change the labels of x- and y-axes of individual plots.
@@ -341,17 +351,10 @@ The following code gives an example of how to change the labels of x- and y-axes
 ctr %>% set_plot("IND", pname = "indiv1")
 p1 <- ctr %>% get_plot("indiv1",npage=1)
 
-# Change x- and y-labels (doesn't work with Rmarkdown, strange...)
-# ctr %>%
-#   pmx_update(
-#     "indiv",
-#     labels=list(xlab="Time (days)", ylab="Free serum concentration (nmol)")) %>%
-#   get_plot("indiv",npage=1)
-
-# An alternative way:
-p2 <- ctr %>% get_plot("indiv1",npage=1) +
-  xlab("Time (days)") +
-  ylab("Free serum concentration (nmol)")
+p2 <- ctr %>% pmx_plot_individual(1,
+  labels=list(x ="Time (days)",
+  y= "Free serum concentration (nmol)")
+)
 p1
 p2
 
@@ -362,22 +365,27 @@ The code below gives an example of how to change the color of points of a residu
 ```{r update_res_plot2,  out.width='.49\\linewidth', fig.width=3, fig.height=3, fig.show='hold',fig.align='left'}
 
 # Default dv_pred plot
-ctr %>% set_plot("RES", pname = "res2", x = "PRED", y = "DV")
-p1 <- ctr %>% get_plot("res2")
+p1 <- ctr %>% pmx_plot_dv_pred
 
 # Change x- and y-labels (doesn't work with Rmarkdown, strange...)
-p2 <- ctr %>% pmx_update("res2", 
+p2 <- ctr %>% pmx_plot_dv_pred(, 
                          labels=list(x="Population predictions", y="Observations"), 
-                         add_hline=FALSE,point=list(color="green4")) %>%
-  get_plot("res2")
+                         add_hline=FALSE,point=list(color="green4")) 
 
-# How do I modify the colors and shapes of points? What are the possible values of 'point' argument? I can't find it in full documentation.
 
-# Add the identity line and a smooth through the data:
-p3 = p2 + 
-  geom_abline(intercept=0,aes(colour="red")) + 
-  geom_smooth(aes(color="red"),show.legend=FALSE)
-p1
+
+# modify the colors and shapes of points
+# Change x- and y-labels (doesn't work with Rmarkdown, strange...)
+# Add the identity line and a smooth through the data
+
+p3 <- ctr %>% pmx_plot_dv_pred(
+  labels=list(x="Population predictions", y="Observations"), 
+  add_hline=FALSE,
+  has.identity_line=TRUE,
+  identity_line=list(color="red"),
+  has.smooth=TRUE,
+  point=list(color="green4",shape=4))
+
 p3
 
 ```
@@ -385,18 +393,15 @@ We can add a band between -2 and 2 in residual plots:
 ```{r update_res_plot,  out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='center'}
 
 # Default iwres_ipred plot
-ctr %>% set_plot("RES", pname = "res1", x = "IPRED", y = "IWRES")
-p1 <- ctr %>% get_plot("res1")
+p1 <- ctr %>% pmx_plot_iwres_ipred
 
 # Above lines give the same result as the following:
 # p1a = ctr %>% get_plot("iwres_ipred")
 
 # Add bands and update title
 p2 <- ctr %>% 
-  pmx_update("res1", has.band = TRUE, 
-             labels = list(title = "IPRED versus IWRES (with bands)")) %>% 
-  get_plot("res1")
-
+  pmx_plot_iwres_ipred( has.band = TRUE, 
+             labels = list(title = "IPRED versus IWRES (with bands)")) 
 p1
 p2
 ```
