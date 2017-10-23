@@ -64,7 +64,10 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats="",occ=""){
     stop(err.msg)
   }
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
-  else stop(dvid," is not a valid input variable")
+  else {
+    message("no valid dvid provided: create a dummy dvid")
+    xx[,"DVID" :=1]
+  }
   if(nzchar(occ) && occ %in% names(xx))
     setnames(xx,occ,"OCC")
   ## round time column for further merge

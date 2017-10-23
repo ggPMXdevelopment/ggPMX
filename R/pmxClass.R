@@ -413,7 +413,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   private$.input <- input
   self$config <- config
   self$dv <- dv
-  self$dvid <- toupper(dvid)
+  self$dvid <- dvid
   self$cats <- toupper(cats)
   self$conts <- toupper(conts)
   self$occ <- toupper(occ)
