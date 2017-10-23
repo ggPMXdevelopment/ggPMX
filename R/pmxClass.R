@@ -136,10 +136,10 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV","P
   conf <-
     switch(ptype,
            IND=individual(...),
-           DIS=distrib(...),
+           DIS=if(ctr$has_re)distrib(...),
            RES=residual(...),
-           ETA_PAIRS=eta_pairs(...),
-           ETA_COV=eta_cov(...),
+           ETA_PAIRS=if(ctr$has_re)eta_pairs(...),
+           ETA_COV=if(ctr$has_re)eta_cov(...),
            PMX_QQ=pmx_qq(...)
            
     )
@@ -147,19 +147,15 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV","P
     filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
   }
-  conf[["filter"]] <- filter
-  conf[["trans"]] <- trans
-  # if(ptype=="DIS" && conf$has.shrink)
-  #   conf$shrink <- ctr$data[["shrink"]]
-  
-  ## stratification  
-  if(!is.null(strat.color)) conf[["strat.color"]] <- strat.color
-  if(!is.null(strat.facet)) conf[["strat.facet"]] <- strat.facet
-  
-  
-  ctr[["config"]][["plots"]][[toupper(pname)]] <- 
-    c(ptype = ptype, list(...))
-  ctr$add_plot(conf, pname)
+  if(!is.null(conf)){
+    conf[["filter"]] <- filter
+    conf[["trans"]] <- trans
+    if(!is.null(strat.color)) conf[["strat.color"]] <- strat.color
+    if(!is.null(strat.facet)) conf[["strat.facet"]] <- strat.facet
+    ctr[["config"]][["plots"]][[toupper(pname)]] <- 
+      c(ptype = ptype, list(...))
+    ctr$add_plot(conf, pname)
+  }
   invisible(ctr)
 }
 
@@ -364,6 +360,7 @@ pmxClass <- R6::R6Class(
     dvid=NULL,cats=NULL,conts=NULL,occ=NULL,
     strats=NULL,
     settings=NULL,
+    has_re=FALSE,re=NULL,
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ,strats,settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ,strats,settings),
     
@@ -416,7 +413,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   private$.input <- input
   self$config <- config
   self$dv <- dv
-  self$dvid <- if(occ!="") occ else dvid
+  self$dvid <- toupper(dvid)
   self$cats <- toupper(cats)
   self$conts <- toupper(conts)
   self$occ <- toupper(occ)
@@ -424,9 +421,22 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$settings <- settings
   
   ##private$.covariates <- covs[!is.na(covs) & covs!=""]
-  self$input <- read_input(input, self$dv,self$dvid,self$cats,self$conts,self$strats)
+  self$input <- read_input(input, self$dv,self$dvid,self$cats,self$conts,self$strats,self$occ)
   self$data <- load_source(sys=config$sys,  private$.data_path,
                            self$config$data,dvid=self$dvid)
+  ## check random effect
+  
+  if(!is.null(self$data[["eta"]])){
+    re <- grep("^eta_(.*)_(mode|mean)",names(self$data[["eta"]]),value=TRUE)
+    if(length(re)>0){
+      self$has_re <- TRUE
+      self$re <- gsub("^eta_(.*)_(mode|mean)","\\1",re)
+      self$data[["eta"]] <- 
+        post_load_eta(self$data[["eta"]],
+                      self$input,self$sys,self$occ)
+    }
+  }
+  
   self$post_load()
   ## create all plots
   for ( nn in names(self$config$plots)){
