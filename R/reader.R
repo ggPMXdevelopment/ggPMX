@@ -23,9 +23,14 @@ read_mlx_ind_est <- function(path, x,...){
   ds <- ds[,valid_cols,with=FALSE]
   ## remove hash
   if(grepl("#",ds[1,ID],fixed=TRUE))
-    ds[,c("ID","DVID") := tstrsplit(ID,"#")
+    ds[,c("ID","OCC") := tstrsplit(ID,"#")
        ][,
-         c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+         c("ID","OCC"):=list(as.integer(ID),as.integer(OCC))]
+  
+  dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
+  if(is.null(dvid) || !dvid %in% names(ds)) ds[,"DVID" :=1]
+  else setnames(ds,dvid,"DVID")
+  
   
   ds
 }
@@ -43,7 +48,7 @@ read_mlx_ind_est <- function(path, x,...){
 #' 
 #' @return data.table well formatted containing modelling input data
 #'
-read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
+read_input <- function(ipath, dv,dvid, cats = "",conts="",strats="",occ=""){
   
   DVID <- TIME <- EVID <- MDV <- NULL 
   xx <- pmx_fread(ipath)
@@ -59,7 +64,9 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats=""){
     stop(err.msg)
   }
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
-  else xx[,DVID:=1]
+  else stop(dvid," is not a valid input variable")
+  if(nzchar(occ) && occ %in% names(xx))
+    setnames(xx,occ,"OCC")
   ## round time column for further merge
   setnames(xx, grep("^time$",names(xx),ignore.case = TRUE,value=TRUE), "TIME")
   xx[,TIME:=round(TIME,4)]
@@ -126,7 +133,7 @@ read_mlx_pred <- function(path, x,...){
   res <- setnames(xx[,names(nn),with=FALSE],as.character(nn))
   
   if(grepl("#",res[1,ID],fixed=TRUE))
-    res[,c("ID","DVID") := tstrsplit(ID,"#")][,c("ID","DVID"):=list(as.integer(ID),as.integer(DVID))]
+    res[,c("ID","OCC") := tstrsplit(ID,"#")][,c("ID","OCC"):=list(as.integer(ID),as.integer(OCC))]
   
   dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
   if(is.null(dvid) || !dvid %in% names(res)) res[,"DVID" :=1]

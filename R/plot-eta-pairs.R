@@ -163,8 +163,10 @@ plot_pmx.eta_pairs <- function(x, dx,...){
   
   ## filter by type of eta 
   dx <- dx[FUN==x$type.eta]
-  if(nrow(dx)==0)
-    stop("Now rows find for eta of type ",x$type.eta,"\n")
+  if(nrow(dx)==0){
+    message("No rows find for eta of type ",x$type.eta,"\n")
+    return(NULL)
+  }
   data_plot <- 
     dcast(dx[,list(ID,EFFECT,VALUE)],ID~EFFECT,
           fun.aggregate = max,value.var = "VALUE")[,-"ID",with=F]

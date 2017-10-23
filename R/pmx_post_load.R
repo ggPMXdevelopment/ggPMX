@@ -31,7 +31,7 @@ post_load_eta <- function(ds,input,sys,occ){
   if(!"DVID" %in% names(ds))  ds[,DVID:=1]
   
   keys <- c("ID", "DVID")
-  if(occ!="") keys <- c(keys,occ)
+  if(occ!="") keys <- c(keys,if(length(occ)==1)"OCC" else sprintf("OCC%s",seq_long(occ)))
   ds <- try(
     merge(ds, input, 
           by = keys)
@@ -41,6 +41,10 @@ post_load_eta <- function(ds,input,sys,occ){
     stop("error cannot merge eta data with the modelling input")
   ## put in the long format 
   measures <- grep("_.*_", names(ds))
+  if(length(measures)==0){
+    message("NO random effect found")
+    return(ds)
+  }
   ds[,(measures) := lapply(.SD,as.numeric),.SDcols =measures]
   ds <- melt(ds, measure = measures)
   setnames(ds, toupper(names(ds)))
@@ -60,7 +64,7 @@ post_load <- function(dxs, input, sys, dplot,occ){
   ## merge finegrid with input data 
   if(sys == "mlx"){
     keys <- c("ID", "TIME","DVID")
-    if(occ!="")keys <- c(keys,occ)
+    if(occ!="") keys <- c(keys,if(length(occ)==1)"OCC" else sprintf("OCC%s",seq_long(occ)))
     
     dxs[["predictions"]]  <- 
       merge(dxs[["predictions"]], input, by=keys)
@@ -74,10 +78,7 @@ post_load <- function(dxs, input, sys, dplot,occ){
       dxs[["IND"]] <- dxs[["predictions"]] 
     }  
     
-    ## prepare data set for stratification
-    if(!is.null(dxs[["eta"]]))
-      dxs[["eta"]] <- post_load_eta(dxs[["eta"]],input,sys,occ)
-    
+   
     
   }
   

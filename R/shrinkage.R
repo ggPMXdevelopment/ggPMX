@@ -20,6 +20,8 @@ shrinkage <-
         , c("VAR","EFFECT") := list("omega",gsub("(^ +)?omega_","",PARAM))]
     dx2 <- eta[VAR == "eta" & grepl("mean", FUN)]
     if(nrow(dx2)==0)dx2 <- eta[VAR == "eta" & grepl("mode", FUN)]
+    if(!"EFFECT" %in% intersect(names(dx1),names(dx2)))
+      return(NULL)
     dx <- merge(dx2, dx1, by = "EFFECT")
     setnames(dx, c("VALUE.x", "VALUE.y"), c("VALUE", "VALUE_OMEGA"))
     
