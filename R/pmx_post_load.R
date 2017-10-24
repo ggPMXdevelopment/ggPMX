@@ -39,6 +39,8 @@ post_load_eta <- function(ds,input,sys,occ){
   
   if(inherits(ds,"try-error"))
     stop("error cannot merge eta data with the modelling input")
+  if(nrow(ds)==0)
+    stop("error cannot merge eta data with the modelling input: no individual match")
   ## put in the long format 
   measures <- grep("_.*_", names(ds))
   if(length(measures)==0){
