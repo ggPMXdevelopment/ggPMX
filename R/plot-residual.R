@@ -64,6 +64,16 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
 }
 
 
+extend_range <- 
+  function (x, r = range(x, na.rm = TRUE), f = 0.05) 
+  {
+    if (!missing(r) && length(r) != 2) 
+      stop("'r' must be a \"range\", hence of length 2")
+    rr <- r + c(-f, f) * diff(r)
+    if(min(x,na.rm=TRUE)>0 & rr[1]<0)rr[1] <- min(x,na.rm=TRUE)
+    rr
+  }
+
 
 #' Plot residual object
 #'
@@ -101,12 +111,10 @@ plot_pmx.residual <- function(x, dx,...){
     }
     # calculate variable ranges so the gridlines line up
     if(aess$y=="DV"){
-      xmin <- min(dx[,c(aess$x,aess$y),with=FALSE], na.rm = TRUE)
-      xmax <- max(dx[,c(aess$x,aess$y),with=FALSE], na.rm = TRUE)
-      xrange <- c(xmin-.01*(xmax-xmin),xmax+.01*(xmax-xmin))
+      xrange <- extend_range(dx[,c(aess$x,aess$y),with=FALSE])
       p <- p + 
-          coord_cartesian(xlim=xrange,ylim=xrange) +
-          theme(aspect.ratio=1)
+        coord_cartesian(xlim=xrange,ylim=xrange) +
+        theme(aspect.ratio=1)
     }
     p
   })
