@@ -25,6 +25,7 @@ pmx_plot_dv_pred <- function(
   
   
   stopifnot(is_pmxclass(ctr))
+  if(!"dv_pred" %in% (ctr %>% plot_names))return(NULL)
   cctr <- pmx_copy(ctr) 
   assert_that(is_list_or_null(labels))
   assert_that(is_string_or_null(dname))
@@ -75,6 +76,8 @@ pmx_plot_dv_ipred <- function(
   
   
   stopifnot(is_pmxclass(ctr))
+  if(!"dv_ipred" %in% (ctr %>% plot_names))return(NULL)
+  
   cctr <- pmx_copy(ctr) 
   assert_that(is_list_or_null(labels))
   assert_that(is_string_or_null(dname))
@@ -126,6 +129,8 @@ pmx_plot_iwres_ipred <- function(
   
   
   stopifnot(is_pmxclass(ctr))
+  if(!"iwres_ipred" %in% (ctr %>% plot_names))return(NULL)
+  
   cctr <- pmx_copy(ctr) 
   assert_that(is_list_or_null(labels))
   assert_that(is_string_or_null(dname))
@@ -149,7 +154,7 @@ pmx_plot_iwres_ipred <- function(
 }
 
 
-# IWRES vs IPRED plot --------------------------------------------------------------
+# abs IWRES vs IPRED plot --------------------------------------------------------------
 
 
 #' |IWRES| vs IPRED plot
@@ -175,6 +180,8 @@ pmx_plot_abs_iwres_ipred <- function(
   
   
   stopifnot(is_pmxclass(ctr))
+  if(!"abs_iwres_ipred" %in% (ctr %>% plot_names))return(NULL)
+  
   cctr <- pmx_copy(ctr) 
   assert_that(is_list_or_null(labels))
   assert_that(is_string_or_null(dname))
@@ -226,6 +233,8 @@ pmx_plot_iwres_time <- function(
   
   
   stopifnot(is_pmxclass(ctr))
+  if(!"iwres_time" %in% (ctr %>% plot_names))return(NULL)
+  
   cctr <- pmx_copy(ctr) 
   assert_that(is_list_or_null(labels))
   assert_that(is_string_or_null(dname))
@@ -272,6 +281,8 @@ pmx_plot_npde_time <- function(
   
   
   stopifnot(is_pmxclass(ctr))
+  if(!"npde_time" %in% (ctr %>% plot_names))return(NULL)
+  
   cctr <- pmx_copy(ctr) 
   assert_that(is_list_or_null(labels))
   assert_that(is_string_or_null(dname))
@@ -322,6 +333,8 @@ pmx_plot_npde_pred<- function(
   
   
   stopifnot(is_pmxclass(ctr))
+  if(!"npde_pred" %in% (ctr %>% plot_names))return(NULL)
+  
   cctr <- pmx_copy(ctr) 
   assert_that(is_list_or_null(labels))
   assert_that(is_string_or_null(dname))
@@ -363,6 +376,8 @@ pmx_plot_eta_matrix <-
            text_color="black",...){
   
   stopifnot(is_pmxclass(ctr))
+  if(!"eta_matrix" %in% (ctr %>% plot_names))return(NULL)
+    
   cctr <- pmx_copy(ctr) 
   
   cctr %>%
@@ -396,6 +411,8 @@ pmx_plot_ebe_box <-
            dname = NULL,
            ...){
     stopifnot(is_pmxclass(ctr))
+    if(!"ebe_box" %in% (ctr %>% plot_names))return(NULL)
+    
     cctr <- pmx_copy(ctr) 
     
     assert_that(is_logical(has.jitter))
@@ -443,6 +460,8 @@ pmx_plot_ebe_hist <-
     dname = NULL,
     ...){
     stopifnot(is_pmxclass(ctr))
+    if(!"ebe_hist" %in% (ctr %>% plot_names))return(NULL)
+    
     cctr <- pmx_copy(ctr) 
     
     assert_that(is_list(facets))
@@ -482,6 +501,8 @@ pmx_plot_individual <-
     npage,
     ...){
     stopifnot(is_pmxclass(ctr))
+    if(!"indiv" %in% (ctr %>% plot_names))return(NULL)
+    
     cctr <- pmx_copy(ctr) 
     
     cctr %>%
@@ -507,6 +528,8 @@ pmx_plot_eta_cats <-
            ...){
     
     stopifnot(is_pmxclass(ctr))
+    if(!"eta_cats" %in% (ctr %>% plot_names))return(NULL)
+    
     cctr <- pmx_copy(ctr) 
     
     cctr %>%
@@ -531,6 +554,8 @@ pmx_plot_eta_conts <-
            ...){
     
     stopifnot(is_pmxclass(ctr))
+    if(!"eta_conts" %in% (ctr %>% plot_names))return(NULL)
+    
     cctr <- pmx_copy(ctr) 
     
     cctr %>%
