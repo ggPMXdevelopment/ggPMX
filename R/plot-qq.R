@@ -94,12 +94,13 @@ pmx_qq <- function(
 #' @import ggplot2
 #'
 plot_pmx.pmx_qq <- function(x, dx,...){
+  dx <- dx[!is.infinite(get(x$x))]
   p <- ggplot(dx, aes_string(sample=x$x))+
     geom_abline()+
     with(x$point,
          geom_point(stat='qq',shape = shape, color = color, 
                     size = size))
-
+  
   strat.color <- x[["strat.color"]]
   strat.facet <- x[["strat.facet"]]
   
@@ -111,7 +112,12 @@ plot_pmx.pmx_qq <- function(x, dx,...){
     p <- p + facet_grid(strat.facet)
   }
   
-  
+  xmin <- min(dx[,x$x,with=FALSE], na.rm = TRUE)
+  xmax <- max(dx[,x$x,with=FALSE], na.rm = TRUE)
+  xrange <- c(xmin-.01*(xmax-xmin),xmax+.01*(xmax-xmin))
+  p <- p + 
+    coord_cartesian(xlim=xrange,ylim=xrange) +
+    theme(aspect.ratio=1)
   if(!is.null(p)) p <- plot_pmx(x$gp, p)
   p
 }

@@ -505,11 +505,19 @@ pmx_transform <- function(x,dx,trans,direction){
     )
   }
   
+  cols_qq <- function(x){
+    switch(
+      direction,
+      x=x$x
+    )
+  }
+  
   cols <- switch(
     x[["ptype"]],
     RES=cols_res(x),
     IND=cols_ind(x),
-    DIS=cols_dis(x)
+    DIS=cols_dis(x),
+    PMX_QQ=cols_qq(x)
   )
   
   
