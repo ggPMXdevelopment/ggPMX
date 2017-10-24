@@ -50,6 +50,56 @@ pmx_plot_dv_pred <- function(
 }
 
 
+# DV vs IPRED plot --------------------------------------------------------------
+
+#' DV vs IPRED plot
+#' @inherit residual
+#' @inheritDotParams pmx_update filter:trans
+#' @export
+pmx_plot_dv_ipred <- function(
+  ctr,
+  labels = list(
+    title="DV vs IPRED",
+    subtitle = "",
+    x = "IPRED",
+    y = "DV"
+  ), 
+  point = list(shape = 1, color = "black", size = 1), 
+  add_hline=FALSE, 
+  dname="predictions",
+  has.smooth=TRUE,
+  smooth=list(se=FALSE,color="red",linetype=1),
+  has.identity_line=TRUE,
+  identity_line=list(intercept=0,color="blue"),
+  ...){
+  
+  
+  stopifnot(is_pmxclass(ctr))
+  cctr <- pmx_copy(ctr) 
+  assert_that(is_list_or_null(labels))
+  assert_that(is_string_or_null(dname))
+  assert_that(is.list(point))
+  
+  cctr %>%
+    pmx_update(
+      "dv_ipred",
+      labels=labels,
+      point=point,
+      add_hline=add_hline,
+      dname=dname,
+      has.smooth=has.smooth,
+      smooth=smooth,
+      has.identity_line=has.identity_line,
+      identity_line=identity_line,
+      ...
+    )
+  
+  p <- cctr %>%  get_plot("dv_ipred")
+  rm(cctr)
+  p
+}
+
+
 # IWRES vs IPRED plot --------------------------------------------------------------
 
 
@@ -97,6 +147,58 @@ pmx_plot_iwres_ipred <- function(
   rm(cctr)
   p
 }
+
+
+# IWRES vs IPRED plot --------------------------------------------------------------
+
+
+#' |IWRES| vs IPRED plot
+#' @inheritParams residual
+#' @inheritDotParams pmx_update filter:trans
+#' @export
+#' @return ggplot2 plot
+#' @export
+pmx_plot_abs_iwres_ipred <- function(
+  ctr,
+  labels = list(
+    title="|IWRES| vs IPRED",
+    subtitle = "",
+    x = "|IWRES|",
+    y = "Individual predictions"
+  ), 
+  point = list(shape = 1, color = "black", size = 1), 
+  add_hline=TRUE, 
+  dname="predictions",
+  has.smooth=TRUE,
+  smooth=list(se=FALSE,color="red",linetype=1),
+  ...){
+  
+  
+  stopifnot(is_pmxclass(ctr))
+  cctr <- pmx_copy(ctr) 
+  assert_that(is_list_or_null(labels))
+  assert_that(is_string_or_null(dname))
+  assert_that(is.list(point))
+  
+  cctr %>%
+    pmx_update(
+      "abs_iwres_ipred",
+      labels=labels,
+      point=point,
+      add_hline=add_hline,
+      dname=dname,
+      has.smooth=has.smooth,
+      smooth=smooth,
+      trans="abs_y",
+      ...
+    )
+  
+  p <- cctr %>%  get_plot("abs_iwres_ipred")
+  rm(cctr)
+  p
+}
+
+
 
 # IWRES vs TIME plot --------------------------------------------------------------
 
