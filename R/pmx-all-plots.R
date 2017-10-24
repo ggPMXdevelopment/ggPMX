@@ -475,3 +475,34 @@ pmx_plot_iwres_qq <-
     p
     
   }
+
+
+#' Quantile-quantile plot of NPDE
+#' @inheritDotParams pmx_update
+#' @export
+pmx_plot_npde_qq <- 
+  function(ctr,
+           labels = list(
+             title="",
+             subtitle = "",
+             x = "Standard Normal Quantiles",
+             y = "NPDE Quantiles"
+           ),
+           ...){
+    
+    stopifnot(is_pmxclass(ctr))
+    cctr <- pmx_copy(ctr) 
+    
+    cctr %>%
+      pmx_update(
+        "npde_qq",
+        labels=labels,
+        ...
+      )
+    
+    p <- cctr %>%  get_plot("npde_qq")
+    rm(cctr)
+    p
+    
+  }
+

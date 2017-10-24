@@ -182,7 +182,7 @@ shrinkage_layer <-
       with(shrink,annotate(geom="text",
                label = sprintf('shrinkage=%s%%',round(dx$SHRINK*100)),
                x=x_,y=y_,hjust=hjust,vjust=vjust,
-               color=color,inherit.aes=FALSE))
+               color=color))
                
     res
     
