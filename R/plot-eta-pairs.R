@@ -73,12 +73,12 @@ upper.plot <- function(data, x,y, text_color,gp) {
 .plot_matrix <- 
   function(dx,text_color=text_color,point=point,smooth=smooth,gp){
   nn <- colnames(dx)
-  mat <- outer(nn,nn,paste,sep="_")
+  mat <- outer(nn,nn,paste,sep=";")
   uppers <- 
     lapply(
       mat[upper.tri(mat)],
       function(z){
-        z <- strsplit(z,"_")[[1]]
+        z <- strsplit(z,";")[[1]]
         upper.plot(dx,x=z[1],y=z[2],text_color=text_color,gp=gp)
       } )
   uppers <- setNames(uppers,mat[upper.tri(mat)])
@@ -87,7 +87,7 @@ upper.plot <- function(data, x,y, text_color,gp) {
     lapply(
       mat[lower.tri(mat)],
       function(z){
-        z <- strsplit(z,"_")[[1]]
+        z <- strsplit(z,";")[[1]]
         lower.plot(dx,x=z[1],y=z[2],point=point,smooth=smooth,gp=gp)
       } )
   
@@ -98,7 +98,7 @@ upper.plot <- function(data, x,y, text_color,gp) {
     lapply(
       diag(mat),
       function(z){
-        z <- strsplit(z,"_")[[1]]
+        z <- strsplit(z,";")[[1]]
         diag.plot(dx,x=z[1],gp=gp)
       } )
   
@@ -223,8 +223,8 @@ print.pmx_eta_matrix <- function (x, newpage = is.null(vp), vp = NULL, ...) {
   if(x$has.shrink){
     eta_gtable <- gtable_remove_grobs(eta_gtable, "axis-l-1")
     strip_l_1 <- gtable::gtable_filter(eta_gtable,"strip-l-1")
-    strip_l_1$grobs[[1]]$grobs[[1]]$children$GRID.stripGrob.395$children$GRID.text.394$rot=0
-    strip_l_1$grobs[[1]]$grobs[[1]]$children$GRID.stripGrob.395$children$GRID.text.394$hjust =-0.03
+    strip_l_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]$rot=0
+    strip_l_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]$hjust=-0.03
     matches <- grepl("strip-l-1", eta_gtable$layout$name, fixed = TRUE)
     eta_gtable$grobs[[which(matches)]] <- strip_l_1
     

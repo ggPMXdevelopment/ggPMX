@@ -138,7 +138,7 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES","ETA_PAIRS","ETA_COV","P
            IND=individual(...),
            DIS=if(ctr$has_re)distrib(...),
            RES=residual(...),
-           ##ETA_PAIRS=if(ctr$has_re)eta_pairs(...),
+           ETA_PAIRS=if(ctr$has_re)eta_pairs(...),
            ETA_COV=if(ctr$has_re)eta_cov(...),
            PMX_QQ=pmx_qq(...)
            
