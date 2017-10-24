@@ -78,23 +78,34 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
 #' @export
 plot_pmx.residual <- function(x, dx,...){
   with(x,{
-   
+    
+    
+    
+    
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
     
     p <- p+  with(point, geom_point(shape = shape, color = color))
     if(add_hline) p <- p + geom_hline(yintercept = 0)
     p <- plot_pmx(gp, p)
-   
+    
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
     if(!is.null(strat.color))
       p <- p  %+%  geom_point(
         with(point,aes_string(color=strat.color)))
- 
+    
     if(!is.null(strat.facet)){
       if(is.character(strat.facet))
         strat.facet <- formula(paste0("~",strat.facet))
       p <- p + facet_grid(strat.facet)
+    }
+    # calculate variable ranges so the gridlines line up
+    if(aess$y=="DV"){
+      xmin <- min(dx[,c(aess$x,aess$y),with=FALSE], na.rm = TRUE)
+      xmax <- max(dx[,c(aess$x,aess$y),with=FALSE], na.rm = TRUE)
+      xrange <- c(xmin-.01*(xmax-xmin),xmax+.01*(xmax-xmin))
+      p <- p + coord_cartesian(xlim=xrange,ylim=xrange)+
+        theme(aspect.ratio=1)
     }
     p
   })

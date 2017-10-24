@@ -100,9 +100,9 @@ plot_pmx.individual <-
     
     get_page <- with(x,{
       p <- ggplot(dx, aes(TIME, DV))+
+        with(point,geom_point(data=input,shape=shape,size=size,color=color)) +
         with(ipred_line,geom_line(aes(y=IPRED),size=size,linetype=linetype,color=color))+
-        with(pred_line,geom_line(aes(y=PRED),size=size,linetype=linetype,color=color))+
-        with(point,geom_point(data=input,shape=shape,size=size,color=color))
+        with(pred_line,geom_line(aes(y=PRED),size=size,linetype=linetype,color=color))
       p <- plot_pmx(gp, p)
       
       ## split pages
