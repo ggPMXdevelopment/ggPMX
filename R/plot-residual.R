@@ -79,7 +79,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
 plot_pmx.residual <- function(x, dx,...){
   with(x,{
     
-    
+    dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
     
     
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
@@ -104,8 +104,9 @@ plot_pmx.residual <- function(x, dx,...){
       xmin <- min(dx[,c(aess$x,aess$y),with=FALSE], na.rm = TRUE)
       xmax <- max(dx[,c(aess$x,aess$y),with=FALSE], na.rm = TRUE)
       xrange <- c(xmin-.01*(xmax-xmin),xmax+.01*(xmax-xmin))
-      p <- p + coord_cartesian(xlim=xrange,ylim=xrange)+
-        theme(aspect.ratio=1)
+      p <- p + 
+          coord_cartesian(xlim=xrange,ylim=xrange) +
+          theme(aspect.ratio=1)
     }
     p
   })
