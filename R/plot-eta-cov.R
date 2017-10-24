@@ -24,6 +24,7 @@ eta_cov <- function(
   labels,
   type = c("cats", "conts"),
   dname = NULL,
+  show.correl=TRUE,
   ...){
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
@@ -41,6 +42,7 @@ eta_cov <- function(
     ptype="ETA_COV",
     dname = dname,
     type=type,
+    show.correl=show.correl,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -60,7 +62,20 @@ eta_cov <- function(
 
 
 
-
+correl_labeller <- 
+  function(dx.conts,show.correl){
+    if(!show.correl)return(label_value)
+    dd <- dx.conts[,
+             list(
+               corr =round(cor(get("value"),get("VALUE")),3)),
+             "variable"
+             ][,
+               label:=paste(variable,sprintf('[correlation=%s]',corr))
+               ]
+    
+    as_labeller(setNames(dd$label,dd$variable))
+    
+  }
 
 
 
@@ -94,11 +109,11 @@ plot_pmx.eta_cov <- function(x, dx,...){
     if(all(nzchar(x[["conts"]]))){
       dx.conts <- dx[,c(conts,"VALUE"),with=FALSE]
       dx.conts <- melt(dx.conts,id="VALUE")
-      dx.conts[,value:=log10(value)-mean(log10(value)),variable]
-      
+      ## dx.conts[,value:=log10(value)-mean(log10(value)),variable]
       ggplot(dx.conts,aes_string(x="value",y="VALUE")) + 
         geom_point() +
-        facet_grid(as.formula("~variable"),scales="free_x") +
+        facet_grid(as.formula("~variable"),scales="free_x",
+                   labeller = correl_labeller(dx.conts,x$show.correl)) +
         geom_smooth(method = "lm",se=FALSE)
     }
   }
