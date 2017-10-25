@@ -12,7 +12,7 @@ test_that("can set option", {
 })
 
 
-test_that("Initiating controlers work with and without specification of covariates",{
+test_that("Initiating controllers work with and without specification of covariates",{
   
   theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
                             "theophylline")
@@ -31,17 +31,18 @@ test_that("Initiating controlers work with and without specification of covariat
   
   uc.dir <- file.path(system.file(package = "ggPMX"), "testdata", 
                       uc.name)
-  wd.mlx <- file.path(uc.dir, "Monolix")
+  work_dir <- file.path(uc.dir, "Monolix")
   input_file <- file.path(uc.dir, data_file)
-  
-  ctr <- pmx_mlx("standing",
-    directory = wd.mlx, 
-    input = input_file, 
-    dv = "DV", 
-    dvid = "ytype", 
-    cats = c("SEX","RACE","DISE","ILOW"), 
-    conts = c("AGE0","WT0","HT0","TRT")
-  )
+  browser()
+  ctr <- pmx_mlx(
+    "standing",
+    directory=work_dir,
+    input=input_file,
+    dv="DV",
+    dvid="YTYPE",
+    cats=c("SEX","RACE","DISE","ILOW"),
+    conts=c("AGE0","WT0","HT0","TRT"),
+    occ="ISS")
   
   expect_equal(ctr %>% get_covariates,
                c("SEX", "RACE", "DISE", "ILOW", "AGE0", "WT0", "HT0", "TRT"))
