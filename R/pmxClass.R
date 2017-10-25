@@ -512,16 +512,26 @@ pmx_transform <- function(x,dx,trans,direction){
     )
   }
   
+  cols_eta_conts <- function(x){
+    switch(
+      direction,
+      y="VALUE"
+    )
+  }
+  
   cols <- switch(
     x[["ptype"]],
     RES=cols_res(x),
     IND=cols_ind(x),
     DIS=cols_dis(x),
-    PMX_QQ=cols_qq(x)
+    PMX_QQ=cols_qq(x),
+    ETA_COV=cols_eta_conts(x)
+    
   )
   
-  
-  dx[,(cols):=lapply(.SD,get(trans)),.SDcols =cols]
+  if(length(cols)>0)
+    dx[,(cols):=lapply(.SD,get(trans)),.SDcols =cols]
+  dx
 } 
 
 
