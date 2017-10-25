@@ -109,7 +109,7 @@ plot_pmx.eta_cov <- function(x, dx,...){
         do.call(facet_grid,x$facets)
       if(x$show.correl){ 
         df_cor <- 
-          dx.conts[,corr :=round(cor(get("value"),get("VALUE")),3)
+          dx.conts[,corr :=round(cor(get("value"),get("VALUE"),use="na.or.complete"),3)
                    ,"EFFECT,variable"]
         p <- p + 
           with(x$correl,
