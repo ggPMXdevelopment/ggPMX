@@ -13,8 +13,8 @@ output: html_vignette
 library(ggPMX)
 library(knitr)
 knitr::opts_chunk$set(
-    fig.width = 7,
-    fig.height = 4
+  fig.width = 7,
+  fig.height = 4
 )
 
 ```
@@ -36,12 +36,16 @@ in Pharmatometrics (NONMEM/Monolix):
 library("ggPMX")
 
 # Load standard configuration
-
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                          "theophylline")
+WORK_DIR <- file.path(theophylline, "Monolix")
+input_file <- file.path(theophylline, "data_pk.csv")
 ctr <- pmx(
   config = "standing", sys = "mlx", 
-           directory = WORK_DIR, 
-           input = input_file, dv = "Y", 
-           dvid ="DVID")
+  directory = WORK_DIR, 
+  input = input_file, 
+  dv = "Y", 
+  dvid ="DVID")
 ```
 
 2. Set graphics parameters:
@@ -58,7 +62,7 @@ lapply(ctr %>% plot_names,
          if(x=="indiv") 
            return(ctr %>% get_plot(x, c(2, 4)))
          ctr %>% get_plot(x)
-         })
+       })
 ```
 
 TODO: Populate further steps:  

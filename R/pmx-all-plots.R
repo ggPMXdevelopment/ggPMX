@@ -4,7 +4,10 @@
 
 #' DV vs PRED plot
 #' @inherit residual
-#' @inheritDotParams pmx_update filter:trans
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_dv_pred <- function(
   ctr,
@@ -55,7 +58,10 @@ pmx_plot_dv_pred <- function(
 
 #' DV vs IPRED plot
 #' @inherit residual
-#' @inheritDotParams pmx_update filter:trans
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_dv_ipred <- function(
   ctr,
@@ -107,10 +113,11 @@ pmx_plot_dv_ipred <- function(
 
 
 #' IWRES vs IPRED plot
-#' @inheritParams residual
-#' @inheritDotParams pmx_update filter:trans
-#' @export
-#' @return ggplot2 plot
+#' @inherit residual
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_iwres_ipred <- function(
   ctr,
@@ -158,10 +165,11 @@ pmx_plot_iwres_ipred <- function(
 
 
 #' |IWRES| vs IPRED plot
-#' @inheritParams residual
-#' @inheritDotParams pmx_update filter:trans
-#' @export
-#' @return ggplot2 plot
+#' @inherit residual
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_abs_iwres_ipred <- function(
   ctr,
@@ -211,10 +219,11 @@ pmx_plot_abs_iwres_ipred <- function(
 
 
 #' IWRES vs TIME plot
-#' @inheritParams residual
-#' @inheritDotParams pmx_update filter:trans
-#' @export
-#' @return ggplot2 plot
+#' @inherit residual
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_iwres_time <- function(
   ctr,
@@ -261,7 +270,10 @@ pmx_plot_iwres_time <- function(
 
 #' NPDE vs TIME plot
 #' @inherit residual
-#' @inheritDotParams pmx_update filter:trans
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_npde_time <- function(
   ctr,
@@ -313,7 +325,10 @@ pmx_plot_npde_time <- function(
 
 #' NPDE vs PRED plot
 #' @inherit residual
-#' @inheritDotParams pmx_update filter:trans
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_npde_pred<- function(
   ctr,
@@ -364,9 +379,11 @@ pmx_plot_npde_pred<- function(
 
 
 #' Eta matrix plot
-#' @param ctr the controller
-#' @inheritParams eta_pairs
-#' @return ggplot2 pbject
+#' @inherit eta_pairs
+#' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_eta_matrix <- 
   function(ctr,
@@ -400,6 +417,9 @@ pmx_plot_eta_matrix <-
 #' Distribution boxplot
 #' @inherit distrib
 #' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_ebe_box <- 
   function(ctr,
@@ -446,6 +466,9 @@ pmx_plot_ebe_box <-
 #' Distribution histogram plot
 #' @inherit distrib
 #' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_ebe_hist <- 
   function(
@@ -494,6 +517,9 @@ pmx_plot_ebe_hist <-
 #' Individual plot
 #' @inherit individual
 #' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @inheritParams pmx_gpar
+#' @return ggplot2 object
 #' @export
 pmx_plot_individual <- 
   function(
@@ -522,6 +548,8 @@ pmx_plot_individual <-
 
 #' Relationships between (ETA) and categorical covariates
 #' @inheritDotParams pmx_update
+#' @inherit pmx_update
+#' @return ggplot2 object
 #' @export
 pmx_plot_eta_cats <- 
   function(ctr,

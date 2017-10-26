@@ -5,8 +5,12 @@
 #' @param title character the plot title
 #' @param dname name of dataset to be used
 #' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' byd efault
-#' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @param text_color color of the correlation text in the upper matrix
+#' @param has.shrink \code{logical} if TRUE add shrinkage to the plot
+#' @param shrink \code{list} shrinkage graphical parameter
+#' @param point \code{list} geom_point graphical parameter
+#' @param smooth \code{list} geom_smooth graphical parameter
+#' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @return ecorrel object
 #' @family plot_pmx
 #' @importFrom  GGally ggally_cor ggally_densityDiag
@@ -82,7 +86,7 @@ upper.plot <- function(data, x,y, text_color,gp) {
         z <- strsplit(z,";")[[1]]
         upper.plot(dx,x=z[1],y=z[2],text_color=text_color,gp=gp)
       } )
-  uppers <- setNames(uppers,mat[upper.tri(mat)])
+  names(uppers) <- mat[upper.tri(mat)]
   
   lowers <- 
     lapply(
@@ -92,7 +96,7 @@ upper.plot <- function(data, x,y, text_color,gp) {
         lower.plot(dx,x=z[1],y=z[2],point=point,smooth=smooth,gp=gp)
       } )
   
-  lowers <- setNames(lowers,mat[lower.tri(mat)])
+  names(lowers) <- mat[lower.tri(mat)]
   
   
   diags <-
@@ -103,7 +107,7 @@ upper.plot <- function(data, x,y, text_color,gp) {
         diag.plot(dx,x=z[1],gp=gp)
       } )
   
-  diags <- setNames(diags,diag(mat))
+  names(diags) <- diag(mat)
   
   ll <- c(uppers,diags,lowers)
   

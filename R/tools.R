@@ -37,7 +37,7 @@ abbrev <- function(param) {
 }
 
 
-#' @importFrom data.table fread
+#' @import data.table
 pmx_fread <- function(...){
   fread(na.strings = c("NA","."),...)
 }

@@ -8,6 +8,8 @@
 
 #' @export
 read_mlx_ind_est <- function(path, x,...){
+  
+  ID <- OCC <- NULL
   ds <- pmx_fread(path)
   nn <- grep("^id|^eta_.*_(mode|mean)$",names(ds),
              ignore.case = TRUE,value=TRUE)
@@ -44,6 +46,7 @@ read_mlx_ind_est <- function(path, x,...){
 #' @param cats \emph{[Optional]}\code{character} vector of categorical covariates
 #' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
+#' @param occ \emph{[Optional]}\code{character} inter individual occasion varaibles
 
 #' 
 #' @return data.table well formatted containing modelling input data
@@ -65,7 +68,7 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats="",occ=""){
   }
   if(dvid %in% names(xx)) setnames(xx, dvid, "DVID")
   else {
-    message("no valid dvid provided: create a dummy dvid")
+    message("NO VALID DVID column provided: set DVID equal to 1")
     xx[,"DVID" :=1]
   }
   if(nzchar(occ) && occ %in% names(xx))
@@ -113,7 +116,7 @@ read_input <- function(ipath, dv,dvid, cats = "",conts="",strats="",occ=""){
 #' @export
 read_mlx_pred <- function(path, x,...){
   
-  ID <- DVID <- NULL
+  ID <- DVID <- OCC <- NULL
   xx <- pmx_fread(path)
   setnames(xx, tolower(names(xx)))
   if(!is.null(x$strict)) xx <- xx[, names(x$names), with = FALSE]

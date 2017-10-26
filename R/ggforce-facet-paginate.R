@@ -15,7 +15,7 @@
 #'
 #'
 #' @export
-#' @importFrom ggplot2 facet_wrap ggproto
+#' @import ggplot2
 #'
 
 facet_wrap_paginate <- function(facets, nrow = NULL, ncol = NULL,
@@ -44,7 +44,7 @@ facet_wrap_paginate <- function(facets, nrow = NULL, ncol = NULL,
 
 #' Extend facet_wrap using ggproto
 #' @format NULL
-#' @importFrom ggplot2 ggproto FacetWrap
+#' @import ggplot2
 #' @importFrom gtable gtable_add_rows gtable_add_cols
 #' @export
 FacetWrapPaginate <-
@@ -174,7 +174,7 @@ FacetWrapPaginate <-
 #' returns NULL
 #'
 #' @export
-#' @importFrom ggplot2 ggplot_build
+#' @import ggplot2
 #'
 n_pages <- function(plot) {
   page <- ggplot_build(plot)$layout$panel_layout$page

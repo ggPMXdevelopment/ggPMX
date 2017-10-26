@@ -31,7 +31,7 @@ post_load_eta <- function(ds,input,sys,occ){
   if(!"DVID" %in% names(ds))  ds[,DVID:=1]
   
   keys <- c("ID", "DVID")
-  if(occ!="") keys <- c(keys,if(length(occ)==1)"OCC" else sprintf("OCC%s",seq_long(occ)))
+  if(occ!="") keys <- c(keys,if(length(occ)==1)"OCC" else sprintf("OCC%s",seq_along(occ)))
   ds <- try(
     merge(ds, input, 
           by = keys)
@@ -66,7 +66,7 @@ post_load <- function(dxs, input, sys, dplot,occ){
   ## merge finegrid with input data 
   if(sys == "mlx"){
     keys <- c("ID", "TIME","DVID")
-    if(occ!="") keys <- c(keys,if(length(occ)==1)"OCC" else sprintf("OCC%s",seq_long(occ)))
+    if(occ!="") keys <- c(keys,if(length(occ)==1)"OCC" else sprintf("OCC%s",seq_along(occ)))
     
     dxs[["predictions"]]  <- 
       merge(dxs[["predictions"]], input, by=keys)

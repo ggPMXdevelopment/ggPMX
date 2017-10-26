@@ -5,6 +5,11 @@
 #' @param labels list of texts/titles used within the plot
 #' @param type box for cats or conts
 #' @param dname name of dataset to be used
+#' @param has.shrink \code{logical} if TRUE add shrinkage to the plot
+#' @param shink \code{list} shrinkage graphical parameter
+#' @param point \code{list} geom_point graphical parameter
+#' @param smooth \code{list} geom_smooth graphical parameter
+#' @param facets \code{list} facetting graphical parameter
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -85,6 +90,7 @@ eta_cov <- function(
 #' @seealso \code{\link{eta_cov}}
 #' @family plot_pmx
 #' @import ggplot2
+#' @importFrom stats cor
 #'
 plot_pmx.eta_cov <- function(x, dx,...){
   p <- if(x$type=="cats"){
@@ -109,11 +115,11 @@ plot_pmx.eta_cov <- function(x, dx,...){
         do.call(facet_grid,x$facets)
       if(x$show.correl){ 
         df_cor <- 
-          dx.conts[,corr :=round(cor(get("value"),get("VALUE"),use="na.or.complete"),3)
+          dx.conts[,"corr" :=round(cor(get("value"),get("VALUE"),use="na.or.complete"),3)
                    ,"EFFECT,variable"]
         p <- p + 
           with(x$correl,
-            geom_text(data=df_cor, aes(label=paste("correlation=", corr)), 
+            geom_text(data=df_cor, aes_string(label=paste("correlation=", "corr")), 
                   x=-Inf, y=Inf, hjust=-0.2, vjust=1.2,size=size,color=color))
        } 
         

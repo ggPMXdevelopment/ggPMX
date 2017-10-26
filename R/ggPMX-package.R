@@ -24,17 +24,13 @@
 #' @name ggPMX
 #' @docType package
 #' @importFrom R6 R6Class
-#' @importFrom ggplot2 %+replace% element_text facet_wrap ggplot_build 
-#' @importFrom ggplot2 theme ggplot aes_string geom_point geom_smooth
-#' @importFrom ggplot2 geom_hline labs annotate aes geom_histogram
-#' @importFrom ggplot2 geom_line ggproto
+#' @import ggplot2
 #' @importFrom ggthemes theme_gdocs
 #' @importFrom gtable gtable_add_cols gtable_add_rows
 #' @importFrom magrittr %>%
 #' @importFrom stringr str_trim
 #' @importFrom utils read.table
 #' @importFrom yaml yaml.load_file
-#' @importFrom data.table setDT setnames fread melt tstrsplit
-#' @importFrom data.table melt.data.table :=
+#' @import data.table
 #' @importFrom assertthat assert_that
 NULL
