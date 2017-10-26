@@ -9,6 +9,7 @@
 #' @param text_color color of the correlation text in the upper matrix
 #' @return ecorrel object
 #' @family plot_pmx
+#' @importFrom  GGally ggally_cor ggally_densityDiag
 #' @export
 eta_pairs <- function(
   title,
@@ -126,6 +127,13 @@ gtable_remove_grobs <- function(table, names, ...)
 
 
 
+#' Plot shrink in eta matric
+#'
+#' @param x pmx_gpar object
+#' @param shrink.dx data.table of shrinkage 
+#' @param shrink list graphical parameter
+#' @return ggplot2 object
+#' @importFrom GGally ggally_text
 plot_shrink <- 
   function(x,shrink.dx,shrink){
     
@@ -154,7 +162,7 @@ plot_shrink <-
 #' @seealso \code{\link{distrib}}
 #' @family plot_pmx
 #' @import ggplot2
-#' @import GGally
+#' @importFrom  GGally ggmatrix
 #'
 plot_pmx.eta_pairs <- function(x, dx,...){
   ## avoid RCMDCHECK warning
@@ -212,7 +220,8 @@ plot_pmx.eta_pairs <- function(x, dx,...){
 ggplot2_set_last_plot <- utils::getFromNamespace("set_last_plot", "ggplot2")
 #' @export
 #' @method print pmx_eta_matrix
-#' @import grid 
+#' @import grid
+#' @importFrom  GGally ggmatrix_gtable
 print.pmx_eta_matrix <- function (x, newpage = is.null(vp), vp = NULL, ...) {
   if (newpage) {
     grid.newpage()
