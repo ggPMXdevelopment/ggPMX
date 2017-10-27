@@ -224,8 +224,8 @@ plot_pmx.eta_pairs <- function(x, dx,...){
 ggplot2_set_last_plot <- utils::getFromNamespace("set_last_plot", "ggplot2")
 #' @export
 #' @method print pmx_eta_matrix
-#' @import grid
 #' @importFrom  GGally ggmatrix_gtable
+#' @importFrom grid grid.newpage grid.draw seekViewport pushViewport upViewport
 print.pmx_eta_matrix <- function (x, newpage = is.null(vp), vp = NULL, ...) {
   if (newpage) {
     grid.newpage()

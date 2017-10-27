@@ -2,7 +2,7 @@
 
 
 
-#' creates an eta_cov object to plot ebe versus covariates
+#' creates a qq plot object
 #'
 #' @param x \code{character} variable name to sample
 #' @param labels list of texts/titles used within the plot
