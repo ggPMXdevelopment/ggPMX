@@ -1,5 +1,14 @@
 
 
+default_residual <- function(...){
+  list(
+    point = list(shape = 1, color = "black", size = 1),
+    hline = list(yintercept=0)
+  )
+  
+}
+
+
 #' Create a residual object
 #'
 #' @param x x axis aesthetics
@@ -7,6 +16,7 @@
 #' @param labels list that contain title,subtitle, axis labels
 #' @param point geom point graphical parameters
 #' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
+#' @param point geom hline graphical parameters
 #' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
@@ -32,7 +42,7 @@
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
-residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NULL, ...){
+residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE,hline=NULL, dname=NULL, ...){
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -45,11 +55,15 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
     y = aess[["y"]]
   )
   assert_that(is_list_or_null(labels))
+  assert_that(is_list_or_null(point))
+  assert_that(is_list_or_null(hline))
   assert_that(is_string_or_null(dname))
   
   labels <- l_left_join(default_labels, labels)
   default_point <- list(shape = 1, color = "black", size = 1)
+  default_hline <- list(yintercept=0)
   point <- l_left_join(default_point, point)
+  hline <- l_left_join(default_hline, hline)
   if(is.null(dname)) dname <- "predictions"
   
   structure(
@@ -59,6 +73,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, dname=NU
       aess = aess,
       point = point,
       add_hline=add_hline,
+      hline=hline,
       gp = pmx_gpar( labels = labels, ...)
     ), class=c("residual", "pmx_gpar"))
 }
@@ -94,22 +109,20 @@ plot_pmx.residual <- function(x, dx,...){
     
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
     
-    p <- p+  with(point, geom_point(shape = shape, color = color))
-    if(add_hline) p <- p + geom_hline(yintercept = 0)
+    p <- p+  do.call(geom_point,point)
+    if(add_hline) p <- p + do.call(geom_hline,hline)
     p <- plot_pmx(gp, p)
     
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
     if(!is.null(strat.color))
-      p <- p  %+%  geom_point(
-        with(point,aes_string(color=strat.color)))
+      p <- p  %+%  geom_point(aes_string(color=strat.color))
     
     if(!is.null(strat.facet)){
       if(is.character(strat.facet))
         strat.facet <- formula(paste0("~",strat.facet))
       p <- p + facet_grid(strat.facet)
     }
-    # calculate variable ranges so the gridlines line up
     if(aess$y=="DV"){
       xrange <- extend_range(dx[,c(aess$x,aess$y),with=FALSE])
       p <- p + 

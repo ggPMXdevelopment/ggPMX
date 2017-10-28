@@ -13,27 +13,24 @@
 plot_pmx.pmx_gpar <- function(gpar, p){
   assert_that(is_pmx_gpar(gpar))
   assert_that(is_ggplot(p))
+  with(gpar,{
+    assert_that(is_list_or_null(smooth))
+    assert_that(is_list_or_null(band))
+    assert_that(is_list_or_null(labels))
+  })
+  
   
   
   ## smoothing
   p <- with(gpar, {
     if(has.smooth){
-      p <- p + with(smooth,
-                    geom_smooth(se=se, 
-                                linetype=linetype,
-                                size=size, 
-                                method=method,color=color
-                    ),na.rm=TRUE)
+      smooth$na.rm <- TRUE
+      p <- p + do.call(geom_smooth,smooth)
     }
     
-    if(has.band){
-      p <- p +
-        with(band,
-             geom_hline(yintercept = y, 
-                        color=color,
-                        linetype = linetype, 
-                        size = size))
-    }
+    if(has.band)
+      p <- p + do.call(geom_hline,band)
+    
     ## labels:title,axis,subtitle...
     p <- p + with(labels, ggplot2::labs(x = x,
                                         y = y,

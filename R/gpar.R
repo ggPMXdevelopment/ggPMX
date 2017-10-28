@@ -13,7 +13,6 @@
 #' @param has.identity_line \code{logical} if TRUE add y=x line
 #' @param identity_line \code{list} y=x aes properties
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
-#' @param scale_log \code{character} define the how to apply scale log, can be x,y,both or none of them
 #' @param ... extra arguments (not used yet)
 #'
 #'
@@ -35,16 +34,14 @@ pmx_gpar <-
     has.smooth = FALSE,
     smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess',color="red"),
     has.band = FALSE,
-    band = list(y = c(-2, 2), linetype = 1, size = 0.5,color="black"),
+    band = list(yintercept = c(-2, 2), linetype = 1, size = 0.5,color="black"),
     is.draft = TRUE,
     draft = list(size = 5, label = "DRAFT", color = 'grey50',x = Inf, y = -Inf),
     discrete=FALSE,
-    scale_log=c("","x","y"),
     has.identity_line=FALSE,
     identity_line=list(intercept=0,color="blue"),
     ...) {
     
-    scale_log <- match.arg(scale_log)
     gp <- .valid_pmx_gpar(list(
       labels = labels,
       axis.title = axis.title,
@@ -57,7 +54,6 @@ pmx_gpar <-
       is.draft = is.draft,
       draft = draft,
       discrete = discrete,
-      scale_log=scale_log,
       has.identity_line=has.identity_line,
       identity_line=identity_line,
       ...))

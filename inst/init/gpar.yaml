@@ -17,7 +17,7 @@ smooth:
   color: red
 has.band: yes
 band:
-  'y':
+  'yintercept':
   - -2.0
   - 2.0
   linetype: 2.0

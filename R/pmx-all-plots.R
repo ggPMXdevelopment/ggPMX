@@ -1,111 +1,41 @@
-
+pmx_plot_generic <- 
+  function(ctr,pname,defaults_,...){
+    
+    stopifnot(is_pmxclass(ctr))
+    if(!pname %in% (ctr %>% plot_names))return(NULL)
+    cctr <- pmx_copy(ctr) 
+    params <- 
+      c(
+        ctr=cctr,
+        pname=pname,
+        defaults_,
+        list(...)
+      )
+    do.call("pmx_update",params)
+    p <- cctr %>%  get_plot(pname)
+    rm(cctr)
+    p
+  }
 
 # DV vs PRED plot --------------------------------------------------------------
 
 #' DV vs PRED plot
-#' @inherit residual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
-pmx_plot_dv_pred <- function(
-  ctr,
-  labels = list(
-    title="DV vs PRED",
-    subtitle = "",
-    x = "PRED",
-    y = "DV"
-  ), 
-  point = list(shape = 1, color = "black", size = 1), 
-  add_hline=FALSE, 
-  dname="predictions",
-  has.smooth=TRUE,
-  smooth=list(se=FALSE,color="red",linetype=1),
-  has.identity_line=TRUE,
-  identity_line=list(intercept=0,color="blue"),
-  ...){
-  
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"dv_pred" %in% (ctr %>% plot_names))return(NULL)
-  cctr <- pmx_copy(ctr) 
-  assert_that(is_list_or_null(labels))
-  assert_that(is_string_or_null(dname))
-  assert_that(is.list(point))
-  
-  cctr %>%
-    pmx_update(
-      "dv_pred",
-      labels=labels,
-      point=point,
-      add_hline=add_hline,
-      dname=dname,
-      has.smooth=has.smooth,
-      smooth=smooth,
-      has.identity_line=has.identity_line,
-      identity_line=identity_line,
-      ...
-    )
-  
-  p <- cctr %>%  get_plot("dv_pred")
-  rm(cctr)
-  p
+pmx_plot_dv_pred <- function(ctr,...){
+  pmx_plot_generic(ctr,"dv_pred",defaults_dv_pred,...)
 }
 
 
 # DV vs IPRED plot --------------------------------------------------------------
 
 #' DV vs IPRED plot
-#' @inherit residual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_dv_ipred <- function(
   ctr,
-  labels = list(
-    title="DV vs IPRED",
-    subtitle = "",
-    x = "IPRED",
-    y = "DV"
-  ), 
-  point = list(shape = 1, color = "black", size = 1), 
-  add_hline=FALSE, 
-  dname="predictions",
-  has.smooth=TRUE,
-  smooth=list(se=FALSE,color="red",linetype=1),
-  has.identity_line=TRUE,
-  identity_line=list(intercept=0,color="blue"),
   ...){
-  
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"dv_ipred" %in% (ctr %>% plot_names))return(NULL)
-  
-  cctr <- pmx_copy(ctr) 
-  assert_that(is_list_or_null(labels))
-  assert_that(is_string_or_null(dname))
-  assert_that(is.list(point))
-  
-  cctr %>%
-    pmx_update(
-      "dv_ipred",
-      labels=labels,
-      point=point,
-      add_hline=add_hline,
-      dname=dname,
-      has.smooth=has.smooth,
-      smooth=smooth,
-      has.identity_line=has.identity_line,
-      identity_line=identity_line,
-      ...
-    )
-  
-  p <- cctr %>%  get_plot("dv_ipred")
-  rm(cctr)
-  p
+  pmx_plot_generic(ctr,"dv_ipred",defaults_dv_ipred,...)
 }
 
 
@@ -113,51 +43,11 @@ pmx_plot_dv_ipred <- function(
 
 
 #' IWRES vs IPRED plot
-#' @inherit residual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_iwres_ipred <- function(
-  ctr,
-  labels = list(
-    title="IWRES vs IPRED",
-    subtitle = "",
-    x = "IWRES",
-    y = "Individual predictions"
-  ), 
-  point = list(shape = 1, color = "black", size = 1), 
-  add_hline=TRUE, 
-  dname="predictions",
-  has.smooth=TRUE,
-  smooth=list(se=FALSE,color="red",linetype=1),
-  ...){
-  
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"iwres_ipred" %in% (ctr %>% plot_names))return(NULL)
-  
-  cctr <- pmx_copy(ctr) 
-  assert_that(is_list_or_null(labels))
-  assert_that(is_string_or_null(dname))
-  assert_that(is.list(point))
-  
-  cctr %>%
-    pmx_update(
-      "iwres_ipred",
-      labels=labels,
-      point=point,
-      add_hline=add_hline,
-      dname=dname,
-      has.smooth=has.smooth,
-      smooth=smooth,
-      ...
-    )
-  
-  p <- cctr %>%  get_plot("iwres_ipred")
-  rm(cctr)
-  p
+  ctr,...){
+  pmx_plot_generic(ctr,"iwres_ipred",defaults_iwres_ipred,...)
 }
 
 
@@ -165,52 +55,12 @@ pmx_plot_iwres_ipred <- function(
 
 
 #' |IWRES| vs IPRED plot
-#' @inherit residual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_abs_iwres_ipred <- function(
-  ctr,
-  labels = list(
-    title="|IWRES| vs IPRED",
-    subtitle = "",
-    x = "|IWRES|",
-    y = "Individual predictions"
-  ), 
-  point = list(shape = 1, color = "black", size = 1), 
-  add_hline=TRUE, 
-  dname="predictions",
-  has.smooth=TRUE,
-  smooth=list(se=FALSE,color="red",linetype=1),
-  ...){
-  
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"abs_iwres_ipred" %in% (ctr %>% plot_names))return(NULL)
-  
-  cctr <- pmx_copy(ctr) 
-  assert_that(is_list_or_null(labels))
-  assert_that(is_string_or_null(dname))
-  assert_that(is.list(point))
-  
-  cctr %>%
-    pmx_update(
-      "abs_iwres_ipred",
-      labels=labels,
-      point=point,
-      add_hline=add_hline,
-      dname=dname,
-      has.smooth=has.smooth,
-      smooth=smooth,
-      trans="abs_y",
-      ...
-    )
-  
-  p <- cctr %>%  get_plot("abs_iwres_ipred")
-  rm(cctr)
-  p
+  ctr,...){
+  defaults_abs_iwres_ipred$trans <- "abs_y"
+  pmx_plot_generic(ctr,"abs_iwres_ipred",defaults_abs_iwres_ipred,...)
 }
 
 
@@ -219,158 +69,32 @@ pmx_plot_abs_iwres_ipred <- function(
 
 
 #' IWRES vs TIME plot
-#' @inherit residual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
-pmx_plot_iwres_time <- function(
-  ctr,
-  labels = list(
-    title="IWRES vs TIME",
-    subtitle = "",
-    x = "TIME",
-    y = "Individual predictions"
-  ), 
-  point = list(shape = 1, color = "black", size = 1), 
-  add_hline=TRUE, 
-  dname="predictions",
-  has.smooth=TRUE,
-  smooth=list(se=FALSE,color="red",linetype=1),
-  ...){
-  
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"iwres_time" %in% (ctr %>% plot_names))return(NULL)
-  
-  cctr <- pmx_copy(ctr) 
-  assert_that(is_list_or_null(labels))
-  assert_that(is_string_or_null(dname))
-  assert_that(is.list(point))
-  
-  cctr %>%
-    pmx_update(
-      "iwres_time",
-      labels=labels,
-      point=point,
-      add_hline=add_hline,
-      dname=dname,
-      has.smooth=has.smooth,
-      smooth=smooth
-    )
-  
-  p <- cctr %>%  get_plot("iwres_time")
-  rm(cctr)
-  p
+pmx_plot_iwres_time <- function(ctr,...){
+  pmx_plot_generic(ctr,"iwres_time",defaults_iwres_time,...)
 }
 
 
 # NPDE vs TIME plot --------------------------------------------------------------
 
 #' NPDE vs TIME plot
-#' @inherit residual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_npde_time <- function(
-  ctr,
-  labels = list(
-    title="NPDE vs TIME",
-    subtitle = "",
-    x = "TIME",
-    y = "NPDE"
-  ), 
-  point = list(shape = 1, color = "black", size = 1), 
-  add_hline=TRUE, 
-  has.band=TRUE, 
-  dname="predictions",
-  has.smooth=TRUE,
-  smooth=list(se=FALSE,color="red",linetype=2),
-  ...){
-  
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"npde_time" %in% (ctr %>% plot_names))return(NULL)
-  
-  cctr <- pmx_copy(ctr) 
-  assert_that(is_list_or_null(labels))
-  assert_that(is_string_or_null(dname))
-  assert_that(is.list(point))
-  
-  cctr %>%
-    pmx_update(
-      "npde_time",
-      labels=labels,
-      point=point,
-      add_hline=add_hline,
-      dname=dname,
-      has.smooth=has.smooth,
-      smooth=smooth,
-      has.band=has.band,
-      ...
-    )
-  
-  p <- cctr %>%  get_plot("npde_time")
-  rm(cctr)
-  p
+  ctr, ...){
+  pmx_plot_generic(ctr,"npde_time",defaults_npde_time,...)
 }
-
-
-
 
 # NPDE vs PRED plot --------------------------------------------------------------
 
 #' NPDE vs PRED plot
-#' @inherit residual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_npde_pred<- function(
   ctr,
-  labels = list(
-    title="NPDE vs IPRED",
-    subtitle = "",
-    x = "IPRED",
-    y = "NPDE"
-  ), 
-  point = list(shape = 1, color = "black", size = 1), 
-  add_hline=TRUE, 
-  has.band=TRUE, 
-  dname="predictions",
-  has.smooth=TRUE,
-  smooth=list(se=FALSE,color="red",linetype=2),
   ...){
-  
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"npde_pred" %in% (ctr %>% plot_names))return(NULL)
-  
-  cctr <- pmx_copy(ctr) 
-  assert_that(is_list_or_null(labels))
-  assert_that(is_string_or_null(dname))
-  assert_that(is.list(point))
-  
-  cctr %>%
-    pmx_update(
-      "npde_pred",
-      labels=labels,
-      point=point,
-      add_hline=add_hline,
-      dname=dname,
-      has.smooth=has.smooth,
-      smooth=smooth,
-      has.band=has.band,
-      ...
-    )
-  
-  p <- cctr %>%  get_plot("npde_pred")
-  rm(cctr)
-  p
+  pmx_plot_generic(ctr,"npde_pred",defaults_npde_pred,...)
 }
 
 
@@ -379,135 +103,36 @@ pmx_plot_npde_pred<- function(
 
 
 #' Eta matrix plot
-#' @inherit eta_pairs
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
-pmx_plot_eta_matrix <- 
-  function(ctr,
-           title= "Correlations of random effects",
-           dname="eta",
-           type.eta="mode",
-           text_color="black",...){
-  
-  stopifnot(is_pmxclass(ctr))
-  if(!"eta_matrix" %in% (ctr %>% plot_names))return(NULL)
-    
-  cctr <- pmx_copy(ctr) 
-  
-  cctr %>%
-    pmx_update(
-      "eta_matrix",
-      title=title,
-      dname=dname,
-      type.eta=type.eta,
-      text_color=text_color,
-      ...)
-  
-  p <- cctr %>%  get_plot("eta_matrix")
-  rm(cctr)
-  p
-  
+pmx_plot_eta_matrix <-  function(ctr,...){
+  pmx_plot_generic(ctr,"eta_matrix",defaults_eta_matrix,...)
 }
+
+
 
 # Distribution boxplot --------------------------------------------------------------
 
 #' Distribution boxplot
-#' @inherit distrib
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_ebe_box <- 
   function(ctr,
-           labels,
-           has.jitter = FALSE,
-           jitter = list(shape = 1, color = "grey50", width = 0.1),
-           has.shrink = TRUE,
-           shrink=list(fun="sd",size=4,color="black"),
-           dname = NULL,
            ...){
-    stopifnot(is_pmxclass(ctr))
-    if(!"ebe_box" %in% (ctr %>% plot_names))return(NULL)
-    
-    cctr <- pmx_copy(ctr) 
-    
-    assert_that(is_logical(has.jitter))
-    assert_that(is_list(jitter))
-    assert_that(is_logical(has.shrink))
-    assert_that(is_list(shrink))
-    assert_that(is_string_or_null(dname))
-    if(is.null(dname)) dname <- "eta"
-    
-    
-    cctr %>%
-      pmx_update(
-        "ebe_box",
-        type="box",
-        has.jitter = has.jitter,
-        jitter = jitter,
-        has.shrink = has.shrink,
-        shrink=shrink,
-        dname = dname,
-        ...
-      )
-    
-    p <- cctr %>%  get_plot("ebe_box")
-    rm(cctr)
-    p
+    pmx_plot_generic(ctr,"ebe_box",defaults_eta_box,...)
   }
 
 # Distribution histogram plot --------------------------------------------------------------
 
 
 #' Distribution histogram plot
-#' @inherit distrib
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_ebe_hist <- 
   function(
     ctr,
-    labels,
-    facets = list(scales = "free_y", nrow = 3),
-    has.shrink = TRUE,
-    shrink=list(
-      fun="sd",size=4,color="black",
-      x_=-Inf,y_=Inf,
-      hjust=-0.5,vjust=2),
-    dname = NULL,
     ...){
-    stopifnot(is_pmxclass(ctr))
-    if(!"ebe_hist" %in% (ctr %>% plot_names))return(NULL)
-    
-    cctr <- pmx_copy(ctr) 
-    
-    assert_that(is_list(facets))
-    assert_that(is_logical(has.shrink))
-    assert_that(is_list(shrink))
-    assert_that(is_string_or_null(dname))
-    if(is.null(dname)) dname <- "eta"
-    
-    
-    cctr %>%
-      pmx_update(
-        "ebe_hist",
-        type="hist",
-        facets = facets,
-        has.shrink = has.shrink,
-        shrink=shrink,
-        dname = dname,
-        ...
-      )
-    
-    p <- cctr %>%  get_plot("ebe_hist")
-    rm(cctr)
-    p
+    pmx_plot_generic(ctr,"ebe_hist",defaults_eta_hist,...)
   }
 
 # Individual plot --------------------------------------------------------------
@@ -515,10 +140,6 @@ pmx_plot_ebe_hist <-
 
 
 #' Individual plot
-#' @inherit individual
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
-#' @inheritParams pmx_gpar
 #' @return ggplot2 object
 #' @export
 pmx_plot_individual <- 
@@ -534,41 +155,23 @@ pmx_plot_individual <-
     cctr %>%
       pmx_update(
         "indiv",
-         ...
+        ...
       )
-    
     p <- cctr %>%  get_plot("indiv",npage)
     rm(cctr)
     p
-    
-    
   }
 
 # eta cats plot --------------------------------------------------------------
 
 #' Relationships between (ETA) and categorical covariates
-#' @inheritDotParams pmx_update
-#' @inherit pmx_update
 #' @return ggplot2 object
 #' @export
 pmx_plot_eta_cats <- 
   function(ctr,
            ...){
     
-    stopifnot(is_pmxclass(ctr))
-    if(!"eta_cats" %in% (ctr %>% plot_names))return(NULL)
-    
-    cctr <- pmx_copy(ctr) 
-    
-    cctr %>%
-      pmx_update(
-        "eta_cats",
-        ...
-      )
-    
-    p <- cctr %>%  get_plot("eta_cats")
-    rm(cctr)
-    p
+    pmx_plot_generic(ctr,"eta_cats",list(),...)
     
   }
 
@@ -580,22 +183,7 @@ pmx_plot_eta_cats <-
 pmx_plot_eta_conts <- 
   function(ctr,
            ...){
-    
-    stopifnot(is_pmxclass(ctr))
-    if(!"eta_conts" %in% (ctr %>% plot_names))return(NULL)
-    
-    cctr <- pmx_copy(ctr) 
-    
-    cctr %>%
-      pmx_update(
-        "eta_conts",
-        ...
-      )
-    
-    p <- cctr %>%  get_plot("eta_conts")
-    rm(cctr)
-    p
-    
+    pmx_plot_generic(ctr,"eta_cats",list(),...)
   }
 
 
@@ -603,61 +191,23 @@ pmx_plot_eta_conts <-
 # Quantile-quantile plot of IWRES --------------------------------------------------------------
 
 #' Quantile-quantile plot of IWRES
-#' @inheritDotParams pmx_update
+#' @return ggplot2 plot
 #' @export
 pmx_plot_iwres_qq <- 
   function(ctr,
-           labels = list(
-             title="",
-             subtitle = "",
-             x = "Standard Normal Quantiles",
-             y = "IWRES Quantiles"
-           ),
            ...){
-    
-    stopifnot(is_pmxclass(ctr))
-    cctr <- pmx_copy(ctr) 
-    
-    cctr %>%
-      pmx_update(
-        "iwres_qq",
-        labels=labels,
-        ...
-      )
-    
-    p <- cctr %>%  get_plot("iwres_qq")
-    rm(cctr)
-    p
-    
+    pmx_plot_generic(ctr,"iwres_qq",defaults_iwres_qq,...)
   }
 
 
 #' Quantile-quantile plot of NPDE
-#' @inheritDotParams pmx_update
+#' @return ggplot2 plot
 #' @export
 pmx_plot_npde_qq <- 
   function(ctr,
-           labels = list(
-             title="",
-             subtitle = "",
-             x = "Standard Normal Quantiles",
-             y = "NPDE Quantiles"
-           ),
            ...){
     
-    stopifnot(is_pmxclass(ctr))
-    cctr <- pmx_copy(ctr) 
-    
-    cctr %>%
-      pmx_update(
-        "npde_qq",
-        labels=labels,
-        ...
-      )
-    
-    p <- cctr %>%  get_plot("npde_qq")
-    rm(cctr)
-    p
+    pmx_plot_generic(ctr,"npde_qq",defaults_npde_qq,...)
     
   }
 
