@@ -14,14 +14,12 @@ shrinkage <-
   function(estimates, eta, fun=c("sd","var"),by=""){
     PARAM <-  EFFECT <- VAR <- FUN <- NULL
     VALUE_ETA <- VALUE_OMEGA <- VALUE <- NULL
-    if(missing(fun))fun <- "sd"
-    dx1 <- 
-      estimates[grepl("omega", PARAM)][
-        , c("VAR","EFFECT") := list("omega",gsub("(^ +)?omega_","",PARAM))]
+    if(missing(fun)) fun <- "sd"
+    dx1 <- estimates[grepl("omega", PARAM)]
+    dx1[, c("VAR","EFFECT") := list("omega",gsub("(^ +)?omega_","",PARAM))]
     dx2 <- eta[VAR == "eta" & grepl("mean", FUN)]
-    if(nrow(dx2)==0)dx2 <- eta[VAR == "eta" & grepl("mode", FUN)]
-    if(!"EFFECT" %in% intersect(names(dx1),names(dx2)))
-      return(NULL)
+    if(nrow(dx2)==0) dx2 <- eta[VAR == "eta" & grepl("mode", FUN)]
+    if(!"EFFECT" %in% intersect(names(dx1),names(dx2)))return(NULL)
     dx <- merge(dx2, dx1, by = "EFFECT")
     setnames(dx, c("VALUE.x", "VALUE.y"), c("VALUE", "VALUE_OMEGA"))
     
