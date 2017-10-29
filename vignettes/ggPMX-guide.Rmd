@@ -367,7 +367,7 @@ The code below gives an example of how to change the color of points of a residu
 p1 <- ctr %>% pmx_plot_dv_pred
 
 # Change x- and y-labels (doesn't work with Rmarkdown, strange...)
-p2 <- ctr %>% pmx_plot_dv_pred(, 
+p2 <- ctr %>% pmx_plot_dv_pred(
                          labels=list(x="Population predictions", y="Observations"), 
                          add_hline=FALSE,point=list(color="green4")) 
 
@@ -429,7 +429,7 @@ ctr <-
     conts=c("WT0","AGE0"),
     strats="STUD",
     settings = list(is.draft=FALSE)) ## here the draft option
-ctr %>% pmx_plot_dv_pred()
+ctr %>% pmx_plot_dv_pred
 ```
 
 
