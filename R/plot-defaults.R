@@ -41,8 +41,6 @@ get_plot_defaults <-
                has.smooth=TRUE,
                smooth=list(se=FALSE,color="red",linetype=1)
              ),
-           
-           
            abs_iwres_ipred = 
              list(
                labels = list(
@@ -57,8 +55,6 @@ get_plot_defaults <-
                smooth=list(se=FALSE,color="red",linetype=1),
                trans = "abs_y"
              ),
-           
-           
            iwres_time = list(
              labels = list(
                title="IWRES vs TIME",
@@ -73,7 +69,6 @@ get_plot_defaults <-
            ),
            
            npde_time = list(
-             
              labels = list(
                title="NPDE vs TIME",
                subtitle = "",
@@ -100,27 +95,27 @@ get_plot_defaults <-
              has.smooth=TRUE,
              smooth=list(se=FALSE,color="red",linetype=2)
            ),
-           
            eta_matrix =
-             list(    title= "Correlations of random effects",
-                      dname="eta",
-                      type.eta="mode",
-                      text_color="black"),
-           
-           
-           eta_box =
-             list(     has.jitter = FALSE,
-                       jitter = list(shape = 1, color = "grey50", width = 0.1),
-                       has.shrink = TRUE,
-                       shrink=list(fun="sd",size=4,color="black")
+             list(    
+               title= "Correlations of random effects",
+               dname="eta",
+               type.eta="mode",
+               text_color="black"),
+           ebe_box =
+             list(     
+               has.jitter = FALSE,
+               jitter = list(shape = 1, color = "grey50", width = 0.1),
+               has.shrink = TRUE,
+               shrink=list(fun="sd",size=4,color="black")
              ),
            
            
            ebe_hist = 
-             list(    facets = list(scales = "free_y", nrow = 3),
-                      has.shrink = TRUE,
-                      shrink=list(
-                        fun="sd",size=4,color="black",hjust=-0.5,vjust=2)
+             list(    
+               facets = list(scales = "free_y", nrow = 3),
+               has.shrink = TRUE,
+               shrink=list(
+                 fun="sd",size=4,color="black",hjust=-0.5,vjust=2)
              ),
            
            
