@@ -16,7 +16,7 @@ library(ggPMX)
 
 ```{r init_controller}
 ctr <- params$ctr
-if(ctr=="") ctr <- theophylline()
+if(identical(ctr,"")) ctr <- theophylline()
 
 ```
 
