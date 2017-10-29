@@ -16,7 +16,7 @@ default_residual <- function(...){
 #' @param labels list that contain title,subtitle, axis labels
 #' @param point geom point graphical parameters
 #' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
-#' @param point geom hline graphical parameters
+#' @param hline geom hline graphical parameters
 #' @param dname name of dataset to be used
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
