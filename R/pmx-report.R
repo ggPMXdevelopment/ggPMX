@@ -43,7 +43,6 @@ pmx_report <-
       create_dir=FALSE,
       edit=FALSE
     )
-    if(render) 
-      if(is.null(params)) render(file_name,"pdf_document",envir = new.env())
-    else render(file_name,"pdf_document",params=list(ctr=ctr),envir = new.env()) 
+  if(render) 
+    render(file_name,"pdf_document",params=list(ctr=ctr),envir = new.env()) 
   }
