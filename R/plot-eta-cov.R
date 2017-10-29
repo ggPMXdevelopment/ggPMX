@@ -5,9 +5,9 @@
 #' @param labels list of texts/titles used within the plot
 #' @param type box for cats or conts
 #' @param dname name of dataset to be used
-#' @param has.shrink \code{logical} if TRUE add shrinkage to the plot
-#' @param shink \code{list} shrinkage graphical parameter
-#' @param point \code{list} geom_point graphical parameter
+#' @param has.correl \code{logical} if TRUE add correlation to the plot
+#' @param correlation \code{list} correl geom text graphical parameter
+#' @param point \code{list} geom point graphical parameter
 #' @param smooth \code{list} geom_smooth graphical parameter
 #' @param facets \code{list} facetting graphical parameter
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
