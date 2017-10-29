@@ -2,6 +2,8 @@
 title: "ggPMX: all plots"
 author: "TODO"
 output: pdf_document
+params:
+  ctr: ""
 ---
 
 ```{r setup, include=FALSE}
@@ -13,41 +15,28 @@ library(ggPMX)
 
 
 ```{r init_controller}
-
-theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
-                            "theophylline")
-  WORK_DIR <- file.path(theophylline, "Monolix")
-  input_file <- file.path(theophylline, "data_pk.csv")
-  
-  ctr <- pmx_mlx(
-    config = "standing", 
-    directory = WORK_DIR, 
-    input = input_file, 
-    dv = "Y", 
-    dvid ="DVID",
-    cats=c("SEX"),
-    conts=c("WT0","AGE0"),
-    strats="STUD")
+ctr <- params$ctr
+if(ctr=="") ctr <- theophylline()
 
 ```
 
 
 
-```{r all_plots, out.width='.4\\linewidth', fig.width=4, fig.height=4, fig.show='hold', fig.align='left'}
- pmx_plots <- ctr %>% plot_names
-  pmx_function_plots <- sprintf("pmx_plot_%s",pmx_plots)
-  
+```{r all_plots,out.width='8cm', out.height='8cm', fig.show='hold'}
+pmx_plots <- ctr %>% plot_names
+pmx_function_plots <- sprintf("pmx_plot_%s",pmx_plots)
+
 res <- lapply(
-    pmx_function_plots,
-    function(fun){
-      is_function <- exists(fun,where = 'package:ggPMX',mode="function")
-      if(is_function)
-        do.call(fun,list(ctr=ctr))
-      else{
-        if(fun=="pmx_plot_indiv")
+  pmx_function_plots,
+  function(fun){
+    is_function <- exists(fun,where = 'package:ggPMX',mode="function")
+    if(is_function)
+      do.call(fun,list(ctr=ctr))
+    else{
+      if(fun=="pmx_plot_indiv")
         ctr %>% pmx_plot_individual(1)
-      }
-    })
+    }
+  })
 
 for (x in seq_along(res))print(res[[x]])
 

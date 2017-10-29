@@ -13,7 +13,7 @@
 #' pmx_report("my_report")
 #' }
 pmx_report <-
-  function(name,template="standing",render=TRUE){
+  function(ctr,name,template="standing",render=TRUE){
     file_name <- sprintf("%s.Rmd",name)
     if(file.exists(file_name))
       file.remove(file_name)
@@ -24,5 +24,7 @@ pmx_report <-
       create_dir=FALSE,
       edit=FALSE
     )
-    if(render) render(file_name,"pdf_document")
+    if(render) 
+      if(is.null(params)) render(file_name,"pdf_document",envir = new.env())
+    else render(file_name,"pdf_document",params=list(ctr=ctr),envir = new.env()) 
   }
