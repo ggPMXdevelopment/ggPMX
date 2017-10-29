@@ -5,8 +5,8 @@
 #' @param labels list of texts/titles used within the plot
 #' @param type box for cats or conts
 #' @param dname name of dataset to be used
-#' @param has.correl \code{logical} if TRUE add correlation to the plot
-#' @param correlation \code{list} correl geom text graphical parameter
+#' @param show.correl \code{logical} if TRUE add correlation to the plot
+#' @param correl \code{list} correl geom text graphical parameter
 #' @param point \code{list} geom point graphical parameter
 #' @param smooth \code{list} geom_smooth graphical parameter
 #' @param facets \code{list} facetting graphical parameter
