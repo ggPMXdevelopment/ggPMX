@@ -10,6 +10,7 @@
 #' @export
 pmx_theme <- function(...) {
   theme_bw() +
-    theme(strip.text = element_text(size=14))  %+replace%
+    theme(strip.text = element_text(size=14),
+          strip.background = element_rect(colour = NA,fill=NA))  %+replace%
     theme(...)
 }
