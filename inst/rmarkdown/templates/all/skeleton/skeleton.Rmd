@@ -33,7 +33,7 @@ theophylline <- file.path(system.file(package = "ggPMX"), "testdata",
 
 
 
-```{r all_plots}
+```{r all_plots, out.width='.4\\linewidth', fig.width=4, fig.height=4, fig.show='hold', fig.align='left'}
  pmx_plots <- ctr %>% plot_names
   pmx_function_plots <- sprintf("pmx_plot_%s",pmx_plots)
   
@@ -49,6 +49,6 @@ res <- lapply(
       }
     })
 
-res
+for (x in seq_along(res))print(res[[x]])
 
 ```
