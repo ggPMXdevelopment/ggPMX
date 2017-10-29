@@ -36,9 +36,12 @@ wrap_pmx_plot_generic <-
 
 #' DV vs PRED plot
 #' @param ctr pmx controller 
-#' @param ... others graphics parameters passed to \code{\link{pmx_gpar}}.
-#' @param ... others graphics parameters passed to \code{\link{residual}} internal object.
-#' @param ... others graphics parameters passed to \code{\link{pmx_update}} internal object.
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_dv_pred <- function(ctr,...){
@@ -50,6 +53,13 @@ pmx_plot_dv_pred <- function(ctr,...){
 # DV vs IPRED plot --------------------------------------------------------------
 
 #' DV vs IPRED plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_dv_ipred <- function(
@@ -64,6 +74,13 @@ pmx_plot_dv_ipred <- function(
 
 
 #' IWRES vs IPRED plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_iwres_ipred <- function(
@@ -77,6 +94,13 @@ pmx_plot_iwres_ipred <- function(
 
 
 #' |IWRES| vs IPRED plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_abs_iwres_ipred <- function(
@@ -91,6 +115,13 @@ pmx_plot_abs_iwres_ipred <- function(
 
 
 #' IWRES vs TIME plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_iwres_time <- function(ctr,...){
@@ -103,6 +134,13 @@ pmx_plot_iwres_time <- function(ctr,...){
 # NPDE vs TIME plot --------------------------------------------------------------
 
 #' NPDE vs TIME plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_npde_time <- function(
@@ -113,6 +151,13 @@ pmx_plot_npde_time <- function(
 # NPDE vs PRED plot --------------------------------------------------------------
 
 #' NPDE vs PRED plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_npde_pred<- function(
@@ -127,6 +172,13 @@ pmx_plot_npde_pred<- function(
 
 
 #' Eta matrix plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{eta_pairs}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_eta_matrix <-  function(ctr,...){
@@ -139,6 +191,13 @@ pmx_plot_eta_matrix <-  function(ctr,...){
 # Distribution boxplot --------------------------------------------------------------
 
 #' Distribution boxplot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{distrib}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_ebe_box <- 
@@ -153,6 +212,13 @@ pmx_plot_ebe_box <-
 
 
 #' Distribution histogram plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{distrib}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_ebe_hist <- 
@@ -168,6 +234,13 @@ pmx_plot_ebe_hist <-
 
 
 #' Individual plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{individual}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 object
 #' @export
 pmx_plot_individual <- 
@@ -192,6 +265,14 @@ pmx_plot_individual <-
 # eta cats plot --------------------------------------------------------------
 
 #' Relationships between (ETA) and categorical covariates
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{eta_cov}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
+
 #' @return ggplot2 object
 #' @export
 pmx_plot_eta_cats <- 
@@ -202,8 +283,15 @@ pmx_plot_eta_cats <-
   }
 
 # eta conts plot --------------------------------------------------------------
-
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{eta_cov}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' Relationships between (ETA) and continuous covariates
+
 #' @inheritDotParams pmx_update
 #' @export
 pmx_plot_eta_conts <- 
@@ -218,6 +306,13 @@ pmx_plot_eta_conts <-
 # Quantile-quantile plot of IWRES --------------------------------------------------------------
 
 #' Quantile-quantile plot of IWRES
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{pmx_qq}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @return ggplot2 plot
 #' @export
 pmx_plot_iwres_qq <- 
@@ -230,6 +325,13 @@ pmx_plot_iwres_qq <-
 
 #' Quantile-quantile plot of NPDE
 #' @return ggplot2 plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} loaw level function grahical object
+#' \item \code{\link{pmx_qq}} generic function internal object.
+#' \item \code{\link{pmx_update}} function.
+#' }
 #' @export
 pmx_plot_npde_qq <- 
   function(ctr,

@@ -1,13 +1,17 @@
 #' Creates a standing report
 #'
-#' @param name \code{charcter} report name
+#' @param name \code{character} report name
+#' @param template \code{character} report template 
+#' @param render \code{logical} if TRUE generate pdf report
 #'
 #' @return a new folder containg standing report template
 #' @export
 #' @importFrom rmarkdown draft render
 #'
 #' @examples
-#' pmx_standing_report("my_report")
+#' \dontrun{
+#' pmx_report("my_report")
+#' }
 pmx_report <-
   function(name,template="standing",render=TRUE){
     file_name <- sprintf("%s.Rmd",name)

@@ -1,4 +1,4 @@
-context("Test pmx_plot_xx entries")
+context("Test all plots")
 pmxClassHelpers <- test_pmxClass_helpers()
 
 test_that("We can call all pmx_plot_xx with success", {
