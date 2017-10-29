@@ -179,7 +179,8 @@ pmx_plot_individual <-
     if(!"indiv" %in% (ctr %>% plot_names))return(NULL)
     cctr <- pmx_copy(ctr) 
     params <- as.list(match.call(expand.dots = TRUE))[-1]
-    params$filter <- deparse(params$filter)
+    params <- lang_to_expr(params)
+    params$pname <- "indiv"
     params$ctr <- cctr
     do.call("pmx_update",params)
     p <- cctr %>%  get_plot("indiv",npage)
