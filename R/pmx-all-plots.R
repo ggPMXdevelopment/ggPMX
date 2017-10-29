@@ -234,7 +234,8 @@ pmx_plot_ebe_hist <-
 
 
 #' Individual plot
-#' @param ctr pmx controller 
+#' @param ctr pmx controller
+#' @param npage \code{integer} page(s) to display 
 #' @param ... others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} loaw level function grahical object
@@ -283,6 +284,8 @@ pmx_plot_eta_cats <-
   }
 
 # eta conts plot --------------------------------------------------------------
+
+#' Relationships between (ETA) and continuous covariates
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
@@ -290,9 +293,7 @@ pmx_plot_eta_cats <-
 #' \item \code{\link{eta_cov}} generic function internal object.
 #' \item \code{\link{pmx_update}} function.
 #' }
-#' Relationships between (ETA) and continuous covariates
 
-#' @inheritDotParams pmx_update
 #' @export
 pmx_plot_eta_conts <- 
   function(ctr,

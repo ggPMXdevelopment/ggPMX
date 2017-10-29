@@ -3,6 +3,7 @@
 #' @param name \code{character} report name
 #' @param template \code{character} report template 
 #' @param render \code{logical} if TRUE generate pdf report
+#' @param ctr controller
 #'
 #' @return a new folder containg standing report template
 #' @export
