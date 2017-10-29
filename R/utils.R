@@ -95,6 +95,7 @@ function (x, y)
 #' @param color color of the annotation default to grey50
 #' @param x \code{numeric} x coordinate of the draft label 
 #' @param y \code{numeric} y coordinate of the draft label 
+#' @param ... extra paremeters to geom text used to annotate the draft
 #'
 #' @return ggplot2 annotation
 #' @export
