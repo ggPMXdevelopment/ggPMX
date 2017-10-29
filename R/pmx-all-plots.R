@@ -4,16 +4,32 @@ pmx_plot_generic <-
     stopifnot(is_pmxclass(ctr))
     if(!pname %in% (ctr %>% plot_names))return(NULL)
     cctr <- pmx_copy(ctr) 
-    params <- 
-      c(
-        ctr=cctr,
-        pname=pname,
-        l_left_join(defaults_,list(...))
-      )
+    
+    params <- c(
+      ctr=cctr,
+      pname=pname,
+      l_left_join(defaults_,list(...)))
     do.call("pmx_update",params)
     p <- cctr %>%  get_plot(pname)
     rm(cctr)
     p
+  }
+
+
+lang_to_expr <- function(params){
+  if("filter" %in% names(params))
+    if(is.language(params$filter))
+      params$filter <- deparse(params$filter)
+    params
+}
+
+wrap_pmx_plot_generic <- 
+  function(ctr,pname,params,defaults_){
+    params$ctr <- ctr
+    params$pname <- pname
+    params <- lang_to_expr(params)
+    params$defaults_ <- get_plot_defaults(pname)
+    do.call(pmx_plot_generic,params)
   }
 
 # DV vs PRED plot --------------------------------------------------------------
@@ -26,7 +42,8 @@ pmx_plot_generic <-
 #' @return ggplot2 object
 #' @export
 pmx_plot_dv_pred <- function(ctr,...){
-  pmx_plot_generic(ctr,"dv_pred",defaults_dv_pred,...)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"dv_pred",params)
 }
 
 
@@ -38,7 +55,8 @@ pmx_plot_dv_pred <- function(ctr,...){
 pmx_plot_dv_ipred <- function(
   ctr,
   ...){
-  pmx_plot_generic(ctr,"dv_ipred",defaults_dv_ipred,...)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"dv_ipred",params)
 }
 
 
@@ -50,7 +68,8 @@ pmx_plot_dv_ipred <- function(
 #' @export
 pmx_plot_iwres_ipred <- function(
   ctr,...){
-  pmx_plot_generic(ctr,"iwres_ipred",defaults_iwres_ipred,...)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"iwres_ipred",params)
 }
 
 
@@ -62,8 +81,8 @@ pmx_plot_iwres_ipred <- function(
 #' @export
 pmx_plot_abs_iwres_ipred <- function(
   ctr,...){
-  defaults_abs_iwres_ipred$trans <- "abs_y"
-  pmx_plot_generic(ctr,"abs_iwres_ipred",defaults_abs_iwres_ipred,...)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"abs_iwres_ipred",params)
 }
 
 
@@ -75,7 +94,9 @@ pmx_plot_abs_iwres_ipred <- function(
 #' @return ggplot2 object
 #' @export
 pmx_plot_iwres_time <- function(ctr,...){
-  pmx_plot_generic(ctr,"iwres_time",defaults_iwres_time,...)
+  
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"iwres_time",params)
 }
 
 
@@ -86,9 +107,9 @@ pmx_plot_iwres_time <- function(ctr,...){
 #' @export
 pmx_plot_npde_time <- function(
   ctr, ...){
-  pmx_plot_generic(ctr,"npde_time",defaults_npde_time,...)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"npde_time",params)
 }
-
 # NPDE vs PRED plot --------------------------------------------------------------
 
 #' NPDE vs PRED plot
@@ -97,9 +118,9 @@ pmx_plot_npde_time <- function(
 pmx_plot_npde_pred<- function(
   ctr,
   ...){
-  pmx_plot_generic(ctr,"npde_pred",defaults_npde_pred,...)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"npde_pred",params)
 }
-
 
 
 # Eta matrix plot --------------------------------------------------------------
@@ -109,7 +130,8 @@ pmx_plot_npde_pred<- function(
 #' @return ggplot2 object
 #' @export
 pmx_plot_eta_matrix <-  function(ctr,...){
-  pmx_plot_generic(ctr,"eta_matrix",defaults_eta_matrix,...)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr,"eta_matrix",params)
 }
 
 
@@ -122,7 +144,9 @@ pmx_plot_eta_matrix <-  function(ctr,...){
 pmx_plot_ebe_box <- 
   function(ctr,
            ...){
-    pmx_plot_generic(ctr,"ebe_box",defaults_eta_box,...)
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr,"ebe_box",params)
+
   }
 
 # Distribution histogram plot --------------------------------------------------------------
@@ -135,7 +159,8 @@ pmx_plot_ebe_hist <-
   function(
     ctr,
     ...){
-    pmx_plot_generic(ctr,"ebe_hist",defaults_ebe_hist,...)
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr,"ebe_hist",params)
   }
 
 # Individual plot --------------------------------------------------------------
@@ -152,14 +177,11 @@ pmx_plot_individual <-
     ...){
     stopifnot(is_pmxclass(ctr))
     if(!"indiv" %in% (ctr %>% plot_names))return(NULL)
-    
     cctr <- pmx_copy(ctr) 
-    
-    cctr %>%
-      pmx_update(
-        "indiv",
-        ...
-      )
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params$filter <- deparse(params$filter)
+    params$ctr <- cctr
+    do.call("pmx_update",params)
     p <- cctr %>%  get_plot("indiv",npage)
     rm(cctr)
     p
@@ -173,9 +195,8 @@ pmx_plot_individual <-
 pmx_plot_eta_cats <- 
   function(ctr,
            ...){
-    
-    pmx_plot_generic(ctr,"eta_cats",list(),...)
-    
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr,"eta_cats",params)
   }
 
 # eta conts plot --------------------------------------------------------------
@@ -186,7 +207,8 @@ pmx_plot_eta_cats <-
 pmx_plot_eta_conts <- 
   function(ctr,
            ...){
-    pmx_plot_generic(ctr,"eta_conts",list(),...)
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr,"eta_conts",params)
   }
 
 
@@ -199,8 +221,9 @@ pmx_plot_eta_conts <-
 pmx_plot_iwres_qq <- 
   function(ctr,
            ...){
-    pmx_plot_generic(ctr,"iwres_qq",defaults_iwres_qq,...)
-  }
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr,"iwres_qq",params)
+}
 
 
 #' Quantile-quantile plot of NPDE
@@ -209,8 +232,7 @@ pmx_plot_iwres_qq <-
 pmx_plot_npde_qq <- 
   function(ctr,
            ...){
-    
-    pmx_plot_generic(ctr,"npde_qq",defaults_npde_qq,...)
-    
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr,"npde_qq",params)
   }
 
