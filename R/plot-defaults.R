@@ -119,9 +119,7 @@ defaults_ebe_hist <-
   list(    facets = list(scales = "free_y", nrow = 3),
            has.shrink = TRUE,
            shrink=list(
-             fun="sd",size=4,color="black",
-             x_=-Inf,y_=Inf,
-             hjust=-0.5,vjust=2)
+             fun="sd",size=4,color="black",hjust=-0.5,vjust=2)
   )
 
 

@@ -8,8 +8,7 @@ pmx_plot_generic <-
       c(
         ctr=cctr,
         pname=pname,
-        defaults_,
-        list(...)
+        l_left_join(defaults_,list(...))
       )
     do.call("pmx_update",params)
     p <- cctr %>%  get_plot(pname)
@@ -20,6 +19,10 @@ pmx_plot_generic <-
 # DV vs PRED plot --------------------------------------------------------------
 
 #' DV vs PRED plot
+#' @param ctr pmx controller 
+#' @param ... others graphics parameters passed to \code{\link{pmx_gpar}}.
+#' @param ... others graphics parameters passed to \code{\link{residual}} internal object.
+#' @param ... others graphics parameters passed to \code{\link{pmx_update}} internal object.
 #' @return ggplot2 object
 #' @export
 pmx_plot_dv_pred <- function(ctr,...){
@@ -132,7 +135,7 @@ pmx_plot_ebe_hist <-
   function(
     ctr,
     ...){
-    pmx_plot_generic(ctr,"ebe_hist",defaults_eta_hist,...)
+    pmx_plot_generic(ctr,"ebe_hist",defaults_ebe_hist,...)
   }
 
 # Individual plot --------------------------------------------------------------
@@ -183,7 +186,7 @@ pmx_plot_eta_cats <-
 pmx_plot_eta_conts <- 
   function(ctr,
            ...){
-    pmx_plot_generic(ctr,"eta_cats",list(),...)
+    pmx_plot_generic(ctr,"eta_conts",list(),...)
   }
 
 

@@ -42,9 +42,7 @@ distrib <- function(
   type = c("box", "hist"),
   has.shrink = FALSE,
   binwidth=1/30,
-  shrink=list(
-    fun="sd",size=5,color="black",
-    x_=-Inf,y_=Inf, hjust=-1,vjust=5),
+  shrink=list(fun="sd",size=5,color="black", hjust=-1,vjust=5),
   dname = NULL,
   ...){
   assert_that(is_logical(has.jitter))
@@ -177,12 +175,14 @@ shrinkage_layer <-
                            label = sprintf('shrinkage=%s%%',round(SHRINK*100))),
                        color = shrink$color, size = shrink$size,
                        position = position_dodge(width = 0.9)) 
-    if(type=="hist")
-      res <- 
-      with(shrink,annotate(geom="text",
-               label = sprintf('shrinkage=%s%%',round(dx$SHRINK*100)),
-               x=x_,y=y_,hjust=hjust,vjust=vjust,
-               color=color))
+    if(type=="hist"){
+      shrink$label <- sprintf('shrinkage=%s%%',round(dx$SHRINK*100))
+      shrink$geom <- "text"
+      shrink$x <- -Inf
+      shrink$y <- Inf
+      shrink$fun <- NULL
+      res <- do.call(annotate,shrink)
+    }
                
     res
     
