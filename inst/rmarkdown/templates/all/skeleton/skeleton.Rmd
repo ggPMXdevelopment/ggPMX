@@ -1,20 +1,16 @@
 ---
-title: "ggPMX standing report"
+title: "ggPMX: all plots"
 author: "TODO"
-date: "October 9, 2017"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 library(ggPMX)
 ```
 
 
-# Overview
 
-
-# Init controller
 
 ```{r init_controller}
 
@@ -37,12 +33,22 @@ theophylline <- file.path(system.file(package = "ggPMX"), "testdata",
 
 
 
-# Plots
+```{r all_plots}
+ pmx_plots <- ctr %>% plot_names
+  pmx_function_plots <- sprintf("pmx_plot_%s",pmx_plots)
+  
+res <- lapply(
+    pmx_function_plots,
+    function(fun){
+      is_function <- exists(fun,where = 'package:ggPMX',mode="function")
+      if(is_function)
+        do.call(fun,list(ctr=ctr))
+      else{
+        if(fun=="pmx_plot_indiv")
+        ctr %>% pmx_plot_individual(1)
+      }
+    })
 
-## Observations verus Predictions
-
-```{r dv_pred}
-
-ctr %>% pmx_plot_dv_pred
+res
 
 ```

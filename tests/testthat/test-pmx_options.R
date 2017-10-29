@@ -33,7 +33,6 @@ test_that("Initiating controllers work with and without specification of covaria
                       uc.name)
   work_dir <- file.path(uc.dir, "Monolix")
   input_file <- file.path(uc.dir, data_file)
-  browser()
   ctr <- pmx_mlx(
     "standing",
     directory=work_dir,

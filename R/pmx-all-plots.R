@@ -188,6 +188,7 @@ pmx_plot_individual <-
     p
   }
 
+
 # eta cats plot --------------------------------------------------------------
 
 #' Relationships between (ETA) and categorical covariates
