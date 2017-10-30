@@ -63,6 +63,7 @@ post_load_eta <- function(ds,input,sys,occ){
 post_load <- function(dxs, input, sys, dplot,occ){
   ## avoid RCMDCHECK
   DVID <- ID <- NULL
+  if(is.null(dxs[["predictions"]]))return(dxs)
   ## merge finegrid with input data 
   if(sys == "mlx"){
     keys <- c("ID", "TIME","DVID")

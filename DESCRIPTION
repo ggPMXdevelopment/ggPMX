@@ -27,7 +27,8 @@ Imports:
 License: file LICENSE
 LazyData: true
 Suggests:
-    testthat
+    testthat,
+    xtable
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
 NeedsCompilation: no
+RoxygenNote: 6.0.1
