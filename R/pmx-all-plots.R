@@ -221,6 +221,8 @@ pmx_plot_eta_matrix <-  function(ctr,...){
 #' }
 #' @return ggplot2 object
 #' @export
+#' @example inst/examples/distribution.R
+
 pmx_plot_ebe_box <- 
   function(ctr,
            ...){
@@ -242,6 +244,8 @@ pmx_plot_ebe_box <-
 #' }
 #' @return ggplot2 object
 #' @export
+#' @example inst/examples/distribution.R
+
 pmx_plot_ebe_hist <- 
   function(
     ctr,
