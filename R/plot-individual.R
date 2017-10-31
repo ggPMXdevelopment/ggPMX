@@ -99,10 +99,15 @@ plot_pmx.individual <-
     else formula("~ID")
     
     get_page <- with(x,{
+      point$data <- input
+      ipred_line$mapping <- aes(y=IPRED)
+      pred_line$mapping <- aes(y=PRED)
+      
       p <- ggplot(dx, aes(TIME, DV))+
-        with(point,geom_point(data=input,shape=shape,size=size,color=color)) +
-        with(ipred_line,geom_line(aes(y=IPRED),size=size,linetype=linetype,color=color))+
-        with(pred_line,geom_line(aes(y=PRED),size=size,linetype=linetype,color=color))
+        do.call(geom_point,point) +
+        do.call(geom_line,ipred_line) +
+        do.call(geom_line,pred_line) 
+      
       p <- plot_pmx(gp, p)
       
       ## split pages

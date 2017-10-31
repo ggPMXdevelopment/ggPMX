@@ -265,6 +265,7 @@ pmx_plot_ebe_hist <-
 #' }
 #' @return ggplot2 object
 #' @export
+#' @example inst/examples/individual.R
 pmx_plot_individual <- 
   function(
     ctr,

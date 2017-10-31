@@ -516,8 +516,8 @@ pmx_transform <- function(x,dx,trans,direction){
     switch(
       direction,
       x="TIME",
-      y=c("PRED","IPRED"),
-      xy=c("TIME","PRED","IPRED")
+      y=c("PRED","IPRED","DV"),
+      xy=c("TIME","PRED","IPRED","DV")
     )
   }
   
@@ -553,7 +553,7 @@ pmx_transform <- function(x,dx,trans,direction){
     ETA_COV=cols_eta_conts(x)
     
   )
-  
+  cols <- intersect(cols ,names(dx))
   if(length(cols)>0)
     dx[,(cols):=lapply(.SD,get(trans)),.SDcols =cols]
   dx
@@ -579,8 +579,11 @@ pmx_add_plot <- function(self, private, x, pname){
   if(!is.null(self$data[[dname]])) {
     dx <- self$data[[dname]]
     assert_that(is.data.table(dx))
+    x$input <- self %>% get_data("input")
     if(!is.null(x[["filter"]])) {
       dx <- x[["filter"]](dx)
+      if(ptype=="IND") x$input <- x[["filter"]](x$input)
+      
     }
     ## stratification 
     
@@ -598,6 +601,10 @@ pmx_add_plot <- function(self, private, x, pname){
     if(!is.null( x[["trans"]])) {
       dx1 <- copy(dx)
       dx <- pmx_transform(x,dx1, x[["trans"]])
+      if(ptype=="IND") {
+        inp <- copy(x$input)
+        x$input <- pmx_transform(x,inp, x[["trans"]])
+      }
     }
     if(ptype=="DIS"){
       VAR <- FUN <- NULL
@@ -629,7 +636,7 @@ pmx_add_plot <- function(self, private, x, pname){
       
     }
     self$set_config(pname,x)
-    x$input <- self %>% get_data("input")
+    
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
     
   } else {
