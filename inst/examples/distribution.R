@@ -33,8 +33,9 @@ ctr %>% pmx_plot_ebe_box(strat.facet = STUD~SEX)
 
 ## select a set of random effect
 ctr %>% pmx_plot_ebe_box(filter=EFFECT %in% c("ka","Cl"))
-## filter and stratify
-ctr %>% pmx_plot_ebe_box(filter=EFFECT %in% c("ka","Cl"),strat.color="SEX")
-
-ctr %>% pmx_plot_ebe_hist(filter=EFFECT %in% c("ka","Cl"),strat.color="SEX")
+## filter and stratify by facets
+ctr %>% pmx_plot_ebe_box(
+      filter=EFFECT %in% c("ka","Cl"),strat.facet="SEX")
+ctr %>% pmx_plot_ebe_hist(
+  filter=EFFECT %in% c("ka","Cl"),strat.facet="SEX")
 
