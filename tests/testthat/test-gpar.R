@@ -3,15 +3,16 @@ context("Test graphical parameters object")
 test_that("pmx_gpar defaults are well setted", {
   gpars <- ggPMX::pmx_gpar(labels = list(title = "hello"))
   expect_identical(
-    gpars$draft, 
-    list(size = 5, label = "DRAFT", color = "grey50",x=Inf,y=-Inf)
+    gpars$draft,
+    list(size = 5, label = "DRAFT", color = "grey50", x = Inf, y = -Inf)
   )
   expect_identical(
-    gpars$smooth, 
-    list(se = FALSE, linetype = 2, size = 1.5, method = "loess",
-         color="red")
+    gpars$smooth,
+    list(
+      se = FALSE, linetype = 2, size = 1.5, method = "loess",
+      color = "red"
+    )
   )
-  
 })
 
 test_that("can test object is pmx_gpar", {

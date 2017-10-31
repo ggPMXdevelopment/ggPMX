@@ -27,21 +27,20 @@
 
 pmx_gpar <-
   function(
-    labels,
-    axis.title = c(size = 12),
-    axis.text = c(size = 14),
-    ranges = NULL,
-    has.smooth = FALSE,
-    smooth = list(se = FALSE, linetype = 2, size = 1.5, method = 'loess',color="red"),
-    has.band = FALSE,
-    band = list(yintercept = c(-2, 2), linetype = 1, size = 0.5,color="black"),
-    is.draft = TRUE,
-    draft = list(size = 5, label = "DRAFT", color = 'grey50',x = Inf, y = -Inf),
-    discrete=FALSE,
-    has.identity_line=FALSE,
-    identity_line=list(intercept=0,color="blue"),
-    ...) {
-    
+           labels,
+           axis.title = c(size = 12),
+           axis.text = c(size = 14),
+           ranges = NULL,
+           has.smooth = FALSE,
+           smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "red"),
+           has.band = FALSE,
+           band = list(yintercept = c(-2, 2), linetype = 1, size = 0.5, color = "black"),
+           is.draft = TRUE,
+           draft = list(size = 5, label = "DRAFT", color = "grey50", x = Inf, y = -Inf),
+           discrete=FALSE,
+           has.identity_line=FALSE,
+           identity_line=list(intercept = 0, color = "blue"),
+           ...) {
     gp <- .valid_pmx_gpar(list(
       labels = labels,
       axis.title = axis.title,
@@ -54,10 +53,11 @@ pmx_gpar <-
       is.draft = is.draft,
       draft = draft,
       discrete = discrete,
-      has.identity_line=has.identity_line,
-      identity_line=identity_line,
-      ...))
-    class(gp) <- c("pmx_gpar","list")
+      has.identity_line = has.identity_line,
+      identity_line = identity_line,
+      ...
+    ))
+    class(gp) <- c("pmx_gpar", "list")
     gp
   }
 
@@ -91,8 +91,8 @@ print.pmx_gpar <- function(x, ...) {
   ## graphical parametrs
 
   ## join with default values
-  default_yaml <- 
-    file.path(system.file(package="ggPMX"), "init", "gpar.yaml")
+  default_yaml <-
+    file.path(system.file(package = "ggPMX"), "init", "gpar.yaml")
   default_gpars <- yaml.load_file(default_yaml)
   l_left_join(default_gpars, gpars)
 }
@@ -107,12 +107,12 @@ print.pmx_gpar <- function(x, ...) {
 #' @return if exists the parameter description
 #' @export
 `[.pmx_gpar` <- function(x, index, ...) {
-  if (length(x) == 0)
+  if (length(x) == 0) {
     return(pmx_gpar())
+  }
   maxn <- do.call("max", lapply(x, length))
   newgp <- lapply(x, rep, length.out = maxn)
   newgp <- lapply(X = newgp, FUN = "[", index, ...)
   class(newgp) <- "pmx_gpar"
   newgp
 }
-

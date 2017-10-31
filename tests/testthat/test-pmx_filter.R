@@ -9,4 +9,3 @@ test_that("canFilterData", {
   expect_gt(dim(oldData$eta[ID > 5])[1], 0L)
   expect_equal(dim(out$data$eta[ID > 5])[1], 0L)
 })
-

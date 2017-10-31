@@ -15,13 +15,13 @@
 #' }
 #' @export
 getPmxOption <- function(name, default = NULL) {
-  
   assert_that(is_string(name))
-  
-  if (name %in% names(.globals$options))
+
+  if (name %in% names(.globals$options)) {
     .globals$options[[name]]
-  else
+  } else {
     default
+  }
 }
 
 
@@ -34,11 +34,11 @@ getPmxOption <- function(name, default = NULL) {
 #'
 #'
 #' @param ... Options to set, with the form \code{name = value}.
-#' 
-#' @details 
+#'
+#' @details
 #' There is a global option set, which is available by default.
 #' @section Options used in ggPMX:
-#' 
+#'
 #' \itemize{
 #' \item {\strong{template_dir:}} {path to template directory}
 #' }
@@ -51,10 +51,12 @@ getPmxOption <- function(name, default = NULL) {
 pmxOptions <- function(...) {
   newOpts <- list(...)
   if (length(newOpts) > 0) {
-    if("template_dir" %in% names(newOpts) )
+    if ("template_dir" %in% names(newOpts)) {
       .globals$options <- newOpts
-    else .globals$options <- .globals$options["template_dir"]
-    
+    } else {
+      .globals$options <- .globals$options["template_dir"]
+    }
+
     .globals$options <- dropNulls.(mergeVectors.(.globals$options, newOpts))
     invisible(.globals$options)
   } else {
@@ -63,14 +65,18 @@ pmxOptions <- function(...) {
 }
 
 
-checkPmxOption <- function(value, pmxname,default=NULL){
+checkPmxOption <- function(value, pmxname, default=NULL) {
   call <- match.call()
-  if(missing(value))
-    value <- getPmxOption(pmxname,default)
-  if(is.null(value))
+  if (missing(value)) {
+    value <- getPmxOption(pmxname, default)
+  }
+  if (is.null(value)) {
     stop(
-      sprintf("Please set a %s argument or set global %s option", 
-              deparse(call$value), pmxname)
+      sprintf(
+        "Please set a %s argument or set global %s option",
+        deparse(call$value), pmxname
+      )
     )
+  }
   value
 }

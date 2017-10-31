@@ -6,4 +6,4 @@
 #' @seealso \code{\link{pmx_gpar}}.
 #' @family plot_pmx
 #' @export
-plot_pmx <- function(x, dx,...) UseMethod("plot_pmx")
+plot_pmx <- function(x, dx, ...) UseMethod("plot_pmx")

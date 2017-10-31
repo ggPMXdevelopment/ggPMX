@@ -1,11 +1,10 @@
 
 
-default_residual <- function(...){
+default_residual <- function(...) {
   list(
     point = list(shape = 1, color = "black", size = 1),
-    hline = list(yintercept=0)
+    hline = list(yintercept = 0)
   )
-  
 }
 
 
@@ -25,16 +24,16 @@ default_residual <- function(...){
 #' @export
 #' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.residual}}
-#' @details 
+#' @details
 #' Some parameters are a list of parameters :
-#' 
+#'
 #' \strong{point} is a list that contains:
 #' \itemize{
 #' \item {\strong{shape:}} {default to 1}
 #' \item {\strong{color:}} {default to black}
 #' \item {\strong{size:}} {default to 1}
 #' }
-#' 
+#'
 #' \strong{labels} is a list that contains:
 #' \itemize{
 #' \item {\strong{title:}} {plot title default to AES_X versue AES_Y}
@@ -42,14 +41,14 @@ default_residual <- function(...){
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
-residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE,hline=NULL, dname=NULL, ...){
+residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, hline=NULL, dname=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
   stopifnot(!missing(y))
   aess <- list(x = x, y = y)
   default_labels <- list(
-    title=paste(rev(aess), collapse = " versus "),
+    title = paste(rev(aess), collapse = " versus "),
     subtitle = "",
     x = aess[["x"]],
     y = aess[["y"]]
@@ -58,34 +57,35 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE,hline=NUL
   assert_that(is_list_or_null(point))
   assert_that(is_list_or_null(hline))
   assert_that(is_string_or_null(dname))
-  
+
   labels <- l_left_join(default_labels, labels)
   default_point <- list(shape = 1, color = "black", size = 1)
-  default_hline <- list(yintercept=0)
+  default_hline <- list(yintercept = 0)
   point <- l_left_join(default_point, point)
   hline <- l_left_join(default_hline, hline)
-  if(is.null(dname)) dname <- "predictions"
-  
+  if (is.null(dname)) dname <- "predictions"
+
   structure(
     list(
-      ptype="RES",
-      dname=dname,
+      ptype = "RES",
+      dname = dname,
       aess = aess,
       point = point,
-      add_hline=add_hline,
-      hline=hline,
-      gp = pmx_gpar( labels = labels, ...)
-    ), class=c("residual", "pmx_gpar"))
+      add_hline = add_hline,
+      hline = hline,
+      gp = pmx_gpar(labels = labels, ...)
+    ), class = c("residual", "pmx_gpar")
+  )
 }
 
 
-extend_range <- 
-  function (x, r = range(x, na.rm = TRUE), f = 0.05) 
-  {
-    if (!missing(r) && length(r) != 2) 
+extend_range <-
+  function(x, r = range(x, na.rm = TRUE), f = 0.05) {
+    if (!missing(r) && length(r) != 2) {
       stop("'r' must be a \"range\", hence of length 2")
+    }
     rr <- r + c(-f, f) * diff(r)
-    if(min(x,na.rm=TRUE)>0 & rr[1]<0)rr[1] <- min(x,na.rm=TRUE)
+    if (min(x, na.rm = TRUE) > 0 & rr[1] < 0) rr[1] <- min(x, na.rm = TRUE)
     rr
   }
 
@@ -101,36 +101,35 @@ extend_range <-
 #' @seealso \code{\link{residual}}
 #' @family plot_pmx
 #' @export
-plot_pmx.residual <- function(x, dx,...){
-  with(x,{
-    
+plot_pmx.residual <- function(x, dx, ...) {
+  with(x, {
     dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
-    
-    
+
+
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
-    
-    p <- p+  do.call(geom_point,point)
-    if(add_hline) p <- p + do.call(geom_hline,hline)
+
+    p <- p + do.call(geom_point, point)
+    if (add_hline) p <- p + do.call(geom_hline, hline)
     p <- plot_pmx(gp, p)
-    
+
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
-    if(!is.null(strat.color))
-      p <- p  %+%  geom_point(aes_string(color=strat.color))
-    
-    if(!is.null(strat.facet)){
-      if(is.character(strat.facet))
-        strat.facet <- formula(paste0("~",strat.facet))
+    if (!is.null(strat.color)) {
+      p <- p %+% geom_point(aes_string(color = strat.color))
+    }
+
+    if (!is.null(strat.facet)) {
+      if (is.character(strat.facet)) {
+        strat.facet <- formula(paste0("~", strat.facet))
+      }
       p <- p + facet_grid(strat.facet)
     }
-    if(aess$y=="DV"){
-      xrange <- extend_range(dx[,c(aess$x,aess$y),with=FALSE])
-      p <- p + 
-        coord_cartesian(xlim=xrange,ylim=xrange) +
-        theme(aspect.ratio=1)
+    if (aess$y == "DV") {
+      xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
+      p <- p +
+        coord_cartesian(xlim = xrange, ylim = xrange) +
+        theme(aspect.ratio = 1)
     }
     p
   })
 }
-
-

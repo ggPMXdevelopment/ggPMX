@@ -5,11 +5,13 @@ test_that("can create pmx class", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   expect_identical(
-    sort(ctr %>% plot_names), 
-    sort(c("abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time", 
-      "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "indiv", 
+    sort(ctr %>% plot_names()),
+    sort(c(
+      "abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time",
+      "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "indiv",
       "eta_matrix", "eta_cats", "eta_conts",
-      "iwres_qq"        ,"npde_qq" ))
+      "iwres_qq", "npde_qq"
+    ))
   )
 })
 
@@ -30,9 +32,11 @@ test_that("can get pmx class config", {
   ctr <- pmxClassHelpers$ctr
   cplots <- ctr %>% plot_names()
   conf <- ctr$get_config("npde_time")
-  clabels <- list(title = "NPDE versus TIME", subtitle = "", 
-                  x = "TIME", 
-                  y = "NPDE")
+  clabels <- list(
+    title = "NPDE versus TIME", subtitle = "",
+    x = "TIME",
+    y = "NPDE"
+  )
   expect_identical(conf$gp$labels, clabels)
 })
 
@@ -40,21 +44,22 @@ test_that("can get data from controller", {
   ctr <- pmxClassHelpers$ctr
   inputData <- ctr %>% get_data("input")
   inNames <- c("ID", "DV", "DVID", "TIME", "SEX", "WT0", "AGE0", "STUD")
-  expect_true( all(inNames %in% names(inputData)))
-  
+  expect_true(all(inNames %in% names(inputData)))
+
   peData <- ctr %>% get_data("estimates")
   peNames <- c("PARAM", "VALUE", "SE", "RSE", "PVALUE")
   expect_identical(names(peData), peNames)
-  
+
   mpData <- ctr %>% get_data("predictions")
-  mpNames <- c("ID", "TIME", "DVID","PRED", "NPDE", "IPRED", "IWRES", "DV",
-                "SEX", "WT0", "AGE0", "STUD")
-  expect_true(all( mpNames %in% names(mpData)))
+  mpNames <- c(
+    "ID", "TIME", "DVID", "PRED", "NPDE", "IPRED", "IWRES", "DV",
+    "SEX", "WT0", "AGE0", "STUD"
+  )
+  expect_true(all(mpNames %in% names(mpData)))
 
   fgData <- ctr %>% get_data("finegrid")
   fgNames <- c("ID", "TIME", "PRED", "IPRED")
   expect_true(all(fgNames %in% names(fgData)))
-  
 })
 
 test_that("can set plot and filter", {
@@ -72,29 +77,33 @@ test_that("can set plot and filter", {
 })
 
 
-test_that("can disable draft for all plots",{
-  theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
-                                    "theophylline")
+test_that("can disable draft for all plots", {
+  theophylline <- file.path(
+    system.file(package = "ggPMX"), "testdata",
+    "theophylline"
+  )
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
-  
-  ctr <- 
+
+  ctr <-
     pmx_mlx(
-      config = "standing", 
-      directory = WORK_DIR, 
-      input = input_file, 
-      dv = "Y", 
-      dvid ="DVID",
-      cats=c("SEX"),
-      conts=c("WT0","AGE0"),
-      strats="STUD",
-      settings = list(is.draft=FALSE))
-  
-  is_draft <- vapply(ctr%>% plot_names,
-         function(p){
-           conf <- ctr %>%get_plot_config(p)
-           conf$gp[["is.draft"]]
-         },TRUE)
+      config = "standing",
+      directory = WORK_DIR,
+      input = input_file,
+      dv = "Y",
+      dvid = "DVID",
+      cats = c("SEX"),
+      conts = c("WT0", "AGE0"),
+      strats = "STUD",
+      settings = list(is.draft = FALSE)
+    )
+
+  is_draft <- vapply(
+    ctr %>% plot_names(),
+    function(p) {
+      conf <- ctr %>% get_plot_config(p)
+      conf$gp[["is.draft"]]
+    }, TRUE
+  )
   expect_false(any(is_draft))
 })
-

@@ -15,8 +15,8 @@
 #'
 #' @return \code{eta_cov} object
 #' @family plot_pmx
-#' @details 
-#' 
+#' @details
+#'
 #' \strong{labels} is a list that contains:
 #' \itemize{
 #' \item {\strong{title:}} {plot title default  "EBE vs. covariates"}
@@ -26,42 +26,44 @@
 #'
 #' @export
 eta_cov <- function(
-  labels,
-  type = c("cats", "conts"),
-  dname = NULL,
-  show.correl=TRUE,
-  correl=list(size=5,color="blue"),
-  facets=list(scales="free"),
-  smooth = list(method="lm",se=FALSE),
-  point = list(color="gray"),
-  ...){
+                    labels,
+                    type = c("cats", "conts"),
+                    dname = NULL,
+                    show.correl=TRUE,
+                    correl=list(size = 5, color = "blue"),
+                    facets=list(scales = "free"),
+                    smooth = list(method = "lm", se = FALSE),
+                    point = list(color = "gray"),
+                    ...) {
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
-  if(is.null(dname)) dname <- "eta"
-  
-  
-  if(missing(labels))
+  if (is.null(dname)) dname <- "eta"
+
+
+  if (missing(labels)) {
     labels <- list(
-      title = "EBE vs. covariates",
-      x = "",
-      y = "")
+        title = "EBE vs. covariates",
+        x = "",
+        y = ""
+      )
+  }
   assert_that(is_list(labels))
   labels$subtitle <- ""
   structure(list(
-    ptype="ETA_COV",
+    ptype = "ETA_COV",
     dname = dname,
-    type=type,
-    show.correl=show.correl,
-    correl=correl,
-    facets=facets,
-    smooth=smooth,
-    point=point,
+    type = type,
+    show.correl = show.correl,
+    correl = correl,
+    facets = facets,
+    smooth = smooth,
+    point = point,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
-      has.smooth = FALSE)
-    
-  ), class =c("eta_cov", "pmx_gpar"))
+      has.smooth = FALSE
+    )
+  ), class = c("eta_cov", "pmx_gpar"))
 }
 
 
@@ -92,41 +94,43 @@ eta_cov <- function(
 #' @import ggplot2
 #' @importFrom stats cor
 #'
-plot_pmx.eta_cov <- function(x, dx,...){
-  p <- if(x$type=="cats"){
-    cats  <- x[["cats"]]
-    if(all(nzchar(x[["cats"]]))){
-      dx.cats <- dx[,c(cats,"VALUE","EFFECT"),with=FALSE]
-      ggplot(melt(dx.cats,measure.vars = cats)) + 
-        geom_boxplot(aes_string(x="value",y="VALUE")) +
-        facet_grid(as.formula("EFFECT~variable"),scales = "free")
+plot_pmx.eta_cov <- function(x, dx, ...) {
+  p <- if (x$type == "cats") {
+    cats <- x[["cats"]]
+    if (all(nzchar(x[["cats"]]))) {
+      dx.cats <- dx[, c(cats, "VALUE", "EFFECT"), with = FALSE]
+      ggplot(melt(dx.cats, measure.vars = cats)) +
+        geom_boxplot(aes_string(x = "value", y = "VALUE")) +
+        facet_grid(as.formula("EFFECT~variable"), scales = "free")
     }
-  }else{
+  } else {
     value <- variable <- NULL
     conts <- x[["conts"]]
-    if(all(nzchar(x[["conts"]]))){
-      dx.conts <- dx[,c(conts,"VALUE","EFFECT"),with=FALSE]
-      dx.conts <- melt(dx.conts,id=c("VALUE","EFFECT"))
+    if (all(nzchar(x[["conts"]]))) {
+      dx.conts <- dx[, c(conts, "VALUE", "EFFECT"), with = FALSE]
+      dx.conts <- melt(dx.conts, id = c("VALUE", "EFFECT"))
       ## dx.conts[,value:=log10(value)-mean(log10(value)),variable]
       x$facets$facets <- as.formula("EFFECT~variable")
-      p <- ggplot(dx.conts,aes_string(x="value",y="VALUE")) + 
-        do.call(geom_point,x$point) +
-        do.call(geom_smooth,x$smooth) + 
-        do.call(facet_grid,x$facets)
-      if(x$show.correl){ 
-        df_cor <- 
-          dx.conts[,"corr" :=round(cor(get("value"),get("VALUE"),use="na.or.complete"),3)
-                   ,"EFFECT,variable"]
-        p <- p + 
-          with(x$correl,
-            geom_text(data=df_cor, aes_string(label=paste("correlation=", "corr")), 
-                  x=-Inf, y=Inf, hjust=-0.2, vjust=1.2,size=size,color=color))
-       } 
-        
-        
+      p <- ggplot(dx.conts, aes_string(x = "value", y = "VALUE")) +
+        do.call(geom_point, x$point) +
+        do.call(geom_smooth, x$smooth) +
+        do.call(facet_grid, x$facets)
+      if (x$show.correl) {
+        df_cor <-
+          dx.conts[
+            , "corr" := round(cor(get("value"), get("VALUE"), use = "na.or.complete"), 3)
+            , "EFFECT,variable"
+          ]
+        p <- p +
+          with(
+            x$correl,
+            geom_text(
+              data = df_cor, aes_string(label = paste("correlation=", "corr")),
+              x = -Inf, y = Inf, hjust = -0.2, vjust = 1.2, size = size, color = color
+            )
+          )
+      }
     }
   }
-  if(!is.null(p)) plot_pmx(x$gp, p)
+  if (!is.null(p)) plot_pmx(x$gp, p)
 }
-
-

@@ -14,8 +14,8 @@
 #'
 #' @return distrib object
 #' @family plot_pmx
-#' @details 
-#' 
+#' @details
+#'
 #' \strong{labels} is a list that contains:
 #' \itemize{
 #' \item {\strong{title:}} {plot title default "EBE distribution"}
@@ -35,16 +35,16 @@
 #'
 #' @export
 distrib <- function(
-  labels,
-  has.jitter = FALSE,
-  jitter = list(shape = 1, color = "grey50", width = 0.1),
-  facets = list(scales = "free_y", nrow = 3),
-  type = c("box", "hist"),
-  has.shrink = FALSE,
-  histogram=list(binwidth=1/30,position = "dodge"),
-  shrink=list(fun="sd",size=5,color="black", hjust=-1,vjust=5),
-  dname = NULL,
-  ...){
+                    labels,
+                    has.jitter = FALSE,
+                    jitter = list(shape = 1, color = "grey50", width = 0.1),
+                    facets = list(scales = "free_y", nrow = 3),
+                    type = c("box", "hist"),
+                    has.shrink = FALSE,
+                    histogram=list(binwidth = 1 / 30, position = "dodge"),
+                    shrink=list(fun = "sd", size = 5, color = "black", hjust = -1, vjust = 5),
+                    dname = NULL,
+                    ...) {
   assert_that(is_logical(has.jitter))
   assert_that(is_list(jitter))
   assert_that(is_list(facets))
@@ -52,36 +52,38 @@ distrib <- function(
   assert_that(is_logical(has.shrink))
   assert_that(is_list(shrink))
   assert_that(is_string_or_null(dname))
-  if(is.null(dname)) dname <- "eta"
-  
-  
-  if(missing(labels))
+  if (is.null(dname)) dname <- "eta"
+
+
+  if (missing(labels)) {
     labels <- list(
-      title = "EBE distribution",
-      subtitle = "",
-      x = "Etas",
-      y = "",
-      legend = "Random effect")
+        title = "EBE distribution",
+        subtitle = "",
+        x = "Etas",
+        y = "",
+        legend = "Random effect"
+      )
+  }
   assert_that(is_list(labels))
-  
+
   structure(list(
-    ptype="DIS",
+    ptype = "DIS",
     dname = dname,
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
     type = type,
     has.jitter = has.jitter,
     jitter = jitter,
     facets = facets,
-    histogram=histogram,
+    histogram = histogram,
     has.shrink = has.shrink,
-    shrink=shrink,
+    shrink = shrink,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
       has.smooth = FALSE,
-      has.band = FALSE, ...)
-    
-  ), class =c("distrib", "pmx_gpar"))
+      has.band = FALSE, ...
+    )
+  ), class = c("distrib", "pmx_gpar"))
 }
 
 
@@ -91,94 +93,107 @@ is.formula <- function(x) inherits(x, "formula")
 #' merge facets formula with new formula
 #'
 #' @param x \code{formula} object
-#' @param origin the origin formula defualt to ~lfacets 
+#' @param origin the origin formula defualt to ~lfacets
 #'
 #' @return \code{formula} object
 #' @importFrom stats formula
 
-wrap_formula <- function(x,origin="lfacet"){
-  str <- sprintf("~ %s",origin)
-  if(is.character(x) && length(x)==1)
-    str <- sprintf( "%s ~ %s", x,origin)
-  
-  if(length(x)==3 && is.formula(x))
-    str <- sprintf( "%s ~ %s + %s", deparse(x[[2]]),
-                    deparse(x[[3]]),origin)
-  
-  if(length(x)==2 && is.formula(x))
-    str <- sprintf( "%s ~ %s", deparse(x[[2]]),origin)
+wrap_formula <- function(x, origin="lfacet") {
+  str <- sprintf("~ %s", origin)
+  if (is.character(x) && length(x) == 1) {
+    str <- sprintf("%s ~ %s", x, origin)
+  }
+
+  if (length(x) == 3 && is.formula(x)) {
+    str <- sprintf(
+        "%s ~ %s + %s", deparse(x[[2]]),
+        deparse(x[[3]]), origin
+      )
+  }
+
+  if (length(x) == 2 && is.formula(x)) {
+    str <- sprintf("%s ~ %s", deparse(x[[2]]), origin)
+  }
   return(formula(str))
 }
 
-jitter_layer <- function(jitter){
-  
-  jitter$mapping <- aes_string(x="EFFECT",y = "VALUE")
-  do.call(geom_jitter,jitter) 
+jitter_layer <- function(jitter) {
+  jitter$mapping <- aes_string(x = "EFFECT", y = "VALUE")
+  do.call(geom_jitter, jitter)
 }
 
-distrib.hist <- function(dx,strat.facet,strat.color,x){
-  wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet,"EFFECT")
-  else formula("~EFFECT")
-  with(x,{
-    p <-   ggplot(data = dx,aes_string(x = "VALUE"))
-    if(!is.null(strat.color))
-      histogram$mapping <- aes_string(fill=strat.color)
-    p <- p + do.call(geom_histogram,histogram)
+distrib.hist <- function(dx, strat.facet, strat.color, x) {
+  wrap.formula <- if (!is.null(strat.facet)) {
+    wrap_formula(strat.facet, "EFFECT")
+  } else {
+    formula("~EFFECT")
+  }
+  with(x, {
+    p <- ggplot(data = dx, aes_string(x = "VALUE"))
+    if (!is.null(strat.color)) {
+      histogram$mapping <- aes_string(fill = strat.color)
+    }
+    p <- p + do.call(geom_histogram, histogram)
     facets$facets <- wrap.formula
-    p <- p + do.call(facet_wrap,facets)
-    if(has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]] ,x$shrink)
-    
+    p <- p + do.call(facet_wrap, facets)
+    if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink)
+
     p
   })
-  
 }
 
-distrib.box <- function(dx,strat.color,strat.facet,x){
-  
+distrib.box <- function(dx, strat.color, strat.facet, x) {
   EFFECT <- VALUE <- NULL
   p <- ggplot(data = dx) +
-    geom_boxplot(aes(x=EFFECT, y = VALUE), outlier.shape = NA) 
-  
-  if(!is.null(strat.color))
-    p <-  ggplot(data = dx,aes_string(fill=strat.color)) +
-    geom_boxplot(aes_string(x="EFFECT",y = "VALUE"),
-                 outlier.shape = NA,position = position_dodge(width = 0.9))
-  
-  if(!is.null(strat.facet))
-    p <-  p + with(x$facets, facet_wrap(strat.facet , scales = scales,
-                                        nrow = nrow))
-  
-  if(x$has.jitter) p <- p + jitter_layer(x$jitter )
-  if(x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]] ,x$shrink,"box")
-  
+    geom_boxplot(aes(x = EFFECT, y = VALUE), outlier.shape = NA)
+
+  if (!is.null(strat.color)) {
+    p <- ggplot(data = dx, aes_string(fill = strat.color)) +
+      geom_boxplot(
+        aes_string(x = "EFFECT", y = "VALUE"),
+        outlier.shape = NA, position = position_dodge(width = 0.9)
+      )
+  }
+
+  if (!is.null(strat.facet)) {
+    p <- p + with(x$facets, facet_wrap(
+        strat.facet, scales = scales,
+        nrow = nrow
+      ))
+  }
+
+  if (x$has.jitter) p <- p + jitter_layer(x$jitter)
+  if (x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box")
+
   p
-  
-  
 }
 
 
 
 
-shrinkage_layer <- 
-  function(dx,shrink,type="hist") {
-    ## 
+shrinkage_layer <-
+  function(dx, shrink, type="hist") {
+    ##
     SHRINK <- EFFECT <- POS <- NULL
-    res <-   geom_text(data=dx,
-                       aes(x=EFFECT,y=POS,
-                           label = sprintf('shrinkage=%s%%',round(SHRINK*100))),
-                       color = shrink$color, size = shrink$size,
-                       position = position_dodge(width = 0.9)) 
-    if(type=="hist"){
-      shrink$label <- sprintf('shrinkage=%s%%',round(dx$SHRINK*100))
+    res <- geom_text(
+      data = dx,
+      aes(
+        x = EFFECT, y = POS,
+        label = sprintf("shrinkage=%s%%", round(SHRINK * 100))
+      ),
+      color = shrink$color, size = shrink$size,
+      position = position_dodge(width = 0.9)
+    )
+    if (type == "hist") {
+      shrink$label <- sprintf("shrinkage=%s%%", round(dx$SHRINK * 100))
       shrink$geom <- "text"
       shrink$x <- -Inf
       shrink$y <- Inf
       shrink$fun <- NULL
-      res <- do.call(annotate,shrink)
+      res <- do.call(annotate, shrink)
     }
-    
+
     res
-    
   }
 
 
@@ -191,12 +206,14 @@ shrinkage_layer <-
 
 
 
-plot_distribution <- function(x,dx,...){
-  
+plot_distribution <- function(x, dx, ...) {
   strat.facet <- x[["strat.facet"]]
   strat.color <- x[["strat.color"]]
-  p <- if(x$type=="box")distrib.box(dx,strat.color,strat.facet,x)
-  else distrib.hist(dx,strat.facet,strat.color,x)
+  p <- if (x$type == "box") {
+    distrib.box(dx, strat.color, strat.facet, x)
+  } else {
+    distrib.hist(dx, strat.facet, strat.color, x)
+  }
   plot_pmx(x$gp, p)
 }
 
@@ -215,6 +232,6 @@ plot_distribution <- function(x,dx,...){
 #' @family plot_pmx
 #' @import ggplot2
 #'
-plot_pmx.distrib <- function(x, dx,...){
-  plot_distribution(x,dx,...)
+plot_pmx.distrib <- function(x, dx, ...) {
+  plot_distribution(x, dx, ...)
 }
