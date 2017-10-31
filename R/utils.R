@@ -71,9 +71,8 @@ local_filter <-
     e <- if(is.character(pmx_exp))parse(text=pmx_exp)
     else as.expression(pmx_exp)
     filter_ <-function(x){
-      r <- eval(parse(text = e), x)
-      if (!is.logical( r )) 
-        stop("'expression' must evaluate to logical")
+      r <- try(eval(parse(text = e), x),silent=TRUE)
+      if(inherits(r,"try-error")) r <- TRUE
       x[r & !is.na( r )]
     }
   }

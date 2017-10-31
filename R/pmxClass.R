@@ -609,27 +609,26 @@ pmx_add_plot <- function(self, private, x, pname){
     if(ptype=="DIS"){
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
-      if(x$has.shrink){
-        
-        grp <- as.character(unlist(lapply(x[["strat.facet"]],as.list)))
-        grp <- intersect(grp,names(dx))
-        
-        x[["shrink.dx"]] <- shrinkage(
-          self$data[["estimates"]],self$data[["eta"]],
-          fun = x$shrink$fun,by=grp)
-      }
     }
     if(ptype=="ETA_COV"){
       x[["cats"]] <- self %>% get_cats
       x[["conts"]] <- self %>% get_conts
     }
-    if(ptype=="ETA_PAIRS"){
-      if(x$has.shrink){
-        x[["shrink.dx"]] <- shrinkage(
-          self$data[["estimates"]],self$data[["eta"]],
-          fun = x$shrink$fun)
-      }
+    if(!is.null(x[["has.shrink"]]) && x$has.shrink){
+      grp <- as.character(unlist(lapply(x[["strat.facet"]],as.list)))
+      grp <- intersect(grp,names(dx))
+      x[["shrink.dx"]] <- 
+        if(!is.null(x[["filter"]])){
+          ff <- x[["filter"]]
+          shrinkage(
+            ff(self$data[["estimates"]]),ff(self$data[["eta"]]),
+            fun = x$shrink$fun,by=grp)
+        }else
+          shrinkage(
+            self$data[["estimates"]],self$data[["eta"]],
+            fun = x$shrink$fun,by=grp)
     }
+    
     if(!is.null(self$settings)){
       if("is.draft" %in% names(self$settings))
         x$gp$is.draft <- self$settings$is.draft
@@ -642,7 +641,8 @@ pmx_add_plot <- function(self, private, x, pname){
   } else {
     # throw error message
     private$.plots[[pname]] <- NULL
-    message(sprintf("No data %s provided for plot %s",sprintf('%s',dname),sprintf('%s',pname)))
+    message(sprintf("No data %s provided for plot %s",
+                    sprintf('%s',dname),sprintf('%s',pname)))
   }
   invisible(self)
 }
