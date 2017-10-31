@@ -43,7 +43,7 @@ test_that("can create a plot using setting dname", {
   ctr %>% set_plot("DIS", pname = "distr1", type = "box",dname="eta")
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_identical(dim(pconf$data[[2]]), c(1800L, 10L))
+  expect_equal(length(pconf$plot$layers), 2)
 })
 
 
