@@ -3,23 +3,23 @@ title: "ggPMX - User guide"
 author: "Amine Gassem, Irina Baltcheva"
 date: '`r Sys.Date()`'
 output:
-  html_document:
-    toc: yes
-    toc_depth: '3'
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
     toc: yes
     toc_depth: '3'
-vignette: >
-  %\VignetteIndexEntry{ggPMX: User guide}
-  %\VignetteEngine{knitr::rmarkdown}
+  html_document:
+    toc: yes
+    toc_depth: '3'
+vignette: |
+  %\VignetteIndexEntry{ggPMX: User guide} 
+  %\VignetteEngine{knitr::rmarkdown} 
   %\VignetteEncoding{UTF-8}
 ---
 \clearpage  
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
-knitr::opts_chunk$set(out.width='100%',warning=FALSE,message=FALSE)
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggPMX)
 library(ggplot2)
 library(xtable)
@@ -50,7 +50,7 @@ ctr <- theophylline()
 ctr %>% pmx_plot_dv_pred()
 ctr %>% pmx_plot_ebe_box()
 ctr %>% pmx_plot_ebe_hist()
-ctr %>% pmx_plot_individual(npage=1)
+ctr %>% pmx_plot_individual(npage = 1)
 ctr %>% pmx_plot_eta_matrix()
 ```
 
@@ -68,7 +68,7 @@ The design of the package is around a central object called *controller*. The co
 **Something else to highlight? Amine to explain a bit more.**
 
 ```{r echo=FALSE, out.width='80%', fig.align='center'}
-knitr::include_graphics('./ggPMX_arch.png')
+knitr::include_graphics("./ggPMX_arch.png")
 ```
 
 ## ggPMX datasets
@@ -78,25 +78,26 @@ The following dataset name convention is used throughout this vignette. The *inp
 ```{r datasets_list,echo=FALSE,results='asis'}
 
 out <- rbind(
-c("input", "Input modeling dataset"),
-c("estimates", "Estimated population parameters"),
-c("eta","Random effects, their standard deviation and residual errors (to calculate shrinkage)"),
-c("predictions","Observations and predictions at times of observations dataset"),
-c("finegrid", "Additional predictions (at times without observations)"))
+  c("input", "Input modeling dataset"),
+  c("estimates", "Estimated population parameters"),
+  c("eta", "Random effects, their standard deviation and residual errors (to calculate shrinkage)"),
+  c("predictions", "Observations and predictions at times of observations dataset"),
+  c("finegrid", "Additional predictions (at times without observations)")
+)
 
-colnames(out) <- c("ggPMX dataset","Description")
-#knitr::kable(out)
-#latex(head(out), file='', label='tab:ggPMX_datasets', caption='ggPMX datasets',where = "!htbp")
-xt=xtable(head(out), label='tab:ggPMX_datasets', caption='ggPMX datasets')
+colnames(out) <- c("ggPMX dataset", "Description")
+# knitr::kable(out)
+# latex(head(out), file='', label='tab:ggPMX_datasets', caption='ggPMX datasets',where = "!htbp")
+xt <- xtable(head(out), label = "tab:ggPMX_datasets", caption = "ggPMX datasets")
 print(xt, comment = F)
 ```
-
+\clearpage
 
 # Basics: PK models
 
 To illustrate `ggPMX` functionalities, we use a built-in model: the theophylline example. The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline. A simple one-compartmental PK model with first-order absorption was fitted to the data. The following covariates were used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance. Random effects on all three parameters (ka, Cl, V) were included. The residual error was proportional.
 
-As a convention, when plots are described as ???Y vs. X???, we mean that Y is plotted on the vertical axis and X on the horizontal axis.
+As a convention, when plots are described as "Y vs. X", we mean that Y is plotted on the vertical axis and X on the horizontal axis.
 
 ## Create a controller with `pmx()`
 
@@ -104,18 +105,18 @@ A diagnostic session starts by creating a controller using the function `pmx()`.
 
 ```{r init_ctr}
 
-  theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
-  work_dir <- file.path(theophylline, "Monolix")
-  input_data <- file.path(theophylline, "data_pk.csv")
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
 
-  ctr <- pmx(
-    sys="mlx",
-    config = "standing", 
-    directory = work_dir, 
-    input = input_data, 
-    dv = "Y", 
-    dvid ="DVID")
-
+ctr <- pmx(
+  sys = "mlx",
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID"
+)
 ```
 
 All mandatory arguments of `pmx()` are listed below:
@@ -142,12 +143,12 @@ The third table of the controller provides the list of the available plots. It c
 The above controller initialization can be simplified by using the Monolix controller `pmx_mlx()`, which is a wrapper function for `pmx()` with `sys="mlx"`:
 ```{r init_pmx_mlx}
 ctr <- pmx_mlx(
-  config = "standing", 
-           directory = work_dir, 
-           input = input_data, 
-           dv = "Y", 
-           dvid ="DVID")
-
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID"
+)
 ```
 ### Nonmem controller
 Similarly, there will be (in a future release) a Nonmem controller.
@@ -164,45 +165,41 @@ ctr <- theophylline()
 Besides the mandatory fields to initialize a controller, the user can set optional parameters related to covariates 
 
 ```{r init_ctr_covar}
-  ctr <- pmx_mlx(
-    config = "standing", 
-    directory = work_dir, 
-    input = input_data, 
-    dv = "Y", 
-    dvid ="DVID",
-    cats=c("SEX"),
-    conts=c("WT0","AGE0"),
-    strats=c("STUD","SEX"))
-
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID",
+  cats = c("SEX"),
+  conts = c("WT0", "AGE0"),
+  strats = c("STUD", "SEX")
+)
 ```
 `Conts` are the continuous covariates. `Cats` are categorical covariates used in the model, whereas `strats` are categorical variables that can be used for plot stratification, but are not used as covariates in the model.
 
 We can access different covariates using helpers functions:
 
 ```{r get_covar}
- ctr %>% get_cats
- ctr %>% get_conts
- ctr %>% get_strats
- ctr %>% get_covariates
+ctr %>% get_cats()
+ctr %>% get_conts()
+ctr %>% get_strats()
+ctr %>% get_covariates()
 ```
 
 ## Plot names
 
 The controller is a container that stores all plots. To get the list of plots, we use the function `plot_names()`:
 ```{r plot_lists}
-ctr %>% plot_names
+ctr %>% plot_names()
 ```
-Note here the use of piping. An alternative way to display the names of the existing plots is by printing the content of the controller as done in the previous section. or to use :
-
-```{r plots}
-ctr %>% plots
-```
+Note here the use of piping. An alternative way to display the names of the existing plots is by printing the content of the controller as done in the previous section.
 
 ## Plot types 
 
 `ggPMX` comes with a list of plot types. This is not to be confused with plot names. Each plot type can be used to create one or many plots.
 ```{r plot_types}
- ctr %>% plots
+ctr %>% plots()
 ```
 
 A short description of each plot type is given below:
@@ -217,14 +214,32 @@ A short description of each plot type is given below:
 ## View default plots
 
 To view all standard diagnostig plots, call the corresponding `pmx_plot_xx()` function. See the Advanced features section to learn how to modify default plot settings.
-```{r fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+```{r out.width='.48\\linewidth', fig.height=4, fig.width=6, fig.show='hold', fig.align='center'}
 ctr %>% pmx_plot_dv_pred()
 ctr %>% pmx_plot_iwres_time()
 ctr %>% pmx_plot_iwres_ipred()
-ctr %>% pmx_plot_eta_matrix()
+ctr %>% pmx_plot_npde_time()
+ctr %>% pmx_plot_npde_pred()
 ctr %>% pmx_plot_ebe_box()
+```
+```{r fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_eta_matrix()
+```
+```{r fig.height=6.5, fig.width=4, fig.show='hold', fig.align='center'}
 ctr %>% pmx_plot_ebe_hist()
-ctr %>% pmx_plot_individual(npage=c(1,2))
+```
+```{r fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_individual(npage = c(1, 2))
+```
+
+## Update default plots
+
+To update default plots, one can use the same functions as above, but with additional arguments. For example:
+```{r out.width='.98\\linewidth', fig.height=6, fig.width=9, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_individual(
+  npage = 1, facets = list(nrow = 3, ncol = 5),
+  labels = list(title = "My individuals")
+) + scale_y_log10()
 ```
 
 \clearpage
@@ -250,7 +265,13 @@ ctr %>% get_data("predictions")
 ctr %>% get_data("finegrid")
 ```
 
+Here an example of filtering input data in a sugar syntax manner (??). 
 
+```{r dx_sugar_syntax}
+
+input <- ctr %>% get_data("input")
+input[DV > 350 & TIME > 0 & ID == 1 & SEX == 1]
+```
 
 ## View plots with `get_plot()`
 To view a particular plot we call the function `get_plot()` with the name of the plot as the first (mandatory) argument, where the name has to correspond to one of the plot_names above: 
@@ -261,14 +282,14 @@ ctr %>% get_plot("ebe_box")
 
 `get_plot` returns a standard `ggplot2` object that we can customize using any valid `ggplot2` operation. In the example below, we add a smooth line to the NPDE plot:
 ```{r add_smooth, out.width='.49\\linewidth', fig.width=3, fig.height=3, fig.show='hold', fig.align='center'}
-p1 = ctr %>% get_plot("npde_time")
-p2 = p1 + geom_smooth(color='red',linetype="dashed")
+p1 <- ctr %>% get_plot("npde_time")
+p2 <- p1 + geom_smooth(color = "red", linetype = "dashed")
 p2
 ```
 
 In case of individual plots where several pages are produced, another optional argument exists, the page number to display (`npage`). 
 ```{r ind_plots, fig.height=3, fig.width=4, fig.align='center'}
-ctr %>% get_plot("indiv",npage = 2)
+ctr %>% get_plot("indiv", npage = 2)
 ```
 
 ## Create a new plot with `set_plot()`
@@ -282,28 +303,30 @@ To create a new plot, we use the `set_plot()` function. The following fields nee
 ### New residual plot
 We can plot individual model predictions (spaghetti plot) on top of indiviual data, stratified by study (TBD: check if data is also stratified):
 ```{r new_res_plot, fig.height=3, fig.width=7, fig.align='center'}
-p1 = ctr %>% 
-  set_plot("RES", pname = "pred_vs_time",x="TIME",y="PRED",strat.facet = "STUD",
-           labels=list(title="Individual predictions and data per study"))%>% 
-  get_plot( "pred_vs_time")
-p2 = p1 + geom_line(aes(group=as.factor(ID),color=as.factor(ID)))
+p1 <- ctr %>%
+  set_plot(
+    "RES", pname = "pred_vs_time", x = "TIME", y = "PRED", strat.facet = "STUD",
+    labels = list(title = "Individual predictions and data per study")
+  ) %>%
+  get_plot("pred_vs_time")
+p2 <- p1 + geom_line(aes(group = as.factor(ID), color = as.factor(ID)))
 p2
 ```
 see `??residual` for the list of all parameters to create a new residual plot. (I can't see anything when doing `??residual`. Bug with the help?)
 
 ### New distribution plot
 ```{r new_dis_plot, fig.height=3, fig.width=3, fig.align='center'}
-ctr %>% 
-  set_plot("DIS", pname = "distr1", type = "box",has.jitter=FALSE) %>%
+ctr %>%
+  set_plot("DIS", pname = "distr1", type = "box", has.jitter = FALSE) %>%
   get_plot("distr1")
 ```
 see `?distib` for the list of all parameters to create a new individual plot.
 
 ### New individual plot
 ```{r new_ind_plot, fig.height=3, fig.width=3, fig.align='center'}
-ctr %>% 
+ctr %>%
   set_plot("IND", pname = "ind1") %>%
-  get_plot("ind1",4) # display only the fourth page
+  get_plot("ind1", 4) # display only the fourth page
 ```
 see `??individual` for the list of all parameters to create a new individual plot.
  
@@ -314,32 +337,23 @@ To update some plot features and to access additional settings, we use `pmx_upda
 ### Change title
 In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
 ```{r indiv_plots_update, fig.height=3, fig.width=5, fig.align='center'}
-ctr %>% pmx_update("indiv",
-                  labels=list(title="My individuals"))
-ctr %>% get_plot("indiv",npage=1)
-```
-or even simpler by using `pmx_plot_individual`:
-
-```{r indiv_plots_update_defualt, fig.height=3, fig.width=5, fig.align='center'}
-ctr %>% pmx_plot_individual(npage=1,labels=list(title="My individuals"))
+ctr %>% pmx_update(
+  "indiv",
+  labels = list(title = "My individuals")
+)
+ctr %>% get_plot("indiv", npage = 1)
 ```
 
 ### Change grid size of individual plots 
 In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
 ```{r indiv_plots_grid, fig.height=3.5, fig.width=6, fig.align='center'}
-ctr %>% pmx_update("indiv",
-                  facets=list(nrow=2,ncol=4),
-                  point=list(shape=4,color="red"),
-                  labels=list(title="My individual plots grid"))
-ctr %>% get_plot("indiv",npage=1)
-```
-or even simpler by using `pmx_plot_individual`:
-
-```{r indiv_plots_grid_default, fig.height=3.5, fig.width=6, fig.align='center'}
-ctr %>% pmx_plot_individual(npage=1,
-                  facets=list(nrow=2,ncol=4),
-                  point=list(shape=4,color="red"),
-                  labels=list(title="My individual plots grid"))
+ctr %>% pmx_update(
+  "indiv",
+  facets = list(nrow = 2, ncol = 4),
+  point = list(shape = 4, color = "red"),
+  labels = list(title = "My individual plots grid")
+)
+ctr %>% get_plot("indiv", npage = 1)
 ```
 
 ### Change labels
@@ -348,15 +362,22 @@ The following code gives an example of how to change the labels of x- and y-axes
 
 # Default individual plot
 ctr %>% set_plot("IND", pname = "indiv1")
-p1 <- ctr %>% get_plot("indiv1",npage=1)
+p1 <- ctr %>% get_plot("indiv1", npage = 1)
 
-p2 <- ctr %>% pmx_plot_individual(1,
-  labels=list(x ="Time (days)",
-  y= "Free serum concentration (nmol)")
-)
+# Change x- and y-labels (doesn't work with Rmarkdown, strange...)
+# ctr %>%
+#   pmx_update(
+#     "indiv",
+#     labels=list(xlab="Time (days)", ylab="Free serum concentration (nmol)")) %>%
+#   get_plot("indiv",npage=1)
+
+# An alternative way:
+p2 <- ctr %>%
+  get_plot("indiv1", npage = 1) +
+  xlab("Time (days)") +
+  ylab("Free serum concentration (nmol)")
 p1
 p2
-
 ```
 
 ### Change point types and other settings 
@@ -364,43 +385,45 @@ The code below gives an example of how to change the color of points of a residu
 ```{r update_res_plot2,  out.width='.49\\linewidth', fig.width=3, fig.height=3, fig.show='hold',fig.align='left'}
 
 # Default dv_pred plot
-p1 <- ctr %>% pmx_plot_dv_pred
+ctr %>% set_plot("RES", pname = "res2", x = "PRED", y = "DV")
+p1 <- ctr %>% get_plot("res2")
 
 # Change x- and y-labels (doesn't work with Rmarkdown, strange...)
-p2 <- ctr %>% pmx_plot_dv_pred(
-                         labels=list(x="Population predictions", y="Observations"), 
-                         add_hline=FALSE,point=list(color="green4")) 
+p2 <- ctr %>%
+  pmx_update(
+    "res2",
+    labels = list(x = "Population predictions", y = "Observations"),
+    add_hline = FALSE, point = list(color = "green4")
+  ) %>%
+  get_plot("res2")
 
+# How do I modify the colors and shapes of points? What are the possible values of 'point' argument? I can't find it in full documentation.
 
-
-# modify the colors and shapes of points
-# Change x- and y-labels (doesn't work with Rmarkdown, strange...)
-# Add the identity line and a smooth through the data
-
-p3 <- ctr %>% pmx_plot_dv_pred(
-  labels=list(x="Population predictions", y="Observations"), 
-  add_hline=FALSE,
-  has.identity_line=TRUE,
-  identity_line=list(color="red"),
-  has.smooth=TRUE,
-  point=list(color="green4",shape=4))
-
+# Add the identity line and a smooth through the data:
+p3 <- p2 +
+  geom_abline(intercept = 0, aes(colour = "red")) +
+  geom_smooth(aes(color = "red"), show.legend = FALSE)
+p1
 p3
-
 ```
 We can add a band between -2 and 2 in residual plots:
 ```{r update_res_plot,  out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='center'}
 
 # Default iwres_ipred plot
-p1 <- ctr %>% pmx_plot_iwres_ipred
+ctr %>% set_plot("RES", pname = "res1", x = "IPRED", y = "IWRES")
+p1 <- ctr %>% get_plot("res1")
 
 # Above lines give the same result as the following:
 # p1a = ctr %>% get_plot("iwres_ipred")
 
 # Add bands and update title
-p2 <- ctr %>% 
-  pmx_plot_iwres_ipred( has.band = TRUE, 
-             labels = list(title = "IPRED versus IWRES (with bands)")) 
+p2 <- ctr %>%
+  pmx_update(
+    "res1", has.band = TRUE,
+    labels = list(title = "IPRED versus IWRES (with bands)")
+  ) %>%
+  get_plot("res1")
+
 p1
 p2
 ```
@@ -408,28 +431,30 @@ p2
 ### Modify or remove DRAFT label
 This is how we can modify the DRAFT label:
 ```{r fig.width=5, fig.height=4}
-ctr %>% 
+ctr %>%
   pmx_update(
     "iwres_ipred",
-    draft=list(size=20,color="purple",label="FINAL")) %>% 
+    draft = list(size = 20, color = "purple", label = "FINAL")
+  ) %>%
   get_plot("iwres_ipred")
 ```
 
 To remove the DRAFT label from all plots, set this option during the initialization of the controller.
 
 ```{r fig.width=5, fig.height=4}
-ctr <- 
+ctr <-
   pmx_mlx(
-    config = "standing", 
-    directory = work_dir, 
-    input = input_data, 
-    dv = "Y", 
-    dvid ="DVID",
-    cats=c("SEX"),
-    conts=c("WT0","AGE0"),
-    strats="STUD",
-    settings = list(is.draft=FALSE)) ## here the draft option
-ctr %>% pmx_plot_dv_pred
+    config = "standing",
+    directory = work_dir,
+    input = input_data,
+    dv = "Y",
+    dvid = "DVID",
+    cats = c("SEX"),
+    conts = c("WT0", "AGE0"),
+    strats = "STUD",
+    settings = list(is.draft = FALSE)
+  ) ## here the draft option
+ctr %>% pmx_plot_dv_pred()
 ```
 
 
@@ -446,99 +471,116 @@ Some text needed here... TBD.
 ```{r create_controller_uc}
 library(ggPMX)
 
-uc.name <-  "1_popPK_model"
-data_file <-  "PKdata_ggPMX.csv"
+uc.name <- "1_popPK_model"
+data_file <- "PKdata_ggPMX.csv"
 
-uc.dir <- file.path(system.file(package = "ggPMX"), "testdata", 
-                    uc.name)
+uc.dir <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  uc.name
+)
 wd.mlx <- file.path(uc.dir, "Monolix")
 input_file <- file.path(uc.dir, data_file)
 
-ctr <- pmx_mlx("standing",
-  director = wd.mlx, 
-  input = input_file, 
-  dv = "DV", 
-  dvid = "ytype", 
-  cats = c("SEX","RACE","DISE","ILOW"), 
-  conts = c("AGE0","WT0","HT0","TRT"),
-  occ="ISS"
+ctr <- pmx_mlx(
+  "standing",
+  directory = wd.mlx,
+  input = input_file,
+  dv = "DV",
+  dvid = "ytype",
+  cats = c("SEX", "RACE", "DISE", "ILOW"),
+  conts = c("AGE0", "WT0", "HT0", "TRT"),
+  occ = "ISS"
 )
-
 ```
 
 ## Residual plot: categorical covariates
 ```{r}
 
-ctr %>% set_plot("RES","p1",x="IPRED",y="IWRES",strat.facet=SEX+ILOW~RACE+DISE)
+ctr %>% set_plot("RES", "p1", x = "IPRED", y = "IWRES", strat.facet = SEX + ILOW~RACE + DISE)
 ctr %>% get_plot("p1")
+ctr %>% pmx_plot_iwres_ipred(strat.facet = SEX + ILOW~RACE + DISE)
 ```
 
 ## Residual plot: continuous covariates
 ```{r fig.width=4, fig.height=3}
-ctr %>% set_plot("RES","p2",x="IPRED",y="IWRES",strat.color="AGE0")
+ctr %>% set_plot("RES", "p2", x = "IPRED", y = "IWRES", strat.color = "AGE0")
 ctr %>% get_plot("p2")
+ctr %>% pmx_plot_iwres_ipred(strat.color = "AGE0")
 ```
 
 ## Residual plot: mix of categorical and continuous covariates
 ```{r}
-ctr %>% set_plot("RES","p3",x="IPRED",y="IWRES",strat.color="SEX",strat.facet=SEX~RACE)
+ctr %>% set_plot("RES", "p3", x = "IPRED", y = "IWRES", strat.color = "SEX", strat.facet = SEX~RACE)
 ctr %>% get_plot("p3")
+ctr %>% pmx_plot_iwres_ipred(strat.facet = SEX~RACE)
 ```
 
 ## Distribution boxplot: categorical covariates
  
 ```{r fig.width=3, fig.height=5}
-ctr %>% set_plot("DIS","p4", strat.facet=~SEX)
+ctr %>% set_plot("DIS", "p4", strat.facet = ~SEX)
 ctr %>% get_plot("p4")
 ```
 
 ## Distribution boxplot: mix of categorical and continuous covariates
 ```{r}
-ctr %>% set_plot("DIS","p5", strat.facet=DISE~RACE,strat.color="SEX",
-                 has.jitter=FALSE)
+ctr %>% set_plot(
+  "DIS", "p5", strat.facet = DISE~RACE, strat.color = "SEX",
+  has.jitter = FALSE
+)
 ctr %>% get_plot("p5")
 ```
 
 ## Distribution histogram plot: categorical covariates
 ```{r}
-ctr = theophylline()
-ctr %>% set_plot("DIS","p6", strat.facet="SEX",type="hist")
+ctr <- theophylline()
+ctr %>% set_plot("DIS", "p6", strat.facet = "SEX", type = "hist")
 ctr %>% get_plot("p6")
 ```
 
 # Shrinkage
 ## Default call
 ```{r}
-ctr = theophylline()
-shrinkage(ctr %>% get_data("estimates"),
-          ctr %>% get_data("eta"))
+ctr <- theophylline()
+shrinkage(
+  ctr %>% get_data("estimates"),
+  ctr %>% get_data("eta")
+)
 ```
 
 ## Var function
 ```{r}
-shrinkage(ctr %>% get_data("estimates"),
-          ctr %>% get_data("eta"),
-          fun="var")
+shrinkage(
+  ctr %>% get_data("estimates"),
+  ctr %>% get_data("eta"),
+  fun = "var"
+)
 ```
 
 ## Shrinkage plot
 ```{r}
-ctr %>% 
-  pmx_update("ebe_box",has.shrink=TRUE) %>%   
+ctr %>%
+  pmx_update("ebe_box", has.shrink = TRUE) %>%
   get_plot("ebe_box")
 ```
 
 ## Shrinkage with simple stratification
 ```{r}
-shrinkage(ctr %>% get_data("estimates"),
-          ctr %>% get_data("eta"),
-          by="SEX")
+shrinkage(
+  ctr %>% get_data("estimates"),
+  ctr %>% get_data("eta"),
+  by = "SEX"
+)
 ```
 
 ## Shrinkage with double stratification
 ```{r fig.width=9, fig.height=8}
-ctr %>% pmx_update("ebe_hist",has.shrink=TRUE,strat.facet=~SEX) %>% get_plot("ebe_hist")
+ctr %>% pmx_update("ebe_hist", has.shrink = TRUE, strat.facet = ~SEX) %>% get_plot("ebe_hist")
 ```
+
+## Filtering
+
+TBD
 
 ## Visual predictive checks (VPCs)
 
@@ -561,24 +603,25 @@ The main target of ggPMX is to create a report containing the following plots (s
 ```{r plots_list,echo=FALSE,results='asis'}
 
 out <- rbind(
-c("Scatter plot of NPDE vs population predictions","RES","npde_pred"),
-c("Scatter plot of NPDE vs time","RES","npde_time"),
-c("Scatter plot of IWRES vs time","RES","iwres_time"),
-c("Scatter plot of observations vs population predictions", "RES","dv_pred"),
-c("Scatter plot of observations vs individual predictions", "RES","dv_ipred"),
-c("Scatter plot of absolute value of IWRES vs individual predictions","RES","abs_iwres_ipred"),
-c("Scatter plot of IWRES vs individual predictions","RES","iwres_ipred"),
-c("Plots of observations and model predictions per individual","IND","indiv"),
-c("Histogram of EBE","DIS","ebe_hist"),
-c("Boxplot of EBE","DIS","ebe_box"),
-c("Distribution and quantile-quantile plot of IWRES","QQ","qq_iwres"),
-c("Distribution and correlation structure of RE (`ETA`)","ETA_PAIRS","eta_matrix"),
-c("Relationships between RE and categorical covariates","ETA_COV","eta_cats"),
-c("Relationships between RE and continuous covariates","ETA_COV","eta_conts"),
-c("Visual predictive check (VPC)","VPC","vpc"))
+  c("Scatter plot of NPDE vs population predictions", "RES", "npde_pred"),
+  c("Scatter plot of NPDE vs time", "RES", "npde_time"),
+  c("Scatter plot of IWRES vs time", "RES", "iwres_time"),
+  c("Scatter plot of observations vs population predictions", "RES", "dv_pred"),
+  c("Scatter plot of observations vs individual predictions", "RES", "dv_ipred"),
+  c("Scatter plot of absolute value of IWRES vs individual predictions", "RES", "abs_iwres_ipred"),
+  c("Scatter plot of IWRES vs individual predictions", "RES", "iwres_ipred"),
+  c("Plots of observations and model predictions per individual", "IND", "indiv"),
+  c("Histogram of EBE", "DIS", "ebe_hist"),
+  c("Boxplot of EBE", "DIS", "ebe_box"),
+  c("Distribution and quantile-quantile plot of IWRES", "QQ", "qq_iwres"),
+  c("Distribution and correlation structure of RE (`ETA`)", "ETA_PAIRS", "eta_matrix"),
+  c("Relationships between RE and categorical covariates", "ETA_COV", "eta_cats"),
+  c("Relationships between RE and continuous covariates", "ETA_COV", "eta_conts"),
+  c("Visual predictive check (VPC)", "VPC", "vpc")
+)
 
-colnames(out) <- c("Plot Name","ggPMX type","ggPMX name")
-xt=xtable(out, label='tab:plots_list', caption='List of all diagnostic plots')
+colnames(out) <- c("Plot Name", "ggPMX type", "ggPMX name")
+xt <- xtable(out, label = "tab:plots_list", caption = "List of all diagnostic plots")
 print(xt, comment = F)
 ```
 Abbreviations:
@@ -597,18 +640,19 @@ Abbreviations:
 ```{r functions_list,echo=FALSE,results='asis'}
 
 out <- rbind(
-c("1","pmx, or pmx_mlx","Creates a controller"),
-c("2","plot_names or plots","Lists controller plots"),
-c("3","get_data","Lists controller data"),
-c("4","get_plot", "Prints a plot"),
-c("5","set_plot", "Creates a new plot"),
-c("6","pmx_update","Updates an existing plot"),
-c("7","pmx_filter","Filters globally the data of the current session"),
-c("8","pmx_copy","Returns a deep copy of the controller"))
+  c("1", "pmx, or pmx_mlx", "Creates a controller"),
+  c("2", "plot_names or plots", "Lists controller plots"),
+  c("3", "get_data", "Lists controller data"),
+  c("4", "get_plot", "Prints a plot"),
+  c("5", "set_plot", "Creates a new plot"),
+  c("6", "pmx_update", "Updates an existing plot"),
+  c("7", "pmx_filter", "Filters globally the data of the current session"),
+  c("8", "pmx_copy", "Returns a deep copy of the controller")
+)
 
-colnames(out) <- c(" ","Function name","Description")
+colnames(out) <- c(" ", "Function name", "Description")
 
-xt=xtable(out, label='tab:func_list', caption='List of all `ggPMX` functions')
+xt <- xtable(out, label = "tab:func_list", caption = "List of all `ggPMX` functions")
 print(xt, comment = F)
 ```
 
