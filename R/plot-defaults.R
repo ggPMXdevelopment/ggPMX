@@ -104,9 +104,10 @@ get_plot_defaults <-
            ebe_box =
              list(     
                has.jitter = FALSE,
-               jitter = list(shape = 1, color = "grey50", width = 0.1),
+               jitter = list(shape = 1, color = "grey50", width = 0.1,height=0.1),
                has.shrink = TRUE,
-               shrink=list(fun="sd",size=4,color="black")
+               shrink=list(fun="sd",size=4,color="black"),
+               histogram=list(binwidth=1/30,position = "dodge")
              ),
            
            

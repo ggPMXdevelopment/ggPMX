@@ -36,12 +36,12 @@
 #' @export
 distrib <- function(
   labels,
-  has.jitter = TRUE,
+  has.jitter = FALSE,
   jitter = list(shape = 1, color = "grey50", width = 0.1),
   facets = list(scales = "free_y", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
-  binwidth=1/30,
+  histogram=list(binwidth=1/30,position = "dodge"),
   shrink=list(fun="sd",size=5,color="black", hjust=-1,vjust=5),
   dname = NULL,
   ...){
@@ -72,7 +72,7 @@ distrib <- function(
     has.jitter = has.jitter,
     jitter = jitter,
     facets = facets,
-    binwidth=binwidth,
+    histogram=histogram,
     has.shrink = has.shrink,
     shrink=shrink,
     gp = pmx_gpar(
@@ -111,32 +111,25 @@ wrap_formula <- function(x,origin="lfacet"){
 }
 
 jitter_layer <- function(jitter){
-  with(jitter,
-       geom_jitter(
-         aes_string(x="EFFECT",y = "VALUE"),
-         shape = shape, color = color,
-         position = 
-           position_jitter(width = width,height = 0.1)
-       ))
+  
+  jitter$mapping <- aes_string(x="EFFECT",y = "VALUE")
+  do.call(geom_jitter,jitter) 
 }
 
 distrib.hist <- function(dx,strat.facet,strat.color,x){
   wrap.formula <- if(!is.null(strat.facet)) wrap_formula(strat.facet,"EFFECT")
   else formula("~EFFECT")
-  
-  p <-   ggplot(data = dx,aes_string(x = "VALUE")) + 
-    with(x,geom_histogram(binwidth=binwidth))
-  if(!is.null(strat.color))
-    p <- p  %+% with(x,geom_histogram(
-      aes_string(fill=strat.color),
-      position = "dodge",
-      binwidth=binwidth))
-  p <- p + with(x$facets, facet_wrap(wrap.formula , scales = scales,
-                                     nrow = nrow))
-  
-  if(x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]] ,x$shrink)
-  
-  p
+  with(x,{
+    p <-   ggplot(data = dx,aes_string(x = "VALUE"))
+    if(!is.null(strat.color))
+      histogram$mapping <- aes_string(fill=strat.color)
+    p <- p + do.call(geom_histogram,histogram)
+    facets$facets <- wrap.formula
+    p <- p + do.call(facet_wrap,facets)
+    if(has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]] ,x$shrink)
+    
+    p
+  })
   
 }
 
@@ -183,7 +176,7 @@ shrinkage_layer <-
       shrink$fun <- NULL
       res <- do.call(annotate,shrink)
     }
-               
+    
     res
     
   }
