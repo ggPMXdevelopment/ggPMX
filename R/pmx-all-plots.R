@@ -38,12 +38,14 @@ wrap_pmx_plot_generic <-
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
 #' @export
+#' @example inst/examples/residual.R
+#' @family residual
 pmx_plot_dv_pred <- function(ctr,...){
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr,"dv_pred",params)
@@ -56,12 +58,16 @@ pmx_plot_dv_pred <- function(ctr,...){
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
 #' @export
+#' @family residual
+#' @example inst/examples/residual.R
+
+
 pmx_plot_dv_ipred <- function(
   ctr,
   ...){
@@ -77,12 +83,15 @@ pmx_plot_dv_ipred <- function(
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
 #' @export
+#' @family residual
+#' @example inst/examples/residual.R
+
 pmx_plot_iwres_ipred <- function(
   ctr,...){
   params <- as.list(match.call(expand.dots = TRUE))[-1]
@@ -97,12 +106,15 @@ pmx_plot_iwres_ipred <- function(
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
 #' @export
+#' @family residual
+#' @example inst/examples/residual.R
+
 pmx_plot_abs_iwres_ipred <- function(
   ctr,...){
   params <- as.list(match.call(expand.dots = TRUE))[-1]
@@ -118,12 +130,15 @@ pmx_plot_abs_iwres_ipred <- function(
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
 #' @export
+#' @family residual
+#' @example inst/examples/residual.R
+
 pmx_plot_iwres_time <- function(ctr,...){
   
   params <- as.list(match.call(expand.dots = TRUE))[-1]
@@ -137,12 +152,15 @@ pmx_plot_iwres_time <- function(ctr,...){
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
 #' @export
+#' @family residual
+#' @example inst/examples/residual.R
+
 pmx_plot_npde_time <- function(
   ctr, ...){
   params <- as.list(match.call(expand.dots = TRUE))[-1]
@@ -154,12 +172,15 @@ pmx_plot_npde_time <- function(
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{residual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
 #' @export
+#' @family residual
+#' @example inst/examples/residual.R
+
 pmx_plot_npde_pred<- function(
   ctr,
   ...){
@@ -175,8 +196,8 @@ pmx_plot_npde_pred<- function(
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{eta_pairs}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{eta_pairs}} ggPMX internal function for eta matrix plot.
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
@@ -194,8 +215,8 @@ pmx_plot_eta_matrix <-  function(ctr,...){
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{distrib}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{distrib}} generic object for distribution plots (histogram/boxplot).
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
@@ -215,8 +236,8 @@ pmx_plot_ebe_box <-
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{distrib}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{distrib}} generic object for distribution plots (histogram/boxplot).
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
@@ -238,8 +259,8 @@ pmx_plot_ebe_hist <-
 #' @param npage \code{integer} page(s) to display 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{individual}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{individual}} generic object for individual plots.
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
@@ -247,7 +268,7 @@ pmx_plot_ebe_hist <-
 pmx_plot_individual <- 
   function(
     ctr,
-    npage,
+    npage=1,
     ...){
     stopifnot(is_pmxclass(ctr))
     if(!"indiv" %in% (ctr %>% plot_names))return(NULL)
@@ -269,8 +290,8 @@ pmx_plot_individual <-
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{eta_cov}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{eta_cov}}  generic object for eta/covariates plots
 #' \item \code{\link{pmx_update}} function.
 #' }
 
@@ -289,8 +310,8 @@ pmx_plot_eta_cats <-
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{eta_cov}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} low level function grahical object
+#' \item \code{\link{eta_cov}} generic object for eta/covariates plots.
 #' \item \code{\link{pmx_update}} function.
 #' }
 
@@ -310,8 +331,8 @@ pmx_plot_eta_conts <-
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{pmx_qq}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_qq}} quantile-quantile plot object.
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 plot
@@ -329,8 +350,8 @@ pmx_plot_iwres_qq <-
 #' @param ctr pmx controller 
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} loaw level function grahical object
-#' \item \code{\link{pmx_qq}} generic function internal object.
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_qq}} quantile-quantile plot object
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @export

@@ -16,8 +16,8 @@ check_argument <- function(value,pmxname){
 #' @param config Can be either :
 #' The complete path for the configuration file, the name of configuration within the built-in
 #' list of configurations, or a configuration object.
-#' @param sys the system name can be MLX/NM/OTHERS
-#' @param directory where the files are located. 
+#' @param sys the system name can be MLX/NM
+#' @param directory \code{character} modelling output directory. 
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
 #' @param dvid \code{character} observation type parameter
@@ -28,7 +28,7 @@ check_argument <- function(value,pmxname){
 #' @param settings \emph{[Optional]}\code{list} list of global settings parameters 
 #' shared between all plots
 #' @return a pmxClass object
-#' @family pmxclass 
+#' @seealso  \code{\link{pmx_mlx}} 
 #' @export
 #' @details 
 #' 
@@ -37,22 +37,47 @@ check_argument <- function(value,pmxname){
 #' \item {\strong{is.draft:}} {\code{logical} if set to FALSE any plot is without draft annotation}
 #' }
 #' @examples
-#'\dontrun{
+## \dontrun{
 #'
-#'## Example to create the controller object:
-#' workdir <- "~/SVN/ggPMX_doc/USER_EXAMPLES/MLX/PK_NO_COVARIATE"
-#' WORK_DIR <- file.path(workdir, "RESULTS")
-#' input_file <- file.path(workdir, "oral_data.txt")
+#'## Example to create the controller using theophylline data
+#'theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+#'                          "theophylline")
+#'WORK_DIR <- file.path(theophylline, "Monolix")
+#'input_file <- file.path(theophylline, "data_pk.csv")
 
-#' ctr <- pmx(sys="mlx",
-#'            config = "standing", 
-#'            directory = WORK_DIR,input = input_file,dv="Y")
-#'## Better option is to use pmxOptions
-#'## Now the latter call becomes
-#'ctr <- pmx(sys="mlx", config = "standing",work_dir = WORK_DIR, input = input_file, dv = "Y")
-#'## Or even simpler
-#'ctr1 <- pmx_mlx("standing")
-#'}
+#' ## using only mondatory varaibles
+#' ctr <- pmx(
+#'   sys="mlx",
+#'   config = "standing",
+#'   directory = WORK_DIR,
+#'   input = input_file,
+#'   dv = "Y",
+#'   dvid ="DVID"
+#'   )
+#' ## Using covariates 
+#' ctr <- pmx(
+#'   sys="mlx",
+#'   config = "standing",
+#'   directory = WORK_DIR,
+#'   input = input_file,
+#'   dv = "Y",
+#'   dvid ="DVID",
+#'   cats=c("SEX"),
+#'   conts=c("WT0","AGE0"),
+#'   strats="STUD"
+#' )
+#' ## using settings paremeter
+#' ctr <- pmx(
+#'   sys="mlx",
+#'   config = "standing",
+#'   directory = WORK_DIR,
+#'   input = input_file,
+#'   dv = "Y",
+#'   dvid ="DVID",
+#'   settings=list(is.draft=FALSE)
+#')
+#' 
+## }
 
 pmx <-
   function(config, sys=c("mlx","nm"), directory, input, dv,dvid,cats=NULL,conts=NULL,occ=NULL,strats=NULL,
@@ -87,7 +112,7 @@ pmx <-
 #' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
-#' @family pmxclass 
+#' @seealso  \code{\link{pmx}} 
 #' @return \code{pmxClass} object
 #' @export
 pmx_mlx <-
@@ -606,7 +631,7 @@ pmx_add_plot <- function(self, private, x, pname){
     self$set_config(pname,x)
     x$input <- self %>% get_data("input")
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
-   
+    
   } else {
     # throw error message
     private$.plots[[pname]] <- NULL
