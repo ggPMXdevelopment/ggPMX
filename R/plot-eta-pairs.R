@@ -210,7 +210,7 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       xAxisLabels = nn,
       yAxisLabels = if (has.shrink) c("Shrinkage", nn) else nn,
       showYAxisPlotLabels = TRUE,
-      switch = "both",
+      ##switch = "both",
       xlab = labels$x,
       ylab = labels$y,
       byrow = TRUE,
@@ -246,10 +246,10 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   eta_gtable <- ggmatrix_gtable(x, ...)
   if (x$has.shrink) {
     eta_gtable <- gtable_remove_grobs(eta_gtable, "axis-l-1")
-    strip_l_1 <- gtable::gtable_filter(eta_gtable, "strip-l-1")
+    strip_l_1 <- gtable::gtable_filter(eta_gtable, "strip-r-1")
     strip_l_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]$rot <- 0
-    strip_l_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]$hjust <- -0.03
-    matches <- grepl("strip-l-1", eta_gtable$layout$name, fixed = TRUE)
+    strip_l_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]$hjust <- 0.1
+    matches <- grepl("strip-r-1", eta_gtable$layout$name, fixed = TRUE)
     eta_gtable$grobs[[which(matches)]] <- strip_l_1
   }
 

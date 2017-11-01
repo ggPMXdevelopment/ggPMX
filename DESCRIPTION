@@ -12,7 +12,6 @@ Depends:
 Imports:
     data.table,
     yaml,
-    ggthemes,
     R6,
     gtable,
     ggplot2 (>= 2.2.0),

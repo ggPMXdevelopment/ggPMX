@@ -25,7 +25,6 @@
 #' @docType package
 #' @importFrom R6 R6Class
 #' @import ggplot2
-#' @importFrom ggthemes theme_gdocs
 #' @importFrom gtable gtable_add_cols gtable_add_rows
 #' @importFrom magrittr %>%
 #' @importFrom stringr str_trim

@@ -6,7 +6,6 @@
 #' object.
 
 #' @import ggplot2
-#' @importFrom ggthemes theme_gdocs
 #' @export
 pmx_theme <- function(...) {
   theme_bw() +
