@@ -538,8 +538,10 @@ ctr %>% pmx_plot_ebe_box(strat.facet = ~SEX)
 ## Distribution boxplot: mix of categorical and continuous covariates
 ```{r}
 ctr %>% pmx_plot_ebe_box(
- strat.facet = DISE~RACE, strat.color = "SEX",
-  has.jitter = FALSE
+  strat.facet = SEX~RACE,
+  strat.color="DISE",
+  has.jitter = FALSE,
+  shrink=list(hjust=0.7)
 )
 ```
 

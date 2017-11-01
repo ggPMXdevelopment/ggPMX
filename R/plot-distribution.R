@@ -179,7 +179,7 @@ shrinkage_layer <-
       shrink$mapping <- 
         aes(
           x = EFFECT, y = Inf,
-          label = round(SHRINK * 100)
+          label = sprintf("%s%%",round(SHRINK * 100))
         )
       shrink$data <- dx
       shrink$position = position_dodge(width = 0.9)
