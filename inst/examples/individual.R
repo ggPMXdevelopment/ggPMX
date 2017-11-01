@@ -49,7 +49,9 @@ ctr %>% pmx_plot_individual(strat.facet = STUD~SEX)
 #
 # ## we can use any expression involving the data
 # ## filter and stratify
-ctr %>% pmx_plot_individual(filter = SEX == 1, strat.facet = ~SEX, facets = list(nrow = 5, ncol = 5))
+ctr %>% pmx_plot_individual(
+  filter = SEX == 1, strat.facet = ~SEX, 
+  facets = list(nrow = 5, ncol = 5))
 
 # # transformation  --------------------------------------
 #
