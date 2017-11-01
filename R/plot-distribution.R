@@ -35,16 +35,16 @@
 #'
 #' @export
 distrib <- function(
-                    labels,
-                    has.jitter = FALSE,
-                    jitter = list(shape = 1, color = "grey50", width = 0.1),
-                    facets = list(scales = "free_y", nrow = 3),
-                    type = c("box", "hist"),
-                    has.shrink = FALSE,
-                    histogram=list(binwidth = 1 / 30, position = "dodge"),
-                    shrink=list(fun = "sd", size = 5, color = "black", hjust = -1, vjust = 5),
-                    dname = NULL,
-                    ...) {
+  labels,
+  has.jitter = FALSE,
+  jitter = list(shape = 1, color = "grey50", width = 0.1),
+  facets = list(scales = "free_y", nrow = 3),
+  type = c("box", "hist"),
+  has.shrink = FALSE,
+  histogram=list(binwidth = 1 / 30, position = "dodge"),
+  shrink=list(fun = "sd", size = 5, color = "black", hjust = -1, vjust = 5),
+  dname = NULL,
+  ...) {
   assert_that(is_logical(has.jitter))
   assert_that(is_list(jitter))
   assert_that(is_list(facets))
@@ -53,19 +53,19 @@ distrib <- function(
   assert_that(is_list(shrink))
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "eta"
-
-
+  
+  
   if (missing(labels)) {
     labels <- list(
-        title = "EBE distribution",
-        subtitle = "",
-        x = "Etas",
-        y = "",
-        legend = "Random effect"
-      )
+      title = "EBE distribution",
+      subtitle = "",
+      x = "Etas",
+      y = "",
+      legend = "Random effect"
+    )
   }
   assert_that(is_list(labels))
-
+  
   structure(list(
     ptype = "DIS",
     dname = dname,
@@ -103,14 +103,14 @@ wrap_formula <- function(x, origin="lfacet") {
   if (is.character(x) && length(x) == 1) {
     str <- sprintf("%s ~ %s", x, origin)
   }
-
+  
   if (length(x) == 3 && is.formula(x)) {
     str <- sprintf(
-        "%s ~ %s + %s", deparse(x[[2]]),
-        deparse(x[[3]]), origin
-      )
+      "%s ~ %s + %s", deparse(x[[2]]),
+      deparse(x[[3]]), origin
+    )
   }
-
+  
   if (length(x) == 2 && is.formula(x)) {
     str <- sprintf("%s ~ %s", deparse(x[[2]]), origin)
   }
@@ -137,7 +137,7 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
     facets$facets <- wrap.formula
     p <- p + do.call(facet_wrap, facets)
     if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink)
-
+    
     p
   })
 }
@@ -146,7 +146,7 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
   EFFECT <- VALUE <- NULL
   p <- ggplot(data = dx) +
     geom_boxplot(aes(x = EFFECT, y = VALUE), outlier.shape = NA)
-
+  
   if (!is.null(strat.color)) {
     p <- ggplot(data = dx, aes_string(fill = strat.color)) +
       geom_boxplot(
@@ -154,17 +154,17 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
         outlier.shape = NA, position = position_dodge(width = 0.9)
       )
   }
-
+  
   if (!is.null(strat.facet)) {
     p <- p + with(x$facets, facet_wrap(
-        strat.facet, scales = scales,
-        nrow = nrow
-      ))
+      strat.facet, scales = scales,
+      nrow = nrow
+    ))
   }
-
+  
   if (x$has.jitter) p <- p + jitter_layer(x$jitter)
   if (x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box")
-
+  
   p
 }
 
@@ -175,25 +175,26 @@ shrinkage_layer <-
   function(dx, shrink, type="hist") {
     ##
     SHRINK <- EFFECT <- POS <- NULL
-    res <- geom_text(
-      data = dx,
-      aes(
-        x = EFFECT, y = POS,
-        label = sprintf("shrinkage=%s%%", round(SHRINK * 100))
-      ),
-      color = shrink$color, size = shrink$size,
-      position = position_dodge(width = 0.9)
-    )
-    if (type == "hist") {
+    res <- if(type=="box"){
+      shrink$mapping <- 
+        aes(
+          x = EFFECT, y = Inf,
+          label = round(SHRINK * 100)
+        )
+      shrink$data <- dx
+      shrink$position = position_dodge(width = 0.9)
+      shrink$fun <- NULL
+      do.call(geom_text, shrink)      
+    } else  {
       shrink$label <- sprintf("shrinkage=%s%%", round(dx$SHRINK * 100))
       shrink$geom <- "text"
       shrink$x <- -Inf
       shrink$y <- Inf
       shrink$fun <- NULL
-      res <- do.call(annotate, shrink)
+      do.call(annotate, shrink)
     }
-
     res
+    
   }
 
 

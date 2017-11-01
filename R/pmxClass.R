@@ -259,7 +259,9 @@ plots <- function(ctr) {
   if (exists("plots", x)) {
     data.table(
       plot_name = tolower(names(x$plots)),
-      plot_type = sapply(x$plots, "[[", "ptype")
+      plot_type = sapply(x$plots, "[[", "ptype"),
+      plot_function = sprintf("pmx_plot_%s",tolower(names(x$plots)))
+      
     )
   }
 }
@@ -640,7 +642,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     }
     if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
       grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-      grp <- intersect(grp, names(dx))
+      grp <- intersect(c(grp, x[["strat.color"]]),names(dx))
       x[["shrink.dx"]] <-
         if (!is.null(x[["filter"]])) {
           ff <- x[["filter"]]
