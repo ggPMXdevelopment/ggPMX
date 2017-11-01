@@ -610,7 +610,10 @@ pmx_add_plot <- function(self, private, x, pname) {
       if (ptype == "IND") x$input <- x[["filter"]](x$input)
     }
     ## stratification
-
+    if (ptype == "ETA_PAIRS") {
+      x[["strat.color"]] <- NULL
+      x[["strat.facet"]] <- NULL
+    }
 
     if (!is.null(x[["strat.color"]])) {
       gp <- x[["gp"]]

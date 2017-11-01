@@ -202,6 +202,7 @@ pmx_plot_npde_pred <- function(
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
+#' @example inst/examples/eta_matrix.R
 #' @export
 pmx_plot_eta_matrix <- function(ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
