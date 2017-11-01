@@ -596,7 +596,7 @@ ctr %>% pmx_plot_ebe_hist(has.shrink = TRUE, strat.facet = ~SEX)
 ## global filtering 
 ```{r}
 ctr <- theophylline()
-
+## this will change controller 
 ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME <2)
 ctr %>% get_data("prediction")
 ```
@@ -605,6 +605,8 @@ ctr %>% get_data("prediction")
 ## local filtering 
 
 ```{r loacl_filtering}
+ctr <- theophylline()
+
 ## we can use any expression involving the data
 ctr %>% pmx_plot_dv_pred(filter = DV > mean(DV) & PRED < median(PRED))
 ## filter and stratify
