@@ -303,6 +303,8 @@ pmx_plot_individual <-
 
 #' @return ggplot2 object
 #' @export
+#' @example inst/examples/eta_cov.R
+#' @family eta covariates
 pmx_plot_eta_cats <-
   function(ctr,
            ...) {
@@ -320,7 +322,7 @@ pmx_plot_eta_cats <-
 #' \item \code{\link{eta_cov}} generic object for eta/covariates plots.
 #' \item \code{\link{pmx_update}} function.
 #' }
-
+#' @family eta covariates
 #' @export
 pmx_plot_eta_conts <-
   function(ctr,
