@@ -41,7 +41,7 @@
 
 
 individual <- function(labels,
-                       facets = list(ncol = 2, nrow = 2),
+                       facets = list(ncol = 2, nrow = 2,scales="free"),
                        dname = NULL,
                        ipred_line = list(linetype = 2, color = "grey50", size = 1),
                        pred_line = list(linetype = 1, color = "grey50", size = 1),
@@ -119,18 +119,18 @@ plot_pmx.individual <-
         length(unique(dx$ID)) / nrow / ncol
       ))
 
-      with(facets, function(i) {
+      function(i) {
         res <- list()
         if (is.null(i)) i <- seq_len(npages)
         i <- intersect(i, seq_len(npages))
         res <- lapply(i, function(x) {
-          p + facet_wrap_paginate(
-            wrap.formula, ncol = ncol, nrow = nrow,
-            page = x
-          )
+          facets$page <- x
+          facets$facets <- wrap.formula
+          p + do.call(facet_wrap_paginate,facets)
+        
         })
         if (length(res) == 1) res[[1]] else res
-      })
+      }
     })
 
     get_page

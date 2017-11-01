@@ -16,7 +16,8 @@
 pmx_filter <-
   function(ctr, data_set = c(
            "estimates", "predictions",
-           "eta", "finegrid", "shrink"
+           "eta", "finegrid", "shrink",
+           "input"
          ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)
