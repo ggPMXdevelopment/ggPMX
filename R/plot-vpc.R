@@ -19,7 +19,9 @@ vpc.data <-
            irun = 99,
            key = "RID",
            group_by = c("VIS1N", "NT", "NDOSE", "PART", "meanTIM2")) {
-    sim <- fread(nm_sim_file, skip = 1, fill = TRUE)
+    ## TODO:remove fill = TRUE for check (DT 1.10.4 has this feature)
+    
+    sim <- fread(nm_sim_file, skip = 1)
     dat <- fread(data_file)
     CMT <- DV <- EFFECT <- EVID <- NULL
     ID <- ISIM <- LIDV <- NT <- NULL

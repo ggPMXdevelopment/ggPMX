@@ -174,9 +174,7 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
 
 
 
-
-shrinkage_layer <-
-  function(dx, shrink, type="hist",strat.color) {
+shrinkage_layer <- function(dx, shrink, type="hist",strat.color) {
     ##
     SHRINK <- EFFECT <- POS <- NULL
     res <- if(type=="box"){
