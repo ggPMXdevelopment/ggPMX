@@ -106,12 +106,10 @@ get_plot_defaults <-
           has.jitter = FALSE,
           jitter = list(shape = 1, color = "grey50", width = 0.1, height = 0.1),
           has.shrink = TRUE,
-          shrink = list(fun = "sd", size = 4, color = "black"),
+          shrink = list(fun = "sd", size = 4, color = "black",vjust=3),
           histogram = list(binwidth = 1 / 30, position = "dodge")
         ),
-
-
-      ebe_hist =
+     ebe_hist =
         list(
           facets = list(scales = "free_y", nrow = 3),
           has.shrink = TRUE,
@@ -119,8 +117,6 @@ get_plot_defaults <-
             fun = "sd", size = 4, color = "black", hjust = -0.5, vjust = 2
           )
         ),
-
-
       iwres_qq =
         list(
           labels = list(

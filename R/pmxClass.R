@@ -160,17 +160,17 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV",
   assert_that(is_string_or_null(pname))
   assert_that(is_string_or_null(strat.color))
   assert_that(is_string_or_formula_or_null(strat.facet))
-
-
-
+  
+  
+  
   conf <-
     switch(ptype,
-      IND = individual(...),
-      DIS = if (ctr$has_re) distrib(...),
-      RES = residual(...),
-      ETA_PAIRS = if (ctr$has_re) eta_pairs(...),
-      ETA_COV = if (ctr$has_re) eta_cov(...),
-      PMX_QQ = pmx_qq(...)
+           IND = individual(...),
+           DIS = if (ctr$has_re) distrib(...),
+           RES = residual(...),
+           ETA_PAIRS = if (ctr$has_re) eta_pairs(...),
+           ETA_COV = if (ctr$has_re) eta_cov(...),
+           PMX_QQ = pmx_qq(...)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
@@ -300,9 +300,9 @@ get_plot_config <- function(ctr, pname) {
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, data_set = c(
-                     "estimates", "predictions",
-                     "eta", "finegrid", "input"
-                   )) {
+  "estimates", "predictions",
+  "eta", "finegrid", "input"
+)) {
   assert_that(is_pmxclass(ctr))
   data_set <- match.arg(data_set)
   if (data_set == "input") {
@@ -381,7 +381,7 @@ get_occ <- function(ctr) {
 #' @importFrom R6 R6Class
 pmxClass <- R6::R6Class(
   "pmxClass",
-
+  
   # Private methods ------------------------------------------------------------
   private = list(
     .data_path = "",
@@ -390,7 +390,7 @@ pmxClass <- R6::R6Class(
     .plots = list(),
     .plots_configs = list()
   ),
-
+  
   # Public methods -------------------------------------------------------------
   public = list(
     data = NULL,
@@ -403,14 +403,14 @@ pmxClass <- R6::R6Class(
     has_re = FALSE, re = NULL,
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
-
+    
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
-
+    
     # Operations ---------------------------------------------------------------
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
-
+    
     update_plot = function(pname, strat.facet=NULL, strat.color=NULL,
                            filter=NULL, trans=NULL,
                            ..., pmxgpar = NULL) {
@@ -420,21 +420,21 @@ pmxClass <- R6::R6Class(
         filter, trans, ..., pmxgpar = pmxgpar
       )
     },
-
+    
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
-
+    
     get_config = function(pname)
       pmx_get_config(self, private, pname),
-
+    
     set_config = function(pname, new)
       pmx_set_config(self, private, pname, new),
     get_plot = function(pname)
       pmx_get_plot(self, private, pname),
-
+    
     plots = function()
       pmx_plots(self, private),
-
+    
     post_load = function()
       pmx_post_load(self, private)
   )
@@ -453,7 +453,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(conts) || is.null(conts) || is.na(conts)) conts <- ""
   if (missing(strats) || is.null(strats) || is.na(strats)) strats <- ""
   if (missing(settings)) settings <- NULL
-
+  
   private$.data_path <- data_path
   private$.input <- input
   self$config <- config
@@ -464,7 +464,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$occ <- toupper(occ)
   self$strats <- toupper(strats)
   self$settings <- settings
-
+  
   ## private$.covariates <- covs[!is.na(covs) & covs!=""]
   self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ)
   self$data <- load_source(
@@ -472,7 +472,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$config$data, dvid = self$dvid
   )
   ## check random effect
-
+  
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
     if (length(re) > 0) {
@@ -485,7 +485,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         )
     }
   }
-
+  
   self$post_load()
   ## create all plots
   for (nn in names(self$config$plots)) {
@@ -511,10 +511,10 @@ pmx_print <- function(self, private, ...) {
       c("strats", paste(self %>% get_strats(), collapse = ","))
     )
   colnames(ctr_table) <- c("PARAM", "VALUE")
-
+  
   print(kable(ctr_table))
-
-
+  
+  
   print(self$config, ...)
 }
 
@@ -535,7 +535,7 @@ pmx_transform <- function(x, dx, trans, direction) {
       )
     })
   }
-
+  
   cols_ind <- function(x) {
     switch(
       direction,
@@ -544,7 +544,7 @@ pmx_transform <- function(x, dx, trans, direction) {
       xy = c("TIME", "PRED", "IPRED", "DV")
     )
   }
-
+  
   cols_dis <- function(x) {
     switch(
       direction,
@@ -553,21 +553,21 @@ pmx_transform <- function(x, dx, trans, direction) {
       xy = c("VALUE")
     )
   }
-
+  
   cols_qq <- function(x) {
     switch(
       direction,
       x = x$x
     )
   }
-
+  
   cols_eta_conts <- function(x) {
     switch(
       direction,
       y = "VALUE"
     )
   }
-
+  
   cols <- switch(
     x[["ptype"]],
     RES = cols_res(x),
@@ -593,10 +593,10 @@ pmx_add_plot <- function(self, private, x, pname) {
   if (missing(pname)) {
     pname <- paste(x$aess, collapse = "_")
   }
-
+  
   ## assert_that(is_string_or_expression_or_null(filter))
-
-
+  
+  
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
@@ -614,7 +614,7 @@ pmx_add_plot <- function(self, private, x, pname) {
       x[["strat.color"]] <- NULL
       x[["strat.facet"]] <- NULL
     }
-
+    
     if (!is.null(x[["strat.color"]])) {
       gp <- x[["gp"]]
       gp[["labels"]][["legend"]] <- x[["strat.color"]]
@@ -638,36 +638,30 @@ pmx_add_plot <- function(self, private, x, pname) {
     if (ptype == "DIS") {
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
+      cols <- c("ID","EFFECT","VALUE",x[["strat.color"]],x[["strat.facet"]])
+      dx <- unique(dx[,cols , with=FALSE])
+    }
+    if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
+      grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
+      grp <- intersect(c(grp, x[["strat.color"]]),names(dx))
+      estimates <- self$data[["estimates"]]  
+      if (!is.null(x[["filter"]])) 
+        estimates <- x[["filter"]](estimates)
+      x[["shrink.dx"]] <- shrinkage(estimates, dx,fun = x$shrink$fun, by = grp)
     }
     if (ptype == "ETA_COV") {
       x[["cats"]] <- self %>% get_cats()
       x[["conts"]] <- self %>% get_conts()
     }
-    if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
-      grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-      grp <- intersect(c(grp, x[["strat.color"]]),names(dx))
-      x[["shrink.dx"]] <-
-        if (!is.null(x[["filter"]])) {
-          ff <- x[["filter"]]
-          shrinkage(
-            ff(self$data[["estimates"]]), ff(self$data[["eta"]]),
-            fun = x$shrink$fun, by = grp
-          )
-        } else {
-          shrinkage(
-            self$data[["estimates"]], self$data[["eta"]],
-            fun = x$shrink$fun, by = grp
-          )
-        }
-    }
-
+    
+    
     if (!is.null(self$settings)) {
       if ("is.draft" %in% names(self$settings)) {
         x$gp$is.draft <- self$settings$is.draft
       }
     }
     self$set_config(pname, x)
-
+    
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
   } else {
     # throw error message
