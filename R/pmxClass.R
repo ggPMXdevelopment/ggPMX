@@ -615,6 +615,7 @@ pmx_add_plot <- function(self, private, x, pname) {
       x[["strat.facet"]] <- NULL
     }
     
+    
     if (!is.null(x[["strat.color"]])) {
       gp <- x[["gp"]]
       gp[["labels"]][["legend"]] <- x[["strat.color"]]
@@ -635,15 +636,17 @@ pmx_add_plot <- function(self, private, x, pname) {
         x$input <- pmx_transform(x, inp, x[["trans"]])
       }
     }
+    grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
+    grp <- unique(intersect(c(grp, x[["strat.color"]]),names(dx)))
+    
     if (ptype == "DIS") {
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
-      cols <- c("ID","EFFECT","VALUE",x[["strat.color"]],x[["strat.facet"]])
-      dx <- unique(dx[,unique(cols) , with=FALSE])
+      cols <- c("ID","EFFECT","VALUE",grp)
+      dx <- unique(dx[,cols , with=FALSE])
     }
     if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
-      grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-      grp <- unique(intersect(c(grp, x[["strat.color"]]),names(dx)))
+
       estimates <- self$data[["estimates"]]  
       if (!is.null(x[["filter"]])) 
         estimates <- x[["filter"]](estimates)
