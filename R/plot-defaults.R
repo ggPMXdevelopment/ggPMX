@@ -12,6 +12,7 @@ get_plot_defaults <-
         has.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
         has.identity_line = TRUE,
+        add_hline=FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       dv_ipred = list(
@@ -25,6 +26,7 @@ get_plot_defaults <-
         has.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
         has.identity_line = TRUE,
+        add_hline=FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       iwres_ipred =
