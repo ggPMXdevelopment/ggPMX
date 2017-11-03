@@ -284,7 +284,9 @@ pmx_plot_individual <-
     params$pname <- "indiv"
     params$ctr <- cctr
     do.call("pmx_update", params)
-    p <- cctr %>% get_plot("indiv", npage)
+    p <- if(is.null(npage)) cctr %>% get_plot("indiv")
+    else  cctr %>% get_plot("indiv", npage)
+    
     rm(cctr)
     p
   }
