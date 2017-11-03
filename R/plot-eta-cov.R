@@ -95,6 +95,11 @@ eta_cov <- function(
 #' @importFrom stats cor
 #'
 plot_pmx.eta_cov <- function(x, dx, ...) {
+  if(!is.null(x[["strat.facet"]]))
+    message("facet stratification is not yet implemented")
+  if(!is.null(x[["strat.color"]]))
+    message("color stratification is not yet implemented")
+  
   p <- if (x$type == "cats") {
     cats <- x[["cats"]]
     if (all(nzchar(x[["cats"]]))) {
@@ -109,7 +114,6 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
     if (all(nzchar(x[["conts"]]))) {
       dx.conts <- dx[, c(conts, "VALUE", "EFFECT"), with = FALSE]
       dx.conts <- melt(dx.conts, id = c("VALUE", "EFFECT"))
-      ## dx.conts[,value:=log10(value)-mean(log10(value)),variable]
       x$facets$facets <- as.formula("EFFECT~variable")
       p <- ggplot(dx.conts, aes_string(x = "value", y = "VALUE")) +
         do.call(geom_point, x$point) +
