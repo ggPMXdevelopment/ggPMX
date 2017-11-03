@@ -43,8 +43,8 @@
 individual <- function(labels,
                        facets = list(ncol = 2, nrow = 2,scales="free"),
                        dname = NULL,
-                       ipred_line = list(linetype = 2, color = "grey50", size = 1),
-                       pred_line = list(linetype = 1, color = "grey50", size = 1),
+                       ipred_line = list(linetype = 1, color = "grey50", size = 1),
+                       pred_line = list(linetype =2, color = "grey50", size = 1),
                        point = list(shape = 20, color = "black", size = 4),
                        ...) {
   assert_that(is_list(facets))
