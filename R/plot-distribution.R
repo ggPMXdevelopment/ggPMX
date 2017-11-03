@@ -101,18 +101,18 @@ is.formula <- function(x) inherits(x, "formula")
 wrap_formula <- function(x, origin="lfacet") {
   str <- sprintf("~ %s", origin)
   if (is.character(x) && length(x) == 1) {
-    str <- sprintf("%s ~ %s", x, origin)
+    str <- sprintf("%s ~ %s", origin,x)
   }
   
   if (length(x) == 3 && is.formula(x)) {
     str <- sprintf(
-      "%s ~ %s + %s", deparse(x[[2]]),
-      deparse(x[[3]]), origin
+      "%s ~ %s + %s", origin,
+      deparse(x[[2]]), deparse(x[[3]])
     )
   }
   
   if (length(x) == 2 && is.formula(x)) {
-    str <- sprintf("%s ~ %s", deparse(x[[2]]), origin)
+    str <- sprintf("%s ~ %s", origin,deparse(x[[2]]))
   }
   return(formula(str))
 }
@@ -142,7 +142,7 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
     p <- p + do.call(geom_histogram, histogram)
     facets$facets <- wrap.formula
     p <- p + do.call(facet_wrap, facets)
-    if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink,strat.color)
+    if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink,"hist",strat.color)
     
     p
   })
