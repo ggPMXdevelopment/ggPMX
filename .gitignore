@@ -10,3 +10,4 @@ ggPMX_testPK
 packrat/lib*/
 packrat/
 cleanup
+NAMESPACE
