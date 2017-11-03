@@ -639,11 +639,11 @@ pmx_add_plot <- function(self, private, x, pname) {
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
       cols <- c("ID","EFFECT","VALUE",x[["strat.color"]],x[["strat.facet"]])
-      dx <- unique(dx[,cols , with=FALSE])
+      dx <- unique(dx[,unique(cols) , with=FALSE])
     }
     if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
       grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-      grp <- intersect(c(grp, x[["strat.color"]]),names(dx))
+      grp <- unique(intersect(c(grp, x[["strat.color"]]),names(dx)))
       estimates <- self$data[["estimates"]]  
       if (!is.null(x[["filter"]])) 
         estimates <- x[["filter"]](estimates)
