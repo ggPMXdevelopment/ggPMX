@@ -20,7 +20,7 @@ vpc.data <-
            key = "RID",
            group_by = c("VIS1N", "NT", "NDOSE", "PART", "meanTIM2")) {
     ## TODO:remove fill = TRUE for check (DT 1.10.4 has this feature)
-    
+
     sim <- fread(nm_sim_file, skip = 1)
     dat <- fread(data_file)
     CMT <- DV <- EFFECT <- EVID <- NULL
@@ -110,11 +110,11 @@ vpc <- function(
   assert_that(is_string_or_null(dname))
   if (missing(labels)) {
     labels <- list(
-        title = "VPC",
-        subtitle = "",
-        x = "Time after first dose (h)",
-        y = "Plasma concentration (ng/mL)"
-      )
+      title = "VPC",
+      subtitle = "",
+      x = "Time after first dose (h)",
+      y = "Plasma concentration (ng/mL)"
+    )
   }
   assert_that(is_list(labels))
   if (is.null(dname)) dname <- "IND"

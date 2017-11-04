@@ -42,15 +42,16 @@ eta_cov <- function(
 
   if (missing(labels)) {
     labels <- list(
-        title = "EBE vs. covariates",
-        x = "",
-        y = ""
-      )
+      title = "EBE vs. covariates",
+      x = "",
+      y = ""
+    )
   }
   assert_that(is_list(labels))
   labels$subtitle <- ""
   structure(list(
     ptype = "ETA_COV",
+    strat=FALSE,
     dname = dname,
     type = type,
     show.correl = show.correl,
@@ -95,11 +96,7 @@ eta_cov <- function(
 #' @importFrom stats cor
 #'
 plot_pmx.eta_cov <- function(x, dx, ...) {
-  if(!is.null(x[["strat.facet"]]))
-    message("facet stratification is not yet implemented")
-  if(!is.null(x[["strat.color"]]))
-    message("color stratification is not yet implemented")
-  
+ 
   p <- if (x$type == "cats") {
     cats <- x[["cats"]]
     if (all(nzchar(x[["cats"]]))) {

@@ -41,27 +41,28 @@
 
 
 individual <- function(labels,
-                       facets = list(ncol = 2, nrow = 2,scales="free"),
+                       facets = list(ncol = 2, nrow = 2, scales = "free"),
                        dname = NULL,
                        ipred_line = list(linetype = 1, color = "grey50", size = 1),
-                       pred_line = list(linetype =2, color = "grey50", size = 1),
+                       pred_line = list(linetype = 2, color = "grey50", size = 1),
                        point = list(shape = 20, color = "black", size = 4),
                        ...) {
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
   if (missing(labels)) {
     labels <- list(
-        title = "Individual fits",
-        subtitle = "",
-        x = "Time after first dose (hours)",
-        y = "ABC123 plasma concentration (ng/mL)"
-      )
+      title = "Individual fits",
+      subtitle = "",
+      x = "Time after first dose (hours)",
+      y = "ABC123 plasma concentration (ng/mL)"
+    )
   }
   assert_that(is_list(labels))
   if (is.null(dname)) dname <- "IND"
 
   structure(list(
     ptype = "IND",
+    strat=TRUE,
     dname = dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
@@ -126,8 +127,7 @@ plot_pmx.individual <-
         res <- lapply(i, function(x) {
           facets$page <- x
           facets$facets <- wrap.formula
-          p + do.call(facet_wrap_paginate,facets)
-        
+          p + do.call(facet_wrap_paginate, facets)
         })
         if (length(res) == 1) res[[1]] else res
       }

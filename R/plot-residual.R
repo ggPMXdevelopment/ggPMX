@@ -68,6 +68,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, hline=NU
   structure(
     list(
       ptype = "RES",
+      strat = TRUE,
       dname = dname,
       aess = aess,
       point = point,

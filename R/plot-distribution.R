@@ -68,6 +68,7 @@ distrib <- function(
   
   structure(list(
     ptype = "DIS",
+    strat=TRUE,
     dname = dname,
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
     type = type,
@@ -101,7 +102,7 @@ is.formula <- function(x) inherits(x, "formula")
 wrap_formula <- function(x, origin="lfacet") {
   str <- sprintf("~ %s", origin)
   if (is.character(x) && length(x) == 1) {
-    str <- sprintf("%s ~ %s", origin,x)
+    str <- sprintf("%s ~ %s", origin, x)
   }
   
   if (length(x) == 3 && is.formula(x)) {
@@ -112,20 +113,20 @@ wrap_formula <- function(x, origin="lfacet") {
   }
   
   if (length(x) == 2 && is.formula(x)) {
-    str <- sprintf("%s ~ %s", origin,deparse(x[[2]]))
+    str <- sprintf("%s ~ %s", origin, deparse(x[[2]]))
   }
   return(formula(str))
 }
 
-jitter_layer <- function(jitter,strat.color) {
-  if(is.null(strat.color)) do.call(geom_jitter, jitter)
-  else  {
-    jitter$position <- position_jitterdodge(jitter.width=0.1,dodge.width=0.9)
+jitter_layer <- function(jitter, strat.color) {
+  if (is.null(strat.color)) {
+    do.call(geom_jitter, jitter)
+  } else {
+    jitter$position <- position_jitterdodge(jitter.width = 0.1, dodge.width = 0.9)
     jitter$width <- NULL
     jitter$height <- NULL
     do.call(geom_point, jitter)
   }
-
 }
 
 distrib.hist <- function(dx, strat.facet, strat.color, x) {
@@ -142,7 +143,7 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
     p <- p + do.call(geom_histogram, histogram)
     facets$facets <- wrap.formula
     p <- p + do.call(facet_wrap, facets)
-    if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink,"hist",strat.color)
+    if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "hist", strat.color)
     
     p
   })
@@ -152,10 +153,11 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
   EFFECT <- VALUE <- NULL
   p <- ggplot(data = dx, aes_string(x = "EFFECT", y = "VALUE"))
   
-  if (!is.null(strat.color)) 
-    p <- ggplot(data = dx, aes_string(fill = strat.color,x = "EFFECT", y = "VALUE"))
- 
-  if (x$has.jitter) p <- p + jitter_layer(x$jitter,strat.color)
+  if (!is.null(strat.color)) {
+    p <- ggplot(data = dx, aes_string(fill = strat.color, x = "EFFECT", y = "VALUE"))
+  }
+  
+  if (x$has.jitter) p <- p + jitter_layer(x$jitter, strat.color)
   
   p <- p + geom_boxplot(outlier.shape = NA, position = position_dodge(width = 0.9))
   
@@ -167,36 +169,37 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
     ))
   }
   
-  if (x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box",strat.color)
+  if (x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
   
   p
 }
 
 
 
-shrinkage_layer <- function(dx, shrink, type="hist",strat.color) {
-    ##
-    SHRINK <- EFFECT <- POS <- NULL
-    res <- if(type=="box"){
-      shrink$mapping <- 
-        aes(label = sprintf("%s%%",round(SHRINK * 100)),
-            y=Inf)
-      shrink$data <- dx
-      if(is.null(strat.color)) shrink$position = position_dodge(width=0.9)
-      else  shrink$position = position_jitterdodge(jitter.width =0.1)
-      shrink$fun <- NULL
-      do.call(geom_text, shrink)      
-    } else  {
-      shrink$label <- sprintf("shrinkage=%s%%", round(dx$SHRINK * 100))
-      shrink$geom <- "text"
-      shrink$x <- -Inf
-      shrink$y <- Inf
-      shrink$fun <- NULL
-      do.call(annotate, shrink)
-    }
-    res
-    
+shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
+  ##
+  SHRINK <- EFFECT <- POS <- NULL
+  res <- if (type == "box") {
+    shrink$mapping <-
+      aes(
+        label = sprintf("%s%%", round(SHRINK * 100)),
+        y = Inf
+      )
+    shrink$data <- dx
+    shrink$position <- if (is.null(strat.color)) position_dodge(width = 0.9)
+    else position_jitterdodge(jitter.width = 0.1)
+    shrink$fun <- NULL
+    do.call(geom_text, shrink)
+  } else {
+    shrink$label <- sprintf("shrinkage=%s%%", round(dx$SHRINK * 100))
+    shrink$geom <- "text"
+    shrink$x <- -Inf
+    shrink$y <- Inf
+    shrink$fun <- NULL
+    do.call(annotate, shrink)
   }
+  res
+}
 
 
 

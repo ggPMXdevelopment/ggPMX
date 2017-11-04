@@ -260,8 +260,7 @@ plots <- function(ctr) {
     data.table(
       plot_name = tolower(names(x$plots)),
       plot_type = sapply(x$plots, "[[", "ptype"),
-      plot_function = sprintf("pmx_plot_%s",tolower(names(x$plots)))
-      
+      plot_function = sprintf("pmx_plot_%s", tolower(names(x$plots)))
     )
   }
 }
@@ -584,18 +583,26 @@ pmx_transform <- function(x, dx, trans, direction) {
 }
 
 
+is_strat_supported <- function(x){
+  if (!x$strat && !is.null(x[["strat.facet"]])) {
+    message("facet stratification is not yet implemented")
+    x$strat.facet <- NULL
+  }
+  if (!x$strat && !is.null(x[["strat.color"]])) {
+    message("color stratification is not yet implemented")
+    x$strat.color <- NULL
+  }
+  x
+}
 
-## TODO change the way how we choose the data
-## USE AN EXPLICIT METHOD
-## data_set(s) for res,data_set(s) for IND,..
+
 pmx_add_plot <- function(self, private, x, pname) {
   assert_that(is_pmx_gpar(x))
   if (missing(pname)) {
     pname <- paste(x$aess, collapse = "_")
   }
   
-  ## assert_that(is_string_or_expression_or_null(filter))
-  
+  x <- is_strat_supported(x)
   
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
@@ -609,13 +616,6 @@ pmx_add_plot <- function(self, private, x, pname) {
       dx <- x[["filter"]](dx)
       if (ptype == "IND") x$input <- x[["filter"]](x$input)
     }
-    ## stratification
-    if (ptype == "ETA_PAIRS") {
-      x[["strat.color"]] <- NULL
-      x[["strat.facet"]] <- NULL
-    }
-    
-    
     if (!is.null(x[["strat.color"]])) {
       gp <- x[["gp"]]
       gp[["labels"]][["legend"]] <- x[["strat.color"]]
@@ -637,20 +637,20 @@ pmx_add_plot <- function(self, private, x, pname) {
       }
     }
     grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-    grp <- unique(intersect(c(grp, x[["strat.color"]]),names(dx)))
+    grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
     
     if (ptype == "DIS") {
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
-      cols <- c("ID","EFFECT","VALUE",grp)
-      dx <- unique(dx[,cols , with=FALSE])
+      cols <- c("ID", "EFFECT", "VALUE", grp)
+      dx <- unique(dx[, cols, with = FALSE])
     }
     if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
-
-      estimates <- self$data[["estimates"]]  
-      if (!is.null(x[["filter"]])) 
+      estimates <- self$data[["estimates"]]
+      if (!is.null(x[["filter"]])) {
         estimates <- x[["filter"]](estimates)
-      x[["shrink.dx"]] <- shrinkage(estimates, dx,fun = x$shrink$fun, by = grp)
+      }
+      x[["shrink.dx"]] <- shrinkage(estimates, dx, fun = x$shrink$fun, by = grp)
     }
     if (ptype == "ETA_COV") {
       x[["cats"]] <- self %>% get_cats()

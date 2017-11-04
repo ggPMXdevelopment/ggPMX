@@ -15,7 +15,7 @@ input_finegrid <- function(input, finegrid) {
   measures <- setdiff(names(input), c("ID", "DVID", "DV", "TIME", "source"))
   if (length(measures) > 0) {
     dx[, (measures) :=
-        lapply(.SD, na.locf, na.rm = FALSE), by = "ID,DVID", .SDcols = measures]
+      lapply(.SD, na.locf, na.rm = FALSE), by = "ID,DVID", .SDcols = measures]
   }
   input[, source := NULL]
   dx[is.na(source) & TIME >= 0][, source := NULL]

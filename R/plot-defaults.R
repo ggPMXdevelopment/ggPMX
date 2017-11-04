@@ -12,7 +12,7 @@ get_plot_defaults <-
         has.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
         has.identity_line = TRUE,
-        add_hline=FALSE,
+        add_hline = FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       dv_ipred = list(
@@ -26,7 +26,7 @@ get_plot_defaults <-
         has.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
         has.identity_line = TRUE,
-        add_hline=FALSE,
+        add_hline = FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       iwres_ipred =
@@ -108,10 +108,10 @@ get_plot_defaults <-
           has.jitter = FALSE,
           jitter = list(shape = 1, color = "grey50", width = 0.1, height = 0.1),
           has.shrink = TRUE,
-          shrink = list(fun = "sd", size = 4, color = "black",vjust=3),
+          shrink = list(fun = "sd", size = 4, color = "black", vjust = 3),
           histogram = list(binwidth = 1 / 30, position = "dodge")
         ),
-     ebe_hist =
+      ebe_hist =
         list(
           facets = list(scales = "free_y", nrow = 3),
           has.shrink = TRUE,

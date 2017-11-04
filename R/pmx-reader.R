@@ -93,8 +93,8 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="") 
     covariates <- covariates[covariates != ""]
     if (any(!covariates %in% names(xx))) {
       stop(sprintf(
-          "%s : is not a valid covariate variable\n",
-          covariates[!covariates %in% names(xx)]
+        "%s : is not a valid covariate variable\n",
+        covariates[!covariates %in% names(xx)]
       ))
     }
   }

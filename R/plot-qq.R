@@ -42,8 +42,8 @@ pmx_qq <- function(
 
   if (missing(labels)) {
     labels <- list(
-        title = sprintf("QQ plot: %s", x)
-      )
+      title = sprintf("QQ plot: %s", x)
+    )
   }
   labels$y <- ""
   labels$x <- ""
@@ -53,6 +53,7 @@ pmx_qq <- function(
   labels$subtitle <- ""
   structure(list(
     ptype = "PMX_QQ",
+    strat=TRUE,
     x = x,
     dname = dname,
     point = point,
