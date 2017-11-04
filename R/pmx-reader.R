@@ -61,8 +61,13 @@ read_mlx_ind_est <- function(path, x, ...) {
 read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="") {
   DVID <- TIME <- EVID <- MDV <- NULL
   xx <- pmx_fread(ipath)
-
-  setnames(xx, grep("^id$", names(xx), ignore.case = TRUE, value = TRUE), "ID")
+  
+  id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
+  if(length(id_col)==0){
+    id_col <- names(xx)[1]
+    message("input do not contain ID variable: ggPMX use first input variable ",id_col)
+  }
+  setnames(xx, id_col , "ID")
 
   if (dv %in% names(xx)) {
     setnames(xx, dv, "DV")
