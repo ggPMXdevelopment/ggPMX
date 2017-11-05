@@ -33,12 +33,12 @@ read_mlx_ind_est <- function(path, x, ...) {
     ]
   }
 
-  dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
-  if (is.null(dvid) || !dvid %in% names(ds)) {
-    ds[, "DVID" := 1]
-  } else {
-    setnames(ds, dvid, "DVID")
-  }
+  # dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
+  # if (is.null(dvid) || !dvid %in% names(ds)) {
+  #   ds[, "DVID" := 1]
+  # } else {
+  #   setnames(ds, dvid, "DVID")
+  # }
 
 
   ds
