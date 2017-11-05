@@ -7,7 +7,6 @@
 #' @param by \code{character} vector to group by before shrinkage
 #'
 #' @return data.table computing the shrinkage by effect
-#' @importFrom stringr str_trim
 #' @export
 
 shrinkage <-
@@ -30,3 +29,6 @@ shrinkage <-
       list(SHRINK = shrink, POS = max(VALUE) / 2)
     }, grp]
   }
+
+
+
