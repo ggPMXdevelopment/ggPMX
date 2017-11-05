@@ -28,7 +28,7 @@ l_left_join <-
             append(
               merged_list,
               overlay_list[which(names(overlay_list) %in%
-                name)]
+                                   name)]
             )
         }
       }
@@ -160,7 +160,7 @@ theophylline <- function() {
   )
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
-
+  
   pmx_mlx(
     config = "standing",
     directory = WORK_DIR,
@@ -170,6 +170,38 @@ theophylline <- function() {
     cats = c("SEX"),
     conts = c("WT0", "AGE0"),
     strats = "STUD"
+  )
+}
+
+#' Creates pmx controller using monlix data having Occasional variable
+#'
+#' @return pmx controller
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pk_occ()
+#' }
+pk_occ <- function(){
+  uc.name <- "1_popPK_model"
+  data_file <- "PKdata_ggPMX.csv"
+  
+  uc.dir <- file.path(
+    system.file(package = "ggPMX"), "testdata",
+    uc.name
+  )
+  wd.mlx <- file.path(uc.dir, "Monolix")
+  input_file <- file.path(uc.dir, data_file)
+  
+  pmx_mlx(
+    "standing",
+    directory = wd.mlx,
+    input = input_file,
+    dv = "DV",
+    dvid = "YTYPE",
+    cats = c("SEX", "RACE", "DISE", "ILOW"),
+    conts = c("AGE0", "WT0", "HT0", "TRT"),
+    occ = "ISS"
   )
 }
 

@@ -8,6 +8,12 @@ estimates  :
       - SE
       - RSE
       - PVALUE
+
+eta :
+    label : invidual estimates of random effects
+    file  : indiv_eta.txt
+    reader  : read_mlx_ind_est
+    
 predictions :
     label : model predictions
     file  : predictions.txt
@@ -19,10 +25,6 @@ predictions :
       npde: NPDE
       indpred_mode: IPRED
       indwres_mode: IWRES
-eta :
-    label : invidual estimates of random effects
-    file  : indiv_eta.txt
-    reader  : read_mlx_ind_est
 finegrid :
     label : finegrid
     file  : finegrid.txt
@@ -31,6 +33,49 @@ finegrid :
       id: ID
       time: TIME
       poppred: PRED
+      indpred_mode: IPRED
+
+predictions1 :
+    label : model predictions
+    file  : predictions1.txt
+    reader  : read_mlx_pred
+    names:
+      id: ID
+      time: TIME
+      poppred: PRED
       npde: NPDE
+      indpred_mode: IPRED
+      indwres_mode: IWRES
+      
+predictions2 :
+    label : model predictions
+    file  : predictions2.txt
+    reader  : read_mlx_pred
+    names:
+      id: ID
+      time: TIME
+      poppred: PRED
+      npde: NPDE
+      indpred_mode: IPRED
+      indwres_mode: IWRES
+
+finegrid1 :
+    label : finegrid
+    file  : finegrid1.txt
+    reader  : read_mlx_pred
+    names:
+      id: ID
+      time: TIME
+      poppred: PRED
+      indpred_mode: IPRED
+      
+finegrid2 :
+    label : finegrid
+    file  : finegrid2.txt
+    reader  : read_mlx_pred
+    names:
+      id: ID
+      time: TIME
+      poppred: PRED
       indpred_mode: IPRED
 

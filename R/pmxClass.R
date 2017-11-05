@@ -400,6 +400,7 @@ pmxClass <- R6::R6Class(
     strats = NULL,
     settings = NULL,
     has_re = FALSE, re = NULL,
+    endpoint=NULL,
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
     
@@ -463,13 +464,25 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$occ <- toupper(occ)
   self$strats <- toupper(strats)
   self$settings <- settings
+  if(!is.null(settings$endpoint)) self$endpoint <- settings$endpoint
   
   ## private$.covariates <- covs[!is.na(covs) & covs!=""]
-  self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ)
+  self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ,self$endpoint)
   self$data <- load_source(
     sys = config$sys, private$.data_path,
-    self$config$data, dvid = self$dvid
+    self$config$data, dvid = self$dvid,
+    endpoint=self$endpoint
   )
+  if(is.null(self$data$predictions1)) self$endpoint <- NULL
+  if(!is.null(self$endpoint)){
+    if(self$endpoint==1) {
+      self$input <- self$input[DVID==min(DVID)][,DVID:=1]
+      
+    }else{
+      self$input <-self$input[DVID==max(DVID)][,DVID:=2]
+    }
+  }
+  
   ## check random effect
   
   if (!is.null(self$data[["eta"]])) {

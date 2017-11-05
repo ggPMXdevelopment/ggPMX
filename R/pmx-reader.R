@@ -58,7 +58,7 @@ read_mlx_ind_est <- function(path, x, ...) {
 #'
 #' @return data.table well formatted containing modelling input data
 #'
-read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="") {
+read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",endpoint=NULL) {
   DVID <- TIME <- EVID <- MDV <- NULL
   xx <- pmx_fread(ipath)
   
@@ -250,5 +250,20 @@ load_source <- function(sys, path, dconf, ...) {
   dxs <- lapply(datasets, function(x) {
     load_data_set(x, path = path, sys = sys, ...)
   })
+  
+  ## 
+  if(is.null(dxs[["predictions"]])){
+    endpoint = list(...)$endpoint
+    if(is.null(endpoint)) endpoint <- 1
+    dxs[["eta"]][,DVID:=endpoint]
+    if(!is.null(dxs[["predictions1"]]) && !is.null(dxs[["predictions2"]])){
+      dxs[["predictions"]] <- dxs[[sprintf("predictions%s",endpoint)]]
+      dxs[["predictions"]][,DVID:=endpoint]
+    }
+    if(!is.null(dxs[["finegrid1"]]) && !is.null(dxs[["finegrid2"]])){
+      dxs[["finegrid"]] <- dxs[[sprintf("finegrid%s",endpoint)]]
+      dxs[["finegrid"]][,DVID:=endpoint]
+    }
+  }
   dxs
 }
