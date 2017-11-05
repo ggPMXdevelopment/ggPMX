@@ -39,49 +39,7 @@ check_argument <- function(value, pmxname) {
 #' \itemize{
 #' \item {\strong{is.draft:}} {\code{logical} if set to FALSE any plot is without draft annotation}
 #' }
-#' @examples
-## \dontrun{
-#'
-#' ## Example to create the controller using theophylline data
-#' theophylline <- file.path(system.file(package = "ggPMX"), "testdata",
-#'                          "theophylline")
-#' WORK_DIR <- file.path(theophylline, "Monolix")
-#' input_file <- file.path(theophylline, "data_pk.csv")
-
-#' ## using only mondatory varaibles
-#' ctr <- pmx(
-#'   sys="mlx",
-#'   config = "standing",
-#'   directory = WORK_DIR,
-#'   input = input_file,
-#'   dv = "Y",
-#'   dvid ="DVID"
-#'   )
-#' ## Using covariates
-#' ctr <- pmx(
-#'   sys="mlx",
-#'   config = "standing",
-#'   directory = WORK_DIR,
-#'   input = input_file,
-#'   dv = "Y",
-#'   dvid ="DVID",
-#'   cats=c("SEX"),
-#'   conts=c("WT0","AGE0"),
-#'   strats="STUD"
-#' )
-#' ## using settings paremeter
-#' ctr <- pmx(
-#'   sys="mlx",
-#'   config = "standing",
-#'   directory = WORK_DIR,
-#'   input = input_file,
-#'   dv = "Y",
-#'   dvid ="DVID",
-#'   settings=list(is.draft=FALSE)
-#' )
-#'
-## }
-
+#' @example inst/examples/controller.R
 pmx <-
   function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
            settings=NULL) {
@@ -659,11 +617,13 @@ pmx_add_plot <- function(self, private, x, pname) {
       dx <- unique(dx[, cols, with = FALSE])
     }
     if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
-      estimates <- self$data[["estimates"]]
-      if (!is.null(x[["filter"]])) {
-        estimates <- x[["filter"]](estimates)
-      }
-      x[["shrink.dx"]] <- shrinkage(estimates, dx, fun = x$shrink$fun, by = grp)
+      x[["shrink.dx"]] <- 
+          ctr %>% pmx_comp_shrink(
+            fun= x$shrink$fun,
+            strat.color=x[["strat.color"]],
+            strat.facet=x[["strat.facet"]],
+            filter=x[["filter"]]
+          )
     }
     if (ptype == "ETA_COV") {
       x[["cats"]] <- self %>% get_cats()
