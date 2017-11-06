@@ -84,7 +84,26 @@ pmx_mlx <-
 
 
 
-
+#' Create a controller from mlxtran file 
+#'
+#' @param file_name mlxtran file 
+#' @param config object as pmx controller
+#' @param endpoint can be 1 or 2
+#'
+#' @return \code{pmxClass} controller object
+#' @export
+#'
+#' @examples
+#' \notrun{
+#' pmx_mlxtran("some_file.mlxtran")
+#' }
+pmx_mlxtran <- function(file_name,config="standing",endpoint=c(1,2)){
+  params <- parse_mlxtran(file_name)
+  params$config <- "standing"
+  params$settings <- list(endpoint=endpoint)
+  do.call(pmx_mlx,params)
+  
+}
 
 formula_to_text <- function(form) {
   if (is.formula(form)) {
