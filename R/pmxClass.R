@@ -83,6 +83,9 @@ pmx_mlx <-
   }
 
 
+
+
+
 formula_to_text <- function(form) {
   if (is.formula(form)) {
     Reduce(paste, deparse(form))
@@ -400,6 +403,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats, settings) {
+  DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
       "Expecting source path(directory ) and a config path",
@@ -618,7 +622,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     }
     if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
       x[["shrink.dx"]] <- 
-          ctr %>% pmx_comp_shrink(
+          self %>% pmx_comp_shrink(
             fun= x$shrink$fun,
             strat.color=x[["strat.color"]],
             strat.facet=x[["strat.facet"]],

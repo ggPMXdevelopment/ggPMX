@@ -13,6 +13,9 @@
 #'
 pmx_comp_shrink <- 
   function(ctr,fun=c("sd", "var"),strat.facet,strat.color,filter,...){
+    
+    VAR <-     FUN <-     PARAM <-     EFFECT <- NULL  
+    VALUE <-     OMEGA <-     EBE <- NULL
     stopifnot(is_pmxclass(ctr))
     ## cherch variable and missing 
     fun <- match.arg(fun)
