@@ -30,17 +30,17 @@ read_mlx_ind_est <- function(path, x, ...) {
     ds[, c("ID", "OCC") := tstrsplit(ID, "#")       ][
       ,
       c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))
-    ]
+      ]
   }
-
+  
   # dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
   # if (is.null(dvid) || !dvid %in% names(ds)) {
   #   ds[, "DVID" := 1]
   # } else {
   #   setnames(ds, dvid, "DVID")
   # }
-
-
+  
+  
   ds
 }
 
@@ -68,7 +68,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
     message("input do not contain ID variable: ggPMX use first input variable ",id_col)
   }
   setnames(xx, id_col , "ID")
-
+  
   if (dv %in% names(xx)) {
     setnames(xx, dv, "DV")
   } else {
@@ -81,7 +81,6 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
   if (dvid %in% names(xx)) {
     setnames(xx, dvid, "DVID")
   } else {
-    message("NO VALID DVID column provided: set DVID equal to 1")
     xx[, "DVID" := 1]
   }
   if (nzchar(occ) && occ %in% names(xx)) {
@@ -90,9 +89,9 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
   ## round time column for further merge
   setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
   xx[, TIME := round(TIME, 4)]
-
+  
   setnames(xx, toupper(names(xx)))
-
+  
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {
     covariates <- covariates[covariates != ""]
@@ -150,22 +149,22 @@ read_mlx_pred <- function(path, x, ...) {
       return(NULL)
     }
   }
-
-
+  
+  
   ## select columns
   res <- setnames(xx[, names(nn), with = FALSE], as.character(nn))
-
+  
   if (grepl("#", res[1, ID], fixed = TRUE)) {
     res[, c("ID", "OCC") := tstrsplit(ID, "#")][, c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))]
   }
-
+  
   dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
   if (is.null(dvid) || !dvid %in% names(res)) {
     res[, "DVID" := 1]
   } else {
     setnames(res, dvid, "DVID")
   }
-
+  
   res
 }
 
@@ -200,21 +199,9 @@ read_mlx_par_est <- function(path, x, ...) {
 #' @export
 load_data_set <- function(x, path, sys, ...) {
   fpath <- file.path(path, x[["file"]])
-  if (!file.exists(fpath)) {
-    fpath <- grep(
-      x[["file"]], list.files(path, full.names = TRUE),
-      value = TRUE
-    )
-    if (length(fpath) > 1) {
-      fpath <- grep(sys, fpath, ignore.case = TRUE, value = TRUE)
-    }
-  }
-  if (length(fpath) == 0 || !file.exists(fpath)) {
-    message(sprintf(" %s FILE DOES NOT exist under %s", x[["file"]], path))
-    return(NULL)
-  }
-
-
+  if (!file.exists(fpath)) return(NULL)
+  
+  
   if (exists("reader", x)) {
     return(do.call(x[["reader"]], list(fpath, x, ...)))
   }
@@ -244,26 +231,38 @@ load_data_set <- function(x, path, sys, ...) {
 #' @export
 load_source <- function(sys, path, dconf, ...) {
   names. <- names(dconf)
-
-
-  datasets <- dconf[names.]
+  DVID <- NULL
+  
+  pk_pd <- c("predictions1","predictions2","finegrid1","finegrid2")
+  
+  datasets <- dconf[setdiff(names.,pk_pd)]
   dxs <- lapply(datasets, function(x) {
     load_data_set(x, path = path, sys = sys, ...)
   })
   
   ## 
   if(is.null(dxs[["predictions"]])){
+    datasets <- dconf[pk_pd]
+    dxs2 <- lapply(datasets, function(x) {
+      load_data_set(x, path = path, sys = sys, ...)
+    })
+    
     endpoint = list(...)$endpoint
     if(is.null(endpoint)) endpoint <- 1
     dxs[["eta"]][,DVID:=endpoint]
-    if(!is.null(dxs[["predictions1"]]) && !is.null(dxs[["predictions2"]])){
-      dxs[["predictions"]] <- dxs[[sprintf("predictions%s",endpoint)]]
+    if(!is.null(dxs2[["predictions1"]]) && !is.null(dxs2[["predictions2"]])){
+      dxs[["predictions"]] <- dxs2[[sprintf("predictions%s",endpoint)]]
       dxs[["predictions"]][,DVID:=endpoint]
     }
-    if(!is.null(dxs[["finegrid1"]]) && !is.null(dxs[["finegrid2"]])){
-      dxs[["finegrid"]] <- dxs[[sprintf("finegrid%s",endpoint)]]
+    if(!is.null(dxs2[["finegrid1"]]) && !is.null(dxs2[["finegrid2"]])){
+      dxs[["finegrid"]] <- dxs2[[sprintf("finegrid%s",endpoint)]]
       dxs[["finegrid"]][,DVID:=endpoint]
     }
   }
+  for ( x in setdiff(names.,pk_pd))
+    if (is.null(dxs[[x]]))
+      message(sprintf(" %s FILE DOES NOT exist", x))
+  
+  
   dxs
 }

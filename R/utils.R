@@ -216,7 +216,9 @@ is_mlxtran <- function(file_name)
 #' @return \code{list} key/values to initilize ggPMX controller 
 #' @export
 parse_mlxtran <- function(file_name){
-  
+   section.name <- line <- section <- NULL
+   sub_section <- sub_section.name <- NULL
+   value <- NULL
   ## general file check 
   if(!is_mlxtran(file_name))
     stop("this is not a mlxtran file")
