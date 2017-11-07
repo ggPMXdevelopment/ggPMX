@@ -12,3 +12,4 @@ packrat/
 cleanup
 NAMESPACE
 cont.sh
+.Rbuildignore
