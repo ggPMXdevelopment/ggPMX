@@ -454,16 +454,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$config$data, dvid = self$dvid,
     endpoint=self$endpoint
   )
-  if(is.null(self$data$predictions1)) self$endpoint <- NULL
-  if(!is.null(self$endpoint)){
-    if(self$endpoint==1) {
-      self$input <- self$input[DVID==min(DVID)][,DVID:=1]
-      
-    }else{
-      self$input <-self$input[DVID==max(DVID)][,DVID:=2]
-    }
-  }
-  
   ## check random effect
   
   if (!is.null(self$data[["eta"]])) {

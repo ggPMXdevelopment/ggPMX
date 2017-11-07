@@ -78,11 +78,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
                         suggested names are : %s", dv, dv.names)
     stop(err.msg)
   }
-  if (dvid %in% names(xx)) {
-    setnames(xx, dvid, "DVID")
-  } else {
-    xx[, "DVID" := 1]
-  }
+
   if (nzchar(occ) && occ %in% names(xx)) {
     setnames(xx, occ, "OCC")
   }
@@ -91,6 +87,22 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
   xx[, TIME := round(TIME, 4)]
   
   setnames(xx, toupper(names(xx)))
+  if (all(c("MDV", "EVID") %in% names(xx))) {
+    xx <- xx[!(EVID == 1 & MDV == 1)]
+  }
+  if (dvid %in% names(xx)) {
+    setnames(xx, dvid, "DVID")
+    if(!is.null(endpoint)){
+      xx <- if(endpoint==1) {
+        xx[DVID==min(DVID)][,DVID:=1]
+      }else{
+        xx[DVID==max(DVID)][,DVID:=2]
+      }
+    }
+    
+  } else {
+    xx[, "DVID" := 1]
+  }
   
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {
@@ -114,11 +126,10 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
     conts <- conts[conts != ""]
     xx[, (conts) := lapply(.SD, as.numeric), .SDcols = conts]
   }
-  if (all(c("MDV", "EVID") %in% names(xx))) {
-    xx[!(EVID == 1 & MDV == 1)]
-  } else {
-    xx
-  }
+  
+  
+  
+  
 }
 
 #' Read MONOLIX model predictions
