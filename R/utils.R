@@ -216,6 +216,9 @@ is_mlxtran <- function(file_name)
 #' @return \code{list} key/values to initilize ggPMX controller 
 #' @export
 parse_mlxtran <- function(file_name){
+  on.exit(setwd(wd))
+  
+  wd <- getwd()
    section.name <- line <- section <- NULL
    sub_section <- sub_section.name <- NULL
    value <- NULL
@@ -256,8 +259,9 @@ parse_mlxtran <- function(file_name){
   directory = gsub("'","",dat[key=="exportpath",value])
   directory = file.path(dirname(file_name),directory)
   ### input
-  input = basename(gsub("'","",dat[key=="file" & section=="DATAFILE",value]))
-  input = file.path(dirname(file_name),input)
+  input = gsub("'","",dat[key=="file" & section=="DATAFILE",value])
+  setwd(dirname(file_name))
+  input = normalizePath(input)
   ### dv
   dv <- dat[grepl("use=observation,",value),key]
   ### dvid
