@@ -249,7 +249,7 @@ load_source <- function(sys, path, dconf, ...) {
     
     endpoint = list(...)$endpoint
     if(is.null(endpoint)) endpoint <- 1
-    dxs[["eta"]][,DVID:=endpoint]
+    if(!is.null(dxs[["eta"]]))dxs[["eta"]][,DVID:=endpoint]
     if(!is.null(dxs2[["predictions1"]]) && !is.null(dxs2[["predictions2"]])){
       dxs[["predictions"]] <- dxs2[[sprintf("predictions%s",endpoint)]]
       dxs[["predictions"]][,DVID:=endpoint]
