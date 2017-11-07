@@ -127,6 +127,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
     xx[, (conts) := lapply(.SD, as.numeric), .SDcols = conts]
   }
   
+  xx
   
   
   
