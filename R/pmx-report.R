@@ -12,15 +12,12 @@
 #' @export
 #' @importFrom rmarkdown draft render
 #'
-#' @examples
-#' \dontrun{
-#' ctr <- pk_occ()
-#' ctr %>% pmx_report("1_popPK_model","all")
-#' }
-#'
+#' @example inst/examples/report.R
+#' 
 pmx_report <-
   function(ctr, name, output_dir=NULL,template="standing", render=TRUE) {
-    file_name <- sprintf("%s.Rmd", name)
+    
+    file_name <- file.path(output_dir,sprintf("%s.Rmd", name))
     if (file.exists(file_name)) {
       file.remove(file_name)
     }
