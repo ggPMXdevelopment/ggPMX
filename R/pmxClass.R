@@ -97,7 +97,8 @@ pmx_mlx <-
 #' \notrun{
 #' pmx_mlxtran("some_file.mlxtran")
 #' }
-pmx_mlxtran <- function(file_name,config="standing",endpoint=c(1,2)){
+pmx_mlxtran <- function(file_name,config="standing",endpoint){
+  if(missing(endpoint)) endpoint <- 1
   params <- parse_mlxtran(file_name)
   params$config <- "standing"
   params$settings <- list(endpoint=endpoint)
