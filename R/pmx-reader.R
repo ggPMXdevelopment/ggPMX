@@ -32,15 +32,6 @@ read_mlx_ind_est <- function(path, x, ...) {
       c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))
       ]
   }
-  
-  # dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
-  # if (is.null(dvid) || !dvid %in% names(ds)) {
-  #   ds[, "DVID" := 1]
-  # } else {
-  #   setnames(ds, dvid, "DVID")
-  # }
-  
-  
   ds
 }
 
@@ -78,7 +69,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
                         suggested names are : %s", dv, dv.names)
     stop(err.msg)
   }
-
+  
   if (nzchar(occ) && occ %in% names(xx)) {
     setnames(xx, occ, "OCC")
   }
@@ -133,6 +124,35 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
   
 }
 
+mlx_ipred <- function(x){
+  if("indpred_mode" %in% x) return("indpred_mode")
+  if("indpred_mean" %in% x) {
+    message("NO indpred_mode found use indpred_mean instead")
+    return("indpred_mean")
+  }
+  if("indpred_mean*" %in% x) {
+    message("NO indpred_(mode|mean) found use indpred_mean* instead")
+    return("indpred_mean*")
+  }
+  message("NO valid mapping for IPRED")
+  return(NULL)
+}
+
+mlx_iwres<- function(x){
+  if("indwres_mode" %in% x) return("indwres_mode")
+  if("indwres_mean" %in% x) {
+    message("NO indwres_mode found use indwres_mean instead")
+    return("indpred_mean")
+  }
+  if("indwres_mean*" %in% x) {
+    message("NO indwres_(mode|mean) found use indwres_mean* instead")
+    return("indwres_mean*")
+  }
+  message("NO valid mapping for IWRES")
+  return(NULL)
+}
+
+
 #' Read MONOLIX model predictions
 #'
 #' @param path character path to the file
@@ -147,25 +167,20 @@ read_mlx_pred <- function(path, x, ...) {
   ID <- DVID <- OCC <- NULL
   xx <- pmx_fread(path)
   setnames(xx, tolower(names(xx)))
-  if (!is.null(x$strict)) xx <- xx[, names(x$names), with = FALSE]
   ## use configuration columns
-  ids <- which(names(x$names) %in% names(xx))
-  nn <- x$names[ids]
-  if (!"indpred_mode" %in% names(nn)) {
-    if ("indpred_mean" %in% names(xx)) {
-      message("predictions: NO indpred_mode found use inpred_mean instead")
-      nn[["indpred_mode"]] <- NULL
-      nn[["indpred_mean"]] <- "IPRED"
-    } else {
-      message("predictions: NO indpred_mode neither indpred_mean found")
-      return(NULL)
-    }
+  ids <- x$names %in% names(xx)
+  ipred <- get(x$names$IPRED)(names(xx))
+  nn <- as.character(c(x$names[ids],ipred))
+  names.nn <- c(names(x$names[ids]),"IPRED")
+  if("IWRES" %in% names(x$names)){
+    iwres <- get(x$names$IWRES)(names(xx))
+    nn <- c(nn,iwres)
+    names.nn <- c(names.nn,"IWRES")
   }
-  
-  
+  res <- setnames(xx[, nn, with = FALSE],names.nn)
+
   ## select columns
-  res <- setnames(xx[, names(nn), with = FALSE], as.character(nn))
-  
+
   if (grepl("#", res[1, ID], fixed = TRUE)) {
     res[, c("ID", "OCC") := tstrsplit(ID, "#")][, c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))]
   }
@@ -211,7 +226,16 @@ read_mlx_par_est <- function(path, x, ...) {
 #' @export
 load_data_set <- function(x, path, sys, ...) {
   fpath <- file.path(path, x[["file"]])
-  if (!file.exists(fpath)) return(NULL)
+  if (!file.exists(fpath)) {
+    endpoint <- list(...)$endpoint
+    fpath <- sub("_",endpoint,x[["pattern"]])
+    if(length(fpath)==0) fpath <- file.path(path, x[["file"]])
+    fpath <- file.path(path, fpath)
+    if(!file.exists(fpath)){
+       message("file ",x[["file"]], " do not exist")
+       return(NULL)
+    }
+  }
   
   
   if (exists("reader", x)) {

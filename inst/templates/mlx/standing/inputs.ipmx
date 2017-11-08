@@ -17,65 +17,22 @@ eta :
 predictions :
     label : model predictions
     file  : predictions.txt
+    pattern: predictions_.txt
     reader  : read_mlx_pred
     names:
-      id: ID
-      time: TIME
-      poppred: PRED
-      npde: NPDE
-      indpred_mode: IPRED
-      indwres_mode: IWRES
+      ID: id
+      TIME: time
+      PRED: poppred
+      NPDE: npde
+      IPRED: mlx_ipred
+      IWRES: mlx_iwres
 finegrid :
     label : finegrid
     file  : finegrid.txt
+    pattern: finegrid_.txt
     reader  : read_mlx_pred
     names:
-      id: ID
-      time: TIME
-      poppred: PRED
-      indpred_mode: IPRED
-
-predictions1 :
-    label : model predictions
-    file  : predictions1.txt
-    reader  : read_mlx_pred
-    names:
-      id: ID
-      time: TIME
-      poppred: PRED
-      npde: NPDE
-      indpred_mode: IPRED
-      indwres_mode: IWRES
-      
-predictions2 :
-    label : model predictions
-    file  : predictions2.txt
-    reader  : read_mlx_pred
-    names:
-      id: ID
-      time: TIME
-      poppred: PRED
-      npde: NPDE
-      indpred_mode: IPRED
-      indwres_mode: IWRES
-
-finegrid1 :
-    label : finegrid
-    file  : finegrid1.txt
-    reader  : read_mlx_pred
-    names:
-      id: ID
-      time: TIME
-      poppred: PRED
-      indpred_mode: IPRED
-      
-finegrid2 :
-    label : finegrid
-    file  : finegrid2.txt
-    reader  : read_mlx_pred
-    names:
-      id: ID
-      time: TIME
-      poppred: PRED
-      indpred_mode: IPRED
-
+      ID: id
+      TIME: time
+      PRED: poppred
+      IPRED: mlx_ipred
