@@ -375,7 +375,7 @@ pmxClass <- R6::R6Class(
   public = list(
     data = NULL,
     config = NULL,
-    input = NULL,
+    input = NULL,input_file=NULL,
     dv = NULL,
     dvid = NULL, cats = NULL, conts = NULL, occ = NULL,
     strats = NULL,
@@ -449,6 +449,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if(!is.null(settings$endpoint)) self$endpoint <- settings$endpoint
   
   ## private$.covariates <- covs[!is.na(covs) & covs!=""]
+  self$input_file <- input
   self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ,self$endpoint)
   self$data <- load_source(
     sys = config$sys, private$.data_path,
@@ -481,25 +482,23 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 #' @importFrom knitr kable
 pmx_print <- function(self, private, ...) {
   cat("\npmx object:\n")
+  paste_col <- function(n,x) if(all(x!=""))c(n,paste(x, collapse = ","))
   ctr_table <-
     rbind(
       c(
         "working directory",
-        gsub(path.package("ggPMX"), "", private$.data_path)
+        basename(dirname(private$.data_path))
       ),
       c("Modelling input", basename(private$.input)),
       c("dv", self$dv),
       c("dvid", self$dvid),
-      c("cats", paste(self %>% get_cats(), collapse = ",")),
-      c("conts", paste(self %>% get_conts(), collapse = ",")),
-      c("strats", paste(self %>% get_strats(), collapse = ","))
+      paste_col("cats", self %>% get_cats),
+      paste_col("conts", self %>% get_conts),
+      paste_col("strats", self %>% get_strats)
     )
   colnames(ctr_table) <- c("PARAM", "VALUE")
-  
   print(kable(ctr_table))
-  
-  
-  print(self$config, ...)
+  print(self$config, ctr=self,plot_names=names(private$.plots))
 }
 
 
@@ -632,12 +631,12 @@ pmx_add_plot <- function(self, private, x, pname) {
     }
     if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
       x[["shrink.dx"]] <- 
-          self %>% pmx_comp_shrink(
-            fun= x$shrink$fun,
-            strat.color=x[["strat.color"]],
-            strat.facet=x[["strat.facet"]],
-            filter=x[["filter"]]
-          )
+        self %>% pmx_comp_shrink(
+          fun= x$shrink$fun,
+          strat.color=x[["strat.color"]],
+          strat.facet=x[["strat.facet"]],
+          filter=x[["filter"]]
+        )
     }
     if (ptype == "ETA_COV") {
       x[["cats"]] <- self %>% get_cats()

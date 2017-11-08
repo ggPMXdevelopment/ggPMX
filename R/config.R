@@ -92,18 +92,31 @@ print.pmxConfig <-
         data_file = sapply(x$data, "[[", "file"),
         data_label = sapply(x$data, "[[", "label")
       )
-
-      print(kable(datas_table), format = "latex", caption = "List of data sets:")
+      datas_table <- rbind(datas_table,
+                           data.table(
+                             data_name = "input",
+                             data_file = basename(ctr$input_file),
+                             data_label = "modelling input"
+                           )
+      )
+      ctr <- list(...)$ctr
+      if(!is.null(ctr)){
+        datas_table <- datas_table[ data_name %in% c("input",names(ctr$data))]
+      }
+      print(kable(datas_table), format = "latex")
     }
-
+    
     if (exists("plots", x)) {
       plots_table <- data.table(
         plot_name = tolower(names(x$plots)),
         plot_type = sapply(x$plots, "[[", "ptype")
       )
-
-      print(kable(plots_table), format = "latex", caption = "List of plots:")
+      plot_names <- list(...)$plot_names
+      if(!is.null(ctr)){
+        plots_table <- plots_table[ plot_name %in% plot_names]
+      }
+      print(kable(plots_table), format = "latex")
     }
-
+    
     invisible(x)
   }
