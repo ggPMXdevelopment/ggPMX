@@ -3,7 +3,7 @@
 #' @param name \code{character} report name
 #' @param template \code{character} report template
 #' @param render \code{logical} if TRUE generate pdf report
-#' @param outpu_dir Output directory. 
+#' @param output_dir Output directory. 
 #' An alternate directory to write the output file to 
 #' (defaults to the directory of the input file).
 #' @param ctr controller

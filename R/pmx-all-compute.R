@@ -1,7 +1,7 @@
 #' Compute Shrinkage
 #'
 #' @param ctr \code{pmxClass} controller object
-#' @param fun 
+#' @param fun \code{character} can be sd or var
 #' @param filter optional filter which will be applied to plotting data
 #' @param strat.facet \code{formula} optional stratification parameter
 #' @param strat.color \code{character} optional stratification parameter

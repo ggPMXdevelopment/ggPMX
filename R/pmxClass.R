@@ -94,7 +94,7 @@ pmx_mlx <-
 #' @export
 #'
 #' @examples
-#' \notrun{
+#' \dontrun{
 #' pmx_mlxtran("some_file.mlxtran")
 #' }
 pmx_mlxtran <- function(file_name,config="standing",endpoint){

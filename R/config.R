@@ -85,6 +85,7 @@ load_config <- function(x, sys = c("mlx", "nm")) {
 #' @export
 print.pmxConfig <-
   function(x, ...) {
+    data_name <- plot_name <- NULL
     assert_that(is_pmxconfig(x))
     if (exists("data", x)) {
       datas_table <- data.table(
@@ -92,17 +93,19 @@ print.pmxConfig <-
         data_file = sapply(x$data, "[[", "file"),
         data_label = sapply(x$data, "[[", "label")
       )
-      datas_table <- rbind(datas_table,
-                           data.table(
-                             data_name = "input",
-                             data_file = basename(ctr$input_file),
-                             data_label = "modelling input"
-                           )
-      )
+      
+      
       ctr <- list(...)$ctr
       if(!is.null(ctr)){
-        datas_table <- datas_table[ data_name %in% c("input",names(ctr$data))]
+        datas_table <- rbind(datas_table,
+                             data.table(
+                               data_name = "input",
+                               data_file = basename(ctr$input_file),
+                               data_label = "modelling input"
+                             )
+        )
       }
+      datas_table <- datas_table[ data_name %in% c("input",names(ctr$data))]
       print(kable(datas_table), format = "latex")
     }
     
@@ -112,7 +115,7 @@ print.pmxConfig <-
         plot_type = sapply(x$plots, "[[", "ptype")
       )
       plot_names <- list(...)$plot_names
-      if(!is.null(ctr)){
+      if(!is.null(plot_names)){
         plots_table <- plots_table[ plot_name %in% plot_names]
       }
       print(kable(plots_table), format = "latex")
