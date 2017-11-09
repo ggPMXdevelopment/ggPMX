@@ -84,15 +84,13 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",e
   }
   if (dvid %in% names(xx)) {
     setnames(xx, dvid, "DVID")
-    if(!is.null(endpoint)){
-      xx <- if(endpoint==1) {
-        xx[DVID==min(DVID)][,DVID:=1]
-      }else{
-        xx[DVID==max(DVID)][,DVID:=2]
-      }
+    nb.end <- length(unique(xx[,DVID]))
+    if(!is.null(endpoint) & nb.end >1){
+      xx[,DVID :=as.integer(factor(y,labels = seq_along(unique(DVID))))]
+      xx <- xx[DVID==endpoint]
     }
     
-  } else {
+  } else { ## dummy variable for single endpoint case
     xx[, "DVID" := 1]
   }
   
@@ -232,7 +230,7 @@ load_data_set <- function(x, path, sys, ...) {
     if(!is.null(endpoint) && !is.null(x$pattern)){
       file_name <- sub("_",endpoint,x[["pattern"]])
       fpath <- file.path(path, file_name)
-      message("use ",file_name, "for endpoint ",endpoint )
+      message("use ",file_name, " for endpoint ",endpoint )
     }
   }
   if(!file.exists(fpath)){

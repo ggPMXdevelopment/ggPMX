@@ -592,8 +592,8 @@ pmx_add_plot <- function(self, private, x, pname) {
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
   dname <- x$dname
-  if (!is.null(self$data[[dname]])) {
-    dx <- self$data[[dname]]
+  dx <- self$data[[dname]]
+  if (!is.null(dx) && nrow(dx)>0) {
     assert_that(is.data.table(dx))
     x$input <- self %>% get_data("input")
     if (!is.null(x[["filter"]])) {
