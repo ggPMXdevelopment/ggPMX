@@ -261,7 +261,8 @@ pmx_plot_ebe_hist <-
 
 #' Individual plot
 #' @param ctr pmx controller
-#' @param npage \code{integer} page(s) to display
+#' @param npage \code{integer} page(s) to display , set npage to NULL
+#' if you want to have all the individual plots
 #' @param ... others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
@@ -284,7 +285,12 @@ pmx_plot_individual <-
     params$pname <- "indiv"
     params$ctr <- cctr
     do.call("pmx_update", params)
-    p <- cctr %>% get_plot("indiv", npage)
+    p <- if (is.null(npage)) {
+      cctr %>% get_plot("indiv")
+    } else {
+      cctr %>% get_plot("indiv", npage)
+    }
+
     rm(cctr)
     p
   }

@@ -15,7 +15,7 @@ input_finegrid <- function(input, finegrid) {
   measures <- setdiff(names(input), c("ID", "DVID", "DV", "TIME", "source"))
   if (length(measures) > 0) {
     dx[, (measures) :=
-        lapply(.SD, na.locf, na.rm = FALSE), by = "ID,DVID", .SDcols = measures]
+      lapply(.SD, na.locf, na.rm = FALSE), by = "ID,DVID", .SDcols = measures]
   }
   input[, source := NULL]
   dx[is.na(source) & TIME >= 0][, source := NULL]
@@ -24,16 +24,7 @@ input_finegrid <- function(input, finegrid) {
 
 post_load_eta <- function(ds, input, sys, occ) {
   ID <- DVID <- VARIABLE <- NULL
-  ## add DVID variable : merge key with the input
-  if (grepl("#", ds[1, ID], fixed = TRUE)) {
-    ds[, c("ID", "DVID") := tstrsplit(ID, "#")][
-      ,
-      c("ID", "DVID") := list(as.integer(ID), as.integer(DVID))
-    ]
-  }
-  if (!"DVID" %in% names(ds)) ds[, DVID := 1]
-
-  keys <- c("ID", "DVID")
+  keys <- c("ID")
   if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
   ds <- try(
     merge(
