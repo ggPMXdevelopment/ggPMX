@@ -179,9 +179,9 @@ read_mlx_pred <- function(path, x, ...) {
     names.nn <- c(names.nn,"IWRES")
   }
   res <- setnames(xx[, nn, with = FALSE],names.nn)
-
+  
   ## select columns
-
+  
   if (grepl("#", res[1, ID], fixed = TRUE)) {
     res[, c("ID", "OCC") := tstrsplit(ID, "#")][, c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))]
   }
@@ -229,14 +229,17 @@ load_data_set <- function(x, path, sys, ...) {
   fpath <- file.path(path, x[["file"]])
   if (!file.exists(fpath)) {
     endpoint <- list(...)$endpoint
-    fpath <- sub("_",endpoint,x[["pattern"]])
-    if(length(fpath)==0) fpath <- file.path(path, x[["file"]])
-    fpath <- file.path(path, fpath)
-    if(!file.exists(fpath)){
-       message("file ",x[["file"]], " do not exist")
-       return(NULL)
+    if(!is.null(endpoint) && !is.null(x$pattern)){
+      file_name <- sub("_",endpoint,x[["pattern"]])
+      fpath <- file.path(path, file_name)
+      message("use ",file_name, "for endpoint ",endpoint )
     }
   }
+  if(!file.exists(fpath)){
+    message("file ",x[["file"]], " do not exist")
+    return(NULL)
+  }
+  
   
   
   if (exists("reader", x)) {
