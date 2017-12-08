@@ -3,46 +3,179 @@ ABS_IWRES_IPRED:
   ptype: RES
   x: IPRED
   'y': IWRES
-  trans: abs_y
   labels:
-    title: '|IWRES| versus IPRED'
+    title: '|IWRES| vs IPRED'
+    subtitle: ''
     'y': '|IWRES|'
+    x: Individual predictions
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  add_hline: yes
+  has.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  trans: abs_y
+
 IWRES_IPRED:
   ptype: RES
   x: IPRED
   'y': IWRES
+  labels:
+    title: IWRES vs IPRED
+    subtitle: ''
+    x: IWRES
+    'y': Individual predictions
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  add_hline: yes
+  has.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+
 IWRES_TIME:
   ptype: RES
   x: TIME
   'y': IWRES
+  labels:
+    title: IWRES vs TIME
+    subtitle: ''
+    x: TIME
+    'y': Individual predictions
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  add_hline: yes
+  has.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
 
 NPDE_TIME:
   ptype: RES
   x: TIME
   'y': NPDE
+  labels:
+    title: NPDE vs TIME
+    subtitle: ''
+    x: TIME
+    'y': NPDE
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  add_hline: yes
+  has.band: yes
+  has.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 2.0
+
+
 NPDE_PRED:
   ptype: RES
   x: PRED
   'y': NPDE
+  labels:
+    title: NPDE vs PRED
+    subtitle: ''
+    x: PRED
+    'y': NPDE
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  add_hline: yes
+  has.band: yes
+  has.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 2.0
 
 DV_PRED:
   ptype: RES
+  labels:
+    title: DV vs PRED
+    subtitle: ''
   x: PRED
   'y': DV
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  has.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  has.identity_line: yes
+  identity_line:
+    intercept: 0
+    color: blue
 DV_IPRED:
   ptype: RES
+  labels:
+    title: DV vs IPRED
+    subtitle: ''
   x: IPRED
   'y': DV
-
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  has.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  has.identity_line: yes
+  identity_line:
+    intercept: 0
+    color: blue
+    
 EBE_HIST:
   ptype: DIS
-  ranges: ~
   type: hist
+  facets:
+    scales: free_y
+    nrow: 3.0
+  has.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    color: black
+    hjust: -0.5
+    vjust: 2.0
+
 EBE_BOX:
   ptype: DIS
-  ranges: ~
   type: box
-  'has.jitter': false
+  has.jitter: no
+  jitter:
+    shape: 1.0
+    color: grey50
+    width: 0.1
+    height: 0.1
+  has.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    color: black
+  histogram:
+    binwidth: 0.033
+    position: dodge
+  
   
 INDIV:
   ptype: IND
@@ -50,10 +183,15 @@ INDIV:
   
 ETA_MATRIX:
   ptype: ETA_PAIRS
+  title: Correlations of random effects
+  dname: eta
+  type.eta: mode
+  text_color: black
   
 ETA_CATS:
   ptype: ETA_COV
   type: cats
+  
 ETA_CONTS:
   ptype: ETA_COV
   type: conts
@@ -61,7 +199,17 @@ ETA_CONTS:
 IWRES_QQ:
   ptype: PMX_QQ
   x: IWRES
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': IWRES Quantiles
 NPDE_QQ:
   ptype: PMX_QQ
   x: NPDE
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': NPDE Quantiles
 
