@@ -4,7 +4,7 @@ pmxClassHelpers <- test_pmxClass_helpers()
 test_that("individual plot: get all pages", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
-  p <- ctr %>% get_plot("indiv")
+  p <- ctr %>% get_plot("individual")
   expect_equal(length(p), 13)
 })
 
@@ -12,7 +12,7 @@ test_that("individual plot: get all pages", {
 test_that("individual plot: get single page", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
-  p <- ctr %>% get_plot("indiv", 2)
+  p <- ctr %>% get_plot("individual", 2)
   expect_true(inherits(p, "ggplot"))
 })
 
@@ -21,14 +21,14 @@ test_that("individual plot: get single page", {
 test_that("individual plot: get some pages", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
-  p <- ctr %>% get_plot("indiv", c(2, 4))
+  p <- ctr %>% get_plot("individual", c(2, 4))
   expect_equal(length(p), 2)
 })
 
 test_that("individual plot : don't exceed the effective number of pages", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
-  p <- ctr %>% get_plot("indiv", 1:100)
+  p <- ctr %>% get_plot("individual", 1:100)
   expect_equal(length(p), 13)
 })
 

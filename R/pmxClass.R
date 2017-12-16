@@ -204,10 +204,10 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV",
 #' ctr <- pmx_mlx("standing")
 #' p1 <- ctr %>% get_plot("ipred_iwres")
 #' ## get all pages or some pages
-#' p2 <- ctr %>% get_plot("indiv")
+#' p2 <- ctr %>% get_plot("individual")
 #' ## returns one page of individual plot
-#' p2 <- ctr %>% get_plot("indiv",napge=1)
-#' p3 <- ctr %>% get_plot("indiv",napge=c(1,3))
+#' p2 <- ctr %>% get_plot("individual",napge=1)
+#' p3 <- ctr %>% get_plot("individual",napge=c(1,3))
 #' ## get distribution plot
 #' pdistri <- ctr %>% get_plot("ebe_hist")
 #'

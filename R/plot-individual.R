@@ -35,9 +35,9 @@
 #' library(ggPMX)
 #' ctr <- theophylline()
 #' ## display the first page of the individual plot
-#' ctr %>% get_plot("indiv",1)
+#' ctr %>% get_plot("individual",1)
 # display all pages ( default)
-#' ctr %>% get_plot("indiv")
+#' ctr %>% get_plot("individual")
 
 
 individual <- function(labels,

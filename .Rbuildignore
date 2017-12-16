@@ -3,3 +3,5 @@
 ^data-raw$
 ^tools$
 
+^packrat/
+^\.Rprofile$

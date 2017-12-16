@@ -277,14 +277,14 @@ pmx_plot_individual <-
            npage=1,
            ...) {
     stopifnot(is_pmxclass(ctr))
-    if (!"indiv" %in% (ctr %>% plot_names())) return(NULL)
+    if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
     cctr <- pmx_copy(ctr)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
-    params$pname <- "indiv"
+    params$pname <- "individual"
     params$ctr <- cctr
     do.call("pmx_update", params)
-    p <- cctr %>% get_plot("indiv", npage)
+    p <- cctr %>% get_plot("individual", npage)
     rm(cctr)
     p
   }

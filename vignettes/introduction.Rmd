@@ -59,7 +59,7 @@ ctr <- pmx(
 ```{r, results="asis", echo=TRUE}
 lapply(ctr %>% plot_names,
        function(x){
-         if(x=="indiv") 
+         if(x=="individual") 
            return(ctr %>% get_plot(x, c(2, 4)))
          ctr %>% get_plot(x)
        })

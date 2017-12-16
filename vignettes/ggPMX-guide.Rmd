@@ -300,7 +300,7 @@ p2
 
 In case of individual plots where several pages are produced, another optional argument exists, the page number to display (`npage`). 
 ```{r ind_plots, fig.height=3, fig.width=4, fig.align='center'}
-ctr %>% get_plot("indiv", npage = 2)
+ctr %>% get_plot("individual", npage = 2)
 ```
 
 ## Create a new plot with `set_plot()`
@@ -347,13 +347,13 @@ To update some plot features and to access additional settings, we use `pmx_upda
 
 ### Change title
 
-In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
+In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "individual" will be re-plotted, it will be with the settings below.
 ```{r indiv_plots_update, fig.height=3, fig.width=5, fig.align='center'}
 ctr %>% pmx_update(
-  "indiv",
+  "individual",
   labels = list(title = "My individuals")
 )
-ctr %>% get_plot("indiv", npage = 1)
+ctr %>% get_plot("individual", npage = 1)
 ```
 
 Similarly we can do it using: 
@@ -364,15 +364,15 @@ ctr %>% pmx_plot_individual(labels = list(title = "My individuals"), npage = 1)
 
 
 ### Change grid size of individual plots 
-In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
+In the example below, we change the title of the plot called "individual" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
 ```{r indiv_plots_grid, fig.height=3.5, fig.width=6, fig.align='center'}
 ctr %>% pmx_update(
-  "indiv",
+  "individual",
   facets = list(nrow = 2, ncol = 4),
   point = list(shape = 4, color = "red"),
   labels = list(title = "My individual plots grid")
 )
-ctr %>% get_plot("indiv", npage = 1)
+ctr %>% get_plot("individual", npage = 1)
 ```
 
 
@@ -644,7 +644,7 @@ out <- rbind(
   c("Scatter plot of observations vs individual predictions", "RES", "dv_ipred"),
   c("Scatter plot of absolute value of IWRES vs individual predictions", "RES", "abs_iwres_ipred"),
   c("Scatter plot of IWRES vs individual predictions", "RES", "iwres_ipred"),
-  c("Plots of observations and model predictions per individual", "IND", "indiv"),
+  c("Plots of observations and model predictions per individual", "IND", "individual"),
   c("Histogram of EBE", "DIS", "ebe_hist"),
   c("Boxplot of EBE", "DIS", "ebe_box"),
   c("Distribution and quantile-quantile plot of IWRES", "QQ", "qq_iwres"),

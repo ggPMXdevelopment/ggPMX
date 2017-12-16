@@ -42,11 +42,12 @@ pmx_qq <- function(
 
   if (missing(labels)) {
     labels <- list(
-        title = sprintf("QQ plot: %s", x)
-      )
+        title = sprintf("QQ plot: %s", x),
+        y = "",
+        x = "",
+        subtitle = ""
+    )
   }
-  labels$y <- ""
-  labels$x <- ""
   assert_that(is_list(labels))
   default_point <- list(shape = 1, color = "black", size = 1)
   point <- l_left_join(default_point, point)

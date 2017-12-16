@@ -172,12 +172,9 @@ EBE_BOX:
     fun: sd
     size: 4.0
     color: black
-  histogram:
-    binwidth: 0.033
-    position: dodge
   
   
-INDIV:
+INDIVIDUAL:
   ptype: IND
   ranges: ~
   

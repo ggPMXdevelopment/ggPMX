@@ -83,10 +83,10 @@ test_that("can update indivual plot labels", {
   # Change x- and y-labels
   p2 <- ctr %>%
     pmx_update(
-      "indiv",
+      "individual",
       labels = list(x = "Time (days)", y = "Free serum concentration (nmol)")
     ) %>%
-    get_plot("indiv", npage = 1)
+    get_plot("individual", npage = 1)
   expect_identical(
     list(
       x = p2$labels$x,
