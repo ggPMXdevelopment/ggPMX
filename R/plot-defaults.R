@@ -12,6 +12,7 @@ get_plot_defaults <-
         has.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
         has.identity_line = TRUE,
+        add_hline = FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       dv_ipred = list(
@@ -25,6 +26,7 @@ get_plot_defaults <-
         has.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
         has.identity_line = TRUE,
+        add_hline = FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       iwres_ipred =
@@ -108,8 +110,6 @@ get_plot_defaults <-
           has.shrink = TRUE,
           shrink = list(fun = "sd", size = 4, color = "black")
         ),
-
-
       ebe_hist =
         list(
           facets = list(scales = "free_y", nrow = 3),
@@ -118,8 +118,6 @@ get_plot_defaults <-
             fun = "sd", size = 4, color = "black", hjust = -0.5, vjust = 2
           )
         ),
-
-
       iwres_qq =
         list(
           labels = list(

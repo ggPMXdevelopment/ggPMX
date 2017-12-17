@@ -30,8 +30,8 @@ ctr %>%
 
 # stratification  ----------------------------------
 
-## categorical stratification fill parameter
-## ctr %>% pmx_plot_ebe_hist(strat.color = "SEX")
+## categorical stratification color parameter
+ctr %>% pmx_plot_ebe_box(has.jitter=TRUE,strat.facet=~STUD,strat.color="SEX")
 ## categorical stratification facetting
 ctr %>% pmx_plot_ebe_hist(strat.facet = "SEX")
 ## using formula categorical stratification facetting

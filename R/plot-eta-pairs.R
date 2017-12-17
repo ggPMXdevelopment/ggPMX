@@ -36,6 +36,7 @@ eta_pairs <- function(
   )
   structure(list(
     dname = dname,
+    strat=FALSE,
     labels = labels,
     point = point,
     type.eta = match.arg(type.eta),
@@ -149,8 +150,8 @@ plot_shrink <-
       sprintf("%s%%", round(SHRINK * 100))
     ]
     params <- c(label = label, shrink)
-    do.call(ggally_text, params[names(params) != "fun"]) +
-      ## ggally_text(label=label)+
+    params$fun <- NULL
+    do.call(ggally_text, params) +
       theme_bw() +
       theme(
         panel.border = element_blank(),
@@ -210,7 +211,7 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       xAxisLabels = nn,
       yAxisLabels = if (has.shrink) c("Shrinkage", nn) else nn,
       showYAxisPlotLabels = TRUE,
-      ##switch = "both",
+      ## switch = "both",
       xlab = labels$x,
       ylab = labels$y,
       byrow = TRUE,

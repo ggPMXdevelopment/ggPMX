@@ -9,3 +9,7 @@ man/*Rd
 ggPMX_testPK
 packrat/lib*/
 packrat/
+cleanup
+NAMESPACE
+cont.sh
+.Rbuildignore

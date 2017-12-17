@@ -64,3 +64,11 @@ normalize <-
       (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
   }
 ctr %>% pmx_plot_individual(trans = "normalize_xy")
+
+## get a list of parameter
+p <- ctr %>% pmx_plot_individual(
+  npage=NULL,
+  point=list(shape=4,color='blue',size=10),
+  facets = list(nrow = 5, ncol = 5),
+  labels = list(title = "My individuals",x='my time',y='PD data')
+) 

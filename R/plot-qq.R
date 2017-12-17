@@ -54,6 +54,7 @@ pmx_qq <- function(
   labels$subtitle <- ""
   structure(list(
     ptype = "PMX_QQ",
+    strat=TRUE,
     x = x,
     dname = dname,
     point = point,
@@ -119,13 +120,13 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     }
     p <- p + facet_grid(strat.facet)
   }
-
+  if (!is.null(p)) p <- plot_pmx(x$gp, p)
+  
   xmin <- min(dx[, x$x, with = FALSE], na.rm = TRUE)
   xmax <- max(dx[, x$x, with = FALSE], na.rm = TRUE)
-  xrange <- c(xmin - .01 * (xmax - xmin), xmax + .01 * (xmax - xmin))
+  xrange <- c(xmin - .001 * (xmax - xmin), xmax + .001 * (xmax - xmin))
   p <- p +
     coord_cartesian(xlim = xrange, ylim = xrange) +
-    theme(aspect.ratio = 1)
-  if (!is.null(p)) p <- plot_pmx(x$gp, p)
+     theme(aspect.ratio = 1)
   p
 }

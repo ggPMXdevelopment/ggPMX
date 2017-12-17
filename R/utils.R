@@ -28,7 +28,7 @@ l_left_join <-
             append(
               merged_list,
               overlay_list[which(names(overlay_list) %in%
-                name)]
+                                   name)]
             )
         }
       }
@@ -150,7 +150,9 @@ is.formula <- function(x) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' theophylline()
+#' }
 theophylline <- function() {
   theophylline <- file.path(
     system.file(package = "ggPMX"), "testdata",
@@ -158,7 +160,7 @@ theophylline <- function() {
   )
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
-
+  
   pmx_mlx(
     config = "standing",
     directory = WORK_DIR,
@@ -170,3 +172,126 @@ theophylline <- function() {
     strats = "STUD"
   )
 }
+
+#' Creates pmx controller using monlix data having Occasional variable
+#'
+#' @return pmx controller
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' pk_occ()
+#' }
+pk_occ <- function(){
+  uc.name <- "1_popPK_model"
+  data_file <- "PKdata_ggPMX.csv"
+  
+  uc.dir <- file.path(
+    system.file(package = "ggPMX"), "testdata",
+    uc.name
+  )
+  wd.mlx <- file.path(uc.dir, "Monolix")
+  input_file <- file.path(uc.dir, data_file)
+  
+  pmx_mlx(
+    "standing",
+    directory = wd.mlx,
+    input = input_file,
+    dv = "DV",
+    dvid = "YTYPE",
+    cats = c("SEX", "RACE", "DISE", "ILOW"),
+    conts = c("AGE0", "WT0", "HT0", "TRT"),
+    occ = "ISS"
+  )
+}
+
+
+is_mlxtran <- function(file_name) 
+  identical(tools::file_ext(file_name),"mlxtran")
+
+#' Parse MONOLIX mlxtran file
+#'
+#' @param file_name absolute path to mlxtran file
+#'
+#' @return \code{list} key/values to initilize ggPMX controller 
+#' @export
+parse_mlxtran <- function(file_name){
+  on.exit(setwd(wd))
+  
+  wd <- getwd()
+   section.name <- line <- section <- NULL
+   sub_section <- sub_section.name <- NULL
+   value <- NULL
+  ## general file check 
+  if(!is_mlxtran(file_name))
+    stop("this is not a mlxtran file")
+  if(!file.exists(file_name))
+    stop("file do not exist")
+  lines <- readLines(file_name)
+  
+  ## empty lines
+  firsts <- min(grep("<.*>", lines))  # first section
+  lines <- lines[firsts:length(lines)]
+  lines <- lines[lines!="" & !grepl(":$",lines)]
+  ## extract sections
+  sections <- cumsum(grepl("<.*>",lines))
+  dat <- data.table(line=lines,section=sections)
+  dat [,section.name :=gsub("<|>","",line[1]),section]
+  dat <- dat[!grepl("<.*>",line)]
+  ## extract sub sections 
+  dat[,sub_section := cumsum(grepl("\\[.*\\]",line)),section]
+  dat[,sub_section := cumsum(grepl("\\[.*\\]",line)),section]
+  dat[,sub_section.name:= {
+    if(sub_section>0) gsub("\\[|\\]","",line[1])
+    else "NO_SUB"
+  },"section,sub_section"]
+  dat <- dat[!grepl("\\[.*\\]",line)]
+  dat[,c("section","sub_section"):=NULL]
+  setnames(dat,c("sub_section.name","section.name"),c("sub_section","section"))
+  dat <- dat[sub_section!="TASKS"]
+  ## split lines
+  
+  dat[,c("key","value"):=tstrsplit(dat$line," = ")]
+  dat[,line:=NULL]
+  
+  ## extract controller param
+  ### directory
+  directory = gsub("'","",dat[key=="exportpath",value])
+  directory = file.path(dirname(file_name),directory)
+  ### input
+  input = gsub("'","",dat[key=="file" & section=="DATAFILE",value])
+  setwd(dirname(file_name))
+  input = normalizePath(input)
+  ### dv
+  dv <- dat[grepl("use=observation,",value),key]
+  ### dvid
+  dvid <- dat[grepl("use=observationType",value),key]
+  if(length(dvid)==0)dvid <- "DVID"
+  ### cats 
+  cats <- dat[grepl("use=covariate, type=categorical",value),key]
+  ### conts 
+  conts <- dat[grepl("use=covariate, type=continuous",value),key]
+  ## occ
+  occ <- dat[grepl("use=occasion",value),key]
+  
+  
+  res <- list(
+    directory=directory,
+    input =input,
+    dv=dv,
+    dvid=dvid)
+  if(length(cats)>0)res$cats=cats
+  if(length(conts)>0)res$conts=conts
+  if(length(occ)>0)res$occ=occ
+  res
+  
+  
+  
+  
+}  
+
+
+
+
+
+

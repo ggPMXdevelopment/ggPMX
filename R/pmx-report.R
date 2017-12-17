@@ -1,39 +1,30 @@
-#' Creates a standing report
+#' Creates a pdf document from a pre-defined template
 #'
 #' @param name \code{character} report name
 #' @param template \code{character} report template
 #' @param render \code{logical} if TRUE generate pdf report
+#' @param output_dir Output directory. 
+#' An alternate directory to write the output file to 
+#' (defaults to the directory of the input file).
 #' @param ctr controller
 #'
-#' @return a new folder containg standing report template
 #' @export
 #' @importFrom rmarkdown draft render
-#'
-#' @examples
+#' @details 
+#' \code{pmx_report} uses pre-defined template .Rmd to generate the report. 
+#' The idea is to pass the controller as a report argument using knitr \code{params} artifact. 
+#' If render=TRUE , it will generate the pdf report and the template used to create that report. 
+#' The user can choose to store both in output_dir. 
+#' @examples 
 #' \dontrun{
-#' c.name <-  "1_popPK_model"
-#' data_file <-  "PKdata_ggPMX.csv"
-#' uc.dir <- system.file(package = "ggPMX", "testdata",uc.name)
-#' wd.mlx <- file.path(uc.dir, "Monolix")
-#' input_file <- file.path(uc.dir, data_file)
-#' params <-
-#' list(
-#' config="standing",
-#' directory = wd.mlx,
-#' input = input_file,
-#' dv = "DV",
-#' dvid = "ytype",
-#' cats = c("SEX","RACE","DISE","ILOW"),
-#' conts = c("AGE0","WT0","HT0","TRT"),
-#' occ="ISS"
-#' )
-#' ctr <- do.call(pmx_mlx,params)
-#' ctr %>% pmx_report("1_popPK_model","all")
+#' ctr <- pk_occ() 
+#' ctr %>% pmx_report(name="1_popPK_model",template = "all")
+#' ctr %>% pmx_report(name="1_popPK_model",template = "standing",output_dir="/tmp")
 #' }
-#'
 pmx_report <-
-  function(ctr, name, template="standing", render=TRUE) {
-    file_name <- sprintf("%s.Rmd", name)
+  function(ctr, name, output_dir=NULL,template="all", render=TRUE) {
+    
+    file_name <- file.path(output_dir,sprintf("%s.Rmd", name))
     if (file.exists(file_name)) {
       file.remove(file_name)
     }
@@ -45,6 +36,7 @@ pmx_report <-
       edit = FALSE
     )
     if (render) {
-      render(file_name, "pdf_document", params = list(ctr = ctr), envir = new.env())
+      render(file_name, "pdf_document", params = list(ctr = ctr), envir = new.env(),
+             output_dir=output_dir)
     }
   }

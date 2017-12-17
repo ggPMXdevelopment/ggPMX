@@ -68,6 +68,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, hline=NU
   structure(
     list(
       ptype = "RES",
+      strat = TRUE,
       dname = dname,
       aess = aess,
       point = point,
@@ -85,7 +86,7 @@ extend_range <-
       stop("'r' must be a \"range\", hence of length 2")
     }
     rr <- r + c(-f, f) * diff(r)
-    if (min(x, na.rm = TRUE) > 0 & rr[1] < 0) rr[1] <- min(x, na.rm = TRUE)
+    if (rr[1] <= 0) rr[1] <- 0.01
     rr
   }
 
