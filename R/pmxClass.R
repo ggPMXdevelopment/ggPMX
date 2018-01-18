@@ -108,7 +108,7 @@ pmx_mlxtran <- function(file_name,config="standing",endpoint){
 
 formula_to_text <- function(form) {
   if (is.formula(form)) {
-    Reduce(paste, deparse(form))
+    paste(as.character(as.list(form)[-1]),collapse=" and ")
   } else {
     form
   }
@@ -606,7 +606,7 @@ pmx_add_plot <- function(self, private, x, pname) {
       x[["gp"]] <- gp
     }
     if (!is.null(x[["strat.facet"]])) {
-      x[["labels"]][["title"]] <-
+      x$gp[["labels"]][["title"]] <-
         sprintf(
           "%s by %s",
           x$gp[["labels"]][["title"]], formula_to_text(x[["strat.facet"]])

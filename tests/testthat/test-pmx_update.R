@@ -95,3 +95,17 @@ test_that("can update indivual plot labels", {
     list(x = "Time (days)", y = "Free serum concentration (nmol)")
   )
 })
+
+
+test_that("plot title with start.facet",{
+  
+  ctr <- helpers$ctr
+  
+  # Change x- and y-labels
+  p1 <- ctr %>% pmx_plot_iwres_ipred(strat.color="AGE0",strat.facet=~STUD)
+  p2 <- ctr %>% pmx_plot_iwres_ipred(strat.color="AGE0",strat.facet=SEX~STUD)
+  
+  expect_identicla(p1$labels$title,"IWRES vs IPRED by STUD")
+  expect_identicla(p2$labels$title,"IWRES vs IPRED by SEX and STUD")
+  
+})
