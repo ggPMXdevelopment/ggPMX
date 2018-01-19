@@ -43,9 +43,10 @@
 individual <- function(labels,
                        facets = list(ncol = 2, nrow = 2, scales = "free"),
                        dname = NULL,
-                       ipred_line = list(linetype = 1, color = "grey50", size = 1),
-                       pred_line = list(linetype = 2, color = "grey50", size = 1),
+                       ipred_line = list( color = "grey50", size = 1),
+                       pred_line = list(color = "grey50", size = 1),
                        point = list(shape = 20, color = "black", size = 4),
+                       has.legend=TRUE,
                        ...) {
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
@@ -63,6 +64,7 @@ individual <- function(labels,
   structure(list(
     ptype = "IND",
     strat=TRUE,
+    has.legend=has.legend,
     dname = dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
@@ -104,15 +106,25 @@ plot_pmx.individual <-
 
     get_page <- with(x, {
       point$data <- input
-      ipred_line$mapping <- aes(y = IPRED)
-      pred_line$mapping <- aes(y = PRED)
-
-      p <- ggplot(dx, aes(TIME, DV)) +
+      v1 <- ipred_line$linetype
+      v2 <- pred_line$linetype
+      
+      ipred_line$mapping <- aes(y = IPRED,linetype="1")
+      pred_line$mapping <- aes(y = PRED,linetype="3")
+       p <- ggplot(dx, aes(TIME, DV)) +
         do.call(geom_point, point) +
         do.call(geom_line, ipred_line) +
-        do.call(geom_line, pred_line)
+       do.call(geom_line, pred_line)
 
       p <- plot_pmx(gp, p)
+      if(has.legend){
+        p <- p +   
+          scale_linetype_manual("", 
+            labels = c("individual predictions", "population predictions"),
+            values=c("solid","dotted")
+          ) +theme(legend.position = "top")
+
+      }
 
       ## split pages
       npages <- ceiling(with(
