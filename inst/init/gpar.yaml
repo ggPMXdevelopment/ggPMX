@@ -32,5 +32,7 @@ has.identity_line: no
 identity_line:
   color: blue
   intercept: 0
+log_x: no
+log_y: no
 
 

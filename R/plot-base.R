@@ -61,8 +61,18 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       axis.text=gpar$axis.text,
       axis.title=gpar$axis.title
     )
+    
+    if(log_y){
+      if (is.draft) draft$y <- 0
+      p <- p + scale_y_log10()
+    }
+    if(log_x){
+      p <- p + scale_x_log10()
+    }
+    
     ## draft layer
     if (is.draft) {
+      
       p <- p + with(draft, add_draft(label, size, color, x, y))
     }
     

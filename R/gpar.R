@@ -1,8 +1,8 @@
 
 #' Handling pmx Graphical parameters
 #' @param labels list of labels, like title, subtitle, xlab , ylab
-#' @param  axis.title list of axis title parameter : font size
-#' @param axis.text list of axis title parameter : font size
+#' @param  axis.title list or element_text (same as ggplot2 axis.title theme)
+#' @param axis.text list or element_text (same as ggplot2 axis.text theme)
 #' @param ranges limits of x/y ranges
 #' @param has.smooth logical if set to TRUE add smooth layer
 #' @param smooth smooth layer parameters
@@ -13,6 +13,8 @@
 #' @param has.identity_line \code{logical} if TRUE add y=x line
 #' @param identity_line \code{list} y=x aes properties
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
+#' @param log_x logical if TRUE add scale_x_log10 layer
+#' @param log_y logical if TRUE add scale_y_log10 layer
 #' @param ... extra arguments (not used yet)
 #'
 #'
@@ -40,6 +42,8 @@ pmx_gpar <-
            discrete=FALSE,
            has.identity_line=FALSE,
            identity_line=list(intercept = 0, color = "blue"),
+           log_x=FALSE,
+           log_y=FALSE,
            ...) {
     gp <- .valid_pmx_gpar(list(
       labels = labels,
