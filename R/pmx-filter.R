@@ -106,10 +106,9 @@ pmx_update_plot <- function(self, private, pname, strat.facet, strat.color, filt
     x <- l_left_join(x, hl)
   }
 
-
-  x[["filter"]] <- filter
+  if(!is.null(filter))  x[["filter"]] <- filter
   ## transformation
-  x[["trans"]] <- trans
+  if(!is.null(trans))  x[["trans"]] <- trans
   ## stratification
   if (!is.null(strat.color)) x[["strat.color"]] <- strat.color
   if (!is.null(strat.facet)) x[["strat.facet"]] <- strat.facet
