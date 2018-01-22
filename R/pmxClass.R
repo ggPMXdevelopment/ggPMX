@@ -611,6 +611,8 @@ pmx_add_plot <- function(self, private, x, pname) {
           "%s by %s",
           x$gp[["labels"]][["title"]], formula_to_text(x[["strat.facet"]])
         )
+    }else{
+      x$gp[["labels"]][["title"]] <- gsub(" by.*","",x$gp[["labels"]][["title"]])
     }
     if (!is.null(x[["trans"]])) {
       dx1 <- copy(dx)

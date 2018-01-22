@@ -101,7 +101,7 @@ pmx_update_plot <- function(self, private, pname, strat.facet, strat.color, filt
   if (length(newopts) > 0) {
     hl <- newopts[names(newopts) %in% unique(c(names(x), "shrink"))]
     gpl <- newopts[!names(newopts) %in% unique(c(names(x), "shrink"))]
-    if ("labels" %in% names(newopts)) gpl$labels <- newopts[["labels"]]
+    if ("labels" %in% names(newopts)) gpl$labels <- l_left_join(x$gp$labels,newopts[["labels"]] )
     hl$gp <- gpl
     x <- l_left_join(x, hl)
   }
@@ -110,8 +110,8 @@ pmx_update_plot <- function(self, private, pname, strat.facet, strat.color, filt
   ## transformation
   if(!is.null(trans))  x[["trans"]] <- trans
   ## stratification
-  if (!is.null(strat.color)) x[["strat.color"]] <- strat.color
-  if (!is.null(strat.facet)) x[["strat.facet"]] <- strat.facet
+  x[["strat.color"]] <- strat.color
+  x[["strat.facet"]] <- strat.facet
 
   class(x$gp) <- old_class_gp
   class(x) <- old_class
