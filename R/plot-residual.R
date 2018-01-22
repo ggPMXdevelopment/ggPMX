@@ -41,7 +41,7 @@ default_residual <- function(...) {
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
-residual <- function(x, y, labels = NULL, point = NULL, add_hline=TRUE, hline=NULL, dname=NULL, ...) {
+residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE, hline=NULL, dname=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
