@@ -118,7 +118,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     if (is.character(strat.facet)) {
       strat.facet <- formula(paste0("~", strat.facet))
     }
-    p <- p + facet_grid(strat.facet)
+    p <- p + facet_wrap(strat.facet)
   }
   if (!is.null(p)) p <- plot_pmx(x$gp, p)
   

@@ -123,7 +123,7 @@ plot_pmx.residual <- function(x, dx, ...) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
-      p <- p + facet_grid(strat.facet)
+      p <- p + facet_wrap(strat.facet)
     }
     if (aess$y == "DV") {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
