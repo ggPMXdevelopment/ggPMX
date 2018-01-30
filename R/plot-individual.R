@@ -41,11 +41,11 @@
 
 
 individual <- function(labels,
-                       facets = list(ncol = 2, nrow = 2, scales = "free"),
+                       facets = list(ncol = 3, nrow = 4, scales = "free"),
                        dname = NULL,
-                       ipred_line = list( color = "grey50", size = 1),
-                       pred_line = list(color = "grey50", size = 1),
-                       point = list(shape = 20, color = "black", size = 4),
+                       ipred_line = list( color = "black", size = 1),
+                       pred_line = list(color = "black", size = 1),
+                       point = list(shape = 21, color = "black", size = 1),
                        has.legend=TRUE,
                        ...) {
   assert_that(is_list(facets))
@@ -54,8 +54,8 @@ individual <- function(labels,
     labels <- list(
       title = "Individual fits",
       subtitle = "",
-      x = "Time after first dose (hours)",
-      y = "ABC123 plasma concentration (ng/mL)"
+      x = "Time",
+      y = "DV"
     )
   }
   assert_that(is_list(labels))

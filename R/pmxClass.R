@@ -650,6 +650,9 @@ pmx_add_plot <- function(self, private, x, pname) {
       if ("is.draft" %in% names(self$settings)) {
         x$gp$is.draft <- self$settings$is.draft
       }
+      if ("strat.color" %in% names(self$settings)) {
+        x$gp$strat.color <- self$settings$strat.color
+      }
     }
     self$set_config(pname, x)
     

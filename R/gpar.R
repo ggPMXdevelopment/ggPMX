@@ -31,7 +31,7 @@ pmx_gpar <-
   function(
            labels,
            axis.title = c(size = 12),
-           axis.text = c(size = 14),
+           axis.text = c(size = 10),
            ranges = NULL,
            has.smooth = FALSE,
            smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "red"),
@@ -44,6 +44,7 @@ pmx_gpar <-
            identity_line=list(intercept = 0, color = "blue"),
            log_x=FALSE,
            log_y=FALSE,
+           start.color=NULL,
            ...) {
     gp <- .valid_pmx_gpar(list(
       labels = labels,

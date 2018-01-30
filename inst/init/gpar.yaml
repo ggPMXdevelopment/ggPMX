@@ -1,6 +1,6 @@
 labels: ~
 axis.title: 12.0
-axis.text: 14.0
+axis.text: 10.0
 ranges:
   'y':
   - -2.5
@@ -34,5 +34,6 @@ identity_line:
   intercept: 0
 log_x: no
 log_y: no
+strat.color: ~
 
 

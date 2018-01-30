@@ -148,7 +148,7 @@ EBE_HIST:
   ptype: DIS
   type: hist
   facets:
-    scales: free_y
+    scales: free_x
     nrow: 3.0
   has.shrink: yes
   shrink:

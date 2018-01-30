@@ -38,10 +38,10 @@ distrib <- function(
   labels,
   has.jitter = FALSE,
   jitter = list(shape = 1, color = "grey50", width = 0.1),
-  facets = list(scales = "free_y", nrow = 3),
+  facets = list(scales = "free_x", nrow = 3),
   type = c("box", "hist"),
   has.shrink = FALSE,
-  histogram=list(binwidth = 1 / 30, position = "dodge"),
+  histogram=list(binwidth = 1 / 30, position = "dodge",fill="white",color="black"),
   shrink=list(fun = "sd", size = 5, color = "black"),
   dname = NULL,
   ...) {

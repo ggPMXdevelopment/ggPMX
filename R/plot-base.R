@@ -83,6 +83,10 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
         geom_abline(intercept = intercept, color = color)
       )
     }
+    
+    if (!is.null(strat.color)) {
+      p <- p + do.call("scale_colour_manual",strat.color)
+    }
     p
   })
   p

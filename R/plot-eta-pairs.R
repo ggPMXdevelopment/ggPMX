@@ -21,7 +21,7 @@ eta_pairs <- function(
                       type.eta=c("mode", "mean"),
                       text_color="black",
                       has.shrink=TRUE,
-                      smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "red"),
+                      smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "black"),
                       point = list(shape = 1, color = "grey50", size = 1, colour = "black"),
                       shrink=list(fun = "sd", size = 5),
                       ...) {

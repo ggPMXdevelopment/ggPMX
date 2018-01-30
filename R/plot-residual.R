@@ -57,14 +57,14 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE, hline=N
   assert_that(is_list_or_null(point))
   assert_that(is_list_or_null(hline))
   assert_that(is_string_or_null(dname))
-
+  
   labels <- l_left_join(default_labels, labels)
   default_point <- list(shape = 1, color = "black", size = 1)
   default_hline <- list(yintercept = 0)
   point <- l_left_join(default_point, point)
   hline <- l_left_join(default_hline, hline)
   if (is.null(dname)) dname <- "predictions"
-
+  
   structure(
     list(
       ptype = "RES",
@@ -105,20 +105,20 @@ extend_range <-
 plot_pmx.residual <- function(x, dx, ...) {
   with(x, {
     dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
-
-
+    
+    
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
-
+    
     p <- p + do.call(geom_point, point)
     if (add_hline) p <- p + do.call(geom_hline, hline)
     p <- plot_pmx(gp, p)
-
+    
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
     if (!is.null(strat.color)) {
       p <- p %+% geom_point(aes_string(color = strat.color))
     }
-
+    
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
@@ -130,7 +130,20 @@ plot_pmx.residual <- function(x, dx, ...) {
       p <- p +
         coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)
+    }else{
+      X <- dx[ , aess$x, with = FALSE] 
+      Y <- dx[ , aess$y, with = FALSE] 
+      
+      xmin <- min(X, na.rm = TRUE)
+      xmax <- max(X, na.rm = TRUE)
+      ymin <- min(Y, na.rm = TRUE)
+      ymax <- max(Y, na.rm = TRUE)
+      xrange <- c(xmin - .001 * (xmax - xmin), xmax + .001 * (xmax - xmin))
+      yrange <- c(ymin - .001 * (ymax - ymin), ymax + .001 * (ymax - ymin))
+      p <- p +
+        coord_cartesian(xlim = xrange, ylim = yrange) 
     }
+    
     p
   })
 }

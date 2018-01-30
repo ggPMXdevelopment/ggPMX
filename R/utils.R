@@ -153,7 +153,7 @@ is.formula <- function(x) {
 #' \dontrun{
 #' theophylline()
 #' }
-theophylline <- function() {
+theophylline <- function(settings=NULL) {
   theophylline <- file.path(
     system.file(package = "ggPMX"), "testdata",
     "theophylline"
@@ -169,7 +169,8 @@ theophylline <- function() {
     dvid = "DVID",
     cats = c("SEX"),
     conts = c("WT0", "AGE0"),
-    strats = "STUD"
+    strats = "STUD",
+    settings=settings
   )
 }
 

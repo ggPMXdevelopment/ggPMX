@@ -92,9 +92,10 @@ get_plot_defaults <-
         ),
         point = list(shape = 1, color = "black", size = 1),
         add_hline = TRUE,
+        hline=list(color="blue"),
         has.band = TRUE,
         has.smooth = TRUE,
-        smooth = list(se = FALSE, color = "red", linetype = 2)
+        smooth = list(se = FALSE, color = "red", linetype = 1)
       ),
       eta_matrix =
         list(
@@ -112,7 +113,7 @@ get_plot_defaults <-
         ),
       ebe_hist =
         list(
-          facets = list(scales = "free_y", nrow = 3),
+          facets = list(scales = "free_x", nrow = 3),
           has.shrink = TRUE,
           shrink = list(
             fun = "sd", size = 4, color = "black", hjust = -0.5, vjust = 2

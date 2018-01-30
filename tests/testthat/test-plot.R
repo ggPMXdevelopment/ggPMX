@@ -5,7 +5,7 @@ test_that("individual plot: get all pages", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   p <- ctr %>% get_plot("individual")
-  expect_equal(length(p), 13)
+  expect_equal(length(p), 5)
 })
 
 
@@ -29,7 +29,7 @@ test_that("individual plot : don't exceed the effective number of pages", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   p <- ctr %>% get_plot("individual", 1:100)
-  expect_equal(length(p), 13)
+  expect_equal(length(p), 5)
 })
 
 test_that("can create a plot using setting dname", {
