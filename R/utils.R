@@ -129,7 +129,7 @@ abbrev <- function(param) {
   if (missing(param)) {
     keys
   } else {
-    keys[[param]]
+    if(!is.null(keys[[param]])) keys[[param]] else param
   }
 }
 

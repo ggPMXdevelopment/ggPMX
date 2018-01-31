@@ -55,7 +55,7 @@ individual <- function(labels,
     labels <- list(
       title = "Individual fits",
       subtitle = "",
-      x = "Time",
+      x = "TIME",
       y = "DV"
     )
   }

@@ -169,6 +169,34 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV",
   invisible(ctr)
 }
 
+#' update or add a new abbreviation
+#'
+#' @param ctr  \code{pmxClass} controller object
+#' @param ... Options to set or add, with the form \code{name = value}.
+#' @export
+
+set_abbrev <- function(ctr,...){
+  assert_that(is_pmxclass(ctr))
+  ctr$abbrev <- l_left_join(ctr$abbrev ,list(...))
+  
+}
+
+#' Get abbreviation definition by key
+#'
+#' @param param abbreviation term
+#'
+#' @return characater abbreviation defintion
+#' @export
+
+get_abbrev <- function(ctr,param) {
+  keys <- ctr$abbrev
+  if (missing(param)) {
+    keys
+  } else {
+    if(!is.null(keys[[param]])) keys[[param]] else param
+  }
+}
+
 
 #' Get plot object
 #'
@@ -381,6 +409,7 @@ pmxClass <- R6::R6Class(
     strats = NULL,
     settings = NULL,
     has_re = FALSE, re = NULL,
+    abbrev=list(),
     endpoint=NULL,
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
@@ -472,6 +501,12 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   }
   
   self$post_load()
+  
+  ## abbev
+  keys_file <- file.path(
+    system.file(package = "ggPMX"), "init","abbrev.yaml")
+  self$abbrev = yaml.load_file(keys_file)
+  
   ## create all plots
   for (nn in names(self$config$plots)) {
     x <- self$config$plots[[nn]]
@@ -652,6 +687,10 @@ pmx_add_plot <- function(self, private, x, pname) {
       }
       if ("strat.color" %in% names(self$settings)) {
         x$gp$strat.color <- self$settings$strat.color
+      }
+      if ("use_abbrev" %in% names(self$settings) && self$settings$use_abbrev) {
+        x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
+        x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
       }
     }
     self$set_config(pname, x)
