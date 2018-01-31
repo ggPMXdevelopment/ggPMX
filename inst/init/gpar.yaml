@@ -9,7 +9,7 @@ smooth:
   size: 1.5
   method: loess
   color: red
-has.band: yes
+has.band: no
 band:
   'yintercept':
   - -2.0
@@ -18,7 +18,7 @@ band:
   size: 0.5
 is.draft: yes
 draft:
-  size: 10.0
+  size: 5.0
   label: DRAFT
   color: grey50
   x: .inf
