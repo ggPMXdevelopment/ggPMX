@@ -30,38 +30,32 @@
 pmx_gpar <-
   function(
            labels,
-           axis.title = c(size = 12),
-           axis.text = c(size = 10),
-           ranges = NULL,
-           has.smooth = FALSE,
-           smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "red"),
-           has.band = FALSE,
-           band = list(yintercept = c(-2, 2), linetype = 1, size = 0.5, color = "black"),
-           is.draft = TRUE,
-           draft = list(size = 5, label = "DRAFT", color = "grey50", x = Inf, y = -Inf),
-           discrete=FALSE,
-           has.identity_line=FALSE,
-           identity_line=list(intercept = 0, color = "blue"),
-           log_x=FALSE,
-           log_y=FALSE,
-           start.color=NULL,
+           axis.title,
+           axis.text ,
+           ranges ,
+           has.smooth ,
+           smooth , 
+           has.band,
+           band ,
+           is.draft,
+           draft ,
+           discrete,
+           has.identity_line,
+           identity_line,
+           log_x,
+           log_y,
+           start.color,
            ...) {
-    gp <- .valid_pmx_gpar(list(
-      labels = labels,
-      axis.title = axis.title,
-      axis.text = axis.text,
-      ranges = ranges,
-      has.smooth = has.smooth,
-      smooth = smooth,
-      has.band = has.band,
-      band = band,
-      is.draft = is.draft,
-      draft = draft,
-      discrete = discrete,
-      has.identity_line = has.identity_line,
-      identity_line = identity_line,
-      ...
-    ))
+    
+    
+    ## join with default values
+    default_yaml <-
+      file.path(system.file(package = "ggPMX"), "init", "gpar.yaml")
+    default_gpars <- yaml.load_file(default_yaml)
+    gpars <- as.list(match.call(expand.dots = TRUE)[-1])
+    gpars <- mget(names(gpars))
+    gp <- l_left_join(default_gpars, gpars)
+    
     class(gp) <- c("pmx_gpar", "list")
     gp
   }
@@ -91,16 +85,6 @@ print.pmx_gpar <- function(x, ...) {
   invisible(x)
 }
 
-.valid_pmx_gpar <- function(gpars) {
-  ## TDOD add assertions about
-  ## graphical parametrs
-
-  ## join with default values
-  default_yaml <-
-    file.path(system.file(package = "ggPMX"), "init", "gpar.yaml")
-  default_gpars <- yaml.load_file(default_yaml)
-  l_left_join(default_gpars, gpars)
-}
 
 
 #' Method for subsetting "pmx_gpar" objects

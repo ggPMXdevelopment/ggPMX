@@ -130,18 +130,6 @@ plot_pmx.residual <- function(x, dx, ...) {
       p <- p +
         coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)
-    }else{
-      X <- dx[ , aess$x, with = FALSE] 
-      Y <- dx[ , aess$y, with = FALSE] 
-      
-      xmin <- min(X, na.rm = TRUE)
-      xmax <- max(X, na.rm = TRUE)
-      ymin <- min(Y, na.rm = TRUE)
-      ymax <- max(Y, na.rm = TRUE)
-      xrange <- c(xmin - .001 * (xmax - xmin), xmax + .001 * (xmax - xmin))
-      yrange <- c(ymin - .001 * (ymax - ymin), ymax + .001 * (ymax - ymin))
-      p <- p +
-        coord_cartesian(xlim = xrange, ylim = yrange) 
     }
     
     p

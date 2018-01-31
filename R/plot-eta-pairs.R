@@ -35,6 +35,7 @@ eta_pairs <- function(
     y = ""
   )
   structure(list(
+    ptype = "ETA_PAIRS",
     dname = dname,
     strat=FALSE,
     labels = labels,
@@ -46,7 +47,6 @@ eta_pairs <- function(
     smooth = smooth,
     point = point,
     gp = pmx_gpar(
-      ptype = "ETA_PAIRS",
       labels = labels,
       discrete = FALSE,
       has.smooth = FALSE,

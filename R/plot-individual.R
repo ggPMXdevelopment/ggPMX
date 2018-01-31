@@ -7,6 +7,7 @@
 #' @param pred_line \code{list} some ipred line geom properties aesthetics
 #' @param ipred_line \code{list} some pred line geom properties aesthetics
 #' @param point \code{list} some point geom properties aesthetics
+#' @param has.legend \code{logical} if TRUE add a legend
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object

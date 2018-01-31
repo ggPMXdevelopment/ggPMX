@@ -1,13 +1,7 @@
 labels: ~
 axis.title: 12.0
 axis.text: 10.0
-ranges:
-  'y':
-  - -2.5
-  - 2.5
-  x:
-  - 0
-  - 24
+ranges: ~
 has.smooth: yes
 smooth:
   se: no
@@ -25,8 +19,10 @@ band:
 is.draft: yes
 draft:
   size: 10.0
-  label: 
+  label: DRAFT
   color: grey50
+  x: .inf
+  'y': -.inf
 discrete: no
 has.identity_line: no 
 identity_line:
