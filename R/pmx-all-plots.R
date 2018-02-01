@@ -30,7 +30,7 @@ wrap_pmx_plot_generic <-
     params$ctr <- ctr
     params$pname <- pname
     params <- lang_to_expr(params)
-    params$defaults_ <- get_plot_defaults(pname)
+    params$defaults_ <- ctr$config$plots[[toupper(pname)]]
     do.call(pmx_plot_generic, params)
   }
 

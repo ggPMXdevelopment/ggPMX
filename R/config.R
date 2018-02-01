@@ -93,7 +93,7 @@ print.configs <- function(x, ...) {
 load_config <- function(x, sys = c("mlx", "nm")) {
   assert_that(is_string(x))
   sys <- match.arg(sys)
-  configs. <- configs(sys)
+  configs. <- pmx_get_configs(sys)
   cpath <- configs.[configs.$name == x, "path"]
   ifile <- list.files(cpath, full.names = TRUE, pattern = "ipmx")
   pfile <- list.files(cpath, full.names = TRUE, pattern = "ppmx")
