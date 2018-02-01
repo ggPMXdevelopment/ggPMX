@@ -278,28 +278,30 @@ load_source <- function(sys, path, dconf, ...) {
     load_data_set(x, path = path, sys = sys, ...)
   })
   
-  ## 
-  if(is.null(dxs[["predictions"]])){
-    datasets <- dconf[pk_pd]
-    dxs2 <- lapply(datasets, function(x) {
-      load_data_set(x, path = path, sys = sys, ...)
-    })
-    
-    endpoint = list(...)$endpoint
-    if(is.null(endpoint)) endpoint <- 1
-    if(!is.null(dxs[["eta"]]))dxs[["eta"]][,DVID:=endpoint]
-    if(!is.null(dxs2[["predictions1"]]) && !is.null(dxs2[["predictions2"]])){
-      dxs[["predictions"]] <- dxs2[[sprintf("predictions%s",endpoint)]]
-      dxs[["predictions"]][,DVID:=endpoint]
+  ##
+  if(grepl("predictions",names(dconf))){
+    if(is.null(dxs[["predictions"]])){
+      datasets <- dconf[pk_pd]
+      dxs2 <- lapply(datasets, function(x) {
+        load_data_set(x, path = path, sys = sys, ...)
+      })
+      
+      endpoint = list(...)$endpoint
+      if(is.null(endpoint)) endpoint <- 1
+      if(!is.null(dxs[["eta"]]))dxs[["eta"]][,DVID:=endpoint]
+      if(!is.null(dxs2[["predictions1"]]) && !is.null(dxs2[["predictions2"]])){
+        dxs[["predictions"]] <- dxs2[[sprintf("predictions%s",endpoint)]]
+        dxs[["predictions"]][,DVID:=endpoint]
+      }
+      if(!is.null(dxs2[["finegrid1"]]) && !is.null(dxs2[["finegrid2"]])){
+        dxs[["finegrid"]] <- dxs2[[sprintf("finegrid%s",endpoint)]]
+        dxs[["finegrid"]][,DVID:=endpoint]
+      }
     }
-    if(!is.null(dxs2[["finegrid1"]]) && !is.null(dxs2[["finegrid2"]])){
-      dxs[["finegrid"]] <- dxs2[[sprintf("finegrid%s",endpoint)]]
-      dxs[["finegrid"]][,DVID:=endpoint]
-    }
+    for ( x in setdiff(names.,pk_pd))
+      if (is.null(dxs[[x]]))
+        message(sprintf(" %s FILE DOES NOT exist", x))
   }
-  for ( x in setdiff(names.,pk_pd))
-    if (is.null(dxs[[x]]))
-      message(sprintf(" %s FILE DOES NOT exist", x))
   
   
   dxs

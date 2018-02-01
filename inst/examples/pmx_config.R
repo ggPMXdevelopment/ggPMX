@@ -12,7 +12,8 @@ input_file <- file.path(theophylline, "data_pk.csv")
 # create a controler with a custom plots template
 ctr <-  pmx_mlx(
   config = pmx_config(
-    plots="inst/examples/plots.yaml"
+    plots="inst/examples/plots.yaml",
+    inputs = "inst/examples/custom_inputs.yaml"
   ),
   directory = WORK_DIR,
   input = input_file,
