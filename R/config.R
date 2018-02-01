@@ -1,13 +1,47 @@
 
+#' Create a pmx Config
+#'
+#' @param sys \code{charcarter} system used , monolix,nonmem,... 
+#' @param inputs \code{charcater} path to the inputs settings file (yaml format)
+#' @param plots   \code{charcater} path to the inputs settings file (yaml format)
+#' @param ... 
+#'
+#' @return \code{pmxConfig} object
+#' @export
+#' @example inst/examples/pmx_config.R
+#' @details 
+#' To create a controller user can create a pmxConfig object using \cr
+#'  - either an input template file \cr
+#'  - or a plot template file \cr
+#'  - or both. \cr
+#' By default the standing configuration will be used.
+pmx_config <- function(sys="mlx",inputs,plots,...){
+  
+  standing_dir <-
+    file.path(system.file(package = "ggPMX"), "templates", sys,"standing")
+  
+  if(missing(inputs))
+    inputs <- file.path(standing_dir,"inputs.ipmx")
+  if(missing(plots))
+    plots <- file.path(standing_dir,"plots.ppmx")
+  
+  if(!file.exists(inputs)) stop("plots template file does not exist")
+  if(!file.exists(plots)) stop("inputs template file does not exist")
+  load_config_files(inputs,plots,sys)
+  
+}
 
-#' List configurations
+
+
+
+#' Get List of built-in configurations
 #' @param sys can be mlx, if missed all configurations will be listed
 #' @return names of the config
 #' @export
 #'
 #' @examples
-#' configs()
-configs <-
+#' pmx_get_configs()
+pmx_get_configs <-
   function(sys = "mlx") {
     sys <- tolower(sys)
     template_dir <-
