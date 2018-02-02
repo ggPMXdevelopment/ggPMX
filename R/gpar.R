@@ -53,8 +53,11 @@ pmx_gpar <-
       file.path(system.file(package = "ggPMX"), "init", "gpar.yaml")
     default_gpars <- yaml.load_file(default_yaml)
     gpars <- as.list(match.call(expand.dots = TRUE)[-1])
-    gpars <- mget(names(gpars))
-    gp <- l_left_join(default_gpars, gpars)
+    gp <- default_gpars
+    if(length(gpars)>0){
+      gpars <- mget(names(gpars))
+      gp <- l_left_join(default_gpars, gpars)
+    }
     
     class(gp) <- c("pmx_gpar", "list")
     gp
