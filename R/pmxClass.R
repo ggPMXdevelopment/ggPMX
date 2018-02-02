@@ -37,7 +37,9 @@ check_argument <- function(value, pmxname) {
 #'
 #' \strong{setting} is a list of global settings shared between all plots. it contains:
 #' \itemize{
-#' \item {\strong{is.draft:}} {\code{logical} if set to FALSE any plot is without draft annotation}
+#' \item {\strong{is.draft:}} {\code{logical} if FALSE any plot is without draft annotation}
+#' \item {\strong{use_abbrev:}} {\code{logical} if TRUE use abbreviations mapping for axis names}
+#' \item {\strong{facet.color:}} {\code{list} list containg elements of scale_color_manual}
 #' }
 #' @example inst/examples/controller.R
 pmx <-
@@ -485,6 +487,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$config$data, dvid = self$dvid,
     endpoint=self$endpoint
   )
+  ## 
+  
+  
   ## check random effect
   
   if (!is.null(self$data[["eta"]])) {
