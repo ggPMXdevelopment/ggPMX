@@ -1,6 +1,8 @@
 labels: ~
-axis.title: 12.0
-axis.text: 10.0
+axis.title: 
+  size: 12.0
+axis.text: 
+  size: 10.0
 ranges: ~
 has.smooth: yes
 smooth:
