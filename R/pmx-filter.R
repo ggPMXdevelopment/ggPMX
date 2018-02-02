@@ -15,8 +15,11 @@
 #' }
 pmx_filter <-
   function(ctr, data_set = c(
-           "estimates", "predictions",
-           "eta", "finegrid", "shrink",
+           "estimates", 
+           "predictions",
+           "eta", 
+           "finegrid", 
+           "shrink",
            "input"
          ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
@@ -25,7 +28,6 @@ pmx_filter <-
     if (is_string(substitute(pmx_exp))) {
       pmx_exp <- expression(pmx_exp)
     }
-
     if (!is.null(substitute(pmx_exp))) {
       filter <- deparse(substitute(pmx_exp))
       filter <- local_filter(filter)
