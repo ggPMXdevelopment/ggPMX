@@ -16,7 +16,7 @@ vignette: |
 ---
 \clearpage  
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
-knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE,dev="png")
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggPMX)
 library(ggplot2)
 library(xtable)
