@@ -278,8 +278,8 @@ load_source <- function(sys, path, dconf, ...) {
     load_data_set(x, path = path, sys = sys, ...)
   })
   
-  ##
-  if(grepl("predictions",names(dconf))){
+  ## case multi endpoints
+  if(sum(grepl("predictions",names(dconf)))>0){
     if(is.null(dxs[["predictions"]])){
       datasets <- dconf[pk_pd]
       dxs2 <- lapply(datasets, function(x) {
