@@ -1,0 +1,93 @@
+******************************************************************
+*      project.mlxtran
+*      April 04, 2017 at 15:50:25
+*      Monolix version: 4.4.0
+******************************************************************
+
+Estimation of the population parameters
+
+                    parameter     s.e. (lin)   r.s.e.(%)   p-value 
+F_pop             :   0.307         0.064          21              
+beta_F_ILOW_2     :   0.732          0.35          47        0.034 
+beta_F_OCC_2      :   0.398          0.15          38       0.0089 
+CL_pop            :   0.719         0.032           4              
+Vc_pop            :    3.42          0.15           4              
+Q1_pop            :   0.405         0.025           6              
+Vp1_pop           :     2.9          0.13           5              
+ka_input2_pop     :   0.267         0.018           7              
+Tlag_input2_pop   :   1e-10           -           -                
+
+omega_F           :   0.588          0.14          23              
+omega_CL          :    0.29         0.019           6              
+omega_Vc          :   0.237         0.028          12              
+omega_Q1          :       0           -           -                
+omega_Vp1         :   0.159         0.034          21              
+omega_ka_input2   :       0           -           -                
+omega_Tlag_input2 :       0           -           -                
+
+gamma_F           :   0.325         0.091          28              
+gamma_CL          :       0           -           -                
+gamma_Vc          :       0           -           -                
+gamma_Q1          :       0           -           -                
+gamma_Vp1         :       0           -           -                
+gamma_ka_input2   :       0           -           -                
+gamma_Tlag_input2 :       0           -           -                
+
+a                 :    29.9           3.9          13              
+b                 :   0.157        0.0072           5              
+
+______________________________________________
+correlation matrix of the estimates(linearization)
+
+F_pop              1                      
+beta_F_ILOW_2  -0.83       1                   
+beta_F_OCC_2    0.02    -0.1       1                
+CL_pop          0.13    0.03    0.08       1             
+Vc_pop          0.06      -0    0.02     0.1       1          
+Q1_pop          0.04    0.02       0    0.16   -0.02       1       
+Vp1_pop         0.08    0.04    0.02    0.22   -0.03     0.6       1    
+ka_input2_pop  -0.13   -0.06   -0.07   -0.26    0.36    0.01   -0.19       1 
+
+Eigenvalues (min, max, max/min): 0.13  1.9  15
+
+omega_F        1                   
+omega_CL    0.07       1                
+omega_Vc   -0.06   -0.28       1             
+omega_Vp1     -0   -0.01    0.01       1          
+gamma_F    -0.28   -0.29    0.08      -0       1       
+a             -0   -0.03    0.01   -0.05    0.01       1    
+b             -0   -0.03   -0.11   -0.06   -0.02   -0.43       1 
+
+Eigenvalues (min, max, max/min): 0.51  1.6  3.1
+
+_______________
+Estimation of the population parameters by groups
+
+                      parameter     s.e. (lin)   r.s.e.(%) 
+F_(ILOW=1*, OCC=1*) :   0.307         0.064          21    
+F_(ILOW=2 , OCC=1*) :    0.48         0.048          10    
+F_(ILOW=1*, OCC=2 ) :   0.398         0.081          20    
+F_(ILOW=2 , OCC=2 ) :   0.579         0.055          10    
+
+Categorical covariates
+	ILOW
+ 		Reference group: 1 
+		Other groups:  2
+		
+	OCC
+ 		Reference group: 1 
+		Other groups:  2
+		
+
+Population parameters and Fisher Information Matrix estimation...
+
+Elapsed time is 779 seconds. 
+CPU time is 1.37e+03 seconds. 
+______________________________________________________________
+
+Log-likelihood Estimation by linearization
+
+-2 x log-likelihood:                   9203.75 
+Akaike Information Criteria   (AIC):   9233.75 
+Bayesian Information Criteria (BIC):   9267.90 
+______________________________________________________________
