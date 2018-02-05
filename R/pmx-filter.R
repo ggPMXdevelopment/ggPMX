@@ -9,7 +9,7 @@
 #' @examples
 #' \dontrun{
 #' ## example of global filter
-#' ctr <- pmx_mlx("standing")
+#' ctr <- theophylline()
 #' ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME <2)
 #' ctr %>% get_data("prediction")
 #' }
@@ -51,6 +51,8 @@ pmx_filter <-
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
+##' @param color.scales \code{list} can be used with strat.color to set scale_color_manual 
+
 #' \code{\link{pmx_gpar}} function.
 #'
 #' @family pmxclass
@@ -70,6 +72,7 @@ pmx_filter <-
 #' This mechanism is applied internally to scale log.
 
 pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
+                       color.scales=NULL,
                        filter = NULL, trans=NULL, ..., pmxgpar = NULL) {
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
@@ -85,13 +88,17 @@ pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
 
   ctr$update_plot(
     pname, strat.color = strat.color,
-    strat.facet = strat.facet, filter = filter, trans = trans, ..., pmxgpar = pmxgpar
+    strat.facet = strat.facet,
+    filter = filter, trans = trans,
+    color.scales=color.scales,   
+    ..., pmxgpar = pmxgpar
   )
 }
 
 
-pmx_update_plot <- function(self, private, pname, strat.facet, strat.color, filter=NULL, trans=NULL,
-                            ..., pmxgpar) {
+pmx_update_plot <- function(self, private, pname, strat.facet, 
+                            strat.color, filter=NULL, trans=NULL,
+                            color.scales,..., pmxgpar) {
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   x <- private$.plots_configs[[pname]]
   old_class <- class(x)
@@ -114,6 +121,9 @@ pmx_update_plot <- function(self, private, pname, strat.facet, strat.color, filt
   ## stratification
   x[["strat.color"]] <- strat.color
   x[["strat.facet"]] <- strat.facet
+  if (!is.null(color.scales)) 
+    x$gp[["color.scales"]] <- color.scales
+  
 
   class(x$gp) <- old_class_gp
   class(x) <- old_class

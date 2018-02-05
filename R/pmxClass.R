@@ -28,19 +28,11 @@ check_argument <- function(value, pmxname) {
 #' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
 #' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
-#' @param settings \emph{[Optional]}\code{list} list of global settings parameters
+#' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
 #' @return a pmxClass object
 #' @seealso  \code{\link{pmx_mlx}}
 #' @export
-#' @details
-#'
-#' \strong{setting} is a list of global settings shared between all plots. it contains:
-#' \itemize{
-#' \item {\strong{is.draft:}} {\code{logical} if FALSE any plot is without draft annotation}
-#' \item {\strong{use_abbrev:}} {\code{logical} if TRUE use abbreviations mapping for axis names}
-#' \item {\strong{facet.color:}} {\code{list} list containg elements of scale_color_manual}
-#' }
 #' @example inst/examples/controller.R
 pmx <-
   function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
@@ -97,7 +89,10 @@ pmx_mlx <-
 #'
 #' @examples
 #' \dontrun{
-#' pmx_mlxtran("some_file.mlxtran")
+#' mlxtran <- file.path(
+#'    system.file(package = "ggPMX"), "testdata",
+#'     "1_popPK_model","project.mlxtran")
+#' pmx_mlxtran(mlxtran)
 #' }
 pmx_mlxtran <- function(file_name,config="standing",endpoint){
   if(missing(endpoint)) endpoint <- 1
@@ -116,6 +111,36 @@ formula_to_text <- function(form) {
   }
 }
 
+#' Create controller global settings
+#' @param is.draft \code{logical} if FALSE any plot is without draft annotation
+#' @param use_abbrev \code{logical} if TRUE use abbreviations mapping for axis names
+#' @param color.scales \code{list} list containg elements of scale_color_manual
+#' @param use_labels \code{logical} if TRUE replace factor named by cats.labels
+#' @param cats.labels \code{list} list of named vectors for each factor
+
+
+#' @return pmxSettingsClass object
+#' @example inst/examples/pmx-settings.R
+#' @export
+pmx_settings <- 
+  function(is.draft=TRUE,use_abbrev=FALSE,color.scales=NULL,
+           cats.labels=NULL,use_labels=FALSE,...){
+    
+    res <- list(is.draft=is.draft,
+                use_abbrev=use_abbrev,
+                color.scales=color.scales,
+                use_labels=use_labels,
+                cats.labels=cats.labels)
+    if(use_labels){
+      res$labeller = do.call("labeller",cats.labels)
+    }
+    
+    structure(
+      res,...,
+      class="pmxSettingsClass"
+      )
+  }
+
 #' Create a new plot  of the desired type
 #'
 #' @param ctr \code{pmxClass} controller object
@@ -130,6 +155,7 @@ formula_to_text <- function(form) {
 ##' @param strat.facet \code{formula} define categorical stratification as formula
 ##' @param strat.color \code{character}
 ##' @param trans \code{list}{transformation operator}
+##' @param color.scales \code{list} can be used with strat.color to set scale_color_manual 
 #' @param ... other plot parameters to configure \code{\link{pmx_gpar}}.
 #'
 #' @family pmxclass
@@ -137,7 +163,10 @@ formula_to_text <- function(form) {
 #' @export
 set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
                      pname,
-                     filter =NULL, strat.color=NULL, strat.facet=NULL, trans=NULL, ...) {
+                     filter =NULL, strat.color=NULL, 
+                     strat.facet=NULL, 
+                     color.scales=NULL,
+                     trans=NULL, ...) {
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
@@ -164,6 +193,7 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV",
     conf[["trans"]] <- trans
     if (!is.null(strat.color)) conf[["strat.color"]] <- strat.color
     if (!is.null(strat.facet)) conf[["strat.facet"]] <- strat.facet
+    if (!is.null(color.scales)) conf$gp[["color.scales"]] <- color.scales
     ctr[["config"]][["plots"]][[toupper(pname)]] <-
       c(ptype = ptype, list(...))
     ctr$add_plot(conf, pname)
@@ -186,6 +216,7 @@ set_abbrev <- function(ctr,...){
 #' Get abbreviation definition by key
 #'
 #' @param param abbreviation term
+#' @param ctr \code{pmxClass} controller
 #'
 #' @return characater abbreviation defintion
 #' @export
@@ -212,13 +243,13 @@ get_abbrev <- function(ctr,param) {
 #' @examples
 #' \dontrun{
 #' library(ggPMX)
-#' ctr <- pmx_mlx("standing")
-#' p1 <- ctr %>% get_plot("ipred_iwres")
+#' ctr <- theophylline()
+#' p1 <- ctr %>% get_plot("iwres_ipred")
 #' ## get all pages or some pages
 #' p2 <- ctr %>% get_plot("individual")
 #' ## returns one page of individual plot
-#' p2 <- ctr %>% get_plot("individual",napge=1)
-#' p3 <- ctr %>% get_plot("individual",napge=c(1,3))
+#' p2 <- ctr %>% get_plot("individual",npage=1)
+#' p3 <- ctr %>% get_plot("individual",npage=c(1,3))
 #' ## get distribution plot
 #' pdistri <- ctr %>% get_plot("ebe_hist")
 #'
@@ -291,9 +322,9 @@ plots <- function(ctr) {
 #'
 #' @examples
 #' \dontrun{
-#' ctr <- pmx_mlx(config = "standing")
+#' ctr <- theophylline()
 #' ctr %>% set_plot("IND", pname = "indiv1")
-#' get_plot_config("distr1")
+#' ctr %>% get_plot_config("distr1")
 #' }
 get_plot_config <- function(ctr, pname) {
   assert_that(is_pmxclass(ctr))
@@ -690,12 +721,15 @@ pmx_add_plot <- function(self, private, x, pname) {
       if ("is.draft" %in% names(self$settings)) {
         x$gp$is.draft <- self$settings$is.draft
       }
-      if ("strat.color" %in% names(self$settings)) {
-        x$gp$strat.color <- self$settings$strat.color
+      if ("color.scales" %in% names(self$settings)) {
+        x$gp$color.scales <- self$settings$color.scales
       }
       if ("use_abbrev" %in% names(self$settings) && self$settings$use_abbrev) {
         x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
         x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
+      }
+      if("labeller" %in% names(self$settings)){
+        x$facets$labeller <- self$settings$labeller
       }
     }
     self$set_config(pname, x)

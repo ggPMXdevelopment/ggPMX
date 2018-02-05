@@ -17,6 +17,7 @@ default_residual <- function(...) {
 #' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline geom hline graphical parameters
 #' @param dname name of dataset to be used
+#' @param facets \code{list} wrap facetting in case of strat.facet
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -41,7 +42,8 @@ default_residual <- function(...) {
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
-residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE, hline=NULL, dname=NULL, ...) {
+residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE, 
+                     hline=NULL, dname=NULL,facets=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -74,6 +76,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE, hline=N
       point = point,
       add_hline = add_hline,
       hline = hline,
+      facets=facets,
       gp = pmx_gpar(labels = labels, ...)
     ), class = c("residual", "pmx_gpar")
   )
@@ -123,7 +126,7 @@ plot_pmx.residual <- function(x, dx, ...) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
-      p <- p + facet_wrap(strat.facet)
+      p <- p + do.call("facet_wrap",c(strat.facet,facets))
     }
     if (aess$y == "DV") {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])

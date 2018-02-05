@@ -84,8 +84,9 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       )
     }
     
-    if (!is.null(strat.color)) {
-      p <- p + do.call("scale_colour_manual",strat.color)
+    if (!is.null(color.scales)) {
+      p <- p + do.call("scale_colour_manual",color.scales)
+      p <- p + do.call("scale_fill_manual",color.scales)
     }
     p
   })

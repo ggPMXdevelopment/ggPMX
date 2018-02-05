@@ -4,7 +4,7 @@
 #' @param sys \code{charcarter} system used , monolix,nonmem,... 
 #' @param inputs \code{charcater} path to the inputs settings file (yaml format)
 #' @param plots   \code{charcater} path to the inputs settings file (yaml format)
-#' @param ... 
+#' @param ...  extra arguments not used 
 #'
 #' @return \code{pmxConfig} object
 #' @export

@@ -22,10 +22,10 @@
 #' ctr %>% pmx_report(name="1_popPK_model",template = "standing",output_dir="/tmp")
 #' }
 pmx_report <-
-  function(ctr, name, output_dir=NULL,template="all", render=TRUE) {
+  function(ctr, name, output_dir=getwd(),template="all", render=TRUE) {
     
     file_name <- file.path(output_dir,sprintf("%s.Rmd", name))
-    if (file.exists(file_name)) {
+    if (length(file_name) >0 && file.exists(file_name)) {
       file.remove(file_name)
     }
     draft(

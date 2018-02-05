@@ -32,6 +32,6 @@ identity_line:
   intercept: 0
 log_x: no
 log_y: no
-strat.color: ~
+color.scales: ~
 
 

@@ -138,12 +138,12 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
   with(x, {
     p <- ggplot(data = dx, aes_string(x = "VALUE"))
     if (!is.null(strat.color)) {
+      histogram$fill <- NULL
       histogram$mapping <- aes_string(fill = strat.color)
     }
     p <- p + do.call(geom_histogram, histogram)
-    facets$facets <- wrap.formula
-    p <- p + do.call(facet_wrap, facets)
     if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "hist", strat.color)
+    p <- p + do.call("facet_wrap",c(wrap.formula,x$facets))
     
     p
   })
@@ -163,10 +163,7 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
   
   
   if (!is.null(strat.facet)) {
-    p <- p + with(x$facets, facet_wrap(
-      strat.facet, scales = scales,
-      nrow = nrow
-    ))
+    p <- p + do.call("facet_wrap",c(strat.facet,x$facets))
   }
   
   if (x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
@@ -191,12 +188,15 @@ shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
     shrink$fun <- NULL
     do.call(geom_text, shrink)
   } else {
-    shrink$label <- sprintf("shrinkage=%s%%", round(dx$SHRINK * 100))
-    shrink$geom <- "text"
-    shrink$x <- -Inf
-    shrink$y <- Inf
+    shrink$data <- dx
+    shrink$mapping <-
+      aes(
+        label = sprintf("%s%%", round(SHRINK * 100)),
+        y = Inf,
+        x = -Inf
+      )
     shrink$fun <- NULL
-    do.call(annotate, shrink)
+    do.call(geom_text, shrink)
   }
   res
 }

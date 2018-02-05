@@ -191,7 +191,7 @@ pk_occ <- function(){
     system.file(package = "ggPMX"), "testdata",
     uc.name
   )
-  wd.mlx <- file.path(uc.dir, "Monolix")
+  wd.mlx <- file.path(uc.dir, "RESULTS")
   input_file <- file.path(uc.dir, data_file)
   
   pmx_mlx(

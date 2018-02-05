@@ -44,7 +44,7 @@ pmx_gpar <-
            identity_line,
            log_x,
            log_y,
-           start.color,
+           color.scales,
            ...) {
     
     
