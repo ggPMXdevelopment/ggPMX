@@ -1,0 +1,52 @@
+```{r load_shrink, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
+
+ctr <- theophylline()
+```
+
+## Default call
+```{r}
+shrinkage(
+  ctr %>% get_data("estimates"),
+  ctr %>% get_data("eta")
+)
+```
+
+## Var function
+```{r}
+shrinkage(
+  ctr %>% get_data("estimates"),
+  ctr %>% get_data("eta"),
+  fun = "var"
+)
+```
+
+## Shrinkage plot
+```{r}
+ctr %>%
+  pmx_plot_ebe_box( has.shrink = TRUE) 
+```
+
+## Shrinkage with simple stratification
+```{r}
+shrinkage(
+  ctr %>% get_data("estimates"),
+  ctr %>% get_data("eta"),
+  by = "SEX"
+)
+```
+
+## Shrinkage with double stratification
+```{r fig.width=9, fig.height=8}
+ctr %>% pmx_plot_ebe_hist(has.shrink = TRUE, strat.facet = ~SEX)
+```
+
+

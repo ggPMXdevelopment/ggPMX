@@ -1,0 +1,56 @@
+```{r load_archi, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
+
+ctr <- theophylline()
+```
+
+
+# General architecture
+
+The package is coded using object-oriented programming. This means that information is encoded in objects and we use functions to change the content of objets.
+
+## Controller
+
+The design of the package is around a central object called *controller*. The controller allows to read the model output files, produces the diagnostics plots and allows to customize them. All these operations are done trough functions.
+
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics("./ggPMX_arch.png")
+```
+
+We can distinguish 3 layers in the design of ggPMX package: 
+
+1. Controller initialization using data templates (yaml): The user creates the controller that reads and store modelling inputs and outputs data. Using the pre defined template the data is reshaped in a standard format.
+2. Plot Creation Using plot templates (yaml):  The controller creates and store plots with their default values. User can customize each plot using a set of plot functions : pmx_plot_xx family.
+3. Plot rendering using document templates (rmarkdwon): The controller generates report in pdf or rmarkdwon format.
+
+## ggPMX datasets
+
+The following dataset name convention is used throughout this vignette. The *input modeling dataset* is the one used for model fitting (the actual data). The *output modeling datasets* are those output from the fitting tool (Monolix or Nonmem). The *ggPMX datasets* are the ones created within ggPMX. Table \ref{tab:ggPMX_datasets} provides a list of all ggPMX datasets. 
+
+```{r datasets_list,echo=FALSE,results='asis'}
+
+out <- rbind(
+  c("input", "Input modeling dataset"),
+  c("estimates", "Estimated population parameters"),
+  c("eta", "Random effects, their standard deviation and residual errors (to calculate shrinkage)"),
+  c("predictions", "Observations and predictions at times of observations dataset"),
+  c("finegrid", "Additional predictions (at times without observations)")
+)
+
+colnames(out) <- c("ggPMX dataset", "Description")
+# knitr::kable(out)
+# latex(head(out), file='', label='tab:ggPMX_datasets', caption='ggPMX datasets',where = "!htbp")
+xt <- xtable(head(out), label = "tab:ggPMX_datasets", caption = "ggPMX datasets")
+print(xt, comment = F)
+```
+\clearpage
+
