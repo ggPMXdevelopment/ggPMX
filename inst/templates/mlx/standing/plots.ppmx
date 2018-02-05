@@ -158,7 +158,6 @@ EBE_HIST:
     hjust: -1
     vjust: 2
 
-
 EBE_BOX:
   ptype: DIS
   type: box
@@ -175,8 +174,7 @@ EBE_BOX:
     color: black
     hjust: -0.5
     vjust: 2.0
-  
-  
+
 INDIVIDUAL:
   ptype: IND
   ranges: ~
@@ -204,6 +202,7 @@ IWRES_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': IWRES Quantiles
+    
 NPDE_QQ:
   ptype: PMX_QQ
   x: NPDE
@@ -212,4 +211,3 @@ NPDE_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': NPDE Quantiles
-
