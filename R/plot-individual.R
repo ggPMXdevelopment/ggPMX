@@ -123,8 +123,11 @@ plot_pmx.individual <-
           scale_linetype_manual("", 
             labels = c("individual predictions", "population predictions"),
             values=c("solid","dotted")
-          ) +theme(legend.position = "top")
-
+          ) + theme(legend.position = "top")
+      }else{
+        
+        p <- p + theme(legend.position = "none")   
+          
       }
 
       ## split pages
