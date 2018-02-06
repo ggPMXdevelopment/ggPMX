@@ -718,12 +718,8 @@ pmx_add_plot <- function(self, private, x, pname) {
     
     
     if (!is.null(self$settings)) {
-      if ("is.draft" %in% names(self$settings)) {
         x$gp$is.draft <- self$settings$is.draft
-      }
-      if ("color.scales" %in% names(self$settings)) {
         x$gp$color.scales <- self$settings$color.scales
-      }
       if ("use_abbrev" %in% names(self$settings) && self$settings$use_abbrev) {
         x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
         x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
