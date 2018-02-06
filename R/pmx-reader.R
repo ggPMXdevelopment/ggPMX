@@ -271,10 +271,15 @@ load_source <- function(sys, path, dconf, ...) {
   names. <- names(dconf)
   DVID <- NULL
   
-  pk_pd <- c("predictions1","predictions2","finegrid1","finegrid2")
   
+  
+  pk_pd <- c("predictions1","predictions2","finegrid1","finegrid2")
   datasets <- dconf[setdiff(names.,pk_pd)]
-  dxs <- lapply(datasets, function(x) {
+  use_finegrid <- list(...)$use_finegrid
+  nn <- names(datasets)
+  if(!use_finegrid)
+    nn <- setdiff(nn,"finegrid")
+  dxs <- lapply(datasets[nn], function(x) {
     load_data_set(x, path = path, sys = sys, ...)
   })
   

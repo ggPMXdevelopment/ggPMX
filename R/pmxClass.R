@@ -52,6 +52,10 @@ pmx <-
     if (!inherits(config, "pmxConfig")) {
       config <- load_config(config, sys)
     }
+    
+    if (!inherits(settings, "pmxSettingsClass")) {
+      settings <- pmx_settings()
+    }
     pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings)
   }
 
@@ -117,6 +121,7 @@ formula_to_text <- function(form) {
 #' @param color.scales \code{list} list containg elements of scale_color_manual
 #' @param use_labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
+#' @param use_finegrid \code{logical} if FALSE don't use finegrid even if it is present within data
 
 
 #' @return pmxSettingsClass object
@@ -124,13 +129,16 @@ formula_to_text <- function(form) {
 #' @export
 pmx_settings <- 
   function(is.draft=TRUE,use_abbrev=FALSE,color.scales=NULL,
-           cats.labels=NULL,use_labels=FALSE,...){
+           cats.labels=NULL,use_labels=FALSE,
+           use_finegrid=TRUE, 
+           ...){
     
     res <- list(is.draft=is.draft,
                 use_abbrev=use_abbrev,
                 color.scales=color.scales,
                 use_labels=use_labels,
-                cats.labels=cats.labels)
+                cats.labels=cats.labels,
+                use_finegrid=use_finegrid)
     if(use_labels){
       res$labeller = do.call("labeller",cats.labels)
     }
@@ -516,7 +524,8 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
-    endpoint=self$endpoint
+    endpoint=self$endpoint,
+    use_finegrid=settings$use_finegrid
   )
   ## 
   
