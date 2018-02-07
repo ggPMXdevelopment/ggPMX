@@ -241,3 +241,9 @@ ctr %>% pmx_plot(pname = "pred_time",
 
 
 
+
+## Custom configuration
+
+
+```{r child = 'config.Rmd'}
+```

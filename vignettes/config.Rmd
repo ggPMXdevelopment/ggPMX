@@ -1,0 +1,89 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r load_basics, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+library(yaml)
+```
+
+ggPMX creates a configuration object based on built-in input and plots templates . User can customize those template using yaml notation. 
+
+### Custom input template 
+
+
+Here an example of a MONOLIX custom inputs configuration. It is a very simple configuration where we just define the predictions file. 
+```{r , echo=FALSE}
+theophylline <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  "theophylline"
+)
+WORK_DIR <- file.path(theophylline, "Monolix")
+custom_inputs_file=file.path( system.file(package = "ggPMX"),"examples/custom_inputs.yaml")
+cat(as.yaml(yaml.load_file(custom_inputs_file)))
+```
+
+### Custom plots template
+
+The set of controller plots are define in the plot template. It is again using the yaml notation. Here we define a tiny configuration with 2 plots: 
+```{r adv_custom_configs_files,echo=FALSE}
+
+theophylline <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  "theophylline"
+)
+WORK_DIR <- file.path(theophylline, "Monolix")
+
+custom_plots_file=file.path( system.file(package = "ggPMX"),"examples/plots.yaml")
+
+cat(as.yaml(yaml.load_file(custom_plots_file)))
+```
+
+### Custom configuration use case
+
+In this example , we will the previsuouly defined templates to create a controller with 2 plots. We create a custom config using `pmx_config`. 
+
+```{r adv_custom_configs}
+# *************** Create a controller using custom plot configuration ***************** ------
+
+theophylline <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  "theophylline"
+)
+WORK_DIR <- file.path(theophylline, "Monolix")
+
+custom_plots_file=file.path( system.file(package = "ggPMX"),"examples/plots.yaml")
+ctr <-  pmx_mlx(
+  config = pmx_config(
+    plots=custom_plots_file,
+    inputs = custom_inputs_file
+  ),
+  directory = WORK_DIR,
+  input = file.path(theophylline, "data_pk.csv"),
+  dv = "Y",
+  dvid = "DVID",
+  cats = c("SEX"),
+  conts = c("WT0", "AGE0"),
+  strats = "STUD"
+)
+
+## get the list of plots
+ctr %>% plots
+
+```
+
+then jsut render plot using `get_plot` or even better using `pmx_plot` :
+```{r}
+ctr %>% pmx_plot("custom_res_time")
+ctr %>% pmx_plot("custom_npde_time")
+```
+
+
+
+
+
