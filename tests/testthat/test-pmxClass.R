@@ -96,7 +96,7 @@ test_that("can disable draft for all plots", {
       cats = c("SEX"),
       conts = c("WT0", "AGE0"),
       strats = "STUD",
-      settings = list(is.draft = FALSE)
+      settings = pmx_settings(is.draft = FALSE)
     )
 
   is_draft <- vapply(

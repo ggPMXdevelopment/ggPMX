@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ```{r load_archi, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggPMX)
@@ -15,11 +20,14 @@ ctr <- theophylline()
 
 # General architecture
 
-The package is coded using object-oriented programming. This means that information is encoded in objects and we use functions to change the content of objets.
+The package is coded using object-oriented programming. This means that information is encoded in objects and we use methods to change or expose the content of objets. Many Class-pardaigm can be used in R. `ggPMX` use bascially 2 class types: 
 
-## Controller
+- R6 to create the controller object. The R6 object behave like a container that conatins all data, plots and configuration produced during the analysis session. 
+- S3 methods to expose R6 class methods in a handy way without side effect. 
 
-The design of the package is around a central object called *controller*. The controller allows to read the model output files, produces the diagnostics plots and allows to customize them. All these operations are done trough functions.
+## The controller
+
+The design of the package is around a central object called *controller*. The controller allows to read the model output files, produces the diagnostics plots and allows to customize them. It is template-diven layout. Indeed , for each task or layer , the controller uses a pre-defined template to control its execution.
 
 
 ```{r echo=FALSE, out.width='80%', fig.align='center'}
@@ -28,9 +36,9 @@ knitr::include_graphics("./ggPMX_arch.png")
 
 We can distinguish 3 layers in the design of ggPMX package: 
 
-1. Controller initialization using data templates (yaml): The user creates the controller that reads and store modelling inputs and outputs data. Using the pre defined template the data is reshaped in a standard format.
-2. Plot Creation Using plot templates (yaml):  The controller creates and store plots with their default values. User can customize each plot using a set of plot functions : pmx_plot_xx family.
-3. Plot rendering using document templates (rmarkdwon): The controller generates report in pdf or rmarkdwon format.
+1. Controller initialization using data templates (yaml): The user creates the controller that reads and store modelling inputs and outputs data. Using the pre defined template the data is reshaped in a standard format. ggPMX exposes functions creators `pmx` or more system-specific `pmx_mlx`. 
+2. Plot generation using plot templates (yaml):  The controller creates and store plots with their default values. User can modify plots either by modifying the controller (`pmx_upate`) or just update a copy of the plot (without side effect) using one of the predefined function `pmx_plot_xx`-like family or the more generic `pmx_plot` function.
+3. Plot rendering using document templates (rmarkdwon): The controller generates report in pdf or rmarkdwon format. again here a report template is used to define the report layout.
 
 ## ggPMX datasets
 

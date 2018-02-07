@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ```{r load_intro, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggPMX)
@@ -32,9 +37,12 @@ The following figures are examples of diagnotic plots.
 ctr <- theophylline()
 ctr %>% pmx_plot_dv_pred
 ctr %>% pmx_plot_ebe_box
-ctr %>% pmx_plot_ebe_hist
-ctr %>% pmx_plot_individual(npage = 1)
-ctr %>% pmx_plot_eta_matrix
+ctr %>% pmx_plot_ebe_hist(facets=list(scales="free_y"))
+ctr %>% pmx_plot_individual(npage = 1,
+                            has.legend=FALSE,
+                            facets=list(ncol=2,nrow=3))
+ctr %>% pmx_plot_eta_matrix(
+  shrink=list(size=3,hjust=1.5))
 ```
 
 

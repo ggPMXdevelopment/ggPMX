@@ -16,7 +16,7 @@
 #' @param log_x logical if TRUE add scale_x_log10 layer
 #' @param log_y logical if TRUE add scale_y_log10 layer
 #' @param ... extra arguments (not used yet)
-#'
+#' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
 #'
 #' @details
 

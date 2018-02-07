@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ```{r load_basics, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggPMX)
@@ -7,7 +12,13 @@ library(knitr)
 ```
 
 
-To illustrate `ggPMX` functionalities, we use a built-in model: the theophylline example. The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline. A simple one-compartmental PK model with first-order absorption was fitted to the data. The following covariates were used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance. Random effects on all three parameters (ka, Cl, V) were included. The residual error was proportional.
+To illustrate `ggPMX` functionalities, we use a built-in model: the **theophylline** example. 
+
+- The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline. 
+- A simple one-compartmental PK model with first-order absorption was fitted to the data. 
+- The following covariates were used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance. 
+- Random effects on all three parameters (ka, Cl, V) were included. 
+- The residual error was proportional.
 
 As a convention, when plots are described as "Y vs. X", we mean that Y is plotted on the vertical axis and X on the horizontal axis.
 
@@ -30,6 +41,13 @@ ctr <- pmx(
   dvid = "DVID"
 )
 ```
+This is example of contoller , is wrapped in a function ( massively used to illustrate the package examples) 
+
+```{r theophylline_ctr}
+ctr <- theophylline()
+```
+
+
 
 All mandatory arguments of `pmx()` are listed below:
 
@@ -45,11 +63,13 @@ The controller is an object of class `r class(ctr)[1]`. It behaves like a contai
 ctr
 ```
 
-The first table is the controller configuration. We see the working directory, the input modeling dataset name, the dependent variable (DV) name and other fields related to the model (e.g., continuous and discrete covariates).
+ctr is diplayed in 3 table: 
 
-The second table lists the `ggPMX` datasets. The first column (`data_name`) of this table contains the ggPMX name of the dataset; the second column (data_file) contains the names of the output modeling datasets (for example estimates.txt); in the third column (data_label) contains the dataset description.
+- The first table is the controller configuration. We see the working directory, the input modeling dataset name, the dependent variable (DV) name and other fields related to the model (e.g., continuous and discrete covariates).
 
-The third table of the controller provides the list of the available plots. It corresponds to Table \ref{tab:plots_list} in Section 4. Plot_type is explained in Section 3.3.
+- The second table lists the `ggPMX` datasets. The first column (`data_name`) of this table contains the ggPMX name of the dataset; the second column (data_file) contains the names of the output modeling datasets (for example estimates.txt); in the third column (data_label) contains the dataset description.
+
+- The third table of the controller provides the list of the available plots. It corresponds to Table \ref{tab:plots_list} in Section 4. Plot_type is explained in Section 3.3.
 
 ### Monolix controller with `pmx_mlx()`
 The above controller initialization can be simplified by using the Monolix controller `pmx_mlx()`, which is a wrapper function for `pmx()` with `sys="mlx"`:
@@ -65,14 +85,7 @@ ctr <- pmx_mlx(
 ### Nonmem controller
 Similarly, there will be (in a future release) a Nonmem controller.
 
-### Theophylline controller
-To create a controller for the `theophylline` built-in model, we call the special function `theophylline()`:
 
-```{r theophylline_ctr}
-ctr <- theophylline()
-```
-
-This function is simply a wrapper to pmx fuction used above. 
 
 ### Controller with covariates
 
@@ -132,32 +145,50 @@ NOTE: **`pmx` and `pmx_plot_xx()` functions are just what you need to know to ge
 ## View default plots
 
 To view all standard diagnostig plots, call the corresponding `pmx_plot_xx()` function. See the Advanced features section to learn how to modify default plot settings.
-```{r view_plots, out.width='.48\\linewidth', fig.height=4, fig.width=6, fig.show='hold', fig.align='center'}
-ctr %>% pmx_plot_dv_pred()
-ctr %>% pmx_plot_iwres_time()
-ctr %>% pmx_plot_iwres_ipred()
-ctr %>% pmx_plot_npde_time()
-ctr %>% pmx_plot_npde_pred()
-ctr %>% pmx_plot_ebe_box()
+
+- List  of residual plots (**RES**)
+```{r basics_res, out.width='.48\\linewidth', fig.height=4, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_dv_ipred
+
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_time
+
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+ctr %>% pmx_plot_npde_pred
 ```
-```{r fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
-ctr %>% pmx_plot_eta_matrix()
-```
-```{r fig.height=6.5, fig.width=4, fig.show='hold', fig.align='center'}
+
+- ebe histogram/boxplot plot (**DIS**)
+```{r basics_ebe_hist , fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
 ctr %>% pmx_plot_ebe_hist()
+ctr %>% pmx_plot_ebe_box()
+
 ```
-```{r fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
-ctr %>% pmx_plot_individual(npage = c(1, 2))
+- individual plot (**IND**)
+```{r basics_indiv, fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_individual(npage = 1)
+```
+- qq plot (**PMX_QQ**)
+```{r basics_qq, fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_npde_qq()
+ctr %>% pmx_plot_iwres_qq()
+```
+- matrix plot (**ETA_PAIRS**)
+```{r basics_matrix_plot,  fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_eta_matrix
 ```
 
 ## Update default plots
 
-To update default plots, one can use the same functions as above, but with additional arguments. For example:
-```{r update_defaults, out.width='.98\\linewidth', fig.height=6, fig.width=9, fig.show='hold', fig.align='center'}
+To update default plots, one can use the same functions as above, but with additional arguments. Here for example, to update the individual plot:
+```{r basics_update_defaults, out.width='.98\\linewidth', fig.height=6, fig.width=9, fig.show='hold', fig.align='center'}
 ctr %>% pmx_plot_individual(
-  npage = 1, facets = list(nrow = 3, ncol = 5),
+  npage = 1, 
+  facets = list(nrow = 2, ncol = 2),
   labels = list(title = "My individuals")
-) + scale_y_log10()
+) + ggplot2::scale_y_log10()
 ```
 
-
+Using the help , you can get the list of possible parameters to update the plot.

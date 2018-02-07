@@ -4,15 +4,9 @@ library(ggPMX)
 library(ggplot2)
 library(xtable)
 library(knitr)
-
-theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
-work_dir <- file.path(theophylline, "Monolix")
-input_data <- file.path(theophylline, "data_pk.csv")
-
-ctr <- theophylline()
 ```
 
-Some text needed here... TBD.
+
 
 
 ```{r create_controller_uc}

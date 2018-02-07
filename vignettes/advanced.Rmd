@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ```{r load_advanced, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggPMX)
@@ -15,16 +20,16 @@ ctr <- theophylline()
 
 ## Get data
 
-The `ggPMX` controller reads modeling input and output data files and creates based on these the `ggPMX` datasets (see Table \ref{tab:ggPMX_datasets}). We can access a `ggPMX` dataset using the `get_data()` function. Note that `ggPMX` uses `data.table` package to load data and reformat variables names. Manipulating and reshaping data is efficient and intuitive. 
+The `ggPMX` controller reads modeling input and output data files and creates based on these the `ggPMX` datasets (see Table \ref{tab:ggPMX_datasets}). We can access a `ggPMX` dataset using the `get_data()` method.Note that `ggPMX` uses `data.table` package to load data and reformat variables names. Manipulating and reshaping data is efficient and intuitive. 
 
 ### Input modeling data
-The input modeling data is the dataset on which the model was fitted. In the theophylline example below, it contains individual identifiers (ID), times of measurement (TIME), dependent variables (DV) and their identifiers (DVID), and several covariates (SEX, WT0, AGE0, STUD). The input modeling data is also the same as dataset 1 from Table \ref{tab:ggPMX_datasets}.
+The input modeling data is the dataset on which the model was fitted. In the theophylline example below, it contains individual identifiers (ID), times of measurement (TIME), dependent variables (DV) and their identifiers (DVID), and continuous and categorical covariates (SEX, WT0, AGE0, STUD). The input modeling data is also the same as dataset 1 from Table \ref{tab:ggPMX_datasets}.
 ```{r get_input_data}
 ctr %>% get_data("input")
 ```
 
 ### `ggPMX` datasets
-The output modeling datasets are theose produced by the model fitting software (Monolix or Nonmem). `ggPMX` is using the output modeling datasets to create the `ggPMX` datasets (see Table \ref{tab:ggPMX_datasets}) by adjusting the information necessary to the tool. We have listed below datasets 2-5 from Table \ref{tab:ggPMX_datasets} for the theophylline example. Note that the `ggPMX` `predictions` dataset is different from Monolix' `predictions.txt` dataset in that covariates have been added to the Monolix version and some columns have been removed. A similarl processessing was applied to `finegrid`.  (What happens when there are NANs in some datasets?) 
+The output modeling datasets are those produced by the model fitting software (Monolix or Nonmem). `ggPMX` is using the output modeling datasets to create the `ggPMX` datasets (see Table \ref{tab:ggPMX_datasets}) by adjusting the information necessary to the tool. We have listed below datasets 2-5 from Table \ref{tab:ggPMX_datasets} for the theophylline example. Note that the `ggPMX` `predictions` dataset is different from Monolix' `predictions.txt` dataset in that covariates have been added to the Monolix version and some columns have been removed. A similarl processessing was applied to `finegrid`.  (What happens when there are NANs in some datasets?) 
 ```{r get_outputs_data}
 ctr %>% get_data("estimates")
 ctr %>% get_data("eta")
@@ -32,15 +37,7 @@ ctr %>% get_data("predictions")
 ctr %>% get_data("finegrid")
 ```
 
-Here an example of filtering input data in a sugar syntax manner (??). 
-
-```{r dx_sugar_syntax}
-
-input <- ctr %>% get_data("input")
-input[DV > 350 & TIME > 0 & ID == 1 & SEX == 1]
-```
-
-## View plots with `get_plot()`
+## `get_plot()`
 To view a particular plot we call the function `get_plot()` with the name of the plot as the first (mandatory) argument, where the name has to correspond to one of the plot_names above: 
 ```{r get_ipred_iwres, out.width='.9\\linewidth', fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
 ctr %>% get_plot("dv_pred")
@@ -55,11 +52,11 @@ p2
 ```
 
 In case of individual plots where several pages are produced, another optional argument exists, the page number to display (`npage`). 
-```{r ind_plots, fig.height=3, fig.width=4, fig.align='center'}
+```{r ind_plots}
 ctr %>% get_plot("individual", npage = 2)
 ```
 
-## Create a new plot with `set_plot()`
+## `set_plot()`
 
 To create a new plot, we use the `set_plot()` function. The following fields need to be provided:
 
@@ -79,7 +76,7 @@ p1 <- ctr %>%
 p2 <- p1 + geom_line(aes(group = as.factor(ID), color = as.factor(ID)))
 p2
 ```
-see `??residual` for the list of all parameters to create a new residual plot. (I can't see anything when doing `??residual`. Bug with the help?)
+see `?residual` for the list of all parameters to create a new residual plot.
 
 ### New distribution plot
 ```{r new_dis_plot, fig.height=3, fig.width=3, fig.align='center'}
@@ -95,16 +92,16 @@ ctr %>%
   set_plot("IND", pname = "ind1") %>%
   get_plot("ind1", 4) # display only the fourth page
 ```
-see `??individual` for the list of all parameters to create a new individual plot.
+see `?individual` for the list of all parameters to create a new individual plot.
  
 
-## Update an existing plot with `pmx_update()`
+## `pmx_update()`
 To update some plot features and to access additional settings, we use `pmx_update()`. Note that `pmx_update` changes permanently the actual content of the controller. We highly recommand you to use one f the `pmx_plot_xx` to update plots. They are without side effect and easier to use. We will show the 2 options for each example.
 
 ### Change title
 
 In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "individual" will be re-plotted, it will be with the settings below.
-```{r indiv_plots_update, fig.height=3, fig.width=5, fig.align='center'}
+```{r indiv_plots_update}
 ctr %>% pmx_update(
   "individual",
   labels = list(title = "My individuals")
@@ -114,14 +111,14 @@ ctr %>% get_plot("individual", npage = 1)
 
 Similarly we can do it using: 
 
-```{r update_pmx_plot_individual1, fig.height=3, fig.width=5, fig.align='center'}
+```{r update_pmx_plot_individual1}
 ctr %>% pmx_plot_individual(labels = list(title = "My individuals"), npage = 1)
 ```
 
 
 ### Change grid size of individual plots 
 In the example below, we change the title of the plot called "individual" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
-```{r indiv_plots_grid, fig.height=3.5, fig.width=6, fig.align='center'}
+```{r indiv_plots_grid}
 ctr %>% pmx_update(
   "individual",
   facets = list(nrow = 2, ncol = 4),
@@ -135,7 +132,7 @@ ctr %>% get_plot("individual", npage = 1)
 
 Similarly we can do it using: 
 
-```{r update_pmx_plot_individual2, fig.height=3, fig.width=5, fig.align='center'}
+```{r update_pmx_plot_individual2}
 ctr %>% 
   pmx_plot_individual(
    facets = list(nrow = 2, ncol = 4),
@@ -146,7 +143,7 @@ ctr %>%
 
 ### Change axis labels
 The following code gives an example of how to change the labels of x- and y-axes of individual plots.
-```{r update_xy_labels,  out.width='.49\\linewidth', fig.width=4, fig.height=3, fig.show='hold',fig.align='center'}
+```{r update_xy_labels}
 
 # Default individual plot
 p1 <- ctr %>% pmx_plot_individual
@@ -213,29 +210,34 @@ ctr %>%
   ) 
 ```
 
-To remove the DRAFT label from all plots, set this option during the initialization of the controller.
+## `pmx_plot()`
 
-```{r fig.width=5, fig.height=4}
-ctr <-
-  pmx_mlx(
-    config = "standing",
-    directory = work_dir,
-    input = input_data,
-    dv = "Y",
-    dvid = "DVID",
-    cats = c("SEX"),
-    conts = c("WT0", "AGE0"),
-    strats = "STUD",
-    settings = list(is.draft = FALSE)
-  ) ## here the draft option
-ctr %>% pmx_plot_dv_pred()
+A generic pmx_plot function can be used to update the new created plot without side effect, i.e, without modifying the parent controller. This is a generalization to `pmx_plot_xx` of the family function. Here a use case example : 
+
+```{r advanced_pmx_plot}
+## create a new residual plot 
+
+ctr <- theophylline()
+ctr %>% set_plot(
+  ptype = "RES",
+  pname = "pred_time",
+  x ="TIME",y="PRED")
+## get the plot using pmx_plot
+
+ctr %>% pmx_plot("pred_time")
+
+```
+
+We can easily upadte it : 
+
+```{r adv_update_pmx_plot_pred_time}
+
+ctr %>% pmx_plot(pname = "pred_time",
+                           point = list(alpha=0.1),
+                           smooth=list(method="lm",color="blue"))
 ```
 
 
 
-
-
-
-\clearpage 
 
 

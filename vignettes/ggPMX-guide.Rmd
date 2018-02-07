@@ -66,6 +66,12 @@ library(knitr)
 ```
 \clearpage
 
+# Global settings
+
+```{r child = 'settings.Rmd'}
+```
+\clearpage
+
 ## Visual predictive checks (VPCs)
 
 In a next release.

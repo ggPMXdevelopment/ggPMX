@@ -52,7 +52,7 @@ pmx <-
     if (!inherits(config, "pmxConfig")) {
       config <- load_config(config, sys)
     }
-    
+    if(missing(settings)) settings <- pmx_settings()
     if (!inherits(settings, "pmxSettingsClass")) {
       settings <- pmx_settings()
     }
@@ -122,8 +122,7 @@ formula_to_text <- function(form) {
 #' @param use_labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
 #' @param use_finegrid \code{logical} if FALSE don't use finegrid even if it is present within data
-
-
+#' @param ... extra parameter not used yet
 #' @return pmxSettingsClass object
 #' @example inst/examples/pmx-settings.R
 #' @export
@@ -217,7 +216,23 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV",
 
 set_abbrev <- function(ctr,...){
   assert_that(is_pmxclass(ctr))
-  ctr$abbrev <- l_left_join(ctr$abbrev ,list(...))
+  abbrev <- if(length(ctr$abbrev)>0)
+    l_left_join(ctr$abbrev ,list(...))
+  else unlist(list(...),recursive=FALSE)
+  class(abbrev) <- c("abbrev","list")
+  ctr$abbrev <- abbrev
+}
+
+#' S3 print abbrev
+#' @param x object of class configs
+#' @param ... pass additonal options (not used presently)
+#' @return print abbrev
+#' @export
+print.abbrev <- function(x,...){
+  
+  assert_that(inherits(x,"abbrev"))
+  for (i in seq_len(length(x)))
+    cat(sprintf("%s : %s \n", names(x)[i],x[[i]]))
   
 }
 
@@ -550,7 +565,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   ## abbev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init","abbrev.yaml")
-  self$abbrev = yaml.load_file(keys_file)
+  self$abbrev = set_abbrev(self,yaml.load_file(keys_file))
   
   ## create all plots
   for (nn in names(self$config$plots)) {
