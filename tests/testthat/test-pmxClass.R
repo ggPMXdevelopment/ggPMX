@@ -8,7 +8,7 @@ test_that("can create pmx class", {
     sort(ctr %>% plot_names()),
     sort(c(
       "abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time",
-      "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "indiv",
+      "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "individual",
       "eta_matrix", "eta_cats", "eta_conts",
       "iwres_qq", "npde_qq"
     ))
@@ -33,7 +33,8 @@ test_that("can get pmx class config", {
   cplots <- ctr %>% plot_names()
   conf <- ctr$get_config("npde_time")
   clabels <- list(
-    title = "NPDE versus TIME", subtitle = "",
+    title = "NPDE vs TIME",
+    subtitle = "",
     x = "TIME",
     y = "NPDE"
   )
@@ -95,7 +96,7 @@ test_that("can disable draft for all plots", {
       cats = c("SEX"),
       conts = c("WT0", "AGE0"),
       strats = "STUD",
-      settings = list(is.draft = FALSE)
+      settings = pmx_settings(is.draft = FALSE)
     )
 
   is_draft <- vapply(

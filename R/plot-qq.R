@@ -42,18 +42,19 @@ pmx_qq <- function(
 
   if (missing(labels)) {
     labels <- list(
-      title = sprintf("QQ plot: %s", x)
+      title = sprintf("QQ plot: %s", x),
+      y = "",
+      x = "",
+      subtitle = ""
     )
   }
-  labels$y <- ""
-  labels$x <- ""
   assert_that(is_list(labels))
   default_point <- list(shape = 1, color = "black", size = 1)
   point <- l_left_join(default_point, point)
   labels$subtitle <- ""
   structure(list(
     ptype = "PMX_QQ",
-    strat=TRUE,
+    strat = TRUE,
     x = x,
     dname = dname,
     point = point,
@@ -117,15 +118,15 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     if (is.character(strat.facet)) {
       strat.facet <- formula(paste0("~", strat.facet))
     }
-    p <- p + facet_grid(strat.facet)
+    p <- p + facet_wrap(strat.facet)
   }
   if (!is.null(p)) p <- plot_pmx(x$gp, p)
-  
+
   xmin <- min(dx[, x$x, with = FALSE], na.rm = TRUE)
   xmax <- max(dx[, x$x, with = FALSE], na.rm = TRUE)
   xrange <- c(xmin - .001 * (xmax - xmin), xmax + .001 * (xmax - xmin))
   p <- p +
     coord_cartesian(xlim = xrange, ylim = xrange) +
-     theme(aspect.ratio = 1)
+    theme(aspect.ratio = 1)
   p
 }

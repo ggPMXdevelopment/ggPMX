@@ -30,7 +30,7 @@ wrap_pmx_plot_generic <-
     params$ctr <- ctr
     params$pname <- pname
     params <- lang_to_expr(params)
-    params$defaults_ <- get_plot_defaults(pname)
+    params$defaults_ <- ctr$config$plots[[toupper(pname)]]
     do.call(pmx_plot_generic, params)
   }
 
@@ -278,17 +278,17 @@ pmx_plot_individual <-
            npage=1,
            ...) {
     stopifnot(is_pmxclass(ctr))
-    if (!"indiv" %in% (ctr %>% plot_names())) return(NULL)
+    if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
     cctr <- pmx_copy(ctr)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
-    params$pname <- "indiv"
+    params$pname <- "individual"
     params$ctr <- cctr
     do.call("pmx_update", params)
     p <- if (is.null(npage)) {
-      cctr %>% get_plot("indiv")
+      cctr %>% get_plot("individual")
     } else {
-      cctr %>% get_plot("indiv", npage)
+      cctr %>% get_plot("individual", npage)
     }
 
     rm(cctr)
@@ -375,3 +375,23 @@ pmx_plot_npde_qq <-
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "npde_qq", params)
   }
+
+
+
+
+#' Genereic pmx plot
+#'
+#' @param ctr \code{pmxClass} pmx controller
+#' @param pname plot name
+#' @param ...  others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_qq}} quantile-quantile plot object
+#' \item \code{\link{pmx_update}} function.
+#' }
+#' @export
+#'
+pmx_plot <- function(ctr, pname, ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, pname, params)
+}

@@ -11,7 +11,9 @@ pmx_theme <- function(...) {
   theme_bw() +
     theme(
       strip.text = element_text(size = 14),
-      strip.background = element_rect(colour = NA, fill = NA)
+      strip.background = element_rect(colour = NA, fill = NA),
+      plot.title = element_text(size = 12),
+      axis.text = element_text(size = 10)
     ) %+replace%
     theme(...)
 }

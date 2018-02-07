@@ -21,7 +21,7 @@ eta_pairs <- function(
                       type.eta=c("mode", "mean"),
                       text_color="black",
                       has.shrink=TRUE,
-                      smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "red"),
+                      smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "black"),
                       point = list(shape = 1, color = "grey50", size = 1, colour = "black"),
                       shrink=list(fun = "sd", size = 5),
                       ...) {
@@ -35,8 +35,9 @@ eta_pairs <- function(
     y = ""
   )
   structure(list(
+    ptype = "ETA_PAIRS",
     dname = dname,
-    strat=FALSE,
+    strat = FALSE,
     labels = labels,
     point = point,
     type.eta = match.arg(type.eta),
@@ -46,7 +47,6 @@ eta_pairs <- function(
     smooth = smooth,
     point = point,
     gp = pmx_gpar(
-      ptype = "ETA_PAIRS",
       labels = labels,
       discrete = FALSE,
       has.smooth = FALSE,
@@ -247,12 +247,21 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   eta_gtable <- ggmatrix_gtable(x, ...)
   if (x$has.shrink) {
     eta_gtable <- gtable_remove_grobs(eta_gtable, "axis-l-1")
-    strip_l_1 <- gtable::gtable_filter(eta_gtable, "strip-r-1")
-    strip_l_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]$rot <- 0
-    strip_l_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]$hjust <- 0.1
+    strip_r_1 <- gtable::gtable_filter(eta_gtable, "strip-r-1")
+    ## make all table wider
+    strip_r_1$grobs[[1]]$widths <- unit(4, "cm")
+    ## chnage text position,rot
+    text_shrink <- strip_r_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]
+    text_shrink$rot <- 0
+    text_shrink$hjust <- 0.8
+    text_shrink$gp$font <- 1L
+    strip_r_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]] <- text_shrink
     matches <- grepl("strip-r-1", eta_gtable$layout$name, fixed = TRUE)
-    eta_gtable$grobs[[which(matches)]] <- strip_l_1
+    eta_gtable$grobs[[which(matches)]] <- strip_r_1
   }
+
+
+
 
   # must be done after gtable, as gtable calls many ggplot2::print.ggplot methods
   ggplot2_set_last_plot(x)

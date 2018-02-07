@@ -9,14 +9,17 @@
 #' @examples
 #' \dontrun{
 #' ## example of global filter
-#' ctr <- pmx_mlx("standing")
+#' ctr <- theophylline()
 #' ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME <2)
 #' ctr %>% get_data("prediction")
 #' }
 pmx_filter <-
   function(ctr, data_set = c(
-           "estimates", "predictions",
-           "eta", "finegrid", "shrink",
+           "estimates",
+           "predictions",
+           "eta",
+           "finegrid",
+           "shrink",
            "input"
          ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
@@ -25,7 +28,6 @@ pmx_filter <-
     if (is_string(substitute(pmx_exp))) {
       pmx_exp <- expression(pmx_exp)
     }
-
     if (!is.null(substitute(pmx_exp))) {
       filter <- deparse(substitute(pmx_exp))
       filter <- local_filter(filter)
@@ -49,6 +51,8 @@ pmx_filter <-
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
+##' @param color.scales \code{list} can be used with strat.color to set scale_color_manual
+
 #' \code{\link{pmx_gpar}} function.
 #'
 #' @family pmxclass
@@ -68,10 +72,11 @@ pmx_filter <-
 #' This mechanism is applied internally to scale log.
 
 pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
+                       color.scales=NULL,
                        filter = NULL, trans=NULL, ..., pmxgpar = NULL) {
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
-  assert_that(is_string_or_null(strat.color))
+  ## assert_that(is_string_or_null(strat.color))
   assert_that(is_string_or_formula_or_null(strat.facet))
 
   ## filtering
@@ -83,13 +88,17 @@ pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
 
   ctr$update_plot(
     pname, strat.color = strat.color,
-    strat.facet = strat.facet, filter = filter, trans = trans, ..., pmxgpar = pmxgpar
+    strat.facet = strat.facet,
+    filter = filter, trans = trans,
+    color.scales = color.scales,
+    ..., pmxgpar = pmxgpar
   )
 }
 
 
-pmx_update_plot <- function(self, private, pname, strat.facet, strat.color, filter=NULL, trans=NULL,
-                            ..., pmxgpar) {
+pmx_update_plot <- function(self, private, pname, strat.facet,
+                            strat.color, filter=NULL, trans=NULL,
+                            color.scales, ..., pmxgpar) {
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   x <- private$.plots_configs[[pname]]
   old_class <- class(x)
@@ -101,18 +110,21 @@ pmx_update_plot <- function(self, private, pname, strat.facet, strat.color, filt
   if (length(newopts) > 0) {
     hl <- newopts[names(newopts) %in% unique(c(names(x), "shrink"))]
     gpl <- newopts[!names(newopts) %in% unique(c(names(x), "shrink"))]
-    if ("labels" %in% names(newopts)) gpl$labels <- newopts[["labels"]]
+    if ("labels" %in% names(newopts)) gpl$labels <- l_left_join(x$gp$labels, newopts[["labels"]])
     hl$gp <- gpl
     x <- l_left_join(x, hl)
   }
 
-
-  x[["filter"]] <- filter
+  if (!is.null(filter)) x[["filter"]] <- filter
   ## transformation
-  x[["trans"]] <- trans
+  if (!is.null(trans)) x[["trans"]] <- trans
   ## stratification
-  if (!is.null(strat.color)) x[["strat.color"]] <- strat.color
-  if (!is.null(strat.facet)) x[["strat.facet"]] <- strat.facet
+  x[["strat.color"]] <- strat.color
+  x[["strat.facet"]] <- strat.facet
+  if (!is.null(color.scales)) {
+    x$gp[["color.scales"]] <- color.scales
+  }
+
 
   class(x$gp) <- old_class_gp
   class(x) <- old_class

@@ -12,6 +12,7 @@ ABS_IWRES_IPRED:
     shape: 1.0
     color: black
     size: 1.0
+    alpha: 0.1
   add_hline: yes
   has.smooth: yes
   smooth:
@@ -33,6 +34,7 @@ IWRES_IPRED:
     shape: 1.0
     color: black
     size: 1.0
+    alpha: 0.1
   add_hline: yes
   has.smooth: yes
   smooth:
@@ -53,6 +55,7 @@ IWRES_TIME:
     shape: 1.0
     color: black
     size: 1.0
+    alpha: 0.1
   add_hline: yes
   has.smooth: yes
   smooth:
@@ -73,6 +76,7 @@ NPDE_TIME:
     shape: 1.0
     color: black
     size: 1.0
+    alpha: 0.1
   add_hline: yes
   has.band: yes
   has.smooth: yes
@@ -94,6 +98,7 @@ NPDE_PRED:
     shape: 1.0
     color: black
     size: 1.0
+    alpha: 0.1
   add_hline: yes
   has.band: yes
   has.smooth: yes
@@ -113,6 +118,7 @@ DV_PRED:
     shape: 1.0
     color: black
     size: 1.0
+    alpha: 0.1
   has.smooth: yes
   smooth:
     se: no
@@ -134,6 +140,7 @@ DV_IPRED:
     shape: 1.0
     color: black
     size: 1.0
+    alpha: 0.1
   has.smooth: yes
   smooth:
     se: no

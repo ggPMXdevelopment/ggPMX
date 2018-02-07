@@ -1,8 +1,8 @@
 
 #' Handling pmx Graphical parameters
 #' @param labels list of labels, like title, subtitle, xlab , ylab
-#' @param  axis.title list of axis title parameter : font size
-#' @param axis.text list of axis title parameter : font size
+#' @param  axis.title list or element_text (same as ggplot2 axis.title theme)
+#' @param axis.text list or element_text (same as ggplot2 axis.text theme)
 #' @param ranges limits of x/y ranges
 #' @param has.smooth logical if set to TRUE add smooth layer
 #' @param smooth smooth layer parameters
@@ -13,8 +13,10 @@
 #' @param has.identity_line \code{logical} if TRUE add y=x line
 #' @param identity_line \code{list} y=x aes properties
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
+#' @param log_x logical if TRUE add scale_x_log10 layer
+#' @param log_y logical if TRUE add scale_y_log10 layer
 #' @param ... extra arguments (not used yet)
-#'
+#' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
 #'
 #' @details
 
@@ -28,35 +30,35 @@
 pmx_gpar <-
   function(
            labels,
-           axis.title = c(size = 12),
-           axis.text = c(size = 14),
-           ranges = NULL,
-           has.smooth = FALSE,
-           smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "red"),
-           has.band = FALSE,
-           band = list(yintercept = c(-2, 2), linetype = 1, size = 0.5, color = "black"),
-           is.draft = TRUE,
-           draft = list(size = 5, label = "DRAFT", color = "grey50", x = Inf, y = -Inf),
-           discrete=FALSE,
-           has.identity_line=FALSE,
-           identity_line=list(intercept = 0, color = "blue"),
+           axis.title,
+           axis.text,
+           ranges,
+           has.smooth,
+           smooth,
+           has.band,
+           band,
+           is.draft,
+           draft,
+           discrete,
+           has.identity_line,
+           identity_line,
+           log_x,
+           log_y,
+           color.scales,
            ...) {
-    gp <- .valid_pmx_gpar(list(
-      labels = labels,
-      axis.title = axis.title,
-      axis.text = axis.text,
-      ranges = ranges,
-      has.smooth = has.smooth,
-      smooth = smooth,
-      has.band = has.band,
-      band = band,
-      is.draft = is.draft,
-      draft = draft,
-      discrete = discrete,
-      has.identity_line = has.identity_line,
-      identity_line = identity_line,
-      ...
-    ))
+
+
+    ## join with default values
+    default_yaml <-
+      file.path(system.file(package = "ggPMX"), "init", "gpar.yaml")
+    default_gpars <- yaml.load_file(default_yaml)
+    gpars <- as.list(match.call(expand.dots = TRUE)[-1])
+    gp <- default_gpars
+    if (length(gpars) > 0) {
+      gpars <- mget(names(gpars))
+      gp <- l_left_join(default_gpars, gpars)
+    }
+
     class(gp) <- c("pmx_gpar", "list")
     gp
   }
@@ -86,16 +88,6 @@ print.pmx_gpar <- function(x, ...) {
   invisible(x)
 }
 
-.valid_pmx_gpar <- function(gpars) {
-  ## TDOD add assertions about
-  ## graphical parametrs
-
-  ## join with default values
-  default_yaml <-
-    file.path(system.file(package = "ggPMX"), "init", "gpar.yaml")
-  default_gpars <- yaml.load_file(default_yaml)
-  l_left_join(default_gpars, gpars)
-}
 
 
 #' Method for subsetting "pmx_gpar" objects

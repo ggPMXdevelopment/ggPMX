@@ -43,7 +43,9 @@ ctr %>% pmx_plot_individual(strat.color = "WT0")
 ## categorical stratification
 ctr %>% pmx_plot_individual(strat.facet = "SEX", facets = list(nrow = 5, ncol = 5))
 ## using formula notation
-ctr %>% pmx_plot_individual(strat.facet = STUD~SEX)
+ctr %>% pmx_plot_individual(strat.facet = STUD~SEX,
+                            facets=list(nrow=5,ncol=5),
+                            2)
 #
 # # subsetting  --------------------------------------
 #

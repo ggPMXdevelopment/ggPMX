@@ -32,6 +32,13 @@ is_string_or_formula_or_null <- function(x) {
   is_string(x) || is.formula(x) || is.null(x)
 }
 
+is_null_or_named_vector <- function(v) {
+  is.null(c) || is.vector(v) & !is.null(names(v)) & all(!is.na(names(v)))
+}
+
+assertthat::on_failure(is_null_or_named_vector) <- function(call, env) {
+  paste0(deparse(call$x), " is not a named vector or NULL")
+}
 assertthat::on_failure(is_string_or_formula_or_null) <- function(call, env) {
   paste0(deparse(call$x), " is not a formula or NULL")
 }

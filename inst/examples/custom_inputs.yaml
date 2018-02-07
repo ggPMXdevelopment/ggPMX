@@ -1,0 +1,12 @@
+predictions :
+    label : model predictions
+    file  : predictions.txt
+    pattern: predictions_.txt
+    reader  : read_mlx_pred
+    names:
+      ID: id
+      TIME: time
+      PRED: poppred
+      NPDE: npde
+      IPRED: mlx_ipred
+      IWRES: mlx_iwres

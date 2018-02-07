@@ -1,0 +1,249 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r load_advanced, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
+
+ctr <- theophylline()
+```
+
+
+## Get data
+
+The `ggPMX` controller reads modeling input and output data files and creates based on these the `ggPMX` datasets (see Table \ref{tab:ggPMX_datasets}). We can access a `ggPMX` dataset using the `get_data()` method.Note that `ggPMX` uses `data.table` package to load data and reformat variables names. Manipulating and reshaping data is efficient and intuitive. 
+
+### Input modeling data
+The input modeling data is the dataset on which the model was fitted. In the theophylline example below, it contains individual identifiers (ID), times of measurement (TIME), dependent variables (DV) and their identifiers (DVID), and continuous and categorical covariates (SEX, WT0, AGE0, STUD). The input modeling data is also the same as dataset 1 from Table \ref{tab:ggPMX_datasets}.
+```{r get_input_data}
+ctr %>% get_data("input")
+```
+
+### `ggPMX` datasets
+The output modeling datasets are those produced by the model fitting software (Monolix or Nonmem). `ggPMX` is using the output modeling datasets to create the `ggPMX` datasets (see Table \ref{tab:ggPMX_datasets}) by adjusting the information necessary to the tool. We have listed below datasets 2-5 from Table \ref{tab:ggPMX_datasets} for the theophylline example. Note that the `ggPMX` `predictions` dataset is different from Monolix' `predictions.txt` dataset in that covariates have been added to the Monolix version and some columns have been removed. A similarl processessing was applied to `finegrid`.  (What happens when there are NANs in some datasets?) 
+```{r get_outputs_data}
+ctr %>% get_data("estimates")
+ctr %>% get_data("eta")
+ctr %>% get_data("predictions")
+ctr %>% get_data("finegrid")
+```
+
+## `get_plot()`
+To view a particular plot we call the function `get_plot()` with the name of the plot as the first (mandatory) argument, where the name has to correspond to one of the plot_names above: 
+```{r get_ipred_iwres, out.width='.9\\linewidth', fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+ctr %>% get_plot("dv_pred")
+ctr %>% get_plot("ebe_box")
+```
+
+`get_plot` returns a standard `ggplot2` object that we can customize using any valid `ggplot2` operation. In the example below, we add a smooth line to the NPDE plot:
+```{r add_smooth, out.width='.49\\linewidth', fig.width=3, fig.height=3, fig.show='hold', fig.align='center'}
+p1 <- ctr %>% get_plot("npde_time")
+p2 <- p1 + geom_smooth(color = "red", linetype = "dashed")
+p2
+```
+
+In case of individual plots where several pages are produced, another optional argument exists, the page number to display (`npage`). 
+```{r ind_plots}
+ctr %>% get_plot("individual", npage = 2)
+```
+
+## `set_plot()`
+
+To create a new plot, we use the `set_plot()` function. The following fields need to be provided:
+
+  + plot `type`: to view the plot type, display the plots of the controller (`ctr %>% plots`)
+  + plot `name`: to view the plot name, display the plots of the controller (`ctr %>% plots`)
+  + type-specific parameters: where can I find these?
+  
+### New residual plot
+We can plot individual model predictions (spaghetti plot) on top of indiviual data, stratified by study (TBD: check if data is also stratified):
+```{r new_res_plot, fig.height=3, fig.width=7, fig.align='center'}
+p1 <- ctr %>%
+  set_plot(
+    "RES", pname = "pred_vs_time", x = "TIME", y = "PRED", strat.facet = "STUD",
+    labels = list(title = "Individual predictions and data per study")
+  ) %>%
+  get_plot("pred_vs_time")
+p2 <- p1 + geom_line(aes(group = as.factor(ID), color = as.factor(ID)))
+p2
+```
+see `?residual` for the list of all parameters to create a new residual plot.
+
+### New distribution plot
+```{r new_dis_plot, fig.height=3, fig.width=3, fig.align='center'}
+ctr %>%
+  set_plot("DIS", pname = "distr1", type = "box", has.jitter = FALSE) %>%
+  get_plot("distr1")
+```
+see `?distib` for the list of all parameters to create a new individual plot.
+
+### New individual plot
+```{r new_ind_plot, fig.height=3, fig.width=3, fig.align='center'}
+ctr %>%
+  set_plot("IND", pname = "ind1") %>%
+  get_plot("ind1", 4) # display only the fourth page
+```
+see `?individual` for the list of all parameters to create a new individual plot.
+ 
+
+## `pmx_update()`
+To update some plot features and to access additional settings, we use `pmx_update()`. Note that `pmx_update` changes permanently the actual content of the controller. We highly recommand you to use one f the `pmx_plot_xx` to update plots. They are without side effect and easier to use. We will show the 2 options for each example.
+
+### Change title
+
+In the example below, we change the title of the plot called "indiv" and display 2x3 individual plots per page. Everytime the plot "individual" will be re-plotted, it will be with the settings below.
+```{r indiv_plots_update}
+ctr %>% pmx_update(
+  "individual",
+  labels = list(title = "My individuals")
+)
+ctr %>% get_plot("individual", npage = 1)
+```
+
+Similarly we can do it using: 
+
+```{r update_pmx_plot_individual1}
+ctr %>% pmx_plot_individual(labels = list(title = "My individuals"), npage = 1)
+```
+
+
+### Change grid size of individual plots 
+In the example below, we change the title of the plot called "individual" and display 2x3 individual plots per page. Everytime the plot "indiv" will be re-plotted, it will be with the settings below.
+```{r indiv_plots_grid}
+ctr %>% pmx_update(
+  "individual",
+  facets = list(nrow = 2, ncol = 4),
+  point = list(shape = 4, color = "red"),
+  labels = list(title = "My individual plots grid")
+)
+ctr %>% get_plot("individual", npage = 1)
+```
+
+
+
+Similarly we can do it using: 
+
+```{r update_pmx_plot_individual2}
+ctr %>% 
+  pmx_plot_individual(
+   facets = list(nrow = 2, ncol = 4),
+   point = list(shape = 4, color = "red"),
+   labels = list(title = "My individual plots grid"),
+  npage = 1)
+```
+
+### Change axis labels
+The following code gives an example of how to change the labels of x- and y-axes of individual plots.
+```{r update_xy_labels}
+
+# Default individual plot
+p1 <- ctr %>% pmx_plot_individual
+
+p2 <- ctr %>%
+  pmx_plot_individual(
+    labels=list(
+      x="Time (days)" ,
+      y="Free serum concentration (nmol)")
+  )
+p1
+p2
+```
+
+### Change point types and other settings 
+The code below gives an example of how to change the color of points of a residual plot and how to remove the horizontal line printed by default, add the identity line and a smooth through the data:
+```{r update_res_plot2,  out.width='.49\\linewidth', fig.width=3, fig.height=3, fig.show='hold',fig.align='left'}
+
+
+p1 <- ctr %>% pmx_plot_dv_pred
+
+p2 <- ctr %>%
+  pmx_plot_dv_pred(
+    labels = list(x = "Population predictions", y = "Observations"),
+    add_hline = FALSE, 
+    point = list(color = "green4",shape=5)
+  ) 
+
+
+
+# Add the identity line and a smooth through the data:
+p3 <- p2 +
+  geom_abline(intercept = 0, aes(colour = "red")) +
+  geom_smooth(aes(color = "red"), show.legend = FALSE)
+p1
+p3
+```
+We can add a band between -2 and 2 in residual plots:
+```{r update_res_plot,  out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='center'}
+
+# Default iwres_ipred plot
+
+p1 <- ctr %>% pmx_plot_iwres_ipred
+
+# Above lines give the same result as the following:
+# p1a = ctr %>% get_plot("iwres_ipred")
+
+# Add bands and update title
+p2 <- ctr %>%
+  pmx_plot_iwres_ipred(
+    has.band = TRUE,
+    labels = list(title = "IPRED versus IWRES (with bands)")
+  ) 
+p1
+p2
+```
+
+### Modify or remove DRAFT label
+This is how we can modify the DRAFT label:
+```{r fig.width=5, fig.height=4}
+ctr %>%
+  pmx_plot_iwres_ipred(
+    draft = list(size = 20, color = "purple", label = "FINAL")
+  ) 
+```
+
+## `pmx_plot()`
+
+A generic pmx_plot function can be used to update the new created plot without side effect, i.e, without modifying the parent controller. This is a generalization to `pmx_plot_xx` of the family function. Here a use case example : 
+
+```{r advanced_pmx_plot}
+## create a new residual plot 
+
+ctr <- theophylline()
+ctr %>% set_plot(
+  ptype = "RES",
+  pname = "pred_time",
+  x ="TIME",y="PRED")
+## get the plot using pmx_plot
+
+ctr %>% pmx_plot("pred_time")
+
+```
+
+We can easily upadte it : 
+
+```{r adv_update_pmx_plot_pred_time}
+
+ctr %>% pmx_plot(pname = "pred_time",
+                           point = list(alpha=0.1),
+                           smooth=list(method="lm",color="blue"))
+```
+
+
+
+
+
+
+## Custom configuration
+
+
+```{r child = 'config.Rmd'}
+```

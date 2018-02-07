@@ -1,0 +1,194 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r load_basics, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+```
+
+
+To illustrate `ggPMX` functionalities, we use a built-in model: the **theophylline** example. 
+
+- The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline. 
+- A simple one-compartmental PK model with first-order absorption was fitted to the data. 
+- The following covariates were used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance. 
+- Random effects on all three parameters (ka, Cl, V) were included. 
+- The residual error was proportional.
+
+As a convention, when plots are described as "Y vs. X", we mean that Y is plotted on the vertical axis and X on the horizontal axis.
+
+## Create a controller with `pmx()`
+
+A diagnostic session starts by creating a controller using the function `pmx()`. The user has to specify the path to his model directory, the software used for model fitting (Monolix or Nonmem) and a configuration. A pre-defined configuration is a set of default settings. Below is an example where we instantiate a controller with the *standing* configuration (a list of all existing configurations is provided in the Appendix):
+
+```{r init_ctr}
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
+
+ctr <- pmx(
+  sys = "mlx",
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID"
+)
+```
+This is example of contoller , is wrapped in a function ( massively used to illustrate the package examples) 
+
+```{r theophylline_ctr}
+ctr <- theophylline()
+```
+
+
+
+All mandatory arguments of `pmx()` are listed below:
+
+- `sys` : modeling software, either Monolix ('mlx') or Nonmem ('nm')
+- `config` : configuration used can be 'standing' or a custom defined file (clarify if the path to the file has to be provided)
+- `directory`: path to the directory containing model output files
+- `input`: path to input modeling dataset
+- `dv` : measurable variable name, as defined in the input modeling dataset
+- `dvid` : endpoint type (compartment) name, as defined in the input modeling dataset
+
+The controller is an object of class `r class(ctr)[1]`. It behaves like a container that stores configuration fields (model- and input data-related information), datasets and plots. It can be used as a reference object in which the user can see the names of the exisitng plots, the names of the `ggPMX` datasets, etc. We can see the content of the controller by printing it:
+```{r display_ctr}
+ctr
+```
+
+ctr is diplayed in 3 table: 
+
+- The first table is the controller configuration. We see the working directory, the input modeling dataset name, the dependent variable (DV) name and other fields related to the model (e.g., continuous and discrete covariates).
+
+- The second table lists the `ggPMX` datasets. The first column (`data_name`) of this table contains the ggPMX name of the dataset; the second column (data_file) contains the names of the output modeling datasets (for example estimates.txt); in the third column (data_label) contains the dataset description.
+
+- The third table of the controller provides the list of the available plots. It corresponds to Table \ref{tab:plots_list} in Section 4. Plot_type is explained in Section 3.3.
+
+### Monolix controller with `pmx_mlx()`
+The above controller initialization can be simplified by using the Monolix controller `pmx_mlx()`, which is a wrapper function for `pmx()` with `sys="mlx"`:
+```{r init_pmx_mlx}
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID"
+)
+```
+### Nonmem controller
+Similarly, there will be (in a future release) a Nonmem controller.
+
+
+
+### Controller with covariates
+
+Besides the mandatory fields to initialize a controller, the user can set optional parameters related to covariates 
+
+```{r init_ctr_covar}
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID",
+  cats = c("SEX"),
+  conts = c("WT0", "AGE0"),
+  strats = c("STUD", "SEX")
+)
+```
+`Conts` are the continuous covariates. `Cats` are categorical covariates used in the model, whereas `strats` are categorical variables that can be used for plot stratification, but are not used as covariates in the model.
+
+We can access different covariates using helpers functions:
+
+```{r get_covar}
+ctr %>% get_cats()
+ctr %>% get_conts()
+ctr %>% get_strats()
+ctr %>% get_covariates()
+```
+
+## Plot names
+
+The controller is a container that stores all plots. To get the list of plots, we use the function `plot_names()`:
+```{r plot_lists}
+ctr %>% plot_names()
+```
+Note here the use of piping. An alternative way to display the names of the existing plots is by printing the content of the controller as done in the previous section.
+
+## Plot types 
+
+`ggPMX` comes with a list of plot types. This is not to be confused with plot names. Each plot type is a class of similar plots that helps to mak ethe code more efficient and factorized.
+```{r plot_types}
+ctr %>% plots()
+```
+
+A short description of each plot type is given below:
+
+  + RES: residual plots are scatter plots
+  + IND: individual plots display longitudinal (time course) predictions and data (one panel per individual)
+  + DIS: Distribution of empirical Bayes estimates (EBE) histogram or boxplot
+  + ETA_PAIRS: random effects (ETA) distributions and correlations structure
+  + ETA_COV: Relationships between random effects (ETA) and continuous or categorical covariates
+  + PMX_QQ: quantile-quantile plot (qq-plot)
+  
+`ggPMX` provides a specialized function to create and update each plot :`pmx_plot_xx()` where `xx` is the plot name. 
+
+NOTE: **`pmx` and `pmx_plot_xx()` functions are just what you need to know to generate and customize any plot.**
+  
+## View default plots
+
+To view all standard diagnostig plots, call the corresponding `pmx_plot_xx()` function. See the Advanced features section to learn how to modify default plot settings.
+
+- List  of residual plots (**RES**)
+```{r basics_res, out.width='.48\\linewidth', fig.height=4, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_dv_ipred
+
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_time
+
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+ctr %>% pmx_plot_npde_pred
+```
+
+- ebe histogram/boxplot plot (**DIS**)
+```{r basics_ebe_hist , fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_ebe_hist()
+ctr %>% pmx_plot_ebe_box()
+
+```
+- individual plot (**IND**)
+```{r basics_indiv, fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_individual(npage = 1)
+```
+- qq plot (**PMX_QQ**)
+```{r basics_qq, fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_npde_qq()
+ctr %>% pmx_plot_iwres_qq()
+```
+- matrix plot (**ETA_PAIRS**)
+```{r basics_matrix_plot,  fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_eta_matrix
+```
+
+## Update default plots
+
+To update default plots, one can use the same functions as above, but with additional arguments. Here for example, to update the individual plot:
+```{r basics_update_defaults, out.width='.98\\linewidth', fig.height=6, fig.width=9, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_individual(
+  npage = 1, 
+  facets = list(nrow = 2, ncol = 2),
+  labels = list(title = "My individuals")
+) + ggplot2::scale_y_log10()
+```
+
+Using the help , you can get the list of possible parameters to update the plot.

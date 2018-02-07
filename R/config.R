@@ -1,13 +1,47 @@
 
+#' Create a pmx Config
+#'
+#' @param sys \code{charcarter} system used , monolix,nonmem,...
+#' @param inputs \code{charcater} path to the inputs settings file (yaml format)
+#' @param plots   \code{charcater} path to the inputs settings file (yaml format)
+#' @param ...  extra arguments not used
+#'
+#' @return \code{pmxConfig} object
+#' @export
+#' @example inst/examples/pmx_config.R
+#' @details
+#' To create a controller user can create a pmxConfig object using \cr
+#'  - either an input template file \cr
+#'  - or a plot template file \cr
+#'  - or both. \cr
+#' By default the standing configuration will be used.
+pmx_config <- function(sys="mlx", inputs, plots, ...) {
+  standing_dir <-
+    file.path(system.file(package = "ggPMX"), "templates", sys, "standing")
 
-#' List configurations
+  if (missing(inputs)) {
+    inputs <- file.path(standing_dir, "inputs.ipmx")
+  }
+  if (missing(plots)) {
+    plots <- file.path(standing_dir, "plots.ppmx")
+  }
+
+  if (!file.exists(inputs)) stop("plots template file does not exist")
+  if (!file.exists(plots)) stop("inputs template file does not exist")
+  load_config_files(inputs, plots, sys)
+}
+
+
+
+
+#' Get List of built-in configurations
 #' @param sys can be mlx, if missed all configurations will be listed
 #' @return names of the config
 #' @export
 #'
 #' @examples
-#' configs()
-configs <-
+#' pmx_get_configs()
+pmx_get_configs <-
   function(sys = "mlx") {
     sys <- tolower(sys)
     template_dir <-
@@ -59,14 +93,22 @@ print.configs <- function(x, ...) {
 load_config <- function(x, sys = c("mlx", "nm")) {
   assert_that(is_string(x))
   sys <- match.arg(sys)
-  configs. <- configs(sys)
+  configs. <- pmx_get_configs(sys)
   cpath <- configs.[configs.$name == x, "path"]
   ifile <- list.files(cpath, full.names = TRUE, pattern = "ipmx")
+  pfile <- list.files(cpath, full.names = TRUE, pattern = "ppmx")
   if (length(ifile) == 0) {
     stop(sprintf("No configuration found for: %s", x))
   }
+  if (length(ifile) == 0) {
+    stop(sprintf("No configuration found for: %s", x))
+  }
+  load_config_files(ifile, pfile, sys)
+}
+
+
+load_config_files <- function(ifile, pfile, sys) {
   iconfig <- yaml.load_file(ifile)
-  pfile <- list.files(cpath, full.names = TRUE, pattern = "ppmx")
   pconfig <- yaml.load_file(pfile)
   config <- list(data = iconfig, plots = pconfig)
   config$sys <- sys
@@ -93,33 +135,34 @@ print.pmxConfig <-
         data_file = sapply(x$data, "[[", "file"),
         data_label = sapply(x$data, "[[", "label")
       )
-      
-      
+
+
       ctr <- list(...)$ctr
-      if(!is.null(ctr)){
-        datas_table <- rbind(datas_table,
-                             data.table(
-                               data_name = "input",
-                               data_file = basename(ctr$input_file),
-                               data_label = "modelling input"
-                             )
+      if (!is.null(ctr)) {
+        datas_table <- rbind(
+          datas_table,
+          data.table(
+            data_name = "input",
+            data_file = basename(ctr$input_file),
+            data_label = "modelling input"
+          )
         )
       }
-      datas_table <- datas_table[ data_name %in% c("input",names(ctr$data))]
+      datas_table <- datas_table[ data_name %in% c("input", names(ctr$data))]
       print(kable(datas_table), format = "latex")
     }
-    
+
     if (exists("plots", x)) {
       plots_table <- data.table(
         plot_name = tolower(names(x$plots)),
         plot_type = sapply(x$plots, "[[", "ptype")
       )
       plot_names <- list(...)$plot_names
-      if(!is.null(plot_names)){
+      if (!is.null(plot_names)) {
         plots_table <- plots_table[ plot_name %in% plot_names]
       }
       print(kable(plots_table), format = "latex")
     }
-    
+
     invisible(x)
   }

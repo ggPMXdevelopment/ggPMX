@@ -53,7 +53,25 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
 
 
     ## theming
-    p <- p + pmx_theme()
+    if (!inherits(gpar$axis.text, "element_text")) {
+      gpar$axis.text <- do.call(element_text, as.list(gpar$axis.text))
+    }
+    if (!inherits(gpar$axis.title, "element_text")) {
+      gpar$axis.title <- do.call(element_text, as.list(gpar$axis.title))
+    }
+    p <- p + pmx_theme(
+      axis.text = gpar$axis.text,
+      axis.title = gpar$axis.title
+    )
+
+    if (log_y) {
+      if (is.draft) draft$y <- 0
+      p <- p + scale_y_log10()
+    }
+    if (log_x) {
+      p <- p + scale_x_log10()
+    }
+
     ## draft layer
     if (is.draft) {
       p <- p + with(draft, add_draft(label, size, color, x, y))
@@ -65,6 +83,11 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
         identity_line,
         geom_abline(intercept = intercept, color = color)
       )
+    }
+
+    if (exists("color.scales", gpar) && !is.null(color.scales)) {
+      p <- p + do.call("scale_colour_manual", color.scales)
+      p <- p + do.call("scale_fill_manual", color.scales)
     }
     p
   })

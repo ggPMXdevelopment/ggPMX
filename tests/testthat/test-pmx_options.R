@@ -34,7 +34,7 @@ test_that("Initiating controllers work with and without specification of covaria
     system.file(package = "ggPMX"), "testdata",
     uc.name
   )
-  work_dir <- file.path(uc.dir, "Monolix")
+  work_dir <- file.path(uc.dir, "RESULTS")
   input_file <- file.path(uc.dir, data_file)
   ctr <- pmx_mlx(
     "standing",
