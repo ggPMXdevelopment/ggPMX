@@ -92,7 +92,7 @@ get_plot_defaults <-
         ),
         point = list(shape = 1, color = "black", size = 1),
         add_hline = TRUE,
-        hline=list(color="blue"),
+        hline = list(color = "blue"),
         has.band = TRUE,
         has.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1)

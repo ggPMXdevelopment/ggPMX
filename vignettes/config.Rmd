@@ -3,7 +3,7 @@ output:
   pdf_document: default
   html_document: default
 ---
-```{r load_basics, echo=FALSE,warning=FALSE,message=FALSE}
+```{r load_config_advanced, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggPMX)
 library(ggplot2)
@@ -78,7 +78,7 @@ ctr %>% plots
 ```
 
 then jsut render plot using `get_plot` or even better using `pmx_plot` :
-```{r}
+```{r custom_plots,  out.width='.49\\linewidth', fig.width=3, fig.height=3, fig.show='hold',fig.align='left'}
 ctr %>% pmx_plot("custom_res_time")
 ctr %>% pmx_plot("custom_npde_time")
 ```

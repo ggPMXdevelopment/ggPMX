@@ -44,7 +44,7 @@
 individual <- function(labels,
                        facets = list(ncol = 3, nrow = 4, scales = "free"),
                        dname = NULL,
-                       ipred_line = list( color = "black", size = 1),
+                       ipred_line = list(color = "black", size = 1),
                        pred_line = list(color = "black", size = 1),
                        point = list(shape = 21, color = "black", size = 1),
                        has.legend=TRUE,
@@ -64,8 +64,8 @@ individual <- function(labels,
 
   structure(list(
     ptype = "IND",
-    strat=TRUE,
-    has.legend=has.legend,
+    strat = TRUE,
+    has.legend = has.legend,
     dname = dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
@@ -109,25 +109,24 @@ plot_pmx.individual <-
       point$data <- input
       v1 <- ipred_line$linetype
       v2 <- pred_line$linetype
-      
-      ipred_line$mapping <- aes(y = IPRED,linetype="1")
-      pred_line$mapping <- aes(y = PRED,linetype="3")
-       p <- ggplot(dx, aes(TIME, DV)) +
+
+      ipred_line$mapping <- aes(y = IPRED, linetype = "1")
+      pred_line$mapping <- aes(y = PRED, linetype = "3")
+      p <- ggplot(dx, aes(TIME, DV)) +
         do.call(geom_point, point) +
         do.call(geom_line, ipred_line) +
-       do.call(geom_line, pred_line)
+        do.call(geom_line, pred_line)
 
       p <- plot_pmx(gp, p)
-      if(has.legend){
-        p <- p +   
-          scale_linetype_manual("", 
+      if (has.legend) {
+        p <- p +
+          scale_linetype_manual(
+            "",
             labels = c("individual predictions", "population predictions"),
-            values=c("solid","dotted")
+            values = c("solid", "dotted")
           ) + theme(legend.position = "top")
-      }else{
-        
-        p <- p + theme(legend.position = "none")   
-          
+      } else {
+        p <- p + theme(legend.position = "none")
       }
 
       ## split pages

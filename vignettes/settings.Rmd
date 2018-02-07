@@ -70,7 +70,7 @@ ctr %>% set_abbrev(TIME="TIME after the first dose")
 
 Using `use_abbrev` flag you can use abbreviation definition to set axis labels:
 
-```{r}
+```{r settings_use_abbrev}
 ctr <- theophylline(settings=pmx_settings(use_abbrev = TRUE))
 ctr %>% set_abbrev(TIME="Custom TIME axis")
 ctr %>% pmx_plot_npde_time
@@ -82,7 +82,7 @@ ctr %>% pmx_plot_npde_time
 
 within Monolix, user can choose to not use finegrid file even if it is present. 
 
-```{r}
+```{r settings_use_finegrid}
 ctr <- theophylline(settings=pmx_settings(use_finegrid = FALSE))
 
 
@@ -92,7 +92,7 @@ ctr <- theophylline(settings=pmx_settings(use_finegrid = FALSE))
 
 In case of color startfication user can customize the legend. For example here using the `ggplot2::scale_color_manual`:
 
-```{r}
+```{r settings_color_scales_local}
 ctr <- theophylline()
 ctr %>% pmx_plot_npde_time(strat.color="STUD")+ 
       ggplot2::scale_color_manual(
@@ -104,7 +104,7 @@ ctr %>% pmx_plot_npde_time(strat.color="STUD")+
 ```
 
 Another way to do it is to define a global `scales.color` parameter that will applied to all plots with strat.color :
-```{r}
+```{r serrings_solor_scales}
 ctr <- theophylline(
   settings=
     pmx_settings(
@@ -125,7 +125,7 @@ ctr  %>%  pmx_plot_ebe_box(strat.color="STUD")
 
 In case of faceting by stratification user can redfine categrical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use_lables` to TRUE.
 
-```{r}
+```{r settings_cat_labels}
 
 
 ctr <- theophylline(

@@ -33,7 +33,7 @@ test_that("can get pmx class config", {
   cplots <- ctr %>% plot_names()
   conf <- ctr$get_config("npde_time")
   clabels <- list(
-    title = "NPDE vs TIME", 
+    title = "NPDE vs TIME",
     subtitle = "",
     x = "TIME",
     y = "NPDE"

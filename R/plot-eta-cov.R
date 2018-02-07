@@ -51,7 +51,7 @@ eta_cov <- function(
   labels$subtitle <- ""
   structure(list(
     ptype = "ETA_COV",
-    strat=FALSE,
+    strat = FALSE,
     dname = dname,
     type = type,
     show.correl = show.correl,
@@ -96,7 +96,6 @@ eta_cov <- function(
 #' @importFrom stats cor
 #'
 plot_pmx.eta_cov <- function(x, dx, ...) {
- 
   p <- if (x$type == "cats") {
     cats <- x[["cats"]]
     if (all(nzchar(x[["cats"]]))) {

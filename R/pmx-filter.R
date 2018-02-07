@@ -15,10 +15,10 @@
 #' }
 pmx_filter <-
   function(ctr, data_set = c(
-           "estimates", 
+           "estimates",
            "predictions",
-           "eta", 
-           "finegrid", 
+           "eta",
+           "finegrid",
            "shrink",
            "input"
          ), pmx_exp) {
@@ -51,7 +51,7 @@ pmx_filter <-
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param ... others graphical parameters given to set the plot
 #' @param  pmxgpar a object of class pmx_gpar possibly the output of the
-##' @param color.scales \code{list} can be used with strat.color to set scale_color_manual 
+##' @param color.scales \code{list} can be used with strat.color to set scale_color_manual
 
 #' \code{\link{pmx_gpar}} function.
 #'
@@ -90,15 +90,15 @@ pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
     pname, strat.color = strat.color,
     strat.facet = strat.facet,
     filter = filter, trans = trans,
-    color.scales=color.scales,   
+    color.scales = color.scales,
     ..., pmxgpar = pmxgpar
   )
 }
 
 
-pmx_update_plot <- function(self, private, pname, strat.facet, 
+pmx_update_plot <- function(self, private, pname, strat.facet,
                             strat.color, filter=NULL, trans=NULL,
-                            color.scales,..., pmxgpar) {
+                            color.scales, ..., pmxgpar) {
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   x <- private$.plots_configs[[pname]]
   old_class <- class(x)
@@ -110,20 +110,21 @@ pmx_update_plot <- function(self, private, pname, strat.facet,
   if (length(newopts) > 0) {
     hl <- newopts[names(newopts) %in% unique(c(names(x), "shrink"))]
     gpl <- newopts[!names(newopts) %in% unique(c(names(x), "shrink"))]
-    if ("labels" %in% names(newopts)) gpl$labels <- l_left_join(x$gp$labels,newopts[["labels"]] )
+    if ("labels" %in% names(newopts)) gpl$labels <- l_left_join(x$gp$labels, newopts[["labels"]])
     hl$gp <- gpl
     x <- l_left_join(x, hl)
   }
 
-  if(!is.null(filter))  x[["filter"]] <- filter
+  if (!is.null(filter)) x[["filter"]] <- filter
   ## transformation
-  if(!is.null(trans))  x[["trans"]] <- trans
+  if (!is.null(trans)) x[["trans"]] <- trans
   ## stratification
   x[["strat.color"]] <- strat.color
   x[["strat.facet"]] <- strat.facet
-  if (!is.null(color.scales)) 
+  if (!is.null(color.scales)) {
     x$gp[["color.scales"]] <- color.scales
-  
+  }
+
 
   class(x$gp) <- old_class_gp
   class(x) <- old_class

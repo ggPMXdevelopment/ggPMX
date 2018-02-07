@@ -37,7 +37,7 @@ eta_pairs <- function(
   structure(list(
     ptype = "ETA_PAIRS",
     dname = dname,
-    strat=FALSE,
+    strat = FALSE,
     labels = labels,
     point = point,
     type.eta = match.arg(type.eta),
@@ -249,7 +249,7 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
     eta_gtable <- gtable_remove_grobs(eta_gtable, "axis-l-1")
     strip_r_1 <- gtable::gtable_filter(eta_gtable, "strip-r-1")
     ## make all table wider
-    strip_r_1$grobs[[1]]$widths <- unit(4,"cm")
+    strip_r_1$grobs[[1]]$widths <- unit(4, "cm")
     ## chnage text position,rot
     text_shrink <- strip_r_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]
     text_shrink$rot <- 0
@@ -259,9 +259,9 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
     matches <- grepl("strip-r-1", eta_gtable$layout$name, fixed = TRUE)
     eta_gtable$grobs[[which(matches)]] <- strip_r_1
   }
-  
- 
-  
+
+
+
 
   # must be done after gtable, as gtable calls many ggplot2::print.ggplot methods
   ggplot2_set_last_plot(x)

@@ -42,8 +42,8 @@ default_residual <- function(...) {
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
-residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE, 
-                     hline=NULL, dname=NULL,facets=NULL, ...) {
+residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE,
+                     hline=NULL, dname=NULL, facets=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -59,14 +59,14 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE,
   assert_that(is_list_or_null(point))
   assert_that(is_list_or_null(hline))
   assert_that(is_string_or_null(dname))
-  
+
   labels <- l_left_join(default_labels, labels)
   default_point <- list(shape = 1, color = "black", size = 1)
   default_hline <- list(yintercept = 0)
   point <- l_left_join(default_point, point)
   hline <- l_left_join(default_hline, hline)
   if (is.null(dname)) dname <- "predictions"
-  
+
   structure(
     list(
       ptype = "RES",
@@ -76,7 +76,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE,
       point = point,
       add_hline = add_hline,
       hline = hline,
-      facets=facets,
+      facets = facets,
       gp = pmx_gpar(labels = labels, ...)
     ), class = c("residual", "pmx_gpar")
   )
@@ -108,25 +108,25 @@ extend_range <-
 plot_pmx.residual <- function(x, dx, ...) {
   with(x, {
     dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
-    
-    
+
+
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
-    
+
     p <- p + do.call(geom_point, point)
     if (add_hline) p <- p + do.call(geom_hline, hline)
     p <- plot_pmx(gp, p)
-    
+
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
     if (!is.null(strat.color)) {
       p <- p %+% geom_point(aes_string(color = strat.color))
     }
-    
+
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
-      p <- p + do.call("facet_wrap",c(strat.facet,facets))
+      p <- p + do.call("facet_wrap", c(strat.facet, facets))
     }
     if (aess$y == "DV") {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
@@ -134,7 +134,7 @@ plot_pmx.residual <- function(x, dx, ...) {
         coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)
     }
-    
+
     p
   })
 }

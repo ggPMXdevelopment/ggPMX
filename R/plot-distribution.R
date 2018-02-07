@@ -35,16 +35,16 @@
 #'
 #' @export
 distrib <- function(
-  labels,
-  has.jitter = FALSE,
-  jitter = list(shape = 1, color = "grey50", width = 0.1),
-  facets = list(scales = "free_x", nrow = 3),
-  type = c("box", "hist"),
-  has.shrink = FALSE,
-  histogram=list(binwidth = 1 / 30, position = "dodge",fill="white",color="black"),
-  shrink=list(fun = "sd", size = 5, color = "black"),
-  dname = NULL,
-  ...) {
+                    labels,
+                    has.jitter = FALSE,
+                    jitter = list(shape = 1, color = "grey50", width = 0.1),
+                    facets = list(scales = "free_x", nrow = 3),
+                    type = c("box", "hist"),
+                    has.shrink = FALSE,
+                    histogram=list(binwidth = 1 / 30, position = "dodge", fill = "white", color = "black"),
+                    shrink=list(fun = "sd", size = 5, color = "black"),
+                    dname = NULL,
+                    ...) {
   assert_that(is_logical(has.jitter))
   assert_that(is_list(jitter))
   assert_that(is_list(facets))
@@ -53,8 +53,8 @@ distrib <- function(
   assert_that(is_list(shrink))
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "eta"
-  
-  
+
+
   if (missing(labels)) {
     labels <- list(
       title = "EBE distribution",
@@ -65,10 +65,10 @@ distrib <- function(
     )
   }
   assert_that(is_list(labels))
-  
+
   structure(list(
     ptype = "DIS",
-    strat=TRUE,
+    strat = TRUE,
     dname = dname,
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
     type = type,
@@ -104,14 +104,14 @@ wrap_formula <- function(x, origin="lfacet") {
   if (is.character(x) && length(x) == 1) {
     str <- sprintf("%s ~ %s", origin, x)
   }
-  
+
   if (length(x) == 3 && is.formula(x)) {
     str <- sprintf(
       "%s ~ %s + %s", origin,
       deparse(x[[2]]), deparse(x[[3]])
     )
   }
-  
+
   if (length(x) == 2 && is.formula(x)) {
     str <- sprintf("%s ~ %s", origin, deparse(x[[2]]))
   }
@@ -143,8 +143,8 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
     }
     p <- p + do.call(geom_histogram, histogram)
     if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "hist", strat.color)
-    p <- p + do.call("facet_wrap",c(wrap.formula,x$facets))
-    
+    p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
+
     p
   })
 }
@@ -152,22 +152,22 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
 distrib.box <- function(dx, strat.color, strat.facet, x) {
   EFFECT <- VALUE <- NULL
   p <- ggplot(data = dx, aes_string(x = "EFFECT", y = "VALUE"))
-  
+
   if (!is.null(strat.color)) {
     p <- ggplot(data = dx, aes_string(fill = strat.color, x = "EFFECT", y = "VALUE"))
   }
-  
+
   if (x$has.jitter) p <- p + jitter_layer(x$jitter, strat.color)
-  
+
   p <- p + geom_boxplot(outlier.shape = NA, position = position_dodge(width = 0.9))
-  
-  
+
+
   if (!is.null(strat.facet)) {
-    p <- p + do.call("facet_wrap",c(strat.facet,x$facets))
+    p <- p + do.call("facet_wrap", c(strat.facet, x$facets))
   }
-  
+
   if (x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
-  
+
   p
 }
 
@@ -183,8 +183,11 @@ shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
         y = Inf
       )
     shrink$data <- dx
-    shrink$position <- if (is.null(strat.color)) position_dodge(width = 0.9)
-    else position_jitterdodge(jitter.width = 0.1)
+    shrink$position <- if (is.null(strat.color)) {
+      position_dodge(width = 0.9)
+    } else {
+      position_jitterdodge(jitter.width = 0.1)
+    }
     shrink$fun <- NULL
     do.call(geom_text, shrink)
   } else {

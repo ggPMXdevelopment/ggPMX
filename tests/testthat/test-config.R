@@ -2,7 +2,7 @@ context("Test config")
 
 test_that("can source configs", {
   conf <- pmx_get_configs()
-  expect_identical(conf$name, c("standing","submission"))
+  expect_identical(conf$name, c("standing", "submission"))
 })
 
 

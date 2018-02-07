@@ -31,14 +31,14 @@ pmx_gpar <-
   function(
            labels,
            axis.title,
-           axis.text ,
-           ranges ,
-           has.smooth ,
-           smooth , 
+           axis.text,
+           ranges,
+           has.smooth,
+           smooth,
            has.band,
-           band ,
+           band,
            is.draft,
-           draft ,
+           draft,
            discrete,
            has.identity_line,
            identity_line,
@@ -46,19 +46,19 @@ pmx_gpar <-
            log_y,
            color.scales,
            ...) {
-    
-    
+
+
     ## join with default values
     default_yaml <-
       file.path(system.file(package = "ggPMX"), "init", "gpar.yaml")
     default_gpars <- yaml.load_file(default_yaml)
     gpars <- as.list(match.call(expand.dots = TRUE)[-1])
     gp <- default_gpars
-    if(length(gpars)>0){
+    if (length(gpars) > 0) {
       gpars <- mget(names(gpars))
       gp <- l_left_join(default_gpars, gpars)
     }
-    
+
     class(gp) <- c("pmx_gpar", "list")
     gp
   }
