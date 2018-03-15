@@ -1,0 +1,396 @@
+---
+title: "HOWTO"
+author: "Amine Gassem"
+date: "March 15, 2018"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggPMX)
+library(ggplot2)
+library(graphics)
+ctr <- theophylline()
+```
+
+# EBE plot options
+
+## basic plot
+```{r ebe}
+ctr %>% pmx_plot_eta_matrix()
+```
+
+## update labels
+```{r labs}
+
+ctr %>% pmx_plot_eta_matrix(
+  labels = list(title = "Eta matrix new title")
+)
+
+```
+
+## remove draft 
+```{r}
+ctr %>% pmx_plot_eta_matrix(is.draft = FALSE)
+```
+
+## change text color line
+```{r text_color}
+ctr %>% pmx_plot_eta_matrix(
+  text_color="red",
+  shrink=list(mapping=aes(color="magenta"))
+)
+```
+
+## custom point aes and static paremeters
+We can customize any geom_point parameter
+```{r ebe_geom_point}
+ctr %>% pmx_plot_eta_matrix(point = list(color = "blue", shape = 4, size=3))
+```
+
+We can customize x- and y-ranges
+```{r ebe_xy_ranges}
+ctr %>% pmx_plot_eta_matrix(ranges = list(x = c(-1,1), y=c(-1,1)))
+```
+
+You can use `ggplot2` `theme`for further customizations of x- and y-labels. 
+```{r ebe_further}
+p <- ctr %>% pmx_plot_eta_matrix(
+  labels = list(x = 'Bla_x', y= 'Bla_y'),
+  axis.text = element_text(size=20)) 
+
+p + theme(
+  axis.text=element_text(size=5),
+  axis.title = element_text(size = 20))
+
+```
+
+## pmx_update for global change
+Using `pmx_update` allows to change the stored object settings. Generally you set a parameter using `pmx_update` , all future calls of pmx_plot_xx will integrate the parameter change.  
+```{r ebe_update}
+ctr %>% pmx_update("eta_matrix", labels=list(title='NEW GLOBAL TITLE'))
+ctr %>% pmx_plot_eta_matrix
+```
+
+## Add horizontal ref line at y=0:
+```{r ebe_horiz}
+ctr %>% pmx_plot_eta_matrix(add_hline=TRUE)
+```
+
+## Add/remove smoothing line:
+```{r ebe_smoo}
+ctr %>% pmx_plot_eta_matrix(has.smooth = FALSE)
+```
+
+## Smooth options
+```{r ebe_smoo2}
+ctr %>% pmx_plot_eta_matrix(smooth = list(color='blue'))
+```
+
+# Individual plot options
+```{r ind_basic}
+ctr %>% pmx_plot_individual(npage=1)
+```
+
+## Use predictions.txt instead of finegrid.txt 
+```{r ind_pred}
+
+ctr %>% pmx_plot_individual(npage=1)   ## finegrid the default
+ctr %>% pmx_plot_individual(npage=1, dname = 'predictions')
+
+```
+
+## legend hide/show
+
+- Dots: Observations. 
+- Dashed Line: Population Predictions
+- Solid Line: Individual Predictions
+```{r ind_legend}
+ctr %>% pmx_update("individual", has.legend = TRUE)
+ctr %>% get_plot("individual", npage=1)
+ctr %>% pmx_plot_individual(has.legend=FALSE) 
+
+```
+
+##	Draft Label (default = T)
+```{r ind_draft}
+ctr %>% pmx_plot_individual(is.draft=FALSE)
+```
+
+##	Options for plotting observations.
+-	symbol type (default = circle)
+-	symbol color (default = black) 
+-	symbol size (default=1)
+```{r ind_obs}
+ctr %>% pmx_plot_individual(point = list(aes(alpha = DV), color = "red", shape = 8, size = 4))
+```
+Use `point=NULL` to remove observations. 
+
+##	Plot population predicted curves
+-	Line type (default dashed)
+-	Line color (default black)
+-	Line width (default 2)
+Use `pred_line=NULL` to remove population predicted plot. 
+
+```{r ind_pred_line}
+ctr %>% pmx_plot_individual(pred_line = list(color = "red", linetype = 20, size = 3, alpha = 1))
+```
+
+##	Plot individual predicted curves
+
+- Line type (default solid)
+- Line color (default black)
+- Line width (default 2)
+Use `ipred_line=NULL` to remove individual predicted curves. 
+
+```{r ind_ipred_line}
+ctr %>% pmx_plot_individual(ipred_line = list(color = "blue", linetype = 2, size = 2))
+```
+
+## X and Y axis ranges 
+
+default = minimum and maximum values)
+```{r ind_max_min}
+ctr %>% pmx_plot_individual(ranges = list(x = c(0,10), y=c(0,500)))
+```
+
+## X and Y axis labels 
+default = TIME and DV
+```{r ind_xy_labels}
+ctr %>% pmx_plot_individual(labels = list(x = 'Bla_x', y= 'Bla_y'))
+```
+
+##	X and Y axis titles
+The default font size is 12 pt
+```{r ind_labels_size}
+
+ctr %>% pmx_plot_individual(labels = list(x = 'Bla_x', y= 'Bla_y')) +
+  theme(axis.title=element_text(size=20))
+```
+
+##	X and Y axis texts
+The default font size is 10 pt
+
+```{r ind_labels_text_size}
+ctr %>% pmx_plot_individual +
+  theme(axis.text=element_text(size=10))
+```
+
+## Page configuration (default portrait)
+This point is not clear. Is it for the print? If yes maybe we should report it for the reporting 
+
+##	Plots per page and configuration 
+The default is (default 12, 4 rows by 3 columns)? - OK
+```{r ind_ncol_nrow}
+ctr %>% pmx_plot_individual(facets = list(nrow = 5, ncol = 5), npage = 2)
+```
+
+##	Log-scale y or x or x/y 
+```{r ind_log_scale}
+ctr %>% pmx_plot_individual(log_y = TRUE, log_x=TRUE)
+```
+
+The use of transformation is not recommanded for the log scale. Its use is more general to 
+apply any function on the data before plotting. 
+```{r ind_log_trans}
+ctr %>% pmx_plot_individual(trans = "log10_y") # TO BE REMOVED
+```
+
+##	Stratification by CMT, STUDY or other flag
+```{r ind_strat}
+
+ctr %>% pmx_plot_individual(
+  filter = SEX == 1, strat.facet = ~SEX, 
+  facets = list(nrow = 6, ncol = 6),
+  has.legend = FALSE)
+
+```
+##	Page format for faceting 
+
+This point is not clear. The page formatting is more a report settings independant from the plot itself.
+##	Add BLOQ intercept 
+This is not yet implemented. 
+
+# Residual plot options
+Defaults:
+- symbol type (default = circle)
+- symbol color (default = black) 
+- symbol size (default=1)
+
+## basic plot
+```{r res_basic}
+
+ctr %>% pmx_plot_dv_pred
+```
+
+## layer point
+```{r res_update}
+ctr %>% pmx_plot_dv_pred(point = list(color = "blue", shape = 2, size = 2))
+```
+
+## Remove grid
+
+```{r res_grid}
+ctr %>% pmx_plot_dv_pred() + 
+  theme(panel.grid = element_blank())
+
+```
+
+## Remove draft
+
+```{r res_draft}
+ctr %>% pmx_plot_dv_pred(is.draft=FALSE)
+
+```
+
+## Axis labels and ticks
+
+- X and Y axis labels (default = DV and PRED)) 
+- X and Y axis label font size (default = 12 pt)
+
+```{r res_xy}
+ctr %>% pmx_plot_dv_pred(labels = list(x = 'Bla_x', y= 'Bla_y')) +
+  theme(
+    axis.title=element_text(size=20),
+    axis.text=element_text(size=19)
+  )
+```
+
+
+
+## identity line 
+
+- default = black line and is.identity = TRUE
+
+To remove the identity line set the parameter to FALSE: 
+```{r res_identity}
+
+ctr %>% pmx_plot_dv_pred(has.identity_line=FALSE)
+```
+
+## smoothing line 
+
+- default = loess 
+- red dashed line 
+- is.smoothing=TRUE
+
+To remove sommthing :
+```{r res_smoothing1}
+ctr %>% pmx_plot_dv_pred(has.smooth=FALSE)
+```
+
+Example of smoothing options: 
+
+```{r res_smoothing2}
+
+ctr %>% pmx_plot_dv_pred(smooth=list(color='green3', size=2, linetype=5,fun="lm"))
+```
+
+## Startification
+
+Either Faceting by CMT, STUDY or other categorical covariate
+```{r res_strat}
+ctr %>% pmx_plot_dv_pred(strat.facet = ~SEX)
+```
+Or by grouping (color):
+```{r res_strat2}
+ctr %>% pmx_plot_dv_pred(strat.color = "SEX")
+```
+
+## stratification: set grouping options
+
+Use `color.scales` parameter to set grouping options (
+  names of categorical variables, color of each level, legend title)
+
+```{r res_strat_options}
+
+ctr <- theophylline()
+col_scale <- 
+  list(
+    "SEX",
+    labels=c("M","F"),
+    values=c("1"="lightyellow","0"="lightblue")
+  )
+
+ctr %>% pmx_plot_dv_pred( 
+  strat.color = "SEX",
+  color.scales= col_scale)
+
+```
+
+
+
+##	Color coding by continuous covariate
+
+```{r res_strat_conts}
+ctr %>% pmx_plot_dv_pred(strat.color = "WT0")
+```
+
+
+## Facet label font size
+
+```{r res_strat_font_facet}
+ctr %>% pmx_plot_dv_pred(strat.facet = ~SEX) +
+  theme(strip.text = element_text(size=20))
+```
+
+
+
+##	Facet label
+
+```{r res_strat_label_facet}
+## set labels once 
+ctr <- theophylline(
+  settings=
+    pmx_settings(
+     
+      cats.labels=list(
+        SEX=c("0"="M","1"="F")
+      ),
+      use_labels=TRUE
+    )
+)
+## Now any plot with stratification will use labels
+ctr %>% pmx_plot_dv_pred(strat.facet = ~SEX)
+```
+
+# Use of abbreviations
+
+```{r res_use_abbrev}
+ctr <- theophylline(
+  settings=
+    pmx_settings(
+      use_abbrev = TRUE
+    )
+)
+ctr %>% pmx_plot_dv_pred
+```
+
+##	Page format for facetting (one per page or ncol, nrow)
+
+The current facetting creates a single page. But you still can set the number of columns or rows
+```{r}
+
+ctr %>% pmx_plot_dv_pred(strat.facet = ~WT0,facets=list(ncol=10))
+```
+
+
+
+# ??? X and Y axis ranges (default = minimum and maximum values, 
+# the same range for both axes to maintain a 1:1 ratio) - 
+# works strangely, filters the data, but keeps the original axis ranges. 
+# I WOULD SAY THIS IS A BUG
+#??ctr %>% pmx_plot_dv_pred(ranges = list(x = c(0,200), y=c(0,300)))
+
+# ??? X and Y axis scale (default = linear):
+#   Option for log scale to be named as ???scale_log10???. 
+# Draft label has to moved accordingly always at the bottom right
+# WORKS, but axis range stays as before, so plot looks strange
+# ctr %>% pmx_plot_dv_pred(log_y = TRUE, log_x=TRUE)
+
+
+
+# ???	BLOQ Flag (color coding)
+# Not yet implemented

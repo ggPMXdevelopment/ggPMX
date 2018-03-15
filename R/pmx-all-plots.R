@@ -2,7 +2,7 @@ pmx_plot_generic <-
   function(ctr, pname, defaults_, ...) {
     stopifnot(is_pmxclass(ctr))
     if (!pname %in% (ctr %>% plot_names())) return(NULL)
-    cctr <- pmx_copy(ctr)
+    cctr <- pmx_copy(ctr,...)
 
     params <- c(
       ctr = cctr,
@@ -279,7 +279,7 @@ pmx_plot_individual <-
            ...) {
     stopifnot(is_pmxclass(ctr))
     if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
-    cctr <- pmx_copy(ctr)
+    cctr <- pmx_copy(ctr,...)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
     params$pname <- "individual"

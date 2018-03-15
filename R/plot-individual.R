@@ -106,16 +106,24 @@ plot_pmx.individual <-
     }
 
     get_page <- with(x, {
-      point$data <- input
-      v1 <- ipred_line$linetype
-      v2 <- pred_line$linetype
-
-      ipred_line$mapping <- aes(y = IPRED, linetype = "1")
-      pred_line$mapping <- aes(y = PRED, linetype = "3")
-      p <- ggplot(dx, aes(TIME, DV)) +
-        do.call(geom_point, point) +
-        do.call(geom_line, ipred_line) +
+      
+      
+      p_point <- if(!is.null(point)){
+        point$data <- input
+        do.call(geom_point, point) 
+      } 
+      p_ipred <- if(!is.null(ipred_line)){
+        ipred_line$mapping <- aes(y = IPRED, linetype = "1")
+        do.call(geom_line, ipred_line)
+      } 
+      p_pred <-  if(!is.null(pred_line)) {
+        pred_line$mapping <- aes(y = PRED, linetype = "2")
         do.call(geom_line, pred_line)
+      }
+      
+      
+      p <- ggplot(dx, aes(TIME, DV)) + 
+        p_point + p_ipred + p_pred
 
       p <- plot_pmx(gp, p)
       if (has.legend) {
@@ -123,7 +131,7 @@ plot_pmx.individual <-
           scale_linetype_manual(
             "",
             labels = c("individual predictions", "population predictions"),
-            values = c("solid", "dotted")
+            values = c("solid", "dashed")
           ) + theme(legend.position = "top")
       } else {
         p <- p + theme(legend.position = "none")
