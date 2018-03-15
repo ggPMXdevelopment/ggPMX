@@ -24,6 +24,8 @@ eta_pairs <- function(
                       smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "black"),
                       point = list(shape = 1, color = "grey50", size = 1, colour = "black"),
                       shrink=list(fun = "sd", size = 5),
+                      add_hline=FALSE,
+                      hline=NULL,
                       ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "eta"
@@ -46,6 +48,8 @@ eta_pairs <- function(
     shrink = shrink,
     smooth = smooth,
     point = point,
+    add_hline=add_hline,
+    hline = hline,
     gp = pmx_gpar(
       labels = labels,
       discrete = FALSE,
@@ -56,11 +60,17 @@ eta_pairs <- function(
 }
 
 
-lower.plot <- function(data, x, y, point, smooth, gp) {
+lower.plot <- function(data, x, y, point, smooth, gp,add_hline,hline) {
   p <-
     ggplot(data = data, aes_string(x = x, y = y)) +
     with(point, geom_point(shape = shape, size = size, color = color)) +
     with(smooth, geom_smooth(method = method, se = se, size = size, color = color))
+  
+  if (add_hline) {
+    hline <- l_left_join(list(yintercept = 0), hline)
+    p <- p + do.call(geom_hline, hline)
+  }
+  
   plot_pmx(gp, p)
 }
 
@@ -78,7 +88,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 
 
 .plot_matrix <-
-  function(dx, text_color=text_color, point=point, smooth=smooth, gp) {
+  function(dx, text_color=text_color, point=point, smooth=smooth, gp,add_hline,hline) {
     nn <- colnames(dx)
     mat <- outer(nn, nn, paste, sep = ";")
     uppers <-
@@ -96,7 +106,8 @@ upper.plot <- function(data, x, y, text_color, gp) {
         mat[lower.tri(mat)],
         function(z) {
           z <- strsplit(z, ";")[[1]]
-          lower.plot(dx, x = z[1], y = z[2], point = point, smooth = smooth, gp = gp)
+          lower.plot(dx, x = z[1], y = z[2], point = point, smooth = smooth, gp = gp,
+                     add_hline,hline)
         }
       )
 
@@ -196,7 +207,9 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       text_color = text_color,
       point = point,
       smooth = smooth,
-      gp = gp
+      gp = gp,
+      add_hline=add_hline,
+      hline=hline
     )
 
     if (has.shrink) {
