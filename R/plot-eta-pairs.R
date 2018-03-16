@@ -21,6 +21,7 @@ eta_pairs <- function(
                       type.eta=c("mode", "mean"),
                       text_color="black",
                       has.shrink=TRUE,
+                      has.smooth=TRUE,
                       smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "black"),
                       point = list(shape = 1, color = "grey50", size = 1, colour = "black"),
                       shrink=list(fun = "sd", size = 5),
@@ -46,6 +47,7 @@ eta_pairs <- function(
     text_color = text_color,
     has.shrink = has.shrink,
     shrink = shrink,
+    has.smooth=has.smooth,
     smooth = smooth,
     point = point,
     add_hline=add_hline,
@@ -60,11 +62,13 @@ eta_pairs <- function(
 }
 
 
-lower.plot <- function(data, x, y, point, smooth, gp,add_hline,hline) {
+lower.plot <- function(data, x, y, point, has.smooth,smooth, gp,add_hline,hline) {
   p <-
     ggplot(data = data, aes_string(x = x, y = y)) +
-    with(point, geom_point(shape = shape, size = size, color = color)) +
-    with(smooth, geom_smooth(method = method, se = se, size = size, color = color))
+    with(point, geom_point(shape = shape, size = size, color = color)) 
+  if(has.smooth){    
+    p <- p + with(smooth, geom_smooth(method = method, se = se, size = size, color = color))
+  }
   
   if (add_hline) {
     hline <- l_left_join(list(yintercept = 0), hline)
@@ -88,7 +92,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 
 
 .plot_matrix <-
-  function(dx, text_color=text_color, point=point, smooth=smooth, gp,add_hline,hline) {
+  function(dx, text_color=text_color, point=point, has.smooth,smooth, gp,add_hline,hline) {
     nn <- colnames(dx)
     mat <- outer(nn, nn, paste, sep = ";")
     uppers <-
@@ -106,7 +110,8 @@ upper.plot <- function(data, x, y, text_color, gp) {
         mat[lower.tri(mat)],
         function(z) {
           z <- strsplit(z, ";")[[1]]
-          lower.plot(dx, x = z[1], y = z[2], point = point, smooth = smooth, gp = gp,
+          lower.plot(dx, x = z[1], y = z[2], point = point, 
+                     has.smooth = has.smooth, smooth = smooth, gp = gp,
                      add_hline,hline)
         }
       )
@@ -206,6 +211,7 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       data_plot,
       text_color = text_color,
       point = point,
+      has.smooth = has.smooth,
       smooth = smooth,
       gp = gp,
       add_hline=add_hline,
