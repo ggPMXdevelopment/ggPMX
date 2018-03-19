@@ -115,7 +115,8 @@ plot_pmx.residual <- function(x, dx, ...) {
     p <- p + do.call(geom_point, point)
     if (is.hline) p <- p + do.call(geom_hline, hline)
 
-    if (aess$y == "DV") {
+    
+    if (aess$y == "DV" && !(gp$log_y || gp$log_x)) {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
       if (!is.null(gp$ranges)) {
         if(is.null(gp$ranges$x)){
@@ -132,10 +133,10 @@ plot_pmx.residual <- function(x, dx, ...) {
         gp$ranges$y <- xrange
       }
       p <- p +
-        coord_cartesian(xlim = xrange, ylim = xrange) +
+        coord_cartesian(xlim = xrange, ylim = xrange)+
         theme(aspect.ratio = 1)
     }
-    
+
     p <- plot_pmx(gp, p)
 
     strat.color <- x[["strat.color"]]
