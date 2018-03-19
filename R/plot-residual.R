@@ -114,6 +114,28 @@ plot_pmx.residual <- function(x, dx, ...) {
 
     p <- p + do.call(geom_point, point)
     if (is.hline) p <- p + do.call(geom_hline, hline)
+
+    if (aess$y == "DV") {
+      xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
+      if (!is.null(gp$ranges)) {
+        if(is.null(gp$ranges$x)){
+          rng <- gp$ranges$y
+        }else{
+          if(is.null(gp$ranges$y))
+          rng <- gp$ranges$x
+          else rng <- c(max(gp$ranges$x[1],gp$ranges$y[1]),
+                        min(gp$ranges$x[2],gp$ranges$y[2]))
+        }
+        xrange[1] <- max(xrange[1], rng[1])
+        xrange[2] <- min(xrange[2], rng[2])
+        gp$ranges$x <- xrange
+        gp$ranges$y <- xrange
+      }
+      p <- p +
+        coord_cartesian(xlim = xrange, ylim = xrange) +
+        theme(aspect.ratio = 1)
+    }
+    
     p <- plot_pmx(gp, p)
 
     strat.color <- x[["strat.color"]]
@@ -127,18 +149,6 @@ plot_pmx.residual <- function(x, dx, ...) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
       p <- p + do.call("facet_wrap", c(strat.facet, facets))
-    }
-    if (aess$y == "DV") {
-      xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
-      if (!is.null(x$gp$ranges)) {
-        rng <- extend_range(unlist(x$gp$ranges))
-        xrange[1] <- max(xrange[1], rng[1])
-        xrange[2] <- min(xrange[2], rng[2])
-      }
-
-      p <- p +
-        coord_cartesian(xlim = xrange, ylim = xrange) +
-        theme(aspect.ratio = 1)
     }
 
     p
