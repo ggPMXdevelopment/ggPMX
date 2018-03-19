@@ -11,11 +11,11 @@ p <- ctr %>% pmx_plot_ebe_hist()
 
 ## add jitter
 ctr %>% 
-  pmx_plot_ebe_box(has.jitter = TRUE, jitter = list(alpha = 0.4, color = "red"))
+  pmx_plot_ebe_box(is.jitter = TRUE, jitter = list(alpha = 0.4, color = "red"))
 
 ## remove shrinkage
 ctr %>% 
-  pmx_plot_ebe_hist(has.shrink = FALSE)
+  pmx_plot_ebe_hist(is.shrink = FALSE)
 
 ## updat histogram graphical parameters
 ctr %>% 
@@ -31,7 +31,7 @@ ctr %>%
 # stratification  ----------------------------------
 
 ## categorical stratification color parameter
-ctr %>% pmx_plot_ebe_box(has.jitter=TRUE,strat.facet=~STUD,strat.color="SEX")
+ctr %>% pmx_plot_ebe_box(is.jitter=TRUE,strat.facet=~STUD,strat.color="SEX")
 ## categorical stratification facetting
 ctr %>% pmx_plot_ebe_hist(strat.facet = "SEX")
 ## using formula categorical stratification facetting

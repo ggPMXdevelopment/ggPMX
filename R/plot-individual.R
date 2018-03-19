@@ -7,7 +7,7 @@
 #' @param pred_line \code{list} some ipred line geom properties aesthetics
 #' @param ipred_line \code{list} some pred line geom properties aesthetics
 #' @param point \code{list} some point geom properties aesthetics
-#' @param has.legend \code{logical} if TRUE add a legend
+#' @param is.legend \code{logical} if TRUE add a legend
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object
@@ -42,30 +42,21 @@
 
 
 individual <- function(labels,
-                       facets = list(ncol = 3, nrow = 4, scales = "free"),
+                       facets = NULL,
                        dname = NULL,
-                       ipred_line = list(color = "black", size = 1),
-                       pred_line = list(color = "black", size = 1),
-                       point = list(shape = 21, color = "black", size = 1),
-                       has.legend=TRUE,
+                       ipred_line = NULL,
+                       pred_line = NULL,
+                       point = NULL,
+                       is.legend,
                        ...) {
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
-  if (missing(labels)) {
-    labels <- list(
-      title = "Individual fits",
-      subtitle = "",
-      x = "TIME",
-      y = "DV"
-    )
-  }
   assert_that(is_list(labels))
-  if (is.null(dname)) dname <- "IND"
-
+  
   structure(list(
     ptype = "IND",
     strat = TRUE,
-    has.legend = has.legend,
+    is.legend = is.legend,
     dname = dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
@@ -98,13 +89,13 @@ plot_pmx.individual <-
     ## dx <- dx[DVID==1]
     strat.facet <- x[["strat.facet"]]
     strat.color <- x[["strat.color"]]
-
+    
     wrap.formula <- if (!is.null(strat.facet)) {
       wrap_formula(strat.facet, "ID")
     } else {
       formula("~ID")
     }
-
+    
     get_page <- with(x, {
       
       
@@ -124,9 +115,9 @@ plot_pmx.individual <-
       
       p <- ggplot(dx, aes(TIME, DV)) + 
         p_point + p_ipred + p_pred
-
+      
       p <- plot_pmx(gp, p)
-      if (has.legend) {
+      if (is.legend) {
         p <- p +
           scale_linetype_manual(
             "",
@@ -136,13 +127,13 @@ plot_pmx.individual <-
       } else {
         p <- p + theme(legend.position = "none")
       }
-
+      
       ## split pages
       npages <- ceiling(with(
         facets,
         length(unique(dx$ID)) / nrow / ncol
       ))
-
+      
       function(i) {
         res <- list()
         if (is.null(i)) i <- seq_len(npages)
@@ -150,11 +141,13 @@ plot_pmx.individual <-
         res <- lapply(i, function(x) {
           facets$page <- x
           facets$facets <- wrap.formula
+          if(is.null(facets$labeller))
+            facets$labeller <- labeller(ID = function(x)sprintf("ID: %s",x))
           p + do.call(facet_wrap_paginate, facets)
         })
         if (length(res) == 1) res[[1]] else res
       }
     })
-
+    
     get_page
   }

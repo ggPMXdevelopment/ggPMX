@@ -23,12 +23,12 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
 
   ## smoothing
   p <- with(gpar, {
-    if (has.smooth) {
+    if (is.smooth) {
       smooth$na.rm <- TRUE
       p <- p + do.call(geom_smooth, smooth)
     }
 
-    if (has.band) {
+    if (is.band) {
       p <- p + do.call(geom_hline, band)
     }
 
@@ -45,10 +45,10 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
 
     ## limits
     if (!is.null(ranges$y)) {
-      p <- p + scale_y_continuous(limits = ranges$y)
+       p <- p + scale_y_continuous(limits = ranges$y)
     }
     if (!is.null(ranges$x) && !discrete) {
-      p <- p + scale_x_continuous(limits = ranges$x)
+      p <- p %+% scale_x_continuous(limits = ranges$x)
     }
 
 
@@ -78,7 +78,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     }
 
     ## draft layer
-    if (has.identity_line) {
+    if (is.identity_line) {
       p <- p + with(
         identity_line,
         geom_abline(intercept = intercept, color = color)

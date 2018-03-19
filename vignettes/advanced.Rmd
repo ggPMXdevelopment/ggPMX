@@ -81,7 +81,7 @@ see `?residual` for the list of all parameters to create a new residual plot.
 ### New distribution plot
 ```{r new_dis_plot, fig.height=3, fig.width=3, fig.align='center'}
 ctr %>%
-  set_plot("DIS", pname = "distr1", type = "box", has.jitter = FALSE) %>%
+  set_plot("DIS", pname = "distr1", type = "box", is.jitter = FALSE) %>%
   get_plot("distr1")
 ```
 see `?distib` for the list of all parameters to create a new individual plot.
@@ -168,7 +168,7 @@ p1 <- ctr %>% pmx_plot_dv_pred
 p2 <- ctr %>%
   pmx_plot_dv_pred(
     labels = list(x = "Population predictions", y = "Observations"),
-    add_hline = FALSE, 
+    is.hline = FALSE, 
     point = list(color = "green4",shape=5)
   ) 
 
@@ -194,7 +194,7 @@ p1 <- ctr %>% pmx_plot_iwres_ipred
 # Add bands and update title
 p2 <- ctr %>%
   pmx_plot_iwres_ipred(
-    has.band = TRUE,
+    is.band = TRUE,
     labels = list(title = "IPRED versus IWRES (with bands)")
   ) 
 p1

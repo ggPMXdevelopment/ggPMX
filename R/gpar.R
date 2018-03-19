@@ -4,13 +4,13 @@
 #' @param  axis.title list or element_text (same as ggplot2 axis.title theme)
 #' @param axis.text list or element_text (same as ggplot2 axis.text theme)
 #' @param ranges limits of x/y ranges
-#' @param has.smooth logical if set to TRUE add smooth layer
+#' @param is.smooth logical if set to TRUE add smooth layer
 #' @param smooth smooth layer parameters
-#' @param has.band logical if TRUE add horizontal band
+#' @param is.band logical if TRUE add horizontal band
 #' @param band horizontal band parameters
 #' @param is.draft logical if TRUE add draft layer
 #' @param draft draft layer parameters
-#' @param has.identity_line \code{logical} if TRUE add y=x line
+#' @param is.identity_line \code{logical} if TRUE add y=x line
 #' @param identity_line \code{list} y=x aes properties
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
 #' @param log_x logical if TRUE add scale_x_log10 layer
@@ -33,14 +33,14 @@ pmx_gpar <-
            axis.title,
            axis.text,
            ranges,
-           has.smooth,
+           is.smooth,
            smooth,
-           has.band,
+           is.band,
            band,
            is.draft,
            draft,
            discrete,
-           has.identity_line,
+           is.identity_line,
            identity_line,
            log_x,
            log_y,

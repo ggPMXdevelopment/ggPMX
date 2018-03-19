@@ -727,7 +727,7 @@ pmx_add_plot <- function(self, private, x, pname) {
       cols <- c("ID", "EFFECT", "VALUE", grp)
       dx <- unique(dx[, cols, with = FALSE])
     }
-    if (!is.null(x[["has.shrink"]]) && x$has.shrink) {
+    if (!is.null(x[["is.shrink"]]) && x$is.shrink) {
       x[["shrink.dx"]] <-
         self %>%
         pmx_comp_shrink(

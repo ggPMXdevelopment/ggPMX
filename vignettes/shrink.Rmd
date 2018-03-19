@@ -37,10 +37,10 @@ ctr %>% pmx_plot_ebe_hist
 
 ```
 
-You can add or remove shrinkage annotation using `has.shrink` argument ( TRUE by default) : 
+You can add or remove shrinkage annotation using `is.shrink` argument ( TRUE by default) : 
 
 ```{r shrink_plot_no}
-ctr %>%   pmx_plot_ebe_box( has.shrink = FALSE) 
+ctr %>%   pmx_plot_ebe_box( is.shrink = FALSE) 
 
 ```
 
@@ -73,13 +73,13 @@ ctr %>% pmx_comp_shrink(strat.color = "SEX")
 
 We can 
 ```{r shrink_plot_strat, fig.width=9, fig.height=8}
-ctr %>% pmx_plot_ebe_hist(has.shrink = TRUE, strat.facet = ~SEX,
+ctr %>% pmx_plot_ebe_hist(is.shrink = TRUE, strat.facet = ~SEX,
                           facets=list(scales="free_y"))
 ```
 or 
  
 ```{r fig.width=9, fig.height=8}
-ctr %>% pmx_plot_ebe_box(has.shrink = TRUE, strat.facet = "SEX",
+ctr %>% pmx_plot_ebe_box(is.shrink = TRUE, strat.facet = "SEX",
                           facets=list(scales="free_y",ncol=2))
 ```
 

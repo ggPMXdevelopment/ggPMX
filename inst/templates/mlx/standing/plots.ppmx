@@ -12,8 +12,8 @@ ABS_IWRES_IPRED:
     shape: 1.0
     color: black
     size: 1.0
-  add_hline: yes
-  has.smooth: yes
+  is.hline: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -33,8 +33,8 @@ IWRES_IPRED:
     shape: 1.0
     color: black
     size: 1.0
-  add_hline: yes
-  has.smooth: yes
+  is.hline: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -53,8 +53,8 @@ IWRES_TIME:
     shape: 1.0
     color: black
     size: 1.0
-  add_hline: yes
-  has.smooth: yes
+  is.hline: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -73,9 +73,9 @@ NPDE_TIME:
     shape: 1.0
     color: black
     size: 1.0
-  add_hline: yes
-  has.band: yes
-  has.smooth: yes
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -94,13 +94,15 @@ NPDE_PRED:
     shape: 1.0
     color: black
     size: 1.0
-  add_hline: yes
-  has.band: yes
-  has.smooth: yes
+  is.hline: yes
+  hline:
+    color: blue
+  is.band: no
+  is.smooth: yes
   smooth:
     se: no
     color: red
-    linetype: 2.0
+    linetype: 1.0
 
 DV_PRED:
   ptype: RES
@@ -113,12 +115,12 @@ DV_PRED:
     shape: 1.0
     color: black
     size: 1.0
-  has.smooth: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
     linetype: 1.0
-  has.identity_line: yes
+  is.identity_line: yes
   identity_line:
     intercept: 0
     color: blue
@@ -134,12 +136,12 @@ DV_IPRED:
     shape: 1.0
     color: black
     size: 1.0
-  has.smooth: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
     linetype: 1.0
-  has.identity_line: yes
+  is.identity_line: yes
   identity_line:
     intercept: 0
     color: blue
@@ -147,38 +149,81 @@ DV_IPRED:
 EBE_HIST:
   ptype: DIS
   type: hist
+  dname: eta
   facets:
     scales: free_x
     nrow: 3.0
-  has.shrink: yes
+  is.shrink: yes
   shrink:
     fun: sd
     size: 4.0
     color: black
     hjust: -1
     vjust: 2
+    annotation: shrinkage
+  histogram:
+    binwidth: 0.034
+    position: dodge
+    fill: white
+    color: black
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: ''
+    'y': ''
+    legend: Random effect
 
 EBE_BOX:
   ptype: DIS
+  dname: eta
   type: box
-  has.jitter: no
+  is.jitter: no
   jitter:
     shape: 1.0
     color: grey50
     width: 0.1
     height: 0.1
-  has.shrink: yes
+  is.shrink: yes
   shrink:
     fun: sd
     size: 4.0
     color: black
-    hjust: -0.5
+    hjust: 0.5
     vjust: 2.0
-
+    annotation: shrinkage
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: ''
+    'y': ''
+    legend: Random effect
+    
 INDIVIDUAL:
   ptype: IND
+  dname: IND
   ranges: ~
-  
+  is.smooth: no
+  ipred_line:
+    color: black
+    size: 1
+  pred_line:
+    color: black
+    size: 1
+  point:
+    color: black
+    shape : 21
+    size: 1
+  is.legend: no
+  facets:
+    ncol: 3
+    nrow: 4
+    scales: free
+  labels:
+    title: Individual fits
+    subtitle: ''
+    x: TIME
+    'y': DV
+
 ETA_MATRIX:
   ptype: ETA_PAIRS
   title: Correlations of random effects

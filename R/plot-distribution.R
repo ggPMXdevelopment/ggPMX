@@ -6,9 +6,9 @@
 #' @param facets list set the facet setting in case of histogram plot
 #' @param type box for boxplot or histogram
 #' @param dname name of dataset to be used
-#' @param has.shrink \code{logical} if TRUE add shrinkage layer
+#' @param is.shrink \code{logical} if TRUE add shrinkage layer
 #' @param shrink \code{list} list of parameters to tune the shrinkage
-#' @param has.jitter \code{logical} if TRUE add jitter operator for points
+#' @param is.jitter \code{logical} if TRUE add jitter operator for points
 #' @param histogram \code{list} histogram graphical parameters
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
@@ -36,34 +36,24 @@
 #' @export
 distrib <- function(
                     labels,
-                    has.jitter = FALSE,
-                    jitter = list(shape = 1, color = "grey50", width = 0.1),
-                    facets = list(scales = "free_x", nrow = 3),
+                    is.jitter = FALSE,
+                    jitter =NULL,
+                    facets = NULL,
                     type = c("box", "hist"),
-                    has.shrink = FALSE,
-                    histogram=list(binwidth = 1 / 30, position = "dodge", fill = "white", color = "black"),
-                    shrink=list(fun = "sd", size = 5, color = "black"),
+                    histogram=NULL,
+                    shrink=NULL,
                     dname = NULL,
+                    is.shrink,
                     ...) {
-  assert_that(is_logical(has.jitter))
-  assert_that(is_list(jitter))
-  assert_that(is_list(facets))
+  assert_that(is_logical(is.jitter))
+  assert_that(is_list_or_null(jitter))
+  assert_that(is_list_or_null(facets))
   type <- match.arg(type)
-  assert_that(is_logical(has.shrink))
+  assert_that(is_logical(is.shrink))
   assert_that(is_list(shrink))
   assert_that(is_string_or_null(dname))
-  if (is.null(dname)) dname <- "eta"
+ 
 
-
-  if (missing(labels)) {
-    labels <- list(
-      title = "EBE distribution",
-      subtitle = "",
-      x = "Etas",
-      y = "",
-      legend = "Random effect"
-    )
-  }
   assert_that(is_list(labels))
 
   structure(list(
@@ -72,17 +62,17 @@ distrib <- function(
     dname = dname,
     aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
     type = type,
-    has.jitter = has.jitter,
+    is.jitter = is.jitter,
     jitter = jitter,
     facets = facets,
     histogram = histogram,
-    has.shrink = has.shrink,
+    is.shrink = is.shrink,
     shrink = shrink,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
-      has.smooth = FALSE,
-      has.band = FALSE, ...
+      is.smooth = FALSE,
+      is.band = FALSE, ...
     )
   ), class = c("distrib", "pmx_gpar"))
 }
@@ -142,7 +132,7 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
       histogram$mapping <- aes_string(fill = strat.color)
     }
     p <- p + do.call(geom_histogram, histogram)
-    if (has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "hist", strat.color)
+    if (is.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "hist", strat.color)
     p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
 
     p
@@ -157,7 +147,7 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
     p <- ggplot(data = dx, aes_string(fill = strat.color, x = "EFFECT", y = "VALUE"))
   }
 
-  if (x$has.jitter) p <- p + jitter_layer(x$jitter, strat.color)
+  if (x$is.jitter) p <- p + jitter_layer(x$jitter, strat.color)
 
   p <- p + geom_boxplot(outlier.shape = NA, position = position_dodge(width = 0.9))
 
@@ -166,7 +156,7 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
     p <- p + do.call("facet_wrap", c(strat.facet, x$facets))
   }
 
-  if (x$has.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
+  if (x$is.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
 
   p
 }
@@ -178,27 +168,28 @@ shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
   SHRINK <- EFFECT <- POS <- NULL
   res <- if (type == "box") {
     shrink$mapping <-
-      aes(
-        label = sprintf("%s%%", round(SHRINK * 100)),
-        y = Inf
-      )
+      aes(label=sprintf("%s=%s%%", annotation,round(SHRINK * 100)),
+          y = Inf)
     shrink$data <- dx
+    shrink$data$annotation <- shrink$annotation
     shrink$position <- if (is.null(strat.color)) {
       position_dodge(width = 0.9)
     } else {
       position_jitterdodge(jitter.width = 0.1)
     }
     shrink$fun <- NULL
+    shrink$annotation <- NULL
     do.call(geom_text, shrink)
   } else {
     shrink$data <- dx
     shrink$mapping <-
       aes(
-        label = sprintf("%s%%", round(SHRINK * 100)),
+        label = sprintf("%s=%s%%", shrink$annotation,round(SHRINK * 100)),
         y = Inf,
         x = -Inf
       )
     shrink$fun <- NULL
+    shrink$annotation <- NULL
     do.call(geom_text, shrink)
   }
   res

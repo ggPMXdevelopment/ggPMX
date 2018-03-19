@@ -14,7 +14,7 @@ default_residual <- function(...) {
 #' @param y y axis aesthetics
 #' @param labels list that contain title,subtitle, axis labels
 #' @param point geom point graphical parameters
-#' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
+#' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline geom hline graphical parameters
 #' @param dname name of dataset to be used
 #' @param facets \code{list} wrap facetting in case of strat.facet
@@ -42,7 +42,7 @@ default_residual <- function(...) {
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
-residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE,
+residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
                      hline=NULL, dname=NULL, facets=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
@@ -74,7 +74,7 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE,
       dname = dname,
       aess = aess,
       point = point,
-      add_hline = add_hline,
+      is.hline = is.hline,
       hline = hline,
       facets = facets,
       gp = pmx_gpar(labels = labels, ...)
@@ -113,7 +113,7 @@ plot_pmx.residual <- function(x, dx, ...) {
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
 
     p <- p + do.call(geom_point, point)
-    if (add_hline) p <- p + do.call(geom_hline, hline)
+    if (is.hline) p <- p + do.call(geom_hline, hline)
     p <- plot_pmx(gp, p)
 
     strat.color <- x[["strat.color"]]
@@ -130,6 +130,12 @@ plot_pmx.residual <- function(x, dx, ...) {
     }
     if (aess$y == "DV") {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
+      if(!is.null(x$gp$ranges)){
+        rng <- extend_range(unlist(x$gp$ranges))
+        xrange[1] <- max(xrange[1],rng[1])
+        xrange[2] <- min(xrange[2],rng[2])
+      }
+      
       p <- p +
         coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)

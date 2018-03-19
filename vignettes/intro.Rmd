@@ -39,7 +39,7 @@ ctr %>% pmx_plot_dv_pred
 ctr %>% pmx_plot_ebe_box
 ctr %>% pmx_plot_ebe_hist(facets=list(scales="free_y"))
 ctr %>% pmx_plot_individual(npage = 1,
-                            has.legend=FALSE,
+                            is.legend=FALSE,
                             facets=list(ncol=2,nrow=3))
 ctr %>% pmx_plot_eta_matrix(
   shrink=list(size=3,hjust=1.5))

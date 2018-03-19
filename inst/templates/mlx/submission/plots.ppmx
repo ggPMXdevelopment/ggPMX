@@ -13,8 +13,8 @@ ABS_IWRES_IPRED:
     color: black
     size: 1.0
     alpha: 0.1
-  add_hline: yes
-  has.smooth: yes
+  is.hline: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -35,8 +35,8 @@ IWRES_IPRED:
     color: black
     size: 1.0
     alpha: 0.1
-  add_hline: yes
-  has.smooth: yes
+  is.hline: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -56,8 +56,8 @@ IWRES_TIME:
     color: black
     size: 1.0
     alpha: 0.1
-  add_hline: yes
-  has.smooth: yes
+  is.hline: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -77,9 +77,9 @@ NPDE_TIME:
     color: black
     size: 1.0
     alpha: 0.1
-  add_hline: yes
-  has.band: yes
-  has.smooth: yes
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -99,9 +99,9 @@ NPDE_PRED:
     color: black
     size: 1.0
     alpha: 0.1
-  add_hline: yes
-  has.band: yes
-  has.smooth: yes
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -119,12 +119,12 @@ DV_PRED:
     color: black
     size: 1.0
     alpha: 0.1
-  has.smooth: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
     linetype: 1.0
-  has.identity_line: yes
+  is.identity_line: yes
   identity_line:
     intercept: 0
     color: blue
@@ -141,12 +141,12 @@ DV_IPRED:
     color: black
     size: 1.0
     alpha: 0.1
-  has.smooth: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
     linetype: 1.0
-  has.identity_line: yes
+  is.identity_line: yes
   identity_line:
     intercept: 0
     color: blue
@@ -157,30 +157,32 @@ EBE_HIST:
   facets:
     scales: free_x
     nrow: 3.0
-  has.shrink: yes
+  is.shrink: yes
   shrink:
     fun: sd
     size: 4.0
     color: black
     hjust: -1
     vjust: 2
+    annotation: shrinkage
 
 EBE_BOX:
   ptype: DIS
   type: box
-  has.jitter: no
+  is.jitter: no
   jitter:
     shape: 1.0
     color: grey50
     width: 0.1
     height: 0.1
-  has.shrink: yes
+  is.shrink: yes
   shrink:
     fun: sd
     size: 4.0
     color: black
     hjust: -0.5
     vjust: 2.0
+    annotation: shrinkage
 
 INDIVIDUAL:
   ptype: IND

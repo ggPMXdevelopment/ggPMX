@@ -104,7 +104,7 @@ vpc <- function(
                 plot.pi=TRUE,
                 plot.bands=TRUE,
                 plot.obs=TRUE,
-                has.legend=FALSE,
+                is.legend=FALSE,
                 ...) {
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
@@ -144,7 +144,7 @@ vpc <- function(
       plot.pi = plot.pi,
       plot.bands = plot.bands,
       plot.obs = plot.obs,
-      has.legend = has.legend,
+      is.legend = is.legend,
       gp = pmx_gpar(labels = labels, ...)
     ),
     class = c("vpc", "pmx_gpar")
