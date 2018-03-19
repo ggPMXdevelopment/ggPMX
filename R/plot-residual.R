@@ -130,12 +130,12 @@ plot_pmx.residual <- function(x, dx, ...) {
     }
     if (aess$y == "DV") {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
-      if(!is.null(x$gp$ranges)){
+      if (!is.null(x$gp$ranges)) {
         rng <- extend_range(unlist(x$gp$ranges))
-        xrange[1] <- max(xrange[1],rng[1])
-        xrange[2] <- min(xrange[2],rng[2])
+        xrange[1] <- max(xrange[1], rng[1])
+        xrange[2] <- min(xrange[2], rng[2])
       }
-      
+
       p <- p +
         coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)

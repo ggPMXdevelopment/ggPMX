@@ -52,7 +52,7 @@ individual <- function(labels,
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
   assert_that(is_list(labels))
-  
+
   structure(list(
     ptype = "IND",
     strat = TRUE,
@@ -89,33 +89,31 @@ plot_pmx.individual <-
     ## dx <- dx[DVID==1]
     strat.facet <- x[["strat.facet"]]
     strat.color <- x[["strat.color"]]
-    
+
     wrap.formula <- if (!is.null(strat.facet)) {
       wrap_formula(strat.facet, "ID")
     } else {
       formula("~ID")
     }
-    
+
     get_page <- with(x, {
-      
-      
-      p_point <- if(!is.null(point)){
+      p_point <- if (!is.null(point)) {
         point$data <- input
-        do.call(geom_point, point) 
-      } 
-      p_ipred <- if(!is.null(ipred_line)){
+        do.call(geom_point, point)
+      }
+      p_ipred <- if (!is.null(ipred_line)) {
         ipred_line$mapping <- aes(y = IPRED, linetype = "1")
         do.call(geom_line, ipred_line)
-      } 
-      p_pred <-  if(!is.null(pred_line)) {
+      }
+      p_pred <- if (!is.null(pred_line)) {
         pred_line$mapping <- aes(y = PRED, linetype = "2")
         do.call(geom_line, pred_line)
       }
-      
-      
-      p <- ggplot(dx, aes(TIME, DV)) + 
+
+
+      p <- ggplot(dx, aes(TIME, DV)) +
         p_point + p_ipred + p_pred
-      
+
       p <- plot_pmx(gp, p)
       if (is.legend) {
         p <- p +
@@ -127,13 +125,13 @@ plot_pmx.individual <-
       } else {
         p <- p + theme(legend.position = "none")
       }
-      
+
       ## split pages
       npages <- ceiling(with(
         facets,
         length(unique(dx$ID)) / nrow / ncol
       ))
-      
+
       function(i) {
         res <- list()
         if (is.null(i)) i <- seq_len(npages)
@@ -141,13 +139,14 @@ plot_pmx.individual <-
         res <- lapply(i, function(x) {
           facets$page <- x
           facets$facets <- wrap.formula
-          if(is.null(facets$labeller))
-            facets$labeller <- labeller(ID = function(x)sprintf("ID: %s",x))
+          if (is.null(facets$labeller)) {
+            facets$labeller <- labeller(ID = function(x) sprintf("ID: %s", x))
+          }
           p + do.call(facet_wrap_paginate, facets)
         })
         if (length(res) == 1) res[[1]] else res
       }
     })
-    
+
     get_page
   }

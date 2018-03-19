@@ -52,7 +52,7 @@ distrib <- function(
   assert_that(is_logical(is.shrink))
   assert_that(is_list(shrink))
   assert_that(is_string_or_null(dname))
- 
+
 
   assert_that(is_list(labels))
 
@@ -168,8 +168,10 @@ shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
   SHRINK <- EFFECT <- POS <- NULL
   res <- if (type == "box") {
     shrink$mapping <-
-      aes(label=sprintf("%s=%s%%", annotation,round(SHRINK * 100)),
-          y = Inf)
+      aes(
+        label = sprintf("%s=%s%%", annotation, round(SHRINK * 100)),
+        y = Inf
+      )
     shrink$data <- dx
     shrink$data$annotation <- shrink$annotation
     shrink$position <- if (is.null(strat.color)) {
@@ -184,7 +186,7 @@ shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
     shrink$data <- dx
     shrink$mapping <-
       aes(
-        label = sprintf("%s=%s%%", shrink$annotation,round(SHRINK * 100)),
+        label = sprintf("%s=%s%%", shrink$annotation, round(SHRINK * 100)),
         y = Inf,
         x = -Inf
       )

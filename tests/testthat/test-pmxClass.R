@@ -113,6 +113,4 @@ test_that("can disable draft for all plots", {
 test_that("can set draft to false for a single plot", {
   ctr <- pmxClassHelpers$ctr
   p <- ctr %>% pmx_plot_dv_pred(is.draft = FALSE)
-  
-  
 })

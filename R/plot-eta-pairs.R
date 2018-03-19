@@ -47,10 +47,10 @@ eta_pairs <- function(
     text_color = text_color,
     is.shrink = is.shrink,
     shrink = shrink,
-    is.smooth=is.smooth,
+    is.smooth = is.smooth,
     smooth = smooth,
     point = point,
-    is.hline=is.hline,
+    is.hline = is.hline,
     hline = hline,
     gp = pmx_gpar(
       labels = labels,
@@ -62,19 +62,19 @@ eta_pairs <- function(
 }
 
 
-lower.plot <- function(data, x, y, point, is.smooth,smooth, gp,is.hline,hline) {
+lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline) {
   p <-
     ggplot(data = data, aes_string(x = x, y = y)) +
-    with(point, geom_point(shape = shape, size = size, color = color)) 
-  if(is.smooth){    
+    with(point, geom_point(shape = shape, size = size, color = color))
+  if (is.smooth) {
     p <- p + with(smooth, geom_smooth(method = method, se = se, size = size, color = color))
   }
-  
+
   if (is.hline) {
     hline <- l_left_join(list(yintercept = 0), hline)
     p <- p + do.call(geom_hline, hline)
   }
-  
+
   plot_pmx(gp, p)
 }
 
@@ -92,7 +92,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 
 
 .plot_matrix <-
-  function(dx, text_color=text_color, point=point, is.smooth,smooth, gp,is.hline,hline) {
+  function(dx, text_color=text_color, point=point, is.smooth, smooth, gp, is.hline, hline) {
     nn <- colnames(dx)
     mat <- outer(nn, nn, paste, sep = ";")
     uppers <-
@@ -110,9 +110,11 @@ upper.plot <- function(data, x, y, text_color, gp) {
         mat[lower.tri(mat)],
         function(z) {
           z <- strsplit(z, ";")[[1]]
-          lower.plot(dx, x = z[1], y = z[2], point = point, 
-                     is.smooth = is.smooth, smooth = smooth, gp = gp,
-                     is.hline,hline)
+          lower.plot(
+            dx, x = z[1], y = z[2], point = point,
+            is.smooth = is.smooth, smooth = smooth, gp = gp,
+            is.hline, hline
+          )
         }
       )
 
@@ -214,8 +216,8 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       is.smooth = is.smooth,
       smooth = smooth,
       gp = gp,
-      is.hline=is.hline,
-      hline=hline
+      is.hline = is.hline,
+      hline = hline
     )
 
     if (is.shrink) {
