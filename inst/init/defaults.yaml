@@ -44,12 +44,13 @@ DIS_hist:
 DIS_box:
   dname: eta
   type: box
-  is.jitter: no
+  is.jitter: yes
   jitter:
     shape: 1.0
     color: grey50
     width: 0.1
     height: 0.1
+    alpha: 0.3
   is.shrink: yes
   shrink:
     fun: sd
@@ -90,6 +91,7 @@ IND:
     subtitle: ''
     x: TIME
     'y': DV
+  use.finegrid: yes
 
 ETA_PAIRS:
   title: Correlations of random effects

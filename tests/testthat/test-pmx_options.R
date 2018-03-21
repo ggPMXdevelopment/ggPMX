@@ -26,7 +26,7 @@ test_that("Initiating controllers work with and without specification of covaria
     dv = "Y",
     dvid = "DVID"
   )
-  expect_equal(ctr %>% get_covariates(), "")
+  expect_equal(length(ctr %>% get_covariates()), 0)
   uc.name <- "1_popPK_model"
   data_file <- "PKdata_ggPMX.csv"
 

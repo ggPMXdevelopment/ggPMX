@@ -48,18 +48,20 @@ individual <- function(labels,
                        pred_line = NULL,
                        point = NULL,
                        is.legend,
+                       use.finegrid,
                        ...) {
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
   assert_that(is_list(labels))
   
   
-  
+  if(!use.finegrid)dname <- "predictions"  
 
   structure(list(
     ptype = "IND",
     strat = TRUE,
     is.legend = is.legend,
+    use.finegrid = use.finegrid,
     dname = dname,
     aess = list(x = "TIME", y1 = "PRED", y2 = "IPRED"),
     labels = labels,
@@ -89,7 +91,7 @@ plot_pmx.individual <-
   function(x, dx, ...) {
     ID <- NULL
     ## plot
-    ## dx <- dx[DVID==1]
+    if (x$dname =="predictions")cat("USE predictions data set \n")
     strat.facet <- x[["strat.facet"]]
     strat.color <- x[["strat.color"]]
 

@@ -227,6 +227,7 @@ INDIVIDUAL:
     subtitle: ''
     x: TIME
     'y': DV
+  use.finegrid: yes
 
 ETA_MATRIX:
   ptype: ETA_PAIRS
