@@ -169,8 +169,8 @@ EBE_HIST:
   labels:
     title: EBE distribution
     subtitle: ''
-    x: ''
-    'y': ''
+    x: 'Estimated eta'
+    'y': 'Histogram'
     legend: Random effect
 
 EBE_BOX:
@@ -195,8 +195,8 @@ EBE_BOX:
   labels:
     title: EBE distribution
     subtitle: ''
-    x: ''
-    'y': ''
+    x: 'Estimated eta'
+    'y': 'Density'
     legend: Random effect
   facets:
     scales: free_x
