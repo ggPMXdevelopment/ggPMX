@@ -1,6 +1,6 @@
 ## add comment 
 ABS_IWRES_IPRED:
-  ptype: RES
+  ptype: SATTER
   x: IPRED
   'y': IWRES
   labels:
@@ -22,7 +22,7 @@ ABS_IWRES_IPRED:
   trans: abs_y
 
 IWRES_IPRED:
-  ptype: RES
+  ptype: SATTER
   x: IPRED
   'y': IWRES
   labels:
@@ -43,7 +43,7 @@ IWRES_IPRED:
     linetype: 1.0
 
 IWRES_TIME:
-  ptype: RES
+  ptype: SATTER
   x: TIME
   'y': IWRES
   labels:
@@ -64,7 +64,7 @@ IWRES_TIME:
     linetype: 1.0
 
 NPDE_TIME:
-  ptype: RES
+  ptype: SATTER
   x: TIME
   'y': NPDE
   labels:
@@ -86,7 +86,7 @@ NPDE_TIME:
     linetype: 2.0
 
 NPDE_PRED:
-  ptype: RES
+  ptype: SATTER
   x: PRED
   'y': NPDE
   labels:
@@ -108,7 +108,7 @@ NPDE_PRED:
     linetype: 2.0
 
 DV_PRED:
-  ptype: RES
+  ptype: SATTER
   labels:
     title: DV vs PRED
     subtitle: ''
@@ -130,7 +130,7 @@ DV_PRED:
     color: blue
     
 DV_IPRED:
-  ptype: RES
+  ptype: SATTER
   labels:
     title: DV vs IPRED
     subtitle: ''

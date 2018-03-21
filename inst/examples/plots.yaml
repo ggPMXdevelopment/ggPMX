@@ -1,5 +1,5 @@
 CUSTOM_RES_TIME:
-  ptype: RES
+  ptype: SCATTER
   x: TIME
   'y': IWRES
   labels:
@@ -20,7 +20,7 @@ CUSTOM_RES_TIME:
     method: lm
 
 CUSTOM_NPDE_TIME:
-  ptype: RES
+  ptype: SCATTER
   x: TIME
   'y': NPDE
   labels:

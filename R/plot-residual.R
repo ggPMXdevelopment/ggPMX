@@ -61,7 +61,7 @@ residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
 
   structure(
     list(
-      ptype = "RES",
+      ptype = "SCATTER",
       strat = TRUE,
       dname = dname,
       aess = aess,

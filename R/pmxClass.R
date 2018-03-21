@@ -155,7 +155,7 @@ pmx_settings <-
 ##' \itemize{
 ##'  \item{"IND"}{ Individual plot type: \code{\link{individual}} }
 ##'  \item{"DIS"}{ Distribution plot type : \code{\link{distrib}}}
-##'  \item{"RES"}{ Residual plot type :\code{\link{residual}}}
+##'  \item{"SCATTER"}{ Residual plot type :\code{\link{residual}}}
 ##' }
 ##' @param pname plot name, if missing it will be created using function aestetics
 ##' @param filter optional filter which will be applied to plotting data
@@ -168,7 +168,7 @@ pmx_settings <-
 #' @family pmxclass
 #' @return invisible ctr object
 #' @export
-set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
+set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
                      pname,
                      use_default=TRUE,
                      filter =NULL, strat.color=NULL,
@@ -204,7 +204,7 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "RES", "ETA_PAIRS", "ETA_COV",
     switch(ptype,
            IND = do.call(individual,params),
            DIS = if (ctr$has_re) do.call(distrib,params),
-           RES = do.call(residual,params),
+           SCATTER = do.call(residual,params),
            ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs,params),
            ETA_COV = if (ctr$has_re) do.call(eta_cov,params),
            PMX_QQ = do.call(pmx_qq,params)
@@ -671,7 +671,7 @@ pmx_transform <- function(x, dx, trans, direction) {
   
   cols <- switch(
     x[["ptype"]],
-    RES = cols_res(x),
+    SCATTER = cols_res(x),
     IND = cols_ind(x),
     DIS = cols_dis(x),
     PMX_QQ = cols_qq(x),
