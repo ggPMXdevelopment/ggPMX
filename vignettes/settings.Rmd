@@ -122,9 +122,9 @@ ctr  %>%  pmx_plot_ebe_box(strat.color="STUD")
 ```
 
 
-## Define catgerical labels :
+## Define categorical labels :
 
-In case of faceting by stratification user can redfine categrical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use_lables` to TRUE.
+In case of faceting by stratification user can redfine categorical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use_lables` to TRUE.
 
 ```{r settings_cat_labels}
 
