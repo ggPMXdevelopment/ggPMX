@@ -174,7 +174,7 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
 
 shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
   ##
-  SHRINK <- EFFECT <- POS <- NULL
+  SHRINK <- EFFECT <- POS <- annotation <- NULL
   res <- if (type == "box") {
     shrink$mapping <-
       aes(
