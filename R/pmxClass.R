@@ -306,6 +306,7 @@ get_plot <- function(ctr, nplot, npage = NULL) {
   nplot <- tolower(nplot)
   assert_that(is_valid_plot_name(nplot, plot_names(ctr)))
   xx <- ctr$get_plot(nplot)
+  
   if (is.function(xx)) {
     xx(npage)
   } else {
@@ -486,6 +487,7 @@ pmxClass <- R6::R6Class(
     has_re = FALSE, re = NULL,
     abbrev = list(),
     endpoint = NULL,
+    warnings=list(),
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
     
@@ -817,11 +819,15 @@ pmx_plots <- function(self, private) {
 }
 
 pmx_post_load <- function(self, private) {
-  self$data <- post_load(
+  
+  res <- post_load(
     self$data, self$input, self$config$sys,
     self$config$plots,
     occ = get_occ(self)
   )
+  
+  self$data <- res$data 
+  self$warnings <- res$warnings
 }
 
 #' Print pmxClass object

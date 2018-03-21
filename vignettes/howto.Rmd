@@ -333,7 +333,7 @@ ctr %>% pmx_plot_individual(facets = list(nrow = 5, ncol = 5), npage = 2)
 
 ### Log-scale y or x or x/y 
 ```{r fig.height=7, fig.width=6,warning=FALSE}
-ctr %>% pmx_plot_individual(log_y = TRUE, log_x=TRUE)
+ctr %>% pmx_plot_individual(scale_x_log10 = TRUE, scale_y_log10=TRUE)
 ```
 
 ### Stratification by CMT, STUDY or other flag

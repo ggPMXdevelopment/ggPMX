@@ -64,6 +64,7 @@ post_load_eta <- function(ds, input, sys, occ) {
 post_load <- function(dxs, input, sys, dplot, occ) {
   ## avoid RCMDCHECK
   DVID <- ID <- NULL
+  warns <- list()
   if (is.null(dxs[["predictions"]])) return(dxs)
   ## merge finegrid with input data
   if (sys == "mlx") {
@@ -76,12 +77,15 @@ post_load <- function(dxs, input, sys, dplot, occ) {
       dxs[["finegrid"]] <- input_finegrid(input, dxs[["finegrid"]])
       dxs[["IND"]] <- dxs[["finegrid"]]
     } else {
-      message("
-        NO FINEGRID FILE: 
-        we will use instead predictions.txt for individual plots")
+      warn <- 
+      "NO FINEGRID FILE: 
+        we will use instead predictions.txt for individual plots"
+      warns$MISSING_FINEGRID <- warn 
+      message(warn)
       dxs[["IND"]] <- dxs[["predictions"]]
     }
   }
-
-  dxs
+  list(data=dxs,
+       warnings= warns)
+  
 }

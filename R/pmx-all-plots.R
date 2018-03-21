@@ -295,7 +295,10 @@ pmx_plot_individual <-
       cctr %>% get_plot("individual", npage)
     }
 
+    cctr %>% pmx_warnings("MISSING_FINEGRID")
     rm(cctr)
+    
+    
     p
   }
 

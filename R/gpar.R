@@ -13,8 +13,8 @@
 #' @param is.identity_line \code{logical} if TRUE add y=x line
 #' @param identity_line \code{list} y=x aes properties
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
-#' @param log_x logical if TRUE add scale_x_log10 layer
-#' @param log_y logical if TRUE add scale_y_log10 layer
+#' @param scale_x_log10 logical if TRUE add scale_x_log10 layer
+#' @param scale_y_log10 logical if TRUE add scale_y_log10 layer
 #' @param ... extra arguments (not used yet)
 #' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
 #'

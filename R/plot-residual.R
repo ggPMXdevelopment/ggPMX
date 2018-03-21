@@ -108,7 +108,7 @@ plot_pmx.residual <- function(x, dx, ...) {
     if (is.hline) p <- p + do.call(geom_hline, hline)
 
     
-    if (aess$y == "DV" && !(gp$log_y || gp$log_x)) {
+    if (aess$y == "DV" && !(gp$scale_x_log10 || gp$scale_y_log10)) {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
       if (!is.null(gp$ranges)) {
         if(is.null(gp$ranges$x)){
