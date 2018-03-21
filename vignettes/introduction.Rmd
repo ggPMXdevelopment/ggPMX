@@ -74,6 +74,7 @@ ctr4 <- pmx(
   input = input_file, 
   dv = "Y", 
   dvid ="DVID",
+  cats="SEX",
   settings=
     pmx_settings(
       cats.labels=list(
@@ -94,23 +95,19 @@ ctr4 %>% get_plot("npde_pred")
 ## Set aesthetics (colours, size, etc.) to data column?
 ctr4 %>% pmx_update("npde_pred", point=list(shape="SEX"))
 ctr4 %>% get_plot("npde_pred")
-stop("Does not produce desired result with shape defined by SEX")
+##??stop("Does not produce desired result with shape defined by SEX")
 
 # alternative - use strat.color 
 ctr4 %>% pmx_update("npde_pred", 
                     point=list(shape=1,color="black",size=1), 
-                    strat.color="SEX",
-                    color.scales=list(
-                        "SEX",
-                        labels=c("M","F"),
-                        values=c("1"="lightyellow","2"="lightblue")))
+                    strat.color="SEX")
 ctr4 %>% get_plot("npde_pred")
-stop("Does not produce desired result with shape defined by SEX")
+##stop("Does not produce desired result with shape defined by SEX")
 
 ## Add/remove layers?
-ctr4 %>% pmx_update("npde_pred", has.smooth=FALSE, has.band=FALSE, has.identity_line=TRUE, strat.color=NULL)
+ctr4 %>% pmx_update("npde_pred", is.smooth=FALSE, is.band=FALSE, is.identity_line=TRUE, strat.color=NULL)
 ctr4 %>% get_plot("npde_pred")
-ctr4 %>% pmx_update("npde_pred", has.smooth=TRUE, has.band=TRUE, has.identity_line=FALSE)
+ctr4 %>% pmx_update("npde_pred", is.smooth=TRUE, is.band=TRUE, is.identity_line=FALSE)
 ctr4 %>% get_plot("npde_pred")
 
 ## Add/remove facetting?
@@ -120,7 +117,7 @@ ctr4 %>% get_plot("npde_pred")
 # change
 ctr4 %>% pmx_update("npde_pred", strat.facet="STUD")
 ctr4 %>% get_plot("npde_pred")
-stop("Error in title")
+## stop("Error in title")
 # remove
 ctr4 %>% pmx_update("npde_pred", strat.facet=NULL)
 ctr4 %>% get_plot("npde_pred")
@@ -130,17 +127,17 @@ ctr4 %>% get_plot("npde_pred")
 ctr4 %>% pmx_update("npde_pred", strat.facet=NULL)
 
 ##log axis?
-ctr4 %>% pmx_update("npde_pred", log_x=TRUE) # ok
+ctr4 %>% pmx_update("npde_pred", scale_x_log10=TRUE) # ok
 ctr4 %>% get_plot("npde_pred")
-ctr4 %>% pmx_update("npde_pred", log_y=TRUE) # produces expected nonesense result
+ctr4 %>% pmx_update("npde_pred", scale_y_log10=TRUE) # produces expected nonesense result
 ctr4 %>% get_plot("npde_pred")
-ctr4 %>% pmx_update("npde_pred", log_y=FALSE, log_x=FALSE)
+ctr4 %>% pmx_update("npde_pred", scale_y_log10=FALSE, scale_x_log10=FALSE)
 ctr4 %>% get_plot("npde_pred")
 ctr4 %>% pmx_update("npde_pred", trans = "abs_y", log_y=FALSE, log_x=FALSE)
 ctr4 %>% get_plot("npde_pred")
 ctr4 %>% pmx_update("npde_pred", trans = "abs_y", log_y=TRUE, log_x=FALSE)
 ctr4 %>% get_plot("npde_pred")
-ctr4 %>% pmx_update("npde_pred", trans= "", log_y=FALSE, log_x=FALSE)
+ctr4 %>% pmx_update("npde_pred", trans= "", scale_y_log10=FALSE, scale_x_log10=FALSE)
           
 ##Subsetting?
 ctr4 %>% pmx_update("npde_pred", filter = SEX == 1, strat.facet="SEX")
@@ -153,7 +150,7 @@ ctr4 %>% get_plot("npde_pred")
 ##Add/remove draft label?
 ctr4 %>% pmx_update("npde_pred", is.draft = FALSE)
 ctr4 %>% get_plot("npde_pred")
-stop("Draft label is still present")
+## stop("Draft label is still present")
 
 
 
