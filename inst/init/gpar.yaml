@@ -30,8 +30,8 @@ is.identity_line: no
 identity_line:
   color: blue
   intercept: 0
-log_x: no
-log_y: no
+scale_x_log10: no
+scale_y_log10: no
 color.scales: ~
 
 

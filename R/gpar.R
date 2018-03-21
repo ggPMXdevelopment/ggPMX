@@ -42,8 +42,8 @@ pmx_gpar <-
            discrete,
            is.identity_line,
            identity_line,
-           log_x,
-           log_y,
+           scale_x_log10,
+           scale_y_log10,
            color.scales,
            ...) {
 

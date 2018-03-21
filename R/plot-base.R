@@ -64,11 +64,11 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       axis.title = gpar$axis.title
     )
     
-    if (log_y) {
+    if (scale_x_log10) {
       if (is.draft) draft$y <- 0
       p <- p + scale_y_log10()
     }
-    if (log_x) {
+    if (scale_y_log10) {
       p <- p + scale_x_log10()
     }
     
