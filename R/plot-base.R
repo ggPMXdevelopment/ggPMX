@@ -33,16 +33,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     }
     
     ## labels:title,axis,subtitle...
-    p <- p + with(labels, ggplot2::labs(
-      x = x,
-      y = y,
-      title = title,
-      subtitle = subtitle
-    ))
-    if ("legend" %in% names(labels)) {
-      p <- p + with(labels, labs(fill = legend))
-    }
-    
+   
     ## limits
     if (!is.null(ranges$y)) {
       p <- p + scale_y_continuous(limits = ranges$y)
@@ -66,10 +57,11 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     
     if (scale_x_log10) {
       if (is.draft) draft$y <- 0
-      p <- p + scale_y_log10()
+      p <- p + scale_x_log10()
+
     }
     if (scale_y_log10) {
-      p <- p + scale_x_log10()
+      p <- p + scale_y_log10()
     }
     
     ## draft layer
@@ -89,6 +81,17 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       p <- p + do.call("scale_colour_manual", color.scales)
       p <- p + do.call("scale_fill_manual", color.scales)
     }
+    
+    p <- p + with(labels, ggplot2::labs(
+      x = x,
+      y = y,
+      title = title,
+      subtitle = subtitle
+    ))
+    if ("legend" %in% names(labels)) {
+      p <- p + with(labels, labs(fill = legend))
+    }
+    
     p
   })
   p
