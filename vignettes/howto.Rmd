@@ -199,7 +199,7 @@ ctr %>% pmx_plot_dv_pred(strat.facet = ~WT0,facets=list(ncol=10))
 
 ### X and Y axis scale (default = linear):
 ```{r,warning=FALSE}
-ctr %>% pmx_plot_dv_pred(log_y = TRUE, log_x=TRUE)
+ctr %>% pmx_plot_dv_pred(scale_y_log10 = TRUE, scale_y_log10=TRUE)
 ```
 
 
