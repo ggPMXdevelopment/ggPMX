@@ -81,7 +81,7 @@ see `?residual` for the list of all parameters to create a new residual plot.
 ### New distribution plot
 ```{r new_dis_plot, fig.height=3, fig.width=3, fig.align='center'}
 ctr %>%
-  set_plot("DIS", pname = "distr1", type = "box", is.jitter = FALSE) %>%
+  set_plot("DIS", pname = "distr1", type = "box", is.jitter = FALSE,is.shrink=TRUE) %>%
   get_plot("distr1")
 ```
 see `?distib` for the list of all parameters to create a new individual plot.

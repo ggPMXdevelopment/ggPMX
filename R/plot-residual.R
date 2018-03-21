@@ -1,13 +1,5 @@
 
 
-default_residual <- function(...) {
-  list(
-    point = list(shape = 1, color = "black", size = 1),
-    hline = list(yintercept = 0)
-  )
-}
-
-
 #' Create a residual object
 #'
 #' @param x x axis aesthetics

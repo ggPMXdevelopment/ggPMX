@@ -3,7 +3,7 @@ helpers <- helper_updateplots()
 
 test_that("can update DIS plot", {
   ctr <- helpers$ctr
-  ctr %>% set_plot("DIS", pname = "distr1", type = "box")
+  ctr %>% set_plot("DIS", pname = "distr1", type = "box",is.shrink=FALSE)
   expect_true("distr1" %in% ctr$plots())
   p <- ctr %>% get_plot("distr1")
   oldconf <- ctr$get_config("distr1")
@@ -49,20 +49,20 @@ test_that("can update with filter", {
   ctr %>% get_plot("distr1")
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 3)
 
   # Update plot with filter
   ctr %>% pmx_update("distr1", filter = ID < 10)
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 3)
 
   # test can remove filter
   ctr %>% pmx_update("distr1", filter = NULL)
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
 
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 3)
 })
 
 

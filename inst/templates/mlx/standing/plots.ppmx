@@ -197,6 +197,9 @@ EBE_BOX:
     x: ''
     'y': ''
     legend: Random effect
+  facets:
+    scales: free_x
+    nrow: 3.0
     
 INDIVIDUAL:
   ptype: IND

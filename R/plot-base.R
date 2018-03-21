@@ -18,20 +18,20 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     assert_that(is_list_or_null(band))
     assert_that(is_list_or_null(labels))
   })
-
-
-
+  
+  
+  
   ## smoothing
   p <- with(gpar, {
     if (is.smooth) {
       smooth$na.rm <- TRUE
       p <- p + do.call(geom_smooth, smooth)
     }
-
+    
     if (is.band) {
       p <- p + do.call(geom_hline, band)
     }
-
+    
     ## labels:title,axis,subtitle...
     p <- p + with(labels, ggplot2::labs(
       x = x,
@@ -42,7 +42,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     if ("legend" %in% names(labels)) {
       p <- p + with(labels, labs(fill = legend))
     }
-
+    
     ## limits
     if (!is.null(ranges$y)) {
       p <- p + scale_y_continuous(limits = ranges$y)
@@ -50,8 +50,8 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     if (!is.null(ranges$x) && !discrete) {
       p <- p %+% scale_x_continuous(limits = ranges$x)
     }
-
-
+    
+    
     ## theming
     if (!inherits(gpar$axis.text, "element_text")) {
       gpar$axis.text <- do.call(element_text, as.list(gpar$axis.text))
@@ -63,7 +63,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       axis.text = gpar$axis.text,
       axis.title = gpar$axis.title
     )
-
+    
     if (log_y) {
       if (is.draft) draft$y <- 0
       p <- p + scale_y_log10()
@@ -71,12 +71,12 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     if (log_x) {
       p <- p + scale_x_log10()
     }
-
+    
     ## draft layer
     if (is.draft) {
       p <- p + with(draft, add_draft(label, size, color, x, y))
     }
-
+    
     ## draft layer
     if (is.identity_line) {
       p <- p + with(
@@ -84,7 +84,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
         geom_abline(intercept = intercept, color = color)
       )
     }
-
+    
     if (exists("color.scales", gpar) && !is.null(color.scales)) {
       p <- p + do.call("scale_colour_manual", color.scales)
       p <- p + do.call("scale_fill_manual", color.scales)

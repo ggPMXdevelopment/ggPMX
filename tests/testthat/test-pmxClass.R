@@ -69,12 +69,12 @@ test_that("can set plot and filter", {
   ctr %>% set_plot("DIS", pname = "distr1", type = "box")
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 3)
   # set plot and filter
   ctr %>% set_plot("DIS", pname = "distr2", filter = ID < 10, type = "box")
   p <- ctr %>% get_plot("distr2")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 3)
 })
 
 

@@ -52,6 +52,9 @@ individual <- function(labels,
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
   assert_that(is_list(labels))
+  
+  
+  
 
   structure(list(
     ptype = "IND",
