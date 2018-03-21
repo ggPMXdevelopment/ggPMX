@@ -429,7 +429,8 @@ get_strats <- function(ctr) {
 #' @export
 get_covariates <- function(ctr) {
   assert_that(is_pmxclass(ctr))
-  unique(c(ctr$cats, ctr$conts))
+  res <- unique(c(ctr$cats, ctr$conts))
+  res[nzchar(res)]
 }
 
 
