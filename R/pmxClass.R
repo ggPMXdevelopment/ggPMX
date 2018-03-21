@@ -722,10 +722,12 @@ pmx_add_plot <- function(self, private, x, pname) {
       x[["gp"]] <- gp
     }
     if (!is.null(x[["strat.facet"]])) {
+      
+      tit <- x$gp[["labels"]][["title"]]
+      tit <- gsub(" by .*","",tit)
       x$gp[["labels"]][["title"]] <-
         sprintf(
-          "%s by %s",
-          x$gp[["labels"]][["title"]], formula_to_text(x[["strat.facet"]])
+          "%s by %s",tit, formula_to_text(x[["strat.facet"]])
         )
     } else {
       x$gp[["labels"]][["title"]] <- gsub(" by.*", "", x$gp[["labels"]][["title"]])
