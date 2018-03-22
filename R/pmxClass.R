@@ -159,6 +159,7 @@ pmx_settings <-
 ##' @param strat.color \code{character}
 ##' @param trans \code{list}{transformation operator}
 ##' @param color.scales \code{list} can be used with strat.color to set scale_color_manual
+##' @param use_defaults \code{logical} if FALSE do not use defaults defined in yaml init files
 #' @param ... other plot parameters to configure \code{\link{pmx_gpar}}.
 #'
 #' @family pmxclass
