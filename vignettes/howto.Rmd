@@ -164,7 +164,7 @@ ctr <- theophylline(
       cats.labels=list(
         SEX=c("0"="M","1"="F")
       ),
-      use_labels=TRUE
+      use.labels=TRUE
     )
 )
 ## Now any plot with stratification will use labels
@@ -173,11 +173,11 @@ ctr %>% pmx_plot_dv_pred(strat.facet = ~SEX)
 
 ### Use of abbreviations
 
-```{r res_use_abbrev}
+```{r res_use.abbrev}
 ctr <- theophylline(
   settings=
     pmx_settings(
-      use_abbrev = TRUE
+      use.abbrev = TRUE
     )
 )
 ctr %>% pmx_plot_dv_pred
