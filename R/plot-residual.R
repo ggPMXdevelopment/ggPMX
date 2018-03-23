@@ -1,20 +1,12 @@
 
 
-default_residual <- function(...) {
-  list(
-    point = list(shape = 1, color = "black", size = 1),
-    hline = list(yintercept = 0)
-  )
-}
-
-
 #' Create a residual object
 #'
 #' @param x x axis aesthetics
 #' @param y y axis aesthetics
 #' @param labels list that contain title,subtitle, axis labels
 #' @param point geom point graphical parameters
-#' @param add_hline logical if TRUE add horizontal line y=0 ( TRUE by default)
+#' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline geom hline graphical parameters
 #' @param dname name of dataset to be used
 #' @param facets \code{list} wrap facetting in case of strat.facet
@@ -42,7 +34,7 @@ default_residual <- function(...) {
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
-residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE,
+residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
                      hline=NULL, dname=NULL, facets=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
@@ -69,12 +61,12 @@ residual <- function(x, y, labels = NULL, point = NULL, add_hline=FALSE,
 
   structure(
     list(
-      ptype = "RES",
+      ptype = "SCATTER",
       strat = TRUE,
       dname = dname,
       aess = aess,
       point = point,
-      add_hline = add_hline,
+      is.hline = is.hline,
       hline = hline,
       facets = facets,
       gp = pmx_gpar(labels = labels, ...)
@@ -113,7 +105,30 @@ plot_pmx.residual <- function(x, dx, ...) {
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
 
     p <- p + do.call(geom_point, point)
-    if (add_hline) p <- p + do.call(geom_hline, hline)
+    if (is.hline) p <- p + do.call(geom_hline, hline)
+
+    
+    if (aess$y == "DV" && !(gp$scale_x_log10 || gp$scale_y_log10)) {
+      xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
+      if (!is.null(gp$ranges)) {
+        if(is.null(gp$ranges$x)){
+          rng <- gp$ranges$y
+        }else{
+          if(is.null(gp$ranges$y))
+          rng <- gp$ranges$x
+          else rng <- c(max(gp$ranges$x[1],gp$ranges$y[1]),
+                        min(gp$ranges$x[2],gp$ranges$y[2]))
+        }
+        xrange[1] <- max(xrange[1], rng[1])
+        xrange[2] <- min(xrange[2], rng[2])
+        gp$ranges$x <- xrange
+        gp$ranges$y <- xrange
+      }
+      p <- p +
+        coord_cartesian(xlim = xrange, ylim = xrange)+
+        theme(aspect.ratio = 1)
+    }
+
     p <- plot_pmx(gp, p)
 
     strat.color <- x[["strat.color"]]
@@ -127,12 +142,6 @@ plot_pmx.residual <- function(x, dx, ...) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
       p <- p + do.call("facet_wrap", c(strat.facet, facets))
-    }
-    if (aess$y == "DV") {
-      xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
-      p <- p +
-        coord_cartesian(xlim = xrange, ylim = xrange) +
-        theme(aspect.ratio = 1)
     }
 
     p

@@ -4,14 +4,14 @@ axis.title:
 axis.text: 
   size: 10.0
 ranges: ~
-has.smooth: yes
+is.smooth: yes
 smooth:
   se: no
   linetype: 1.0
   size: 1.5
   method: loess
   color: red
-has.band: no
+is.band: no
 band:
   'yintercept':
   - -2.0
@@ -26,12 +26,12 @@ draft:
   x: .inf
   'y': -.inf
 discrete: no
-has.identity_line: no 
+is.identity_line: no 
 identity_line:
   color: blue
   intercept: 0
-log_x: no
-log_y: no
+scale_x_log10: no
+scale_y_log10: no
 color.scales: ~
 
 

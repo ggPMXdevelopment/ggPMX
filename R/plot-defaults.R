@@ -9,10 +9,10 @@ get_plot_defaults <-
           y = "DV"
         ),
         point = list(shape = 1, color = "black", size = 1),
-        has.smooth = TRUE,
+        is.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
-        has.identity_line = TRUE,
-        add_hline = FALSE,
+        is.identity_line = TRUE,
+        is.hline = FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       dv_ipred = list(
@@ -23,10 +23,10 @@ get_plot_defaults <-
           y = "DV"
         ),
         point = list(shape = 1, color = "black", size = 1),
-        has.smooth = TRUE,
+        is.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1),
-        has.identity_line = TRUE,
-        add_hline = FALSE,
+        is.identity_line = TRUE,
+        is.hline = FALSE,
         identity_line = list(intercept = 0, color = "blue")
       ),
       iwres_ipred =
@@ -38,8 +38,8 @@ get_plot_defaults <-
             y = "Individual predictions"
           ),
           point = list(shape = 1, color = "black", size = 1),
-          add_hline = TRUE,
-          has.smooth = TRUE,
+          is.hline = TRUE,
+          is.smooth = TRUE,
           smooth = list(se = FALSE, color = "red", linetype = 1)
         ),
       abs_iwres_ipred =
@@ -51,8 +51,8 @@ get_plot_defaults <-
             x = "Individual predictions"
           ),
           point = list(shape = 1, color = "black", size = 1),
-          add_hline = TRUE,
-          has.smooth = TRUE,
+          is.hline = TRUE,
+          is.smooth = TRUE,
           smooth = list(se = FALSE, color = "red", linetype = 1),
           trans = "abs_y"
         ),
@@ -64,8 +64,8 @@ get_plot_defaults <-
           y = "Individual predictions"
         ),
         point = list(shape = 1, color = "black", size = 1),
-        add_hline = TRUE,
-        has.smooth = TRUE,
+        is.hline = TRUE,
+        is.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1)
       ),
 
@@ -77,9 +77,9 @@ get_plot_defaults <-
           y = "NPDE"
         ),
         point = list(shape = 1, color = "black", size = 1),
-        add_hline = TRUE,
-        has.band = TRUE,
-        has.smooth = TRUE,
+        is.hline = TRUE,
+        is.band = TRUE,
+        is.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 2)
       ),
 
@@ -91,10 +91,10 @@ get_plot_defaults <-
           y = "NPDE"
         ),
         point = list(shape = 1, color = "black", size = 1),
-        add_hline = TRUE,
+        is.hline = TRUE,
         hline = list(color = "blue"),
-        has.band = TRUE,
-        has.smooth = TRUE,
+        is.band = TRUE,
+        is.smooth = TRUE,
         smooth = list(se = FALSE, color = "red", linetype = 1)
       ),
       eta_matrix =
@@ -106,15 +106,15 @@ get_plot_defaults <-
         ),
       ebe_box =
         list(
-          has.jitter = FALSE,
+          is.jitter = FALSE,
           jitter = list(shape = 1, color = "grey50", width = 0.1, height = 0.1),
-          has.shrink = TRUE,
+          is.shrink = TRUE,
           shrink = list(fun = "sd", size = 4, color = "black")
         ),
       ebe_hist =
         list(
           facets = list(scales = "free_x", nrow = 3),
-          has.shrink = TRUE,
+          is.shrink = TRUE,
           shrink = list(
             fun = "sd", size = 4, color = "black", hjust = -0.5, vjust = 2
           )

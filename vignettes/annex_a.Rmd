@@ -15,13 +15,13 @@ The main target of ggPMX is to create a report containing the following plots (s
 ```{r plots_list,echo=FALSE,results='asis'}
 
 out <- rbind(
-  c("Scatter plot of NPDE vs population predictions", "RES", "npde_pred"),
-  c("Scatter plot of NPDE vs time", "RES", "npde_time"),
-  c("Scatter plot of IWRES vs time", "RES", "iwres_time"),
-  c("Scatter plot of observations vs population predictions", "RES", "dv_pred"),
-  c("Scatter plot of observations vs individual predictions", "RES", "dv_ipred"),
-  c("Scatter plot of absolute value of IWRES vs individual predictions", "RES", "abs_iwres_ipred"),
-  c("Scatter plot of IWRES vs individual predictions", "RES", "iwres_ipred"),
+  c("Scatter plot of NPDE vs population predictions", "SCATTER", "npde_pred"),
+  c("Scatter plot of NPDE vs time", "SCATTER", "npde_time"),
+  c("Scatter plot of IWRES vs time", "SCATTER", "iwres_time"),
+  c("Scatter plot of observations vs population predictions", "SCATTER", "dv_pred"),
+  c("Scatter plot of observations vs individual predictions", "SCATTER", "dv_ipred"),
+  c("Scatter plot of absolute value of IWRES vs individual predictions", "SCATTER", "abs_iwres_ipred"),
+  c("Scatter plot of IWRES vs individual predictions", "SCATTER", "iwres_ipred"),
   c("Plots of observations and model predictions per individual", "IND", "individual"),
   c("Histogram of EBE", "DIS", "ebe_hist"),
   c("Boxplot of EBE", "DIS", "ebe_box"),

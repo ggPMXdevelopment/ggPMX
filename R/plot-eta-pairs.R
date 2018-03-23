@@ -6,10 +6,13 @@
 #' @param dname name of dataset to be used
 #' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' byd efault
 #' @param text_color color of the correlation text in the upper matrix
-#' @param has.shrink \code{logical} if TRUE add shrinkage to the plot
+#' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
 #' @param shrink \code{list} shrinkage graphical parameter
 #' @param point \code{list} geom_point graphical parameter
-#' @param smooth \code{list} geom_smooth graphical parameter
+#' @param is.smooth \code{logical} if TRUE add smoothing to lower matrix plots
+#' @param smooth \code{list} geom_smooth graphical parameters
+#' @param is.band \code{logical} if TRUE add horizontalline to lower matrix plots
+#' @param band \code{list} geom_hline graphical parameters
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @return ecorrel object
 #' @family plot_pmx
@@ -20,10 +23,13 @@ eta_pairs <- function(
                       dname=NULL,
                       type.eta=c("mode", "mean"),
                       text_color="black",
-                      has.shrink=TRUE,
+                      is.shrink=TRUE,
+                      is.smooth=TRUE,
                       smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", color = "black"),
                       point = list(shape = 1, color = "grey50", size = 1, colour = "black"),
                       shrink=list(fun = "sd", size = 5),
+                      is.hline=FALSE,
+                      hline=NULL,
                       ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "eta"
@@ -42,25 +48,36 @@ eta_pairs <- function(
     point = point,
     type.eta = match.arg(type.eta),
     text_color = text_color,
-    has.shrink = has.shrink,
+    is.shrink = is.shrink,
     shrink = shrink,
+    is.smooth = is.smooth,
     smooth = smooth,
     point = point,
+    is.hline = is.hline,
+    hline = hline,
     gp = pmx_gpar(
       labels = labels,
       discrete = FALSE,
-      has.smooth = FALSE,
-      has.band = FALSE, ...
+      is.smooth = FALSE,
+      is.band = FALSE, ...
     )
   ), class = c("eta_pairs", "pmx_gpar"))
 }
 
 
-lower.plot <- function(data, x, y, point, smooth, gp) {
+lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline) {
   p <-
     ggplot(data = data, aes_string(x = x, y = y)) +
-    with(point, geom_point(shape = shape, size = size, color = color)) +
-    with(smooth, geom_smooth(method = method, se = se, size = size, color = color))
+    with(point, geom_point(shape = shape, size = size, color = color))
+  if (is.smooth) {
+    p <- p + with(smooth, geom_smooth(method = method, se = se, size = size, color = color))
+  }
+
+  if (is.hline) {
+    hline <- l_left_join(list(yintercept = 0), hline)
+    p <- p + do.call(geom_hline, hline)
+  }
+
   plot_pmx(gp, p)
 }
 
@@ -78,7 +95,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 
 
 .plot_matrix <-
-  function(dx, text_color=text_color, point=point, smooth=smooth, gp) {
+  function(dx, text_color=text_color, point=point, is.smooth, smooth, gp, is.hline, hline) {
     nn <- colnames(dx)
     mat <- outer(nn, nn, paste, sep = ";")
     uppers <-
@@ -96,7 +113,11 @@ upper.plot <- function(data, x, y, text_color, gp) {
         mat[lower.tri(mat)],
         function(z) {
           z <- strsplit(z, ";")[[1]]
-          lower.plot(dx, x = z[1], y = z[2], point = point, smooth = smooth, gp = gp)
+          lower.plot(
+            dx, x = z[1], y = z[2], point = point,
+            is.smooth = is.smooth, smooth = smooth, gp = gp,
+            is.hline, hline
+          )
         }
       )
 
@@ -195,11 +216,14 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       data_plot,
       text_color = text_color,
       point = point,
+      is.smooth = is.smooth,
       smooth = smooth,
-      gp = gp
+      gp = gp,
+      is.hline = is.hline,
+      hline = hline
     )
 
-    if (has.shrink) {
+    if (is.shrink) {
       dd <- x[["shrink.dx"]]
       ll <- lapply(nn, plot_shrink, shrink.dx, shrink)
       plots <- c(ll, plots)
@@ -209,18 +233,18 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       plots,
       title = labels$title,
       xAxisLabels = nn,
-      yAxisLabels = if (has.shrink) c("Shrinkage", nn) else nn,
+      yAxisLabels = if (is.shrink) c("Shrinkage", nn) else nn,
       showYAxisPlotLabels = TRUE,
       ## switch = "both",
       xlab = labels$x,
       ylab = labels$y,
       byrow = TRUE,
-      nrow = length(nn) + has.shrink * 1,
+      nrow = length(nn) + is.shrink * 1,
       ncol = length(nn),
-      yProportions = if (has.shrink) c(1, rep(5, length(nn)))
+      yProportions = if (is.shrink) c(1, rep(5, length(nn)))
     )
   })
-  p$has.shrink <- x$has.shrink
+  p$is.shrink <- x$is.shrink
   attributes(p)$class <- c("pmx_eta_matrix", "gg", "ggmatrix")
   p +
     theme(
@@ -245,7 +269,7 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
     list(), getNamespace("GGally")
   )
   eta_gtable <- ggmatrix_gtable(x, ...)
-  if (x$has.shrink) {
+  if (x$is.shrink) {
     eta_gtable <- gtable_remove_grobs(eta_gtable, "axis-l-1")
     strip_r_1 <- gtable::gtable_filter(eta_gtable, "strip-r-1")
     ## make all table wider

@@ -27,7 +27,7 @@ ctr %>% pmx_plot_dv_pred(
 ctr %>% pmx_plot_dv_pred(is.draft = FALSE)
 
 ## remove horizontal line
-ctr %>% pmx_plot_dv_pred(add_hline = FALSE)
+ctr %>% pmx_plot_dv_pred(is.hline = FALSE)
 
 ## custom point aes and static paremeters
 ## we can customize any geom_point parameter

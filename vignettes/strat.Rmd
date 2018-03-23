@@ -63,7 +63,7 @@ ctr %>% pmx_plot_ebe_box(strat.facet = ~SEX)
 ctr %>% pmx_plot_ebe_box(
   strat.facet = SEX~RACE,
   strat.color="DISE",
-  has.jitter = FALSE,
+  is.jitter = FALSE,
   shrink=list(hjust=0.7)
 )
 ```

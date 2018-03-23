@@ -3,11 +3,11 @@ helpers <- helper_updateplots()
 
 test_that("can update DIS plot", {
   ctr <- helpers$ctr
-  ctr %>% set_plot("DIS", pname = "distr1", type = "box")
+  ctr %>% set_plot("DIS", pname = "distr1", type = "box",is.shrink=FALSE)
   expect_true("distr1" %in% ctr$plots())
   p <- ctr %>% get_plot("distr1")
   oldconf <- ctr$get_config("distr1")
-  expect_false(oldconf$has.shrink)
+  expect_false(oldconf$is.shrink)
 })
 
 test_that("can remove DIS plot", {
@@ -22,11 +22,11 @@ test_that("can update IND plot", {
   expect_is(ctr %>% get_plot("indiv1", c(2, 4)), "list")
   expect_true("indiv1" %in% ctr$plots())
   oldconf <- ctr$get_config("indiv1")
-  expect_false(oldconf$gp$has.band)
+  expect_false(oldconf$gp$is.band)
 
-  ctr %>% pmx_update("indiv1", has.band = TRUE)
+  ctr %>% pmx_update("indiv1", is.band = TRUE)
   newconf <- ctr$get_config("indiv1")
-  expect_true(newconf$gp$has.band)
+  expect_true(newconf$gp$is.band)
 })
 
 test_that("can remove IND plot", {
@@ -35,12 +35,6 @@ test_that("can remove IND plot", {
   expect_false("indiv1" %in% ctr$plots())
 })
 
-test_that("can update RES plot", {
-
-})
-
-test_that("can remove RES plot", {
-})
 
 test_that("can update with filter", {
   # set new plot
@@ -49,20 +43,20 @@ test_that("can update with filter", {
   ctr %>% get_plot("distr1")
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 4)
 
   # Update plot with filter
   ctr %>% pmx_update("distr1", filter = ID < 10)
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 4)
 
   # test can remove filter
   ctr %>% pmx_update("distr1", filter = NULL)
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
 
-  expect_equal(length(pconf$data), 2)
+  expect_equal(length(pconf$data), 4)
 })
 
 

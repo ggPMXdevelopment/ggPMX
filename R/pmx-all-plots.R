@@ -2,7 +2,7 @@ pmx_plot_generic <-
   function(ctr, pname, defaults_, ...) {
     stopifnot(is_pmxclass(ctr))
     if (!pname %in% (ctr %>% plot_names())) return(NULL)
-    cctr <- pmx_copy(ctr)
+    cctr <- pmx_copy(ctr, ...)
 
     params <- c(
       ctr = cctr,
@@ -279,11 +279,15 @@ pmx_plot_individual <-
            ...) {
     stopifnot(is_pmxclass(ctr))
     if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
-    cctr <- pmx_copy(ctr)
+    cctr <- pmx_copy(ctr, ...)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
+    defaults_ <- ctr$config$plots[[toupper("individual")]]
+    params <- l_left_join(defaults_, params)
     params$pname <- "individual"
     params$ctr <- cctr
+
+
     do.call("pmx_update", params)
     p <- if (is.null(npage)) {
       cctr %>% get_plot("individual")
@@ -291,7 +295,10 @@ pmx_plot_individual <-
       cctr %>% get_plot("individual", npage)
     }
 
+    cctr %>% pmx_warnings("MISSING_FINEGRID")
     rm(cctr)
+    
+    
     p
   }
 

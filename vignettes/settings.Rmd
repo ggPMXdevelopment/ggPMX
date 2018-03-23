@@ -83,7 +83,8 @@ ctr %>% pmx_plot_npde_time
 within Monolix, user can choose to not use finegrid file even if it is present. 
 
 ```{r settings_use_finegrid}
-ctr <- theophylline(settings=pmx_settings(use_finegrid = FALSE))
+ctr <- theophylline()
+ctr <- pmx_plot_individual(use.finegrid =FALSE)
 
 
 ```
@@ -121,9 +122,9 @@ ctr  %>%  pmx_plot_ebe_box(strat.color="STUD")
 ```
 
 
-## Define catgerical labels :
+## Define categorical labels :
 
-In case of faceting by stratification user can redfine categrical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use_lables` to TRUE.
+In case of faceting by stratification user can redfine categorical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use_lables` to TRUE.
 
 ```{r settings_cat_labels}
 

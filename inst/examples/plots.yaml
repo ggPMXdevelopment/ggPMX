@@ -1,5 +1,5 @@
 CUSTOM_RES_TIME:
-  ptype: RES
+  ptype: SCATTER
   x: TIME
   'y': IWRES
   labels:
@@ -11,8 +11,8 @@ CUSTOM_RES_TIME:
     shape: 20
     color: black
     size: 3.0
-  add_hline: yes
-  has.smooth: yes
+  is.hline: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red
@@ -20,7 +20,7 @@ CUSTOM_RES_TIME:
     method: lm
 
 CUSTOM_NPDE_TIME:
-  ptype: RES
+  ptype: SCATTER
   x: TIME
   'y': NPDE
   labels:
@@ -32,9 +32,9 @@ CUSTOM_NPDE_TIME:
     shape: 1.0
     color: black
     size: 1.0
-  add_hline: yes
-  has.band: yes
-  has.smooth: yes
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
   smooth:
     se: no
     color: red

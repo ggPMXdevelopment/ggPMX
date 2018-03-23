@@ -69,7 +69,7 @@ We can plot individual model predictions (spaghetti plot) on top of indiviual da
 ```{r new_res_plot, fig.height=3, fig.width=7, fig.align='center'}
 p1 <- ctr %>%
   set_plot(
-    "RES", pname = "pred_vs_time", x = "TIME", y = "PRED", strat.facet = "STUD",
+    "SCATTER", pname = "pred_vs_time", x = "TIME", y = "PRED", strat.facet = "STUD",
     labels = list(title = "Individual predictions and data per study")
   ) %>%
   get_plot("pred_vs_time")
@@ -81,7 +81,7 @@ see `?residual` for the list of all parameters to create a new residual plot.
 ### New distribution plot
 ```{r new_dis_plot, fig.height=3, fig.width=3, fig.align='center'}
 ctr %>%
-  set_plot("DIS", pname = "distr1", type = "box", has.jitter = FALSE) %>%
+  set_plot("DIS", pname = "distr1", type = "box", is.jitter = FALSE,is.shrink=TRUE) %>%
   get_plot("distr1")
 ```
 see `?distib` for the list of all parameters to create a new individual plot.
@@ -168,7 +168,7 @@ p1 <- ctr %>% pmx_plot_dv_pred
 p2 <- ctr %>%
   pmx_plot_dv_pred(
     labels = list(x = "Population predictions", y = "Observations"),
-    add_hline = FALSE, 
+    is.hline = FALSE, 
     point = list(color = "green4",shape=5)
   ) 
 
@@ -194,7 +194,7 @@ p1 <- ctr %>% pmx_plot_iwres_ipred
 # Add bands and update title
 p2 <- ctr %>%
   pmx_plot_iwres_ipred(
-    has.band = TRUE,
+    is.band = TRUE,
     labels = list(title = "IPRED versus IWRES (with bands)")
   ) 
 p1
@@ -219,7 +219,7 @@ A generic pmx_plot function can be used to update the new created plot without s
 
 ctr <- theophylline()
 ctr %>% set_plot(
-  ptype = "RES",
+  ptype = "SCATTER",
   pname = "pred_time",
   x ="TIME",y="PRED")
 ## get the plot using pmx_plot

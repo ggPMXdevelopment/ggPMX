@@ -131,7 +131,7 @@ ctr %>% plots()
 
 A short description of each plot type is given below:
 
-  + RES: residual plots are scatter plots
+  + SCATTER: residual plots are scatter plots
   + IND: individual plots display longitudinal (time course) predictions and data (one panel per individual)
   + DIS: Distribution of empirical Bayes estimates (EBE) histogram or boxplot
   + ETA_PAIRS: random effects (ETA) distributions and correlations structure
@@ -146,7 +146,7 @@ NOTE: **`pmx` and `pmx_plot_xx()` functions are just what you need to know to ge
 
 To view all standard diagnostig plots, call the corresponding `pmx_plot_xx()` function. See the Advanced features section to learn how to modify default plot settings.
 
-- List  of residual plots (**RES**)
+- List  of residual plots (**SCATTER**)
 ```{r basics_res, out.width='.48\\linewidth', fig.height=4, fig.width=6, fig.show='hold', fig.align='center'}
 ctr %>% pmx_plot_dv_pred
 ctr %>% pmx_plot_dv_ipred

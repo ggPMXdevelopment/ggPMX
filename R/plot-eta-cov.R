@@ -62,7 +62,7 @@ eta_cov <- function(
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
-      has.smooth = FALSE
+      is.smooth = FALSE
     )
   ), class = c("eta_cov", "pmx_gpar"))
 }
