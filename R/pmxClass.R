@@ -116,25 +116,25 @@ formula_to_text <- function(form) {
 
 #' Create controller global settings
 #' @param is.draft \code{logical} if FALSE any plot is without draft annotation
-#' @param use_abbrev \code{logical} if TRUE use abbreviations mapping for axis names
+#' @param use.abbrev \code{logical} if TRUE use abbreviations mapping for axis names
 #' @param color.scales \code{list} list containg elements of scale_color_manual
-#' @param use_labels \code{logical} if TRUE replace factor named by cats.labels
+#' @param use.labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
 #' @param ... extra parameter not used yet
 #' @return pmxSettingsClass object
 #' @example inst/examples/pmx-settings.R
 #' @export
 pmx_settings <-
-  function(is.draft=TRUE, use_abbrev=FALSE, color.scales=NULL,
-           cats.labels=NULL, use_labels=FALSE,
+  function(is.draft=TRUE, use.abbrev=FALSE, color.scales=NULL,
+           cats.labels=NULL, use.labels=FALSE,
            ...) {
     res <- list(
       is.draft = is.draft,
-      use_abbrev = use_abbrev,
+      use.abbrev = use.abbrev,
       color.scales = color.scales,
-      use_labels = use_labels,
+      use.labels = use.labels,
       cats.labels = cats.labels    )
-    if (use_labels) {
+    if (use.labels) {
       res$labeller <- do.call("labeller", cats.labels)
     }
     
@@ -159,6 +159,7 @@ pmx_settings <-
 ##' @param strat.color \code{character}
 ##' @param trans \code{list}{transformation operator}
 ##' @param color.scales \code{list} can be used with strat.color to set scale_color_manual
+##' @param use.defaults \code{logical} if FALSE do not use defaults defined in yaml init files
 #' @param ... other plot parameters to configure \code{\link{pmx_gpar}}.
 #'
 #' @family pmxclass
@@ -166,7 +167,7 @@ pmx_settings <-
 #' @export
 set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
                      pname,
-                     use_default=TRUE,
+                     use.defaults=TRUE,
                      filter =NULL, strat.color=NULL,
                      strat.facet=NULL,
                      color.scales=NULL,
@@ -180,7 +181,7 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_C
   
   
   params <- list(...)
-  if(use_default){
+  if(use.defaults){
     defaults_yaml <-
       file.path(system.file(package = "ggPMX"), "init", "defaults.yaml")
     defaults <- yaml.load_file(defaults_yaml)
@@ -587,7 +588,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   for (nn in names(self$config$plots)) {
     x <- self$config$plots[[nn]]
     x$pname <- tolower(nn)
-    x$use_default= FALSE
+    x$use.defaults= FALSE
     do.call(set_plot, c(ctr = self, x))
   }
 }
@@ -766,7 +767,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     if (!is.null(self$settings)) {
       x$gp$is.draft <- self$settings$is.draft
       x$gp$color.scales <- self$settings$color.scales
-      if ("use_abbrev" %in% names(self$settings) && self$settings$use_abbrev) {
+      if ("use.abbrev" %in% names(self$settings) && self$settings$use.abbrev) {
         x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
         x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
       }

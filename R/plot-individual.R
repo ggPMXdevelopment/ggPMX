@@ -8,6 +8,7 @@
 #' @param ipred_line \code{list} some pred line geom properties aesthetics
 #' @param point \code{list} some point geom properties aesthetics
 #' @param is.legend \code{logical} if TRUE add a legend
+#' @param use.finegrid \code{logical} if FALSE use predictions data set
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object

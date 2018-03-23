@@ -11,8 +11,8 @@
 #' @param point \code{list} geom_point graphical parameter
 #' @param is.smooth \code{logical} if TRUE add smoothing to lower matrix plots
 #' @param smooth \code{list} geom_smooth graphical parameters
-#' @param is.band \code{logical} if TRUE add horizontalline to lower matrix plots
-#' @param band \code{list} geom_hline graphical parameters
+#' @param is.hline \code{logical} if TRUE add horizontalline to lower matrix plots
+#' @param hline \code{list} geom_hline graphical parameters
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @return ecorrel object
 #' @family plot_pmx

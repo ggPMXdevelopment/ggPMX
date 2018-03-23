@@ -30,7 +30,7 @@ see `?pmx_settings`  to get the list of global settings with their corresponding
 ## set one or more settings
 my_settings <- pmx_settings(
   is.draft = FALSE,
-  use_abbrev=TRUE,
+  use.abbrev=TRUE,
   ...) ### set other settings parameters here 
 ctr <-
   pmx_mlx(
@@ -68,10 +68,10 @@ You can update one abbreviation to set a custom label
 ctr %>% set_abbrev(TIME="TIME after the first dose")
 ```
 
-Using `use_abbrev` flag you can use abbreviation definition to set axis labels:
+Using `use.abbrev` flag you can use abbreviation definition to set axis labels:
 
-```{r settings_use_abbrev}
-ctr <- theophylline(settings=pmx_settings(use_abbrev = TRUE))
+```{r settings_use.abbrev}
+ctr <- theophylline(settings=pmx_settings(use.abbrev = TRUE))
 ctr %>% set_abbrev(TIME="Custom TIME axis")
 ctr %>% pmx_plot_npde_time
 
@@ -82,7 +82,7 @@ ctr %>% pmx_plot_npde_time
 
 within Monolix, user can choose to not use finegrid file even if it is present. 
 
-```{r settings_use_finegrid}
+```{r settings_use.finegrid}
 ctr <- theophylline()
 ctr <- pmx_plot_individual(use.finegrid =FALSE)
 
@@ -124,7 +124,7 @@ ctr  %>%  pmx_plot_ebe_box(strat.color="STUD")
 
 ## Define categorical labels :
 
-In case of faceting by stratification user can redfine categorical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use_lables` to TRUE.
+In case of faceting by stratification user can redfine categorical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use.lables` to TRUE.
 
 ```{r settings_cat_labels}
 
@@ -136,7 +136,7 @@ ctr <- theophylline(
         SEX=c("0"="M","1"="F"),
         STUD=c("1"="Study 1","2"="Study 2")
       ),
-      use_labels = TRUE
+      use.labels = TRUE
     )
 )
 
