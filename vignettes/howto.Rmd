@@ -1,14 +1,16 @@
 ---
-title: "HOWTO"
-author: "Amine Gassem"
-date: "March 15, 2018"
-output:
-  pdf_document: default
-  html_document: default
+title: "ggPMX HOWTO"
+author: "Amine Gassem basedon novartis specifications document??"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ggPMX HOWTO}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,eval=FALSE)
 library(ggPMX)
 library(ggplot2)
 ctr <- theophylline()
