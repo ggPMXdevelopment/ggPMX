@@ -84,7 +84,7 @@ within Monolix, user can choose to not use finegrid file even if it is present.
 
 ```{r settings_use.finegrid}
 ctr <- theophylline()
-ctr <- pmx_plot_individual(use.finegrid =FALSE)
+ctr %>% pmx_plot_individual(use.finegrid =FALSE)
 
 
 ```
@@ -106,6 +106,7 @@ ctr %>% pmx_plot_npde_time(strat.color="STUD")+
 
 Another way to do it is to define a global `scales.color` parameter that will applied to all plots with strat.color :
 ```{r serrings_solor_scales}
+
 ctr <- theophylline(
   settings=
     pmx_settings(
