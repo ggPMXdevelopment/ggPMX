@@ -2,7 +2,8 @@
 #'
 #' @param name \code{character} report name
 #' @param template \code{character} report template
-#' @param render \code{logical} if TRUE generate pdf report
+#' @param render \code{logical} TRUE to generate the report in all formats defined in the template.
+#' @param edit \code{logical}  TRUE to edit the template immediately
 #' @param output_dir Output directory.
 #' An alternate directory to write the output file to
 #' (defaults to the directory of the input file).
@@ -22,22 +23,80 @@
 #' ctr %>% pmx_report(name="1_popPK_model",template = "standing",output_dir="/tmp")
 #' }
 pmx_report <-
-  function(ctr, name, output_dir=getwd(), template="all", render=TRUE) {
-    file_name <- file.path(output_dir, sprintf("%s.Rmd", name))
-    if (length(file_name) > 0 && file.exists(file_name)) {
-      file.remove(file_name)
+  function(ctr, 
+           name, 
+           save_dir=NULL,
+           output_type=c("plots","report","both"),
+           template="standing", 
+           footnote=output_type =="both",
+           extra.footnote="",
+           edit=FALSE
+           
+  ){
+    
+    if (!is.null(save_dir)){
+      if(!dir.exists(save_dir)){
+        stop(sprintf("please provide a valid save directory : %s",save_dir))
+      }
+      ctr$save_dir <- tools::file_path_as_absolute(save_dir)
+    } 
+    ctr$footnote <- footnote
+    template_file <- file.path(ctr$save_dir, sprintf("%s.Rmd", name))
+    if (length(template_file) > 0 && file.exists(template_file)) {
+      file.remove(template_file)
     }
-    draft(
-      file_name,
+    res <- draft(
+      template_file,
       template = template,
       package = "ggPMX",
       create_dir = FALSE,
-      edit = FALSE
+      edit = edit
     )
+    
+    standalone <- output_type %in% c("plots","both")
+    footnote <- output_type == "both" || footnote
+    clean <- !standalone
+    render <- TRUE
     if (render) {
       render(
-        file_name, "pdf_document", params = list(ctr = ctr), envir = new.env(),
-        output_dir = output_dir
+        res, "all", params = list(ctr = ctr), envir = new.env(),
+        output_dir = save_dir,clean=clean,quiet=TRUE
       )
     }
+    
+    if(!clean){
+      create_ggpmx_gof(ctr$save_dir,name)
+      remove_reports(output_type ,ctr$save_dir)
+    }
+    
+    invisible(file.remove(list.files(pattern="[.]md$|[.]tex$",path=ctr$save_dir,full=TRUE)))
+    
   }
+
+
+remove_reports <- function(output_type,save_dir){
+  if(output_type=="plots"){
+    invisible(file.remove(list.files(pattern=".pdf$|.docx$",path=save_dir,full=TRUE)))
+  }
+  
+}
+
+create_ggpmx_gof <- function(save_dir,name){
+  plot_dir <- sprintf("%s_files",name)
+  if(dir.exists(file.path(save_dir,plot_dir))){
+    out_ <- file.path(save_dir,"ggpmx_GOF")
+    rm_dir(out_)
+    dir.create(out_)
+    in_ <-  file.path(save_dir,plot_dir)
+    plots_ <- list.files(in_,recursive = TRUE,full.names = TRUE)
+    dest_plots <- gsub("[-]\\d+[.]",".",basename(plots_))
+    file.copy(plots_,file.path(out_,dest_plots))
+    rm_dir(in_)
+  }
+}
+rm_dir <- function(to_remove){
+  if(dir.exists(to_remove)){
+    system(sprintf("rm -r %s",to_remove))
+  }
+  
+}

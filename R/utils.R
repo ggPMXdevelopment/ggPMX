@@ -153,13 +153,14 @@ is.formula <- function(x) {
 #' \dontrun{
 #' theophylline()
 #' }
-theophylline <- function(settings=NULL) {
+theophylline <- function(settings=NULL,input_file) {
   theophylline <- file.path(
     system.file(package = "ggPMX"), "testdata",
     "theophylline"
   )
   WORK_DIR <- file.path(theophylline, "Monolix")
-  input_file <- file.path(theophylline, "data_pk.csv")
+  if(missing(input_file))
+    input_file <- file.path(theophylline, "data_pk.csv")
 
   pmx_mlx(
     config = "standing",

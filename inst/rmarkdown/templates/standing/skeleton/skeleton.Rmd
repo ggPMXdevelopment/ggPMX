@@ -1,47 +1,41 @@
 ---
 title: "ggPMX standing report"
 author: "TODO"
-output: pdf_document
+output: 
+  pdf_document:
+    toc: true
+  word_document:
+    toc: true
+params:
+  ctr: ""
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(ggPMX)
+knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 ```
 
 
-# Overview
+# Key model diagnostics
 
 
-# Init controller
+```{r npde_pred}
+ctr %>% pmx_plot_npde_pred
+```
 
-```{r init_controller}
+```{r npde_time}
+ctr %>% pmx_plot_npde_time
+```
 
-theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
-                            "theophylline")
-  WORK_DIR <- file.path(theophylline, "Monolix")
-  input_file <- file.path(theophylline, "data_pk.csv")
-  
-  ctr <- pmx_mlx(
-    config = "standing", 
-    directory = WORK_DIR, 
-    input = input_file, 
-    dv = "Y", 
-    dvid ="DVID",
-    cats=c("SEX"),
-    conts=c("WT0","AGE0"),
-    strats="STUD")
+```{r iwres_ipred}
+ctr %>% pmx_plot_iwres_ipred
+```
 
+```{r iwres_time}
+ctr %>% pmx_plot_iwres_time
+```
+
+```{r ebe_box}
+ctr %>% pmx_plot_ebe_box
 ```
 
 
-
-# Plots
-
-## Observations verus Predictions
-
-```{r dv_pred}
-
-ctr %>% pmx_plot_dv_pred
-
-```

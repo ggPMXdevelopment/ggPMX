@@ -485,6 +485,8 @@ pmxClass <- R6::R6Class(
     abbrev = list(),
     endpoint = NULL,
     warnings=list(),
+    footnote=FALSE,
+    save_dir=NULL,
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
     
@@ -553,6 +555,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   
   ## private$.covariates <- covs[!is.na(covs) & covs!=""]
   self$input_file <- input
+  self$save_dir <- dirname(input)
   self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
   self$data <- load_source(
     sys = config$sys, private$.data_path,

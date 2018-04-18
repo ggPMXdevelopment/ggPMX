@@ -31,7 +31,13 @@ wrap_pmx_plot_generic <-
     params$pname <- pname
     params <- lang_to_expr(params)
     params$defaults_ <- ctr$config$plots[[toupper(pname)]]
-    do.call(pmx_plot_generic, params)
+    pp <- do.call(pmx_plot_generic, params)
+    if(ctr$footnote){
+      plot_file <- file.path(ctr$save_dir,"ggpmx_GOF",pname)
+      footnote = sprintf("Source: %s.png",plot_file)
+      pp <- pp + labs(caption=footnote)
+    }
+    pp 
   }
 
 # DV vs PRED plot --------------------------------------------------------------
