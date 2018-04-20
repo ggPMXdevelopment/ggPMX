@@ -1,27 +1,25 @@
-#' Creates a pdf document from a pre-defined template
+#' Generates ggpmX report from a pre-defined template
 #'
-#' @param name \code{character} report name
-#' @param template \code{character} report template
-#' @param render \code{logical} TRUE to generate the report in all formats defined in the template.
-#' @param edit \code{logical}  TRUE to edit the template immediately
-#' @param output_dir Output directory.
-#' An alternate directory to write the output file to
-#' (defaults to the directory of the input file).
 #' @param ctr controller
+#' @param name \code{character} The report name
+#' @param output_type \code{character} the result type, can be \cr
+#' a standalone directory of plots or a report document as defined in the template \cr
+#' (pdf, docx,..) ,or both
+#' @param template \code{character} ggPMX predefined template or the path to a custom rmarkdwon template.
+#' @param save_dir Output directory.
+#' A directory to write the results files to
+#' (defaults to the directory of the input file).
+#' @param footnote \code{logical}  TRUE to add a footnote to the generated plots. The default footnote is to add \cr 
+#' the path where the plot is saved.
+#' @param edit \code{logical}  TRUE to edit the template immediately
 #'
 #' @export
 #' @importFrom rmarkdown draft render
 #' @details
 #' \code{pmx_report} uses pre-defined template .Rmd to generate the report.
 #' The idea is to pass the controller as a report argument using knitr \code{params} artifact.
-#' If render=TRUE , it will generate the pdf report and the template used to create that report.
-#' The user can choose to store both in output_dir.
-#' @examples
-#' \dontrun{
-#' ctr <- pk_occ()
-#' ctr %>% pmx_report(name="1_popPK_model",template = "all")
-#' ctr %>% pmx_report(name="1_popPK_model",template = "standing",output_dir="/tmp")
-#' }
+#' @example inst/examples/pmx_report.R
+
 pmx_report <-
   function(ctr, 
            name, 
@@ -56,13 +54,10 @@ pmx_report <-
     standalone <- output_type %in% c("plots","both")
     footnote <- output_type == "both" || footnote
     clean <- !standalone
-    render <- TRUE
-    if (render) {
-      render(
-        res, "all", params = list(ctr = ctr), envir = new.env(),
-        output_dir = save_dir,clean=clean,quiet=TRUE
-      )
-    }
+    render(
+      res, "all", params = list(ctr = ctr), envir = new.env(),
+      output_dir = save_dir,clean=clean,quiet=TRUE
+    )
     
     if(!clean){
       create_ggpmx_gof(ctr$save_dir,name)
