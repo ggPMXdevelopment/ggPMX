@@ -120,20 +120,22 @@ formula_to_text <- function(form) {
 #' @param color.scales \code{list} list containg elements of scale_color_manual
 #' @param use.labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
+#' @param use.titles \code{logical} FALSE to generate plots without titles
 #' @param ... extra parameter not used yet
 #' @return pmxSettingsClass object
 #' @example inst/examples/pmx-settings.R
 #' @export
 pmx_settings <-
   function(is.draft=TRUE, use.abbrev=FALSE, color.scales=NULL,
-           cats.labels=NULL, use.labels=FALSE,
+           cats.labels=NULL, use.labels=FALSE,use.titles=TRUE,
            ...) {
     res <- list(
       is.draft = is.draft,
       use.abbrev = use.abbrev,
       color.scales = color.scales,
       use.labels = use.labels,
-      cats.labels = cats.labels    )
+      cats.labels = cats.labels ,
+      use.titles=use.titles)
     if (use.labels) {
       res$labeller <- do.call("labeller", cats.labels)
     }
@@ -734,6 +736,8 @@ pmx_add_plot <- function(self, private, x, pname) {
     } else {
       x$gp[["labels"]][["title"]] <- gsub(" by.*", "", x$gp[["labels"]][["title"]])
     }
+    
+    
     if (!is.null(x[["trans"]])) {
       dx1 <- copy(dx)
       dx <- pmx_transform(x, dx1, x[["trans"]])
@@ -777,6 +781,10 @@ pmx_add_plot <- function(self, private, x, pname) {
       if ("labeller" %in% names(self$settings)) {
         x$facets$labeller <- self$settings$labeller
       }
+      if (!self$settings$use.titles) {
+        x$gp$labels$title  <- ""
+      }
+      
     }
     self$set_config(pname, x)
     
