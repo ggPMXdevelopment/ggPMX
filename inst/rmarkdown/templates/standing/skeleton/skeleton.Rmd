@@ -23,33 +23,57 @@ knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 ctr %>% pmx_plot_dv_pred
 ```
 
-```{r dv_pred_strat}
-ctr %>% pmx_plot_dv_pred(strat.facet= ~SEX)
+```{r dv_pred_sexl}
+ctr %>% pmx_plot_dv_pred(strat.facet= ~SEXL,footnote="dv_pred_sexl")
 ```
 
 ```{r dv_ipred}
 ctr %>% pmx_plot_dv_ipred
 ```
 
+```{r dv_ipred_sexl}
+ctr %>% pmx_plot_dv_ipred(strat.facet= ~SEXL,footnote="dv_ipred_sexl")
+```
 
 ```{r npde_pred}
 ctr %>% pmx_plot_npde_pred
+```
+
+```{r npde_pred_sexl}
+ctr %>% pmx_plot_npde_pred(strat.facet= ~SEXL,footnote="npde_pred_sexl")
 ```
 
 ```{r npde_time}
 ctr %>% pmx_plot_npde_time
 ```
 
+```{r npde_time_sexl}
+ctr %>% pmx_plot_npde_time(strat.facet= ~SEXL,footnote="npde_time_sexl")
+```
+
 ```{r iwres_ipred}
 ctr %>% pmx_plot_iwres_ipred
+```
+
+```{r iwres_ipred_sexl}
+ctr %>% pmx_plot_iwres_ipred(strat.facet= ~SEXL,footnote="iwres_ipred_sexl")
 ```
 
 ```{r iwres_time}
 ctr %>% pmx_plot_iwres_time
 ```
 
+```{r iwres_time_sexl}
+ctr %>% pmx_plot_iwres_time(strat.facet= ~SEXL,footnote="iwres_time_sexl")
+```
+
+
 ```{r ebe_box}
 ctr %>% pmx_plot_ebe_box
+```
+
+```{r ebe_box_sexl}
+ctr %>% pmx_plot_ebe_box(strat.facet= ~SEXL,footnote="ebe_box_sexl")
 ```
 
 \blandscape

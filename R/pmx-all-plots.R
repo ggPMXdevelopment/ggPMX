@@ -33,7 +33,10 @@ wrap_pmx_plot_generic <-
     params$defaults_ <- ctr$config$plots[[toupper(pname)]]
     pp <- do.call(pmx_plot_generic, params)
     if(ctr$footnote){
-      add_footnote(pp,pname,ctr$save_dir)
+      if (exists("footnote",params))
+        footnote <- params$footnote
+      else footnote <- pname
+      add_footnote(pp,footnote,ctr$save_dir)
     }else pp 
   }
 
