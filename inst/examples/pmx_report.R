@@ -1,7 +1,6 @@
 library(ggPMX)
 
-ctr <- theophylline(input_file = "~/report_dir/case1/theophylline.csv",
-                    input=
+
 
 ## list of templates
 ## ctr %>% pmx_report_template()

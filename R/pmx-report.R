@@ -1,6 +1,6 @@
 #' Generates ggpmX report from a pre-defined template
 #'
-#' @param ctr controller
+#' @param ctr \code{pmxClass} controller
 #' @param name \code{character} The report name
 #' @param output_type \code{character} the result type, can be \cr
 #' a standalone directory of plots or a report document as defined in the template \cr
@@ -32,6 +32,9 @@ pmx_report <-
            
   ){
     
+    assert_that(is_pmxclass(ctr))
+    output_type <- match.arg(output_type)
+    on.exit(remove_temp_files())
     if (!is.null(save_dir)){
       if(!dir.exists(save_dir)){
         stop(sprintf("please provide a valid save directory : %s",save_dir))
@@ -55,7 +58,7 @@ pmx_report <-
     footnote <- output_type == "both" || footnote
     clean <- !standalone
     render(
-      res, "all", params = list(ctr = ctr), envir = new.env(),
+      res, "all", params = list(ctr = ctr,indiv=TRUE), envir = new.env(),
       output_dir = save_dir,clean=clean,quiet=TRUE
     )
     
@@ -64,14 +67,24 @@ pmx_report <-
       remove_reports(output_type ,ctr$save_dir)
     }
     
-    invisible(file.remove(list.files(pattern="[.]md$|[.]tex$",path=ctr$save_dir,full=TRUE)))
-    
   }
 
 
+remove_temp_files <- 
+  function(){
+    temp_files <- 
+      list.files(
+        pattern="[.]md$|[.]tex$",
+        path=ctr$save_dir,
+        full.names=TRUE
+        )
+    invisible(file.remove(temp_files))
+    
+  }
+
 remove_reports <- function(output_type,save_dir){
   if(output_type=="plots"){
-    invisible(file.remove(list.files(pattern=".pdf$|.docx$",path=save_dir,full=TRUE)))
+    invisible(file.remove(list.files(pattern=".pdf$|.docx$",path=save_dir,full.names=TRUE)))
   }
   
 }
@@ -84,8 +97,17 @@ create_ggpmx_gof <- function(save_dir,name){
     dir.create(out_)
     in_ <-  file.path(save_dir,plot_dir)
     plots_ <- list.files(in_,recursive = TRUE,full.names = TRUE)
-    dest_plots <- gsub("[-]\\d+[.]",".",basename(plots_))
-    file.copy(plots_,file.path(out_,dest_plots))
+
+    idx <- grepl("^indiv",basename(plots_))
+    indiv <- plots_[idx]
+    no_indiv <- plots_[!idx]
+    if (length(no_indiv)>0){
+      no_indiv_dest <- gsub("[-]\\d+[.]",".",basename(no_indiv))
+      file.copy(no_indiv,file.path(out_,no_indiv_dest))
+    }
+    if (length(indiv)>0){
+      file.copy(indiv,file.path(out_,basename(indiv)))
+    }
     rm_dir(in_)
   }
 }

@@ -265,6 +265,13 @@ pmx_plot_ebe_hist <-
 
 
 
+
+add_footnote <- function(pp,pname){
+  plot_file <- file.path(ctr$save_dir,"ggpmx_GOF",pname)
+  footnote = sprintf("Source: %s.png",plot_file)
+  pp <- pp + labs(caption=footnote)
+  pp
+}
 #' Individual plot
 #' @param ctr pmx controller
 #' @param npage \code{integer} page(s) to display , set npage to NULL
@@ -282,6 +289,7 @@ pmx_plot_individual <-
   function(
            ctr,
            npage=1,
+           print=FALSE,
            ...) {
     stopifnot(is_pmxclass(ctr))
     if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
@@ -303,9 +311,21 @@ pmx_plot_individual <-
 
     cctr %>% pmx_warnings("MISSING_FINEGRID")
     rm(cctr)
+
     
+        
+    if(ctr$footnote){
+      if(is.list(p)){
+        p <- Map(function(p,id)add_footnote(p,sprintf("indiv-%i",id)),
+            p , seq_along(p))
+      }else{
+        p <- add_footnote(p,"indiv-1")
+      }
+    }
     
-    p
+    if(print){
+      if (is.list(p)) invisible(lapply(p, print)) else p
+    }else p
   }
 
 
