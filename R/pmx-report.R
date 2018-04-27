@@ -34,7 +34,7 @@ pmx_report <-
     
     assert_that(is_pmxclass(ctr))
     output_type <- match.arg(output_type)
-    on.exit(remove_temp_files())
+    on.exit(remove_temp_files(ctr$save_dir))
     if (!is.null(save_dir)){
       if(!dir.exists(save_dir)){
         stop(sprintf("please provide a valid save directory : %s",save_dir))
@@ -71,11 +71,11 @@ pmx_report <-
 
 
 remove_temp_files <- 
-  function(){
+  function(save_dir){
     temp_files <- 
       list.files(
         pattern="[.]md$|[.]tex$",
-        path=ctr$save_dir,
+        path=save_dir,
         full.names=TRUE
         )
     invisible(file.remove(temp_files))

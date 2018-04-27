@@ -468,7 +468,7 @@ pmxClass <- R6::R6Class(
   # Private methods ------------------------------------------------------------
   private = list(
     .data_path = "",
-    .input = "",
+    .input_path = "",
     .covariates = NULL,
     .plots = list(),
     .plots_configs = list()
@@ -544,7 +544,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(settings)) settings <- NULL
   
   private$.data_path <- data_path
-  private$.input <- input
+  self$save_dir <- data_path
+  if(is.character(input))
+  private$.input_path <- input
   self$config <- config
   self$dv <- dv
   self$dvid <- dvid
@@ -557,8 +559,13 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   
   ## private$.covariates <- covs[!is.na(covs) & covs!=""]
   self$input_file <- input
-  self$save_dir <- dirname(input)
-  self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
+  
+  if(is.character(input) && file.exists(input)){
+    self$input_file <- input
+    self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
+  }else{
+    self$input <- input
+  }
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
@@ -607,7 +614,7 @@ pmx_print <- function(self, private, ...) {
         "working directory",
         basename(dirname(private$.data_path))
       ),
-      c("Modelling input", basename(private$.input)),
+      c("Modelling input file", basename(private$.input_path)),
       c("dv", self$dv),
       c("dvid", self$dvid),
       paste_col("cats", self %>% get_cats()),

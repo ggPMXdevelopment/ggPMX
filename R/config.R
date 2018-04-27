@@ -143,7 +143,7 @@ print.pmxConfig <-
           datas_table,
           data.table(
             data_name = "input",
-            data_file = basename(ctr$input_file),
+            data_file = if (!is.null(ctr$input_file)) basename(ctr$input_file) else "",
             data_label = "modelling input"
           )
         )
