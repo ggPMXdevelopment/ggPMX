@@ -314,7 +314,7 @@ pmx_plot_individual <-
     
     
     if(cctr$footnote){
-      if(is.list(p)){
+      if(!inherits(pp,"ggplot")){
         p <- Map(function(p,id){
           add_footnote(p,sprintf("indiv-%i",id),cctr$save_dir)
         },
@@ -431,3 +431,21 @@ pmx_plot <- function(ctr, pname, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, pname, params)
 }
+
+
+#' Quantile-quantile plot of eta variables
+#' @return ggplot2 plot
+#' @param ctr pmx controller
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_qq}} quantile-quantile plot object
+#' \item \code{\link{pmx_update}} function.
+#' }
+#' @export
+pmx_plot_eta_qq <-
+  function(ctr,
+           ...) {
+    
+ctr %>% pmx_plot("eta_qq",...)
+  }

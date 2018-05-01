@@ -230,6 +230,10 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_C
 #' @param ctr  \code{pmxClass} controller object
 #' @param ... Options to set or add, with the form \code{name = value}.
 #' @export
+#' @examples 
+#' ctr %>% set_abbrev("new_param"="naw value")
+#' ctr %>% get_abbrev("new_param")
+
 
 set_abbrev <- function(ctr, ...) {
   assert_that(is_pmxclass(ctr))
