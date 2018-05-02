@@ -276,6 +276,9 @@ add_footnote <- function(pp,pname,save_dir){
 #' @param ctr pmx controller
 #' @param npage \code{integer} page(s) to display , set npage to NULL
 #' if you want to have all the individual plots
+#' @param print \code{logical} if TRUE print directly the result to the current 
+#' device. This is useful to get rid of list indices output when generating 
+#' a rprot with a list of individual plots.
 #' @param ... others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters

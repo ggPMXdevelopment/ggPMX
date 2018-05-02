@@ -42,23 +42,15 @@ pmx_report <-
       ctr$save_dir <- tools::file_path_as_absolute(save_dir)
     } 
     ctr$footnote <- footnote
-    template_file <- file.path(ctr$save_dir, sprintf("%s.Rmd", name))
-    if (length(template_file) > 0 && file.exists(template_file)) {
-      file.remove(template_file)
-    }
-    res <- draft(
-      template_file,
-      template = template,
-      package = "ggPMX",
-      create_dir = FALSE,
-      edit = edit
-    )
     
+    
+    
+    res <- pmx_draft(ctr,name,template,edit)
     standalone <- output_type %in% c("plots","both")
     footnote <- output_type == "both" || footnote
     clean <- !standalone
     suppressWarnings(render(
-      res, "all", params = list(ctr = ctr,indiv=TRUE), envir = new.env(),
+      res, "all", params = list(ctr = ctr), envir = new.env(),
       output_dir = save_dir,clean=clean,quiet=TRUE
     ))
     
@@ -70,6 +62,41 @@ pmx_report <-
   }
 
 
+
+pmx_draft <- function(ctr,name,template,edit){
+  
+  template_file <- file.path(ctr$save_dir, sprintf("%s.Rmd", name))
+  if (length(template_file) > 0 && file.exists(template_file)) {
+    file.remove(template_file)
+  }
+  
+  if (file.exists(template)){
+     template_path = system.file("rmarkdown", "templates", 
+                                "standing", package = "ggPMX")
+    temp_dir =  tempdir()
+    invisible(file.copy(template_path,temp_dir,recursive = TRUE))
+    dest_temp <- file.path(temp_dir,"standing","skeleton","skeleton.Rmd")
+    invisible(file.copy(template,dest_temp,overwrite=TRUE))
+    template_dir <- file.path(temp_dir,"standing")
+    res <- draft(
+      template_file,
+      template = template_dir,
+      create_dir = FALSE,
+      edit = edit
+    )
+    unlink(temp_dir)
+  }else{
+    res <- draft(
+      template_file,
+      template = template,
+      package = "ggPMX",
+      create_dir = FALSE,
+      edit = edit
+    )
+  }
+  res
+}
+
 remove_temp_files <- 
   function(save_dir){
     temp_files <- 
@@ -77,7 +104,7 @@ remove_temp_files <-
         pattern="[.]md$|[.]tex$",
         path=save_dir,
         full.names=TRUE
-        )
+      )
     invisible(file.remove(temp_files))
     
   }
@@ -97,7 +124,7 @@ create_ggpmx_gof <- function(save_dir,name){
     dir.create(out_)
     in_ <-  file.path(save_dir,plot_dir)
     plots_ <- list.files(in_,recursive = TRUE,full.names = TRUE)
-
+    
     idx <- grepl("^indiv",basename(plots_))
     indiv <- plots_[idx]
     no_indiv <- plots_[!idx]

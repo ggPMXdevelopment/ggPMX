@@ -231,7 +231,8 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_C
 #' @param ... Options to set or add, with the form \code{name = value}.
 #' @export
 #' @examples 
-#' ctr %>% set_abbrev("new_param"="naw value")
+#' ctr <- theophylline()
+#' ctr %>% set_abbrev("new_param"="new value")
 #' ctr %>% get_abbrev("new_param")
 
 

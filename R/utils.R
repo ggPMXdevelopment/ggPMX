@@ -145,7 +145,8 @@ is.formula <- function(x) {
 
 
 #' Creates pmx controller using theophylline data
-#'
+#' @param settings 
+#' @param input_file
 #' @return pmx controller
 #' @export
 #'
@@ -153,14 +154,13 @@ is.formula <- function(x) {
 #' \dontrun{
 #' theophylline()
 #' }
-theophylline <- function(settings=NULL,input_file) {
+theophylline <- function(settings=NULL) {
   theophylline <- file.path(
     system.file(package = "ggPMX"), "testdata",
     "theophylline"
   )
   WORK_DIR <- file.path(theophylline, "Monolix")
-  if(missing(input_file))
-    input_file <- file.path(theophylline, "data_pk.csv")
+  input_file <- file.path(theophylline, "data_pk.csv")
 
   pmx_mlx(
     config = "standing",
