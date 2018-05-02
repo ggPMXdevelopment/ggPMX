@@ -21,22 +21,27 @@ cats <- ctr %>% get_cats
 
 # Key model diagnostics
 
+## NPDE vs PRED
 ```{r npde_pred}
 ctr %>% pmx_plot_npde_pred
 ```
 
+## NPDE vs TIME
 ```{r npde_time}
 ctr %>% pmx_plot_npde_time
 ```
 
+## IWRES vs IPRED
 ```{r iwres_ipred}
 ctr %>% pmx_plot_iwres_ipred
 ```
 
+## IWRES vs TIME
 ```{r iwres_time}
 ctr %>% pmx_plot_iwres_time
 ```
 
+## EBE distribution
 ```{r ebe_box}
 ctr %>% pmx_plot_ebe_box
 ```
@@ -58,15 +63,21 @@ ctr %>% pmx_plot_npde_qq
 ```{r eta_qq}
 ctr %>% pmx_plot_eta_qq
 ```
+
+### Correlation of random effects
+
 \blandscape
 ```{r ebe_matrix,out.width='1\\linewidth', fig.width=8, fig.height=6}
 ctr %>% pmx_plot_eta_matrix
 ```
 \elandscape
 
+### EBE vs covariates : categorical
 ```{r eta_cats}
 ctr %>% pmx_plot_eta_cats
 ```
+
+### EBE vs covariates : Continuous
 
 ```{r eta_conts}
 ctr %>%  pmx_plot_eta_conts

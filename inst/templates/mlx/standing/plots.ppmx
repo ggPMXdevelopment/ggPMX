@@ -261,3 +261,15 @@ NPDE_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': NPDE Quantiles
+    
+ETA_QQ:
+  ptype: PMX_QQ
+  x: VALUE
+  dname: eta
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': ETA Quantiles
+  strat.facet: ~VARIABLE
+    
