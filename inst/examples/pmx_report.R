@@ -57,3 +57,14 @@ ctr %>% pmx_report(
   output_type="report",
   edit = TRUE)
 
+
+## case7 : use custom template file 
+
+ctr <- theophylline()
+ctr %>% pmx_report(
+  name="report2",
+  save_dir = "~/report_dir/case1",
+  template="/home/agstudy/report_dir/case2/my_report.Rmd",
+  output_type="both"
+)
+
