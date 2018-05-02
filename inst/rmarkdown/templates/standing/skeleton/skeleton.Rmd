@@ -10,7 +10,6 @@ output:
     toc: true
 params:
   ctr: ""
-  indiv: true
 ---
 
 ```{r setup, include=FALSE}

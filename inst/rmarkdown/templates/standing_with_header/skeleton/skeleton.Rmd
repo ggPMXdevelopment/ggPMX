@@ -4,6 +4,8 @@ author: "TODO"
 output: 
   pdf_document:
     toc: true
+    includes:
+        in_header: header.tex 
   word_document:
     toc: true
 params:
@@ -12,39 +14,95 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,message=FALSE)
+cats <- ctr %>% get_cats
+
 ```
 
 
 # Key model diagnostics
 
 ## NPDE vs PRED
-
 ```{r npde_pred}
 ctr %>% pmx_plot_npde_pred
 ```
 
 ## NPDE vs TIME
-
 ```{r npde_time}
 ctr %>% pmx_plot_npde_time
 ```
 
 ## IWRES vs IPRED
-
 ```{r iwres_ipred}
 ctr %>% pmx_plot_iwres_ipred
 ```
 
 ## IWRES vs TIME
-
 ```{r iwres_time}
 ctr %>% pmx_plot_iwres_time
 ```
 
-## NPDE vs PRED
-
+## EBE distribution
 ```{r ebe_box}
 ctr %>% pmx_plot_ebe_box
 ```
 
+# Supplmentary diagnostics
 
+## Distribution of residuals
+
+```{r iwres_qq}
+ctr %>% pmx_plot_iwres_qq
+```
+
+```{r npde_qq}
+ctr %>% pmx_plot_npde_qq
+```
+
+## Distribution of inter-individual random effects
+
+```{r eta_qq}
+ctr %>% pmx_plot_eta_qq
+```
+
+### Correlation of random effects
+
+\blandscape
+```{r ebe_matrix,out.width='1\\linewidth', fig.width=8, fig.height=6}
+ctr %>% pmx_plot_eta_matrix
+```
+\elandscape
+
+### EBE vs covariates : categorical
+```{r eta_cats}
+ctr %>% pmx_plot_eta_cats
+```
+
+### EBE vs covariates : Continuous
+
+```{r eta_conts}
+ctr %>%  pmx_plot_eta_conts
+```
+
+
+
+# Individual plots
+
+
+```{r indiv,message=FALSE}
+ ctr %>% pmx_plot_individual
+```
+
+
+# Stratified key diagnostics 
+
+```{r npde_time_strats}
+
+ctr %>% pmx_plot_cats("npde_time",chunk="npde_time_strats")
+```
+
+
+```{r iwres_time_strats}
+ctr %>% pmx_plot_cats("iwres_time",chunk="iwres_time_strats")
+
+
+```
