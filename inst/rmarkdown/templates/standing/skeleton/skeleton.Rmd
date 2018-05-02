@@ -13,6 +13,8 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE,message=FALSE)
+cats <- ctr %>% get_cats
+
 ```
 
 
@@ -78,4 +80,19 @@ ctr %>%  pmx_plot_eta_conts
 if(params$indiv) {
   ctr %>% pmx_plot_individual
 }
+```
+
+
+# Stratified key diagnostics 
+
+```{r npde_time_strats}
+
+ctr %>% pmx_plot_cats("npde_time",chunk="npde_time_strats")
+```
+
+
+```{r iwres_time_strats}
+ctr %>% pmx_plot_cats("iwres_time",chunk="iwres_time_strats")
+
+
 ```

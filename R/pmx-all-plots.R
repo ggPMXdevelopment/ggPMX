@@ -314,7 +314,7 @@ pmx_plot_individual <-
     
     
     if(cctr$footnote){
-      if(!inherits(pp,"ggplot")){
+      if(!inherits(p,"ggplot")){
         p <- Map(function(p,id){
           add_footnote(p,sprintf("indiv-%i",id),cctr$save_dir)
         },
@@ -430,6 +430,39 @@ pmx_plot_npde_qq <-
 pmx_plot <- function(ctr, pname, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, pname, params)
+}
+
+#' Genereic pmx stratified plot 
+#'
+#' @param ctr \code{pmxClass} pmx controller
+#' @param pname plot name
+#' @param cats list of categorical variables. By default all of them
+#' @param chunk chunk name  
+#' @param print \code{logical} if TRUE print plots otherwise the list of plots is returned
+#' @param ...  others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_qq}} quantile-quantile plot object
+#' \item \code{\link{pmx_update}} function.
+#' }
+#' @export
+#'
+
+pmx_plot_cats <- function(ctr ,pname,cats,chunk="",print=TRUE,...){
+  
+  sp <- list()
+  if(missing(cats)) cats <- ctr %>% get_cats
+  for (i in seq_along(cats))
+  {
+    p <- ctr %>% pmx_plot(
+      pname,
+      strat.facet=cats[[i]],
+      footnote=sprintf("%s-%i",chunk,i),
+      ...)
+    sp[[i]] <- p
+  }
+  if(length(sp)>0 && print) invisible(lapply(sp,print))
+  invisible(sp)
 }
 
 
