@@ -68,3 +68,14 @@ ctr %>% pmx_report(
   output_type="both"
 )
 
+## case7 : generate individual plots report 
+
+ctr <- theophylline()
+ctr %>% pmx_report(
+  name="report2",
+  save_dir = "~/report_dir/case1",
+  template="individual",
+  edit=TRUE,
+  output_type="both",
+  npage=1:2
+)
