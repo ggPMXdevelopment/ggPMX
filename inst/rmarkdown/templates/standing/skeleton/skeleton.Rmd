@@ -6,6 +6,8 @@ output:
     toc: true
     includes:
         in_header: header.tex 
+  word_document:
+    toc: true
 params:
   ctr: ""
   indiv: true
@@ -77,9 +79,7 @@ ctr %>%  pmx_plot_eta_conts
 
 
 ```{r indiv,message=FALSE}
-if(params$indiv) {
-  ctr %>% pmx_plot_individual
-}
+ ctr %>% pmx_plot_individual
 ```
 
 

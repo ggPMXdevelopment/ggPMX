@@ -57,10 +57,10 @@ pmx_report <-
     standalone <- output_type %in% c("plots","both")
     footnote <- output_type == "both" || footnote
     clean <- !standalone
-    render(
+    suppressWarnings(render(
       res, "all", params = list(ctr = ctr,indiv=TRUE), envir = new.env(),
       output_dir = save_dir,clean=clean,quiet=TRUE
-    )
+    ))
     
     if(!clean){
       create_ggpmx_gof(ctr$save_dir,name)

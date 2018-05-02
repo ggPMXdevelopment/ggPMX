@@ -452,13 +452,13 @@ pmx_plot_cats <- function(ctr ,pname,cats,chunk="",print=TRUE,...){
   
   sp <- list()
   if(missing(cats)) cats <- ctr %>% get_cats
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
   for (i in seq_along(cats))
   {
-    p <- ctr %>% pmx_plot(
-      pname,
-      strat.facet=cats[[i]],
-      footnote=sprintf("%s-%i",chunk,i),
-      ...)
+    
+    params$strat.facet=cats[[i]]
+    params$footnote=sprintf("%s-%i",chunk,i)
+    p <- wrap_pmx_plot_generic(ctr, pname, params)
     sp[[i]] <- p
   }
   if(length(sp)>0 && print) invisible(lapply(sp,print))
