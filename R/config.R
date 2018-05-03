@@ -169,12 +169,10 @@ print.pmxConfig <-
 
 
 
-pmx_warnings <- function(x,warn){
-  
+pmx_warnings <- function(x, warn) {
   assert_that(is_pmxclass(x))
-  
-  if(warn %in% names(x$warnings)){
+
+  if (warn %in% names(x$warnings)) {
     message(x$warnings[[warn]])
   }
-
 }

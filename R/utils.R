@@ -145,7 +145,7 @@ is.formula <- function(x) {
 
 
 #' Creates pmx controller using theophylline data
-#' @param settings 
+#' @param settings
 #' @param input_file
 #' @return pmx controller
 #' @export

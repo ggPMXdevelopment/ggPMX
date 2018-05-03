@@ -45,13 +45,6 @@ distrib <- function(
                     shrink=NULL,
                     dname = NULL,
                     ...) {
-
-  
-  
-  
-  
-  
-  
   assert_that(is_logical(is.jitter))
   assert_that(is_list_or_null(jitter))
   assert_that(is_list_or_null(facets))
@@ -59,10 +52,10 @@ distrib <- function(
   assert_that(is_logical(is.shrink))
   assert_that(is_list_or_null(shrink))
   assert_that(is_string_or_null(dname))
-  
-  
-  
-  
+
+
+
+
   assert_that(is_list(labels))
 
   structure(list(
