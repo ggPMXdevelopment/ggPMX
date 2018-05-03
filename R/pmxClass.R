@@ -562,8 +562,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$settings <- settings
   if (!is.null(settings$endpoint)) self$endpoint <- settings$endpoint
   
-  ## private$.covariates <- covs[!is.na(covs) & covs!=""]
-  self$input_file <- input
   
   if(is.character(input) && file.exists(input)){
     self$input_file <- input
