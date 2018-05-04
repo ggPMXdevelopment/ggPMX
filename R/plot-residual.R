@@ -107,17 +107,21 @@ plot_pmx.residual <- function(x, dx, ...) {
     p <- p + do.call(geom_point, point)
     if (is.hline) p <- p + do.call(geom_hline, hline)
 
-    
+
     if (aess$y == "DV" && !(gp$scale_x_log10 || gp$scale_y_log10)) {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
       if (!is.null(gp$ranges)) {
-        if(is.null(gp$ranges$x)){
+        if (is.null(gp$ranges$x)) {
           rng <- gp$ranges$y
-        }else{
-          if(is.null(gp$ranges$y))
-          rng <- gp$ranges$x
-          else rng <- c(max(gp$ranges$x[1],gp$ranges$y[1]),
-                        min(gp$ranges$x[2],gp$ranges$y[2]))
+        } else {
+          if (is.null(gp$ranges$y)) {
+            rng <- gp$ranges$x
+          } else {
+            rng <- c(
+                max(gp$ranges$x[1], gp$ranges$y[1]),
+                min(gp$ranges$x[2], gp$ranges$y[2])
+              )
+          }
         }
         xrange[1] <- max(xrange[1], rng[1])
         xrange[2] <- min(xrange[2], rng[2])
@@ -125,7 +129,7 @@ plot_pmx.residual <- function(x, dx, ...) {
         gp$ranges$y <- xrange
       }
       p <- p +
-        coord_cartesian(xlim = xrange, ylim = xrange)+
+        coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)
     }
 

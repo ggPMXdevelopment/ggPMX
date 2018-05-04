@@ -45,13 +45,6 @@ distrib <- function(
                     shrink=NULL,
                     dname = NULL,
                     ...) {
-
-  
-  
-  
-  
-  
-  
   assert_that(is_logical(is.jitter))
   assert_that(is_list_or_null(jitter))
   assert_that(is_list_or_null(facets))
@@ -59,10 +52,10 @@ distrib <- function(
   assert_that(is_logical(is.shrink))
   assert_that(is_list_or_null(shrink))
   assert_that(is_string_or_null(dname))
-  
-  
-  
-  
+
+
+
+
   assert_that(is_list(labels))
 
   structure(list(
@@ -141,7 +134,8 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
       histogram$mapping <- aes_string(fill = strat.color)
     }
     p <- p + do.call(geom_histogram, histogram)
-    if (is.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "hist", strat.color)
+    if (is.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], 
+                                            x$shrink, "hist", strat.color)
     p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
 
     p

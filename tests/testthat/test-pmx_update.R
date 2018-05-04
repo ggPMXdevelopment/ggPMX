@@ -3,7 +3,7 @@ helpers <- helper_updateplots()
 
 test_that("can update DIS plot", {
   ctr <- helpers$ctr
-  ctr %>% set_plot("DIS", pname = "distr1", type = "box",is.shrink=FALSE)
+  ctr %>% set_plot("DIS", pname = "distr1", type = "box", is.shrink = FALSE)
   expect_true("distr1" %in% ctr$plots())
   p <- ctr %>% get_plot("distr1")
   oldconf <- ctr$get_config("distr1")

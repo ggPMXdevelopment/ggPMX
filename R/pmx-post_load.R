@@ -77,15 +77,16 @@ post_load <- function(dxs, input, sys, dplot, occ) {
       dxs[["finegrid"]] <- input_finegrid(input, dxs[["finegrid"]])
       dxs[["IND"]] <- dxs[["finegrid"]]
     } else {
-      warn <- 
-      "NO FINEGRID FILE: 
+      warn <-
+        "NO FINEGRID FILE: 
         we will use instead predictions.txt for individual plots"
-      warns$MISSING_FINEGRID <- warn 
+      warns$MISSING_FINEGRID <- warn
       message(warn)
       dxs[["IND"]] <- dxs[["predictions"]]
     }
   }
-  list(data=dxs,
-       warnings= warns)
-  
+  list(
+    data = dxs,
+    warnings = warns
+  )
 }

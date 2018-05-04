@@ -54,9 +54,9 @@ individual <- function(labels,
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
   assert_that(is_list(labels))
-  
-  
-  if(!use.finegrid)dname <- "predictions"  
+
+
+  if (!use.finegrid) dname <- "predictions"
 
   structure(list(
     ptype = "IND",
@@ -92,7 +92,7 @@ plot_pmx.individual <-
   function(x, dx, ...) {
     ID <- NULL
     ## plot
-    if (x$dname =="predictions")cat("USE predictions data set \n")
+    if (x$dname == "predictions") cat("USE predictions data set \n")
     strat.facet <- x[["strat.facet"]]
     strat.color <- x[["strat.color"]]
 
