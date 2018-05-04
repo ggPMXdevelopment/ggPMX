@@ -121,6 +121,7 @@ formula_to_text <- function(form) {
 #' @param use.labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
 #' @param use.titles \code{logical} FALSE to generate plots without titles
+#' @param effects \code{list} list of effects levels and labels
 #' @param ... extra parameter not used yet
 #' @return pmxSettingsClass object
 #' @example inst/examples/pmx-settings.R
@@ -128,19 +129,31 @@ formula_to_text <- function(form) {
 pmx_settings <-
   function(is.draft=TRUE, use.abbrev=FALSE, color.scales=NULL,
            cats.labels=NULL, use.labels=FALSE, use.titles=TRUE,
+           effects=NULL,
            ...) {
+    
+    if(!missing(effects)  && !is.null(effects)){
+      if (!is.list(effects)) stop("effects should be a list")
+      
+      if (!exists("levels",effects) || !exists("labels",effects))
+        stop ("effects should be a list that contains levels and labels")
+      if (length(effects$labels) != length(effects$levels))
+        stop ("effects should be a list that contains levels and labels have the same length")
+    }
+    
     res <- list(
       is.draft = is.draft,
       use.abbrev = use.abbrev,
       color.scales = color.scales,
       use.labels = use.labels,
       cats.labels = cats.labels,
-      use.titles = use.titles
+      use.titles = use.titles,
+      effects = effects
     )
     if (use.labels) {
       res$labeller <- do.call("labeller", cats.labels)
     }
-
+    
     structure(
       res, ...,
       class = "pmxSettingsClass"
@@ -180,9 +193,9 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_C
   assert_that(is_string_or_null(pname))
   assert_that(is_string_or_null(strat.color))
   assert_that(is_string_or_formula_or_null(strat.facet))
-
-
-
+  
+  
+  
   params <- list(...)
   if (use.defaults) {
     defaults_yaml <-
@@ -207,12 +220,12 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_C
   }
   conf <-
     switch(ptype,
-      IND = do.call(individual, params),
-      DIS = if (ctr$has_re) do.call(distrib, params),
-      SCATTER = do.call(residual, params),
-      ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs, params),
-      ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
-      PMX_QQ = do.call(pmx_qq, params)
+           IND = do.call(individual, params),
+           DIS = if (ctr$has_re) do.call(distrib, params),
+           SCATTER = do.call(residual, params),
+           ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs, params),
+           ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
+           PMX_QQ = do.call(pmx_qq, params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
@@ -316,7 +329,7 @@ get_plot <- function(ctr, nplot, npage = NULL) {
   nplot <- tolower(nplot)
   assert_that(is_valid_plot_name(nplot, plot_names(ctr)))
   xx <- ctr$get_plot(nplot)
-
+  
   if (is.function(xx)) {
     xx(npage)
   } else {
@@ -393,18 +406,49 @@ get_plot_config <- function(ctr, pname) {
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, data_set = c(
-                     "estimates", "predictions",
-                     "eta", "finegrid", "input"
-                   )) {
+  "estimates", "predictions",
+  "eta", "finegrid", "input"
+)) {
   assert_that(is_pmxclass(ctr))
-  data_set <- match.arg(data_set)
+  cctr <- pmx_copy(ctr)
+  ## data_set <- match.arg(data_set)
   if (data_set == "input") {
-    ctr[["input"]]
+    cctr[["input"]]
   } else {
-    ctr[["data"]][[data_set]]
+    cctr[["data"]][[data_set]]
   }
 }
 
+#' Set a controller data set
+#'
+#' @param ctr the controller object
+#' @param ... a named  list parameters (see example)
+#' @family pmxclass
+#' @details 
+#' This function can be used to set an existing data set or to create a new one. The basic 
+#' idea is to change the  built-in data set (chnage the factor level names, change some rows
+#' values or apply any other data set operation) and use the new data set using the dname 
+#' parameter of pmx_plot family functions.
+#' @examples 
+#' ctr <- theophylline()
+#' dx <- ctr %>% get_data("eta")
+#' dx <- dx[,EFFECT:=factor(
+#'         EFFECT,levels=c("ka", "V", "Cl"),
+#'         labels=c("Concentration","Volume","Clearance"))]
+#' ## update existing data set 
+#' ctr %>% set_data(eta=dx)
+#' ## or create a new data set 
+#' ctr %>% set_data(eta_long=dx)
+#' @export
+set_data <- function(ctr, ...) {
+  assert_that(is_pmxclass(ctr))
+  params <- as.list(match.call(expand.dots = TRUE))[-c(1,2)]
+  if(!nzchar(names(params))){
+    stop("each data set should be well named")
+  }
+  invisible(Map(function(n,v)ctr$data[[n]] <- eval(v),names(params),params))
+  
+}
 
 #' Get category covariates
 #'
@@ -475,7 +519,7 @@ get_occ <- function(ctr) {
 #' @importFrom R6 R6Class
 pmxClass <- R6::R6Class(
   "pmxClass",
-
+  
   # Private methods ------------------------------------------------------------
   private = list(
     .data_path = "",
@@ -484,7 +528,7 @@ pmxClass <- R6::R6Class(
     .plots = list(),
     .plots_configs = list()
   ),
-
+  
   # Public methods -------------------------------------------------------------
   public = list(
     data = NULL,
@@ -502,14 +546,14 @@ pmxClass <- R6::R6Class(
     save_dir = NULL,
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
-
+    
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
-
+    
     # Operations ---------------------------------------------------------------
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
-
+    
     update_plot = function(pname, strat.facet=NULL, strat.color=NULL,
                            filter=NULL, trans=NULL,
                            ..., pmxgpar = NULL) {
@@ -519,21 +563,21 @@ pmxClass <- R6::R6Class(
         filter, trans, ..., pmxgpar = pmxgpar
       )
     },
-
+    
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
-
+    
     get_config = function(pname)
       pmx_get_config(self, private, pname),
-
+    
     set_config = function(pname, new)
       pmx_set_config(self, private, pname, new),
     get_plot = function(pname)
       pmx_get_plot(self, private, pname),
-
+    
     plots = function()
       pmx_plots(self, private),
-
+    
     post_load = function()
       pmx_post_load(self, private)
   )
@@ -553,7 +597,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(conts) || is.null(conts) || is.na(conts)) conts <- ""
   if (missing(strats) || is.null(strats) || is.na(strats)) strats <- ""
   if (missing(settings)) settings <- NULL
-
+  
   private$.data_path <- data_path
   self$save_dir <- data_path
   if (is.character(input)) {
@@ -568,8 +612,8 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$strats <- toupper(strats)
   self$settings <- settings
   if (!is.null(settings$endpoint)) self$endpoint <- settings$endpoint
-
-
+  
+  
   if (is.character(input) && file.exists(input)) {
     self$input_file <- input
     self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
@@ -582,10 +626,10 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     endpoint = self$endpoint
   )
   ##
-
-
+  
+  
   ## check random effect
-
+  
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
     if (length(re) > 0) {
@@ -598,15 +642,15 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         )
     }
   }
-
+  
   self$post_load()
-
+  
   ## abbev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"
   )
   self$abbrev <- set_abbrev(self, yaml.load_file(keys_file))
-
+  
   ## create all plots
   for (nn in names(self$config$plots)) {
     x <- self$config$plots[[nn]]
@@ -654,7 +698,7 @@ pmx_transform <- function(x, dx, trans, direction) {
       )
     })
   }
-
+  
   cols_ind <- function(x) {
     switch(
       direction,
@@ -663,7 +707,7 @@ pmx_transform <- function(x, dx, trans, direction) {
       xy = c("TIME", "PRED", "IPRED", "DV")
     )
   }
-
+  
   cols_dis <- function(x) {
     switch(
       direction,
@@ -672,21 +716,21 @@ pmx_transform <- function(x, dx, trans, direction) {
       xy = c("VALUE")
     )
   }
-
+  
   cols_qq <- function(x) {
     switch(
       direction,
       x = x$x
     )
   }
-
+  
   cols_eta_conts <- function(x) {
     switch(
       direction,
       y = "VALUE"
     )
   }
-
+  
   cols <- switch(
     x[["ptype"]],
     SCATTER = cols_res(x),
@@ -721,9 +765,9 @@ pmx_add_plot <- function(self, private, x, pname) {
   if (missing(pname)) {
     pname <- paste(x$aess, collapse = "_")
   }
-
+  
   x <- is_strat_supported(x)
-
+  x$ctr <- self
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
@@ -731,7 +775,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     x$dname <- "predictions"
   }
   dname <- x$dname
-  dx <- self$data[[dname]]
+  dx <- copy(self$data[[dname]])
   if (!is.null(dx) && nrow(dx) > 0) {
     assert_that(is.data.table(dx))
     x$input <- self %>% get_data("input")
@@ -754,8 +798,8 @@ pmx_add_plot <- function(self, private, x, pname) {
     } else {
       x$gp[["labels"]][["title"]] <- gsub(" by.*", "", x$gp[["labels"]][["title"]])
     }
-
-
+    
+    
     if (!is.null(x[["trans"]])) {
       dx1 <- copy(dx)
       dx <- pmx_transform(x, dx1, x[["trans"]])
@@ -766,7 +810,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     }
     grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
     grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
-
+    
     if (ptype == "DIS") {
       VAR <- FUN <- NULL
       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
@@ -787,8 +831,8 @@ pmx_add_plot <- function(self, private, x, pname) {
       x[["cats"]] <- self %>% get_cats()
       x[["conts"]] <- self %>% get_conts()
     }
-
-
+    
+    
     if (!is.null(self$settings)) {
       x$gp$is.draft <- self$settings$is.draft
       x$gp$color.scales <- self$settings$color.scales
@@ -801,10 +845,22 @@ pmx_add_plot <- function(self, private, x, pname) {
       }
       if (!self$settings$use.titles) {
         x$gp$labels$title <- ""
+        
+      }
+      if(!is.null(self$settings$effects)){
+        effs <- self$settings$effects
+        if (!is.null(x[["is.shrink"]]) && x$is.shrink){
+          x[["shrink.dx"]][,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
+        }
+        if(exists("EFFECT",dx)){
+          dx[,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
+          dx
+        }
+        
       }
     }
     self$set_config(pname, x)
-
+    
     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
   } else {
     # throw error message
@@ -849,7 +905,7 @@ pmx_post_load <- function(self, private) {
     self$config$plots,
     occ = get_occ(self)
   )
-
+  
   self$data <- res$data
   self$warnings <- res$warnings
 }
@@ -890,13 +946,13 @@ print.pmxClass <- function(x, ...) {
 #' @examples
 #'  ctr <- theophylline()
 #'  cctr <- ctr %>% pmx_copy
-#'  ## Any chnage in the ctr has no side effect in the ctr and vice versa
+#'  ## Any change in the ctr has no side effect in the ctr and vice versa
 pmx_copy <- function(ctr, keep_globals=FALSE, ...) {
   assert_that(is_pmxclass(ctr))
   cctr <- ctr$clone()
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   params <- lang_to_expr(params)
-
+  
   ## params <- list(...)
   if (!keep_globals) {
     nn <- rev(names(formals(pmx_settings)))[-1]
