@@ -462,6 +462,9 @@ pmx_plot <- function(ctr, pname, ...) {
 pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
   sp <- list()
   if (missing(cats)) cats <- ctr %>% get_cats()
+  if (length(cats)==0 || cats =="") {
+    invisible(return(NULL))
+  }
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   for (i in seq_along(cats))
   {
