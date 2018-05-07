@@ -363,11 +363,17 @@ plot_names <- function(ctr) {
 plots <- function(ctr) {
   assert_that(is_pmxclass(ctr))
   x <- ctr$config
+  function_name <- function(nn){
+    fn <- sprintf("pmx_plot_%s", nn)
+    if(!existsFunction(fn,where=asNamespace('ggPMX')))
+      fn <- sprintf("pmx_plot('%s',...)",nn)
+    fn
+  }
   if (exists("plots", x)) {
     data.table(
       plot_name = tolower(names(x$plots)),
       plot_type = sapply(x$plots, "[[", "ptype"),
-      plot_function = sprintf("pmx_plot_%s", tolower(names(x$plots)))
+      plot_function = sapply(tolower(names(x$plots)),function_name)
     )
   }
 }
