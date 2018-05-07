@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Scope 
 
-Allo. 
+Allo. Test.
 
 The main new of the 0.8 version are : 
 
