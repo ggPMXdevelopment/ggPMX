@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Scope 
 
+Allo. 
+
 The main new of the 0.8 version are : 
 
 - Set the imput parameter of the controller creator as a data.frame or data.table
