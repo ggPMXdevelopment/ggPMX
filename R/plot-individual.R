@@ -1,5 +1,6 @@
 
-#' Create individual fits object
+#' This function can be used to obtain individual prediction and compare with observed data and population prediction
+#' for each individual separately
 #'
 #' @param labels  plot tesxts. labels, axis,
 #' @param facets list facets settings nrow/ncol
@@ -76,7 +77,8 @@ individual <- function(labels,
 
 
 
-#' Plot individual fits
+#' This function can be used to plot individual prediction and compare with observed data and population prediction
+#' for each individual separately
 
 #' @param x individual object
 #' @param dx data set
