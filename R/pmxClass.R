@@ -753,132 +753,132 @@ pmx_transform <- function(x, dx, trans, direction) {
 }
 
 
-is_strat_supported <- function(x) {
-  if (!x$strat && !is.null(x[["strat.facet"]])) {
-    message("facet stratification is not yet implemented")
-    x$strat.facet <- NULL
-  }
-  if (!x$strat && !is.null(x[["strat.color"]])) {
-    message("color stratification is not yet implemented")
-    x$strat.color <- NULL
-  }
-  x
-}
+# is_strat_supported <- function(x) {
+#   if (!x$strat && !is.null(x[["strat.facet"]])) {
+#     message("facet stratification is not yet implemented")
+#     x$strat.facet <- NULL
+#   }
+#   if (!x$strat && !is.null(x[["strat.color"]])) {
+#     message("color stratification is not yet implemented")
+#     x$strat.color <- NULL
+#   }
+#   x
+# }
 
 
-pmx_add_plot <- function(self, private, x, pname) {
-  assert_that(is_pmx_gpar(x))
-  if (missing(pname)) {
-    pname <- paste(x$aess, collapse = "_")
-  }
-  
-  x <- is_strat_supported(x)
-  x$ctr <- self
-  pname <- tolower(pname)
-  private$.plots_configs[[pname]] <- x
-  ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
-  if (x$ptype == "IND" && !x$use.finegrid) {
-    x$dname <- "predictions"
-  }
-  dname <- x$dname
-  dx <- copy(self$data[[dname]])
-  if (!is.null(dx) && nrow(dx) > 0) {
-    assert_that(is.data.table(dx))
-    x$input <- self %>% get_data("input")
-    if (!is.null(x[["filter"]])) {
-      dx <- x[["filter"]](dx)
-      if (ptype == "IND") x$input <- x[["filter"]](x$input)
-    }
-    if (!is.null(x[["strat.color"]])) {
-      gp <- x[["gp"]]
-      gp[["labels"]][["legend"]] <- x[["strat.color"]]
-      x[["gp"]] <- gp
-    }
-    if (!is.null(x[["strat.facet"]])) {
-      tit <- x$gp[["labels"]][["title"]]
-      tit <- gsub(" by .*", "", tit)
-      x$gp[["labels"]][["title"]] <-
-        sprintf(
-          "%s by %s", tit, formula_to_text(x[["strat.facet"]])
-        )
-    } else {
-      x$gp[["labels"]][["title"]] <- gsub(" by.*", "", x$gp[["labels"]][["title"]])
-    }
-    
-    
-    if (!is.null(x[["trans"]])) {
-      dx1 <- copy(dx)
-      dx <- pmx_transform(x, dx1, x[["trans"]])
-      if (ptype == "IND") {
-        inp <- copy(x$input)
-        x$input <- pmx_transform(x, inp, x[["trans"]])
-      }
-    }
-    grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-    grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
-    
-    if (ptype == "DIS") {
-      VAR <- FUN <- NULL
-      dx <- dx[VAR == "eta" & grepl("mode", FUN)]
-      cols <- c("ID", "EFFECT", "VALUE", grp)
-      dx <- unique(dx[, cols, with = FALSE])
-    }
-    if (!is.null(x[["is.shrink"]]) && x$is.shrink) {
-      x[["shrink.dx"]] <-
-        self %>%
-        pmx_comp_shrink(
-          fun = x$shrink$fun,
-          strat.color = x[["strat.color"]],
-          strat.facet = x[["strat.facet"]],
-          filter = x[["filter"]]
-        )
-    }
-    if (ptype == "ETA_COV") {
-      x[["cats"]] <- self %>% get_cats()
-      x[["conts"]] <- self %>% get_conts()
-    }
-    
-    
-    if (!is.null(self$settings)) {
-      x$gp$is.draft <- self$settings$is.draft
-      x$gp$color.scales <- self$settings$color.scales
-      if ("use.abbrev" %in% names(self$settings) && self$settings$use.abbrev) {
-        x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
-        x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
-      }
-      if ("labeller" %in% names(self$settings)) {
-        x$facets$labeller <- self$settings$labeller
-      }
-      if (!self$settings$use.titles) {
-        x$gp$labels$title <- ""
-        
-      }
-      if(!is.null(self$settings$effects)){
-        effs <- self$settings$effects
-        if (!is.null(x[["is.shrink"]]) && x$is.shrink){
-          x[["shrink.dx"]][,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
-        }
-        if(exists("EFFECT",dx)){
-          dx[,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
-          dx
-        }
-        
-      }
-    }
-    self$set_config(pname, x)
-    
-    private$.plots[[pname]] <- plot_pmx(x, dx = dx)
-  } else {
-    # throw error message
-    private$.plots[[pname]] <- NULL
-    message(sprintf(
-      "No data %s provided for plot %s",
-      sprintf("%s", dname), sprintf("%s", pname)
-    ))
-  }
-  invisible(self)
-}
-
+# pmx_add_plot <- function(self, private, x, pname) {
+#   assert_that(is_pmx_gpar(x))
+#   if (missing(pname)) {
+#     pname <- paste(x$aess, collapse = "_")
+#   }
+#   
+#   x <- is_strat_supported(x)
+#   x$ctr <- self
+#   pname <- tolower(pname)
+#   private$.plots_configs[[pname]] <- x
+#   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
+#   if (x$ptype == "IND" && !x$use.finegrid) {
+#     x$dname <- "predictions"
+#   }
+#   dname <- x$dname
+#   dx <- copy(self$data[[dname]])
+#   if (!is.null(dx) && nrow(dx) > 0) {
+#     assert_that(is.data.table(dx))
+#     x$input <- self %>% get_data("input")
+#     if (!is.null(x[["filter"]])) {
+#       dx <- x[["filter"]](dx)
+#       if (ptype == "IND") x$input <- x[["filter"]](x$input)
+#     }
+#     if (!is.null(x[["strat.color"]])) {
+#       gp <- x[["gp"]]
+#       gp[["labels"]][["legend"]] <- x[["strat.color"]]
+#       x[["gp"]] <- gp
+#     }
+#     if (!is.null(x[["strat.facet"]])) {
+#       tit <- x$gp[["labels"]][["title"]]
+#       tit <- gsub(" by .*", "", tit)
+#       x$gp[["labels"]][["title"]] <-
+#         sprintf(
+#           "%s by %s", tit, formula_to_text(x[["strat.facet"]])
+#         )
+#     } else {
+#       x$gp[["labels"]][["title"]] <- gsub(" by.*", "", x$gp[["labels"]][["title"]])
+#     }
+#     
+#     
+#     if (!is.null(x[["trans"]])) {
+#       dx1 <- copy(dx)
+#       dx <- pmx_transform(x, dx1, x[["trans"]])
+#       if (ptype == "IND") {
+#         inp <- copy(x$input)
+#         x$input <- pmx_transform(x, inp, x[["trans"]])
+#       }
+#     }
+#     grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
+#     grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
+#     
+#     if (ptype == "DIS") {
+#       VAR <- FUN <- NULL
+#       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
+#       cols <- c("ID", "EFFECT", "VALUE", grp)
+#       dx <- unique(dx[, cols, with = FALSE])
+#     }
+#     if (!is.null(x[["is.shrink"]]) && x$is.shrink) {
+#       x[["shrink.dx"]] <-
+#         self %>%
+#         pmx_comp_shrink(
+#           fun = x$shrink$fun,
+#           strat.color = x[["strat.color"]],
+#           strat.facet = x[["strat.facet"]],
+#           filter = x[["filter"]]
+#         )
+#     }
+#     if (ptype == "ETA_COV") {
+#       x[["cats"]] <- self %>% get_cats()
+#       x[["conts"]] <- self %>% get_conts()
+#     }
+#     
+#     
+#     if (!is.null(self$settings)) {
+#       x$gp$is.draft <- self$settings$is.draft
+#       x$gp$color.scales <- self$settings$color.scales
+#       if ("use.abbrev" %in% names(self$settings) && self$settings$use.abbrev) {
+#         x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
+#         x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
+#       }
+#       if ("labeller" %in% names(self$settings)) {
+#         x$facets$labeller <- self$settings$labeller
+#       }
+#       if (!self$settings$use.titles) {
+#         x$gp$labels$title <- ""
+#         
+#       }
+#       if(!is.null(self$settings$effects)){
+#         effs <- self$settings$effects
+#         if (!is.null(x[["is.shrink"]]) && x$is.shrink){
+#           x[["shrink.dx"]][,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
+#         }
+#         if(exists("EFFECT",dx)){
+#           dx[,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
+#           dx
+#         }
+#         
+#       }
+#     }
+#     self$set_config(pname, x)
+#     
+#     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
+#   } else {
+#     # throw error message
+#     private$.plots[[pname]] <- NULL
+#     message(sprintf(
+#       "No data %s provided for plot %s",
+#       sprintf("%s", dname), sprintf("%s", pname)
+#     ))
+#   }
+#   invisible(self)
+# }
+# 
 pmx_remove_plot <- function(self, private, pname, ...) {
   private$.plots_configs[[pname]] <- NULL
   private$.plots[[pname]] <- NULL
