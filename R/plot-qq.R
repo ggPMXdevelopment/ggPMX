@@ -2,7 +2,7 @@
 
 
 
-#' creates a qq plot object
+#' This function creates a qq plot object
 #'
 #' @param x \code{character} variable name to sample
 #' @param labels list of texts/titles used within the plot
@@ -85,7 +85,7 @@ pmx_qq <- function(
 
 
 
-#' Plot EBE versus covariates
+#' This function plot EBE versus covariates using qq plots
 #'
 #' @param x eta_cov object
 #' @param dx data set

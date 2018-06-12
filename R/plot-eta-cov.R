@@ -1,6 +1,7 @@
 
 
-#' creates an eta_cov object to plot ebe versus covariates
+#' This creates an ETA covriance matrix which can be used to define the co-relation between the parameters and 
+#' its shrinkage..
 #'
 #' @param labels list of texts/titles used within the plot
 #' @param type box for cats or conts
@@ -83,7 +84,8 @@ eta_cov <- function(
 
 
 
-#' Plot EBE versus covariates
+#' This plots an ETA covriance matrix which can be used to define the co-relation between the parameters and 
+#' its shrinkage
 #'
 #' @param x eta_cov object
 #' @param dx data set

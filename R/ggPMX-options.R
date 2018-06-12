@@ -1,4 +1,4 @@
-# A scope where we can put package globals , options
+# This allows user to define package globals , options
 .globals <- new.env(parent = emptyenv())
 
 .globals$options <- list()
@@ -26,7 +26,7 @@ getPmxOption <- function(name, default = NULL) {
 
 
 
-#' Get or set ggPMX options
+#' This function can be used to set ggPMX options
 #'
 #' \code{getPmxOption} retrieves the value of a ggPMX option.
 #' \code{ggPMXOptions} sets the value of ggPMX options; it can also be used to

@@ -1,6 +1,6 @@
 
 
-#' Creates eta correlation object
+#' This creates an eta correlation which defines the relationship between parameters
 #'
 #' @param title character the plot title
 #' @param dname name of dataset to be used

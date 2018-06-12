@@ -1,5 +1,5 @@
 
-#' Create a pmx Config
+#' This functionnn can be used to define the pmx configuration used in plots. e.g. Monolox/Nonmem
 #'
 #' @param sys \code{charcarter} system used , monolix,nonmem,...
 #' @param inputs \code{charcater} path to the inputs settings file (yaml format)
@@ -14,7 +14,7 @@
 #'  - either an input template file \cr
 #'  - or a plot template file \cr
 #'  - or both. \cr
-#' By default the standing configuration will be used.
+#' By default the 'standing' configuration will be used.
 pmx_config <- function(sys="mlx", inputs, plots, ...) {
   standing_dir <-
     file.path(system.file(package = "ggPMX"), "templates", sys, "standing")
@@ -35,7 +35,7 @@ pmx_config <- function(sys="mlx", inputs, plots, ...) {
 
 
 #' Get List of built-in configurations
-#' @param sys can be mlx, if missed all configurations will be listed
+#' @param sys can be mlx, by default all configurations will be listed
 #' @return names of the config
 #' @export
 #'
@@ -68,7 +68,7 @@ pmx_get_configs <-
     res
   }
 
-#' S3 method to print configs
+#' This function can be used to print configuration of the defined object using S3 method. 
 #' @param x object of class configs
 #' @param ... pass additonal options (not used presently)
 #' @return print result
@@ -83,7 +83,7 @@ print.configs <- function(x, ...) {
     cat(sprintf("config %i : name %s \n", i, x[i, "name"]))
 }
 
-#' Get data source config
+#' Obtain the data source config
 #'
 #' @param x the config name.
 #' @param sys can be mlx,nm,...

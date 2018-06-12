@@ -2,7 +2,9 @@
 title: "ggPMX 0.8"
 author: "Amine Gassem"
 date: "May 3, 2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -13,9 +15,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Scope 
 
-The main new of the 0.8 version are : 
+Allo. Test.
 
-- Set the imput parameter of the controller creator as a data.frame or data.table
+The additional new components of the 0.8 version are : 
+
+- Set the input parameter of the controller creator as a data.frame or data.table
 - Generalize the default abbreviations tables and create set/get helper to manipulate abbreviations
 - New effects global settings to rename effects variables
 - Generate a single endpoint report

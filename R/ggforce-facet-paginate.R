@@ -1,10 +1,10 @@
 #' Split facet_wrap over multiple plots
 #'
-#' This extension to \code{\link[ggplot2]{facet_wrap}} will allow you to split
-#' a facetted plot over multiple pages. You define a number of rows and columns
+#' This extension to \code{\link[ggplot2]{facet_wrap}} will allow user to split
+#' a facetted plot over multiple pages. User define the specific number of rows and columns
 #' per page as well as the page number to plot, and the function will
-#' automatically only plot the correct panels. Usually this will be put in a
-#' loop to render all pages one by one.
+#' automatically plot in the correct panels. This will be renderd
+#' in a loop to plot pages one by one.
 #'
 #' @inheritParams ggplot2::facet_wrap
 #' @param ncol Number of rows and columns
