@@ -43,13 +43,36 @@ pmx_report <-
     standalone <- output_type %in% c("plots", "both")
     footnote <- output_type == "both" || footnote
     clean <- !standalone
+    
+    out_ <- file.path(save_dir, "ggpmx_GOF")
+    rm_dir(out_)
+    dir.create(out_)
+    
+    
+    old_fig_process <- knitr::opts_chunk$get("fig.process")
+    knitr::opts_chunk$set(fig.process = function(old_name) {
+      
+      suffix = tools::file_ext(old_name)
+      pname = sprintf("%s.%s",ctr$dequeue_plot(),suffix)
+      new_name <- file.path(out_, pname)
+      file.copy(old_name,new_name)
+      new_name
+    })
+    
+    
     suppressWarnings(render(
       res, "all", params = list(ctr = ctr, ...), envir = new.env(),
       output_dir = save_dir, clean = clean, quiet = TRUE
     ))
-
+    
+    knitr::opts_chunk$set(fig.process = old_fig_process)
+    
+    plot_dir <- sprintf("%s_files", name)
+    in_ <- file.path(ctr$save_dir, plot_dir)
+    rm_dir(in_)
+    
     if (!clean) {
-      create_ggpmx_gof(ctr$save_dir, name)
+      ## create_ggpmx_gof(ctr$save_dir, name)
       remove_reports(output_type, ctr$save_dir)
     }
   }
@@ -61,7 +84,7 @@ pmx_draft <- function(ctr, name, template, edit) {
   if (length(template_file) > 0 && file.exists(template_file)) {
     file.remove(template_file)
   }
-
+  
   if (file.exists(template)) {
     template_path <- system.file(
       "rmarkdown", "templates",
@@ -116,7 +139,7 @@ create_ggpmx_gof <- function(save_dir, name) {
     dir.create(out_)
     in_ <- file.path(save_dir, plot_dir)
     plots_ <- list.files(in_, recursive = TRUE, full.names = TRUE)
-
+    
     idx <- grepl("^indiv", basename(plots_))
     indiv <- plots_[idx]
     no_indiv <- plots_[!idx]

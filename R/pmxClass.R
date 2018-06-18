@@ -550,12 +550,24 @@ pmxClass <- R6::R6Class(
     warnings = list(),
     footnote = FALSE,
     save_dir = NULL,
+    report_queue= list(),
+    report_n = 0,
     initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
       pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
     
+    enqueue_plot=function(pname){
+      self$report_n <- self$report_n + 1
+      pname_file <- paste0(pname,"-",self$report_n)
+      self$report_queue <- c(self$report_queue,pname_file)
+    },
+    dequeue_plot=function(){
+      first <- self$report_queue[[1]]
+      self$report_queue <- self$report_queue[-1]
+      first
+    },
     # Operations ---------------------------------------------------------------
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
