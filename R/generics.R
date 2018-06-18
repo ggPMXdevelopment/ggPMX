@@ -1,4 +1,4 @@
-#' Generic plot method for pmx objects
+#' This is a generic plot method that produces all plots by defaullt desccribed in pmx model evaluation guidance. 
 #'
 #' @param x  object to plot
 #' @param dx data.table , plot source data

@@ -33,11 +33,14 @@ wrap_pmx_plot_generic <-
     params$defaults_ <- ctr$config$plots[[toupper(pname)]]
     pp <- do.call(pmx_plot_generic, params)
     if (ctr$footnote) {
+      ctr$enqueue_plot(pname)
       if (exists("footnote", params)) {
         footnote <- params$footnote
       } else {
-        footnote <- pname
+        footnote <- ctr$report_queue[[1]]
+      
       }
+      
       add_footnote(pp, footnote, ctr$save_dir)
     } else {
       pp
@@ -272,7 +275,8 @@ pmx_plot_ebe_hist <-
 
 add_footnote <- function(pp, pname, save_dir) {
   plot_file <- file.path(save_dir, "ggpmx_GOF", pname)
-  footnote <- sprintf("Source: %s.png", plot_file)
+  footnote <- sprintf("Source: %s", plot_file)
+  ## message("footnote is :" , footnote)
   pp <- pp + labs(caption = footnote)
   pp
 }
@@ -324,12 +328,15 @@ pmx_plot_individual <-
       if (!inherits(p, "ggplot")) {
         p <- Map(
           function(p, id) {
-            add_footnote(p, sprintf("indiv-%i", id), cctr$save_dir)
+          
+            ctr$enqueue_plot("indiv")
+            add_footnote(p, ctr$report_queue[[1]], cctr$save_dir)
           },
           p, seq_along(p)
         )
       } else {
-        p <- add_footnote(p, "indiv-1", cctr$save_dir)
+        ctr$enqueue_plot("indiv")
+        p <- add_footnote(p,ctr$report_queue[[1]], cctr$save_dir)
       }
     }
 
@@ -462,11 +469,13 @@ pmx_plot <- function(ctr, pname, ...) {
 pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
   sp <- list()
   if (missing(cats)) cats <- ctr %>% get_cats()
+  if (length(cats)==0 || cats =="") {
+    invisible(return(NULL))
+  }
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   for (i in seq_along(cats))
   {
     params$strat.facet <- cats[[i]]
-    params$footnote <- sprintf("%s-%i", chunk, i)
     p <- wrap_pmx_plot_generic(ctr, pname, params)
     sp[[i]] <- p
   }

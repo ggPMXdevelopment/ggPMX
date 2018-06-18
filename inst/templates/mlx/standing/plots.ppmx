@@ -27,8 +27,8 @@ IWRES_IPRED:
   labels:
     title: IWRES vs IPRED
     subtitle: ''
-    x: IWRES
-    'y': Individual predictions
+    x: IPRED
+    'y': IWRES
   point:
     shape: 1.0
     color: black
@@ -48,7 +48,7 @@ IWRES_TIME:
     title: IWRES vs TIME
     subtitle: ''
     x: TIME
-    'y': Individual predictions
+    'y': IWRES
   point:
     shape: 1.0
     color: black

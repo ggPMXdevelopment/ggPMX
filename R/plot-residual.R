@@ -1,6 +1,7 @@
 
 
-#' Create a residual object
+#' This function create a residual for each observed value and also generates a residual 
+#' distribution
 #'
 #' @param x x axis aesthetics
 #' @param y y axis aesthetics
@@ -86,7 +87,7 @@ extend_range <-
   }
 
 
-#' Plot residual object
+#' This function plots residual for each observed value by finding the difference between observed and predicted points. It also fits a distribution to the residual value. 
 #'
 #' @param x residual object
 #' @param dx data set

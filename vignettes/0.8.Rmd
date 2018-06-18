@@ -1,8 +1,10 @@
 ---
-title: "ggPMX 8.0"
+title: "ggPMX 0.8"
 author: "Amine Gassem"
 date: "May 3, 2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -13,9 +15,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Scope 
 
-The main new of the 0.8 version are : 
+Allo. Test.
 
-- Set the imput parameter of the controller creator as a data.frame or data.table
+The additional new components of the 0.8 version are : 
+
+- Set the input parameter of the controller creator as a data.frame or data.table
 - Generalize the default abbreviations tables and create set/get helper to manipulate abbreviations
 - New effects global settings to rename effects variables
 - Generate a single endpoint report
@@ -123,8 +127,21 @@ ctr %>% pmx_plot_eta_matrix
 
 
 1. Create a standard report using a predefined template: `standing`. This is a built-in template defined by ggPMX team. 
-2. Create a standalone directory of satdnalone plots 
-3. Plots may contain a footnote to define locations
-4. Create an individual report plots thay may contain all or some of the individual plots. Buil-in template `individual`
+2. Standlone plots :  Create a standalone directory of satdnalone plots 
+3. footnote feature : Plots may contain a footnote to define locations
+4. Individual report; report that contain all or some of the individual plots. Buil-in template `individual`
+5. Templates can be modified on the fly using the `edit` feature
+6. user can define his own template as a markdwon and pass it to the `pms_report` engine
+
+
+Here the simplest way to create a report using default settings: 
+```{r, eval=FALSE}
+ctr <- theophylline()
+ctr %>% pmx_report(
+  name = "my_report",
+  output_type="report",
+  save_dir = "some_location")
+```
+
 
   
