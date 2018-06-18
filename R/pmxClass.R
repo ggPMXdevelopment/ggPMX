@@ -359,6 +359,7 @@ plot_names <- function(ctr) {
 #' @family pmxclass
 #' @return data.frame of plots
 #' @export
+#' @importFrom methods existsFunction
 
 plots <- function(ctr) {
   assert_that(is_pmxclass(ctr))
