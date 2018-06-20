@@ -43,21 +43,22 @@ pmx_report <-
     standalone <- output_type %in% c("plots", "both")
     footnote <- output_type == "both" || footnote
     clean <- !standalone
+    old_fig_process <- knitr::opts_chunk$get("fig.process")
     
     out_ <- file.path(save_dir, "ggpmx_GOF")
     rm_dir(out_)
-    dir.create(out_)
-    
-    
-    old_fig_process <- knitr::opts_chunk$get("fig.process")
-    knitr::opts_chunk$set(fig.process = function(old_name) {
-      
-      suffix = tools::file_ext(old_name)
-      pname = sprintf("%s.%s",ctr$dequeue_plot(),suffix)
-      new_name <- file.path(out_, pname)
-      file.copy(old_name,new_name)
-      new_name
-    })
+    if(footnote || standalone){
+      dir.create(out_)
+      knitr::opts_chunk$set(fig.process = function(old_name) {
+        pname <- if(footnote){
+          suffix = tools::file_ext(old_name)
+          sprintf("%s.%s",ctr$dequeue_plot(),suffix)
+        } else basename(old_name)
+        new_name <- file.path(out_, pname)
+        file.copy(old_name,new_name)
+        new_name
+      })
+    }
     
     
     suppressWarnings(render(
