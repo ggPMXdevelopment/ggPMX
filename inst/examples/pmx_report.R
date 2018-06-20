@@ -5,7 +5,7 @@ library(ggPMX)
 ## list of templates
 ## ctr %>% pmx_report_template()
 
-report_dir <- "~/report_dir"
+report_dir <- path.expand("~/report_dir")
 ## case1: generate a single reprot
 ## We use default save dir, 
 ctr <- theophylline()
@@ -24,7 +24,8 @@ ctr %>% pmx_report(
 
 
 ## case3: generate both : reports + plots
-## by default add footnote, set footnote to FALSE in case you to get rid of it
+## by default add footnote
+## Note , you can force footnote to FALSE using footnote parameter
 ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
@@ -61,10 +62,12 @@ ctr %>% pmx_report(
 ## case7 : use custom template file 
 
 ctr <- theophylline()
+custom_template <- 
+  file.path( system.file(package = "ggPMX"),"examples","custom_report.Rmd")
 ctr %>% pmx_report(
   name="report2",
-  save_dir = "~/report_dir/case1",
-  template="/home/agstudy/report_dir/case2/my_report.Rmd",
+  save_dir =  file.path(report_dir,"case1"),
+  template=custom_template,
   output_type="both"
 )
 
@@ -73,7 +76,7 @@ ctr %>% pmx_report(
 ctr <- theophylline()
 ctr %>% pmx_report(
   name="report2",
-  save_dir = "~/report_dir/case1",
+  save_dir =  file.path(report_dir,"case1"),
   template="individual",
   edit=TRUE,
   output_type="both",
