@@ -24,10 +24,10 @@ test_that("can load data set", {
   )
   expect_identical(
     names(dxs[["predictions"]]),
-    c("ID", "TIME", "PRED", "NPDE", "IPRED", "IWRES", "DVID")
+    c("ID", "TIME", "PRED", "NPDE", "IPRED", "IWRES")
   )
 
-  expect_identical(names(dxs[["finegrid"]]), c("ID", "TIME", "PRED", "IPRED", "DVID"))
+  expect_identical(names(dxs[["finegrid"]]), c("ID", "TIME", "PRED", "IPRED"))
 })
 
 # test_that("errors work in load data set", {

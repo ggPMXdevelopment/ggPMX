@@ -44,7 +44,7 @@ test_that("can get pmx class config", {
 test_that("can get data from controller", {
   ctr <- pmxClassHelpers$ctr
   inputData <- ctr %>% get_data("input")
-  inNames <- c("ID", "DV", "DVID", "TIME", "SEX", "WT0", "AGE0", "STUD")
+  inNames <- c("ID", "DV",  "TIME", "SEX", "WT0", "AGE0", "STUD")
   expect_true(all(inNames %in% names(inputData)))
 
   peData <- ctr %>% get_data("estimates")
@@ -53,7 +53,7 @@ test_that("can get data from controller", {
 
   mpData <- ctr %>% get_data("predictions")
   mpNames <- c(
-    "ID", "TIME", "DVID", "PRED", "NPDE", "IPRED", "IWRES", "DV",
+    "ID", "TIME",  "PRED", "NPDE", "IPRED", "IWRES", "DV",
     "SEX", "WT0", "AGE0", "STUD"
   )
   expect_true(all(mpNames %in% names(mpData)))

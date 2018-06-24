@@ -36,12 +36,13 @@ check_argument <- function(value, pmxname) {
 #' @example inst/examples/controller.R
 pmx <-
   function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
-           settings=NULL) {
+           settings=NULL,endpoint=NULL) {
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
     dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
+    if(missing(endpoint)) endpoint <- NULL
     assert_that(is_character_or_null(cats))
     if (missing(conts)) conts <- ""
     assert_that(is_character_or_null(conts))
@@ -56,7 +57,7 @@ pmx <-
     if (!inherits(settings, "pmxSettingsClass")) {
       settings <- pmx_settings()
     }
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings)
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings,endpoint)
   }
 
 #' Wrapper to pmx constructor
@@ -76,8 +77,8 @@ pmx <-
 #' @return \code{pmxClass} object
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings,endpoint) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings,endpoint)
   }
 
 
@@ -86,7 +87,7 @@ pmx_mlx <-
 #'
 #' @param file_name mlxtran file
 #' @param config object as pmx controller
-#' @param endpoint can be 1 or 2
+#' @param endpoint \code{integer} value of the endpoint
 #'
 #' @return \code{pmxClass} controller object
 #' @export
@@ -99,10 +100,9 @@ pmx_mlx <-
 #' pmx_mlxtran(mlxtran)
 #' }
 pmx_mlxtran <- function(file_name, config="standing", endpoint) {
-  if (missing(endpoint)) endpoint <- 1
   params <- parse_mlxtran(file_name)
   params$config <- "standing"
-  params$settings <- list(endpoint = endpoint)
+  if (!missing(endpoint))    params$endpoint <- endpoint
   do.call(pmx_mlx, params)
 }
 
@@ -554,8 +554,8 @@ pmxClass <- R6::R6Class(
     report_queue= list(),
     report_n = 0,
     plot_file_name = "",
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings,endpoint)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings,endpoint),
     
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -601,7 +601,7 @@ pmxClass <- R6::R6Class(
 )
 
 pmx_initialize <- function(self, private, data_path, input, dv,
-                           config, dvid, cats, conts, occ, strats, settings) {
+                           config, dvid, cats, conts, occ, strats,settings, endpoint) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -628,7 +628,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$occ <- toupper(occ)
   self$strats <- toupper(strats)
   self$settings <- settings
-  if (!is.null(settings$endpoint)) self$endpoint <- settings$endpoint
+  self$endpoint <- endpoint
   
   
   if (is.character(input) && file.exists(input)) {
