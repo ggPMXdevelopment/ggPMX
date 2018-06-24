@@ -63,7 +63,7 @@ ctr %>% pmx_report(
 
 ctr <- theophylline()
 custom_template <- 
-  file.path( system.file(package = "ggPMX"),"examples","custom_report.Rmd")
+  file.path( system.file(package = "ggPMX"),"examples","templates","custom_report.Rmd")
 ctr %>% pmx_report(
   name="report2",
   save_dir =  file.path(report_dir,"case1"),
@@ -81,4 +81,15 @@ ctr %>% pmx_report(
   edit=TRUE,
   output_type="both",
   npage=1:2
+)
+
+## case8: misc example with complicated features
+## see github issue : #179
+misc_template <- 
+  file.path( system.file(package = "ggPMX"),"examples","templates","misc.Rmd")
+ctr %>% pmx_report(
+  name="misc",
+  save_dir =  "/tmp",
+  template=misc_template,
+  output_type="both"
 )

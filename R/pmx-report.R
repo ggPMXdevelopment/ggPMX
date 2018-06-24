@@ -15,7 +15,7 @@
 #' @param ... extra parameters depending in the template used
 #' @export
 #' @importFrom rmarkdown draft render
-#' @importFrom knitr opts_chunk
+#' @importFrom knitr opts_chunk knit_hooks
 #' @details
 #' \code{pmx_report} uses pre-defined template .Rmd to generate the report.
 #' The idea is to pass the controller as a report argument using knitr \code{params} artifact.
@@ -48,6 +48,7 @@ pmx_report <-
     
     out_ <- file.path(save_dir, "ggpmx_GOF")
     rm_dir(out_)
+    
     
     if(footnote || standalone){
       dir.create(out_)

@@ -37,7 +37,7 @@ wrap_pmx_plot_generic <-
       if (exists("footnote", params)) {
         footnote <- params$footnote
       } else {
-        footnote <- ctr$report_queue[[1]]
+        footnote <- ctr$plot_file_name
       }
       add_footnote(pp, footnote, ctr$save_dir)
     } else {
@@ -327,13 +327,13 @@ pmx_plot_individual <-
         p <- Map(
           function(p, id) {
             ctr$enqueue_plot("indiv")
-            add_footnote(p,paste0("indiv-",ctr$report_n), cctr$save_dir)
+            add_footnote(p,ctr$plot_file_name, cctr$save_dir)
           },
           p, seq_along(p)
         )
       } else {
         ctr$enqueue_plot("indiv")
-        p <- add_footnote(p,ctr$report_queue[[1]], cctr$save_dir)
+        p <- add_footnote(p,ctr$plot_file_name, cctr$save_dir)
       }
     }
     
