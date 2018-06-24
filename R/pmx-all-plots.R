@@ -3,7 +3,7 @@ pmx_plot_generic <-
     stopifnot(is_pmxclass(ctr))
     if (!pname %in% (ctr %>% plot_names())) return(NULL)
     cctr <- pmx_copy(ctr, ...)
-
+    
     params <- c(
       ctr = cctr,
       pname = pname,
@@ -82,8 +82,8 @@ pmx_plot_dv_pred <- function(ctr, ...) {
 
 
 pmx_plot_dv_ipred <- function(
-                              ctr,
-                              ...) {
+  ctr,
+  ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "dv_ipred", params)
 }
@@ -106,7 +106,7 @@ pmx_plot_dv_ipred <- function(
 #' @example inst/examples/residual.R
 
 pmx_plot_iwres_ipred <- function(
-                                 ctr, ...) {
+  ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "iwres_ipred", params)
 }
@@ -129,7 +129,7 @@ pmx_plot_iwres_ipred <- function(
 #' @example inst/examples/residual.R
 
 pmx_plot_abs_iwres_ipred <- function(
-                                     ctr, ...) {
+  ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "abs_iwres_ipred", params)
 }
@@ -174,7 +174,7 @@ pmx_plot_iwres_time <- function(ctr, ...) {
 #' @example inst/examples/residual.R
 
 pmx_plot_npde_time <- function(
-                               ctr, ...) {
+  ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "npde_time", params)
 }
@@ -194,8 +194,8 @@ pmx_plot_npde_time <- function(
 #' @example inst/examples/residual.R
 
 pmx_plot_npde_pred <- function(
-                               ctr,
-                               ...) {
+  ctr,
+  ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "npde_pred", params)
 }
@@ -260,8 +260,8 @@ pmx_plot_ebe_box <-
 
 pmx_plot_ebe_hist <-
   function(
-           ctr,
-           ...) {
+    ctr,
+    ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "ebe_hist", params)
   }
@@ -296,10 +296,10 @@ add_footnote <- function(pp, pname, save_dir) {
 #' @example inst/examples/individual.R
 pmx_plot_individual <-
   function(
-           ctr,
-           npage=1,
-           print=FALSE,
-           ...) {
+    ctr,
+    npage=1,
+    print=FALSE,
+    ...) {
     stopifnot(is_pmxclass(ctr))
     if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
     cctr <- pmx_copy(ctr, ...)
@@ -309,18 +309,18 @@ pmx_plot_individual <-
     params <- l_left_join(defaults_, params)
     params$pname <- "individual"
     params$ctr <- cctr
-
-
+    
+    
     do.call("pmx_update", params)
     p <- if (is.null(npage)) {
       cctr %>% get_plot("individual")
     } else {
       cctr %>% get_plot("individual", npage)
     }
-
+    
     cctr %>% pmx_warnings("MISSING_FINEGRID")
-
-
+    
+    
     
     if (cctr$footnote) {
       if (!inherits(p, "ggplot")) {
@@ -336,9 +336,9 @@ pmx_plot_individual <-
         p <- add_footnote(p,ctr$report_queue[[1]], cctr$save_dir)
       }
     }
-
+    
     rm(cctr)
-
+    
     if (print) {
       if (is.list(p)) invisible(lapply(p, print)) else p
     } else {
@@ -495,4 +495,25 @@ pmx_plot_eta_qq <-
   function(ctr,
            ...) {
     ctr %>% pmx_plot("eta_qq", ...)
+  }
+
+
+
+
+#' Register plot
+#'
+#' @param ctr 
+#' @param pp 
+#' @param pname 
+#'
+#' @return
+#' @export
+pmx_register_plot <- 
+  function(ctr, pp,pname=NULL){
+    if(ctr$footnote){
+      if(is.null(pname)) pname= "extra-plot"
+      ctr$enqueue_plot(pname)
+      footnote <- paste0(pname,ctr$report_n)
+      add_footnote(pp, footnote, ctr$save_dir)
+    } else pp
   }

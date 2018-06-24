@@ -564,11 +564,7 @@ pmxClass <- R6::R6Class(
       pname_file <- paste0(pname,"-",self$report_n)
       self$report_queue <- c(self$report_queue,pname_file)
     },
-    dequeue_plot=function(){
-      first <- self$report_queue[[1]]
-      self$report_queue <- self$report_queue[-1]
-      first
-    },
+    dequeue_plot=function()pmx_dequeue_plot(self),
     # Operations ---------------------------------------------------------------
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
@@ -699,6 +695,8 @@ pmx_print <- function(self, private, ...) {
   print(kable(ctr_table))
   print(self$config, ctr = self, plot_names = names(private$.plots))
 }
+
+
 
 
 pmx_transform <- function(x, dx, trans, direction) {
@@ -908,6 +906,14 @@ pmx_set_config <- function(self, private, pname, new) {
   private$.plots_configs[[pname]] <- new
 }
 
+
+pmx_dequeue_plot <- function(self){
+  if(length(self$report_queue)){
+    first <- self$report_queue[[1]]
+    self$report_queue <- self$report_queue[-1]
+    first
+  }
+}
 
 pmx_get_plot <- function(self, private, pname) {
   pname <- tolower(pname)
