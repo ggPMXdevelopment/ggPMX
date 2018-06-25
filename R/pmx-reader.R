@@ -54,8 +54,15 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   TIME <- EVID <- MDV <- y <- NULL
   xx <- pmx_fread(ipath)
   
-  if (!is.null(endpoint) && dvid %in% names(xx)) {
-    xx <- xx[get(dvid) == endpoint]
+  if (!is.null(endpoint)){
+    if (dvid %in% names(xx)) {
+      xx <- xx[get(dvid) == endpoint]
+    }else{
+      msg <- sprintf("ggPMX can not filter by endpoint %s\n",endpoint)
+      msg <- paste(msg,sprintf("%s is not a valid column in the observation data set",dvid))
+     
+      stop(msg)
+    }
   }
   
   
