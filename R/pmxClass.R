@@ -924,11 +924,6 @@ pmx_fig_process_init <- function(self) {
   report_n = 0
 }
 
-pmx_fig_process_init <- function(self) {
-  report_queue= list()
-  report_n = 0
-}
-
 pmx_fig_process_wrapup <- function(self) {
   assert_that(is_empty_queue(self))
 }
