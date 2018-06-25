@@ -53,6 +53,8 @@ pmx_report <-
     if(footnote || standalone){
       dir.create(out_)
       
+      pmx_fig_process_init(ctr)
+      
       opts_chunk$set(
         fig.process = function(old_name){
           pmx_fig_process(ctr = ctr,
@@ -61,13 +63,14 @@ pmx_report <-
                           out_)}
       )
       
-      
       suppressWarnings(render(
         res, "all", params = list(ctr = ctr, ...), envir = new.env(),
         output_dir = save_dir, clean = clean, quiet = TRUE
       ))
       
       knitr::opts_chunk$set(fig.process = old_fig_process)
+      
+      pmx_fig_process_wrapup(ctr)
       
       plot_dir <- sprintf("%s_files", name)
       in_ <- file.path(ctr$save_dir, plot_dir)
@@ -83,15 +86,18 @@ pmx_report <-
 
 
 pmx_fig_process <-  function(ctr , old_name,footnote,out_) {
-  pname <- if(footnote){
+  pname <- if(footnote) {
     suffix = tools::file_ext(old_name)
     sprintf("%s.%s",ctr$dequeue_plot(),suffix)
   } else basename(old_name)
+  
   new_name <- file.path(out_, pname)
+  
   if(length(new_name)){
     file.copy(old_name,new_name)
     return(new_name)
   }
+  
   return(old_name)
 }
 

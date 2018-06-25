@@ -156,3 +156,21 @@ assertthat::on_failure(is_valid_plot_name) <- function(call, env) {
     paste(env$ctr %>% plot_names(), collapse = "--")
   )
 }
+
+is_none_empty_queue <- function(x) {
+  length(x$report_queue) > 0
+}
+
+assertthat::on_failure(is_none_empty_queue) <- function(call, env) {
+  sprintf("Chunk has plots that were not registered within ggPMX")
+}
+
+is_empty_queue <- function(x) {
+  length(x$report_queue) == 0
+}
+
+assertthat::on_failure(is_empty_queue) <- function(call, env) {
+  sprintf("Plot(s) were registered within ggPMX but were not rendered")
+}
+
+
