@@ -54,6 +54,13 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   TIME <- EVID <- MDV <- y <- NULL
   xx <- pmx_fread(ipath)
   
+  if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
+    setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
+    setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
+    xx <- xx[!(EVID == 1 & MDV == 1)]
+  }
+  
+  
   if (!is.null(endpoint)){
     if (dvid %in% names(xx)) {
       rr <- dvid
@@ -74,7 +81,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     if (dvid %in% names(xx)) {
       rr <- dvid
       ends <- unique(xx[,get(rr)])
-      if (length(ends)>0){
+      if (length(ends)>1){
         msg <- sprintf("Observation data contains multiple endpoints %s\n. ",paste(ends,collapse= " ; "))
         msg <- paste(msg,"Please select a single endpoint to continue.")
         
@@ -116,11 +123,6 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   
   
   
-  if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
-    setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
-    setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
-    xx <- xx[!(EVID == 1 & MDV == 1)]
-  }
   
   
   covariates <- unique(c(cats, conts))
