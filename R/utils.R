@@ -274,7 +274,6 @@ parse_mlxtran <- function(file_name) {
   dv <- dat[grepl("use=observation,", value), key]
   ### dvid
   dvid <- dat[grepl("use=observationType", value), key]
-  if (length(dvid) == 0) dvid <- "DVID"
   ### cats
   cats <- dat[grepl("use=covariate, type=categorical", value), key]
   ### conts
@@ -286,9 +285,9 @@ parse_mlxtran <- function(file_name) {
   res <- list(
     directory = directory,
     input = input,
-    dv = dv,
-    dvid = dvid
+    dv = dv
   )
+  if (length(dvid) > 0) res$dvid <- dvid
   if (length(cats) > 0) res$cats <- cats
   if (length(conts) > 0) res$conts <- conts
   if (length(occ) > 0) res$occ <- occ

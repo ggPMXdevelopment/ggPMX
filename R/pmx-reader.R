@@ -56,18 +56,39 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   
   if (!is.null(endpoint)){
     if (dvid %in% names(xx)) {
-      xx <- xx[get(dvid) == endpoint]
+      rr <- dvid
+      xx <- xx[get(rr) == endpoint]
+      if(!nrow(xx)){
+        msg <- sprintf("No observations data for endpoint %s\n",endpoint)
+        stop(msg)
+      }
+      
     }else{
       msg <- sprintf("ggPMX can not filter by endpoint %s\n",endpoint)
       msg <- paste(msg,sprintf("%s is not a valid column in the observation data set",dvid))
-     
+      
       stop(msg)
     }
+  }
+  else{
+    if (dvid %in% names(xx)) {
+      rr <- dvid
+      ends <- unique(xx[,get(rr)])
+      if (length(ends)>0){
+        msg <- sprintf("Observation data contains multiple endpoints %s\n. ",paste(ends,collapse= " ; "))
+        msg <- paste(msg,"Please select a single endpoint to continue.")
+        
+        stop(msg)        
+      }
+      
+       
+    }
+    
   }
   
   
   
-    
+  
   id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
   if (length(id_col) == 0) {
     id_col <- names(xx)[1]
@@ -92,10 +113,15 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
   xx[, TIME := round(TIME, 4)]
   
-  setnames(xx, toupper(names(xx)))
-  if (all(c("MDV", "EVID") %in% names(xx))) {
+  
+  
+  
+  if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
+    setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
+    setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
     xx <- xx[!(EVID == 1 & MDV == 1)]
   }
+  
   
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {

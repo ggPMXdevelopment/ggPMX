@@ -44,7 +44,7 @@ pmx_comp_shrink <-
     ## stratification
     grp <- as.character(unlist(lapply(strat.facet, as.list)))
     grp <- unique(intersect(c(grp, strat.color), names(eta)))
-    eta <- eta[VAR == "eta" & grepl("mode", FUN)]
+    eta <- eta[grepl("mode", FUN)]
     cols <- c("ID", "EFFECT", "VALUE", grp)
     eta <- unique(eta[, cols, with = FALSE])
 
