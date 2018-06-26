@@ -40,7 +40,7 @@ pmx <-
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
-    dvid <- check_argument(dvid, "dvid")
+    ## dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
     if(missing(endpoint)) endpoint <- NULL
     assert_that(is_character_or_null(cats))
@@ -609,6 +609,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
       call. = FALSE
     )
   }
+  if (missing(dvid)) dvid <- NULL
   if (missing(occ) || is.null(occ) || is.na(occ)) occ <- ""
   if (missing(cats) || is.null(cats) || is.na(cats)) cats <- ""
   if (missing(conts) || is.null(conts) || is.na(conts)) conts <- ""

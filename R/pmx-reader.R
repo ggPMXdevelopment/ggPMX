@@ -62,7 +62,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   
   
   if (!is.null(endpoint)){
-    if (dvid %in% names(xx)) {
+    if (!is.null(dvid)  && dvid %in% names(xx)) {
       rr <- dvid
       xx <- xx[get(rr) == endpoint]
       if(!nrow(xx)){
@@ -78,11 +78,11 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     }
   }
   else{
-    if (dvid %in% names(xx)) {
+    if (!is.null(dvid)  && dvid %in% names(xx)) {
       rr <- dvid
       ends <- unique(xx[,get(rr)])
       if (length(ends)>1){
-        msg <- sprintf("Observation data contains multiple endpoints %s\n. ",paste(ends,collapse= " ; "))
+        msg <- sprintf("Observation data contains multiple endpoints %s. \n ",paste(ends,collapse= " ; "))
         msg <- paste(msg,"Please select a single endpoint to continue.")
         
         stop(msg)        
