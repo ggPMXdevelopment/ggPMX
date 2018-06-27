@@ -49,6 +49,7 @@ individual <- function(labels,
                        ipred_line = NULL,
                        pred_line = NULL,
                        point = NULL,
+                       bloq=NULL,
                        is.legend,
                        use.finegrid,
                        ...) {
@@ -71,6 +72,7 @@ individual <- function(labels,
     ipred_line = ipred_line,
     pred_line = pred_line,
     facets = facets,
+    bloq=bloq,
     gp = pmx_gpar(labels = labels, ...)
   ), class = c("individual", "pmx_gpar"))
 }
@@ -106,9 +108,9 @@ plot_pmx.individual <-
 
     get_page <- with(x, {
       p_point <- if (!is.null(point)) {
-        point$data <- input
-        do.call(geom_point, point)
-      }
+        point$data <- if(is.null(bloq))input else input[CENS!=1]
+        do.call(geom_point, point) 
+        }
       p_ipred <- if (!is.null(ipred_line)) {
         ipred_line$mapping <- aes(y = IPRED, linetype = "1")
         do.call(geom_line, ipred_line)
@@ -117,11 +119,16 @@ plot_pmx.individual <-
         pred_line$mapping <- aes(y = PRED, linetype = "2")
         do.call(geom_line, pred_line)
       }
-
+      
+    p_bloq <- if(!is.null(bloq)){
+        
+        bloq$mapping <- aes_string(xend = "TIME", yend = -Inf)
+        bloq$data <- x$input[CENS==1]
+        do.call(geom_segment, bloq)
+    }
 
       p <- ggplot(dx, aes(TIME, DV)) +
-        p_point + p_ipred + p_pred
-
+        p_point + p_ipred + p_pred + p_bloq
       p <- plot_pmx(gp, p)
       if (is.legend) {
         p <- p +
