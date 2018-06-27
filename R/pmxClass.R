@@ -160,6 +160,45 @@ pmx_settings <-
     )
   }
 
+
+
+
+#' Creates pmx endpoint object
+#'
+#' @param code \code{charcater} endpoint code  
+#' @param label \code{charcater} endpoint label
+#' @param unit  \code{character} endpoint unit 
+#' @param files  \code{list} 
+#' @param trans  \code{list}
+#' @export
+#'
+pmx_endpoint <-
+  function(code,
+           label="",
+           unit="",
+           files=NULL,
+           trans =NULL) {
+    
+    assert_that(is.character(code))
+    assert_that(is.character(unit))
+    assert_that(is.character(label))
+    assert_that(is_list_or_null(files))
+    assert_that(is_character_or_null(trans))
+    res <- list(
+      code = code,
+      label = label,
+      unit = unit,
+      files = files,
+      trans = trans
+    )
+    
+    structure(
+      res,
+      class = "pmxEndpointClass"
+    )
+  }
+
+
 #' Create a new plot  of the desired type
 #'
 #' @param ctr \code{pmxClass} controller object
