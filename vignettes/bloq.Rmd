@@ -45,10 +45,13 @@ Optionally, data set can contain have a limit column ( default to `LIMIT`) colum
 
 ## `pmx_bloq`
 
+Whithin ggPMX, to define a bloq we use `pmx_bloq` function. 
+
 ```{r}
 str(pmx_bloq(),1)
 ```
 
+This will create a `pmxBLOQ` object that defines the censoring and column definition and some graphical parameters. In the following ,we will show the use of it through some examples.
 
 # PK data below a lower limit of quantification
 

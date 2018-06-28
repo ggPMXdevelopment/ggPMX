@@ -124,7 +124,7 @@ plot_pmx.individual <-
       
       p_bloq <- if(!is.null(bloq)){
         bloq$data <- x$input[get(bloq$cens)!=0]
-        bloq$data[,"y_end" := ifelse(get(bloq$cens), Inf ,-Inf)]
+        bloq$data[,"y_end" := ifelse(get(bloq$cens)>0, -Inf ,Inf)]
         if(bloq$limit %in% names(bloq$data))         
           bloq$data[!is.na(get(bloq$limit)),"y_end" := as.numeric(get(bloq$limit))]
           bloq$mapping <- 
