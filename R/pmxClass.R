@@ -641,7 +641,7 @@ pmxClass <- R6::R6Class(
       ctr$plot_file_name <- pname_file
       self$report_queue <- c(self$report_queue,pname_file)
     },
-    dequeue_plot=function()pmx_dequeue_plot(self),
+    dequeue_plot=function() pmx_dequeue_plot(self),
     # Operations ---------------------------------------------------------------
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
@@ -863,11 +863,22 @@ pmx_set_config <- function(self, private, pname, new) {
 
 
 pmx_dequeue_plot <- function(self){
+  assert_that(is_none_empty_queue(self))
+  
   if(length(self$report_queue)){
     first <- self$report_queue[[1]]
     self$report_queue <- self$report_queue[-1]
     first
-  }
+  } 
+}
+
+pmx_fig_process_init <- function(self) {
+  report_queue= list()
+  report_n = 0
+}
+
+pmx_fig_process_wrapup <- function(self) {
+  assert_that(is_empty_queue(self))
 }
 
 pmx_get_plot <- function(self, private, pname) {
