@@ -36,7 +36,7 @@
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
 residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
-                     hline=NULL, dname=NULL, facets=NULL, ...) {
+                     hline=NULL, dname=NULL, facets=NULL,bloq=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -70,6 +70,7 @@ residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
       is.hline = is.hline,
       hline = hline,
       facets = facets,
+      bloq=bloq,
       gp = pmx_gpar(labels = labels, ...)
     ), class = c("residual", "pmx_gpar")
   )
@@ -102,10 +103,16 @@ plot_pmx.residual <- function(x, dx, ...) {
   with(x, {
     dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
 
-
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
 
     p <- p + do.call(geom_point, point)
+    
+    if(!is.null(bloq)){
+      bloq$data <- dx[get(bloq$cens)!=0]
+      bloq$cens <- bloq$limit <-  NULL
+      p <- p + do.call(geom_point, bloq)
+    }
+    
     if (is.hline) p <- p + do.call(geom_hline, hline)
 
 
@@ -148,6 +155,9 @@ plot_pmx.residual <- function(x, dx, ...) {
       }
       p <- p + do.call("facet_wrap", c(strat.facet, facets))
     }
+    
+    
+    
 
     p
   })

@@ -199,6 +199,42 @@ pmx_endpoint <-
   }
 
 
+
+#' Creates BLOQ object attributes
+#'
+#' @param cens the censoring column name
+#' @param limit the limit column name (optional)
+#' @param color the color of the geom 
+#' @param size the size of the geom
+#' @param alpha the alpha of the geom 
+#' @param ... any other graphical parameter
+#'
+#' @export
+#'
+pmx_bloq <-
+  function(
+    cens="CENS",
+    limit ="LIMIT",
+    color="pink",
+    size=2,
+    alpha=0.9,
+    ...){
+    res <- list(
+      cens=cens,
+      limit =limit,
+      color=color,
+      size=size,
+      alpha=alpha,
+      ...
+    )
+    
+    structure(
+      res,
+      class = "pmxBLOQClass"
+    )
+  }
+
+
 #' Create a new plot  of the desired type
 #'
 #' @param ctr \code{pmxClass} controller object
