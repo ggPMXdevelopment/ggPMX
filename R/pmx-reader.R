@@ -64,7 +64,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   if (!is.null(endpoint)){
     if (!is.null(dvid)  && dvid %in% names(xx)) {
       rr <- dvid
-      xx <- xx[get(rr) == endpoint]
+      xx <- xx[get(rr) == endpoint$code]
       if(!nrow(xx)){
         msg <- sprintf("No observations data for endpoint %s\n",endpoint)
         stop(msg)
@@ -249,9 +249,9 @@ load_data_set <- function(x, path, sys, ...) {
   if (!file.exists(fpath)) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
-      file_name <- sub("_", endpoint, x[["pattern"]])
+      file_name <- sub("_", endpoint$code, x[["pattern"]])
       fpath <- file.path(path, file_name)
-      message("use ", file_name, " for endpoint ", endpoint)
+      message("use ", file_name, " for endpoint ", endpoint$code)
     }
   }
   if (!file.exists(fpath)) {
@@ -309,16 +309,13 @@ load_source <- function(sys, path, dconf, ...) {
         load_data_set(x, path = path, sys = sys, ...)
       })
       
-      endpoint <- list(...)$endpoint
+      endpoint <- list(...)$endpoint$code
       if (is.null(endpoint)) endpoint <- 1
-      if (!is.null(dxs[["eta"]])) dxs[["eta"]][, DVID := endpoint]
       if (!is.null(dxs2[["predictions1"]]) && !is.null(dxs2[["predictions2"]])) {
         dxs[["predictions"]] <- dxs2[[sprintf("predictions%s", endpoint)]]
-        dxs[["predictions"]][, DVID := endpoint]
       }
       if (!is.null(dxs2[["finegrid1"]]) && !is.null(dxs2[["finegrid2"]])) {
         dxs[["finegrid"]] <- dxs2[[sprintf("finegrid%s", endpoint)]]
-        dxs[["finegrid"]][, DVID := endpoint]
       }
     }
     for (x in setdiff(names., pk_pd))

@@ -51,12 +51,13 @@ ctr %>% pmx_report(
 
 
 ##  case6: dynamic edit
-ctr <- theophylline()
-ctr %>% pmx_report(
-  save_dir = file.path(report_dir,"case6"),
-  name = "my_report",
-  output_type="report",
-  edit = TRUE)
+## uncomment to run 
+# ctr <- theophylline()
+# ctr %>% pmx_report(
+#   save_dir = file.path(report_dir,"case6"),
+#   name = "my_report",
+#   output_type="report",
+#   edit = TRUE)
 
 
 ## case7 : use custom template file 

@@ -30,6 +30,8 @@ check_argument <- function(value, pmxname) {
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
+#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} 
+#' of the endpoint code.   \code{\link{pmx_endpoint}} 
 #' @return a pmxClass object
 #' @seealso  \code{\link{pmx_mlx}}
 #' @export
@@ -42,7 +44,9 @@ pmx <-
     dv <- check_argument(dv, "dv")
     ## dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
-    if(missing(endpoint)) endpoint <- NULL
+    if(missing(endpoint)) {
+      endpoint <- NULL
+    }
     assert_that(is_character_or_null(cats))
     if (missing(conts)) conts <- ""
     assert_that(is_character_or_null(conts))
@@ -73,6 +77,8 @@ pmx <-
 #' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
+#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} 
+#' of the endpoint code.   \code{\link{pmx_endpoint}} 
 #' @seealso  \code{\link{pmx}}
 #' @return \code{pmxClass} object
 #' @export
@@ -179,7 +185,7 @@ pmx_endpoint <-
            files=NULL,
            trans =NULL) {
     
-    assert_that(is.character(code))
+    assert_that(is.character(code) || is.integer(code))
     assert_that(is.character(unit))
     assert_that(is.character(label))
     assert_that(is_list_or_null(files))
@@ -202,11 +208,12 @@ pmx_endpoint <-
 
 #' Creates BLOQ object attributes
 #'
-#' @param cens the censoring column name
-#' @param limit the limit column name (optional)
-#' @param color the color of the geom 
-#' @param size the size of the geom
-#' @param alpha the alpha of the geom 
+#' @param cens \code{character} the censoring column name
+#' @param limit \code{character}  the limit column name (optional)
+#' @param color \code{character}  the color of the geom 
+#' @param size \code{numeric}  the size of the geom
+#' @param alpha  \code{numeric}  the alpha of the geom 
+#' @param show \code{logical} if FALSE remove all censory observations 
 #' @param ... any other graphical parameter
 #'
 #' @export
@@ -218,10 +225,12 @@ pmx_bloq <-
     color="pink",
     size=2,
     alpha=0.9,
+    show=TRUE,
     ...){
     res <- list(
       cens=cens,
       limit =limit,
+      show=show,
       color=color,
       size=size,
       alpha=alpha,
@@ -434,7 +443,6 @@ plot_names <- function(ctr) {
 #' @family pmxclass
 #' @return data.frame of plots
 #' @export
-#' @importFrom methods existsFunction
 
 plots <- function(ctr) {
   assert_that(is_pmxclass(ctr))

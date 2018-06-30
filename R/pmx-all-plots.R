@@ -32,7 +32,7 @@ wrap_pmx_plot_generic <-
     params <- lang_to_expr(params)
     params$defaults_ <- ctr$config$plots[[toupper(pname)]]
     pp <- do.call(pmx_plot_generic, params)
-    if (ctr$footnote) {
+    if (ctr$footnote && !is.null(pp)) {
       ctr$enqueue_plot(pname)
       if (exists("footnote", params)) {
         footnote <- params$footnote
@@ -502,11 +502,10 @@ pmx_plot_eta_qq <-
 
 #' Register plot
 #'
-#' @param ctr 
-#' @param pp 
-#' @param pname 
+#' @param ctr \code{pmxClass} controller 
+#' @param pp \code{ggplot2} plot
+#' @param pname \code{character} plot nme
 #'
-#' @return
 #' @export
 pmx_register_plot <- 
   function(ctr, pp,pname=NULL){

@@ -145,8 +145,8 @@ is.formula <- function(x) {
 
 
 #' Creates pmx controller using theophylline data
-#' @param settings
-#' @param input_file
+#' @param settings \code{pmxSettings} object
+#' @param ...  other parameters of pmx_mlx like endpoint
 #' @return pmx controller
 #' @export
 #'

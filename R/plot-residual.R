@@ -12,6 +12,7 @@
 #' @param dname name of dataset to be used
 #' @param facets \code{list} wrap facetting in case of strat.facet
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
+#' @param bloq \code{pmxBLOQ} object createdby \code{\link{pmx_bloq}}
 
 #'
 #' @return a residual object

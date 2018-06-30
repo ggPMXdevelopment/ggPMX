@@ -146,6 +146,31 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
+.bloq_x <- function(x,self){
+  
+  if (!is.null(x[["bloq"]])) {
+    dx <- self %>% get_data("input")
+    if (!x$bloq$cens %in% names(dx)){
+      x$bloq <- NULL 
+      old_class <- class(x)
+      x <- append(x,list(bloq=NULL))
+      class(x) <- old_class
+    }else{
+      if(!x[["bloq"]]$show){
+        x$dx <-  x$dx[!get(x$bloq$cens)%in%c(1,-1)]
+        x$bloq <- NULL 
+        old_class <- class(x)
+        x <- append(x,list(bloq=NULL))
+        class(x) <- old_class
+      }else{
+        x[["bloq"]]$show <- NULL
+      }
+    }
+  }
+  
+  invisible(x)
+}
+
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)
   assert_that(is_pmx_gpar(x))
@@ -157,7 +182,8 @@ pmx_add_plot <- function(self, private, x, pname) {
     .filter_eta_x %>%
     .shrink_x(self) %>% 
     .add_cats_x(self) %>% 
-    .settings_x(self)
+    .settings_x(self) %>%
+    .bloq_x(self)
   
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)
