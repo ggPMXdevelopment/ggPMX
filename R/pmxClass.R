@@ -265,13 +265,16 @@ pmx_bloq <-
 #' @family pmxclass
 #' @return invisible ctr object
 #' @export
-set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
-                     pname,
-                     use.defaults=TRUE,
-                     filter =NULL, strat.color=NULL,
-                     strat.facet=NULL,
-                     color.scales=NULL,
-                     trans=NULL, ...) {
+set_plot <- function(
+  ctr, 
+  ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
+  pname,
+  use.defaults=TRUE,
+  filter =NULL, 
+  strat.color=NULL,
+  strat.facet=NULL,
+  color.scales=NULL,
+  trans=NULL, ...) {
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))

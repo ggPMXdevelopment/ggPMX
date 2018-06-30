@@ -9,6 +9,7 @@ before_add_check <- function(self, private, x, pname) {
   }
   dname <- x$dname
   dx <- copy(self$data[[dname]])
+  if(is.null(dx))return(NULL)
   assert_that(is.data.table(dx))
   x$input <- self %>% get_data("input")
   if (is.null(dx) || nrow(dx) == 0) {
@@ -173,6 +174,7 @@ before_add_check <- function(self, private, x, pname) {
 
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)
+  if(is.null(x))return(invisible(self))
   assert_that(is_pmx_gpar(x))
   x <- x %>% 
     .strat_supported %>%
