@@ -139,4 +139,18 @@ ctr <- pmx_mlx(
 
 
 ```
+`ggPMX` contains a wrapper   `pk_pd` : 
+
+```{r}
+ctr <- pk_pd("3")
+ctr %>% pmx_plot_cats("iwres_time")
+```
+
+and for the second endpoint: 
+
+```{r}
+ctr <- pk_pd("4")
+ctr %>% pmx_plot_cats("iwres_time")
+```
+
 

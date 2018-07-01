@@ -293,3 +293,48 @@ parse_mlxtran <- function(file_name) {
   if (length(occ) > 0) res$occ <- occ
   res
 }
+
+
+#' Creates pkpd pmx controller using package internal data
+#' @param settings \code{pmxSettings} object
+
+#' @param code  can be 3 or 4
+#' @export
+pk_pd <- function(code = "4"){
+  
+  
+  files_ <- switch (code,
+          "3"=list(
+            predictions="predictions1",
+            finegrid="finegrid1"),
+          "4"=list(
+            predictions="predictions2",
+            finegrid="finegrid2")
+  )
+          
+
+  
+  pk_pd_path <- file.path(
+    system.file(package = "ggPMX"), "testdata",
+    "pk_pd"
+  )
+  WORK_DIR <- file.path(pk_pd_path, "RESULTS")
+  ep <- pmx_endpoint(
+    code,
+    files = files_
+  )
+  
+  
+  input_file <- file.path(pk_pd_path, "pk_pd.csv")
+  
+  ctr <- pmx_mlx(
+    config = "standing",
+    directory = WORK_DIR,
+    input = input_file,
+    dv = "dv",
+    dvid = "dvid",
+    cats = "sex",
+    conts = "wt",
+    endpoint = ep
+  )
+}
