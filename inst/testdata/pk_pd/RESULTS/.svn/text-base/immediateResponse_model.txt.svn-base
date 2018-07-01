@@ -1,0 +1,8 @@
+[LONGITUDINAL]
+input = {Tlag, ka, V, Cl, Imax, IC50, S0}
+
+EQUATION:
+Cc = pkmodel(Tlag, ka, V, Cl)
+E = S0 * (1 - Imax*Cc/(Cc+IC50) )
+
+

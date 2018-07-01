@@ -1,0 +1,88 @@
+; this script is generated automatically
+
+<DATAFILE>
+
+[FILEINFO]
+file = 'pk_pd.csv'
+delimiter = comma
+header = {id, time, amt, dv, dvid, wt, sex, age}
+
+[CONTENT]
+id = {use=identifier}
+time = {use=time}
+amt = {use=amount}
+dv = {use=observation, name={abc, d4}, ytype={3, 4}, type={continuous, continuous}}
+dvid = {use=observationType}
+wt = {use=covariate, type=continuous}
+sex = {use=covariate, type=categorical}
+
+<MODEL>
+
+[COVARIATE]
+input = {wt, sex}
+sex = {type=categorical, categories={0, 1}}
+
+EQUATION:
+lw70 = log(wt/70)
+
+[INDIVIDUAL]
+input = {Tlag_pop, omega_Tlag, ka_pop, omega_ka, V_pop, beta_V_lw70, lw70, omega_V, Cl_pop, beta_Cl_lw70, omega_Cl, Imax_pop, omega_Imax, IC50_pop, omega_IC50, S0_pop, omega_S0}
+
+DEFINITION:
+Tlag = {distribution=lognormal, typical=Tlag_pop, sd=omega_Tlag}
+ka = {distribution=lognormal, typical=ka_pop, sd=omega_ka}
+V = {distribution=lognormal, typical=V_pop, covariate=lw70, coefficient=beta_V_lw70, sd=omega_V}
+Cl = {distribution=lognormal, typical=Cl_pop, covariate=lw70, coefficient=beta_Cl_lw70, sd=omega_Cl}
+Imax = {distribution=logitnormal, typical=Imax_pop, sd=omega_Imax}
+IC50 = {distribution=lognormal, typical=IC50_pop, sd=omega_IC50}
+S0 = {distribution=lognormal, typical=S0_pop, sd=omega_S0}
+
+[LONGITUDINAL]
+input = {a1, b1, a2}
+
+file = './immediateResponse_model.txt'
+
+DEFINITION:
+abc = {distribution=normal, prediction=Cc, errorModel=combined1(a1, b1)}
+
+d4 = {distribution=normal, prediction=E, errorModel=constant(a2)}
+
+<FIT>
+data = {abc, d4}
+model = {abc, d4}
+
+<PARAMETER>
+Tlag_pop = {value=1, method=MLE}
+omega_Tlag = {value=1, method=MLE}
+ka_pop = {value=1, method=MLE}
+omega_ka = {value=1, method=MLE}
+V_pop = {value=10, method=MLE}
+beta_V_lw70 = {value=0, method=MLE}
+omega_V = {value=1, method=MLE}
+Cl_pop = {value=0.1, method=MLE}
+beta_Cl_lw70 = {value=0, method=MLE}
+omega_Cl = {value=1, method=MLE}
+Imax_pop = {value=0.5, method=MLE}
+omega_Imax = {value=1, method=MLE}
+IC50_pop = {value=1, method=MLE}
+omega_IC50 = {value=1, method=MLE}
+S0_pop = {value=1, method=MLE}
+omega_S0 = {value=1, method=MLE}
+a1 = {value=0.3, method=MLE}
+b1 = {value=0.1, method=MLE}
+a2 = {value=1, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = conditionalMode)
+fim(method = Linearization)
+plotResult()
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'RESULTS'
+nbchains = 2
+autochains = no
+

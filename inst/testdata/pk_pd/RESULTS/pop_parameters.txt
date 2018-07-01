@@ -1,0 +1,67 @@
+******************************************************************
+*      warfarin_PKPDimmediate_project.mlxtran
+*      March 22, 2017 at 13:32:54
+*      Monolix version: 4.4.0
+******************************************************************
+
+Estimation of the population parameters
+
+               parameter     s.e. (lin)   r.s.e.(%)   p-value 
+Tlag_pop     :    0.778         0.19          24              
+ka_pop       :     1.24         0.34          27              
+V_pop        :     8.08         0.23           3              
+beta_V_lw70  :    0.897         0.14          16      3.5e-10 
+Cl_pop       :    0.134       0.0065           5              
+beta_Cl_lw70 :    0.594         0.26          43        0.021 
+Imax_pop     :    0.763        0.012           2              
+IC50_pop     :    0.187        0.054          29              
+S0_pop       :     95.2          1.5           2              
+
+omega_Tlag   :    0.566         0.18          31              
+omega_ka     :    0.756         0.22          29              
+omega_V      :    0.138        0.022          16              
+omega_Cl     :    0.267        0.035          13              
+omega_Imax   :   0.0947         0.12         123              
+omega_IC50   :    0.927         0.21          23              
+omega_S0     :   0.0204        0.045         219              
+
+a1           :    0.247        0.045          18              
+b1           :   0.0599       0.0091          15              
+a2           :     8.35         0.45           5              
+
+______________________________________________
+correlation matrix of the estimates(linearization)
+
+Tlag_pop          1                         
+ka_pop         0.28       1                      
+V_pop          0.08       0       1                   
+beta_V_lw70       0   -0.03    0.11       1                
+Cl_pop         0.03   -0.04       0       0       1             
+beta_Cl_lw70      0   -0.01      -0      -0    0.09       1          
+Imax_pop       0.01    0.01    0.02   -0.01   -0.01    0.01       1       
+IC50_pop       0.01    0.02    0.03   -0.01   -0.02    0.01    0.56       1    
+S0_pop            0       0       0      -0      -0       0    0.26   -0.11       1 
+
+Eigenvalues (min, max, max/min): 0.34  1.6  4.7
+
+omega_Tlag      1                            
+omega_ka     -0.1       1                         
+omega_V        -0      -0       1                      
+omega_Cl       -0      -0       0       1                   
+omega_Imax     -0       0       0       0       1                
+omega_IC50      0      -0      -0      -0   -0.32       1             
+omega_S0        0      -0       0       0   -0.07   -0.04       1          
+a1             -0    0.03    0.01   -0.01       0      -0      -0       1       
+b1             -0   -0.06   -0.06       0      -0       0       0   -0.79       1    
+a2              0      -0      -0      -0    -0.2   -0.01   -0.31      -0       0       1 
+
+Eigenvalues (min, max, max/min): 0.21  1.8  8.5
+
+Numerical covariates
+	lw70 = log(wt/70)		
+
+
+Population parameters and Fisher Information Matrix estimation...
+
+Elapsed time is 43.8 seconds. 
+CPU time is 61.5 seconds. 

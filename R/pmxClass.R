@@ -185,7 +185,7 @@ pmx_endpoint <-
            unit="",
            files=NULL,
            trans =NULL) {
-    assert_that(is.character(code) || is.integer(code))
+    assert_that(is.character(code))
     assert_that(is.character(unit))
     assert_that(is.character(label))
     assert_that(is_list_or_null(files))
@@ -727,6 +727,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   } else {
     self$input <- input
   }
+  
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,

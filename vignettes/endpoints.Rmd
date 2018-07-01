@@ -11,19 +11,24 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(ggPMX)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Context
 
-A model aims at predicting one (e.g., PK), two (e.g., PK and PD) endpoints. The measured value of the endpoint is denoted by DV.  IPRED and PRED are prediction for the endpoint.
-Each report is about one single endpoint. The endpoint (if specified) should in the controller call to keep only the corresponding values.
+- A model aims at predicting one (e.g., PK), two (e.g., PK and PD) endpoints. 
+
+- The measured value of the endpoint is denoted by *DV*. *IPRED* and *PRED* are predictions for the endpoint.
+
+- Each report is about one single endpoint. By consequence, the endpoint (if needed) is setted at the controller call `pmx` to filter the observations data set and to keep only the right values.
 
 # ggPMX endpoint
 
 Endpoint is defined by : 
 
 - The name of the DVID column : `DVID` charcater value to be passed to `pmx`. can be omited if not present in the observation data.
+
 - The endpoint value : `endpoint` can be an integer or any character value to be passed to `pmx`. `NULL` by default.
 
 
@@ -70,20 +75,20 @@ pmx_mlx(
 
 Endpoints attributes are:
 
-- **code** (integer or charcater :how the endpoint is coded)
+- **code** (charcater :how the endpoint is coded)
 - **label** (can be used in some plots title or the report file name)
 - **unit**  (used in the axis label for some plots)
-- **prefix** output filename prefix (use for filename (Section 3.4)), or list of output filenames 
+- **files** list of files :`list(predictions="predictions1.txt",finegrid ="finegrid1.txt")` 
 - **trans**: Whether the value must be transformed before being displayed and which transformation to use.
 
 To manage the general case , we should use the helper function `pmx_endpoint` defines as :
-```{r, eval =FALSE}
+```{r}
 ep <- pmx_endpoint(
   code = "zz",
   label = "some_label",
   unit = "some_unit",
-  prefix = "2",
-  trans=(TRUE,"log10")
+  files = list(predictions="predictions1.txt",finegrid ="finegrid1.txt"),
+  trans="log10"
 )
 
 ```
@@ -98,3 +103,40 @@ pmx_mlx(
   endpoint = ep,    
   ...)            
 ```
+
+
+
+# Example 
+
+
+```{r}
+
+pk_pd_path <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  "pk_pd"
+)
+WORK_DIR <- file.path(pk_pd_path, "RESULTS")
+ep <- pmx_endpoint(
+  "4",
+  files = list(
+    predictions="predictions2",
+    finegrid="finegrid2")
+)
+
+
+input_file <- file.path(pk_pd_path, "pk_pd.csv")
+
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = WORK_DIR,
+  input = input_file,
+  dv = "dv",
+  dvid = "dvid",
+  cats = "sex",
+  conts = "wt",
+  endpoint = ep
+)
+
+
+```
+

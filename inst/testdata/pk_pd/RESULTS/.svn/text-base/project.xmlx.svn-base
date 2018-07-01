@@ -1,0 +1,923 @@
+<monolix>
+	<project mlxVersion="4.4.0" name="project.xmlx" version="2">
+		<covariateDefinitionList>
+			<covariateDefinition columnName="wt" name="lw70" transformation="log(cov/70)" type="continuous"/>
+			<covariateDefinition columnName="sex" type="categorical">
+				<groupList>
+					<group name="0" reference="true"/>
+					<group name="1"/>
+				</groupList>
+			</covariateDefinition>
+		</covariateDefinitionList>
+		<data columnDelimiter="," commentSymbol="%" dosesToAddForSteadyState="5" headers="ID,TIME,AMT,Y,YTYPE,COV,CAT,IGNORE" uri="%MLXPROJECT%/../warfarin_data2.csv"/>
+		<models>
+			<statisticalModels>
+				<observationModelList>
+					<observationModel name="abc" outputId="1" pred="Cc" type="continuous">
+						<error alias="comb1">
+							<parameterList>
+								<parameter estimationMethod="MLE" initialization="0.3" name="a"/>
+								<parameter estimationMethod="MLE" initialization="0.1" name="b"/>
+							</parameterList>
+						</error>
+					</observationModel>
+					<observationModel name="d4" outputId="2" pred="E" type="continuous">
+						<error alias="const">
+							<parameterList>
+								<parameter estimationMethod="MLE" initialization="1" name="a"/>
+							</parameterList>
+						</error>
+					</observationModel>
+				</observationModelList>
+				<parameterList>
+					<parameter name="Tlag" transformation="L">
+						<intercept estimationMethod="MLE" initialization="1"/>
+						<variability estimationMethod="MLE" initialization="1" level="1" levelName="IIV"/>
+					</parameter>
+					<parameter name="ka" transformation="L">
+						<intercept estimationMethod="MLE" initialization="1"/>
+						<variability estimationMethod="MLE" initialization="1" level="1" levelName="IIV"/>
+					</parameter>
+					<parameter name="V" transformation="L">
+						<betaList>
+							<beta covariate="lw70" estimationMethod="MLE" initialization="0"/>
+						</betaList>
+						<intercept estimationMethod="MLE" initialization="10"/>
+						<variability estimationMethod="MLE" initialization="1" level="1" levelName="IIV"/>
+					</parameter>
+					<parameter name="Cl" transformation="L">
+						<betaList>
+							<beta covariate="lw70" estimationMethod="MLE" initialization="0"/>
+						</betaList>
+						<intercept estimationMethod="MLE" initialization="0.1"/>
+						<variability estimationMethod="MLE" initialization="1" level="1" levelName="IIV"/>
+					</parameter>
+					<parameter name="Imax" transformation="G">
+						<intercept estimationMethod="MLE" initialization="0.5"/>
+						<variability estimationMethod="MLE" initialization="1" level="1" levelName="IIV"/>
+					</parameter>
+					<parameter name="IC50" transformation="L">
+						<intercept estimationMethod="MLE" initialization="1"/>
+						<variability estimationMethod="MLE" initialization="1" level="1" levelName="IIV"/>
+					</parameter>
+					<parameter name="S0" transformation="L">
+						<intercept estimationMethod="MLE" initialization="1"/>
+						<variability estimationMethod="MLE" initialization="1" level="1" levelName="IIV"/>
+					</parameter>
+				</parameterList>
+			</statisticalModels>
+			<structuralModelList>
+				<structuralModel id="1" name="mlxt:immediateResponse_model" output="1,2" outputName="Cc,E" uri="%MLXPROJECT%"/>
+			</structuralModelList>
+		</models>
+		<settings>
+			<algorithms seed="123456">
+				<commonSettings>
+					<seed value="123456"/>
+				</commonSettings>
+				<fisherInformationMatrix>
+					<L_mcmc value="50"/>
+					<Nsim value="100000"/>
+					<fr_rmcmc value="0.4"/>
+					<nburn_iter value="10"/>
+					<nktest value="1"/>
+					<nu value="2,0,2,2"/>
+					<reldiff value="0.001"/>
+					<retries value="5"/>
+					<rmcmc value="0.3"/>
+					<timeEstimator value="auto"/>
+				</fisherInformationMatrix>
+				<individualParameters>
+					<L_mcmc value="50"/>
+					<fr_rmcmc value="0.4"/>
+					<kdisp value="50"/>
+					<kiter_hmm value="50"/>
+					<mixt_iter value="100"/>
+					<nb_max_simulated_eta value="50"/>
+					<nb_max_simulated_theta value="1000"/>
+					<niter_hmm value="200"/>
+					<nu value="2,0,2,2"/>
+					<r_mcmc value="0.05"/>
+					<rmcmc value="0.3"/>
+					<take_eta_ratio value="0.5"/>
+					<take_prior_iterations value="1"/>
+					<take_prior_ratio value="0.1"/>
+					<tempf_hmm value="10"/>
+					<tempi_hmm value="10"/>
+					<timeEstimator value="auto"/>
+				</individualParameters>
+				<linearization>
+					<Nsim value="100000"/>
+					<mindiff value="1e-10"/>
+					<reldiff value="0.001"/>
+				</linearization>
+				<logLikelihood>
+					<MMindiv value="10"/>
+					<M_is value="20000"/>
+					<Mtest_is value="2000"/>
+					<optimize value="0"/>
+					<tdof value="5"/>
+					<tdof_fixed value="5"/>
+					<tdof_opt value="1,2,5,10,15"/>
+					<timeEstimator value="auto"/>
+				</logLikelihood>
+				<populationParameters>
+					<DGamma2_phi0_ini value="1"/>
+					<K0 value="5"/>
+					<acceptanceRatio value="0.85"/>
+					<coef_sa value="0.95,0.95"/>
+					<dU value="5"/>
+					<em_niter value="10"/>
+					<fr_rmcmc value="0.4"/>
+					<freq_error_c value="20"/>
+					<iop_Kauto value="1,1"/>
+					<iop_nmc value="false"/>
+					<iop_sa value="1"/>
+					<kde0 value="25"/>
+					<kdisp value="50"/>
+					<lK value="100,50"/>
+					<maxIterForTimes value="200"/>
+					<maxIter_initEta value="50"/>
+					<min_prop value="0.1"/>
+					<nb_indiv value="50"/>
+					<niter_cov value="4"/>
+					<niter_mcmc value="20"/>
+					<nmc value="2"/>
+					<no_autocorr value="50"/>
+					<no_const_error value="5"/>
+					<no_mixture value="100"/>
+					<nu value="2,0,2,2"/>
+					<nu_times value="2"/>
+					<optim_iter value="20"/>
+					<rG value="0.5"/>
+					<rK2 value="0.1"/>
+					<rmcmc value="0.3"/>
+					<sd_alpha value="2"/>
+					<sd_ratio value="4"/>
+					<sign_df value="10"/>
+					<strategy value="2"/>
+					<va value="0,1"/>
+					<vna value="500,200"/>
+				</populationParameters>
+				<results>
+					<Knpde value="500"/>
+					<Knpde_ode value="100"/>
+					<Kvpc value="100"/>
+					<Kvpc_ode value="50"/>
+					<max_vectorsize value="Inf"/>
+					<nx value="100"/>
+					<timeEstimator value="auto"/>
+				</results>
+				<simulation>
+					<nbReplicates value="1"/>
+					<option value="1"/>
+					<seed value="123456"/>
+				</simulation>
+			</algorithms>
+			<graphics>
+				<graphicList>
+					<graphic name="projectSummary" out="1"/>
+					<graphic name="projectSummary" out="2"/>
+					<graphic name="spaghetti" out="1">
+						<colorCensData value="0"/>
+						<displayCensData value="0"/>
+						<groupColor value="1"/>
+						<groupFilterIndividual value="1"/>
+						<groupFilterObservation value="1"/>
+						<groupSplit value="1"/>
+						<legend value="0"/>
+						<regId value="1"/>
+						<segment value="1"/>
+						<withInfos value="1"/>
+					</graphic>
+					<graphic name="spaghetti" out="2">
+						<colorCensData value="0"/>
+						<displayCensData value="0"/>
+						<groupColor value="1"/>
+						<groupFilterIndividual value="1"/>
+						<groupFilterObservation value="1"/>
+						<groupSplit value="1"/>
+						<legend value="0"/>
+						<regId value="1"/>
+						<segment value="1"/>
+						<withInfos value="1"/>
+					</graphic>
+					<graphic name="individualFits" out="1">
+						<displayInfos value="0"/>
+						<filterObs value="1"/>
+						<firstIndividual value="1"/>
+						<iovSeparated value="1"/>
+						<nbColumnsInGraphic value="4"/>
+						<nbRowsInGraphic value="3"/>
+						<percentile value="3" vector="5,50,95"/>
+						<selectInd value="2"/>
+						<withCens value="1"/>
+						<withInterval value="0"/>
+						<withLegend value="0"/>
+						<withMedian value="0"/>
+						<withObservedData value="1"/>
+						<withPop value="0"/>
+						<xRegNameId value="1"/>
+					</graphic>
+					<graphic name="individualFits" out="2">
+						<displayInfos value="0"/>
+						<filterObs value="1"/>
+						<firstIndividual value="1"/>
+						<iovSeparated value="1"/>
+						<nbColumnsInGraphic value="4"/>
+						<nbRowsInGraphic value="3"/>
+						<percentile value="3" vector="5,50,95"/>
+						<selectInd value="2"/>
+						<withCens value="1"/>
+						<withInterval value="0"/>
+						<withLegend value="0"/>
+						<withMedian value="0"/>
+						<withObservedData value="1"/>
+						<withPop value="0"/>
+						<xRegNameId value="1"/>
+					</graphic>
+					<graphic name="predVsObs" out="1">
+						<beta_reg value="0.75"/>
+						<ind_estimator value="1"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaycens value="1"/>
+						<iop_displayobs value="1"/>
+						<iop_displayspline value="1"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<pop_estimator value="1"/>
+						<segments value="0"/>
+					</graphic>
+					<graphic name="predVsObs" out="2">
+						<beta_reg value="0.75"/>
+						<ind_estimator value="1"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaycens value="1"/>
+						<iop_displayobs value="1"/>
+						<iop_displayspline value="1"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<pop_estimator value="1"/>
+						<segments value="0"/>
+					</graphic>
+					<graphic name="residuals" out="1">
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<beta_reg value="0.75"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="1"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="1"/>
+						<iop_displayciout value="0"/>
+						<iop_displayciprct value="0"/>
+						<iop_displayemdens value="1"/>
+						<iop_displayemprct value="0"/>
+						<iop_displayhisto value="0"/>
+						<iop_displayobs value="1"/>
+						<iop_displayoutprct value="0"/>
+						<iop_displayspline value="0"/>
+						<iop_displaythdens value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+						<select_graphics value="4" vector="1,1,1,0"/>
+						<select_residual value="6" vector="0,1,0,1,1,0"/>
+					</graphic>
+					<graphic name="residuals" out="2">
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<beta_reg value="0.75"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="1"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="1"/>
+						<iop_displayciout value="0"/>
+						<iop_displayciprct value="0"/>
+						<iop_displayemdens value="1"/>
+						<iop_displayemprct value="0"/>
+						<iop_displayhisto value="0"/>
+						<iop_displayobs value="1"/>
+						<iop_displayoutprct value="0"/>
+						<iop_displayspline value="0"/>
+						<iop_displaythdens value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+						<select_graphics value="4" vector="1,1,1,0"/>
+						<select_residual value="6" vector="0,1,0,1,1,0"/>
+					</graphic>
+					<graphic name="covariates" out="0">
+						<applyColor value="1"/>
+						<applyFilter value="1"/>
+						<applySplit value="0"/>
+						<currentParamEstimator value="3"/>
+						<displayCorrelation value="0"/>
+						<displayData value="1"/>
+						<displayEta value="0"/>
+						<displayGroupSplit value="1"/>
+						<displayLegend value="0"/>
+						<displayParameters value="1"/>
+						<displayRegression value="1"/>
+						<displaySplines value="0"/>
+						<displayYEqZero value="0"/>
+						<nbColumnsInGraphic value="1"/>
+						<nbRowsInGraphic value="1"/>
+						<splines_beta_reg value="0.4"/>
+					</graphic>
+					<graphic name="VPC" out="1">
+						<BLQ_displayCI value="1"/>
+						<BLQ_displayData value="1"/>
+						<BLQ_displayLegend value="1"/>
+						<BLQ_displayMedian value="1"/>
+						<BLQ_displayOutliers value="1"/>
+						<BLQ_lengthGrid value="10"/>
+						<BLQ_percentile value="5"/>
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<NPC_displayCI value="1"/>
+						<NPC_displayData value="1"/>
+						<NPC_displayLegend value="1"/>
+						<NPC_displayMedian value="0"/>
+						<NPC_displayOutliers value="1"/>
+						<NPC_iop_blqres value="2"/>
+						<NPC_iop_censcalc value="1"/>
+						<NPC_lengthGrid value="100"/>
+						<NPC_percentile value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="0"/>
+						<iop_displayciout value="1"/>
+						<iop_displayciprct value="1"/>
+						<iop_displayemprct value="1"/>
+						<iop_displayobs value="0"/>
+						<iop_displayoutprct value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<iop_predcor value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+					</graphic>
+					<graphic name="VPC" out="2">
+						<BLQ_displayCI value="1"/>
+						<BLQ_displayData value="1"/>
+						<BLQ_displayLegend value="1"/>
+						<BLQ_displayMedian value="1"/>
+						<BLQ_displayOutliers value="1"/>
+						<BLQ_lengthGrid value="10"/>
+						<BLQ_percentile value="5"/>
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<NPC_displayCI value="1"/>
+						<NPC_displayData value="1"/>
+						<NPC_displayLegend value="1"/>
+						<NPC_displayMedian value="0"/>
+						<NPC_displayOutliers value="1"/>
+						<NPC_iop_blqres value="2"/>
+						<NPC_iop_censcalc value="1"/>
+						<NPC_lengthGrid value="100"/>
+						<NPC_percentile value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="0"/>
+						<iop_displayciout value="1"/>
+						<iop_displayciprct value="1"/>
+						<iop_displayemprct value="1"/>
+						<iop_displayobs value="0"/>
+						<iop_displayoutprct value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<iop_predcor value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+					</graphic>
+					<graphic name="NPC" out="1">
+						<BLQ_displayCI value="1"/>
+						<BLQ_displayData value="1"/>
+						<BLQ_displayLegend value="1"/>
+						<BLQ_displayMedian value="1"/>
+						<BLQ_displayOutliers value="1"/>
+						<BLQ_lengthGrid value="10"/>
+						<BLQ_percentile value="5"/>
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<NPC_displayCI value="1"/>
+						<NPC_displayData value="1"/>
+						<NPC_displayLegend value="1"/>
+						<NPC_displayMedian value="0"/>
+						<NPC_displayOutliers value="1"/>
+						<NPC_iop_blqres value="2"/>
+						<NPC_iop_censcalc value="1"/>
+						<NPC_lengthGrid value="100"/>
+						<NPC_percentile value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="0"/>
+						<iop_displayciout value="1"/>
+						<iop_displayciprct value="1"/>
+						<iop_displayemprct value="1"/>
+						<iop_displayobs value="0"/>
+						<iop_displayoutprct value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<iop_predcor value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+					</graphic>
+					<graphic name="NPC" out="2">
+						<BLQ_displayCI value="1"/>
+						<BLQ_displayData value="1"/>
+						<BLQ_displayLegend value="1"/>
+						<BLQ_displayMedian value="1"/>
+						<BLQ_displayOutliers value="1"/>
+						<BLQ_lengthGrid value="10"/>
+						<BLQ_percentile value="5"/>
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<NPC_displayCI value="1"/>
+						<NPC_displayData value="1"/>
+						<NPC_displayLegend value="1"/>
+						<NPC_displayMedian value="0"/>
+						<NPC_displayOutliers value="1"/>
+						<NPC_iop_blqres value="2"/>
+						<NPC_iop_censcalc value="1"/>
+						<NPC_lengthGrid value="100"/>
+						<NPC_percentile value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="0"/>
+						<iop_displayciout value="1"/>
+						<iop_displayciprct value="1"/>
+						<iop_displayemprct value="1"/>
+						<iop_displayobs value="0"/>
+						<iop_displayoutprct value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<iop_predcor value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+					</graphic>
+					<graphic name="BLQ" out="1">
+						<BLQ_displayCI value="1"/>
+						<BLQ_displayData value="1"/>
+						<BLQ_displayLegend value="1"/>
+						<BLQ_displayMedian value="0"/>
+						<BLQ_displayOutliers value="1"/>
+						<BLQ_lengthGrid value="200"/>
+						<BLQ_percentile value="5"/>
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<NPC_displayCI value="1"/>
+						<NPC_displayData value="1"/>
+						<NPC_displayLegend value="1"/>
+						<NPC_displayMedian value="0"/>
+						<NPC_displayOutliers value="1"/>
+						<NPC_iop_blqres value="2"/>
+						<NPC_iop_censcalc value="1"/>
+						<NPC_lengthGrid value="100"/>
+						<NPC_percentile value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="0"/>
+						<iop_displayciout value="1"/>
+						<iop_displayciprct value="1"/>
+						<iop_displayemprct value="1"/>
+						<iop_displayobs value="0"/>
+						<iop_displayoutprct value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<iop_predcor value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+					</graphic>
+					<graphic name="BLQ" out="2">
+						<BLQ_displayCI value="1"/>
+						<BLQ_displayData value="1"/>
+						<BLQ_displayLegend value="1"/>
+						<BLQ_displayMedian value="0"/>
+						<BLQ_displayOutliers value="1"/>
+						<BLQ_lengthGrid value="200"/>
+						<BLQ_percentile value="5"/>
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<NPC_displayCI value="1"/>
+						<NPC_displayData value="1"/>
+						<NPC_displayLegend value="1"/>
+						<NPC_displayMedian value="0"/>
+						<NPC_displayOutliers value="1"/>
+						<NPC_iop_blqres value="2"/>
+						<NPC_iop_censcalc value="1"/>
+						<NPC_lengthGrid value="100"/>
+						<NPC_percentile value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<gamma value="0"/>
+						<iop_blqres value="2"/>
+						<iop_censcalc value="1"/>
+						<iop_colorcens value="0"/>
+						<iop_colorobs value="1"/>
+						<iop_displaybins value="0"/>
+						<iop_displaycens value="0"/>
+						<iop_displayciout value="1"/>
+						<iop_displayciprct value="1"/>
+						<iop_displayemprct value="1"/>
+						<iop_displayobs value="0"/>
+						<iop_displayoutprct value="1"/>
+						<iop_displaythprct value="0"/>
+						<iop_gfind value="1"/>
+						<iop_gfobs value="1"/>
+						<iop_gs value="1"/>
+						<iop_legend value="1"/>
+						<iop_predcor value="0"/>
+						<level value="90"/>
+						<lmin value="10"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+					</graphic>
+					<graphic name="vpcPredDist" out="1">
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<gamma value="0"/>
+						<level value="80"/>
+						<lmin value="10"/>
+						<nbDiscretePercentile value="9"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<percentileType value="2"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+						<withBins value="0"/>
+						<withLegend value="0"/>
+						<withMedian value="1"/>
+						<withObservedData value="0"/>
+						<withPercentile value="0"/>
+						<withPercentileFill value="1"/>
+						<withText value="1"/>
+					</graphic>
+					<graphic name="vpcPredDist" out="2">
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<alpha value="0.0005"/>
+						<beta value="0.4"/>
+						<continous value="1"/>
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<gamma value="0"/>
+						<level value="80"/>
+						<lmin value="10"/>
+						<nbDiscretePercentile value="9"/>
+						<nmax value="200"/>
+						<obin value="3"/>
+						<percentileType value="2"/>
+						<prctile value="3" vector="10,50,90"/>
+						<selectK value="1"/>
+						<withBins value="0"/>
+						<withLegend value="0"/>
+						<withMedian value="1"/>
+						<withObservedData value="0"/>
+						<withPercentile value="0"/>
+						<withPercentileFill value="1"/>
+						<withText value="1"/>
+					</graphic>
+					<graphic name="categorizedData" out="1">
+						<XBins_K value="10"/>
+						<XBins_Kmax value="30"/>
+						<XBins_Kmin value="5"/>
+						<XBins_alpha value="0.0005"/>
+						<XBins_beta value="0.4"/>
+						<XBins_lmin value="10"/>
+						<XBins_nmax value="200"/>
+						<XBins_obin value="3"/>
+						<XBins_selectK value="1"/>
+						<YBins_K value="5"/>
+						<YBins_Kmax value="7"/>
+						<YBins_Kmin value="3"/>
+						<YBins_alpha value="0.0005"/>
+						<YBins_beta value="0.4"/>
+						<YBins_lmin value="10"/>
+						<YBins_nmax value="200"/>
+						<YBins_obin value="3"/>
+						<YBins_selectK value="1"/>
+						<applyFilterInd value="1"/>
+						<applyFilterObs value="1"/>
+						<applySplit value="1"/>
+						<displayCI value="1"/>
+						<displayData value="1"/>
+						<displayLegend value="1"/>
+						<displayMedian value="0"/>
+						<displayOutliers value="1"/>
+						<displayXBins value="0"/>
+						<percentile value="5"/>
+					</graphic>
+					<graphic name="categorizedData" out="2">
+						<XBins_K value="10"/>
+						<XBins_Kmax value="30"/>
+						<XBins_Kmin value="5"/>
+						<XBins_alpha value="0.0005"/>
+						<XBins_beta value="0.4"/>
+						<XBins_lmin value="10"/>
+						<XBins_nmax value="200"/>
+						<XBins_obin value="3"/>
+						<XBins_selectK value="1"/>
+						<YBins_K value="5"/>
+						<YBins_Kmax value="7"/>
+						<YBins_Kmin value="3"/>
+						<YBins_alpha value="0.0005"/>
+						<YBins_beta value="0.4"/>
+						<YBins_lmin value="10"/>
+						<YBins_nmax value="200"/>
+						<YBins_obin value="3"/>
+						<YBins_selectK value="1"/>
+						<applyFilterInd value="1"/>
+						<applyFilterObs value="1"/>
+						<applySplit value="1"/>
+						<displayCI value="1"/>
+						<displayData value="1"/>
+						<displayLegend value="1"/>
+						<displayMedian value="0"/>
+						<displayOutliers value="1"/>
+						<displayXBins value="0"/>
+						<percentile value="5"/>
+					</graphic>
+					<graphic name="distPsi" out="0">
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<iop_Fb value="0"/>
+						<iop_bar value="0"/>
+						<iop_dk value="0"/>
+						<iop_fk value="1"/>
+						<iop_fm value="0"/>
+						<iop_gr value="0"/>
+						<selectPhi value="2"/>
+						<withInfos value="0"/>
+						<withLegend value="0"/>
+					</graphic>
+					<graphic name="boxplot" out="0">
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<refLine value="1"/>
+						<selectEta value="2"/>
+						<shrink value="1"/>
+					</graphic>
+					<graphic name="jointDist" out="0">
+						<filterColor value="1"/>
+						<filterIndividual value="1"/>
+						<selectEta value="2"/>
+						<withData value="1"/>
+						<withRegression value="1"/>
+						<withSpline value="1"/>
+					</graphic>
+					<graphic name="kaplanMeier" out="1">
+						<accuracy value="100"/>
+						<filterColor value="1"/>
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<graphicType value="0"/>
+						<level value="90"/>
+						<nbDiscretePercentile value="1"/>
+						<withCI value="0"/>
+						<withCensored value="0"/>
+						<withLegend value="0"/>
+						<withMedian value="0"/>
+						<withSurvival value="1"/>
+					</graphic>
+					<graphic name="kaplanMeier" out="2">
+						<accuracy value="100"/>
+						<filterColor value="1"/>
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<graphicType value="0"/>
+						<level value="90"/>
+						<nbDiscretePercentile value="1"/>
+						<withCI value="0"/>
+						<withCensored value="0"/>
+						<withLegend value="0"/>
+						<withMedian value="0"/>
+						<withSurvival value="1"/>
+					</graphic>
+					<graphic name="transProba" out="1">
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<beta value="0.4"/>
+						<cumulativeProportion value="0"/>
+						<filterIndividual value="1"/>
+						<filterObservation value="1"/>
+						<filterSplit value="1"/>
+						<listModality value="1"/>
+						<lmin value="10"/>
+						<obin value="3"/>
+						<selectK value="1"/>
+						<withBins value="0"/>
+						<withLegend value="0"/>
+					</graphic>
+					<graphic name="transProba" out="2">
+						<K value="10"/>
+						<Kmax value="30"/>
+						<Kmin value="5"/>
+						<beta value="0.4"/>
+						<cumulativeProportion value="0"/>
+						<filterIndividual value="1"/>
+						<filterObservation value="1"/>
+						<filterSplit value="1"/>
+						<listModality value="1"/>
+						<lmin value="10"/>
+						<obin value="3"/>
+						<selectK value="1"/>
+						<withBins value="0"/>
+						<withLegend value="0"/>
+					</graphic>
+					<graphic name="bayesian" out="0">
+						<histo value="0"/>
+						<nonParamDensity value="1"/>
+						<prior value="0"/>
+						<withLegend value="0"/>
+					</graphic>
+					<graphic name="individualContribution" out="1">
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<label value="1"/>
+						<method value="0"/>
+						<sorted value="1"/>
+						<withLegend value="1"/>
+					</graphic>
+					<graphic name="individualContribution" out="2">
+						<filterIndividual value="1"/>
+						<filterSplit value="1"/>
+						<label value="1"/>
+						<method value="0"/>
+						<sorted value="1"/>
+						<withLegend value="1"/>
+					</graphic>
+					<graphic name="cvSAEM" out="0">
+						<firstIndividual value="1"/>
+						<nbParam value="100"/>
+					</graphic>
+				</graphicList>
+				<graphicsToPrint>
+					<BLQ value="1"/>
+					<NPC value="1"/>
+					<VPC value="1"/>
+					<bayesian value="1"/>
+					<boxplot value="1"/>
+					<categorizedData value="1"/>
+					<covTable value="1"/>
+					<covariates value="1"/>
+					<cvSAEM value="1"/>
+					<distPsi value="1"/>
+					<fullTimes value="1"/>
+					<indContTable value="1"/>
+					<individualContribution value="1"/>
+					<individualFits value="1"/>
+					<intTimes value="1"/>
+					<jointDist value="1"/>
+					<kaplanMeier value="1"/>
+					<obsTimes value="1"/>
+					<predVsObs value="1"/>
+					<projectSummary value="1"/>
+					<residuals value="1"/>
+					<spaghetti value="1"/>
+					<transProba value="1"/>
+					<vpcPredDist value="1"/>
+				</graphicsToPrint>
+				<version value="420"/>
+			</graphics>
+			<options>
+				<estimateVariances value="false"/>
+				<resultFolder uri="%MLXPROJECT%"/>
+				<showStandardErrorsInPercents value="true"/>
+			</options>
+			<tasks>
+				<fisherInformationMatrixAlgorithms linearization="true"/>
+				<individualParameterAlgorithms conditionalDistribution="false" conditionalMode="true"/>
+				<logLikelihoodAlgorithms importantSampling="false" linearization="true"/>
+				<scenario computeResults="true" estimateFisherInformationMatrix="true" estimateIndividualParameters="true" estimateLogLikelihood="false" estimatePopulationParameters="true"/>
+			</tasks>
+		</settings>
+	</project>
+</monolix>
