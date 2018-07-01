@@ -66,12 +66,12 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
       rr <- dvid
       xx <- xx[get(rr) == endpoint$code]
       if(!nrow(xx)){
-        msg <- sprintf("No observations data for endpoint %s\n",endpoint)
+        msg <- sprintf("No observations data for endpoint %s\n",endpoint$code)
         stop(msg)
       }
       
     }else{
-      msg <- sprintf("ggPMX can not filter by endpoint %s\n",endpoint)
+      msg <- sprintf("ggPMX can not filter by endpoint %s\n",endpoint$code)
       msg <- paste(msg,sprintf("%s is not a valid column in the observation data set",dvid))
       
       stop(msg)
@@ -88,7 +88,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
         stop(msg)        
       }
       
-       
+      
     }
     
   }
@@ -249,13 +249,20 @@ load_data_set <- function(x, path, sys, ...) {
   if (!file.exists(fpath)) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
-      file_name <- sub("_", endpoint$code, x[["pattern"]])
+      if(!is.null(endpoint$files)){
+        ff <- endpoint$files
+        file_name <- sprintf("%s.txt",ff[[x[["pattern"]]]])
+      }else{
+        file_name <- sprintf("%s%s.txt",x[["pattern"]],endpoint$code)
+      }
+      
       fpath <- file.path(path, file_name)
-      message("use ", file_name, " for endpoint ", endpoint$code)
+      if(length(fpath)>0 && file.exists(fpath))
+        message("use ", file_name, " for endpoint ", endpoint$code)
     }
   }
-  if (!file.exists(fpath)) {
-    message("file ", x[["file"]], " do not exist")
+  if (length(fpath) ==0 || !file.exists(fpath)) {
+    message(sub(".txt","",x[["file"]]), " file do not exist")
     return(NULL)
   }
   
@@ -289,41 +296,10 @@ load_data_set <- function(x, path, sys, ...) {
 #' @return list of data.table
 #' @export
 load_source <- function(sys, path, dconf, ...) {
-  names. <- names(dconf)
-  DVID <- NULL
-  
-  
-  
-  pk_pd <- c("predictions1", "predictions2", "finegrid1", "finegrid2")
-  datasets <- dconf[setdiff(names., pk_pd)]
-  nn <- names(datasets)
-  dxs <- lapply(datasets[nn], function(x) {
+  dxs <- lapply(dconf, function(x) {
     load_data_set(x, path = path, sys = sys, ...)
   })
   
-  ## case multi endpoints
-  if (sum(grepl("predictions", names(dconf))) > 0) {
-    if (is.null(dxs[["predictions"]])) {
-      datasets <- dconf[pk_pd]
-      dxs2 <- lapply(datasets, function(x) {
-        load_data_set(x, path = path, sys = sys, ...)
-      })
-      
-      endpoint <- list(...)$endpoint$code
-      if (is.null(endpoint)) endpoint <- 1
-      if (!is.null(dxs2[["predictions1"]]) && !is.null(dxs2[["predictions2"]])) {
-        dxs[["predictions"]] <- dxs2[[sprintf("predictions%s", endpoint)]]
-      }
-      if (!is.null(dxs2[["finegrid1"]]) && !is.null(dxs2[["finegrid2"]])) {
-        dxs[["finegrid"]] <- dxs2[[sprintf("finegrid%s", endpoint)]]
-      }
-    }
-    for (x in setdiff(names., pk_pd))
-      if (is.null(dxs[[x]])) {
-        message(sprintf(" %s FILE DOES NOT exist", x))
-      }
-  }
-  
-  
+
   dxs
 }
