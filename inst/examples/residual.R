@@ -58,7 +58,7 @@ ctr %>% pmx_plot_dv_pred(filter = SEX == 1, strat.facet = ~SEX)
 
 ## apply a log transformation in y
 ctr %>% pmx_plot_dv_pred(trans = "log10_y")
-## apply a custonm trsnformation to normalize axis between 0 and 1
+## apply a custonm trans  to normalize axis between 0 and 1
 normalize <-
   function(x) {
     (x - min(x, na.rm = TRUE)) /

@@ -7,15 +7,15 @@
 
 input_finegrid <- function(input, finegrid) {
   ## this for R CMD check purpose
-  ID <- TIME <- DVID <- NULL
+  ID <- TIME <- NULL
   if (is.null(finegrid)) return(NULL)
   input[, source := "in"]
-  dx <- rbind(finegrid, input, fill = TRUE)[order(DVID, ID, TIME)]
+  dx <- rbind(finegrid, input, fill = TRUE)[order(ID, TIME)]
 
-  measures <- setdiff(names(input), c("ID", "DVID", "DV", "TIME", "source"))
+  measures <- setdiff(names(input), c("ID", "DV", "TIME", "source"))
   if (length(measures) > 0) {
     dx[, (measures) :=
-      lapply(.SD, na.locf, na.rm = FALSE), by = "ID,DVID", .SDcols = measures]
+      lapply(.SD, na.locf, na.rm = FALSE), by = "ID", .SDcols = measures]
   }
   input[, source := NULL]
   dx[is.na(source) & TIME >= 0][, source := NULL]
@@ -48,16 +48,18 @@ post_load_eta <- function(ds, input, sys, occ) {
   }
   ds[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
   ds <- melt(ds, measure = measures)
-  setnames(ds, toupper(names(ds)))
+  setnames(ds, "value", "VALUE")
+  ## setnames(ds, toupper(names(ds)))
   ## keep only mean or mode variable
-  ds[grep("(mode|mean)$", VARIABLE)]
+  variable <- NULL
+  ds[grep("(mode|mean)$", variable)]
   ## reshape columns for easier filtering
-  ds[, c("VAR", "EFFECT", "FUN") :=
+  ds[, c("EFFECT", "FUN") :=
     list(
-      gsub("_.*", "", VARIABLE),
-      gsub("eta_(.*)_(mode|mean)", "\\1", VARIABLE),
-      gsub(".*_", "", VARIABLE)
+      gsub("eta_(.*)_(mode|mean)", "\\1", variable),
+      gsub(".*_", "", variable)
     )]
+  ds[, c("variable") := NULL]
   ds
 }
 
@@ -68,7 +70,7 @@ post_load <- function(dxs, input, sys, dplot, occ) {
   if (is.null(dxs[["predictions"]])) return(dxs)
   ## merge finegrid with input data
   if (sys == "mlx") {
-    keys <- c("ID", "TIME", "DVID")
+    keys <- c("ID", "TIME")
     if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
 
     dxs[["predictions"]] <-

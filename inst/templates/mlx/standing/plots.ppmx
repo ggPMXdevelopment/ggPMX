@@ -39,6 +39,14 @@ IWRES_IPRED:
     se: no
     color: red
     linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+
 
 IWRES_TIME:
   ptype: SCATTER
@@ -59,6 +67,13 @@ IWRES_TIME:
     se: no
     color: red
     linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
 
 NPDE_TIME:
   ptype: SCATTER
@@ -80,6 +95,14 @@ NPDE_TIME:
     se: no
     color: red
     linetype: 2.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+
 
 NPDE_PRED:
   ptype: SCATTER
@@ -103,6 +126,13 @@ NPDE_PRED:
     se: no
     color: red
     linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
 
 DV_PRED:
   ptype: SCATTER
@@ -124,6 +154,13 @@ DV_PRED:
   identity_line:
     intercept: 0
     color: blue
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
     
 DV_IPRED:
   ptype: SCATTER
@@ -145,6 +182,15 @@ DV_IPRED:
   identity_line:
     intercept: 0
     color: blue
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+    
+    
     
 EBE_HIST:
   ptype: DIS
@@ -228,6 +274,13 @@ INDIVIDUAL:
     x: TIME
     'y': DV
   use.finegrid: yes
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
 
 ETA_MATRIX:
   ptype: ETA_PAIRS
@@ -271,5 +324,5 @@ ETA_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': ETA Quantiles
-  strat.facet: ~VARIABLE
+  strat.facet: ~EFFECT
     

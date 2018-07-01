@@ -10,6 +10,7 @@
 #' @param point \code{list} some point geom properties aesthetics
 #' @param is.legend \code{logical} if TRUE add a legend
 #' @param use.finegrid \code{logical} if FALSE use predictions data set
+#' @param bloq \code{pmxBLOQ} object createdby \code{\link{pmx_bloq}}
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object
@@ -49,6 +50,7 @@ individual <- function(labels,
                        ipred_line = NULL,
                        pred_line = NULL,
                        point = NULL,
+                       bloq=NULL,
                        is.legend,
                        use.finegrid,
                        ...) {
@@ -71,6 +73,7 @@ individual <- function(labels,
     ipred_line = ipred_line,
     pred_line = pred_line,
     facets = facets,
+    bloq = bloq,
     gp = pmx_gpar(labels = labels, ...)
   ), class = c("individual", "pmx_gpar"))
 }
@@ -106,7 +109,11 @@ plot_pmx.individual <-
 
     get_page <- with(x, {
       p_point <- if (!is.null(point)) {
-        point$data <- input
+        point$data <- if (is.null(bloq)) {
+          input
+        } else {
+          input[!get(bloq$cens) %in% c(1, -1)]
+        }
         do.call(geom_point, point)
       }
       p_ipred <- if (!is.null(ipred_line)) {
@@ -118,10 +125,23 @@ plot_pmx.individual <-
         do.call(geom_line, pred_line)
       }
 
+      p_bloq <- if (!is.null(bloq)) {
+        bloq$data <- x$input[get(bloq$cens) != 0]
+        bloq$data[, "y_end" := ifelse(get(bloq$cens) > 0, -Inf, Inf)]
+        if (bloq$limit %in% names(bloq$data)) {
+          bloq$data[!is.na(get(bloq$limit)), "y_end" := as.numeric(get(bloq$limit))]
+        }
+        bloq$mapping <-
+          aes_string(
+            xend = "TIME",
+            yend = "y_end"
+          )
+        bloq$cens <- bloq$limit <- NULL
+        do.call(geom_segment, bloq)
+      }
 
       p <- ggplot(dx, aes(TIME, DV)) +
-        p_point + p_ipred + p_pred
-
+        p_point + p_ipred + p_pred + p_bloq
       p <- plot_pmx(gp, p)
       if (is.legend) {
         p <- p +

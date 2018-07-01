@@ -68,7 +68,7 @@ pmx_get_configs <-
     res
   }
 
-#' This function can be used to print configuration of the defined object using S3 method. 
+#' This function can be used to print configuration of the defined object using S3 method.
 #' @param x object of class configs
 #' @param ... pass additonal options (not used presently)
 #' @return print result

@@ -6,7 +6,6 @@
 #' @return data.table object
 #' @import data.table
 
-#' @export
 read_mlx_ind_est <- function(path, x, ...) {
   ID <- OCC <- NULL
   ds <- pmx_fread(path)
@@ -51,8 +50,46 @@ read_mlx_ind_est <- function(path, x, ...) {
 #' @return data.table well formatted containing modelling input data
 #'
 read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", endpoint=NULL) {
-  DVID <- TIME <- EVID <- MDV <- y <- NULL
+  TIME <- EVID <- MDV <- y <- NULL
   xx <- pmx_fread(ipath)
+
+  if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
+    setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
+    setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
+    xx <- xx[!(EVID == 1 & MDV == 1)]
+  }
+
+
+  if (!is.null(endpoint)) {
+    if (!is.null(dvid) && dvid %in% names(xx)) {
+      rr <- dvid
+      xx <- xx[get(rr) == endpoint$code]
+      if (!nrow(xx)) {
+        msg <- sprintf("No observations data for endpoint %s\n", endpoint$code)
+        stop(msg)
+      }
+    } else {
+      msg <- sprintf("ggPMX can not filter by endpoint %s\n", endpoint$code)
+      msg <- paste(msg, sprintf("%s is not a valid column in the observation data set", dvid))
+
+      stop(msg)
+    }
+  }
+  else {
+    if (!is.null(dvid) && dvid %in% names(xx)) {
+      rr <- dvid
+      ends <- unique(xx[, get(rr)])
+      if (length(ends) > 1) {
+        msg <- sprintf("Observation data contains multiple endpoints %s. \n ", paste(ends, collapse = " ; "))
+        msg <- paste(msg, "Please select a single endpoint to continue.")
+
+        stop(msg)
+      }
+    }
+  }
+
+
+
 
   id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
   if (length(id_col) == 0) {
@@ -78,20 +115,10 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
   xx[, TIME := round(TIME, 4)]
 
-  setnames(xx, toupper(names(xx)))
-  if (all(c("MDV", "EVID") %in% names(xx))) {
-    xx <- xx[!(EVID == 1 & MDV == 1)]
-  }
-  if (dvid %in% names(xx)) {
-    setnames(xx, dvid, "DVID")
-    nb.end <- length(unique(xx[, DVID]))
-    if (!is.null(endpoint) & nb.end > 1) {
-      xx[, DVID := as.integer(factor(y, labels = seq_along(unique(DVID))))]
-      xx <- xx[DVID == endpoint]
-    }
-  } else { ## dummy variable for single endpoint case
-    xx[, "DVID" := 1]
-  }
+
+
+
+
 
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {
@@ -157,9 +184,8 @@ mlx_iwres <- function(x) {
 #' @return data.table object
 #' @import data.table
 
-#' @export
 read_mlx_pred <- function(path, x, ...) {
-  ID <- DVID <- OCC <- NULL
+  ID <- OCC <- NULL
   xx <- pmx_fread(path)
   setnames(xx, tolower(names(xx)))
   ## use configuration columns
@@ -180,13 +206,6 @@ read_mlx_pred <- function(path, x, ...) {
     res[, c("ID", "OCC") := tstrsplit(ID, "#")][, c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))]
   }
 
-  dvid <- as.list(match.call(expand.dots = TRUE))[-1]$dvid
-  if (is.null(dvid) || !dvid %in% names(res)) {
-    res[, "DVID" := 1]
-  } else {
-    setnames(res, dvid, "DVID")
-  }
-
   res
 }
 
@@ -200,7 +219,7 @@ read_mlx_pred <- function(path, x, ...) {
 #' @return data.table object
 #' @importFrom utils read.table
 #' @import data.table
-#' @export
+
 read_mlx_par_est <- function(path, x, ...) {
   xx <- setDT(read.table(path, sep = ";", header = TRUE))
   if ("names" %in% names(x)) {
@@ -218,19 +237,26 @@ read_mlx_par_est <- function(path, x, ...) {
 #'
 #' @return data.table
 #' @import data.table
-#' @export
 load_data_set <- function(x, path, sys, ...) {
   fpath <- file.path(path, x[["file"]])
   if (!file.exists(fpath)) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
-      file_name <- sub("_", endpoint, x[["pattern"]])
+      if (!is.null(endpoint$files)) {
+        ff <- endpoint$files
+        file_name <- sprintf("%s.txt", ff[[x[["pattern"]]]])
+      } else {
+        file_name <- sprintf("%s%s.txt", x[["pattern"]], endpoint$code)
+      }
+
       fpath <- file.path(path, file_name)
-      message("use ", file_name, " for endpoint ", endpoint)
+      if (length(fpath) > 0 && file.exists(fpath)) {
+        message("use ", file_name, " for endpoint ", endpoint$code)
+      }
     }
   }
-  if (!file.exists(fpath)) {
-    message("file ", x[["file"]], " do not exist")
+  if (length(fpath) == 0 || !file.exists(fpath)) {
+    message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
 
@@ -264,43 +290,9 @@ load_data_set <- function(x, path, sys, ...) {
 #' @return list of data.table
 #' @export
 load_source <- function(sys, path, dconf, ...) {
-  names. <- names(dconf)
-  DVID <- NULL
-
-
-
-  pk_pd <- c("predictions1", "predictions2", "finegrid1", "finegrid2")
-  datasets <- dconf[setdiff(names., pk_pd)]
-  nn <- names(datasets)
-  dxs <- lapply(datasets[nn], function(x) {
+  dxs <- lapply(dconf, function(x) {
     load_data_set(x, path = path, sys = sys, ...)
   })
-
-  ## case multi endpoints
-  if (sum(grepl("predictions", names(dconf))) > 0) {
-    if (is.null(dxs[["predictions"]])) {
-      datasets <- dconf[pk_pd]
-      dxs2 <- lapply(datasets, function(x) {
-        load_data_set(x, path = path, sys = sys, ...)
-      })
-
-      endpoint <- list(...)$endpoint
-      if (is.null(endpoint)) endpoint <- 1
-      if (!is.null(dxs[["eta"]])) dxs[["eta"]][, DVID := endpoint]
-      if (!is.null(dxs2[["predictions1"]]) && !is.null(dxs2[["predictions2"]])) {
-        dxs[["predictions"]] <- dxs2[[sprintf("predictions%s", endpoint)]]
-        dxs[["predictions"]][, DVID := endpoint]
-      }
-      if (!is.null(dxs2[["finegrid1"]]) && !is.null(dxs2[["finegrid2"]])) {
-        dxs[["finegrid"]] <- dxs2[[sprintf("finegrid%s", endpoint)]]
-        dxs[["finegrid"]][, DVID := endpoint]
-      }
-    }
-    for (x in setdiff(names., pk_pd))
-      if (is.null(dxs[[x]])) {
-        message(sprintf(" %s FILE DOES NOT exist", x))
-      }
-  }
 
 
   dxs

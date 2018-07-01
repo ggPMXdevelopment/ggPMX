@@ -30,18 +30,23 @@ check_argument <- function(value, pmxname) {
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
+#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater}
+#' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @return a pmxClass object
 #' @seealso  \code{\link{pmx_mlx}}
 #' @export
 #' @example inst/examples/controller.R
 pmx <-
   function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
-           settings=NULL) {
+           settings=NULL, endpoint=NULL) {
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
-    dvid <- check_argument(dvid, "dvid")
+    ## dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
+    if (missing(endpoint)) {
+      endpoint <- NULL
+    }
     assert_that(is_character_or_null(cats))
     if (missing(conts)) conts <- ""
     assert_that(is_character_or_null(conts))
@@ -56,7 +61,7 @@ pmx <-
     if (!inherits(settings, "pmxSettingsClass")) {
       settings <- pmx_settings()
     }
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings)
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint)
   }
 
 #' Wrapper to pmx constructor
@@ -72,12 +77,14 @@ pmx <-
 #' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
+#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater}
+#' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @seealso  \code{\link{pmx}}
 #' @return \code{pmxClass} object
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint)
   }
 
 
@@ -86,7 +93,7 @@ pmx_mlx <-
 #'
 #' @param file_name mlxtran file
 #' @param config object as pmx controller
-#' @param endpoint can be 1 or 2
+#' @param endpoint \code{integer} value of the endpoint
 #'
 #' @return \code{pmxClass} controller object
 #' @export
@@ -99,10 +106,9 @@ pmx_mlx <-
 #' pmx_mlxtran(mlxtran)
 #' }
 pmx_mlxtran <- function(file_name, config="standing", endpoint) {
-  if (missing(endpoint)) endpoint <- 1
   params <- parse_mlxtran(file_name)
   params$config <- "standing"
-  params$settings <- list(endpoint = endpoint)
+  if (!missing(endpoint)) params$endpoint <- endpoint
   do.call(pmx_mlx, params)
 }
 
@@ -131,16 +137,17 @@ pmx_settings <-
            cats.labels=NULL, use.labels=FALSE, use.titles=TRUE,
            effects=NULL,
            ...) {
-    
-    if(!missing(effects)  && !is.null(effects)){
+    if (!missing(effects) && !is.null(effects)) {
       if (!is.list(effects)) stop("effects should be a list")
-      
-      if (!exists("levels",effects) || !exists("labels",effects))
-        stop ("effects should be a list that contains levels and labels")
-      if (length(effects$labels) != length(effects$levels))
-        stop ("effects should be a list that contains levels and labels have the same length")
+
+      if (!exists("levels", effects) || !exists("labels", effects)) {
+        stop("effects should be a list that contains levels and labels")
+      }
+      if (length(effects$labels) != length(effects$levels)) {
+        stop("effects should be a list that contains levels and labels have the same length")
+      }
     }
-    
+
     res <- list(
       is.draft = is.draft,
       use.abbrev = use.abbrev,
@@ -153,12 +160,92 @@ pmx_settings <-
     if (use.labels) {
       res$labeller <- do.call("labeller", cats.labels)
     }
-    
+
     structure(
       res, ...,
       class = "pmxSettingsClass"
     )
   }
+
+
+
+
+#' Creates pmx endpoint object
+#'
+#' @param code \code{charcater} endpoint code
+#' @param label \code{charcater} endpoint label
+#' @param unit  \code{character} endpoint unit
+#' @param files  \code{list}
+#' @param trans  \code{list}
+#' @export
+#'
+pmx_endpoint <-
+  function(code,
+           label="",
+           unit="",
+           files=NULL,
+           trans =NULL) {
+    assert_that(is.character(code))
+    assert_that(is.character(unit))
+    assert_that(is.character(label))
+    assert_that(is_list_or_null(files))
+    assert_that(is_character_or_null(trans))
+    if (is.list(files)) {
+      assert_that(any(names(files) %in% c("predictions", "finegrid")))
+    }
+    res <- list(
+      code = code,
+      label = label,
+      unit = unit,
+      files = files,
+      trans = trans
+    )
+
+    structure(
+      res,
+      class = "pmxEndpointClass"
+    )
+  }
+
+
+
+#' Creates BLOQ object attributes
+#'
+#' @param cens \code{character} the censoring column name
+#' @param limit \code{character}  the limit column name (optional)
+#' @param color \code{character}  the color of the geom
+#' @param size \code{numeric}  the size of the geom
+#' @param alpha  \code{numeric}  the alpha of the geom
+#' @param show \code{logical} if FALSE remove all censory observations
+#' @param ... any other graphical parameter
+#'
+#' @export
+#'
+pmx_bloq <-
+  function(
+           cens="CENS",
+           limit ="LIMIT",
+           color="pink",
+           size=2,
+           alpha=0.9,
+           show=TRUE,
+           ...) {
+    res <- list(
+      cens = cens,
+      limit = limit,
+      show = show,
+      color = color,
+      size = size,
+      alpha = alpha,
+      ...
+    )
+
+    structure(
+      res,
+      class = "pmxBLOQClass"
+    )
+  }
+
 
 #' Create a new plot  of the desired type
 #'
@@ -181,10 +268,13 @@ pmx_settings <-
 #' @family pmxclass
 #' @return invisible ctr object
 #' @export
-set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
+set_plot <- function(
+                     ctr,
+                     ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
                      pname,
                      use.defaults=TRUE,
-                     filter =NULL, strat.color=NULL,
+                     filter =NULL,
+                     strat.color=NULL,
                      strat.facet=NULL,
                      color.scales=NULL,
                      trans=NULL, ...) {
@@ -193,9 +283,9 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_C
   assert_that(is_string_or_null(pname))
   assert_that(is_string_or_null(strat.color))
   assert_that(is_string_or_formula_or_null(strat.facet))
-  
-  
-  
+
+
+
   params <- list(...)
   if (use.defaults) {
     defaults_yaml <-
@@ -220,12 +310,12 @@ set_plot <- function(ctr, ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_C
   }
   conf <-
     switch(ptype,
-           IND = do.call(individual, params),
-           DIS = if (ctr$has_re) do.call(distrib, params),
-           SCATTER = do.call(residual, params),
-           ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs, params),
-           ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
-           PMX_QQ = do.call(pmx_qq, params)
+      IND = do.call(individual, params),
+      DIS = if (ctr$has_re) do.call(distrib, params),
+      SCATTER = do.call(residual, params),
+      ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs, params),
+      ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
+      PMX_QQ = do.call(pmx_qq, params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
@@ -329,7 +419,7 @@ get_plot <- function(ctr, nplot, npage = NULL) {
   nplot <- tolower(nplot)
   assert_that(is_valid_plot_name(nplot, plot_names(ctr)))
   xx <- ctr$get_plot(nplot)
-  
+
   if (is.function(xx)) {
     xx(npage)
   } else {
@@ -359,22 +449,22 @@ plot_names <- function(ctr) {
 #' @family pmxclass
 #' @return data.frame of plots
 #' @export
-#' @importFrom methods existsFunction
 
 plots <- function(ctr) {
   assert_that(is_pmxclass(ctr))
   x <- ctr$config
-  function_name <- function(nn){
+  function_name <- function(nn) {
     fn <- sprintf("pmx_plot_%s", nn)
-    if(!existsFunction(fn,where=asNamespace('ggPMX')))
-      fn <- sprintf("pmx_plot('%s',...)",nn)
+    if (!existsFunction(fn, where = asNamespace("ggPMX"))) {
+      fn <- sprintf("pmx_plot('%s',...)", nn)
+    }
     fn
   }
   if (exists("plots", x)) {
     data.table(
       plot_name = tolower(names(x$plots)),
       plot_type = sapply(x$plots, "[[", "ptype"),
-      plot_function = sapply(tolower(names(x$plots)),function_name)
+      plot_function = sapply(tolower(names(x$plots)), function_name)
     )
   }
 }
@@ -413,9 +503,9 @@ get_plot_config <- function(ctr, pname) {
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, data_set = c(
-  "estimates", "predictions",
-  "eta", "finegrid", "input"
-)) {
+                     "estimates", "predictions",
+                     "eta", "finegrid", "input"
+                   )) {
   assert_that(is_pmxclass(ctr))
   cctr <- pmx_copy(ctr)
   ## data_set <- match.arg(data_set)
@@ -431,30 +521,29 @@ get_data <- function(ctr, data_set = c(
 #' @param ctr the controller object
 #' @param ... a named  list parameters (see example)
 #' @family pmxclass
-#' @details 
-#' This function can be used to set an existing data set or to create a new one. The basic 
+#' @details
+#' This function can be used to set an existing data set or to create a new one. The basic
 #' idea is to change the  built-in data set (chnage the factor level names, change some rows
-#' values or apply any other data set operation) and use the new data set using the dname 
+#' values or apply any other data set operation) and use the new data set using the dname
 #' parameter of pmx_plot family functions.
-#' @examples 
+#' @examples
 #' ctr <- theophylline()
 #' dx <- ctr %>% get_data("eta")
 #' dx <- dx[,EFFECT:=factor(
 #'         EFFECT,levels=c("ka", "V", "Cl"),
 #'         labels=c("Concentration","Volume","Clearance"))]
-#' ## update existing data set 
+#' ## update existing data set
 #' ctr %>% set_data(eta=dx)
-#' ## or create a new data set 
+#' ## or create a new data set
 #' ctr %>% set_data(eta_long=dx)
 #' @export
 set_data <- function(ctr, ...) {
   assert_that(is_pmxclass(ctr))
-  params <- as.list(match.call(expand.dots = TRUE))[-c(1,2)]
-  if(!nzchar(names(params))){
+  params <- as.list(match.call(expand.dots = TRUE))[-c(1, 2)]
+  if (!nzchar(names(params))) {
     stop("each data set should be well named")
   }
-  invisible(Map(function(n,v)ctr$data[[n]] <- eval(v),names(params),params))
-  
+  invisible(Map(function(n, v) ctr$data[[n]] <- eval(v), names(params), params))
 }
 
 #' Get category covariates
@@ -526,7 +615,7 @@ get_occ <- function(ctr) {
 #' @importFrom R6 R6Class
 pmxClass <- R6::R6Class(
   "pmxClass",
-  
+
   # Private methods ------------------------------------------------------------
   private = list(
     .data_path = "",
@@ -535,7 +624,7 @@ pmxClass <- R6::R6Class(
     .plots = list(),
     .plots_configs = list()
   ),
-  
+
   # Public methods -------------------------------------------------------------
   public = list(
     data = NULL,
@@ -551,28 +640,26 @@ pmxClass <- R6::R6Class(
     warnings = list(),
     footnote = FALSE,
     save_dir = NULL,
-    report_queue= list(),
+    report_queue = list(),
     report_n = 0,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings),
-    
+    plot_file_name = "",
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint),
+
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
-    
-    enqueue_plot=function(pname){
+
+    enqueue_plot = function(pname) {
       self$report_n <- self$report_n + 1
-      pname_file <- paste0(pname,"-",self$report_n)
-      self$report_queue <- c(self$report_queue,pname_file)
+      pname_file <- paste0(pname, "-", self$report_n)
+      ctr$plot_file_name <- pname_file
+      self$report_queue <- c(self$report_queue, pname_file)
     },
-    dequeue_plot=function(){
-      first <- self$report_queue[[1]]
-      self$report_queue <- self$report_queue[-1]
-      first
-    },
+    dequeue_plot = function() pmx_dequeue_plot(self),
     # Operations ---------------------------------------------------------------
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
-    
+
     update_plot = function(pname, strat.facet=NULL, strat.color=NULL,
                            filter=NULL, trans=NULL,
                            ..., pmxgpar = NULL) {
@@ -582,28 +669,28 @@ pmxClass <- R6::R6Class(
         filter, trans, ..., pmxgpar = pmxgpar
       )
     },
-    
+
     remove_plot = function(pname, ...)
       pmx_remove_plot(self, private, pname, ...),
-    
+
     get_config = function(pname)
       pmx_get_config(self, private, pname),
-    
+
     set_config = function(pname, new)
       pmx_set_config(self, private, pname, new),
     get_plot = function(pname)
       pmx_get_plot(self, private, pname),
-    
+
     plots = function()
       pmx_plots(self, private),
-    
+
     post_load = function()
       pmx_post_load(self, private)
   )
 )
 
 pmx_initialize <- function(self, private, data_path, input, dv,
-                           config, dvid, cats, conts, occ, strats, settings) {
+                           config, dvid, cats, conts, occ, strats, settings, endpoint) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -611,12 +698,13 @@ pmx_initialize <- function(self, private, data_path, input, dv,
       call. = FALSE
     )
   }
+  if (missing(dvid)) dvid <- NULL
   if (missing(occ) || is.null(occ) || is.na(occ)) occ <- ""
   if (missing(cats) || is.null(cats) || is.na(cats)) cats <- ""
   if (missing(conts) || is.null(conts) || is.na(conts)) conts <- ""
   if (missing(strats) || is.null(strats) || is.na(strats)) strats <- ""
   if (missing(settings)) settings <- NULL
-  
+
   private$.data_path <- data_path
   self$save_dir <- data_path
   if (is.character(input)) {
@@ -630,25 +718,27 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$occ <- toupper(occ)
   self$strats <- toupper(strats)
   self$settings <- settings
-  if (!is.null(settings$endpoint)) self$endpoint <- settings$endpoint
-  
-  
+ 
+  if(!is.null(endpoint) && is.character(endpoint))
+    endpoint <- pmx_endpoint(code=endpoint)
+  self$endpoint <- endpoint
   if (is.character(input) && file.exists(input)) {
     self$input_file <- input
     self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
   } else {
     self$input <- input
   }
+  
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
     endpoint = self$endpoint
   )
   ##
-  
-  
+
+
   ## check random effect
-  
+
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
     if (length(re) > 0) {
@@ -661,15 +751,15 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         )
     }
   }
-  
+
   self$post_load()
-  
+
   ## abbev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"
   )
   self$abbrev <- set_abbrev(self, yaml.load_file(keys_file))
-  
+
   ## create all plots
   for (nn in names(self$config$plots)) {
     x <- self$config$plots[[nn]]
@@ -701,6 +791,8 @@ pmx_print <- function(self, private, ...) {
 }
 
 
+
+
 pmx_transform <- function(x, dx, trans, direction) {
   if (is.character(trans)) {
     params <- strsplit(trans, "_")[[1]]
@@ -717,7 +809,7 @@ pmx_transform <- function(x, dx, trans, direction) {
       )
     })
   }
-  
+
   cols_ind <- function(x) {
     switch(
       direction,
@@ -726,7 +818,7 @@ pmx_transform <- function(x, dx, trans, direction) {
       xy = c("TIME", "PRED", "IPRED", "DV")
     )
   }
-  
+
   cols_dis <- function(x) {
     switch(
       direction,
@@ -735,21 +827,21 @@ pmx_transform <- function(x, dx, trans, direction) {
       xy = c("VALUE")
     )
   }
-  
+
   cols_qq <- function(x) {
     switch(
       direction,
       x = x$x
     )
   }
-  
+
   cols_eta_conts <- function(x) {
     switch(
       direction,
       y = "VALUE"
     )
   }
-  
+
   cols <- switch(
     x[["ptype"]],
     SCATTER = cols_res(x),
@@ -766,132 +858,9 @@ pmx_transform <- function(x, dx, trans, direction) {
 }
 
 
-# is_strat_supported <- function(x) {
-#   if (!x$strat && !is.null(x[["strat.facet"]])) {
-#     message("facet stratification is not yet implemented")
-#     x$strat.facet <- NULL
-#   }
-#   if (!x$strat && !is.null(x[["strat.color"]])) {
-#     message("color stratification is not yet implemented")
-#     x$strat.color <- NULL
-#   }
-#   x
-# }
 
 
-# pmx_add_plot <- function(self, private, x, pname) {
-#   assert_that(is_pmx_gpar(x))
-#   if (missing(pname)) {
-#     pname <- paste(x$aess, collapse = "_")
-#   }
-#   
-#   x <- is_strat_supported(x)
-#   x$ctr <- self
-#   pname <- tolower(pname)
-#   private$.plots_configs[[pname]] <- x
-#   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
-#   if (x$ptype == "IND" && !x$use.finegrid) {
-#     x$dname <- "predictions"
-#   }
-#   dname <- x$dname
-#   dx <- copy(self$data[[dname]])
-#   if (!is.null(dx) && nrow(dx) > 0) {
-#     assert_that(is.data.table(dx))
-#     x$input <- self %>% get_data("input")
-#     if (!is.null(x[["filter"]])) {
-#       dx <- x[["filter"]](dx)
-#       if (ptype == "IND") x$input <- x[["filter"]](x$input)
-#     }
-#     if (!is.null(x[["strat.color"]])) {
-#       gp <- x[["gp"]]
-#       gp[["labels"]][["legend"]] <- x[["strat.color"]]
-#       x[["gp"]] <- gp
-#     }
-#     if (!is.null(x[["strat.facet"]])) {
-#       tit <- x$gp[["labels"]][["title"]]
-#       tit <- gsub(" by .*", "", tit)
-#       x$gp[["labels"]][["title"]] <-
-#         sprintf(
-#           "%s by %s", tit, formula_to_text(x[["strat.facet"]])
-#         )
-#     } else {
-#       x$gp[["labels"]][["title"]] <- gsub(" by.*", "", x$gp[["labels"]][["title"]])
-#     }
-#     
-#     
-#     if (!is.null(x[["trans"]])) {
-#       dx1 <- copy(dx)
-#       dx <- pmx_transform(x, dx1, x[["trans"]])
-#       if (ptype == "IND") {
-#         inp <- copy(x$input)
-#         x$input <- pmx_transform(x, inp, x[["trans"]])
-#       }
-#     }
-#     grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-#     grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
-#     
-#     if (ptype == "DIS") {
-#       VAR <- FUN <- NULL
-#       dx <- dx[VAR == "eta" & grepl("mode", FUN)]
-#       cols <- c("ID", "EFFECT", "VALUE", grp)
-#       dx <- unique(dx[, cols, with = FALSE])
-#     }
-#     if (!is.null(x[["is.shrink"]]) && x$is.shrink) {
-#       x[["shrink.dx"]] <-
-#         self %>%
-#         pmx_comp_shrink(
-#           fun = x$shrink$fun,
-#           strat.color = x[["strat.color"]],
-#           strat.facet = x[["strat.facet"]],
-#           filter = x[["filter"]]
-#         )
-#     }
-#     if (ptype == "ETA_COV") {
-#       x[["cats"]] <- self %>% get_cats()
-#       x[["conts"]] <- self %>% get_conts()
-#     }
-#     
-#     
-#     if (!is.null(self$settings)) {
-#       x$gp$is.draft <- self$settings$is.draft
-#       x$gp$color.scales <- self$settings$color.scales
-#       if ("use.abbrev" %in% names(self$settings) && self$settings$use.abbrev) {
-#         x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
-#         x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
-#       }
-#       if ("labeller" %in% names(self$settings)) {
-#         x$facets$labeller <- self$settings$labeller
-#       }
-#       if (!self$settings$use.titles) {
-#         x$gp$labels$title <- ""
-#         
-#       }
-#       if(!is.null(self$settings$effects)){
-#         effs <- self$settings$effects
-#         if (!is.null(x[["is.shrink"]]) && x$is.shrink){
-#           x[["shrink.dx"]][,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
-#         }
-#         if(exists("EFFECT",dx)){
-#           dx[,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
-#           dx
-#         }
-#         
-#       }
-#     }
-#     self$set_config(pname, x)
-#     
-#     private$.plots[[pname]] <- plot_pmx(x, dx = dx)
-#   } else {
-#     # throw error message
-#     private$.plots[[pname]] <- NULL
-#     message(sprintf(
-#       "No data %s provided for plot %s",
-#       sprintf("%s", dname), sprintf("%s", pname)
-#     ))
-#   }
-#   invisible(self)
-# }
-# 
+
 pmx_remove_plot <- function(self, private, pname, ...) {
   private$.plots_configs[[pname]] <- NULL
   private$.plots[[pname]] <- NULL
@@ -909,6 +878,27 @@ pmx_set_config <- function(self, private, pname, new) {
 }
 
 
+pmx_dequeue_plot <- function(self) {
+  ## assert_that(is_none_empty_queue(self))
+
+  if (length(self$report_queue)) {
+    first <- self$report_queue[[1]]
+    self$report_queue <- self$report_queue[-1]
+    first
+  } else {
+    message("Chunk has plots that were not registered within ggPMX")
+  }
+}
+
+pmx_fig_process_init <- function(self) {
+  report_queue <- list()
+  report_n <- 0
+}
+
+pmx_fig_process_wrapup <- function(self) {
+  assert_that(is_empty_queue(self))
+}
+
 pmx_get_plot <- function(self, private, pname) {
   pname <- tolower(pname)
   private$.plots[[pname]]
@@ -924,7 +914,7 @@ pmx_post_load <- function(self, private) {
     self$config$plots,
     occ = get_occ(self)
   )
-  
+
   self$data <- res$data
   self$warnings <- res$warnings
 }
@@ -971,7 +961,7 @@ pmx_copy <- function(ctr, keep_globals=FALSE, ...) {
   cctr <- ctr$clone()
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   params <- lang_to_expr(params)
-  
+
   ## params <- list(...)
   if (!keep_globals) {
     nn <- rev(names(formals(pmx_settings)))[-1]

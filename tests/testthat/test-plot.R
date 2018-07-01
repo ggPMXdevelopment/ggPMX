@@ -42,10 +42,11 @@ test_that("can create a plot using setting dname", {
 })
 
 
-test_that("Create a plot with not valid dname throw error", {
+test_that("Create a plot with not valid dname throw  message", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
-  expect_error(
-    ctr %>% set_plot("DIS", pname = "distr1", type = "box", dname = "xxx")
+  expect_message(
+    ctr %>% set_plot("DIS", pname = "distr1", type = "box", dname = "xxx"),
+    "No data"
   )
 })

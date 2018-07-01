@@ -145,8 +145,8 @@ is.formula <- function(x) {
 
 
 #' Creates pmx controller using theophylline data
-#' @param settings
-#' @param input_file
+#' @param settings \code{pmxSettings} object
+#' @param ...  other parameters of pmx_mlx like endpoint
 #' @return pmx controller
 #' @export
 #'
@@ -154,7 +154,7 @@ is.formula <- function(x) {
 #' \dontrun{
 #' theophylline()
 #' }
-theophylline <- function(settings=NULL) {
+theophylline <- function(settings=NULL, ...) {
   theophylline <- file.path(
     system.file(package = "ggPMX"), "testdata",
     "theophylline"
@@ -167,11 +167,12 @@ theophylline <- function(settings=NULL) {
     directory = WORK_DIR,
     input = input_file,
     dv = "Y",
-    dvid = "DVID",
+    dvid = "dvid",
     cats = c("SEX"),
     conts = c("WT0", "AGE0"),
     strats = "STUD",
-    settings = settings
+    settings = settings,
+    ...
   )
 }
 
@@ -273,7 +274,6 @@ parse_mlxtran <- function(file_name) {
   dv <- dat[grepl("use=observation,", value), key]
   ### dvid
   dvid <- dat[grepl("use=observationType", value), key]
-  if (length(dvid) == 0) dvid <- "DVID"
   ### cats
   cats <- dat[grepl("use=covariate, type=categorical", value), key]
   ### conts
@@ -285,11 +285,56 @@ parse_mlxtran <- function(file_name) {
   res <- list(
     directory = directory,
     input = input,
-    dv = dv,
-    dvid = dvid
+    dv = dv
   )
+  if (length(dvid) > 0) res$dvid <- dvid
   if (length(cats) > 0) res$cats <- cats
   if (length(conts) > 0) res$conts <- conts
   if (length(occ) > 0) res$occ <- occ
   res
+}
+
+
+#' Creates pkpd pmx controller using package internal data
+#' @param settings \code{pmxSettings} object
+
+#' @param code  can be 3 or 4
+#' @export
+pk_pd <- function(code = "4"){
+  
+  
+  files_ <- switch (code,
+          "3"=list(
+            predictions="predictions1",
+            finegrid="finegrid1"),
+          "4"=list(
+            predictions="predictions2",
+            finegrid="finegrid2")
+  )
+          
+
+  
+  pk_pd_path <- file.path(
+    system.file(package = "ggPMX"), "testdata",
+    "pk_pd"
+  )
+  WORK_DIR <- file.path(pk_pd_path, "RESULTS")
+  ep <- pmx_endpoint(
+    code,
+    files = files_
+  )
+  
+  
+  input_file <- file.path(pk_pd_path, "pk_pd.csv")
+  
+  ctr <- pmx_mlx(
+    config = "standing",
+    directory = WORK_DIR,
+    input = input_file,
+    dv = "dv",
+    dvid = "dvid",
+    cats = "sex",
+    conts = "wt",
+    endpoint = ep
+  )
 }

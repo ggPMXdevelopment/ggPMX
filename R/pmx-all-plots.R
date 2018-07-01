@@ -32,12 +32,12 @@ wrap_pmx_plot_generic <-
     params <- lang_to_expr(params)
     params$defaults_ <- ctr$config$plots[[toupper(pname)]]
     pp <- do.call(pmx_plot_generic, params)
-    if (ctr$footnote) {
+    if (ctr$footnote && !is.null(pp)) {
       ctr$enqueue_plot(pname)
       if (exists("footnote", params)) {
         footnote <- params$footnote
       } else {
-        footnote <- ctr$report_queue[[1]]
+        footnote <- ctr$plot_file_name
       }
       add_footnote(pp, footnote, ctr$save_dir)
     } else {
@@ -321,19 +321,19 @@ pmx_plot_individual <-
     cctr %>% pmx_warnings("MISSING_FINEGRID")
 
 
-    
+
     if (cctr$footnote) {
       if (!inherits(p, "ggplot")) {
         p <- Map(
           function(p, id) {
             ctr$enqueue_plot("indiv")
-            add_footnote(p,paste0("indiv-",ctr$report_n), cctr$save_dir)
+            add_footnote(p, ctr$plot_file_name, cctr$save_dir)
           },
           p, seq_along(p)
         )
       } else {
         ctr$enqueue_plot("indiv")
-        p <- add_footnote(p,ctr$report_queue[[1]], cctr$save_dir)
+        p <- add_footnote(p, ctr$plot_file_name, cctr$save_dir)
       }
     }
 
@@ -466,7 +466,7 @@ pmx_plot <- function(ctr, pname, ...) {
 pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
   sp <- list()
   if (missing(cats)) cats <- ctr %>% get_cats()
-  if (length(cats)==0 || cats =="") {
+  if (length(cats) == 0 || cats == "") {
     invisible(return(NULL))
   }
   params <- as.list(match.call(expand.dots = TRUE))[-1]
@@ -495,4 +495,26 @@ pmx_plot_eta_qq <-
   function(ctr,
            ...) {
     ctr %>% pmx_plot("eta_qq", ...)
+  }
+
+
+
+
+#' Register plot
+#'
+#' @param ctr \code{pmxClass} controller
+#' @param pp \code{ggplot2} plot
+#' @param pname \code{character} plot nme
+#'
+#' @export
+pmx_register_plot <-
+  function(ctr, pp, pname=NULL) {
+    if (ctr$footnote) {
+      if (is.null(pname)) pname <- "extra-plot"
+      ctr$enqueue_plot(pname)
+      footnote <- paste0(pname, ctr$report_n)
+      add_footnote(pp, footnote, ctr$save_dir)
+    } else {
+      pp
+    }
   }
