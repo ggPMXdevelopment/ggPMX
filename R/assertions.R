@@ -172,5 +172,3 @@ is_empty_queue <- function(x) {
 assertthat::on_failure(is_empty_queue) <- function(call, env) {
   sprintf("Plot(s) were registered within ggPMX but were not rendered")
 }
-
-

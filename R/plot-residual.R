@@ -1,6 +1,6 @@
 
 
-#' This function create a residual for each observed value and also generates a residual 
+#' This function create a residual for each observed value and also generates a residual
 #' distribution
 #'
 #' @param x x axis aesthetics
@@ -37,7 +37,7 @@
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
 residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
-                     hline=NULL, dname=NULL, facets=NULL,bloq=NULL, ...) {
+                     hline=NULL, dname=NULL, facets=NULL, bloq=NULL, ...) {
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -71,7 +71,7 @@ residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
       is.hline = is.hline,
       hline = hline,
       facets = facets,
-      bloq=bloq,
+      bloq = bloq,
       gp = pmx_gpar(labels = labels, ...)
     ), class = c("residual", "pmx_gpar")
   )
@@ -89,7 +89,7 @@ extend_range <-
   }
 
 
-#' This function plots residual for each observed value by finding the difference between observed and predicted points. It also fits a distribution to the residual value. 
+#' This function plots residual for each observed value by finding the difference between observed and predicted points. It also fits a distribution to the residual value.
 #'
 #' @param x residual object
 #' @param dx data set
@@ -107,13 +107,13 @@ plot_pmx.residual <- function(x, dx, ...) {
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
 
     p <- p + do.call(geom_point, point)
-    
-    if(!is.null(bloq)){
-      bloq$data <- dx[get(bloq$cens)!=0]
-      bloq$cens <- bloq$limit <-  NULL
+
+    if (!is.null(bloq)) {
+      bloq$data <- dx[get(bloq$cens) != 0]
+      bloq$cens <- bloq$limit <- NULL
       p <- p + do.call(geom_point, bloq)
     }
-    
+
     if (is.hline) p <- p + do.call(geom_hline, hline)
 
 
@@ -127,9 +127,9 @@ plot_pmx.residual <- function(x, dx, ...) {
             rng <- gp$ranges$x
           } else {
             rng <- c(
-                max(gp$ranges$x[1], gp$ranges$y[1]),
-                min(gp$ranges$x[2], gp$ranges$y[2])
-              )
+              max(gp$ranges$x[1], gp$ranges$y[1]),
+              min(gp$ranges$x[2], gp$ranges$y[2])
+            )
           }
         }
         xrange[1] <- max(xrange[1], rng[1])
@@ -156,9 +156,9 @@ plot_pmx.residual <- function(x, dx, ...) {
       }
       p <- p + do.call("facet_wrap", c(strat.facet, facets))
     }
-    
-    
-    
+
+
+
 
     p
   })

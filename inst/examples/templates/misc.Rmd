@@ -48,9 +48,9 @@ ctr %>% pmx_register_plot(pp,"age0_vs_wt0")
 
 ## no ggPMX + ggPMX
 
-We can mix ggPMX and no ggPMX plots under the same chunk. Note that here if we do not register pp we will not have the footnote under it. 
+We can mix ggPMX and no ggPMX plots under the same chunk. Note that here if we do not register pp we will not have the footnote under it. `ggPMX` will throw a message to indicate that the plot was not regisered.
 
-```{r ggpmx_no_ggpmx,pmx=TRUE}
+```{r ggpmx_no_ggpmx}
 pp
 ctr %>% pmx_plot_ebe_box
 ```

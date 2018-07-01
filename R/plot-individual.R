@@ -57,10 +57,10 @@ individual <- function(labels,
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
   assert_that(is_list(labels))
-  
-  
+
+
   if (!use.finegrid) dname <- "predictions"
-  
+
   structure(list(
     ptype = "IND",
     strat = TRUE,
@@ -73,7 +73,7 @@ individual <- function(labels,
     ipred_line = ipred_line,
     pred_line = pred_line,
     facets = facets,
-    bloq=bloq,
+    bloq = bloq,
     gp = pmx_gpar(labels = labels, ...)
   ), class = c("individual", "pmx_gpar"))
 }
@@ -100,19 +100,21 @@ plot_pmx.individual <-
     if (x$dname == "predictions") cat("USE predictions data set \n")
     strat.facet <- x[["strat.facet"]]
     strat.color <- x[["strat.color"]]
-    
+
     wrap.formula <- if (!is.null(strat.facet)) {
       wrap_formula(strat.facet, "ID")
     } else {
       formula("~ID")
     }
-    
+
     get_page <- with(x, {
       p_point <- if (!is.null(point)) {
-        point$data <- if(is.null(bloq))input else {
-          input[!get(bloq$cens)%in%c(1,-1)]
+        point$data <- if (is.null(bloq)) {
+          input
+        } else {
+          input[!get(bloq$cens) %in% c(1, -1)]
         }
-        do.call(geom_point, point) 
+        do.call(geom_point, point)
       }
       p_ipred <- if (!is.null(ipred_line)) {
         ipred_line$mapping <- aes(y = IPRED, linetype = "1")
@@ -122,19 +124,22 @@ plot_pmx.individual <-
         pred_line$mapping <- aes(y = PRED, linetype = "2")
         do.call(geom_line, pred_line)
       }
-      
-      p_bloq <- if(!is.null(bloq)){
-        bloq$data <- x$input[get(bloq$cens)!=0]
-        bloq$data[,"y_end" := ifelse(get(bloq$cens)>0, -Inf ,Inf)]
-        if(bloq$limit %in% names(bloq$data))         
-          bloq$data[!is.na(get(bloq$limit)),"y_end" := as.numeric(get(bloq$limit))]
-          bloq$mapping <- 
-            aes_string(xend = "TIME",
-                       yend = "y_end")
-        bloq$cens <- bloq$limit  <- NULL
+
+      p_bloq <- if (!is.null(bloq)) {
+        bloq$data <- x$input[get(bloq$cens) != 0]
+        bloq$data[, "y_end" := ifelse(get(bloq$cens) > 0, -Inf, Inf)]
+        if (bloq$limit %in% names(bloq$data)) {
+          bloq$data[!is.na(get(bloq$limit)), "y_end" := as.numeric(get(bloq$limit))]
+        }
+        bloq$mapping <-
+          aes_string(
+            xend = "TIME",
+            yend = "y_end"
+          )
+        bloq$cens <- bloq$limit <- NULL
         do.call(geom_segment, bloq)
       }
-      
+
       p <- ggplot(dx, aes(TIME, DV)) +
         p_point + p_ipred + p_pred + p_bloq
       p <- plot_pmx(gp, p)
@@ -148,13 +153,13 @@ plot_pmx.individual <-
       } else {
         p <- p + theme(legend.position = "none")
       }
-      
+
       ## split pages
       npages <- ceiling(with(
         facets,
         length(unique(dx$ID)) / nrow / ncol
       ))
-      
+
       function(i) {
         res <- list()
         if (is.null(i)) i <- seq_len(npages)
@@ -170,6 +175,6 @@ plot_pmx.individual <-
         if (length(res) == 1) res[[1]] else res
       }
     })
-    
+
     get_page
   }

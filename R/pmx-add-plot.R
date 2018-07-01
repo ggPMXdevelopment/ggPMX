@@ -9,17 +9,18 @@ before_add_check <- function(self, private, x, pname) {
   }
   dname <- x$dname
   dx <- copy(self$data[[dname]])
-  if(is.null(dx))return(NULL)
-  assert_that(is.data.table(dx))
-  x$input <- self %>% get_data("input")
+  ## if(is.null(dx))return(NULL)
   if (is.null(dx) || nrow(dx) == 0) {
     private$.plots[[pname]] <- NULL
     message(sprintf(
       "No data %s provided for plot %s",
       sprintf("%s", dname), sprintf("%s", pname)
     ))
-    return(FALSE)
+    return(NULL)
   }
+  assert_that(is.data.table(dx))
+  x$input <- self %>% get_data("input")
+
   x$dx <- dx
   x
 }
@@ -43,7 +44,7 @@ before_add_check <- function(self, private, x, pname) {
 
 
 
-.filter_x <- function(x){
+.filter_x <- function(x) {
   if (!is.null(x[["filter"]])) {
     x$dx <- x[["filter"]](x$dx)
     if (x$ptype == "IND") x$input <- x[["filter"]](x$input)
@@ -51,7 +52,7 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-.strat_x <- function(x){
+.strat_x <- function(x) {
   if (!is.null(x[["strat.color"]])) {
     gp <- x[["gp"]]
     gp[["labels"]][["legend"]] <- x[["strat.color"]]
@@ -70,7 +71,7 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-.trans_x <- function(x){
+.trans_x <- function(x) {
   if (!is.null(x[["trans"]])) {
     dx1 <- copy(x$dx)
     x$dx <- pmx_transform(x, dx1, x[["trans"]])
@@ -82,7 +83,7 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-.filter_eta_x <- function(x){
+.filter_eta_x <- function(x) {
   dx <- x$dx
   grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
   grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
@@ -93,11 +94,9 @@ before_add_check <- function(self, private, x, pname) {
     x$dx <- unique(dx[, cols, with = FALSE])
   }
   invisible(x)
-  
 }
 
-.shrink_x <- function(x,self){
-  
+.shrink_x <- function(x, self) {
   if (!is.null(x[["is.shrink"]]) && x$is.shrink) {
     x[["shrink.dx"]] <-
       self %>%
@@ -111,16 +110,15 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-.add_cats_x <- function(x,self){
+.add_cats_x <- function(x, self) {
   if (x$ptype == "ETA_COV") {
-    x[["cats"]] <- self %>% get_cats
-    x[["conts"]] <- self %>% get_conts
+    x[["cats"]] <- self %>% get_cats()
+    x[["conts"]] <- self %>% get_conts()
   }
   invisible(x)
 }
 
-.settings_x <- function(x,self){
-  
+.settings_x <- function(x, self) {
   if (!is.null(self$settings)) {
     x$gp$is.draft <- self$settings$is.draft
     x$gp$color.scales <- self$settings$color.scales
@@ -134,63 +132,60 @@ before_add_check <- function(self, private, x, pname) {
     if (!self$settings$use.titles) {
       x$gp$labels$title <- ""
     }
-    if(!is.null(self$settings$effects)){
+    if (!is.null(self$settings$effects)) {
+      EFFECT <- NULL
       effs <- self$settings$effects
-      if (!is.null(x[["is.shrink"]]) && x$is.shrink){
-        x[["shrink.dx"]][,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
+      if (!is.null(x[["is.shrink"]]) && x$is.shrink) {
+        x[["shrink.dx"]][, EFFECT := factor(EFFECT, levels = effs$levels, labels = effs$labels)]
       }
-      if(exists("EFFECT",x$dx)){
-        x$dx[,EFFECT:=factor(EFFECT,levels=effs$levels,labels=effs$labels)]
+      if (exists("EFFECT", x$dx)) {
+        x$dx[, EFFECT := factor(EFFECT, levels = effs$levels, labels = effs$labels)]
       }
     }
   }
   invisible(x)
 }
 
-.bloq_x <- function(x,self){
-  
+.bloq_x <- function(x, self) {
   if (!is.null(x[["bloq"]])) {
     dx <- self %>% get_data("input")
-    if (!x$bloq$cens %in% names(dx)){
-      x$bloq <- NULL 
+    if (!x$bloq$cens %in% names(dx)) {
+      x$bloq <- NULL
       old_class <- class(x)
-      x <- append(x,list(bloq=NULL))
+      x <- append(x, list(bloq = NULL))
       class(x) <- old_class
-    }else{
-      if(!x[["bloq"]]$show){
-        x$dx <-  x$dx[!get(x$bloq$cens)%in%c(1,-1)]
-        x$bloq <- NULL 
+    } else {
+      if (!x[["bloq"]]$show) {
+        x$dx <- x$dx[!get(x$bloq$cens) %in% c(1, -1)]
+        x$bloq <- NULL
         old_class <- class(x)
-        x <- append(x,list(bloq=NULL))
+        x <- append(x, list(bloq = NULL))
         class(x) <- old_class
-      }else{
+      } else {
         x[["bloq"]]$show <- NULL
       }
     }
   }
-  
+
   invisible(x)
 }
 
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)
-  if(is.null(x))return(invisible(self))
+  if (is.null(x)) return(invisible(self))
   assert_that(is_pmx_gpar(x))
-  x <- x %>% 
-    .strat_supported %>%
-    .filter_x %>%
-    .strat_x %>%
-    .trans_x %>%
-    .filter_eta_x %>%
-    .shrink_x(self) %>% 
-    .add_cats_x(self) %>% 
+  x <- x %>%
+    .strat_supported() %>%
+    .filter_x() %>%
+    .strat_x() %>%
+    .trans_x() %>%
+    .filter_eta_x() %>%
+    .shrink_x(self) %>%
+    .add_cats_x(self) %>%
     .settings_x(self) %>%
     .bloq_x(self)
-  
+
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)
   invisible(self)
-  
 }
-
-

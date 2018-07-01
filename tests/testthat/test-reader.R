@@ -29,5 +29,3 @@ test_that("can load data set", {
 
   expect_identical(names(dxs[["finegrid"]]), c("ID", "TIME", "PRED", "IPRED"))
 })
-
-

@@ -79,7 +79,6 @@ ctr %>% pmx_report(
   name="report2",
   save_dir =  file.path(report_dir,"case1"),
   template="individual",
-  edit=TRUE,
   output_type="both",
   npage=1:2
 )

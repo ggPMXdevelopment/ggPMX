@@ -6,7 +6,6 @@
 #' @return data.table object
 #' @import data.table
 
-#' @export
 read_mlx_ind_est <- function(path, x, ...) {
   ID <- OCC <- NULL
   ds <- pmx_fread(path)
@@ -30,7 +29,7 @@ read_mlx_ind_est <- function(path, x, ...) {
     ds[, c("ID", "OCC") := tstrsplit(ID, "#")       ][
       ,
       c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))
-      ]
+    ]
   }
   ds
 }
@@ -53,56 +52,52 @@ read_mlx_ind_est <- function(path, x, ...) {
 read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", endpoint=NULL) {
   TIME <- EVID <- MDV <- y <- NULL
   xx <- pmx_fread(ipath)
-  
+
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
     setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
     setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
     xx <- xx[!(EVID == 1 & MDV == 1)]
   }
-  
-  
-  if (!is.null(endpoint)){
-    if (!is.null(dvid)  && dvid %in% names(xx)) {
+
+
+  if (!is.null(endpoint)) {
+    if (!is.null(dvid) && dvid %in% names(xx)) {
       rr <- dvid
       xx <- xx[get(rr) == endpoint$code]
-      if(!nrow(xx)){
-        msg <- sprintf("No observations data for endpoint %s\n",endpoint$code)
+      if (!nrow(xx)) {
+        msg <- sprintf("No observations data for endpoint %s\n", endpoint$code)
         stop(msg)
       }
-      
-    }else{
-      msg <- sprintf("ggPMX can not filter by endpoint %s\n",endpoint$code)
-      msg <- paste(msg,sprintf("%s is not a valid column in the observation data set",dvid))
-      
+    } else {
+      msg <- sprintf("ggPMX can not filter by endpoint %s\n", endpoint$code)
+      msg <- paste(msg, sprintf("%s is not a valid column in the observation data set", dvid))
+
       stop(msg)
     }
   }
-  else{
-    if (!is.null(dvid)  && dvid %in% names(xx)) {
+  else {
+    if (!is.null(dvid) && dvid %in% names(xx)) {
       rr <- dvid
-      ends <- unique(xx[,get(rr)])
-      if (length(ends)>1){
-        msg <- sprintf("Observation data contains multiple endpoints %s. \n ",paste(ends,collapse= " ; "))
-        msg <- paste(msg,"Please select a single endpoint to continue.")
-        
-        stop(msg)        
+      ends <- unique(xx[, get(rr)])
+      if (length(ends) > 1) {
+        msg <- sprintf("Observation data contains multiple endpoints %s. \n ", paste(ends, collapse = " ; "))
+        msg <- paste(msg, "Please select a single endpoint to continue.")
+
+        stop(msg)
       }
-      
-      
     }
-    
   }
-  
-  
-  
-  
+
+
+
+
   id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
   if (length(id_col) == 0) {
     id_col <- names(xx)[1]
     message("input do not contain ID variable: ggPMX use first input variable ", id_col)
   }
   setnames(xx, id_col, "ID")
-  
+
   if (dv %in% names(xx)) {
     setnames(xx, dv, "DV")
   } else {
@@ -112,19 +107,19 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
                         suggested names are : %s", dv, dv.names)
     stop(err.msg)
   }
-  
+
   if (nzchar(occ) && occ %in% names(xx)) {
     setnames(xx, occ, "OCC")
   }
   ## round time column for further merge
   setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
   xx[, TIME := round(TIME, 4)]
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {
     covariates <- covariates[covariates != ""]
@@ -147,7 +142,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     conts <- conts[conts != ""]
     xx[, (conts) := lapply(.SD, as.numeric), .SDcols = conts]
   }
-  
+
   xx
 }
 
@@ -189,7 +184,6 @@ mlx_iwres <- function(x) {
 #' @return data.table object
 #' @import data.table
 
-#' @export
 read_mlx_pred <- function(path, x, ...) {
   ID <- OCC <- NULL
   xx <- pmx_fread(path)
@@ -205,13 +199,13 @@ read_mlx_pred <- function(path, x, ...) {
     names.nn <- c(names.nn, "IWRES")
   }
   res <- setnames(xx[, nn, with = FALSE], names.nn)
-  
+
   ## select columns
-  
+
   if (grepl("#", res[1, ID], fixed = TRUE)) {
     res[, c("ID", "OCC") := tstrsplit(ID, "#")][, c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))]
   }
-  
+
   res
 }
 
@@ -225,7 +219,7 @@ read_mlx_pred <- function(path, x, ...) {
 #' @return data.table object
 #' @importFrom utils read.table
 #' @import data.table
-#' @export
+
 read_mlx_par_est <- function(path, x, ...) {
   xx <- setDT(read.table(path, sep = ";", header = TRUE))
   if ("names" %in% names(x)) {
@@ -243,31 +237,31 @@ read_mlx_par_est <- function(path, x, ...) {
 #'
 #' @return data.table
 #' @import data.table
-#' @export
 load_data_set <- function(x, path, sys, ...) {
   fpath <- file.path(path, x[["file"]])
   if (!file.exists(fpath)) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
-      if(!is.null(endpoint$files)){
+      if (!is.null(endpoint$files)) {
         ff <- endpoint$files
-        file_name <- sprintf("%s.txt",ff[[x[["pattern"]]]])
-      }else{
-        file_name <- sprintf("%s%s.txt",x[["pattern"]],endpoint$code)
+        file_name <- sprintf("%s.txt", ff[[x[["pattern"]]]])
+      } else {
+        file_name <- sprintf("%s%s.txt", x[["pattern"]], endpoint$code)
       }
-      
+
       fpath <- file.path(path, file_name)
-      if(length(fpath)>0 && file.exists(fpath))
+      if (length(fpath) > 0 && file.exists(fpath)) {
         message("use ", file_name, " for endpoint ", endpoint$code)
+      }
     }
   }
-  if (length(fpath) ==0 || !file.exists(fpath)) {
-    message(sub(".txt","",x[["file"]]), " file do not exist")
+  if (length(fpath) == 0 || !file.exists(fpath)) {
+    message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
-  
-  
-  
+
+
+
   if (exists("reader", x)) {
     return(do.call(x[["reader"]], list(fpath, x, ...)))
   }
@@ -299,7 +293,7 @@ load_source <- function(sys, path, dconf, ...) {
   dxs <- lapply(dconf, function(x) {
     load_data_set(x, path = path, sys = sys, ...)
   })
-  
+
 
   dxs
 }

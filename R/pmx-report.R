@@ -45,37 +45,40 @@ pmx_report <-
     footnote <- output_type == "both" || footnote
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
-    
+
     out_ <- file.path(save_dir, "ggpmx_GOF")
     rm_dir(out_)
-    
-    
-    if(footnote || standalone){
+
+
+    if (footnote || standalone) {
       dir.create(out_)
-      
+
       pmx_fig_process_init(ctr)
-      
+
       opts_chunk$set(
-        fig.process = function(old_name){
-          pmx_fig_process(ctr = ctr,
-                          old_name=old_name,
-                          footnote = footnote,
-                          out_)}
+        fig.process = function(old_name) {
+          pmx_fig_process(
+            ctr = ctr,
+            old_name = old_name,
+            footnote = footnote,
+            out_
+          )
+        }
       )
-      
+
       suppressWarnings(render(
         res, "all", params = list(ctr = ctr, ...), envir = new.env(),
         output_dir = save_dir, clean = clean, quiet = TRUE
       ))
-      
+
       knitr::opts_chunk$set(fig.process = old_fig_process)
-      
+
       pmx_fig_process_wrapup(ctr)
-      
+
       plot_dir <- sprintf("%s_files", name)
       in_ <- file.path(ctr$save_dir, plot_dir)
       rm_dir(in_)
-      
+
       if (!clean) {
         ## create_ggpmx_gof(ctr$save_dir, name)
         remove_reports(output_type, ctr$save_dir)
@@ -85,32 +88,33 @@ pmx_report <-
 
 
 
-pmx_fig_process <-  function(ctr , old_name,footnote,out_) {
-  pname <- if(footnote) {
-    suffix = tools::file_ext(old_name)
-    sprintf("%s.%s",ctr$dequeue_plot(),suffix)
-  } else basename(old_name)
-  
+pmx_fig_process <- function(ctr, old_name, footnote, out_) {
+  pname <- if (footnote) {
+    suffix <- tools::file_ext(old_name)
+    sprintf("%s.%s", ctr$dequeue_plot(), suffix)
+  } else {
+    basename(old_name)
+  }
+
   new_name <- file.path(out_, pname)
-  
-  if(length(new_name)){
-    file.copy(old_name,new_name)
+
+  if (length(new_name)) {
+    file.copy(old_name, new_name)
     return(new_name)
   }
-  
+
   return(old_name)
 }
 
 pmx_draft <- function(ctr, name, template, edit) {
-  
-  
   template_file <- file.path(ctr$save_dir, sprintf("%s.Rmd", name))
   if (length(template_file) > 0 && file.exists(template_file)) {
     file.remove(template_file)
   }
-  
-  if(grepl(".Rmd",template) && !file.exists(template))
-    stop(sprintf("!Template %s DO NOT EXIST",template))
+
+  if (grepl(".Rmd", template) && !file.exists(template)) {
+    stop(sprintf("!Template %s DO NOT EXIST", template))
+  }
   if (file.exists(template)) {
     template_path <- system.file(
       "rmarkdown", "templates",
@@ -165,7 +169,7 @@ create_ggpmx_gof <- function(save_dir, name) {
     dir.create(out_)
     in_ <- file.path(save_dir, plot_dir)
     plots_ <- list.files(in_, recursive = TRUE, full.names = TRUE)
-    
+
     idx <- grepl("^indiv", basename(plots_))
     indiv <- plots_[idx]
     no_indiv <- plots_[!idx]
@@ -184,4 +188,3 @@ rm_dir <- function(to_remove) {
     system(sprintf("rm -r %s", to_remove))
   }
 }
-
