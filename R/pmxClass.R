@@ -190,6 +190,9 @@ pmx_endpoint <-
     assert_that(is.character(label))
     assert_that(is_list_or_null(files))
     assert_that(is_character_or_null(trans))
+    if(is.list(files)){
+      assert_that(any(names(files) %in% c("predictions","finegrid")))
+    }
     res <- list(
       code = code,
       label = label,
