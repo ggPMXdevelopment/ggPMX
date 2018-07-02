@@ -3,11 +3,13 @@ title: "bloq"
 author: "Amine Gassem"
 date: "June 27, 2018"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     df_print: paged
-    toc: true
+    number_sections: yes
     theme: united
-    number_sections: true
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -117,7 +119,7 @@ ctr %>% pmx_plot_individual(
 
 ```{r,message=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring3_project.mlxtran"
-ctr <- pmx_mlxtran(file_name=mlx_file,endpoint=2)
+ctr <- pmx_mlxtran(file_name=mlx_file,endpoint="2")
 
 ```
 
@@ -135,7 +137,7 @@ ctr %>% pmx_plot_individual(
 ## Pk data
 ```{r,message=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring4_project.mlxtran"
-ctr <- pmx_mlxtran(file_name=mlx_file,endpoint=1)
+ctr <- pmx_mlxtran(file_name=mlx_file,endpoint="1")
 
 ```
 
@@ -151,7 +153,7 @@ ctr %>% pmx_plot_individual(
 ## PD data
 ```{r,message=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring4_project.mlxtran"
-ctr <- pmx_mlxtran(file_name=mlx_file,endpoint=2)
+ctr <- pmx_mlxtran(file_name=mlx_file,endpoint="2")
 
 ```
 
