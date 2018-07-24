@@ -719,8 +719,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$strats <- toupper(strats)
   self$settings <- settings
  
-  if(!is.null(endpoint) && is.character(endpoint))
-    endpoint <- pmx_endpoint(code=endpoint)
+  
+  if(!is.null(endpoint) && is.atomic(endpoint))
+    endpoint <- pmx_endpoint(code=as.character(endpoint))
   self$endpoint <- endpoint
   if (is.character(input) && file.exists(input)) {
     self$input_file <- input
