@@ -37,6 +37,7 @@ pmx_report <-
       if (!dir.exists(save_dir)) {
         stop(sprintf("please provide a valid save directory : %s", save_dir))
       }
+      save_dir <- path.expand(save_dir)
       ctr$save_dir <- tools::file_path_as_absolute(save_dir)
     }
     ctr$footnote <- footnote
