@@ -275,6 +275,14 @@ add_footnote <- function(pp, pname, save_dir) {
   plot_file <- file.path(save_dir, "ggpmx_GOF", pname)
   footnote <- sprintf("Source: %s", plot_file)
   ## message("footnote is :" , footnote)
+  if(nchar(footnote)>45){
+    fns <- strsplit(footnote,"/")[[1]]
+    term1 <- do.call(file.path,as.list(fns[cumsum(nchar(fns))<45]))
+    term2 <- do.call(file.path,as.list(fns[cumsum(nchar(fns))>=45]))
+    footnote <- paste(paste0(term1,"/"),term2,sep="\n")
+    
+    
+  }
   pp <- pp + labs(caption = footnote)
   pp
 }
