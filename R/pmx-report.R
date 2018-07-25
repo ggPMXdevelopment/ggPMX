@@ -5,7 +5,11 @@
 #' @param format \code{character} the result type, can be \cr
 #' a standalone directory of plots or a report document as defined in the template \cr
 #' (pdf, docx,..) ,or both
-#' @param template \code{character} ggPMX predefined template or the path to a custom rmarkdwon template.
+#' @param template \code{character} ggPMX predefined template or the 
+#' path to a custom rmarkdwon template. \cr 
+#' Use \code{\link{pmx_report_template}} to get the list 
+#' of available templates
+
 #' @param save_dir Output directory.
 #' A directory to write the results files to
 #' (defaults to the directory of the input file).
@@ -195,3 +199,17 @@ rm_dir <- function(to_remove) {
     system(sprintf("rm -r %s", to_remove))
   }
 }
+
+#' Gets build-in report templates
+#'
+#' @return list of templates names
+#' @export
+#'
+#' @examples
+#' pmx_report_template()
+pmx_report_template <- function(){
+  system.file("rmarkdown", "templates", package = "ggPMX") %>%
+    list.dirs(recursive = FALSE) %>% 
+    basename
+}
+
