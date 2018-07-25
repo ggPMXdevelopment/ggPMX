@@ -30,9 +30,13 @@ pmx_report <-
            footnote=format == "both",
            edit=FALSE,
            ...) {
+    
     assert_that(is_pmxclass(ctr))
     format <- match.arg(format)
-    on.exit(remove_temp_files(ctr$save_dir))
+    on.exit({
+      remove_temp_files(ctr$save_dir)
+      ctr$footnote <- FALSE
+    })
     if (!is.null(save_dir)) {
       if (!dir.exists(save_dir)) {
         stop(sprintf("please provide a valid save directory : %s", save_dir))
