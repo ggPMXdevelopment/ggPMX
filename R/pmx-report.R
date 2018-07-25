@@ -25,7 +25,7 @@ pmx_report <-
   function(ctr,
            name,
            save_dir=NULL,
-           format=c("plots", "report", "both"),
+           format=c("both","plots", "report"),
            template="standing",
            footnote=format == "both",
            edit=FALSE,
@@ -47,7 +47,7 @@ pmx_report <-
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
 
-    out_ <- file.path(save_dir, "ggpmx_GOF")
+    out_ <- file.path(ctr$save_dir, "ggpmx_GOF")
     rm_dir(out_)
 
 
