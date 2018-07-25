@@ -46,16 +46,16 @@ pmx_report <-
     footnote <- format == "both" || footnote
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
-
+    
     out_ <- file.path(ctr$save_dir, "ggpmx_GOF")
     rm_dir(out_)
-
-
+    
+    
     if (footnote || standalone) {
       dir.create(out_)
-
+      
       pmx_fig_process_init(ctr)
-
+      
       opts_chunk$set(
         fig.process = function(old_name) {
           pmx_fig_process(
@@ -66,20 +66,20 @@ pmx_report <-
           )
         }
       )
-
+      
       suppressWarnings(render(
         res, "all", params = list(ctr = ctr, ...), envir = new.env(),
         output_dir = save_dir, clean = clean, quiet = TRUE
       ))
-
+      
       knitr::opts_chunk$set(fig.process = old_fig_process)
-
+      
       pmx_fig_process_wrapup(ctr)
-
+      
       plot_dir <- sprintf("%s_files", name)
       in_ <- file.path(ctr$save_dir, plot_dir)
       rm_dir(in_)
-
+      
       if (!clean) {
         ## create_ggpmx_gof(ctr$save_dir, name)
         remove_reports(format, ctr$save_dir)
@@ -96,14 +96,14 @@ pmx_fig_process <- function(ctr, old_name, footnote, out_) {
   } else {
     basename(old_name)
   }
-
+  
   new_name <- file.path(out_, pname)
-
+  
   if (length(new_name)) {
     file.copy(old_name, new_name)
     return(new_name)
   }
-
+  
   return(old_name)
 }
 
@@ -112,7 +112,7 @@ pmx_draft <- function(ctr, name, template, edit) {
   if (length(template_file) > 0 && file.exists(template_file)) {
     file.remove(template_file)
   }
-
+  
   if (grepl(".Rmd", template) && !file.exists(template)) {
     stop(sprintf("!Template %s DO NOT EXIST", template))
   }
@@ -158,7 +158,9 @@ remove_temp_files <-
 
 remove_reports <- function(format, save_dir) {
   if (format == "plots") {
-    invisible(file.remove(list.files(pattern = ".pdf$|.docx$", path = save_dir, full.names = TRUE)))
+    invisible(file.remove(list.files(
+      pattern = "(.pdf|.docx|Rmd)$", 
+      path = save_dir, full.names = TRUE)))
   }
 }
 
@@ -170,7 +172,7 @@ create_ggpmx_gof <- function(save_dir, name) {
     dir.create(out_)
     in_ <- file.path(save_dir, plot_dir)
     plots_ <- list.files(in_, recursive = TRUE, full.names = TRUE)
-
+    
     idx <- grepl("^indiv", basename(plots_))
     indiv <- plots_[idx]
     no_indiv <- plots_[!idx]
