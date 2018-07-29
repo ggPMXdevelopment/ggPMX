@@ -1,14 +1,14 @@
 ---
-title: "bloq"
+title: "BLOQ"
 author: "Amine Gassem"
-date: "June 27, 2018"
+date: "July 2, 2018"
 output:
   pdf_document:
     toc: yes
+    number_sections: yes
   html_document:
     df_print: paged
     number_sections: yes
-    theme: united
     toc: yes
 ---
 

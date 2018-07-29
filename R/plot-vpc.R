@@ -1,238 +1,303 @@
-
-#' Prepare nm vpc data
+#' Creates vpc bins 
 #'
-#' @param data_file input data file
-#' @param nm_dir simulation dir
-#' @param nm_sim_file dimulation file
-#' @param irun simulation run number ( nonmem)
-#' @param key merge column
-#' @param group_by summary key
+#' @param ... 
 #'
-#' @return data.table
-#' @importFrom stats quantile median as.formula
+#' @export
+#' @family vpc
 
-vpc.data <-
-  function(
-           data_file = "~/Downloads/DataManipulationWithR_HandsOn/data/pkDatExample.csv",
-           nm_dir = "~/Downloads/DataManipulationWithR_HandsOn/nonmem/",
-           nm_sim_file = file.path(nm_dir, sprintf("run%isim1.nmtab", irun)),
-           irun = 99,
-           key = "RID",
-           group_by = c("VIS1N", "NT", "NDOSE", "PART", "meanTIM2")) {
-    ## TODO:remove fill = TRUE for check (DT 1.10.4 has this feature)
-
-    sim <- fread(nm_sim_file, skip = 1)
-    dat <- fread(data_file)
-    CMT <- DV <- EFFECT <- EVID <- NULL
-    ID <- ISIM <- LIDV <- NT <- NULL
-    PART <- POS <- TIM2 <- VALUE <- VIS1N <- NULL
-    q10 <- q90 <- meanTIM2 <- med_dv <- NULL
-
-    ## format simulation file
-    sim <- sim[, ISIM := cumsum(ID == "ID") + 1][
-      !ID %in% c("ID", "TABLE")
-    ][
-      , ID := NULL
-    ][, lapply(.SD, as.double)][, (key) := as.integer(get(key))]
-
-    # Merge simulation with additional information from input data set
-    sim2 <- merge(sim, dat[CMT == 2 & EVID == 0][
-      , meanTIM2 := mean(TIM2 / 24), list(VIS1N, NT, PART)
-    ], by = key)
+pmx_bin <- 
+  function(...){
+    
+  }
 
 
-
-    sim2[
-      ISIM == 1,
-      c("obsMedian", "obsQ10", "obsQ90") :=
+#' Sets vpc observation layer
+#'
+#' @param show \code{logical} if TRUE show observation points
+#' @param color \code{character} Color of the observed endpoint values. Default: "#000000".
+#' @param size \code{numeric} Size of the observed endpoint values. Default: 1.
+#' @param alpha \code{numeric} Transparency of the observed endpoint values. Default: 0.7.
+#' @param shape \code{numeric} Shape of the observed endpoint values. Default: 1.
+#'
+#' @export
+#' @family vpc
+pmx_obs <- 
+  function(show=TRUE,
+           color ="#000000",
+           size =1,
+           alpha = 0.7,
+           shape = 1){
+    
+    if (show){
+      structure(
         list(
-          median(LIDV),
-          quantile(LIDV, 0.1),
-          quantile(LIDV, 0.9)
+          color=color,
+          size = size,
+          alpha=alpha,
+          shape=shape
         ),
-      group_by
-    ]
-
-    sim2[, c("med_dv", "q10", "q90") :=
-      list(
-        median(DV),
-        quantile(DV, 0.1),
-        quantile(DV, 0.9)
-      ), c(group_by, "ISIM")]
-
-
-    sim2[, c(
-      "medianOfMedian", "medianOfQ10", "medianOfQ90", "q10OfMedian",
-      "q10OfQ10", "q10OfQ90", "q90OfMedian", "q90OfQ10", "q90OfQ90"
-    ) :=
-      list(
-        median(med_dv), quantile(med_dv, 0.1), quantile(med_dv, 0.9),
-        median(q10), quantile(q10, 0.1), quantile(q10, 0.9),
-        median(q90), quantile(q90, 0.1), quantile(q90, 0.9)
-      ), group_by]
-
-
-    setnames(
-      sim2,
-      c(
-        "medianOfMedian", "q10OfMedian", "q90OfMedian",
-        "medianOfQ10", "q10OfQ10", "q90OfQ10",
-        "medianOfQ90", "q10OfQ90", "q90OfQ90",
-        "obsQ10", "obsQ90"
-      ),
-      c(
-        "median", "lRangeOfMedian",
-        "uRangeOfMedian", "lower",
-        "lRangeOfLower", "uRangeOfLower",
-        "upper", "lRangeOfUpper", "uRangeOfUpper",
-        "obsLower", "obsUpper"
+        class= c("pmx_obs","list")
       )
+    }
+    
+  }
+
+
+#' Sets vpc percentile layer
+#'
+#' @param show  \code{charcater} how lines are displayed:
+#' \itemize{
+#' \item {\strong{show=all}} {lines will be displayed for each of 
+#' the 3 percentiles. }
+#' \item {\strong{show=median}} {Show only median line.}
+#' }
+
+#' @param interval \code{numeric} quantiles values default 
+#' to \code{c(.05,.95)}
+#' @param median \code{list} containg: \cr
+#' \itemize{
+#' \item {\strong{color}} {\code{charcater}  Color of the median percentile line. Default: "#000000". }
+#' \item {\strong{size}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
+#' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
+#' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid".}
+#' }
+
+#' @param extreme \code{list} containg: \cr
+#' \itemize{
+#' \item {\strong{color}} {\code{charcater} Color of the median percentile line. Default: "#000000". }
+#' \item {\strong{size}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
+#' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
+#' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid"}
+#' }
+#'
+#' @family vpc
+#' @export
+pmx_pi <- 
+  function(show = c("all","median"),
+           interval=c(.05,.95),
+           median=list(color ="#000000",size =1,alpha = 0.7,linetype = "solid"),
+           extreme=list(color ="#000000",size =1,alpha = 0.7,linetype = "solid")
+  ){
+    
+    show = match.arg(show)
+    structure(
+      list(show=show,
+           probs=interval,
+           median=median,
+           extreme=extreme),
+      class= c("pmx_pi","list")
     )
+    
+  }
 
 
-    sim2[PART == 1]
+
+#' Sets vpc confidence interval layer
+
+#' @param show  \code{charcater} how areas are displayed:
+#' \itemize{
+#' \item {\strong{show="all"}} {areas will be displayed for each of the 3 percentiles. }
+#' \item {\strong{show="median"}} {Show only median area.}
+#' }
+
+#' @param interval \code{numeric} quantiles values default to \code{c(.05,.95)}
+#' @param method \code{charcater} which areas are displayed:
+#' \itemize{
+#' \item {\strong{method="ribbon"}} {areas are ribbons.}
+#' \item {\strong{method="rectangle"}} {ares are horizontal rectangles.}
+#' }
+
+#' @param median \code{list} containg: \cr
+#' \itemize{
+#' \item {\strong{fill}} { \code{character} Color of the area representing the CI for the median. Default: "#3388cc".}
+#' \item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the median. Default=0.3.}
+#' }
+
+#' @param extreme \code{list} containg: \cr
+#' \itemize{
+#' \item {\strong{fill}} {\code{character} Color of the area representing the CI for the extreme percentiles. Default: "#3388cc".}
+#' \item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the extreme percentiles. Default=0.3.}
+#' }
+#'
+#' @export
+
+#' @family vpc
+pmx_ci <- 
+  function(show = c("all","median"),
+           interval=c(.05,.95),
+           method = c("ribbon","rectangle"),
+           median=list(fill="#3388cc",alpha=0.3),
+           extreme=list(fill="#3388cc",alpha=0.3)){
+    show = match.arg(show)
+    method = match.arg(method)
+    structure(
+      list(show=show,
+           method=method,
+           probs=interval,
+           median=median,
+           extreme=extreme),
+      class= c("pmx_ci","list")
+    )
+    
+  }
+
+
+#' Sets vpc rug layer 
+#'
+#' @param show  \code{logical} If TRUE show bin separators 
+#' @param color \code{character} Color of the rug. Default: "#000000". 
+#' @param size  \code{numeric} Thickness of the rug. Default: 1.
+#' @param alpha  \code{numeric} Transparency of the rug. Default: 0.7.
+#' 
+#' @details 
+#' 
+#' When the vpc confidence interval layer methid  ???rectangles??? we don't show rug separators.
+
+#'
+#' @export
+#'
+#' @family vpc
+pmx_rug <- 
+  function(show=TRUE,
+           color = "#000000",
+           size = 1,
+           alpha =0.7 ){
+    
+    if(show){
+      structure(
+        list(
+          color=color,
+          size=size,
+          alpha=alpha
+        ),
+        class=c("pmx_rug","list")
+      )
+    }
+    
   }
 
 
 
 
+
+
+
+
+
+
+quantile_dt <- 
+  function(dx,grp="time",ind="y",probs=c(.05,.95),prefix="p",wide=FALSE){
+    
+    probs <- sort(unique(c(0.5,probs)))
+    fmt <- ifelse(probs<.1,paste0(prefix,"0%1.f"),paste0(prefix,"%1.f"))
+    probs.n <- sprintf(fmt, probs*100)
+    if(wide){
+      dd <- dx[,as.list(quantile(get(ind),probs=probs)),grp]
+      setnames(dd,grep("%",names(dd)),probs.n)
+    }else{
+      ds <- dx[,quantile(get(ind),probs=probs),grp]
+      ds[,percentile:=rep(probs.n,.N/length(probs))]
+      setnames(ds,  "V1","value")
+    }
+  }
+
+vpc.data <- 
+  function( type = c("percentile","scatter"),
+            dobs,
+            dsim,
+            probs.pi,
+            probs.ci,
+            idv = "time",
+            irun="stu"){
+    rug <- data.frame(cbind(x=unique(dobs[,time]), y=NA))
+    if (type == "percentile"){ 
+      pi <- quantile_dt(dobs,probs = probs.pi,grp = idv)
+      res2 <- quantile_dt(dsim,probs = probs.pi,grp =c(irun,idv))
+      ci <- quantile_dt(res2,probs = probs.ci,grp=c("percentile",idv),
+                        prefix="CL",ind="value",wide=TRUE)
+      
+    }else{
+      pi <- quantile_dt(dsim,probs = probs.pi,grp =c(idv))
+    }
+    
+    res <- list(pi_dt = pi, rug_dt = rug)
+    if (type == "percentile") res$ci_dt <- ci
+    res
+  }
+
+
+
+
+
+
+vpc.plot <- function(db,type){
+  
+  with(db,{
+    pp <- ggplot(data = pi_dt,aes_string(x=idv)) + 
+      geom_line(aes_string(group="percentile",y="value")) +
+      geom_point(data=obs,aes(y=y),alpha=.2) +
+      geom_rug(data=rug_dt, sides = "t", ggplot2::aes(x = x, y=y), colour="red") +
+      theme_bw()
+    
+    if (type=="percentile"){
+      pp + geom_ribbon(data=ci_dt,
+                       aes(ymin=CL05,ymax=CL95,group=percentile),fill='blue',alpha=0.2) +
+        labs(title='Percentile VPC',subtitle = '(with observations)') 
+    }else pp + labs(title='Scatter VPC')
+  })
+}
+
+#' Creates vpc object 
+#'
+#' @param type \code{charcater} can be either perecentile or scatter
+#' @param idv \code{chracater} individual variable
+#' @param obs \code{vpc_obs} object observation layer \link{pmx_obs}
+#' @param pi \code{vpc_pi} object percentile layer  \link{pmx_pi}
+#' @param ci \code{vpc_ci} object confidence interval layer  \link{pmx_ci}
+#' @param rug  \code{vpc_rub} object rug layer  \link{pmx_rug} 
+#' @param bin \code{vpc_bin} object  \link{pmx_bin} 
+#' @param labels \code{list} define title and axis labels
+#' @param is.legend \code{logical} if TRUE add legend
+#' @param dname added for compatibility with other ggPMX plots
+#' @param strat \code{chracter} use stratification 
+#'
+#' @family vpc
+#' @export
+#'
 
 vpc <- function(
-                labels,
-                facets = list(by = "NDOSE", ncol = 2),
-                dname = NULL,
-                plot.pi=TRUE,
-                plot.bands=TRUE,
-                plot.obs=TRUE,
-                is.legend=FALSE,
-                ...) {
-  assert_that(is_list(facets))
-  assert_that(is_string_or_null(dname))
-  if (missing(labels)) {
-    labels <- list(
-      title = "VPC",
-      subtitle = "",
-      x = "Time after first dose (h)",
-      y = "Plasma concentration (ng/mL)"
-    )
-  }
-  assert_that(is_list(labels))
-  if (is.null(dname)) dname <- "IND"
-
-  # Set legend title & entries
-  legTitle <- ""
-  leg <- c(
-    "Median",
-    "Prediction interval",
-    "Observed"
-  )
-  if (plot.bands) {
-    leg <-
-      paste0(leg, c("\n(median and range)", "\n(median and range)", ""))
-  } else {
-    leg <-
-      paste0(leg, c(" (median)", "\n(median)", ""))
-  }
-
-
+  type = c("percentile","scatter"),
+  idv  ="TIME", 
+  strat=NULL,
+  obs  = pmx_obs(),
+  pi =  pmx_pi(),
+  ci =  pmx_ci(),
+  rug = pmx_rug(),
+  bin = pmx_bin(),
+  labels = NULL,
+  is.legend=FALSE,
+  dname=NULL,
+  ...
+){
+  type = match.arg(type)
+  ## check args here  
+  
   structure(
     list(
       ptype = "VPC",
+      idv = idv,
       dname = dname,
       labels = labels,
-      facets = facets,
-      plot.pi = plot.pi,
-      plot.bands = plot.bands,
-      plot.obs = plot.obs,
       is.legend = is.legend,
+      obs = obs,pip = pi,ci = ci,rug=rug,bin=bin,
       gp = pmx_gpar(labels = labels, ...)
     ),
     class = c("vpc", "pmx_gpar")
   )
-}
-
-
+} 
 
 
 plot_pmx.vpc <- function(x, dx, ...) {
-
-
-  # Select data to be included in the plot
-  ISIM <- meanTIM2 <- vpcTime <- NULL
-  sumData <- dx[, vpcTime := meanTIM2 / 24] # Simulated and observed data summaries
-  obsData <- dx[ISIM == 1][, vpcTime := meanTIM2 / 24] # Observed patient data
-
-
-  p <- ggplot(data = sumData, aes_string(x = "vpcTime"))
-  with(x, {
-    # Plot the ranges of the uper and lower boundaries of the simulated studies
-    if (plot.pi && plot.bands) {
-      p <- p +
-        geom_ribbon(aes_string(
-          ymin = "lRangeOfUpper", ymax = "uRangeOfUpper",
-          fill = "minmax", alpha = "minmax"
-        )) +
-        geom_ribbon(aes_string(
-          ymin = "lRangeOfLower", ymax = "uRangeOfLower",
-          fill = "minmax", alpha = "minmax"
-        ))
-    }
-
-    if (plot.bands) {
-      p <- p +
-        geom_ribbon(aes_string(ymin = "lRangeOfMedian", ymax = "uRangeOfMedian", fill = "median", alpha = "median"))
-    }
-    if (add.obs) {
-      p <- p +
-        geom_point(data = obsData, aes_string(y = "LIDV", colour = "data", shape = "data"))
-    }
-
-    # Plot the medians of the upper and lower boundaries
-    if (plot.pi) {
-      if (plot.bands) {
-        p <- p +
-          geom_line(aes_string(y = "upper", colour = "minmax", linetype = "minmax", shape = "minmax")) +
-          geom_line(aes_string(y = "lower", colour = "minmax", linetype = "minmax", shape = "minmax"))
-      } else {
-        p <- p +
-          geom_line(aes_string(
-            y = "upper", colour = "minmax", linetype = "minmax", shape = "minmax",
-            fill = "minmax", alpha = "minmax"
-          )) +
-          geom_line(aes_string(
-            y = "lower", colour = "minmax", linetype = "minmax", shape = "minmax",
-            fill = "minmax", alpha = "minmax"
-          ))
-      }
-      p <- p + geom_line(
-        data = obsData,
-        aes_string(y = "obsLower", colour = "data", linetype = "minmax", alpha = "data")
-      ) +
-        geom_line(
-          data = obsData,
-          aes_string(y = "obsUpper", colour = "data", linetype = "minmax", alpha = "data")
-        )
-    }
-
-    if (plot.bands) {
-      p <- p + geom_line(aes_string(y = "median", colour = "median", linetype = "median", shape = "median"))
-    } else {
-      p <- p + geom_line(aes_string(
-        y = "median", colour = "median", linetype = "median", shape = "median",
-        fill = "median", alpha = "median"
-      ))
-    }
-    p <- p + geom_line(
-      data = obsData,
-      aes_string(
-        y = "median", colour = "median", linetype = "median", shape = "median",
-        fill = "median", alpha = "median"
-      )
-    )
-    p <- p + with(facets, facet_wrap(as.formula(paste("~", by)), ncol = ncol, scales = "free"))
-    p <- plot_pmx(gp, p)
-  })
-
-
-  p
+  db <- x$db
+  vpc.plot(db,type)
 }

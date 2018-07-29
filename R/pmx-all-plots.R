@@ -526,3 +526,24 @@ pmx_register_plot <-
       pp
     }
   }
+
+
+# VPC plot --------------------------------------------------------------
+
+#' VPC plot
+#' @param ctr pmx controller
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{vpc}} vpc object .
+#' \item \code{\link{pmx_update}} function.
+#' }
+#' @return ggplot2 object
+#' @export
+#' @example inst/examples/vpc.R
+#' @family vpc
+pmx_plot_vpc <- function(ctr, ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, "vpc", params)
+}
+

@@ -270,7 +270,7 @@ pmx_bloq <-
 #' @export
 set_plot <- function(
                      ctr,
-                     ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
+                     ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ","VPC"),
                      pname,
                      use.defaults=TRUE,
                      filter =NULL,
@@ -315,7 +315,8 @@ set_plot <- function(
       SCATTER = do.call(residual, params),
       ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs, params),
       ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
-      PMX_QQ = do.call(pmx_qq, params)
+      PMX_QQ = do.call(pmx_qq, params),
+      VPC=do.call(vpc,params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))

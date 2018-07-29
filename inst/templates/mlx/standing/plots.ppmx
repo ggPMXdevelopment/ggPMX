@@ -190,8 +190,6 @@ DV_IPRED:
     size: 2.0
     alpha: 0.9
     
-    
-    
 EBE_HIST:
   ptype: DIS
   type: hist
@@ -326,3 +324,7 @@ ETA_QQ:
     'y': ETA Quantiles
   strat.facet: ~EFFECT
     
+VPC:
+  ptype: VPC
+  type: percentile
+  dname: sim
