@@ -103,7 +103,6 @@ NPDE_TIME:
     size: 2.0
     alpha: 0.9
 
-
 NPDE_PRED:
   ptype: SCATTER
   x: PRED

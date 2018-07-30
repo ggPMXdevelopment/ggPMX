@@ -20,7 +20,7 @@ before_add_check <- function(self, private, x, pname) {
   }
   assert_that(is.data.table(dx))
   x$input <- self %>% get_data("input")
-
+  
   x$dx <- dx
   x
 }
@@ -166,9 +166,29 @@ before_add_check <- function(self, private, x, pname) {
       }
     }
   }
-
+  
   invisible(x)
 }
+
+.vpc_x <- function(x,self){
+  
+  if(x$ptype=="VPC"){
+    res <- vpc.data(x[["type"]],
+                    x$input,
+                    x$dx,
+                    x$pi$probs,
+                    x$ci$probs,
+                    idv = self$sim[["idv"]],
+                    irun=self$sim[["irun"]],
+                    dv = self$sim[["dv"]]
+    )
+    old_class <- class(x)
+    x$db <- res
+    class(x) <- old_class
+    x
+  }
+}
+
 
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)
@@ -183,8 +203,9 @@ pmx_add_plot <- function(self, private, x, pname) {
     .shrink_x(self) %>%
     .add_cats_x(self) %>%
     .settings_x(self) %>%
-    .bloq_x(self)
-
+    .bloq_x(self) %>%
+    .vpc_x(self)
+  
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)
   invisible(self)

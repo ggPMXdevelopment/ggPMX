@@ -208,16 +208,20 @@ vpc.data <-
             probs.pi,
             probs.ci,
             idv = "time",
-            irun="stu"){
-    rug <- data.frame(cbind(x=unique(dobs[,time]), y=NA))
+            irun="stu",
+            dv="y"){
+    rug <- data.frame(
+      x=unlist(unique(dobs[,idv,with=FALSE])), 
+      y=NA_real_,
+      stringsAsFactors = FALSE)
     if (type == "percentile"){ 
-      pi <- quantile_dt(dobs,probs = probs.pi,grp = idv)
-      res2 <- quantile_dt(dsim,probs = probs.pi,grp =c(irun,idv))
+      pi <- quantile_dt(dobs,probs = probs.pi,grp = idv,ind = dv)
+      res2 <- quantile_dt(dsim,probs = probs.pi,grp =c(irun,idv),ind=dv)
       ci <- quantile_dt(res2,probs = probs.ci,grp=c("percentile",idv),
                         prefix="CL",ind="value",wide=TRUE)
       
     }else{
-      pi <- quantile_dt(dsim,probs = probs.pi,grp =c(idv))
+      pi <- quantile_dt(dsim,probs = probs.pi,grp =c(idv),ind=dv)
     }
     
     res <- list(pi_dt = pi, rug_dt = rug)
@@ -230,17 +234,17 @@ vpc.data <-
 
 
 
-vpc.plot <- function(db,type){
+vpc.plot <- function(x){
   
-  with(db,{
-    pp <- ggplot(data = pi_dt,aes_string(x=idv)) + 
+  with(x,{
+    pp <- ggplot(data = db$pi_dt,aes_string(x=idv)) + 
       geom_line(aes_string(group="percentile",y="value")) +
-      geom_point(data=obs,aes(y=y),alpha=.2) +
-      geom_rug(data=rug_dt, sides = "t", ggplot2::aes(x = x, y=y), colour="red") +
+      geom_point(data=input,aes_string(y=dv),alpha=.2) +
+      geom_rug(data=db$rug_dt, sides = "t", aes(x = x, y=y), colour="red") +
       theme_bw()
     
     if (type=="percentile"){
-      pp + geom_ribbon(data=ci_dt,
+      pp + geom_ribbon(data=db$ci_dt,
                        aes(ymin=CL05,ymax=CL95,group=percentile),fill='blue',alpha=0.2) +
         labs(title='Percentile VPC',subtitle = '(with observations)') 
     }else pp + labs(title='Scatter VPC')
@@ -268,6 +272,7 @@ vpc.plot <- function(db,type){
 vpc <- function(
   type = c("percentile","scatter"),
   idv  ="TIME", 
+  dv = "y",
   strat=NULL,
   obs  = pmx_obs(),
   pi =  pmx_pi(),
@@ -285,11 +290,14 @@ vpc <- function(
   structure(
     list(
       ptype = "VPC",
+      strat = TRUE,
       idv = idv,
+      dv = dv,
       dname = dname,
       labels = labels,
       is.legend = is.legend,
-      obs = obs,pip = pi,ci = ci,rug=rug,bin=bin,
+      type=type,
+      obs = obs,pi = pi,ci = ci,rug=rug,bin=bin,
       gp = pmx_gpar(labels = labels, ...)
     ),
     class = c("vpc", "pmx_gpar")
@@ -299,5 +307,5 @@ vpc <- function(
 
 plot_pmx.vpc <- function(x, dx, ...) {
   db <- x$db
-  vpc.plot(db,type)
+  if (!is.null(db))  vpc.plot(x)
 }
