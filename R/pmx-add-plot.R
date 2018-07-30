@@ -186,7 +186,7 @@ before_add_check <- function(self, private, x, pname) {
     x$db <- res
     class(x) <- old_class
     x
-  }
+  }else x
 }
 
 

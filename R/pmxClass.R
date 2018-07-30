@@ -501,10 +501,13 @@ plots <- function(ctr) {
     fn
   }
   if (exists("plots", x)) {
+    pp <- x$plots
+    names(pp) <- tolower(names(pp))
+    pp <- pp[ctr$plots()]
     data.table(
-      plot_name = tolower(names(x$plots)),
-      plot_type = sapply(x$plots, "[[", "ptype"),
-      plot_function = sapply(tolower(names(x$plots)), function_name)
+      plot_name =names(pp),
+      plot_type = sapply(pp, "[[", "ptype"),
+      plot_function = sapply(names(pp), function_name)
     )
   }
 }
