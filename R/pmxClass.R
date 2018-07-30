@@ -65,7 +65,7 @@ check_argument <- function(value, pmxname) {
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} defalut to NULL
-#' @param endpoint \code{pmxSimClass} default to NULL
+#' @param sim \code{pmxSimClass} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @return a pmxClass object
 #' @seealso  \code{\link{pmx_mlx}}

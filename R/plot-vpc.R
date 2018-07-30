@@ -255,6 +255,7 @@ vpc.plot <- function(x){
 #'
 #' @param type \code{charcater} can be either perecentile or scatter
 #' @param idv \code{chracater} individual variable
+#' @param dv \code{chracater} observation variable
 #' @param obs \code{vpc_obs} object observation layer \link{pmx_obs}
 #' @param pi \code{vpc_pi} object percentile layer  \link{pmx_pi}
 #' @param ci \code{vpc_ci} object confidence interval layer  \link{pmx_ci}
@@ -264,6 +265,7 @@ vpc.plot <- function(x){
 #' @param is.legend \code{logical} if TRUE add legend
 #' @param dname added for compatibility with other ggPMX plots
 #' @param strat \code{chracter} use stratification 
+#' @param ...  extra parameters passed to base graphical parameters
 #'
 #' @family vpc
 #' @export
