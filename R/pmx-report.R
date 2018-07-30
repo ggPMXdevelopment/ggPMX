@@ -2,10 +2,14 @@
 #'
 #' @param ctr \code{pmxClass} controller
 #' @param name \code{character} The report name
-#' @param output_type \code{character} the result type, can be \cr
+#' @param format \code{character} the result type, can be \cr
 #' a standalone directory of plots or a report document as defined in the template \cr
 #' (pdf, docx,..) ,or both
-#' @param template \code{character} ggPMX predefined template or the path to a custom rmarkdwon template.
+#' @param template \code{character} ggPMX predefined template or the 
+#' path to a custom rmarkdwon template. \cr 
+#' Use \code{\link{pmx_report_template}} to get the list 
+#' of available templates
+
 #' @param save_dir Output directory.
 #' A directory to write the results files to
 #' (defaults to the directory of the input file).
@@ -25,36 +29,41 @@ pmx_report <-
   function(ctr,
            name,
            save_dir=NULL,
-           output_type=c("plots", "report", "both"),
+           format=c("both","plots", "report"),
            template="standing",
-           footnote=output_type == "both",
+           footnote=format == "both",
            edit=FALSE,
            ...) {
+    
     assert_that(is_pmxclass(ctr))
-    output_type <- match.arg(output_type)
-    on.exit(remove_temp_files(ctr$save_dir))
+    format <- match.arg(format)
+    on.exit({
+      remove_temp_files(ctr$save_dir)
+      ctr$footnote <- FALSE
+    })
     if (!is.null(save_dir)) {
       if (!dir.exists(save_dir)) {
         stop(sprintf("please provide a valid save directory : %s", save_dir))
       }
+      save_dir <- path.expand(save_dir)
       ctr$save_dir <- tools::file_path_as_absolute(save_dir)
     }
     ctr$footnote <- footnote
     res <- pmx_draft(ctr, name, template, edit)
-    standalone <- output_type %in% c("plots", "both")
-    footnote <- output_type == "both" || footnote
+    standalone <- format %in% c("plots", "both")
+    footnote <- format == "both" || footnote
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
-
-    out_ <- file.path(save_dir, "ggpmx_GOF")
+    
+    out_ <- file.path(ctr$save_dir, "ggpmx_GOF")
     rm_dir(out_)
-
-
+    
+    
     if (footnote || standalone) {
       dir.create(out_)
-
+      
       pmx_fig_process_init(ctr)
-
+      
       opts_chunk$set(
         fig.process = function(old_name) {
           pmx_fig_process(
@@ -65,23 +74,23 @@ pmx_report <-
           )
         }
       )
-
+      
       suppressWarnings(render(
         res, "all", params = list(ctr = ctr, ...), envir = new.env(),
         output_dir = save_dir, clean = clean, quiet = TRUE
       ))
-
+      
       knitr::opts_chunk$set(fig.process = old_fig_process)
-
+      
       pmx_fig_process_wrapup(ctr)
-
+      
       plot_dir <- sprintf("%s_files", name)
       in_ <- file.path(ctr$save_dir, plot_dir)
       rm_dir(in_)
-
+      
       if (!clean) {
         ## create_ggpmx_gof(ctr$save_dir, name)
-        remove_reports(output_type, ctr$save_dir)
+        remove_reports(format, ctr$save_dir)
       }
     }
   }
@@ -95,14 +104,14 @@ pmx_fig_process <- function(ctr, old_name, footnote, out_) {
   } else {
     basename(old_name)
   }
-
+  
   new_name <- file.path(out_, pname)
-
+  
   if (length(new_name)) {
     file.copy(old_name, new_name)
     return(new_name)
   }
-
+  
   return(old_name)
 }
 
@@ -111,7 +120,7 @@ pmx_draft <- function(ctr, name, template, edit) {
   if (length(template_file) > 0 && file.exists(template_file)) {
     file.remove(template_file)
   }
-
+  
   if (grepl(".Rmd", template) && !file.exists(template)) {
     stop(sprintf("!Template %s DO NOT EXIST", template))
   }
@@ -155,9 +164,11 @@ remove_temp_files <-
     invisible(file.remove(temp_files))
   }
 
-remove_reports <- function(output_type, save_dir) {
-  if (output_type == "plots") {
-    invisible(file.remove(list.files(pattern = ".pdf$|.docx$", path = save_dir, full.names = TRUE)))
+remove_reports <- function(format, save_dir) {
+  if (format == "plots") {
+    invisible(file.remove(list.files(
+      pattern = "(.pdf|.docx|Rmd)$", 
+      path = save_dir, full.names = TRUE)))
   }
 }
 
@@ -169,7 +180,7 @@ create_ggpmx_gof <- function(save_dir, name) {
     dir.create(out_)
     in_ <- file.path(save_dir, plot_dir)
     plots_ <- list.files(in_, recursive = TRUE, full.names = TRUE)
-
+    
     idx <- grepl("^indiv", basename(plots_))
     indiv <- plots_[idx]
     no_indiv <- plots_[!idx]
@@ -188,3 +199,17 @@ rm_dir <- function(to_remove) {
     system(sprintf("rm -r %s", to_remove))
   }
 }
+
+#' Gets build-in report templates
+#'
+#' @return list of templates names
+#' @export
+#'
+#' @examples
+#' pmx_report_template()
+pmx_report_template <- function(){
+  system.file("rmarkdown", "templates", package = "ggPMX") %>%
+    list.dirs(recursive = FALSE) %>% 
+    basename
+}
+

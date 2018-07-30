@@ -13,7 +13,8 @@ pmx_theme <- function(...) {
       strip.text = element_text(size = 14),
       strip.background = element_rect(colour = NA, fill = NA),
       plot.title = element_text(size = 12),
-      axis.text = element_text(size = 10)
+      axis.text = element_text(size = 10),
+      plot.margin = unit(c(1,1,1,1), "cm")
     ) %+replace%
     theme(...)
 }

@@ -1,10 +1,11 @@
 ---
-title: "ggPMX Multiple endpoints:How it works"
+title: "ggPMX multiple endpoints"
 author: "Amine Gassem"
-date: "June 26, 2018"
+date: "July 2, 2018"
 output:
   pdf_document:
     toc: yes
+    number_sections: yes
   html_document:
     df_print: paged
     number_sections: yes

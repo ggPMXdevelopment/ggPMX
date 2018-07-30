@@ -12,7 +12,7 @@ ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
   save_dir = file.path(report_dir,"case1"),
-  output_type="report")
+  format="report")
 
 ## case2: generate standalone plots
 ## Note here the use of a custom dir to save results
@@ -20,7 +20,7 @@ ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
   save_dir = file.path(report_dir,"case2"),
-  output_type="plots")
+  format="plots")
 
 
 ## case3: generate both : reports + plots
@@ -30,7 +30,7 @@ ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
   save_dir = file.path(report_dir,"case3"),
-  output_type="both")
+  format="both")
 
 ## case4 : generate standalone plots with footnotes
 ctr <- theophylline()
@@ -38,7 +38,7 @@ ctr %>% pmx_report(
   name = "my_report",
   save_dir = file.path(report_dir,"case4"),
   footnote=TRUE,
-  output_type="plots")
+  format="plots")
 
 
 ##  case5: use a custom template 
@@ -47,7 +47,7 @@ ctr %>% pmx_report(
       name = "my_report",
       save_dir = file.path(report_dir,"case5"),
       template="standing_with_header",
-      output_type="both")
+      format="both")
 
 
 ##  case6: dynamic edit
@@ -56,7 +56,7 @@ ctr %>% pmx_report(
 # ctr %>% pmx_report(
 #   save_dir = file.path(report_dir,"case6"),
 #   name = "my_report",
-#   output_type="report",
+#   format="report",
 #   edit = TRUE)
 
 
@@ -69,7 +69,7 @@ ctr %>% pmx_report(
   name="report2",
   save_dir =  file.path(report_dir,"case1"),
   template=custom_template,
-  output_type="both"
+  format="both"
 )
 
 ## case7 : generate individual plots report 
@@ -79,7 +79,7 @@ ctr %>% pmx_report(
   name="report2",
   save_dir =  file.path(report_dir,"case1"),
   template="individual",
-  output_type="both",
+  format="both",
   npage=1:2
 )
 
@@ -91,5 +91,5 @@ ctr %>% pmx_report(
   name="misc",
   save_dir =  "/tmp",
   template=misc_template,
-  output_type="both"
+  format="both"
 )

@@ -1,4 +1,38 @@
 
+#' Create simulation object
+#'
+#' @param file \code{character} path to the simulation file
+#' @param irun \code{character} name of the simulation column 
+#' @param idv \code{character} name of the ind. variable
+#' @param dv \code{character} name of the observation variable
+#' @export
+pmx_sim <- function(
+  file,
+  irun,
+  idv,
+  dv
+){
+  if (file.exists(file)){
+    sim <- pmx_fread(file)
+    if(tolower(idv)=="time"){
+      idvn <- names(sim)[tolower(names(sim))=="time"]
+      setnames(sim, idvn, "TIME")
+      idv <- "TIME"
+    }
+    id_col <- grep("^id$", names(sim), ignore.case = TRUE, value = TRUE)
+    setnames(sim, id_col, "ID")
+    obj <- list(
+      sim=sim,
+      dv = dv,
+      idv=idv,
+      irun=irun
+    )
+    structure(obj,class=c("pmxSimClass","list"))
+  }
+}
+
+
+
 check_argument <- function(value, pmxname) {
   call <- match.call()
   if (missing(value) || is.null(value)) {
@@ -30,7 +64,8 @@ check_argument <- function(value, pmxname) {
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
-#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater}
+#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} defalut to NULL
+#' @param sim \code{pmxSimClass} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @return a pmxClass object
 #' @seealso  \code{\link{pmx_mlx}}
@@ -38,7 +73,7 @@ check_argument <- function(value, pmxname) {
 #' @example inst/examples/controller.R
 pmx <-
   function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
-           settings=NULL, endpoint=NULL) {
+           settings=NULL, endpoint=NULL,sim=NULL) {
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
@@ -61,7 +96,7 @@ pmx <-
     if (!inherits(settings, "pmxSettingsClass")) {
       settings <- pmx_settings()
     }
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint)
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim)
   }
 
 #' Wrapper to pmx constructor
@@ -270,7 +305,7 @@ pmx_bloq <-
 #' @export
 set_plot <- function(
                      ctr,
-                     ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ"),
+                     ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ","VPC"),
                      pname,
                      use.defaults=TRUE,
                      filter =NULL,
@@ -308,6 +343,10 @@ set_plot <- function(
       params$ptype <- NULL
     }
   }
+  if (ptype =="VPC"){
+    params$dv <- ctr$sim$dv
+    params$idv <- ctr$sim$idv
+  }
   conf <-
     switch(ptype,
       IND = do.call(individual, params),
@@ -315,7 +354,8 @@ set_plot <- function(
       SCATTER = do.call(residual, params),
       ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs, params),
       ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
-      PMX_QQ = do.call(pmx_qq, params)
+      PMX_QQ = do.call(pmx_qq, params),
+      VPC=do.call(vpc,params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
@@ -461,10 +501,13 @@ plots <- function(ctr) {
     fn
   }
   if (exists("plots", x)) {
+    pp <- x$plots
+    names(pp) <- tolower(names(pp))
+    pp <- pp[ctr$plots()]
     data.table(
-      plot_name = tolower(names(x$plots)),
-      plot_type = sapply(x$plots, "[[", "ptype"),
-      plot_function = sapply(tolower(names(x$plots)), function_name)
+      plot_name =names(pp),
+      plot_type = sapply(pp, "[[", "ptype"),
+      plot_function = sapply(names(pp), function_name)
     )
   }
 }
@@ -643,8 +686,9 @@ pmxClass <- R6::R6Class(
     report_queue = list(),
     report_n = 0,
     plot_file_name = "",
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint),
+    sim=NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -690,7 +734,8 @@ pmxClass <- R6::R6Class(
 )
 
 pmx_initialize <- function(self, private, data_path, input, dv,
-                           config, dvid, cats, conts, occ, strats, settings, endpoint) {
+                           config, dvid, cats, conts, occ, strats, 
+                           settings, endpoint,sim) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -719,8 +764,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$strats <- toupper(strats)
   self$settings <- settings
  
-  if(!is.null(endpoint) && is.character(endpoint))
-    endpoint <- pmx_endpoint(code=endpoint)
+  
+  if(!is.null(endpoint) && is.atomic(endpoint))
+    endpoint <- pmx_endpoint(code=as.character(endpoint))
   self$endpoint <- endpoint
   if (is.character(input) && file.exists(input)) {
     self$input_file <- input
@@ -735,8 +781,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     endpoint = self$endpoint
   )
   ##
-
-
   ## check random effect
 
   if (!is.null(self$data[["eta"]])) {
@@ -753,8 +797,17 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   }
 
   self$post_load()
-
-  ## abbev
+  
+  if (!is.null(sim)) {
+    self$data[["sim"]] <- sim[["sim"]]
+    
+    self$sim <- sim      
+    
+  }
+  
+  
+  
+  ## abbrev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"
   )

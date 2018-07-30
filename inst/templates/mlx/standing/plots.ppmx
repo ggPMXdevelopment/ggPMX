@@ -103,7 +103,6 @@ NPDE_TIME:
     size: 2.0
     alpha: 0.9
 
-
 NPDE_PRED:
   ptype: SCATTER
   x: PRED
@@ -189,8 +188,6 @@ DV_IPRED:
     color: pink
     size: 2.0
     alpha: 0.9
-    
-    
     
 EBE_HIST:
   ptype: DIS
@@ -326,3 +323,7 @@ ETA_QQ:
     'y': ETA Quantiles
   strat.facet: ~EFFECT
     
+VPC:
+  ptype: VPC
+  type: percentile
+  dname: sim

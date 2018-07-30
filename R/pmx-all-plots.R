@@ -275,6 +275,14 @@ add_footnote <- function(pp, pname, save_dir) {
   plot_file <- file.path(save_dir, "ggpmx_GOF", pname)
   footnote <- sprintf("Source: %s", plot_file)
   ## message("footnote is :" , footnote)
+  if(nchar(footnote)>45){
+    fns <- strsplit(footnote,"/")[[1]]
+    term1 <- do.call(file.path,as.list(fns[cumsum(nchar(fns))<45]))
+    term2 <- do.call(file.path,as.list(fns[cumsum(nchar(fns))>=45]))
+    footnote <- paste(paste0(term1,"/"),term2,sep="\n")
+    
+    
+  }
   pp <- pp + labs(caption = footnote)
   pp
 }
@@ -518,3 +526,24 @@ pmx_register_plot <-
       pp
     }
   }
+
+
+# VPC plot --------------------------------------------------------------
+
+#' VPC plot
+#' @param ctr pmx controller
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{vpc}} vpc object .
+#' \item \code{\link{pmx_update}} function.
+#' }
+#' @return ggplot2 object
+#' @export
+#' @example inst/examples/vpc.R
+#' @family vpc
+pmx_plot_vpc <- function(ctr, ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, "vpc", params)
+}
+
