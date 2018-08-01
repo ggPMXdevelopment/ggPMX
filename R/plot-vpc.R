@@ -1,14 +1,28 @@
+
+
 #' Creates vpc bins 
 #'
-#' @param ... 
+#' @param style \code{character} style	chosen on of the:\cr
+#'  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
+#'  @param n number of bins (Optional)
+#' @param ... other classInt::classIntervals parameters excpet \code{style} and \code{n}
 #'
 #' @export
+#' @importFrom classInt classIntervals
+#' @details 
+#' This is a warraper to 
 #' @family vpc
 
 pmx_bin <- 
-  function(...){
+  function(style, ...) {
+    if(missing(style))return(NULL)
+    as.list(match.call()[-1])
+    
     
   }
+
+
+
 
 
 #' Sets vpc observation layer
@@ -80,6 +94,15 @@ pmx_pi <-
   ){
     
     show = match.arg(show)
+    median_default <- list(color ="#000000",size =1,alpha = 0.7,linetype = "solid")
+    extreme_default  <- list(color ="#000000",size =1,alpha = 0.7,linetype = "solid")
+    
+    median <- if(!missing(median)) {
+      l_left_join(median_default,median)
+    }else median_default
+    extreme <- if(!missing(extreme)) {
+      l_left_join(extreme_default,extreme)
+    }else extreme_default
     structure(
       list(show=show,
            probs=interval,
@@ -130,6 +153,14 @@ pmx_ci <-
            extreme=list(fill="#3388cc",alpha=0.3)){
     show = match.arg(show)
     method = match.arg(method)
+    median_default=list(fill="#3388cc",alpha=0.3)
+    extreme_default=list(fill="#3388cc",alpha=0.3)
+    median <- if(!missing(median)) {
+      l_left_join(median_default,median)
+    }else median_default
+    extreme <- if(!missing(extreme)) {
+      l_left_join(extreme_default,extreme)
+    }else extreme_default
     structure(
       list(show=show,
            method=method,
@@ -210,10 +241,10 @@ vpc.data <-
             idv = "time",
             irun="stu",
             dv="y"){
-    rug <- data.frame(
-      x=unlist(unique(dobs[,idv,with=FALSE])), 
-      y=NA_real_,
-      stringsAsFactors = FALSE)
+    
+    bins <- unlist(unique(dobs[,idv,with=FALSE]))
+    rug <- data.frame(x=bins, y=NA_real_, stringsAsFactors = FALSE)
+    
     if (type == "percentile"){ 
       pi <- quantile_dt(dobs,probs = probs.pi,grp = idv,ind = dv)
       res2 <- quantile_dt(dsim,probs = probs.pi,grp =c(irun,idv),ind=dv)
@@ -233,20 +264,65 @@ vpc.data <-
 
 
 
+vpc.pi_line <- function(dt,left,geom){
+  mapping = aes_string(group="percentile",y="value")
+  right <- list(data=dt,mapping=mapping)
+  do.call("geom_line",append(right,left))
+}
 
 vpc.plot <- function(x){
   
   with(x,{
-    pp <- ggplot(data = db$pi_dt,aes_string(x=idv)) + 
-      geom_line(aes_string(group="percentile",y="value")) +
-      geom_point(data=input,aes_string(y=dv),alpha=.2) +
-      geom_rug(data=db$rug_dt, sides = "t", aes(x = x, y=y), colour="red") +
-      theme_bw()
+    pp <- ggplot(data = db$pi_dt,aes_string(x=if(!is.null(bin))"bin" else idv)) 
+    pi_med_layer <- if(!is.null(pi)){
+      vpc.pi_line(db$pi_dt[percentile=="p50"],pi$median)
+    }
+    pi_ext_layer <- if(!is.null(pi) && pi$show=="all"){
+      vpc.pi_line(db$pi_dt[percentile!="p50"],pi$extreme)
+    }
+    obs_layer <- if(!is.null(obs)){
+      params <- append(
+        list(
+          mapping=aes_string(y=dv),
+          data=input),
+        obs)
+      do.call(geom_point,params)
+    }
+    rug_layer <- if(!is.null(rug)) {
+      params <- append(
+        list(
+          mapping=aes(x = x, y=y),
+          sides="t",
+          data=db$rug_dt),
+        rug)
+      
+      do.call(geom_rug,params)
+    }
+    ci_med_layer <- if(!is.null(ci) && type=="percentile"){
+      params <- append(
+        
+        list(
+          data = db$ci_dt[percentile=="p50"],
+          mapping = aes(ymin=CL05,ymax=CL95,group=percentile)),
+        ci$median)
+      do.call(geom_ribbon,params)
+    }
+    ci_ext_layer <- if(!is.null(ci) && type=="percentile" && ci$show=="all"){
+      params <- append(
+        
+        list(
+          data = db$ci_dt[percentile!="p50"],
+          mapping = aes(ymin=CL05,ymax=CL95,group=percentile)),
+        ci$extreme)
+      do.call(geom_ribbon,params)
+    }
+
+    pp <- ggplot(data = db$pi_dt,aes_string(x=if(!is.null(bin))"bin" else idv)) + 
+      obs_layer + pi_med_layer + pi_ext_layer + 
+      rug_layer + ci_med_layer + ci_ext_layer
     
     if (type=="percentile"){
-      pp + geom_ribbon(data=db$ci_dt,
-                       aes(ymin=CL05,ymax=CL95,group=percentile),fill='blue',alpha=0.2) +
-        labs(title='Percentile VPC',subtitle = '(with observations)') 
+      pp + labs(title='Percentile VPC',subtitle = '(with observations)') 
     }else pp + labs(title='Scatter VPC')
   })
 }
