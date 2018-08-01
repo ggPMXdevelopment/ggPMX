@@ -544,6 +544,7 @@ pmx_register_plot <-
 #' @family vpc
 pmx_plot_vpc <- function(ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params$is.smooth = FALSE
   wrap_pmx_plot_generic(ctr, "vpc", params)
 }
 

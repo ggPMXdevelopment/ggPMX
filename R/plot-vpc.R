@@ -385,5 +385,6 @@ vpc <- function(
 
 plot_pmx.vpc <- function(x, dx, ...) {
   db <- x$db
-  if (!is.null(db))  vpc.plot(x)
+  if (!is.null(db))  p <- vpc.plot(x)
+  plot_pmx(x$gp, p)
 }

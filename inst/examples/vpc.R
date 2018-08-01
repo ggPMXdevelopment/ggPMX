@@ -1,6 +1,5 @@
 
 
-library(ggPMX)
 ctr <- pmx(
   config = "standing",
   sys = "mlx",
@@ -15,7 +14,10 @@ ctr <- pmx(
   )
 )
 
-ctr %>% pmx_plot_vpc(type ="percentile",
+ctr %>% pmx_plot_vpc(
+  is.smooth=TRUE,is.band=TRUE,
+  labels=list(x="IDV"),
+  type ="percentile",
                      bin=pmx_bin(style="quantile",n=5),
                      obs=pmx_obs(
                        color = "green",shape = 20,size=1))

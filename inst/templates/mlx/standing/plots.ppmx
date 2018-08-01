@@ -327,3 +327,9 @@ VPC:
   ptype: VPC
   type: percentile
   dname: sim
+  labels:
+    title: 'Percentile VPC'
+    subtitle: '(with observations)'
+    x: TIME
+    'y': DV
+  is.smooth: no
