@@ -299,20 +299,21 @@ vpc.plot <- function(x){
       do.call(geom_rug,params)
     }
     ci_med_layer <- if(!is.null(ci) && type=="percentile"){
+      nn <- grep("CL",names(db$ci_dt),value=TRUE)[c(1,3)]
       params <- append(
         
         list(
           data = db$ci_dt[percentile=="p50"],
-          mapping = aes(ymin=CL05,ymax=CL95,group=percentile)),
+          mapping = aes_string(ymin=nn[[1]],ymax=nn[[2]],group="percentile")),
         ci$median)
       do.call(geom_ribbon,params)
     }
     ci_ext_layer <- if(!is.null(ci) && type=="percentile" && ci$show=="all"){
+      nn <- grep("CL",names(db$ci_dt),value=TRUE)[c(1,3)]
       params <- append(
-        
         list(
           data = db$ci_dt[percentile!="p50"],
-          mapping = aes(ymin=CL05,ymax=CL95,group=percentile)),
+          mapping = aes_string(ymin=nn[[1]],ymax=nn[[2]],group="percentile")),
         ci$extreme)
       do.call(geom_ribbon,params)
     }
@@ -320,6 +321,21 @@ vpc.plot <- function(x){
     pp <- ggplot(data = db$pi_dt,aes_string(x=if(!is.null(bin))"bin" else idv)) + 
       obs_layer + pi_med_layer + pi_ext_layer + 
       rug_layer + ci_med_layer + ci_ext_layer
+    
+    
+    strat.color <- x[["strat.color"]]
+    strat.facet <- x[["strat.facet"]]
+    if (!is.null(strat.color)) {
+      p <- p %+% geom_point(aes_string(color = strat.color))
+    }
+    
+    if (!is.null(strat.facet)) {
+      if (is.character(strat.facet)) {
+        strat.facet <- formula(paste0("~", strat.facet))
+      }
+      p <- p + do.call("facet_wrap", c(strat.facet, facets))
+    }
+    
     
     if (type=="percentile"){
       pp + labs(title='Percentile VPC',subtitle = '(with observations)') 

@@ -548,3 +548,22 @@ pmx_plot_vpc <- function(ctr, ...) {
   wrap_pmx_plot_generic(ctr, "vpc", params)
 }
 
+
+
+# IRES density plot --------------------------------------------------------------
+
+#' IRES density plot
+#' @param ctr pmx controller
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_dens}} vpc object .
+#' \item \code{\link{pmx_update}} function.
+#' }
+#' @return ggplot2 object
+#' @export
+pmx_plot_dens_iwres <- function(ctr, ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params$is.smooth = FALSE
+  wrap_pmx_plot_generic(ctr, "iwres_dens", params)
+}

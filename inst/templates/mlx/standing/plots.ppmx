@@ -322,6 +322,18 @@ ETA_QQ:
     x: Standard Normal Quantiles
     'y': ETA Quantiles
   strat.facet: ~EFFECT
+
+
+IWRES_DENS:
+  ptype: PMX_DENS
+  x: IWRES
+  dname: predictions
+  labels:
+    title: 'Density plot of IWRES'
+    subtitle: ''
+    x: Etas
+    'y': 
+
     
 VPC:
   ptype: VPC

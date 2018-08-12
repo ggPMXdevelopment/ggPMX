@@ -1,5 +1,5 @@
 
-
+library(ggPMX)
 ctr <- pmx(
   config = "standing",
   sys = "mlx",
@@ -7,6 +7,7 @@ ctr <- pmx(
   directory = "~/Downloads",
   dv ="y",
   sim = pmx_sim(
+    
     file = "~/Downloads/sim.csv",
     irun ="stu",
     idv="TIME",
@@ -15,9 +16,11 @@ ctr <- pmx(
 )
 
 ctr %>% pmx_plot_vpc(
-  is.smooth=TRUE,is.band=TRUE,
-  labels=list(x="IDV"),
-  type ="percentile",
-                     bin=pmx_bin(style="quantile",n=5),
-                     obs=pmx_obs(
-                       color = "green",shape = 20,size=1))
+  type="percentile",
+  is.draft = FALSE,
+  bin=pmx_bin(style="hclust",n=6),
+  pi = pmx_pi(interval = c(0.1,0.90)),
+  ci = pmx_pi(interval = c(0.1,0.90)),
+  rug=NULL
+)
+ 
