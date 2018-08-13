@@ -7,11 +7,11 @@
 #' @param x \code{character} variable name to sample
 #' @param labels list of texts/titles used within the plot
 #' @param dname name of dataset to be used
-#' @parm xlim \code{numeric}
-#' @param var_line \code{list}
-#' @param snd_line \code{list}
-#' @param vline \code{list}
-#' #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
+#' @param xlim \code{numeric} x axis limits
+#' @param var_line \code{list} variable denstiy graphics parameters
+#' @param snd_line \code{list} normal denstiy graphics parameters
+#' @param vline \code{list} vertical line graphics parameters
+#' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
 #' @family plot_pmx
@@ -19,7 +19,7 @@
 #'
 #' \strong{labels} is a list that contains:
 #' \itemize{
-#' \item {\strong{title:}} {plot title default  "EBE vs. covariates"}
+#' \item {\strong{title:}} {plot title default  "IWRES density plot"}
 #' \item {\strong{x:}} {x axis label default to "Etas"}
 #' \item {\strong{y:}} {y axis label default to empty}
 #' }
@@ -31,7 +31,6 @@
 #' \item {\strong{size:}} {default to 1}
 #' }
 #' 
-#' #'
 #' \strong{snd_line} is a list that contains:
 #' \itemize{
 #' \item {\strong{linetype:}} {default to 2}
@@ -39,8 +38,6 @@
 #' \item {\strong{size:}} {default to 1}
 #' }
 #'
-#'#' 
-#' #'
 #' \strong{vline} is a list that contains:
 #' \itemize{
 #' \item {\strong{linetype:}} {default to 3}
