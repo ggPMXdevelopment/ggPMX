@@ -256,7 +256,16 @@ vpc.data <-
     }
     
     res <- list(pi_dt = pi, rug_dt = rug)
-    if (type == "percentile") res$ci_dt <- ci
+    if (type == "percentile") {
+      res$ci_dt <- ci
+      out <- merge(ci,pi,by=c(idv,"percentile"))
+      nn <- grep("CL",names(out),value=TRUE)[c(1,3)]
+      out[,out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
+      out[, zmax := pmax(get(nn[[2]]),value)]
+      out[, zmin := pmin(get(nn[[1]]),value)]
+      res$out <- out 
+      
+    }
     res
   }
 
@@ -317,10 +326,38 @@ vpc.plot <- function(x){
         ci$extreme)
       do.call(geom_ribbon,params)
     }
-
+    
+    out <- list(color="red")
+    out_layer <- if(!is.null(out)){
+      params <- append(
+        list(
+          mapping = aes_string(group="percentile",y="value"),
+          data=db$out[(out_)]),
+        out)
+      do.call(geom_point,params)
+    }
+    out_area <- list(fill="red",alpha=0.2)    
+    out_layer_area_min <- if(!is.null(out_area)){
+      ll <- list( 
+        mapping = aes_string(group="percentile",ymin="zmin",ymax=nn[[1]]),
+        data=db$out
+      )
+      params <- append(ll,out_area)
+      do.call(geom_ribbon,params) 
+    }
+    
+    out_layer_area_max <- if(!is.null(out_area)){
+      ll1 <- list( 
+        mapping = aes_string(group="percentile",ymax="zmax",ymin=nn[[2]]),
+        data=db$out
+      )
+      params <- append(ll1,out_area)
+      do.call(geom_ribbon,params) 
+    }
     pp <- ggplot(data = db$pi_dt,aes_string(x=if(!is.null(bin))"bin" else idv)) + 
       obs_layer + pi_med_layer + pi_ext_layer + 
-      rug_layer + ci_med_layer + ci_ext_layer
+      rug_layer + ci_med_layer + ci_ext_layer +
+      out_layer + out_layer_area_min + out_layer_area_max 
     
     
     strat.color <- x[["strat.color"]]
