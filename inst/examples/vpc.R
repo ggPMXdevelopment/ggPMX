@@ -18,9 +18,7 @@ ctr <- pmx(
 ctr %>% pmx_plot_vpc(
   type="percentile",
   is.draft = FALSE,
-  bin=pmx_bin(style="hclust",n=6),
-  pi = pmx_pi(interval = c(0.1,0.90)),
-  ci = pmx_pi(interval = c(0.1,0.90)),
-  rug=NULL
+  pi = pmx_pi(interval = c(0.05,0.95)),
+  ci = pmx_pi(interval = c(0.05,0.95))
 )
  

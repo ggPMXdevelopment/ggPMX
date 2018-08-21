@@ -99,7 +99,8 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
   setnames(xx, id_col, "ID")
 
   if (dv %in% names(xx)) {
-    xx[,DV:=get(dv)]
+    if(dv=="dv") xx[,DV:=dv]
+    else xx[,DV:=get(dv)]
   } else {
     dv.names <- paste(setdiff(names(xx), c("ID", "id", "time", "TIME")), collapse = " or ")
     dv.names <- sprintf("'%s'", dv.names)
