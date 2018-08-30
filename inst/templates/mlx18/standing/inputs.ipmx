@@ -36,3 +36,16 @@ estimates  :
       - VALUE
       - SE
       - RSE
+      
+finegrid :
+    label : finegrid
+    file  : y_fits.txt
+    subfolder: ChartsData/IndividualFits
+    pattern: _fits
+    reader  : read_mlx18_pred
+    names:
+      ID: id
+      TIME: time
+      PRED: poppred
+      IPRED: mlx18_finegrid_ipred      
+

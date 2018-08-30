@@ -29,7 +29,7 @@ read_mlx_ind_est <- function(path, x, ...) {
     ds[, c("ID", "OCC") := tstrsplit(ID, "#")       ][
       ,
       c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))
-    ]
+      ]
   }
   ds
 }
@@ -40,7 +40,7 @@ read_mlx18_ind_est <- function(path, x, ...) {
   read_mlx_ind_est(path,x,...)
   
 }
-  
+
 
 
 #' Read Modelling input data
@@ -60,14 +60,14 @@ read_mlx18_ind_est <- function(path, x, ...) {
 read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", endpoint=NULL) {
   TIME <- EVID <- MDV <- y <- NULL
   xx <- pmx_fread(ipath)
-
+  
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
     setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
     setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
     xx <- xx[!(EVID == 1 & MDV == 1)]
   }
-
-
+  
+  
   if (!is.null(endpoint)) {
     if (!is.null(dvid) && dvid %in% names(xx)) {
       rr <- dvid
@@ -79,7 +79,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     } else {
       msg <- sprintf("ggPMX can not filter by endpoint %s\n", endpoint$code)
       msg <- paste(msg, sprintf("%s is not a valid column in the observation data set", dvid))
-
+      
       stop(msg)
     }
   }
@@ -90,22 +90,22 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
       if (length(ends) > 1) {
         msg <- sprintf("Observation data contains multiple endpoints %s. \n ", paste(ends, collapse = " ; "))
         msg <- paste(msg, "Please select a single endpoint to continue.")
-
+        
         stop(msg)
       }
     }
   }
-
-
-
-
+  
+  
+  
+  
   id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
   if (length(id_col) == 0) {
     id_col <- names(xx)[1]
     message("input do not contain ID variable: ggPMX use first input variable ", id_col)
   }
   setnames(xx, id_col, "ID")
-
+  
   if (dv %in% names(xx)) {
     if(dv=="dv") xx[,DV:=dv]
     else xx[,DV:=get(dv)]
@@ -116,19 +116,19 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
                         suggested names are : %s", dv, dv.names)
     stop(err.msg)
   }
-
+  
   if (nzchar(occ) && occ %in% names(xx)) {
     setnames(xx, occ, "OCC")
   }
   ## round time column for further merge
   setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
   xx[, TIME := round(TIME, 4)]
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {
     covariates <- covariates[covariates != ""]
@@ -151,7 +151,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     conts <- conts[conts != ""]
     xx[, (conts) := lapply(.SD, as.numeric), .SDcols = conts]
   }
-
+  
   xx
 }
 
@@ -180,7 +180,16 @@ mlx18_ipred <- function(x) {
   return(NULL)
 }
 
-mlx_iwres <- function(x) {
+mlx18_finegrid_ipred <- function(x) {
+  if ("indivpredmode" %in% x) return("indivpredmode")
+  if ("indivpredmean" %in% x) {
+    message("NO indivPredMode found use indivPredMean instead")
+    return("indivpredmean")
+  }
+  message("NO valid mapping for IPRED")
+  return(NULL)
+}
+mlx_iwres <- function(x) {mlx18_ipred
   if ("indwres_mode" %in% x) return("indwres_mode")
   if ("indwres_mean" %in% x) {
     message("NO indwres_mode found use indwres_mean instead")
@@ -229,13 +238,13 @@ read_mlx_pred <- function(path, x, ...) {
     names.nn <- c(names.nn, "IWRES")
   }
   res <- setnames(xx[, nn, with = FALSE], names.nn)
-
+  
   ## select columns
-
+  
   if (grepl("#", res[1, ID], fixed = TRUE)) {
     res[, c("ID", "OCC") := tstrsplit(ID, "#")][, c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))]
   }
-
+  
   res
 }
 
@@ -259,14 +268,26 @@ read_mlx18_res <- function(path, x, ...) {
   new_vars <- names(x[["names"]])
   setnames(ds, ids,new_vars)
   ds[,new_vars,with=FALSE]
-
+  
 }
 
 read_mlx18_pred <- function(path, x, ...) {
   
+  if (exists("subfolder",x)){
+    path <- file.path(dirname(path),x$subfolder)
+    finegrid_file <- file.path(path,x$file)
+    path <- if(!file.exists(finegrid_file)){
+      list.files(path,pattern=x$pattern,full.names = TRUE)[1]
+    } else finegrid_file
+  }
+  
+  
   ds <- read_mlx_pred(path=path,x=x,...)
-  resi <-  read_mlx18_res(path,x$residuals)
-  merge(ds,resi)
+  if (exists("residuals",x)){
+    resi <-  read_mlx18_res(path,x$residuals)
+    ds <- merge(ds,resi)
+  }
+  ds
 }
 
 
@@ -312,7 +333,7 @@ load_data_set <- function(x, path, sys, ...) {
       } else {
         file_name <- sprintf("%s%s.txt", x[["pattern"]], endpoint$code)
       }
-
+      
       fpath <- file.path(path, file_name)
       if (length(fpath) > 0 && file.exists(fpath)) {
         message("use ", file_name, " for endpoint ", endpoint$code)
@@ -326,9 +347,9 @@ load_data_set <- function(x, path, sys, ...) {
       return(NULL)
     }
   }
-
-
-
+  
+  
+  
   if (exists("reader", x)) {
     return(do.call(x[["reader"]], list(fpath, x, ...)))
   }
@@ -363,8 +384,8 @@ load_source <- function(sys, path, dconf, ...) {
   dxs <- lapply(dconf, function(x) {
     load_data_set(x, path = path, sys = sys, ...)
   })
-
-
+  
+  
   dxs
 }
 
