@@ -24,3 +24,15 @@ eta :
     subfolder: IndividualParameters
     file  : estimatedRandomEffects.txt
     reader  : read_mlx18_ind_est 
+    
+    
+estimates  :
+    label : parameter estimates
+    file  : populationParameters.txt
+    reader  : read_mlx_par_est
+    sep: ","
+    names:
+      - PARAM
+      - VALUE
+      - SE
+      - RSE

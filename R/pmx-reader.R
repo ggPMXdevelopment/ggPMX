@@ -282,7 +282,8 @@ read_mlx18_pred <- function(path, x, ...) {
 #' @import data.table
 
 read_mlx_par_est <- function(path, x, ...) {
-  xx <- setDT(read.table(path, sep = ";", header = TRUE))
+  sep = ifelse(exists("sep",x),x$sep,";")
+  xx <- setDT(read.table(path, sep = sep, header = TRUE))
   if ("names" %in% names(x)) {
     setnames(xx, x[["names"]])
   }
