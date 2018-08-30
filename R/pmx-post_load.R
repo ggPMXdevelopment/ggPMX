@@ -69,7 +69,7 @@ post_load <- function(dxs, input, sys, dplot, occ) {
   warns <- list()
   if (is.null(dxs[["predictions"]])) return(dxs)
   ## merge finegrid with input data
-  if (sys == "mlx") {
+  if (sys %in% c("mlx","mlx18")) {
     keys <- c("ID", "TIME")
     if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
 

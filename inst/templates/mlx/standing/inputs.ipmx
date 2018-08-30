@@ -10,18 +10,7 @@ predictions :
       NPDE: npde
       IPRED: mlx_ipred
       IWRES: mlx_iwres
-      
-      
-      
-      
-      
-      
-      
-      
- 
- 
-      
-      
+
 estimates  :
     label : parameter estimates
     file  : estimates.txt
