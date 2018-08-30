@@ -34,6 +34,14 @@ read_mlx_ind_est <- function(path, x, ...) {
   ds
 }
 
+read_mlx18_ind_est <- function(path, x, ...) {
+  
+  path <- file.path(dirname(path),x$subfolder,x$file)
+  read_mlx_ind_est(path,x,...)
+  
+}
+  
+
 
 #' Read Modelling input data
 #'

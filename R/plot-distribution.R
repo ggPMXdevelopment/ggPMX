@@ -134,7 +134,7 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
       histogram$mapping <- aes_string(fill = strat.color)
     }
     p <- p + do.call(geom_histogram, histogram)
-    if (is.shrink) {
+    if (is.shrink && !is.null(x[["shrink.dx"]])) {
       p <- p + shrinkage_layer(
           x[["shrink.dx"]],
           x$shrink, "hist", strat.color
@@ -163,7 +163,7 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
     p <- p + do.call("facet_wrap", c(strat.facet, x$facets))
   }
 
-  if (x$is.shrink) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
+  if (x$is.shrink && !is.null(x[["shrink.dx"]])) p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
 
   p
 }
