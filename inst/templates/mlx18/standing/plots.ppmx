@@ -1,0 +1,347 @@
+## add comment 
+ABS_IWRES_IPRED:
+  ptype: SCATTER
+  x: IPRED
+  'y': IWRES
+  labels:
+    title: '|IWRES| vs IPRED'
+    subtitle: ''
+    'y': '|IWRES|'
+    x: Individual predictions
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.hline: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  trans: abs_y
+
+IWRES_IPRED:
+  ptype: SCATTER
+  x: IPRED
+  'y': IWRES
+  labels:
+    title: IWRES vs IPRED
+    subtitle: ''
+    x: IPRED
+    'y': IWRES
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.hline: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+
+
+IWRES_TIME:
+  ptype: SCATTER
+  x: TIME
+  'y': IWRES
+  labels:
+    title: IWRES vs TIME
+    subtitle: ''
+    x: TIME
+    'y': IWRES
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.hline: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+
+NPDE_TIME:
+  ptype: SCATTER
+  x: TIME
+  'y': NPDE
+  labels:
+    title: NPDE vs TIME
+    subtitle: ''
+    x: TIME
+    'y': NPDE
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 2.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+
+NPDE_PRED:
+  ptype: SCATTER
+  x: PRED
+  'y': NPDE
+  labels:
+    title: NPDE vs PRED
+    subtitle: ''
+    x: PRED
+    'y': NPDE
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.hline: yes
+  hline:
+    color: blue
+  is.band: no
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+
+DV_PRED:
+  ptype: SCATTER
+  labels:
+    title: DV vs PRED
+    subtitle: ''
+  x: PRED
+  'y': DV
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  is.identity_line: yes
+  identity_line:
+    intercept: 0
+    color: blue
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+    
+DV_IPRED:
+  ptype: SCATTER
+  labels:
+    title: DV vs IPRED
+    subtitle: ''
+  x: IPRED
+  'y': DV
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+  is.identity_line: yes
+  identity_line:
+    intercept: 0
+    color: blue
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+    
+EBE_HIST:
+  ptype: DIS
+  type: hist
+  dname: eta
+  facets:
+    scales: free_x
+    nrow: 3.0
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    color: black
+    hjust: -1
+    vjust: 2
+    annotation: shrinkage
+  histogram:
+    binwidth: 0.034
+    position: dodge
+    fill: white
+    color: black
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: 'Estimated eta'
+    'y': 'Histogram'
+    legend: Random effect
+
+EBE_BOX:
+  ptype: DIS
+  dname: eta
+  type: box
+  is.jitter: yes
+  jitter:
+    shape: 1.0
+    color: grey50
+    width: 0.1
+    height: 0.1
+    alpha: 0.3
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    color: black
+    hjust: 0.5
+    vjust: 2.0
+    annotation: shrinkage
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: 'Estimated eta'
+    'y': 'Density'
+    legend: Random effect
+  facets:
+    scales: free_x
+    nrow: 3.0
+    
+INDIVIDUAL:
+  ptype: IND
+  dname: IND
+  ranges: ~
+  is.smooth: no
+  ipred_line:
+    color: black
+    size: 1
+  pred_line:
+    color: black
+    size: 1
+  point:
+    color: black
+    shape : 21
+    size: 1
+  is.legend: no
+  facets:
+    ncol: 3
+    nrow: 4
+    scales: free
+  labels:
+    title: Individual fits
+    subtitle: ''
+    x: TIME
+    'y': DV
+  use.finegrid: yes
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    color: pink
+    size: 2.0
+    alpha: 0.9
+
+ETA_MATRIX:
+  ptype: ETA_PAIRS
+  title: Correlations of random effects
+  dname: eta
+  type.eta: mode
+  text_color: black
+  
+ETA_CATS:
+  ptype: ETA_COV
+  type: cats
+  
+ETA_CONTS:
+  ptype: ETA_COV
+  type: conts
+  
+IWRES_QQ:
+  ptype: PMX_QQ
+  x: IWRES
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': IWRES Quantiles
+    
+NPDE_QQ:
+  ptype: PMX_QQ
+  x: NPDE
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': NPDE Quantiles
+    
+ETA_QQ:
+  ptype: PMX_QQ
+  x: VALUE
+  dname: eta
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': ETA Quantiles
+  strat.facet: ~EFFECT
+
+
+IWRES_DENS:
+  ptype: PMX_DENS
+  x: IWRES
+  dname: predictions
+  labels:
+    title: 'Density plot of IWRES'
+    subtitle: ''
+    x: Etas
+    'y': 
+
+    
+VPC:
+  ptype: VPC
+  type: percentile
+  dname: sim
+  labels:
+    title: 'Percentile VPC'
+    subtitle: '(with observations)'
+    x: TIME
+    'y': DV
+  is.smooth: no

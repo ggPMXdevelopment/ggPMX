@@ -89,7 +89,9 @@ pmx <-
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
+    
     if (!inherits(config, "pmxConfig")) {
+      if("populationParameters.txt" %in% list.files(directory)) sys <- "mlx18"
       config <- load_config(config, sys)
     }
     if (missing(settings)) settings <- pmx_settings()

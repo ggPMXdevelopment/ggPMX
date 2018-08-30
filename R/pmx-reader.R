@@ -153,9 +153,20 @@ mlx_ipred <- function(x) {
     message("NO indpred_mode found use indpred_mean instead")
     return("indpred_mean")
   }
-  if ("indpred_mean*" %in% x) {
+  if ("indpred_mean" %in% x) {
     message("NO indpred_(mode|mean) found use indpred_mean* instead")
     return("indpred_mean*")
+  }
+  message("NO valid mapping for IPRED")
+  return(NULL)
+}
+
+
+mlx18_ipred <- function(x) {
+  if ("indivpred_mode" %in% x) return("indivpred_mode")
+  if ("indivpred_mean" %in% x) {
+    message("NO indivpred_mode found use indivpred_mean instead")
+    return("indivpred_mean")
   }
   message("NO valid mapping for IPRED")
   return(NULL)
@@ -170,6 +181,16 @@ mlx_iwres <- function(x) {
   if ("indwres_mean*" %in% x) {
     message("NO indwres_(mode|mean) found use indwres_mean* instead")
     return("indwres_mean*")
+  }
+  message("NO valid mapping for IWRES")
+  return(NULL)
+}
+
+mlx18_iwres <- function(x) {
+  if ("indwres_mode" %in% x) return("indwres_mode")
+  if ("indwres_mean" %in% x) {
+    message("NO indwres_mode found use indwres_mean instead")
+    return("indpred_mean")
   }
   message("NO valid mapping for IWRES")
   return(NULL)
@@ -239,8 +260,12 @@ read_mlx_par_est <- function(path, x, ...) {
 #' @return data.table
 #' @import data.table
 load_data_set <- function(x, path, sys, ...) {
+  
+  if (exists("subfolder",x))
+    path <- file.path(path,x$subfolder)
+  
   fpath <- file.path(path, x[["file"]])
-  if (!file.exists(fpath)) {
+  if (!file.exists(fpath) ) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
       if (!is.null(endpoint$files)) {
@@ -256,9 +281,12 @@ load_data_set <- function(x, path, sys, ...) {
       }
     }
   }
-  if (length(fpath) == 0 || !file.exists(fpath)) {
-    message(sub(".txt", "", x[["file"]]), " file do not exist")
-    return(NULL)
+  
+  if(sys!="mlx18"){
+    if (length(fpath) == 0 || !file.exists(fpath)) {
+      message(sub(".txt", "", x[["file"]]), " file do not exist")
+      return(NULL)
+    }
   }
 
 
@@ -281,6 +309,22 @@ load_data_set <- function(x, path, sys, ...) {
 }
 
 
+#' Read MONOLIX 18 residuals file predictions
+#'
+#' @param path character path to the file
+#' @param x configuration object
+#' @param ... extra paramter not used
+#'
+#' @return data.table object
+#' @import data.table
+
+read_mlx18_res <- function(path, x, ...) {
+  xx <- pmx_fread(path)
+  
+}
+
+
+
 #' Load all/or some source data set
 #'
 #' @param sys type cane mlx/nom
@@ -298,3 +342,5 @@ load_source <- function(sys, path, dconf, ...) {
 
   dxs
 }
+
+
