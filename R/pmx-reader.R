@@ -232,6 +232,37 @@ read_mlx_pred <- function(path, x, ...) {
 }
 
 
+read_mlx18_res <- function(path, x, ...) {
+  
+  if (exists("subfolder",x))
+    path <- file.path(dirname(path),x$subfolder)
+  
+  res_file <- file.path(path,x$file)
+  file_path <- if(!file.exists(res_file)){
+    list.files(path,pattern=x$pattern,full.names = TRUE)[1]
+  } else res_file
+  if(!file.exists(file_path)){
+    message(sub(".txt", "", x[["file"]]), " file do not exist")
+    return(NULL)
+  }
+  
+  ds <- pmx_fread(file_path)
+  ids <- match(tolower(names(x[["names"]])),tolower(names(ds)))
+  new_vars <- names(x[["names"]])
+  setnames(ds, ids,new_vars)
+  ds[,new_vars,with=FALSE]
+
+}
+
+read_mlx18_pred <- function(path, x, ...) {
+  
+  ds <- read_mlx_pred(path=path,x=x,...)
+  resi <-  read_mlx18_res(path,x$residuals)
+  merge(ds,resi)
+}
+
+
+
 #' Read MONOLIX parameter estimation file
 #'
 #' @param path character path to the file
@@ -261,8 +292,6 @@ read_mlx_par_est <- function(path, x, ...) {
 #' @import data.table
 load_data_set <- function(x, path, sys, ...) {
   
-  if (exists("subfolder",x))
-    path <- file.path(path,x$subfolder)
   
   fpath <- file.path(path, x[["file"]])
   if (!file.exists(fpath) ) {
@@ -309,19 +338,6 @@ load_data_set <- function(x, path, sys, ...) {
 }
 
 
-#' Read MONOLIX 18 residuals file predictions
-#'
-#' @param path character path to the file
-#' @param x configuration object
-#' @param ... extra paramter not used
-#'
-#' @return data.table object
-#' @import data.table
-
-read_mlx18_res <- function(path, x, ...) {
-  xx <- pmx_fread(path)
-  
-}
 
 
 
