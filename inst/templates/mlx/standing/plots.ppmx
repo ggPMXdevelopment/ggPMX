@@ -332,7 +332,7 @@ IWRES_DENS:
     title: 'Density plot of IWRES'
     subtitle: ''
     x: Etas
-    'y': 
+    'y': ''
 
     
 VPC:
