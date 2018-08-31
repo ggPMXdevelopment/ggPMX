@@ -550,7 +550,7 @@ pmx_plot_vpc <- function(ctr, ...) {
 
 
 
-# IRES density plot --------------------------------------------------------------
+# IWRES density plot --------------------------------------------------------------
 
 #' IRES density plot
 #' @param ctr pmx controller
@@ -562,7 +562,7 @@ pmx_plot_vpc <- function(ctr, ...) {
 #' }
 #' @return ggplot2 object
 #' @export
-pmx_plot_dens_iwres <- function(ctr, ...) {
+pmx_plot_iwres_dens <- function(ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   params$is.smooth = FALSE
   wrap_pmx_plot_generic(ctr, "iwres_dens", params)

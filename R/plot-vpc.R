@@ -8,7 +8,6 @@
 #' @param ... other classInt::classIntervals parameters excpet \code{style} and \code{n}
 #'
 #' @export
-#' @importFrom classInt classIntervals
 #' @details 
 #' This is a warraper to 
 #' @family vpc
@@ -356,8 +355,8 @@ vpc.plot <- function(x){
     }
     pp <- ggplot(data = db$pi_dt,aes_string(x=if(!is.null(bin))"bin" else idv)) + 
       obs_layer + pi_med_layer + pi_ext_layer + 
-      rug_layer + ci_med_layer + ci_ext_layer +
-      out_layer + out_layer_area_min + out_layer_area_max 
+      rug_layer + ci_med_layer + ci_ext_layer 
+      ## out_layer + out_layer_area_min + out_layer_area_max 
     
     
     strat.color <- x[["strat.color"]]

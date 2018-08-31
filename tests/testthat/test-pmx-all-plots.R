@@ -19,5 +19,5 @@ test_that("We can call all pmx_plot_xx with success", {
       }
     }
   )
-  expect_true(all(vapply(res, function(x) inherits(x, "gg"), TRUE)))
+  expect_true(all(vapply(res, function(x) inherits(x, "gg") || is.null(x), TRUE)))
 })

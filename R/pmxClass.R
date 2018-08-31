@@ -79,6 +79,7 @@ pmx <-
     dv <- check_argument(dv, "dv")
     ## dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
+    if (missing(sim)) sim <- NULL
     if (missing(endpoint)) {
       endpoint <- NULL
     }
@@ -115,13 +116,14 @@ pmx <-
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater}
+#' @param sim \code{pmxSimClass} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @seealso  \code{\link{pmx}}
 #' @return \code{pmxClass} object
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim)
   }
 
 
