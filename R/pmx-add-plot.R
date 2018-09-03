@@ -146,7 +146,10 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-.bloq_x <- function(x, self) {
+.bloq_x <- function(x, self) { 
+  
+  if (is.null(is.null(x[["bloq"]])) && !is.null(self$bloq))
+    x[["bloq"]] <- self$bloq
   if (!is.null(x[["bloq"]])) {
     dx <- self %>% get_data("input")
     if (!x$bloq$cens %in% names(dx)) {

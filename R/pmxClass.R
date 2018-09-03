@@ -73,7 +73,7 @@ check_argument <- function(value, pmxname) {
 #' @example inst/examples/controller.R
 pmx <-
   function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
-           settings=NULL, endpoint=NULL,sim=NULL) {
+           settings=NULL, endpoint=NULL,sim=NULL,bloq=NULL) {
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
@@ -99,7 +99,10 @@ pmx <-
     if (!inherits(settings, "pmxSettingsClass")) {
       settings <- pmx_settings()
     }
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim)
+    if (missing(bloq)) bloq <- NULL
+    assert_that(inherits(bloq,"pmxBLOQClass") || is.null(bloq))
+    
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq)
   }
 
 #' Wrapper to pmx constructor
@@ -122,8 +125,8 @@ pmx <-
 #' @return \code{pmxClass} object
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq)
   }
 
 
@@ -144,10 +147,12 @@ pmx_mlx <-
 #'     "1_popPK_model","project.mlxtran")
 #' pmx_mlxtran(mlxtran)
 #' }
-pmx_mlxtran <- function(file_name, config="standing", endpoint) {
+pmx_mlxtran <- function(file_name, config="standing", endpoint,...) {
   params <- parse_mlxtran(file_name)
-  params$config <- "standing"
-  if (!missing(endpoint)) params$endpoint <- endpoint
+  params$config <- config
+  rr <- as.list(match.call()[-1])
+  rr$file_name <- NULL
+  params <- append(params,rr)
   do.call(pmx_mlx, params)
 }
 
@@ -326,6 +331,7 @@ set_plot <- function(
 
 
   params <- list(...)
+  
   if (use.defaults) {
     defaults_yaml <-
       file.path(system.file(package = "ggPMX"), "init", "defaults.yaml")
@@ -692,8 +698,9 @@ pmxClass <- R6::R6Class(
     report_n = 0,
     plot_file_name = "",
     sim=NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim),
+    bloq=NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -740,7 +747,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats, 
-                           settings, endpoint,sim) {
+                           settings, endpoint,sim,bloq) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -754,6 +761,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(conts) || is.null(conts) || is.na(conts)) conts <- ""
   if (missing(strats) || is.null(strats) || is.na(strats)) strats <- ""
   if (missing(settings)) settings <- NULL
+  if (missing(bloq)) bloq <- NULL
 
   private$.data_path <- data_path
   self$save_dir <- data_path
@@ -768,7 +776,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$occ <- toupper(occ)
   self$strats <- toupper(strats)
   self$settings <- settings
- 
+  self$bloq <- bloq
   
   if(!is.null(endpoint) && is.atomic(endpoint))
     endpoint <- pmx_endpoint(code=as.character(endpoint))
