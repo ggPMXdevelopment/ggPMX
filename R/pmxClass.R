@@ -708,7 +708,7 @@ pmxClass <- R6::R6Class(
     enqueue_plot = function(pname) {
       self$report_n <- self$report_n + 1
       pname_file <- paste0(pname, "-", self$report_n)
-      ctr$plot_file_name <- pname_file
+      self$plot_file_name <- pname_file
       self$report_queue <- c(self$report_queue, pname_file)
     },
     dequeue_plot = function() pmx_dequeue_plot(self),
