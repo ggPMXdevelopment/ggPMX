@@ -1,6 +1,6 @@
 #' Generates ggpmX report from a pre-defined template
 #'
-#' @param ctr \code{pmxClass} controller
+#' @param contr \code{pmxClass} controller
 #' @param name \code{character} The report name
 #' @param format \code{character} the result type, can be \cr
 #' a standalone directory of plots or a report document as defined in the template \cr
@@ -10,9 +10,7 @@
 #' Use \code{\link{pmx_report_template}} to get the list 
 #' of available templates
 
-#' @param save_dir Output directory.
-#' A directory to write the results files to
-#' (defaults to the directory of the input file).
+#' @param save_dir Output directory.  A directory to write the results files to
 #' @param footnote \code{logical}  TRUE to add a footnote to the generated plots. The default footnote is to add \cr
 #' the path where the plot is saved.
 #' @param edit \code{logical}  TRUE to edit the template immediately
@@ -26,48 +24,48 @@
 #' @example inst/examples/pmx_report.R
 
 pmx_report <-
-  function(ctr,
+  function(contr,
            name,
-           save_dir=NULL,
+           save_dir,
            format=c("both","plots", "report"),
            template="standing",
            footnote=format == "both",
            edit=FALSE,
            ...) {
     
-    assert_that(is_pmxclass(ctr))
+    assert_that(is_pmxclass(contr))
     format <- match.arg(format)
     on.exit({
-      remove_temp_files(ctr$save_dir)
-      ctr$footnote <- FALSE
+      remove_temp_files(contr$save_dir)
+      contr$footnote <- FALSE
     })
-    if (!is.null(save_dir)) {
-      if (!dir.exists(save_dir)) {
-        stop(sprintf("please provide a valid save directory : %s", save_dir))
-      }
-      save_dir <- path.expand(save_dir)
-      ctr$save_dir <- tools::file_path_as_absolute(save_dir)
-    }
-    ctr$footnote <- footnote
-    res <- pmx_draft(ctr, name, template, edit)
+    if (missing(save_dir) || is.null(save_dir)) 
+      stop(sprintf("please provide a valid save directory"))
+    if (!dir.exists(save_dir)) 
+      stop(sprintf("please provide a valid save directory : %s", save_dir))
+    save_dir <- path.expand(save_dir)
+    contr$save_dir <- tools::file_path_as_absolute(save_dir)
+    
+    contr$footnote <- footnote
+    res <- pmx_draft(contr, name, template, edit)
     standalone <- format %in% c("plots", "both")
     footnote <- format == "both" || footnote
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
     
-    out_ <- file.path(ctr$save_dir, "ggpmx_GOF")
+    out_ <- file.path(contr$save_dir, "ggpmx_GOF")
     rm_dir(out_)
     
     
     if (footnote || standalone) {
       dir.create(out_)
       
-      pmx_fig_process_init(ctr)
+      pmx_fig_process_init(contr)
       
       opts_chunk$set(
         fig.process = function(old_name) {
           pmx_fig_process(
-            ctr = ctr,
+            ctr = contr,
             old_name = old_name,
             footnote = footnote,
             out_
@@ -75,22 +73,24 @@ pmx_report <-
         }
       )
       
+      envir = new.env()
+      envir$ctr <- contr
       suppressWarnings(render(
-        res, "all", params = list(ctr = ctr, ...), envir = new.env(),
+        res, "all", params = list(ctr = contr, ...), envir = envir,
         output_dir = save_dir, clean = clean, quiet = TRUE
       ))
       
       knitr::opts_chunk$set(fig.process = old_fig_process)
       
-      pmx_fig_process_wrapup(ctr)
+      pmx_fig_process_wrapup(contr)
       
       plot_dir <- sprintf("%s_files", name)
-      in_ <- file.path(ctr$save_dir, plot_dir)
+      in_ <- file.path(contr$save_dir, plot_dir)
       rm_dir(in_)
       
       if (!clean) {
         ## create_ggpmx_gof(ctr$save_dir, name)
-        remove_reports(format, ctr$save_dir)
+        remove_reports(format, contr$save_dir)
       }
     }
   }
@@ -120,6 +120,9 @@ pmx_draft <- function(ctr, name, template, edit) {
   if (length(template_file) > 0 && file.exists(template_file)) {
     file.remove(template_file)
   }
+  style_file <- file.path(ctr$save_dir,"header.tex")
+  if (file.exists(style_file)) file.remove(style_file)
+  
   
   if (grepl(".Rmd", template) && !file.exists(template)) {
     stop(sprintf("!Template %s DO NOT EXIST", template))
@@ -195,7 +198,7 @@ create_ggpmx_gof <- function(save_dir, name) {
   }
 }
 rm_dir <- function(to_remove) {
-  if (dir.exists(to_remove)) {
+  if (!is.null(to_remove) && dir.exists(to_remove)) {
     system(sprintf("rm -r %s", to_remove))
   }
 }

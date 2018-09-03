@@ -41,6 +41,18 @@ ctr %>% pmx_plot_iwres_time
 ctr %>% pmx_plot_ebe_box
 ```
 
+```{r dv_pred}
+ctr %>% pmx_plot_dv_pred
+```
+
+```{r dv_ipred}
+ctr %>% pmx_plot_dv_pred
+```
+
+```{r dv_abs_iwres_ipred}
+ctr %>% pmx_plot_abs_iwres_ipred
+```
+
 # Supplmentary diagnostics
 
 ## Distribution of residuals

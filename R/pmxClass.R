@@ -73,12 +73,13 @@ check_argument <- function(value, pmxname) {
 #' @example inst/examples/controller.R
 pmx <-
   function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
-           settings=NULL, endpoint=NULL,sim=NULL) {
+           settings=NULL, endpoint=NULL,sim=NULL,bloq=NULL) {
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
     ## dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
+    if (missing(sim)) sim <- NULL
     if (missing(endpoint)) {
       endpoint <- NULL
     }
@@ -89,14 +90,19 @@ pmx <-
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
+    
     if (!inherits(config, "pmxConfig")) {
+      if("populationParameters.txt" %in% list.files(directory)) sys <- "mlx18"
       config <- load_config(config, sys)
     }
     if (missing(settings)) settings <- pmx_settings()
     if (!inherits(settings, "pmxSettingsClass")) {
       settings <- pmx_settings()
     }
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim)
+    if (missing(bloq)) bloq <- NULL
+    assert_that(inherits(bloq,"pmxBLOQClass") || is.null(bloq))
+    
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq)
   }
 
 #' Wrapper to pmx constructor
@@ -113,13 +119,14 @@ pmx <-
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater}
+#' @param sim \code{pmxSimClass} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @seealso  \code{\link{pmx}}
 #' @return \code{pmxClass} object
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq)
   }
 
 
@@ -140,10 +147,12 @@ pmx_mlx <-
 #'     "1_popPK_model","project.mlxtran")
 #' pmx_mlxtran(mlxtran)
 #' }
-pmx_mlxtran <- function(file_name, config="standing", endpoint) {
+pmx_mlxtran <- function(file_name, config="standing", endpoint,...) {
   params <- parse_mlxtran(file_name)
-  params$config <- "standing"
-  if (!missing(endpoint)) params$endpoint <- endpoint
+  params$config <- config
+  rr <- as.list(match.call()[-1])
+  rr$file_name <- NULL
+  params <- append(params,rr)
   do.call(pmx_mlx, params)
 }
 
@@ -305,7 +314,7 @@ pmx_bloq <-
 #' @export
 set_plot <- function(
                      ctr,
-                     ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ","VPC"),
+                     ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ","VPC","PMX_DENS"),
                      pname,
                      use.defaults=TRUE,
                      filter =NULL,
@@ -322,6 +331,7 @@ set_plot <- function(
 
 
   params <- list(...)
+  
   if (use.defaults) {
     defaults_yaml <-
       file.path(system.file(package = "ggPMX"), "init", "defaults.yaml")
@@ -355,6 +365,7 @@ set_plot <- function(
       ETA_PAIRS = if (ctr$has_re) do.call(eta_pairs, params),
       ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
       PMX_QQ = do.call(pmx_qq, params),
+      PMX_DENS = do.call(pmx_dens, params),
       VPC=do.call(vpc,params)
     )
   if (!is.null(substitute(filter))) {
@@ -687,8 +698,9 @@ pmxClass <- R6::R6Class(
     report_n = 0,
     plot_file_name = "",
     sim=NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim),
+    bloq=NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint,sim,bloq),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -696,7 +708,7 @@ pmxClass <- R6::R6Class(
     enqueue_plot = function(pname) {
       self$report_n <- self$report_n + 1
       pname_file <- paste0(pname, "-", self$report_n)
-      ctr$plot_file_name <- pname_file
+      self$plot_file_name <- pname_file
       self$report_queue <- c(self$report_queue, pname_file)
     },
     dequeue_plot = function() pmx_dequeue_plot(self),
@@ -735,7 +747,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats, 
-                           settings, endpoint,sim) {
+                           settings, endpoint,sim,bloq) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -749,6 +761,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(conts) || is.null(conts) || is.na(conts)) conts <- ""
   if (missing(strats) || is.null(strats) || is.na(strats)) strats <- ""
   if (missing(settings)) settings <- NULL
+  if (missing(bloq)) bloq <- NULL
 
   private$.data_path <- data_path
   self$save_dir <- data_path
@@ -763,7 +776,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$occ <- toupper(occ)
   self$strats <- toupper(strats)
   self$settings <- settings
- 
+  self$bloq <- bloq
   
   if(!is.null(endpoint) && is.atomic(endpoint))
     endpoint <- pmx_endpoint(code=as.character(endpoint))

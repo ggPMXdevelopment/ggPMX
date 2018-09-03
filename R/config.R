@@ -90,7 +90,7 @@ print.configs <- function(x, ...) {
 #' @return a list :data configuration object
 #' @importFrom  yaml yaml.load_file
 #' @export
-load_config <- function(x, sys = c("mlx", "nm")) {
+load_config <- function(x, sys = c("mlx", "nm","mlx18")) {
   assert_that(is_string(x))
   sys <- match.arg(sys)
   configs. <- pmx_get_configs(sys)

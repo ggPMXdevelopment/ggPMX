@@ -31,6 +31,9 @@ wrap_pmx_plot_generic <-
     params$pname <- pname
     params <- lang_to_expr(params)
     params$defaults_ <- ctr$config$plots[[toupper(pname)]]
+    if (!exists("bloq",params) && !is.null(ctr$bloq))
+      params$defaults_[["bloq"]] <- ctr$bloq
+    
     pp <- do.call(pmx_plot_generic, params)
     if (ctr$footnote && !is.null(pp)) {
       ctr$enqueue_plot(pname)
@@ -544,6 +547,26 @@ pmx_register_plot <-
 #' @family vpc
 pmx_plot_vpc <- function(ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params$is.smooth = FALSE
   wrap_pmx_plot_generic(ctr, "vpc", params)
 }
 
+
+
+# IWRES density plot --------------------------------------------------------------
+
+#' IRES density plot
+#' @param ctr pmx controller
+#' @param ... others graphics parameters passed :
+#' \itemize{
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_dens}} vpc object .
+#' \item \code{\link{pmx_update}} function.
+#' }
+#' @return ggplot2 object
+#' @export
+pmx_plot_iwres_dens <- function(ctr, ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params$is.smooth = FALSE
+  wrap_pmx_plot_generic(ctr, "iwres_dens", params)
+}

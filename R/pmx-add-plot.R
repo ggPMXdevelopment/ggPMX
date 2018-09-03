@@ -146,7 +146,10 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-.bloq_x <- function(x, self) {
+.bloq_x <- function(x, self) { 
+  
+  if (is.null(is.null(x[["bloq"]])) && !is.null(self$bloq))
+    x[["bloq"]] <- self$bloq
   if (!is.null(x[["bloq"]])) {
     dx <- self %>% get_data("input")
     if (!x$bloq$cens %in% names(dx)) {
@@ -173,14 +176,22 @@ before_add_check <- function(self, private, x, pname) {
 .vpc_x <- function(x,self){
   
   if(x$ptype=="VPC"){
-    res <- vpc.data(x[["type"]],
-                    x$input,
-                    x$dx,
-                    x$pi$probs,
-                    x$ci$probs,
-                    idv = self$sim[["idv"]],
-                    irun=self$sim[["irun"]],
-                    dv = self$sim[["dv"]]
+    
+    if(!is.null(x$bin)){
+      bin_idv <- function(idv)do.call("classIntervals",append(list(var=idv),x$bin))
+      bins <- x$input[,bin_idv(get(self$sim[["idv"]]))]
+      x$input[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
+      x$dx[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
+    }
+    res <- vpc.data(
+      x[["type"]],
+      x$input,
+      x$dx,
+      x$pi$probs,
+      x$ci$probs,
+      idv = if(!is.null(x$bin))"bin" else self$sim[["idv"]],
+      irun=self$sim[["irun"]],
+      dv = self$sim[["dv"]]
     )
     old_class <- class(x)
     x$db <- res

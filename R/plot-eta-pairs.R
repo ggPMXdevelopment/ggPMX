@@ -223,7 +223,7 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       hline = hline
     )
 
-    if (is.shrink) {
+    if (is.shrink && !is.null(x[["shrink.dx"]])) {
       dd <- x[["shrink.dx"]]
       ll <- lapply(nn, plot_shrink, shrink.dx, shrink)
       plots <- c(ll, plots)
