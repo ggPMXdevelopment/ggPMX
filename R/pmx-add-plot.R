@@ -173,12 +173,14 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
+#' @importFrom classInt classIntervals
+
 .vpc_x <- function(x,self){
   
   if(x$ptype=="VPC"){
     
     if(!is.null(x$bin)){
-      bin_idv <- function(idv)do.call("classIntervals",append(list(var=idv),x$bin))
+      bin_idv <- function(idv)do.call(classIntervals,append(list(var=idv),x$bin))
       bins <- x$input[,bin_idv(get(self$sim[["idv"]]))]
       x$input[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
       x$dx[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]

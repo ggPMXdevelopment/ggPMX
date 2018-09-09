@@ -2,7 +2,7 @@ Package: ggPMX
 Title: to be determined
 Description: A ggplot2-based tool to facilitate diagnostic plots for NLME
     models.
-Version: 0.9.1
+Version: 0.9.2
 Authors@R: c(person("Amine Gassem", "AG STUDY", email="conatct@ag-study.com", role="cre")
            ,person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="aut"))
 URL: http://www.github.com/someuser/somerepo
@@ -22,7 +22,8 @@ Imports:
     GGally,
     zoo,
     knitr,
-    rmarkdown
+    rmarkdown,
+    classInt
 License: file LICENSE
 LazyData: true
 Suggests:

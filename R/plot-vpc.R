@@ -359,17 +359,13 @@ vpc.plot <- function(x){
       ## out_layer + out_layer_area_min + out_layer_area_max 
     
     
-    strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
-    if (!is.null(strat.color)) {
-      p <- p %+% geom_point(aes_string(color = strat.color))
-    }
     
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
-      p <- p + do.call("facet_wrap", c(strat.facet, facets))
+      pp <- pp + do.call("facet_wrap", c(strat.facet,facets))
     }
     
     
@@ -392,7 +388,7 @@ vpc.plot <- function(x){
 #' @param labels \code{list} define title and axis labels
 #' @param is.legend \code{logical} if TRUE add legend
 #' @param dname added for compatibility with other ggPMX plots
-#' @param strat \code{chracter} use stratification 
+#' @param facets is a list of parameters passed to facet_wrap in case of startification
 #' @param ...  extra parameters passed to base graphical parameters
 #'
 #' @family vpc
@@ -403,13 +399,13 @@ vpc <- function(
   type = c("percentile","scatter"),
   idv  ="TIME", 
   dv = "y",
-  strat=NULL,
   obs  = pmx_obs(),
   pi =  pmx_pi(),
   ci =  pmx_ci(),
   rug = pmx_rug(),
   bin = pmx_bin(),
   labels = NULL,
+  facets = NULL,
   is.legend=FALSE,
   dname=NULL,
   ...
@@ -427,6 +423,7 @@ vpc <- function(
       labels = labels,
       is.legend = is.legend,
       type=type,
+      facets=facets,
       obs = obs,pi = pi,ci = ci,rug=rug,bin=bin,
       gp = pmx_gpar(labels = labels, ...)
     ),
