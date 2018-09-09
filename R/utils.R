@@ -161,6 +161,8 @@ theophylline <- function(settings=NULL, ...) {
   )
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
+  vpc_file <- file.path(theophylline, "sim.csv")
+  
 
   pmx_mlx(
     config = "standing",
@@ -172,6 +174,13 @@ theophylline <- function(settings=NULL, ...) {
     conts = c("WT0", "AGE0"),
     strats = "STUD",
     settings = settings,
+    sim = pmx_sim(
+      
+      file = vpc_file,
+      irun ="rep",
+      idv="TIME",
+      dv ="Y"
+    ),
     ...
   )
 }
