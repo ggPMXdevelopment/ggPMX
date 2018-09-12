@@ -85,11 +85,12 @@ ctr %>% pmx_report(
 
 ## case8: misc example with complicated features
 ## see github issue : #179
+ctr <- theophylline()
 misc_template <- 
   file.path( system.file(package = "ggPMX"),"examples","templates","misc.Rmd")
 ctr %>% pmx_report(
   name="misc",
-  save_dir =  "/tmp",
+  save_dir =  file.path(report_dir,"misc"),
   template=misc_template,
   format="both"
 )

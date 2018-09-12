@@ -952,7 +952,7 @@ pmx_dequeue_plot <- function(self) {
     self$report_queue <- self$report_queue[-1]
     first
   } else {
-    message("Chunk has plots that were not registered within ggPMX")
+    message("Warning: Chunk has plots that were not registered within ggPMX. Footnotes may be wrong.")
   }
 }
 
