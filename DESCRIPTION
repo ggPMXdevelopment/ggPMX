@@ -22,8 +22,7 @@ Imports:
     GGally,
     zoo,
     knitr,
-    rmarkdown,
-    classInt
+    rmarkdown
 License: file LICENSE
 LazyData: true
 Suggests:

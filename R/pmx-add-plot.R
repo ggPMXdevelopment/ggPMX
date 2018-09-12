@@ -173,8 +173,6 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-#' @importFrom classInt classIntervals
-
 .vpc_x <- function(x,self){
   
   if(x$ptype=="VPC"){
