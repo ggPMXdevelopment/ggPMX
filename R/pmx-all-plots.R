@@ -316,11 +316,15 @@ pmx_plot_individual <-
     cctr <- pmx_copy(ctr, ...)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
+    
     defaults_ <- ctr$config$plots[[toupper("individual")]]
+    
+    if (!exists("bloq",params) && !is.null(ctr$bloq))
+      defaults_[["bloq"]] <- ctr$bloq
     params <- l_left_join(defaults_, params)
     params$pname <- "individual"
     params$ctr <- cctr
-
+    
 
     do.call("pmx_update", params)
     p <- if (is.null(npage)) {

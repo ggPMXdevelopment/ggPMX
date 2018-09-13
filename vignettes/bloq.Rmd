@@ -165,3 +165,17 @@ ctr %>% pmx_plot_individual(
   bloq=pmx_bloq()
 )
 ```
+
+## define bloq at the controller level
+
+We can define parameter at the controller level:`pmx`, or any of its wrapper,`pmx_mlx` or `pmx_mlxtran`. 
+
+```{r}
+mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring1log_project.mlxtran"
+ctr <- pmx_mlxtran(file_name=mlx_file,bloq=pmx_bloq(color="blue"))
+ctr %>% pmx_plot_individual(
+  is.draft = FALSE,
+  facets=list(ncol=3,nrow=2))
+
+```
+This is will define a bloq filed at the controller level and will be used as defaults bloq for all plots. You still can specify and override it at the plot level. 
