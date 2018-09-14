@@ -785,7 +785,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$input_file <- input
     self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
   } else {
-    self$input <- input
+    self$input <- as.data.table(input)
   }
   
   self$data <- load_source(
