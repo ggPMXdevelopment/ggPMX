@@ -785,7 +785,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$input_file <- input
     self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
   } else {
-    self$input <- as.data.table(input)
+    if(!inherits(input,"data.frame"))
+      stop("observation data should be either a file or a data.frame")
+    self$input <- setDT(input)
   }
   
   self$data <- load_source(
