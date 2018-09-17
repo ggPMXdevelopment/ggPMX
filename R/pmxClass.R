@@ -136,6 +136,8 @@ pmx_mlx <-
 #' @param file_name mlxtran file
 #' @param config object as pmx controller
 #' @param endpoint \code{integer} value of the endpoint
+#' @param call \code{logical} if TRUE the result is the parameters parsed 
+#' to create the controller. 
 #'
 #' @return \code{pmxClass} controller object
 #' @export
@@ -147,12 +149,16 @@ pmx_mlx <-
 #'     "1_popPK_model","project.mlxtran")
 #' pmx_mlxtran(mlxtran)
 #' }
-pmx_mlxtran <- function(file_name, config="standing", endpoint,...) {
+pmx_mlxtran <- function(file_name, config="standing",call=FALSE, endpoint,...) {
   params <- parse_mlxtran(file_name)
   params$config <- config
   rr <- as.list(match.call()[-1])
   rr$file_name <- NULL
   params <- append(params,rr)
+  if (call){
+    params$call <- NULL
+    return(params)
+  }
   do.call(pmx_mlx, params)
 }
 
@@ -793,7 +799,8 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
-    endpoint = self$endpoint
+    endpoint = self$endpoint,
+    occ = self$occ
   )
   ##
   ## check random effect

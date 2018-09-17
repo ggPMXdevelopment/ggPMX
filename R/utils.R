@@ -273,8 +273,12 @@ parse_mlxtran <- function(file_name) {
 
   ## extract controller param
   ### directory
-  directory <- gsub("'", "", dat[key == "exportpath", value])
-  directory <- file.path(dirname(file_name), directory)
+  export_path <- gsub("'", "", dat[key == "exportpath", value])
+  directory <- file.path(dirname(file_name), export_path)
+  if (!dir.exists(directory))
+    directory <- file.path(dirname(file_name), "RESULTS")
+  if (!dir.exists(directory))
+    stop("No results directory provided.")
   ### input
   input <- gsub("'", "", dat[key == "file" & section == "DATAFILE", value])
   setwd(dirname(file_name))

@@ -9,10 +9,12 @@
 read_mlx_ind_est <- function(path, x, ...) {
   ID <- OCC <- NULL
   ds <- pmx_fread(path)
+  occ <- list(...)$occ
   nn <- grep(
     "^id|^eta_.*_(mode|mean)$", names(ds),
     ignore.case = TRUE, value = TRUE
   )
+  if (!is.null(occ)) nn <- c(nn,occ)
   ds <- ds[, nn, with = FALSE]
   setnames(ds, grep("^id$", names(ds), ignore.case = TRUE, value = TRUE), "ID")
   ## remove all null variables
@@ -31,6 +33,7 @@ read_mlx_ind_est <- function(path, x, ...) {
       c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))
       ]
   }
+  if (!is.null(occ) && occ %in% names(ds)) setnames(ds,occ,"OCC")
   ds
 }
 
@@ -237,6 +240,11 @@ read_mlx_pred <- function(path, x, ...) {
     nn <- c(nn, iwres)
     names.nn <- c(names.nn, "IWRES")
   }
+  occ <- list(...)$occ
+  if(!is.null(occ)){
+    nn <- c(nn,tolower(occ))
+    names.nn <- c(names.nn,"OCC")
+  }
   res <- setnames(xx[, nn, with = FALSE], names.nn)
   
   ## select columns
@@ -306,7 +314,7 @@ read_mlx_par_est <- function(path, x, ...) {
   sep = ifelse(exists("sep",x),x$sep,";")
   xx <- setDT(read.table(path, sep = sep, header = TRUE))
   if ("names" %in% names(x)) {
-    setnames(xx, x[["names"]])
+    setnames(xx, 1:4,x[["names"]])
   }
   xx
 }
