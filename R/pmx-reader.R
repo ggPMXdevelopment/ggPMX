@@ -14,7 +14,7 @@ read_mlx_ind_est <- function(path, x, ...) {
     "^id|^eta_.*_(mode|mean)$", names(ds),
     ignore.case = TRUE, value = TRUE
   )
-  if (!is.null(occ)) nn <- c(nn,occ)
+  if (occ != "") nn <- c(nn,occ)
   ds <- ds[, nn, with = FALSE]
   setnames(ds, grep("^id$", names(ds), ignore.case = TRUE, value = TRUE), "ID")
   ## remove all null variables
@@ -241,7 +241,7 @@ read_mlx_pred <- function(path, x, ...) {
     names.nn <- c(names.nn, "IWRES")
   }
   occ <- list(...)$occ
-  if(!is.null(occ)){
+  if(occ != ""){
     nn <- c(nn,tolower(occ))
     names.nn <- c(names.nn,"OCC")
   }
