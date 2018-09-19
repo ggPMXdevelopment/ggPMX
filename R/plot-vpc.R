@@ -4,7 +4,9 @@
 #'
 #' @param style \code{character} style	chosen on of the:\cr
 #'  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
-#'  @param n number of bins (Optional)
+#' @param n number of bins (Optional)
+#' @param within_strat \code{logical} if TRUE compute the bining for each strat level. \cr
+#' By default t is false and bining are equal for all stratifications levels.
 #' @param ... other classInt::classIntervals parameters excpet \code{style} and \code{n}
 #'
 #' @export
@@ -13,10 +15,10 @@
 #' @family vpc
 
 pmx_bin <- 
-  function(style, ...) {
+  function(style, within_strat=FALSE,...) {
     if(missing(style))return(NULL)
-    as.list(match.call()[-1])
-    
+    rr <- as.list(match.call()[-1])
+    rr
     
   }
 
@@ -239,19 +241,20 @@ vpc.data <-
             probs.ci,
             idv = "time",
             irun="stu",
-            dv="y"){
+            dv="y",
+            strat = NULL){
     
     bins <- unlist(unique(dobs[,idv,with=FALSE]))
     rug <- data.frame(x=bins, y=NA_real_, stringsAsFactors = FALSE)
     
     if (type == "percentile"){ 
-      pi <- quantile_dt(dobs,probs = probs.pi,grp = idv,ind = dv)
-      res2 <- quantile_dt(dsim,probs = probs.pi,grp =c(irun,idv),ind=dv)
-      ci <- quantile_dt(res2,probs = probs.ci,grp=c("percentile",idv),
+      pi <- quantile_dt(dobs,probs = probs.pi,grp = c(idv,strat),ind = dv)
+      res2 <- quantile_dt(dsim,probs = probs.pi,grp =c(irun,idv,strat),ind=dv)
+      ci <- quantile_dt(res2,probs = probs.ci,grp=c("percentile",idv,strat),
                         prefix="CL",ind="value",wide=TRUE)
       
     }else{
-      pi <- quantile_dt(dsim,probs = probs.pi,grp =c(idv),ind=dv)
+      pi <- quantile_dt(dsim,probs = probs.pi,grp =c(idv,strat),ind=dv)
     }
     
     res <- list(pi_dt = pi, rug_dt = rug)
@@ -278,6 +281,39 @@ vpc.pi_line <- function(dt,left,geom){
   do.call("geom_line",append(right,left))
 }
 
+.vpc.area <- function(){
+  
+  # out <- list(color="red")
+  # out_layer <- if(!is.null(out)){
+  #   params <- append(
+  #     list(
+  #       mapping = aes_string(group="percentile",y="value"),
+  #       data=db$out[(out_)]),
+  #     out)
+  #   do.call(geom_point,params)
+  # }
+  # out_area <- list(fill="red",alpha=0.2)    
+  # out_layer_area_min <- if(!is.null(out_area)){
+  #   ll <- list( 
+  #     mapping = aes_string(group="percentile",ymin="zmin",ymax=nn[[1]]),
+  #     data=db$out
+  #   )
+  #   params <- append(ll,out_area)
+  #   do.call(geom_ribbon,params) 
+  # }
+  # 
+  # out_layer_area_max <- if(!is.null(out_area)){
+  #   ll1 <- list( 
+  #     mapping = aes_string(group="percentile",ymax="zmax",ymin=nn[[2]]),
+  #     data=db$out
+  #   )
+  #   params <- append(ll1,out_area)
+  #   do.call(geom_ribbon,params) 
+  # }
+  
+  # list( out_layer , out_layer_area_min , out_layer_area_max )
+  
+}
 vpc.plot <- function(x){
   
   with(x,{
@@ -326,37 +362,10 @@ vpc.plot <- function(x){
       do.call(geom_ribbon,params)
     }
     
-    # out <- list(color="red")
-    # out_layer <- if(!is.null(out)){
-    #   params <- append(
-    #     list(
-    #       mapping = aes_string(group="percentile",y="value"),
-    #       data=db$out[(out_)]),
-    #     out)
-    #   do.call(geom_point,params)
-    # }
-    # out_area <- list(fill="red",alpha=0.2)    
-    # out_layer_area_min <- if(!is.null(out_area)){
-    #   ll <- list( 
-    #     mapping = aes_string(group="percentile",ymin="zmin",ymax=nn[[1]]),
-    #     data=db$out
-    #   )
-    #   params <- append(ll,out_area)
-    #   do.call(geom_ribbon,params) 
-    # }
-    # 
-    # out_layer_area_max <- if(!is.null(out_area)){
-    #   ll1 <- list( 
-    #     mapping = aes_string(group="percentile",ymax="zmax",ymin=nn[[2]]),
-    #     data=db$out
-    #   )
-    #   params <- append(ll1,out_area)
-    #   do.call(geom_ribbon,params) 
-    # }
     pp <- ggplot(data = db$pi_dt,aes_string(x=if(!is.null(bin))"bin" else idv)) + 
       obs_layer + pi_med_layer + pi_ext_layer + 
       rug_layer + ci_med_layer + ci_ext_layer 
-      ## out_layer + out_layer_area_min + out_layer_area_max 
+     
     
     
     strat.facet <- x[["strat.facet"]]

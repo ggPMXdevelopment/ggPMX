@@ -114,3 +114,28 @@ test_that("can set draft to false for a single plot", {
   ctr <- pmxClassHelpers$ctr
   p <- ctr %>% pmx_plot_dv_pred(is.draft = FALSE)
 })
+
+
+
+test_that("can create a controller with data.frame as input",{
+  
+  theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
+                            "theophylline")
+  WORK_DIR <- file.path(theophylline, "Monolix")
+  input_file <- file.path(theophylline, "data_pk.csv")
+  
+  dat <- read.csv(input_file)
+  dat$SEX <- factor(dat$SEX, levels = c(0,1), labels = c("M", "F"))
+  
+  
+  ctr4 <- pmx(
+    config = "standing", sys = "mlx", 
+    directory = WORK_DIR, 
+    input = dat, 
+    dv = "Y", 
+    dvid ="DVID",
+    cats="SEX"
+  )
+  
+  expect_equal(nrow(ctr4%>% get_data("input")),nrow(dat))
+})

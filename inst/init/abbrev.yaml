@@ -25,6 +25,7 @@ VPC: Visual predictive check
 PRED: Population parameters predictions
 EPRED: Population averaged predictions
 IWRES: Individual weighted residuals
+'|IWRES|': '|Individual weighted residuals|'
 NVS: Novartis internal report
 HA: Report submitted to Health Authorities
 TIME: Time after first dose (hours)

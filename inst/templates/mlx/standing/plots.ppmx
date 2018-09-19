@@ -7,7 +7,7 @@ ABS_IWRES_IPRED:
     title: '|IWRES| vs IPRED'
     subtitle: ''
     'y': '|IWRES|'
-    x: Individual predictions
+    x: IPRED
   point:
     shape: 1.0
     color: black

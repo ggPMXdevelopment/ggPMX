@@ -527,7 +527,7 @@ pmx_register_plot <-
     if (ctr$footnote) {
       if (is.null(pname)) pname <- "extra-plot"
       ctr$enqueue_plot(pname)
-      footnote <- paste0(pname, ctr$report_n)
+      footnote <- paste0(pname, "-", ctr$report_n)
       add_footnote(pp, footnote, ctr$save_dir)
     } else {
       pp

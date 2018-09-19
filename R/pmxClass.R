@@ -136,6 +136,8 @@ pmx_mlx <-
 #' @param file_name mlxtran file
 #' @param config object as pmx controller
 #' @param endpoint \code{integer} value of the endpoint
+#' @param call \code{logical} if TRUE the result is the parameters parsed 
+#' to create the controller. 
 #'
 #' @return \code{pmxClass} controller object
 #' @export
@@ -147,12 +149,16 @@ pmx_mlx <-
 #'     "1_popPK_model","project.mlxtran")
 #' pmx_mlxtran(mlxtran)
 #' }
-pmx_mlxtran <- function(file_name, config="standing", endpoint,...) {
+pmx_mlxtran <- function(file_name, config="standing",call=FALSE, endpoint,...) {
   params <- parse_mlxtran(file_name)
   params$config <- config
   rr <- as.list(match.call()[-1])
   rr$file_name <- NULL
   params <- append(params,rr)
+  if (call){
+    params$call <- NULL
+    return(params)
+  }
   do.call(pmx_mlx, params)
 }
 
@@ -785,13 +791,16 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$input_file <- input
     self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
   } else {
-    self$input <- input
+    if(!inherits(input,"data.frame"))
+      stop("observation data should be either a file or a data.frame")
+    self$input <- setDT(input)
   }
   
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
-    endpoint = self$endpoint
+    endpoint = self$endpoint,
+    occ = self$occ
   )
   ##
   ## check random effect
@@ -812,7 +821,11 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$post_load()
   
   if (!is.null(sim)) {
-    self$data[["sim"]] <- sim[["sim"]]
+    dx <- sim[["sim"]]
+    inn <- copy(self$input)[,sim$dv:=NULL]
+    
+    self$data[["sim"]] <- merge(dx,inn,by=c("ID","TIME"))
+    
     
     self$sim <- sim      
     
@@ -952,7 +965,7 @@ pmx_dequeue_plot <- function(self) {
     self$report_queue <- self$report_queue[-1]
     first
   } else {
-    message("Chunk has plots that were not registered within ggPMX")
+    message("Warning: Chunk has plots that were not registered within ggPMX. Footnotes may be wrong.")
   }
 }
 

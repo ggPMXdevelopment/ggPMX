@@ -33,7 +33,7 @@ post_load_eta <- function(ds, input, sys, occ) {
     )
     , silent = TRUE
   )
-
+  
   if (inherits(ds, "try-error")) {
     stop("error cannot merge eta data with the modelling input")
   }
