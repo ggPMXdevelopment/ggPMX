@@ -821,7 +821,11 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$post_load()
   
   if (!is.null(sim)) {
-    self$data[["sim"]] <- sim[["sim"]]
+    dx <- sim[["sim"]]
+    inn <- copy(self$input)[,sim$dv:=NULL]
+    
+    self$data[["sim"]] <- merge(dx,inn,by=c("ID",sim$idv))
+    
     
     self$sim <- sim      
     

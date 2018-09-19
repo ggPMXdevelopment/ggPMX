@@ -314,7 +314,7 @@ read_mlx_par_est <- function(path, x, ...) {
   sep = ifelse(exists("sep",x),x$sep,";")
   xx <- setDT(read.table(path, sep = sep, header = TRUE))
   if ("names" %in% names(x)) {
-    setnames(xx, 1:4,x[["names"]])
+    setnames(xx, seq_along(x[["names"]]),x[["names"]])
   }
   xx
 }

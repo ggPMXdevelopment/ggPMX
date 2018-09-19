@@ -286,7 +286,7 @@ parse_mlxtran <- function(file_name) {
   ### dv
   dv <- dat[grepl("use=observation,", value), key]
   ### dvid
-  dvid <- dat[grepl("use=observationType", value), key]
+  dvid <- dat[grepl("use=observationtype", value,ignore.case = TRUE), key]
   ### cats
   cats <- dat[grepl("use=covariate, type=categorical", value), key]
   ### conts

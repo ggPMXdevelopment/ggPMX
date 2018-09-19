@@ -178,10 +178,26 @@ before_add_check <- function(self, private, x, pname) {
   if(x$ptype=="VPC"){
     
     if(!is.null(x$bin)){
-      bin_idv <- function(idv)do.call(classIntervals,append(list(var=idv),x$bin))
-      bins <- x$input[,bin_idv(get(self$sim[["idv"]]))]
-      x$input[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
-      x$dx[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
+      if (!is.null(x$strat.facet)&& !is.null(x$bin$within_strat) && x$bin$within_strat){
+        x$bin$within_strat <- NULL
+        bin_idv <- function(idv)do.call(classIntervals,append(list(var=idv),x$bin))
+        bins <- x$input[,list(brks=bin_idv(get(self$sim[["idv"]]))$brks),c(x$strat.facet)]
+
+        x$input[,bin:= {
+          grp <- get(x$strat.facet)
+          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet)==grp,brks])
+          },c(x$strat.facet)]
+        x$dx[,bin:= {
+          grp <- get(x$strat.facet)
+          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet)==grp,brks])
+        },c(x$strat.facet)]
+       
+      }else{
+        bin_idv <- function(idv)do.call(classIntervals,append(list(var=idv),x$bin))
+        bins <- x$input[,bin_idv(get(self$sim[["idv"]]))]
+        x$input[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
+        x$dx[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
+      }
     }
     res <- vpc.data(
       x[["type"]],
@@ -191,7 +207,8 @@ before_add_check <- function(self, private, x, pname) {
       x$ci$probs,
       idv = if(!is.null(x$bin))"bin" else self$sim[["idv"]],
       irun=self$sim[["irun"]],
-      dv = self$sim[["dv"]]
+      dv = self$sim[["dv"]],
+      strat = x$strat.facet
     )
     old_class <- class(x)
     x$db <- res
