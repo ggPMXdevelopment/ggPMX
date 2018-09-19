@@ -824,7 +824,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     dx <- sim[["sim"]]
     inn <- copy(self$input)[,sim$dv:=NULL]
     
-    self$data[["sim"]] <- merge(dx,inn,by=c("ID",sim$idv))
+    self$data[["sim"]] <- merge(dx,inn,by=c("ID","TIME"))
     
     
     self$sim <- sim      
