@@ -60,12 +60,6 @@ ctr %>% pmx_plot_individual(
 # ## apply a log transformation in y
 ctr %>% pmx_plot_individual(trans = "log10_y")
 # ## apply a custonm trsnformation to normalize axis between 0 and 1
-normalize <-
-  function(x) {
-    (x - min(x, na.rm = TRUE)) /
-      (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
-  }
-ctr %>% pmx_plot_individual(trans = "normalize_xy")
 
 ## get a list of parameter
 p <- ctr %>% pmx_plot_individual(

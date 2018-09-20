@@ -10,13 +10,13 @@ ABS_IWRES_IPRED:
     x: IPRED
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.hline: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   trans: abs_y
 
@@ -31,19 +31,19 @@ IWRES_IPRED:
     'y': IWRES
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.hline: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   bloq:
     show: yes
     cens: CENS
     limit: LIMIT
-    color: pink
+    colour: pink
     size: 2.0
     alpha: 0.9
 
@@ -59,19 +59,19 @@ IWRES_TIME:
     'y': IWRES
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.hline: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   bloq:
     show: yes
     cens: CENS
     limit: LIMIT
-    color: pink
+    colour: pink
     size: 2.0
     alpha: 0.9
 
@@ -86,20 +86,20 @@ NPDE_TIME:
     'y': NPDE
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.hline: yes
   is.band: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 2.0
   bloq:
     show: yes
     cens: CENS
     limit: LIMIT
-    color: pink
+    colour: pink
     size: 2.0
     alpha: 0.9
 
@@ -114,22 +114,22 @@ NPDE_PRED:
     'y': NPDE
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.hline: yes
   hline:
-    color: blue
+    colour: blue
   is.band: no
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   bloq:
     show: yes
     cens: CENS
     limit: LIMIT
-    color: pink
+    colour: pink
     size: 2.0
     alpha: 0.9
 
@@ -142,22 +142,22 @@ DV_PRED:
   'y': DV
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   is.identity_line: yes
   identity_line:
     intercept: 0
-    color: blue
+    colour: blue
   bloq:
     show: yes
     cens: CENS
     limit: LIMIT
-    color: pink
+    colour: pink
     size: 2.0
     alpha: 0.9
     
@@ -170,22 +170,22 @@ DV_IPRED:
   'y': DV
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   is.identity_line: yes
   identity_line:
     intercept: 0
-    color: blue
+    colour: blue
   bloq:
     show: yes
     cens: CENS
     limit: LIMIT
-    color: pink
+    colour: pink
     size: 2.0
     alpha: 0.9
     
@@ -200,7 +200,7 @@ EBE_HIST:
   shrink:
     fun: sd
     size: 4.0
-    color: black
+    colour: black
     hjust: -1
     vjust: 2
     annotation: shrinkage
@@ -208,7 +208,7 @@ EBE_HIST:
     binwidth: 0.034
     position: dodge
     fill: white
-    color: black
+    colour: black
   labels:
     title: EBE distribution
     subtitle: ''
@@ -223,7 +223,7 @@ EBE_BOX:
   is.jitter: yes
   jitter:
     shape: 1.0
-    color: grey50
+    colour: grey50
     width: 0.1
     height: 0.1
     alpha: 0.3
@@ -231,7 +231,7 @@ EBE_BOX:
   shrink:
     fun: sd
     size: 4.0
-    color: black
+    colour: black
     hjust: 0.5
     vjust: 2.0
     annotation: shrinkage
@@ -251,13 +251,13 @@ INDIVIDUAL:
   ranges: ~
   is.smooth: no
   ipred_line:
-    color: black
+    colour: black
     size: 1
   pred_line:
-    color: black
+    colour: black
     size: 1
   point:
-    color: black
+    colour: black
     shape : 21
     size: 1
   is.legend: no
@@ -275,7 +275,7 @@ INDIVIDUAL:
     show: yes
     cens: CENS
     limit: LIMIT
-    color: pink
+    colour: pink
     size: 2.0
     alpha: 0.9
 

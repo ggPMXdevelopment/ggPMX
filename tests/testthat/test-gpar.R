@@ -4,13 +4,13 @@ test_that("pmx_gpar defaults are well setted", {
   gpars <- ggPMX::pmx_gpar(labels = list(title = "hello"))
   expect_identical(
     gpars$draft,
-    list(size = 5, label = "DRAFT", color = "grey50", x = Inf, y = -Inf)
+    list(size = 5, label = "DRAFT", colour = "grey50", x = Inf, y = -Inf)
   )
   expect_identical(
     gpars$smooth,
     list(
       se = FALSE, linetype = 1, size = 1.5, method = "loess",
-      color = "red"
+      colour = "red"
     )
   )
 })

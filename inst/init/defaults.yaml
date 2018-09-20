@@ -6,13 +6,13 @@ RES:
     x: ''
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
   is.hline: no
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
 
 DIS_hist:
@@ -25,7 +25,7 @@ DIS_hist:
   shrink:
     fun: sd
     size: 4.0
-    color: black
+    colour: black
     hjust: -1
     vjust: 2
     annotation: shrinkage
@@ -33,7 +33,7 @@ DIS_hist:
     binwidth: 0.034
     position: dodge
     fill: white
-    color: black
+    colour: black
   labels:
     title: EBE distribution
     subtitle: ''
@@ -47,7 +47,7 @@ DIS_box:
   is.jitter: yes
   jitter:
     shape: 1.0
-    color: grey50
+    colour: grey50
     width: 0.1
     height: 0.1
     alpha: 0.3
@@ -55,7 +55,7 @@ DIS_box:
   shrink:
     fun: sd
     size: 4.0
-    color: black
+    colour: black
     hjust: -1.5
     vjust: 2.0
     annotation: shrinkage
@@ -72,13 +72,13 @@ IND:
   ranges: ~
   is.smooth: no
   ipred_line:
-    color: black
+    colour: black
     size: 1
   pred_line:
-    color: black
+    colour: black
     size: 1
   point:
-    color: black
+    colour: black
     shape : 21
     size: 1
   is.legend: no

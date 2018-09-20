@@ -1,3 +1,8 @@
+to_ggplot2_names <- function(a){
+  z <- .globals$ggplot
+  names(a)[names(a) %in% names(z)] <- z[names(z) %in% names(a)]
+  a
+}
 #' @importFrom magrittr %>%
 #' @export
 magrittr::`%>%`
@@ -20,7 +25,10 @@ l_left_join <-
       for (name in names(overlay_list)) {
         base <- base_list[[name]]
         overlay <- overlay_list[[name]]
+        
         if (is.list(base) && is.list(overlay) && recursive) {
+          base <- to_ggplot2_names(base)
+          overlay <- to_ggplot2_names(overlay)
           merged_list[[name]] <- l_left_join(base, overlay)
         } else {
           merged_list[[name]] <- NULL
@@ -93,7 +101,7 @@ merge_defaults <-
 #' This function adds the word draft to certain graphics.
 #' @param label draft layer default to DRAFT
 #' @param size size of the annotation
-#' @param color color of the annotation default to grey50
+#' @param colour color of the annotation default to grey50
 #' @param x \code{numeric} x coordinate of the draft label
 #' @param y \code{numeric} y coordinate of the draft label
 #' @param ... extra paremeters to geom text used to annotate the draft
@@ -102,11 +110,11 @@ merge_defaults <-
 #' @export
 #'
 #' @examples
-#' add_draft("DRAFT", size = 5, color = "grey50")
-add_draft <- function(label = "DRAFT", size=10, color="grey50", x = Inf, y = -Inf, ...) {
+#' add_draft("DRAFT", size = 5, colour = "grey50")
+add_draft <- function(label = "DRAFT", size=10, colour="grey50", x = Inf, y = -Inf, ...) {
   do.call(annotate, list(
     geom = "text", label = label, size = size,
-    colour = color, family = "Courier",
+    colour = colour, family = "Courier",
     x = x, y = y,
     hjust = 1.2, vjust = -1.2, ...
   ))

@@ -3,6 +3,22 @@
 
 .globals$options <- list()
 
+# Aesthetic aliases
+.globals$ggplot <- c(
+  "col"   = "colour",
+  "color" = "colour",
+  "pch"   = "shape",
+  "cex"   = "size",
+  "lty"   = "linetype",
+  "lwd"   = "size",
+  "srt"   = "angle",
+  "adj"   = "hjust",
+  "bg"    = "fill",
+  "fg"    = "colour",
+  "min"   = "ymin",
+  "max"   = "ymax"
+)
+
 #' Get ggPMX Option
 #'
 #' @param name Name of an option to get.

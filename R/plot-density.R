@@ -68,11 +68,11 @@ pmx_dens <- function(
     )
   }
   assert_that(is_list(labels))
-  default_var_line <- list(linetype = 1, color = "black", size = 1)
+  default_var_line <- list(linetype = 1, colour = "black", size = 1)
   var_line <- l_left_join(default_var_line, var_line)
-  default_snd_line <- list(linetype = 2, color = "black", size = 1)
+  default_snd_line <- list(linetype = 2, colour = "black", size = 1)
   snd_line <- l_left_join(default_snd_line, snd_line)
-  default_vline <- list(linetype = 3, color = "black", size = 1)
+  default_vline <- list(linetype = 3, colour = "black", size = 1)
   vline <- l_left_join(default_vline, snd_line)
   labels$subtitle <- ""
   structure(list(

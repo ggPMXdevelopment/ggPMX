@@ -31,10 +31,10 @@ eta_cov <- function(
                     type = c("cats", "conts"),
                     dname = NULL,
                     show.correl=TRUE,
-                    correl=list(size = 5, color = "blue"),
+                    correl=list(size = 5, colour = "blue"),
                     facets=list(scales = "free"),
                     smooth = list(method = "lm", se = FALSE),
-                    point = list(color = "gray"),
+                    point = list(colour = "gray"),
                     ...) {
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
@@ -128,7 +128,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
             x$correl,
             geom_text(
               data = df_cor, aes_string(label = paste("correlation=", "corr")),
-              x = -Inf, y = Inf, hjust = -0.2, vjust = 1.2, size = size, color = color
+              x = -Inf, y = Inf, hjust = -0.2, vjust = 1.2, size = size, colour = colour
             )
           )
       }

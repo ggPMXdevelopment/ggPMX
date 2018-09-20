@@ -5,13 +5,13 @@ library(ggPMX)
 ## list of templates
 ## ctr %>% pmx_report_template()
 
-report_dir <- path.expand("~/report_dir")
+report_dir <- path.expand("/tmp")
 ## case1: generate a single reprot
 ## We use default save dir, 
 ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
-  save_dir = file.path(report_dir,"case1"),
+  save_dir = report_dir,
   format="report")
 
 ## case2: generate standalone plots
@@ -19,7 +19,7 @@ ctr %>% pmx_report(
 ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
-  save_dir = file.path(report_dir,"case2"),
+  save_dir = report_dir,
   format="plots")
 
 
@@ -29,14 +29,14 @@ ctr %>% pmx_report(
 ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
-  save_dir = file.path(report_dir,"case3"),
+  save_dir = report_dir,
   format="both")
 
 ## case4 : generate standalone plots with footnotes
 ctr <- theophylline()
 ctr %>% pmx_report(
   name = "my_report",
-  save_dir = file.path(report_dir,"case4"),
+  save_dir = report_dir,
   footnote=TRUE,
   format="plots")
 
@@ -45,7 +45,7 @@ ctr %>% pmx_report(
 ctr <- theophylline(settings = pmx_settings(use.titles = FALSE))
 ctr %>% pmx_report(
       name = "my_report",
-      save_dir = file.path(report_dir,"case5"),
+      save_dir = report_dir,
       template="standing_with_header",
       format="both")
 
@@ -67,7 +67,7 @@ custom_template <-
   file.path( system.file(package = "ggPMX"),"examples","templates","custom_report.Rmd")
 ctr %>% pmx_report(
   name="report2",
-  save_dir =  file.path(report_dir,"case1"),
+  save_dir = report_dir,
   template=custom_template,
   format="both"
 )
@@ -77,7 +77,7 @@ ctr %>% pmx_report(
 ctr <- theophylline()
 ctr %>% pmx_report(
   name="report2",
-  save_dir =  file.path(report_dir,"case1"),
+  save_dir = report_dir,
   template="individual",
   format="both",
   npage=1:2
@@ -90,7 +90,7 @@ misc_template <-
   file.path( system.file(package = "ggPMX"),"examples","templates","misc.Rmd")
 ctr %>% pmx_report(
   name="misc",
-  save_dir =  file.path(report_dir,"misc"),
+  save_dir = report_dir,
   template=misc_template,
   format="both"
 )

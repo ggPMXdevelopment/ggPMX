@@ -10,11 +10,12 @@ read_mlx_ind_est <- function(path, x, ...) {
   ID <- OCC <- NULL
   ds <- pmx_fread(path)
   occ <- list(...)$occ
+  if(is.null(occ)) occ <- ""
   nn <- grep(
     "^id|^eta_.*_(mode|mean)$", names(ds),
     ignore.case = TRUE, value = TRUE
   )
-  if (occ != "") nn <- c(nn,occ)
+  if (occ != "" && grepl(occ,names(ds),ignore.case = TRUE)) nn <- c(nn,occ)
   ds <- ds[, nn, with = FALSE]
   setnames(ds, grep("^id$", names(ds), ignore.case = TRUE, value = TRUE), "ID")
   ## remove all null variables
@@ -230,6 +231,9 @@ read_mlx_pred <- function(path, x, ...) {
   ID <- OCC <- NULL
   xx <- pmx_fread(path)
   setnames(xx, tolower(names(xx)))
+  if (grepl("#", xx[1, "id",with=FALSE], fixed = TRUE)) {
+    xx[, c("id", "OCC") := tstrsplit(id, "#")][, c("id", "OCC") := list(as.integer(id), as.integer(OCC))]
+  }
   ## use configuration columns
   ids <- x$names %in% names(xx)
   ipred <- get(x$names$IPRED)(names(xx))
@@ -240,8 +244,14 @@ read_mlx_pred <- function(path, x, ...) {
     nn <- c(nn, iwres)
     names.nn <- c(names.nn, "IWRES")
   }
-  occ <- list(...)$occ
-  if(occ != ""){
+  occ <- list(...)$occ 
+  if(is.null(occ)) occ <- ""
+  if ("OCC" %in%names(xx)){
+    nn <- c(nn,"OCC")
+    names.nn <- c(names.nn,"OCC")
+    
+  }
+  if(occ != "" && !"OCC" %in% names(xx)){
     nn <- c(nn,tolower(occ))
     names.nn <- c(names.nn,"OCC")
   }
@@ -249,9 +259,7 @@ read_mlx_pred <- function(path, x, ...) {
   
   ## select columns
   
-  if (grepl("#", res[1, ID], fixed = TRUE)) {
-    res[, c("ID", "OCC") := tstrsplit(ID, "#")][, c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))]
-  }
+  
   
   res
 }
