@@ -10,7 +10,7 @@ smooth:
   linetype: 1.0
   size: 1.5
   method: loess
-  color: red
+  colour: red
 is.band: no
 band:
   'yintercept':
@@ -22,13 +22,13 @@ is.draft: yes
 draft:
   size: 5.0
   label: DRAFT
-  color: grey50
+  colour: grey50
   x: .inf
   'y': -.inf
 discrete: no
 is.identity_line: no 
 identity_line:
-  color: blue
+  colour: blue
   intercept: 0
 scale_x_log10: no
 scale_y_log10: no

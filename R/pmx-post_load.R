@@ -23,6 +23,7 @@ input_finegrid <- function(input, finegrid) {
 
 
 post_load_eta <- function(ds, input, sys, occ) {
+  if(missing(occ)) occ <- ""
   ID <- DVID <- VARIABLE <- NULL
   keys <- c("ID")
   if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
@@ -71,7 +72,7 @@ post_load <- function(dxs, input, sys, dplot, occ) {
   ## merge finegrid with input data
   if (sys %in% c("mlx","mlx18")) {
     keys <- c("ID", "TIME")
-    if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
+    if (occ != "" ) keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
 
     dxs[["predictions"]] <-
       merge(dxs[["predictions"]], input, by = keys)
@@ -83,6 +84,7 @@ post_load <- function(dxs, input, sys, dplot, occ) {
         "NO FINEGRID FILE: 
         we will use instead predictions.txt for individual plots"
       warns$MISSING_FINEGRID <- warn
+      
       message(warn)
       dxs[["IND"]] <- dxs[["predictions"]]
     }

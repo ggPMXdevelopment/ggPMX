@@ -49,7 +49,7 @@ pmx_qq <- function(
     )
   }
   assert_that(is_list(labels))
-  default_point <- list(shape = 1, color = "black", size = 1)
+  default_point <- list(shape = 1, colour = "black", size = 1)
   point <- l_left_join(default_point, point)
   labels$subtitle <- ""
   structure(list(
@@ -105,7 +105,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     with(
       x$point,
       geom_point(
-        stat = "qq", shape = shape, color = color,
+        stat = "qq", shape = shape, colour = colour,
         size = size
       )
     )
@@ -114,7 +114,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   strat.facet <- x[["strat.facet"]]
 
   if (!is.null(strat.color)) {
-    p <- p %+% geom_point(stat = "qq", aes_string(color = strat.color))
+    p <- p %+% geom_point(stat = "qq", aes_string(colour = strat.color))
   }
   if (!is.null(strat.facet)) {
     if (is.character(strat.facet)) {

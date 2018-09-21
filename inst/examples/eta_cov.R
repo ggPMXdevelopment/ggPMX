@@ -19,6 +19,6 @@ ctr %>% pmx_plot_eta_cats(is.draft = FALSE)
 
 ## change text color line
 ctr %>% pmx_plot_eta_conts(
-  correl=list(color="magenta")
+  correl=list(colour="magenta")
   )
 

@@ -1,70 +1,82 @@
 ## add comment 
 ABS_IWRES_IPRED:
-  ptype: SATTER
+  ptype: SCATTER
   x: IPRED
   'y': IWRES
   labels:
     title: '|IWRES| vs IPRED'
     subtitle: ''
     'y': '|IWRES|'
-    x: Individual predictions
+    x: IPRED
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
-    alpha: 0.1
   is.hline: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   trans: abs_y
 
 IWRES_IPRED:
-  ptype: SATTER
+  ptype: SCATTER
   x: IPRED
   'y': IWRES
   labels:
     title: IWRES vs IPRED
     subtitle: ''
-    x: IWRES
-    'y': Individual predictions
+    x: IPRED
+    'y': IWRES
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
-    alpha: 0.1
   is.hline: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
 
 IWRES_TIME:
-  ptype: SATTER
+  ptype: SCATTER
   x: TIME
   'y': IWRES
   labels:
     title: IWRES vs TIME
     subtitle: ''
     x: TIME
-    'y': Individual predictions
+    'y': IWRES
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
-    alpha: 0.1
   is.hline: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
 
 NPDE_TIME:
-  ptype: SATTER
+  ptype: SCATTER
   x: TIME
   'y': NPDE
   labels:
@@ -74,19 +86,25 @@ NPDE_TIME:
     'y': NPDE
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
-    alpha: 0.1
   is.hline: yes
   is.band: yes
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 2.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
 
 NPDE_PRED:
-  ptype: SATTER
+  ptype: SCATTER
   x: PRED
   'y': NPDE
   labels:
@@ -96,19 +114,27 @@ NPDE_PRED:
     'y': NPDE
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
-    alpha: 0.1
   is.hline: yes
-  is.band: yes
+  hline:
+    colour: blue
+  is.band: no
   is.smooth: yes
   smooth:
     se: no
-    color: red
-    linetype: 2.0
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
 
 DV_PRED:
-  ptype: SATTER
+  ptype: SCATTER
   labels:
     title: DV vs PRED
     subtitle: ''
@@ -116,21 +142,27 @@ DV_PRED:
   'y': DV
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
-    alpha: 0.1
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   is.identity_line: yes
   identity_line:
     intercept: 0
-    color: blue
+    colour: blue
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
     
 DV_IPRED:
-  ptype: SATTER
+  ptype: SCATTER
   labels:
     title: DV vs IPRED
     subtitle: ''
@@ -138,22 +170,29 @@ DV_IPRED:
   'y': DV
   point:
     shape: 1.0
-    color: black
+    colour: black
     size: 1.0
-    alpha: 0.1
   is.smooth: yes
   smooth:
     se: no
-    color: red
+    colour: red
     linetype: 1.0
   is.identity_line: yes
   identity_line:
     intercept: 0
-    color: blue
+    colour: blue
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
     
 EBE_HIST:
   ptype: DIS
   type: hist
+  dname: eta
   facets:
     scales: free_x
     nrow: 3.0
@@ -161,33 +200,85 @@ EBE_HIST:
   shrink:
     fun: sd
     size: 4.0
-    color: black
+    colour: black
     hjust: -1
     vjust: 2
     annotation: shrinkage
+  histogram:
+    binwidth: 0.034
+    position: dodge
+    fill: white
+    colour: black
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: 'Estimated eta'
+    'y': 'Histogram'
+    legend: Random effect
 
 EBE_BOX:
   ptype: DIS
+  dname: eta
   type: box
-  is.jitter: no
+  is.jitter: yes
   jitter:
     shape: 1.0
-    color: grey50
+    colour: grey50
     width: 0.1
     height: 0.1
+    alpha: 0.3
   is.shrink: yes
   shrink:
     fun: sd
     size: 4.0
-    color: black
-    hjust: -0.5
+    colour: black
+    hjust: 0.5
     vjust: 2.0
     annotation: shrinkage
-
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: 'Estimated eta'
+    'y': 'Density'
+    legend: Random effect
+  facets:
+    scales: free_x
+    nrow: 3.0
+    
 INDIVIDUAL:
   ptype: IND
+  dname: IND
   ranges: ~
-  
+  is.smooth: no
+  ipred_line:
+    colour: black
+    size: 1
+  pred_line:
+    colour: black
+    size: 1
+  point:
+    colour: black
+    shape : 21
+    size: 1
+  is.legend: no
+  facets:
+    ncol: 3
+    nrow: 4
+    scales: free
+  labels:
+    title: Individual fits
+    subtitle: ''
+    x: TIME
+    'y': DV
+  use.finegrid: yes
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
 ETA_MATRIX:
   ptype: ETA_PAIRS
   title: Correlations of random effects
@@ -220,3 +311,37 @@ NPDE_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': NPDE Quantiles
+    
+ETA_QQ:
+  ptype: PMX_QQ
+  x: VALUE
+  dname: eta
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': ETA Quantiles
+  strat.facet: ~EFFECT
+
+
+IWRES_DENS:
+  ptype: PMX_DENS
+  x: IWRES
+  dname: predictions
+  labels:
+    title: 'Density plot of IWRES'
+    subtitle: ''
+    x: Etas
+    'y': ''
+
+    
+VPC:
+  ptype: VPC
+  type: percentile
+  dname: sim
+  labels:
+    title: 'Percentile VPC'
+    subtitle: '(with observations)'
+    x: TIME
+    'y': DV
+  is.smooth: no

@@ -275,7 +275,7 @@ pmx_bloq <-
   function(
            cens="CENS",
            limit ="LIMIT",
-           color="pink",
+           colour="pink",
            size=2,
            alpha=0.9,
            show=TRUE,
@@ -284,7 +284,7 @@ pmx_bloq <-
       cens = cens,
       limit = limit,
       show = show,
-      color = color,
+      colour = colour,
       size = size,
       alpha = alpha,
       ...

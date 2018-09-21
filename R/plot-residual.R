@@ -55,7 +55,7 @@ residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
   assert_that(is_string_or_null(dname))
 
   labels <- l_left_join(default_labels, labels)
-  default_point <- list(shape = 1, color = "black", size = 1)
+  default_point <- list(shape = 1, colour = "black", size = 1)
   default_hline <- list(yintercept = 0)
   point <- l_left_join(default_point, point)
   hline <- l_left_join(default_hline, hline)
@@ -149,7 +149,7 @@ plot_pmx.residual <- function(x, dx, ...) {
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
     if (!is.null(strat.color)) {
-      p <- p %+% geom_point(aes_string(color = strat.color))
+      p <- p %+% geom_point(aes_string(colour = strat.color))
     }
 
     if (!is.null(strat.facet)) {
