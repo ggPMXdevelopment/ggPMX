@@ -176,7 +176,7 @@ before_add_check <- function(self, private, x, pname) {
 .vpc_x <- function(x,self){
   
   if(x$ptype=="VPC"){
-    
+    x$dv <- self$dv  
     if(!is.null(x$bin)){
       if (!is.null(x$strat.facet)&& !is.null(x$bin$within_strat) && x$bin$within_strat){
         x$bin$within_strat <- NULL
@@ -207,7 +207,7 @@ before_add_check <- function(self, private, x, pname) {
       x$ci$probs,
       idv = if(!is.null(x$bin))"bin" else self$sim[["idv"]],
       irun=self$sim[["irun"]],
-      dv = self$sim[["dv"]],
+      dv = self$dv,
       strat = x$strat.facet
     )
     old_class <- class(x)

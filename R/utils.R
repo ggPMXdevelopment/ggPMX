@@ -186,9 +186,7 @@ theophylline <- function(settings=NULL, ...) {
       
       file = vpc_file,
       irun ="rep",
-      idv="TIME",
-      dv ="Y"
-    ),
+      idv="TIME"    ),
     ...
   )
 }

@@ -388,7 +388,6 @@ vpc.plot <- function(x){
 #'
 #' @param type \code{charcater} can be either perecentile or scatter
 #' @param idv \code{chracater} individual variable
-#' @param dv \code{chracater} observation variable
 #' @param obs \code{vpc_obs} object observation layer \link{pmx_obs}
 #' @param pi \code{vpc_pi} object percentile layer  \link{pmx_pi}
 #' @param ci \code{vpc_ci} object confidence interval layer  \link{pmx_ci}
@@ -407,7 +406,6 @@ vpc.plot <- function(x){
 vpc <- function(
   type = c("percentile","scatter"),
   idv  ="TIME", 
-  dv = "y",
   obs  = pmx_obs(),
   pi =  pmx_pi(),
   ci =  pmx_ci(),
@@ -427,7 +425,6 @@ vpc <- function(
       ptype = "VPC",
       strat = TRUE,
       idv = idv,
-      dv = dv,
       dname = dname,
       labels = labels,
       is.legend = is.legend,
