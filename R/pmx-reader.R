@@ -11,11 +11,12 @@ read_mlx_ind_est <- function(path, x, ...) {
   ds <- pmx_fread(path)
   occ <- list(...)$occ
   if(is.null(occ)) occ <- ""
+  patt_fields <- "^id|^%s|^eta_.*_(mode|mean)$"
   nn <- grep(
-    "^id|^eta_.*_(mode|mean)$", names(ds),
+    patt_fields, names(ds),
     ignore.case = TRUE, value = TRUE
   )
-  if (occ != "" && grepl(occ,names(ds),ignore.case = TRUE)) nn <- c(nn,occ)
+  if(occ != "" && any(grepl(occ,names(ds),ignore.case = TRUE))) nn <- c(nn,occ)
   ds <- ds[, nn, with = FALSE]
   setnames(ds, grep("^id$", names(ds), ignore.case = TRUE, value = TRUE), "ID")
   ## remove all null variables
@@ -231,6 +232,8 @@ read_mlx_pred <- function(path, x, ...) {
   ID <- OCC <- NULL
   xx <- pmx_fread(path)
   setnames(xx, tolower(names(xx)))
+  id_col <- grep("^id", names(xx), ignore.case = TRUE, value = TRUE)
+  if(length(id_col)>0 && nzchar(id_col)) setnames(xx,id_col,"id")
   if (grepl("#", xx[1, "id",with=FALSE], fixed = TRUE)) {
     xx[, c("id", "OCC") := tstrsplit(id, "#")][, c("id", "OCC") := list(as.integer(id), as.integer(OCC))]
   }
@@ -301,6 +304,7 @@ read_mlx18_pred <- function(path, x, ...) {
   ds <- read_mlx_pred(path=path,x=x,...)
   if (exists("residuals",x)){
     resi <-  read_mlx18_res(path,x$residuals)
+    if (is.null(resi)) return(NULL)
     ds <- merge(ds,resi)
   }
   ds
@@ -344,10 +348,17 @@ load_data_set <- function(x, path, sys, ...) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
       if (!is.null(endpoint$files)) {
-        ff <- endpoint$files
-        file_name <- sprintf("%s.txt", ff[[x[["pattern"]]]])
+        patt <- endpoint$files
+        ffiles <- list.files(path,pattern = patt)
+        if(length(ffiles)>0) file_name <- ffiles[1]
       } else {
         file_name <- sprintf("%s%s.txt", x[["pattern"]], endpoint$code)
+        fpath <- file.path(path, file_name)
+        if(!file.exists(fpath)){
+          patt <- sprintf("%s.*%s", x[["pattern"]],endpoint$code)
+          ffiles <- list.files(path,pattern = patt)
+          if(length(ffiles)>0) file_name <- ffiles[1]
+        }
       }
       
       fpath <- file.path(path, file_name)

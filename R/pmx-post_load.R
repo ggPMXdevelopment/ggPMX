@@ -11,11 +11,11 @@ input_finegrid <- function(input, finegrid) {
   if (is.null(finegrid)) return(NULL)
   input[, source := "in"]
   dx <- rbind(finegrid, input, fill = TRUE)[order(ID, TIME)]
-
+  
   measures <- setdiff(names(input), c("ID", "DV", "TIME", "source"))
   if (length(measures) > 0) {
     dx[, (measures) :=
-      lapply(.SD, na.locf, na.rm = FALSE), by = "ID", .SDcols = measures]
+         lapply(.SD, na.locf, na.rm = FALSE), by = "ID", .SDcols = measures]
   }
   input[, source := NULL]
   dx[is.na(source) & TIME >= 0][, source := NULL]
@@ -56,10 +56,10 @@ post_load_eta <- function(ds, input, sys, occ) {
   ds[grep("(mode|mean)$", variable)]
   ## reshape columns for easier filtering
   ds[, c("EFFECT", "FUN") :=
-    list(
-      gsub("eta_(.*)_(mode|mean)", "\\1", variable),
-      gsub(".*_", "", variable)
-    )]
+       list(
+         gsub("eta_(.*)_(mode|mean)", "\\1", variable),
+         gsub(".*_", "", variable)
+       )]
   ds[, c("variable") := NULL]
   ds
 }
@@ -68,14 +68,12 @@ post_load <- function(dxs, input, sys, dplot, occ) {
   ## avoid RCMDCHECK
   DVID <- ID <- NULL
   warns <- list()
-  if (is.null(dxs[["predictions"]])) return(dxs)
   ## merge finegrid with input data
   if (sys %in% c("mlx","mlx18")) {
     keys <- c("ID", "TIME")
     if (occ != "" ) keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
-
-    dxs[["predictions"]] <-
-      merge(dxs[["predictions"]], input, by = keys)
+    if (!is.null(dxs[["predictions"]]))
+      dxs[["predictions"]] <-  merge(dxs[["predictions"]], input, by = keys)
     if (!is.null(dxs[["finegrid"]])) {
       dxs[["finegrid"]] <- input_finegrid(input, dxs[["finegrid"]])
       dxs[["IND"]] <- dxs[["finegrid"]]

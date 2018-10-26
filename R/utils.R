@@ -293,6 +293,7 @@ parse_mlxtran <- function(file_name) {
   dv <- dat[grepl("use=observation,", value), key]
   ### dvid
   dvid <- dat[grepl("use=observationtype", value,ignore.case = TRUE), key]
+  
   ### cats
   cats <- dat[grepl("use=covariate, type=categorical", value), key]
   ### conts
@@ -310,6 +311,16 @@ parse_mlxtran <- function(file_name) {
   if (length(cats) > 0) res$cats <- cats
   if (length(conts) > 0) res$conts <- conts
   if (length(occ) > 0) res$occ <- occ
+  
+  aa <- dat[grepl("use=observation,", value),value]
+  yname <- gsub(".*name=(.*), yname=(.*), type.*","\\1;\\2",aa)
+  yname <- unlist(strsplit(gsub("\\{|\\}|'| ","",yname),';'))
+  if(length(yname)>1 && grepl(",",yname[1])){
+    code =strsplit(yname[2],",")[[1]]
+    files =strsplit(yname[1],",")[[1]]
+    ep = pmx_endpoint(code=code[1],files =files[1] )
+    res$endpoint <- ep
+  }
   res
 }
 

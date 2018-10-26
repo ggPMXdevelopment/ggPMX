@@ -158,6 +158,10 @@ pmx_mlxtran <- function(file_name, config="standing",call=FALSE, endpoint,...) {
     params$call <- NULL
     return(params)
   }
+  if (!"endpoint" %in% names(params) && "dvid" %in%names(params) && missing(endpoint)){
+    params$endpoint <- 1
+  }
+  
   do.call(pmx_mlx, params)
 }
 
@@ -237,7 +241,6 @@ pmx_endpoint <-
     assert_that(is.character(code))
     assert_that(is.character(unit))
     assert_that(is.character(label))
-    assert_that(is_list_or_null(files))
     assert_that(is_character_or_null(trans))
     if (is.list(files)) {
       assert_that(any(names(files) %in% c("predictions", "finegrid")))
