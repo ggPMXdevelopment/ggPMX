@@ -782,7 +782,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$cats <- cats
   self$conts <- conts
   self$occ <- toupper(occ)
-  self$strats <- toupper(strats)
+  self$strats <- strats
   self$settings <- settings
   self$bloq <- bloq
   
