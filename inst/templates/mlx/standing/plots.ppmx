@@ -19,6 +19,14 @@ ABS_IWRES_IPRED:
     colour: red
     linetype: 1.0
   trans: abs_y
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
 
 IWRES_IPRED:
   ptype: SCATTER
@@ -302,6 +310,14 @@ IWRES_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': IWRES Quantiles
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
     
 NPDE_QQ:
   ptype: PMX_QQ
