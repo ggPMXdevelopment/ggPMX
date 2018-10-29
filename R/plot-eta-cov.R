@@ -116,7 +116,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
       p <- ggplot(dx.conts, aes_string(x = "value", y = "VALUE")) +
         do.call(geom_point, x$point) +
         do.call(geom_smooth, x$smooth) +
-        do.call(facet_wrap, x$facets)
+        do.call(facet_grid, x$facets)
       if (x$show.correl) {
         df_cor <-
           dx.conts[
@@ -132,6 +132,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
             )
           )
       }
+      p
     }
   }
   if (!is.null(p)) plot_pmx(x$gp, p)
