@@ -101,7 +101,6 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   if (!(x$x %in% names(dx)))return(NULL)
   dx <- dx[!is.infinite(get(x$x))]
   p <- ggplot(dx, aes_string(sample = x$x)) +
-    geom_abline() +
     with(
       x$point,
       geom_point(
