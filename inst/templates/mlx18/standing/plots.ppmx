@@ -301,6 +301,12 @@ ETA_CATS:
 ETA_CONTS:
   ptype: ETA_COV
   type: conts
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: blue
+    linetype: 1.0
+    method: lm
   
 IWRES_QQ:
   ptype: PMX_QQ

@@ -9,7 +9,6 @@
 #' @param show.correl \code{logical} if TRUE add correlation to the plot
 #' @param correl \code{list} correl geom text graphical parameter
 #' @param point \code{list} geom point graphical parameter
-#' @param smooth \code{list} geom_smooth graphical parameter
 #' @param facets \code{list} facetting graphical parameter
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
@@ -33,7 +32,6 @@ eta_cov <- function(
                     show.correl=TRUE,
                     correl=list(size = 5, colour = "blue"),
                     facets=list(scales = "free"),
-                    smooth = list(method = "lm", se = FALSE),
                     point = list(colour = "gray"),
                     ...) {
   type <- match.arg(type)
@@ -63,7 +61,7 @@ eta_cov <- function(
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
-      is.smooth = FALSE
+      ...
     )
   ), class = c("eta_cov", "pmx_gpar"))
 }
@@ -115,7 +113,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
       x$facets$facets <- as.formula("EFFECT~variable")
       p <- ggplot(dx.conts, aes_string(x = "value", y = "VALUE")) +
         do.call(geom_point, x$point) +
-        do.call(geom_smooth, x$smooth) +
+        ## do.call(geom_smooth, x$smooth) +
         do.call(facet_grid, x$facets)
       if (x$show.correl) {
         df_cor <-
