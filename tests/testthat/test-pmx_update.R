@@ -60,15 +60,6 @@ test_that("can update with filter", {
 })
 
 
-test_that("can update facet stratification", {
-  # set new plot
-  ctr <- helpers$ctr
-  p <- ctr %>%
-    pmx_update("ebe_hist", strat.facet = "SEX") %>%
-    get_plot("ebe_hist")
-  pconf <- ggplot2::ggplot_build(p)
-  expect_true("SEX" %in% names(pconf$layout$panel_layout))
-})
 
 
 test_that("can update indivual plot labels", {
