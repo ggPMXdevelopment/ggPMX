@@ -177,31 +177,6 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
       rbrks <- unlist(tapply(var, factor(cols), range))
       names(rbrks) <- NULL
       brks <- .rbrks(rbrks)
-    } else if (style == "bclust") {
-      # e1071, class
-      pars <- try(bclust(x = var, centers = n, ...))
-      if (class(pars) == "try-error") {
-        warning("jittering in bclust")
-        jvar <- jitter(rep(x = var, times = rtimes))
-        pars <- try(bclust(x = jvar, centers = n, ...))
-        if (class(pars) == "try-error") {
-          stop("bclust failed after jittering")
-        } else {
-          cols <- match(pars$cluster, order(c(pars$centers)))
-          rbrks <- unlist(tapply(jvar, factor(cols), range))
-        }
-      } else {
-        cols <- match(pars$cluster, order(c(pars$centers)))
-        rbrks <- unlist(tapply(var, factor(cols), range))
-      }
-      names(rbrks) <- NULL
-      brks <- .rbrks(rbrks)
-    } else if (style == "fisher") {
-      pars <- fish(x = var, k = n)
-      brks <- pars[n, 1]
-      for (i in n:1) brks <- c(brks, (pars[i, 2] + pars[(i - 1), 1]) / 2)
-      brks <- c(brks, pars[1, 2])
-      colnames(pars) <- c("min", "max", "class mean", "class sd")
     } else if (style == "jenks") { # Jenks Optimisation Method
       # change contributed by Richard Dunlap 090512
       # This version of the Jenks code assumes intervals are closed on
