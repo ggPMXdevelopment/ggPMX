@@ -240,7 +240,7 @@ pmx_plot_eta_matrix <- function(ctr, ...) {
 #' @export
 #' @example inst/examples/distribution.R
 
-pmx_plot_ebe_box <-
+pmx_plot_eta_box <-
   function(ctr,
            ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
@@ -262,7 +262,7 @@ pmx_plot_ebe_box <-
 #' @export
 #' @example inst/examples/distribution.R
 
-pmx_plot_ebe_hist <-
+pmx_plot_eta_hist <-
   function(
            ctr,
            ...) {

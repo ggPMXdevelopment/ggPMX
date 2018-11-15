@@ -26,6 +26,6 @@ ctr %>%
 # 
 # 
 ctr  %>%
-  pmx_plot_ebe_box(strat.color="STUD", strat.facet =~SEX)
+  pmx_plot_eta_box(strat.color="STUD", strat.facet =~SEX)
 
-ctr  %>%  pmx_plot_ebe_hist
+ctr  %>%  pmx_plot_eta_hist
