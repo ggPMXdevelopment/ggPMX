@@ -7,7 +7,9 @@
 #' @param x \code{character} variable name to sample
 #' @param labels list of texts/titles used within the plot
 #' @param dname name of dataset to be used
-#' @param point \code{list}
+#' @param point \code{list} geom_point attributes color, shape,...
+#' @param facets \code{list}
+#' @param xmax \code{logical} if FALSE do not use max(aes(x)) as limits default to TRUE
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -35,6 +37,8 @@ pmx_qq <- function(
                    labels,
                    dname = NULL,
                    point=NULL,
+                   xmax=TRUE,
+                   facets=NULL,
                    ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "predictions"
@@ -51,6 +55,8 @@ pmx_qq <- function(
   assert_that(is_list(labels))
   default_point <- list(shape = 1, colour = "black", size = 1)
   point <- l_left_join(default_point, point)
+  assert_that(is_list_or_null(facets))
+
   labels$subtitle <- ""
   structure(list(
     ptype = "PMX_QQ",
@@ -58,6 +64,8 @@ pmx_qq <- function(
     x = x,
     dname = dname,
     point = point,
+    xmax = xmax,
+    facets = facets,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -97,9 +105,11 @@ pmx_qq <- function(
 #' @import ggplot2
 #'
 plot_pmx.pmx_qq <- function(x, dx, ...) {
-  
-  if (!(x$x %in% names(dx)))return(NULL)
+  if (!(x$x %in% names(dx))) return(NULL)
   dx <- dx[!is.infinite(get(x$x))]
+  if (!is.null(x$omega) && "EFFECT" %in% names(dx)) {
+    dx <- merge(dx, x$omega, by = "EFFECT")
+  }
   p <- ggplot(dx, aes_string(sample = x$x)) +
     with(
       x$point,
@@ -112,22 +122,39 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   strat.color <- x[["strat.color"]]
   strat.facet <- x[["strat.facet"]]
 
+  if ("EFFECT" %in% names(dx)) {
+    p <- p + geom_abline(intercept = 0, aes(slope = OMEGA))
+    wrap.formula <- if (!is.null(strat.facet)) {
+      wrap_formula(strat.facet, "EFFECT")
+    } else {
+      formula("~EFFECT")
+    }
+    p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
+  } else {
+    if (!is.null(strat.facet)) {
+      if (is.character(strat.facet)) {
+        wrap.formula <- formula(paste0("~", strat.facet))
+        p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
+      }
+    }
+  }
+
+
+
   if (!is.null(strat.color)) {
     p <- p %+% geom_point(stat = "qq", aes_string(colour = strat.color))
   }
-  if (!is.null(strat.facet)) {
-    if (is.character(strat.facet)) {
-      strat.facet <- formula(paste0("~", strat.facet))
-    }
-    p <- p + facet_wrap(strat.facet)
-  }
+
+
   if (!is.null(p)) p <- plot_pmx(x$gp, p)
 
-  xmin <- min(dx[, x$x, with = FALSE], na.rm = TRUE)
-  xmax <- max(dx[, x$x, with = FALSE], na.rm = TRUE)
-  xrange <- c(xmin - .001 * (xmax - xmin), xmax + .001 * (xmax - xmin))
-  p <- p +
-    coord_cartesian(xlim = xrange, ylim = xrange) +
-    theme(aspect.ratio = 1)
+  if (x$xmax) {
+    xmin <- min(dx[, x$x, with = FALSE], na.rm = TRUE)
+    xmax <- max(dx[, x$x, with = FALSE], na.rm = TRUE)
+    xrange <- c(xmin - .001 * (xmax - xmin), xmax + .001 * (xmax - xmin))
+    p <- p +
+      coord_cartesian(xlim = xrange, ylim = xrange) +
+      theme(aspect.ratio = 1)
+  }
   p
 }

@@ -31,9 +31,10 @@ wrap_pmx_plot_generic <-
     params$pname <- pname
     params <- lang_to_expr(params)
     params$defaults_ <- ctr$config$plots[[toupper(pname)]]
-    if (!exists("bloq",params) && !is.null(ctr$bloq))
+    if (!exists("bloq", params) && !is.null(ctr$bloq)) {
       params$defaults_[["bloq"]] <- ctr$bloq
-    
+    }
+
     pp <- do.call(pmx_plot_generic, params)
     if (ctr$footnote && !is.null(pp)) {
       ctr$enqueue_plot(pname)
@@ -278,13 +279,11 @@ add_footnote <- function(pp, pname, save_dir) {
   plot_file <- file.path(save_dir, "ggpmx_GOF", pname)
   footnote <- sprintf("Source: %s", plot_file)
   ## message("footnote is :" , footnote)
-  if(nchar(footnote)>45){
-    fns <- strsplit(footnote,"/")[[1]]
-    term1 <- do.call(file.path,as.list(fns[cumsum(nchar(fns))<45]))
-    term2 <- do.call(file.path,as.list(fns[cumsum(nchar(fns))>=45]))
-    footnote <- paste(paste0(term1,"/"),term2,sep="\n")
-    
-    
+  if (nchar(footnote) > 45) {
+    fns <- strsplit(footnote, "/")[[1]]
+    term1 <- do.call(file.path, as.list(fns[cumsum(nchar(fns)) < 45]))
+    term2 <- do.call(file.path, as.list(fns[cumsum(nchar(fns)) >= 45]))
+    footnote <- paste(paste0(term1, "/"), term2, sep = "\n")
   }
   pp <- pp + labs(caption = footnote)
   pp
@@ -316,15 +315,16 @@ pmx_plot_individual <-
     cctr <- pmx_copy(ctr, ...)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
-    
+
     defaults_ <- ctr$config$plots[[toupper("individual")]]
-    
-    if (!exists("bloq",params) && !is.null(ctr$bloq))
+
+    if (!exists("bloq", params) && !is.null(ctr$bloq)) {
       defaults_[["bloq"]] <- ctr$bloq
+    }
     params <- l_left_join(defaults_, params)
     params$pname <- "individual"
     params$ctr <- cctr
-    
+
 
     do.call("pmx_update", params)
     p <- if (is.null(npage)) {
@@ -509,7 +509,8 @@ pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
 pmx_plot_eta_qq <-
   function(ctr,
            ...) {
-    ctr %>% pmx_plot("eta_qq", ...)
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr, "eta_qq", params)
   }
 
 
@@ -551,7 +552,7 @@ pmx_register_plot <-
 #' @family vpc
 pmx_plot_vpc <- function(ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
-  params$is.smooth = FALSE
+  params$is.smooth <- FALSE
   wrap_pmx_plot_generic(ctr, "vpc", params)
 }
 
@@ -571,6 +572,6 @@ pmx_plot_vpc <- function(ctr, ...) {
 #' @export
 pmx_plot_iwres_dens <- function(ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
-  params$is.smooth = FALSE
+  params$is.smooth <- FALSE
   wrap_pmx_plot_generic(ctr, "iwres_dens", params)
 }

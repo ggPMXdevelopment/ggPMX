@@ -87,13 +87,13 @@ pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
 
 
   ctr$update_plot(
-    pname, 
+    pname,
     strat.color = strat.color,
     strat.facet = strat.facet,
-    filter = filter, 
+    filter = filter,
     trans = trans,
     color.scales = color.scales,
-    ..., 
+    ...,
     pmxgpar = pmxgpar
   )
 }

@@ -1,4 +1,4 @@
-to_ggplot2_names <- function(a){
+to_ggplot2_names <- function(a) {
   z <- .globals$ggplot
   names(a)[names(a) %in% names(z)] <- z[names(z) %in% names(a)]
   a
@@ -25,7 +25,7 @@ l_left_join <-
       for (name in names(overlay_list)) {
         base <- base_list[[name]]
         overlay <- overlay_list[[name]]
-        
+
         if (is.list(base) && is.list(overlay) && recursive) {
           base <- to_ggplot2_names(base)
           overlay <- to_ggplot2_names(overlay)
@@ -170,7 +170,7 @@ theophylline <- function(settings=NULL, ...) {
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
   vpc_file <- file.path(theophylline, "sim.csv")
-  
+
 
   pmx_mlx(
     config = "standing",
@@ -183,10 +183,10 @@ theophylline <- function(settings=NULL, ...) {
     strats = "STUD",
     settings = settings,
     sim = pmx_sim(
-      
       file = vpc_file,
-      irun ="rep",
-      idv="TIME"    ),
+      irun = "rep",
+      idv = "TIME"
+    ),
     ...
   )
 }
@@ -281,10 +281,12 @@ parse_mlxtran <- function(file_name) {
   ### directory
   export_path <- gsub("'", "", dat[key == "exportpath", value])
   directory <- file.path(dirname(file_name), export_path)
-  if (!dir.exists(directory))
+  if (!dir.exists(directory)) {
     directory <- file.path(dirname(file_name), "RESULTS")
-  if (!dir.exists(directory))
+  }
+  if (!dir.exists(directory)) {
     stop("No results directory provided.")
+  }
   ### input
   input <- gsub("'", "", dat[key == "file" & section == "DATAFILE", value])
   setwd(dirname(file_name))
@@ -292,8 +294,8 @@ parse_mlxtran <- function(file_name) {
   ### dv
   dv <- dat[grepl("use=observation,", value), key]
   ### dvid
-  dvid <- dat[grepl("use=observationtype", value,ignore.case = TRUE), key]
-  
+  dvid <- dat[grepl("use=observationtype", value, ignore.case = TRUE), key]
+
   ### cats
   cats <- dat[grepl("use=covariate, type=categorical", value), key]
   ### conts
@@ -311,14 +313,14 @@ parse_mlxtran <- function(file_name) {
   if (length(cats) > 0) res$cats <- cats
   if (length(conts) > 0) res$conts <- conts
   if (length(occ) > 0) res$occ <- occ
-  
-  aa <- dat[grepl("use=observation,", value),value]
-  yname <- gsub(".*name=(.*), yname=(.*), type.*","\\1;\\2",aa)
-  yname <- unlist(strsplit(gsub("\\{|\\}|'| ","",yname),';'))
-  if(length(yname)>1 && grepl(",",yname[1])){
-    code =strsplit(yname[2],",")[[1]]
-    files =strsplit(yname[1],",")[[1]]
-    ep = pmx_endpoint(code=code[1],files =files[1] )
+
+  aa <- dat[grepl("use=observation,", value), value]
+  yname <- gsub(".*name=(.*), yname=(.*), type.*", "\\1;\\2", aa)
+  yname <- unlist(strsplit(gsub("\\{|\\}|'| ", "", yname), ";"))
+  if (length(yname) > 1 && grepl(",", yname[1])) {
+    code <- strsplit(yname[2], ",")[[1]]
+    files <- strsplit(yname[1], ",")[[1]]
+    ep <- pmx_endpoint(code = code[1], files = files[1])
     res$endpoint <- ep
   }
   res
@@ -330,20 +332,20 @@ parse_mlxtran <- function(file_name) {
 
 #' @param code  can be 3 or 4
 #' @export
-pk_pd <- function(code = "4"){
-  
-  
-  files_ <- switch (code,
-          "3"=list(
-            predictions="predictions1",
-            finegrid="finegrid1"),
-          "4"=list(
-            predictions="predictions2",
-            finegrid="finegrid2")
+pk_pd <- function(code = "4") {
+  files_ <- switch(code,
+    "3" = list(
+      predictions = "predictions1",
+      finegrid = "finegrid1"
+    ),
+    "4" = list(
+      predictions = "predictions2",
+      finegrid = "finegrid2"
+    )
   )
-          
 
-  
+
+
   pk_pd_path <- file.path(
     system.file(package = "ggPMX"), "testdata",
     "pk_pd"
@@ -353,10 +355,10 @@ pk_pd <- function(code = "4"){
     code,
     files = files_
   )
-  
-  
+
+
   input_file <- file.path(pk_pd_path, "pk_pd.csv")
-  
+
   ctr <- pmx_mlx(
     config = "standing",
     directory = WORK_DIR,

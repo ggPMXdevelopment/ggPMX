@@ -65,13 +65,12 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
 
     ## draft layer
     if (is.draft) {
-      p <- p + do.call(add_draft,draft)
+      p <- p + do.call(add_draft, draft)
     }
 
     ## draft layer
     if (is.identity_line) {
-      p <- p + do.call(geom_abline,identity_line)
-      
+      p <- p + do.call(geom_abline, identity_line)
     }
 
     if (exists("color.scales", gpar) && !is.null(color.scales)) {

@@ -10,7 +10,7 @@ test_that("can create pmx class", {
       "abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time",
       "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "individual",
       "eta_matrix", "eta_cats", "eta_conts",
-      "iwres_qq", "npde_qq", "eta_qq","iwres_dens"
+      "iwres_qq", "npde_qq", "eta_qq", "iwres_dens"
     ))
   )
 })
@@ -117,25 +117,26 @@ test_that("can set draft to false for a single plot", {
 
 
 
-test_that("can create a controller with data.frame as input",{
-  
-  theophylline <- file.path(system.file(package = "ggPMX"), "testdata", 
-                            "theophylline")
+test_that("can create a controller with data.frame as input", {
+  theophylline <- file.path(
+    system.file(package = "ggPMX"), "testdata",
+    "theophylline"
+  )
   WORK_DIR <- file.path(theophylline, "Monolix")
   input_file <- file.path(theophylline, "data_pk.csv")
-  
+
   dat <- read.csv(input_file)
-  dat$SEX <- factor(dat$SEX, levels = c(0,1), labels = c("M", "F"))
-  
-  
+  dat$SEX <- factor(dat$SEX, levels = c(0, 1), labels = c("M", "F"))
+
+
   ctr4 <- pmx(
-    config = "standing", sys = "mlx", 
-    directory = WORK_DIR, 
-    input = dat, 
-    dv = "Y", 
-    dvid ="DVID",
-    cats="SEX"
+    config = "standing", sys = "mlx",
+    directory = WORK_DIR,
+    input = dat,
+    dv = "Y",
+    dvid = "DVID",
+    cats = "SEX"
   )
-  
-  expect_equal(nrow(ctr4%>% get_data("input")),nrow(dat))
+
+  expect_equal(nrow(ctr4 %>% get_data("input")), nrow(dat))
 })

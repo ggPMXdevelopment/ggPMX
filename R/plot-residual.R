@@ -101,10 +101,9 @@ extend_range <-
 #' @family plot_pmx
 #' @export
 plot_pmx.residual <- function(x, dx, ...) {
-    
-    with(x, {
-      if (!all(c(aess$x,aess$y) %in% names(dx))) return(NULL)
-      dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
+  with(x, {
+    if (!all(c(aess$x, aess$y) %in% names(dx))) return(NULL)
+    dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
 
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
 

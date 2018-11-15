@@ -136,9 +136,9 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
     p <- p + do.call(geom_histogram, histogram)
     if (is.shrink && !is.null(x[["shrink.dx"]])) {
       p <- p + shrinkage_layer(
-          x[["shrink.dx"]],
-          x$shrink, "hist", strat.color
-        )
+        x[["shrink.dx"]],
+        x$shrink, "hist", strat.color
+      )
     }
     p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
 
@@ -190,15 +190,16 @@ shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
     shrink$annotation <- NULL
     do.call(geom_text, shrink)
   } else {
-    shrink$data <- dx
+    shrink$data <- copy(dx)
+    shrink$data$annotation <- shrink$annotation
+    shrink$annotation <- NULL
     shrink$mapping <-
       aes(
-        label = sprintf("%s=%s%%", shrink$annotation, round(SHRINK * 100)),
+        label = sprintf("%s=%s%%", annotation, round(SHRINK * 100)),
         y = Inf,
         x = -Inf
       )
     shrink$fun <- NULL
-    shrink$annotation <- NULL
     do.call(geom_text, shrink)
   }
   res

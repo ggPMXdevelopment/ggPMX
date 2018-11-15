@@ -93,7 +93,7 @@ ctr4 %>% pmx_update("npde_pred", point=list(shape=3,color="green",size=3))
 ctr4 %>% get_plot("npde_pred")
 
 ## Set aesthetics (colours, size, etc.) to data column?
-ctr4 %>% pmx_update("npde_pred", point=list(shape="SEX"))
+ctr4 %>% pmx_update("npde_pred", point=list(aes(shape="SEX")))
 ctr4 %>% get_plot("npde_pred")
 ##??stop("Does not produce desired result with shape defined by SEX")
 

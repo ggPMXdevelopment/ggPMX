@@ -29,7 +29,7 @@ pmx_comp_shrink <-
 
     eta <- cctr %>% get_data("eta")
     estimates <- cctr %>% get_data("estimates")
-    if (is.null(estimates)){
+    if (is.null(estimates)) {
       message("No estimates data , we can not compute shrinkage")
       return(NULL)
     }

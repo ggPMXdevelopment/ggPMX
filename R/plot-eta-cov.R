@@ -97,6 +97,7 @@ eta_cov <- function(
 #'
 plot_pmx.eta_cov <- function(x, dx, ...) {
   p <- if (x$type == "cats") {
+    x$gp$is.smooth <- FALSE
     cats <- x[["cats"]]
     if (all(nzchar(x[["cats"]]))) {
       dx.cats <- dx[, c(cats, "VALUE", "EFFECT"), with = FALSE]

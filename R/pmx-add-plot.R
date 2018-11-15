@@ -20,7 +20,7 @@ before_add_check <- function(self, private, x, pname) {
   }
   assert_that(is.data.table(dx))
   x$input <- self %>% get_data("input")
-  
+
   x$dx <- dx
   x
 }
@@ -146,10 +146,10 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
-.bloq_x <- function(x, self) { 
-  
-  if (is.null(is.null(x[["bloq"]])) && !is.null(self$bloq))
+.bloq_x <- function(x, self) {
+  if (is.null(is.null(x[["bloq"]])) && !is.null(self$bloq)) {
     x[["bloq"]] <- self$bloq
+  }
   if (!is.null(x[["bloq"]])) {
     dx <- self %>% get_data("input")
     if (!x$bloq$cens %in% names(dx)) {
@@ -169,34 +169,32 @@ before_add_check <- function(self, private, x, pname) {
       }
     }
   }
-  
+
   invisible(x)
 }
 
-.vpc_x <- function(x,self){
-  
-  if(x$ptype=="VPC"){
-    x$dv <- self$dv  
-    if(!is.null(x$bin)){
-      if (!is.null(x$strat.facet)&& !is.null(x$bin$within_strat) && x$bin$within_strat){
+.vpc_x <- function(x, self) {
+  if (x$ptype == "VPC") {
+    x$dv <- self$dv
+    if (!is.null(x$bin)) {
+      if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
         x$bin$within_strat <- NULL
-        bin_idv <- function(idv)do.call(classIntervals,append(list(var=idv),x$bin))
-        bins <- x$input[,list(brks=bin_idv(get(self$sim[["idv"]]))$brks),c(x$strat.facet)]
+        bin_idv <- function(idv) do.call(classIntervals, append(list(var = idv), x$bin))
+        bins <- x$input[, list(brks = bin_idv(get(self$sim[["idv"]]))$brks), c(x$strat.facet)]
 
-        x$input[,bin:= {
+        x$input[, bin := {
           grp <- get(x$strat.facet)
-          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet)==grp,brks])
-          },c(x$strat.facet)]
-        x$dx[,bin:= {
+          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet) == grp, brks])
+        }, c(x$strat.facet)]
+        x$dx[, bin := {
           grp <- get(x$strat.facet)
-          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet)==grp,brks])
-        },c(x$strat.facet)]
-       
-      }else{
-        bin_idv <- function(idv)do.call(classIntervals,append(list(var=idv),x$bin))
-        bins <- x$input[,bin_idv(get(self$sim[["idv"]]))]
-        x$input[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
-        x$dx[,bin:= findInterval(get(self$sim[["idv"]]), bins$brks)]
+          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet) == grp, brks])
+        }, c(x$strat.facet)]
+      } else {
+        bin_idv <- function(idv) do.call(classIntervals, append(list(var = idv), x$bin))
+        bins <- x$input[, bin_idv(get(self$sim[["idv"]]))]
+        x$input[, bin := findInterval(get(self$sim[["idv"]]), bins$brks)]
+        x$dx[, bin := findInterval(get(self$sim[["idv"]]), bins$brks)]
       }
     }
     res <- vpc.data(
@@ -205,8 +203,8 @@ before_add_check <- function(self, private, x, pname) {
       x$dx,
       x$pi$probs,
       x$ci$probs,
-      idv = if(!is.null(x$bin))"bin" else self$sim[["idv"]],
-      irun=self$sim[["irun"]],
+      idv = if (!is.null(x$bin)) "bin" else self$sim[["idv"]],
+      irun = self$sim[["irun"]],
       dv = self$dv,
       strat = x$strat.facet
     )
@@ -214,9 +212,27 @@ before_add_check <- function(self, private, x, pname) {
     x$db <- res
     class(x) <- old_class
     x
-  }else x
+  } else {
+    x
+  }
 }
 
+get_omega <- function(ctr) {
+  estimates <- ctr %>% get_data("estimates")
+  if (!is.null(estimates)) {
+    omega <- estimates[grepl("omega", PARAM)]
+    omega[, EFFECT := gsub("(^ +)?omega_", "", PARAM)]
+    omega <- omega [, list(EFFECT, OMEGA = VALUE)]
+    omega
+  }
+}
+
+.omega <- function(x, self) {
+  if (x$ptype == "PMX_QQ") {
+    x$omega <- self %>% get_omega()
+  }
+  x
+}
 
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)
@@ -232,8 +248,9 @@ pmx_add_plot <- function(self, private, x, pname) {
     .add_cats_x(self) %>%
     .settings_x(self) %>%
     .bloq_x(self) %>%
-    .vpc_x(self)
-  
+    .vpc_x(self) %>%
+    .omega(self)
+
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)
   invisible(self)

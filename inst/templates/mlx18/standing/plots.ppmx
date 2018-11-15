@@ -344,6 +344,9 @@ ETA_QQ:
     x: Standard Normal Quantiles
     'y': ETA Quantiles
   strat.facet: ~EFFECT
+  facets:
+    scales: free_y
+    nrow: 2
 
 
 IWRES_DENS:

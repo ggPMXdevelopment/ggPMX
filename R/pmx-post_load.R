@@ -11,11 +11,11 @@ input_finegrid <- function(input, finegrid) {
   if (is.null(finegrid)) return(NULL)
   input[, source := "in"]
   dx <- rbind(finegrid, input, fill = TRUE)[order(ID, TIME)]
-  
+
   measures <- setdiff(names(input), c("ID", "DV", "TIME", "source"))
   if (length(measures) > 0) {
     dx[, (measures) :=
-         lapply(.SD, na.locf, na.rm = FALSE), by = "ID", .SDcols = measures]
+      lapply(.SD, na.locf, na.rm = FALSE), by = "ID", .SDcols = measures]
   }
   input[, source := NULL]
   dx[is.na(source) & TIME >= 0][, source := NULL]
@@ -23,7 +23,7 @@ input_finegrid <- function(input, finegrid) {
 
 
 post_load_eta <- function(ds, input, sys, occ) {
-  if(missing(occ)) occ <- ""
+  if (missing(occ)) occ <- ""
   ID <- DVID <- VARIABLE <- NULL
   keys <- c("ID")
   if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
@@ -34,7 +34,7 @@ post_load_eta <- function(ds, input, sys, occ) {
     )
     , silent = TRUE
   )
-  
+
   if (inherits(ds, "try-error")) {
     stop("error cannot merge eta data with the modelling input")
   }
@@ -56,10 +56,10 @@ post_load_eta <- function(ds, input, sys, occ) {
   ds[grep("(mode|mean)$", variable)]
   ## reshape columns for easier filtering
   ds[, c("EFFECT", "FUN") :=
-       list(
-         gsub("eta_(.*)_(mode|mean)", "\\1", variable),
-         gsub(".*_", "", variable)
-       )]
+    list(
+      gsub("eta_(.*)_(mode|mean)", "\\1", variable),
+      gsub(".*_", "", variable)
+    )]
   ds[, c("variable") := NULL]
   ds
 }
@@ -69,11 +69,12 @@ post_load <- function(dxs, input, sys, dplot, occ) {
   DVID <- ID <- NULL
   warns <- list()
   ## merge finegrid with input data
-  if (sys %in% c("mlx","mlx18")) {
+  if (sys %in% c("mlx", "mlx18")) {
     keys <- c("ID", "TIME")
-    if (occ != "" ) keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
-    if (!is.null(dxs[["predictions"]]))
-      dxs[["predictions"]] <-  merge(dxs[["predictions"]], input, by = keys)
+    if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
+    if (!is.null(dxs[["predictions"]])) {
+      dxs[["predictions"]] <- merge(dxs[["predictions"]], input, by = keys)
+    }
     if (!is.null(dxs[["finegrid"]])) {
       dxs[["finegrid"]] <- input_finegrid(input, dxs[["finegrid"]])
       dxs[["IND"]] <- dxs[["finegrid"]]
@@ -82,7 +83,7 @@ post_load <- function(dxs, input, sys, dplot, occ) {
         "NO FINEGRID FILE: 
         we will use instead predictions.txt for individual plots"
       warns$MISSING_FINEGRID <- warn
-      
+
       message(warn)
       dxs[["IND"]] <- dxs[["predictions"]]
     }

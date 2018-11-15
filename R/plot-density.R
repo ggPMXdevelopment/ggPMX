@@ -30,7 +30,7 @@
 #' \item {\strong{color:}} {default to black}
 #' \item {\strong{size:}} {default to 1}
 #' }
-#' 
+#'
 #' \strong{snd_line} is a list that contains:
 #' \itemize{
 #' \item {\strong{linetype:}} {default to 2}
@@ -47,18 +47,18 @@
 #'
 #' @export
 pmx_dens <- function(
-  x,
-  labels,
-  dname = NULL,
-  xlim= 3,
-  var_line=NULL,
-  snd_line=NULL,
-  vline=NULL,
-  ...) {
+                     x,
+                     labels,
+                     dname = NULL,
+                     xlim= 3,
+                     var_line=NULL,
+                     snd_line=NULL,
+                     vline=NULL,
+                     ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "predictions"
-  
-  
+
+
   if (missing(labels)) {
     labels <- list(
       title = sprintf("Density plot of %s", x),
@@ -80,10 +80,10 @@ pmx_dens <- function(
     strat = TRUE,
     x = x,
     dname = dname,
-    xlim=xlim,
+    xlim = xlim,
     var_line = var_line,
     snd_line = snd_line,
-    vline=vline,
+    vline = vline,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -124,43 +124,42 @@ pmx_dens <- function(
 #'
 plot_pmx.pmx_dens <- function(x, dx, ...) {
   dx <- dx[!is.infinite(get(x$x))]
-  
-  
-  with(x,{
-    xrange = c(-xlim,xlim)
-    dens_layer <- if(!is.null(var_line)){
-      params <- var_line
-      do.call(geom_density,params)
-    }
-    
-    snd_layer <-  if(!is.null(snd_line)){
 
+
+  with(x, {
+    xrange <- c(-xlim, xlim)
+    dens_layer <- if (!is.null(var_line)) {
+      params <- var_line
+      do.call(geom_density, params)
+    }
+
+    snd_layer <- if (!is.null(snd_line)) {
       params <- append(
         list(
-          data = data.frame(x=xrange),fun=dnorm,mapping=aes(x)),
-        snd_line)
-      do.call(stat_function,params)
+          data = data.frame(x = xrange), fun = dnorm, mapping = aes(x)
+        ),
+        snd_line
+      )
+      do.call(stat_function, params)
     }
-    
-    vline_layer <-  if(!is.null(vline)){
-      
-      params <- append(list(xintercept=0),vline)
-        
-      do.call(geom_vline,params)
+
+    vline_layer <- if (!is.null(vline)) {
+      params <- append(list(xintercept = 0), vline)
+
+      do.call(geom_vline, params)
     }
-    
-    
-    p <- ggplot(dx, aes(x=get(x)))+
+
+
+    p <- ggplot(dx, aes(x = get(x))) +
       dens_layer + snd_layer + vline_layer
 
-    
-    
+
+
     if (!is.null(p)) p <- plot_pmx(gp, p)
-    
+
     p <- p +
       coord_cartesian(xlim = xrange) +
       theme(aspect.ratio = 1)
     p
   })
-  
 }
