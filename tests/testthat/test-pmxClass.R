@@ -8,7 +8,7 @@ test_that("can create pmx class", {
     sort(ctr %>% plot_names()),
     sort(c(
       "abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time",
-      "npde_pred", "dv_pred", "dv_ipred", "ebe_hist", "ebe_box", "individual",
+      "npde_pred", "dv_pred", "dv_ipred", "eta_hist", "eta_box", "individual",
       "eta_matrix", "eta_cats", "eta_conts",
       "iwres_qq", "npde_qq", "eta_qq", "iwres_dens"
     ))

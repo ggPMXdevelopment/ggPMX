@@ -2,7 +2,7 @@ context("Test defaults")
 pmxClassHelpers <- test_pmxClass_helpers()
 
 
-test_that("plot_pmx_xx and get plot have same defaults", {
+test_that("pmx_plot_xx and get plot have same defaults", {
   ctr <- pmxClassHelpers$ctr
   pp <- ctr %>% plots()
   Map(function(pname, fname) {

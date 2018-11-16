@@ -197,7 +197,7 @@ DV_IPRED:
     size: 2.0
     alpha: 0.9
     
-EBE_HIST:
+ETA_HIST:
   ptype: DIS
   type: hist
   dname: eta
@@ -224,7 +224,7 @@ EBE_HIST:
     'y': 'Histogram'
     legend: Random effect
 
-EBE_BOX:
+ETA_BOX:
   ptype: DIS
   dname: eta
   type: box

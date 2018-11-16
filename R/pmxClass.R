@@ -467,7 +467,7 @@ get_abbrev <- function(ctr, param) {
 #' p2 <- ctr %>% get_plot("individual",npage=1)
 #' p3 <- ctr %>% get_plot("individual",npage=c(1,3))
 #' ## get distribution plot
-#' pdistri <- ctr %>% get_plot("ebe_hist")
+#' pdistri <- ctr %>% get_plot("eta_hist")
 #'
 #' }
 

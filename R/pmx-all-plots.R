@@ -244,7 +244,7 @@ pmx_plot_eta_box <-
   function(ctr,
            ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "ebe_box", params)
+    wrap_pmx_plot_generic(ctr, "eta_box", params)
   }
 
 # Distribution histogram plot --------------------------------------------------------------
@@ -267,7 +267,7 @@ pmx_plot_eta_hist <-
            ctr,
            ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "ebe_hist", params)
+    wrap_pmx_plot_generic(ctr, "eta_hist", params)
   }
 
 # Individual plot --------------------------------------------------------------
