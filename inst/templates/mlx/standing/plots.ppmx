@@ -347,6 +347,9 @@ ETA_QQ:
   facets:
     scales: free_y
     nrow: 2
+  reference_line:
+    color: black
+  xmax: no
 
 
 
