@@ -25,11 +25,9 @@ ctr <- pmx_mlx(
     )
   ),
   sim = pmx_sim(
-    
     file = vpc_file,
     irun ="rep",
-    idv="TIME",
-    dv ="Y"
+    idv="TIME"
   )
 )
 

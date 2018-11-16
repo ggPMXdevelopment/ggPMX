@@ -117,6 +117,7 @@ pmx <-
 #' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater}
 #' @param sim \code{pmxSimClass} default to NULL
+#' @param bloq \code{pmx_bloq} bloq parameters 
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @seealso  \code{\link{pmx}}
 #' @return \code{pmxClass} object
@@ -134,6 +135,7 @@ pmx_mlx <-
 #' @param config object as pmx controller
 #' @param endpoint \code{integer} value of the endpoint
 #' @param call \code{logical} if TRUE the result is the parameters parsed
+#' @param ... extra arguments to pmx_mlx
 #' to create the controller.
 #'
 #' @return \code{pmxClass} controller object

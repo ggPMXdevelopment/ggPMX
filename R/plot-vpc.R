@@ -3,8 +3,7 @@
 #' Creates vpc bins
 #'
 #' @param style \code{character} style	chosen on of the:\cr
-#'  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "bclust", "fisher", or "jenks"
-#' @param n number of bins (Optional)
+#'  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust" or "jenks"
 #' @param within_strat \code{logical} if TRUE compute the bining for each strat level. \cr
 #' By default t is false and bining are equal for all stratifications levels.
 #' @param ... other classInt::classIntervals parameters excpet \code{style} and \code{n}

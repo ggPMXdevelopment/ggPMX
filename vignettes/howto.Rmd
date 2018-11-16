@@ -366,11 +366,11 @@ Each panel in this plot shows histogram of ETAs for one random effect
 ## basic plot
 
 ```{r}
- ctr %>% pmx_plot_ebe_box
+ ctr %>% pmx_plot_eta_box
 ```
 
 ```{r}
- ctr %>% pmx_plot_ebe_hist
+ ctr %>% pmx_plot_eta_hist
 ```
 
 ##Plotting options:
@@ -378,8 +378,8 @@ Each panel in this plot shows histogram of ETAs for one random effect
 ### Remove shrinkage
 
 ```{r}
-ctr %>% pmx_plot_ebe_box(is.shrink=FALSE)
-ctr %>% pmx_plot_ebe_hist(is.shrink=FALSE)
+ctr %>% pmx_plot_eta_box(is.shrink=FALSE)
+ctr %>% pmx_plot_eta_hist(is.shrink=FALSE)
 
 ```
 
@@ -387,25 +387,25 @@ ctr %>% pmx_plot_ebe_hist(is.shrink=FALSE)
 ### Select a subset of ETA 
 
 ```{r}
-ctr %>% pmx_plot_ebe_hist(filter=EFFECT %in% c("ka","Cl"))
+ctr %>% pmx_plot_eta_hist(filter=EFFECT %in% c("ka","Cl"))
 ```
 
 
 
 ### Draft label (default = T)
 ```{r}
-ctr %>% pmx_plot_ebe_hist(is.draft=FALSE)
+ctr %>% pmx_plot_eta_hist(is.draft=FALSE)
 ```
 
 ### Histogram fill (default=white)
 
 ```{r}
-ctr %>% pmx_plot_ebe_hist(histogram=list(fill="gray"))
+ctr %>% pmx_plot_eta_hist(histogram=list(fill="gray"))
 ```
 
 ### Histogram color (default = black)
 ```{r}
-ctr %>% pmx_plot_ebe_hist(histogram=list(fill='green',color='green'))
+ctr %>% pmx_plot_eta_hist(histogram=list(fill='green',color='green'))
 
 ```
 
@@ -416,14 +416,14 @@ ctr %>% pmx_plot_ebe_hist(histogram=list(fill='green',color='green'))
 - y axis range is the same for all panels
 
 ```{r , warning=FALSE}
-ctr %>% pmx_plot_ebe_hist(ranges=list(x=c(-0.2,0.2)))
-ctr %>% pmx_plot_ebe_box(ranges=list(y=c(-0.1,0.2)))
+ctr %>% pmx_plot_eta_hist(ranges=list(x=c(-0.2,0.2)))
+ctr %>% pmx_plot_eta_box(ranges=list(y=c(-0.1,0.2)))
 ```
 
 ### X and y axis labels (default = absent)
 
 ```{r}
-ctr %>% pmx_plot_ebe_box(labels=list(x="X_LAB",y="YLAB"))
+ctr %>% pmx_plot_eta_box(labels=list(x="X_LAB",y="YLAB"))
 ```
 
 
@@ -433,7 +433,7 @@ ctr %>% pmx_plot_ebe_box(labels=list(x="X_LAB",y="YLAB"))
 - X and Y axis value font size (default = 10 pt)
 
 ```{r}
-ctr %>% pmx_plot_ebe_hist +
+ctr %>% pmx_plot_eta_hist +
  ggplot2::theme(
    axis.title=ggplot2::element_text(size=32),
    axis.text=ggplot2::element_text(size=8))
@@ -441,10 +441,10 @@ ctr %>% pmx_plot_ebe_hist +
 
 ### Facet by STUDY or categorical covariate
 ```{r}
-ctr %>% pmx_plot_ebe_hist(strat.facet=~STUD)
-ctr %>% pmx_plot_ebe_hist(strat.color="STUD")
-ctr %>% pmx_plot_ebe_box(strat.color="STUD",shrink=list(annotation="sh"))
-ctr %>% pmx_plot_ebe_box(strat.facet=~STUD, shrink=list(annotation="sh"))
+ctr %>% pmx_plot_eta_hist(strat.facet=~STUD)
+ctr %>% pmx_plot_eta_hist(strat.color="STUD")
+ctr %>% pmx_plot_eta_box(strat.color="STUD",shrink=list(annotation="sh"))
+ctr %>% pmx_plot_eta_box(strat.facet=~STUD, shrink=list(annotation="sh"))
 
 ```
 

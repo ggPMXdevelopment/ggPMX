@@ -19,7 +19,9 @@ pmx_qq_stats = function(points){
   intercept <- y_coords[1L] - slope * x_coords[1L]
   x <- range(theoretical)
   
-  data.table(x = x, y = slope * x + intercept)
+  res <- data.table(x = x, y = slope * x + intercept)
+  res
+  
 }
 
 
@@ -135,8 +137,8 @@ pmx_qq <- function(
 plot_pmx.pmx_qq <- function(x, dx, ...) {
   if (!(x$x %in% names(dx))) return(NULL)
   dx <- dx[!is.infinite(get(x$x))]
-  if (!is.null(x$omega) && "EFFECT" %in% names(dx)) {
-    dx <- merge(dx, x$omega, by = "EFFECT")
+  if ("EFFECT" %in% names(dx)) {
+    dx[,c("x","y"):=pmx_qq_stats(get(x$x)),"EFFECT"]
   }
   p <- ggplot(dx, aes_string(sample = x$x)) +
     with(
@@ -151,18 +153,18 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   strat.facet <- x[["strat.facet"]]
 
   if ("EFFECT" %in% names(dx)) {
-    grp <- as.character(strat.facet)
-    grp <- unique(c("EFFECT",grep("~",grp,value = T,invert = T)))
-    dx[,c("x","y"):=pmx_qq_stats(get(x$x)),grp]
-    if (!is.null(x$reference_line)){
-      x$reference_line$mapping <- aes_string(x="x",y="y")
-      p <- p + do.call(geom_line,x$reference_line)
-    }
     wrap.formula <- if (!is.null(strat.facet)) {
+      grp <- as.character(strat.facet)
+      grp <- unique(c("EFFECT",grep("~",grp,value = T,invert = T)))
       wrap_formula(strat.facet, "EFFECT")
     } else {
       formula("~EFFECT")
     }
+    if (!is.null(x$reference_line)){
+      x$reference_line$mapping <- aes_string(x="x",y="y")
+      p <- p + do.call(geom_line,x$reference_line)
+    }
+    
     p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
   } else {
     if (!is.null(strat.facet)) {

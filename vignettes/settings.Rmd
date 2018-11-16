@@ -49,7 +49,7 @@ The standing configuration defines all the plot as a draft version. You can crea
 ctr <- theophylline(settings=pmx_settings(is.draft = FALSE))
 
 ctr %>% pmx_plot_dv_pred
-ctr %>% pmx_plot_ebe_box
+ctr %>% pmx_plot_eta_box
 
 
 ```
@@ -119,7 +119,7 @@ ctr <- theophylline(
 
 ctr %>% pmx_plot_npde_time(strat.color="STUD")
 
-ctr  %>%  pmx_plot_ebe_box(strat.color="STUD")
+ctr  %>%  pmx_plot_eta_box(strat.color="STUD")
 ```
 
 
@@ -143,7 +143,7 @@ ctr <- theophylline(
 
 
 ctr %>%   pmx_plot_npde_time(strat.facet=~SEX)
-ctr  %>%  pmx_plot_ebe_box(strat.facet =~SEX)
+ctr  %>%  pmx_plot_eta_box(strat.facet =~SEX)
 
 ```
 

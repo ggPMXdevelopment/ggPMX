@@ -36,8 +36,8 @@ The following figures are examples of diagnotic plots.
 ```{r illustrate_diagnostic, out.width='.25\\linewidth', fig.width=4, fig.height=4, fig.show='hold', fig.align='center', echo=FALSE}
 ctr <- theophylline()
 ctr %>% pmx_plot_dv_pred
-ctr %>% pmx_plot_ebe_box
-ctr %>% pmx_plot_ebe_hist(facets=list(scales="free_y"))
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist(facets=list(scales="free_y"))
 ctr %>% pmx_plot_individual(npage = 1,
                             is.legend=FALSE,
                             facets=list(ncol=2,nrow=3))

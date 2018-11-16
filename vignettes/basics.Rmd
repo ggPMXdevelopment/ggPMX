@@ -162,8 +162,8 @@ ctr %>% pmx_plot_npde_pred
 
 - ebe histogram/boxplot plot (**DIS**)
 ```{r basics_ebe_hist , fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
-ctr %>% pmx_plot_ebe_hist()
-ctr %>% pmx_plot_ebe_box()
+ctr %>% pmx_plot_eta_hist()
+ctr %>% pmx_plot_eta_box()
 
 ```
 - individual plot (**IND**)

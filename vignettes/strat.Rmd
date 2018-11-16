@@ -55,12 +55,12 @@ ctr %>% pmx_plot_iwres_ipred(strat.facet = SEX~RACE)
 ## Distribution boxplot: categorical covariates
  
 ```{r fig.width=3, fig.height=5}
-ctr %>% pmx_plot_ebe_box(strat.facet = ~SEX)
+ctr %>% pmx_plot_eta_box(strat.facet = ~SEX)
 ```
 
 ## Distribution boxplot: mix of categorical and continuous covariates
 ```{r}
-ctr %>% pmx_plot_ebe_box(
+ctr %>% pmx_plot_eta_box(
   strat.facet = SEX~RACE,
   strat.color="DISE",
   is.jitter = FALSE,
@@ -70,6 +70,6 @@ ctr %>% pmx_plot_ebe_box(
 
 ## Distribution histogram plot: categorical covariates
 ```{r}
-ctr %>% pmx_plot_ebe_hist(strat.facet = "SEX")
+ctr %>% pmx_plot_eta_hist(strat.facet = "SEX")
 ```
 

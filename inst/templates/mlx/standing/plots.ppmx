@@ -102,7 +102,7 @@ NPDE_TIME:
   smooth:
     se: no
     colour: red
-    linetype: 2.0
+    linetype: 1.0
   bloq:
     show: yes
     cens: CENS
@@ -126,7 +126,7 @@ NPDE_PRED:
     size: 1.0
   is.hline: yes
   hline:
-    colour: blue
+    colour: black
   is.band: no
   is.smooth: yes
   smooth:
@@ -160,7 +160,7 @@ DV_PRED:
   is.identity_line: yes
   identity_line:
     intercept: 0
-    colour: blue
+    colour: black
   bloq:
     show: yes
     cens: CENS
@@ -188,7 +188,7 @@ DV_IPRED:
   is.identity_line: yes
   identity_line:
     intercept: 0
-    colour: blue
+    colour: black
   bloq:
     show: yes
     cens: CENS
@@ -304,7 +304,7 @@ ETA_CONTS:
   is.smooth: yes
   smooth:
     se: no
-    colour: blue
+    colour: red
     linetype: 1.0
     method: lm
   
@@ -318,9 +318,6 @@ IWRES_QQ:
     'y': IWRES Quantiles
   bloq:
     show: yes
-    cens: CENS
-    limit: LIMIT
-    colour: pink
     size: 2.0
     alpha: 0.9
 
@@ -343,7 +340,6 @@ ETA_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': ETA Quantiles
-  strat.facet: ~EFFECT
   facets:
     scales: free_y
     nrow: 2

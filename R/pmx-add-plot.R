@@ -217,22 +217,7 @@ before_add_check <- function(self, private, x, pname) {
   }
 }
 
-get_omega <- function(ctr) {
-  estimates <- ctr %>% get_data("estimates")
-  if (!is.null(estimates)) {
-    omega <- estimates[grepl("omega", PARAM)]
-    omega[, EFFECT := gsub("(^ +)?omega_", "", PARAM)]
-    omega <- omega [, list(EFFECT, OMEGA = VALUE)]
-    omega
-  }
-}
 
-.omega <- function(x, self) {
-  if (x$ptype == "PMX_QQ") {
-    x$omega <- self %>% get_omega()
-  }
-  x
-}
 
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)
@@ -248,8 +233,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     .add_cats_x(self) %>%
     .settings_x(self) %>%
     .bloq_x(self) %>%
-    .vpc_x(self) %>%
-    .omega(self)
+    .vpc_x(self)
 
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)

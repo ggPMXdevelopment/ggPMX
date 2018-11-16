@@ -41,7 +41,7 @@ ctr %>% get_data("finegrid")
 To view a particular plot we call the function `get_plot()` with the name of the plot as the first (mandatory) argument, where the name has to correspond to one of the plot_names above: 
 ```{r get_ipred_iwres, out.width='.9\\linewidth', fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
 ctr %>% get_plot("dv_pred")
-ctr %>% get_plot("ebe_box")
+ctr %>% get_plot("eta_box")
 ```
 
 `get_plot` returns a standard `ggplot2` object that we can customize using any valid `ggplot2` operation. In the example below, we add a smooth line to the NPDE plot:

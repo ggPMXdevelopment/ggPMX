@@ -480,19 +480,3 @@ getHclustClassIntervals <- function(clI, k) {
   class(res) <- "classIntervals"
   res
 }
-
-fish <- function(x, k) {
-  x <- sort(x)
-  m <- length(x)
-  k <- as.integer(k)
-  work <- double(m * k)
-  iwork <- integer(m * k)
-  res <- double(k * 4)
-  out <- .Fortran(
-    "fish", as.integer(m), as.double(x), as.integer(k),
-    as.integer(m), as.double(work), as.integer(m), as.integer(iwork),
-    as.double(res), PACKAGE = "classInt"
-  )[[8]]
-  out <- matrix(out, k, 4)
-  out
-}

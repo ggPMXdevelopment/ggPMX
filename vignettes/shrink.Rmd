@@ -28,19 +28,19 @@ We get the shrinkage for each effect (**SHRINK** column).
 The same values can be shown on distribution plot , for example  : 
 
 ```{r shrink_plot_box}
-ctr %>% pmx_plot_ebe_box
+ctr %>% pmx_plot_eta_box
 
 ```
 or : 
 ```{r shrink_plot_hist}
-ctr %>% pmx_plot_ebe_hist
+ctr %>% pmx_plot_eta_hist
 
 ```
 
 You can add or remove shrinkage annotation using `is.shrink` argument ( TRUE by default) : 
 
 ```{r shrink_plot_no}
-ctr %>%   pmx_plot_ebe_box( is.shrink = FALSE) 
+ctr %>%   pmx_plot_eta_box( is.shrink = FALSE) 
 
 ```
 
@@ -54,7 +54,7 @@ ctr %>% pmx_comp_shrink(  fun = "var")
 ```
 
 ```{r, shrink_plot_var}
-ctr %>% pmx_plot_ebe_box( shrink=list(fun = "var"))
+ctr %>% pmx_plot_eta_box( shrink=list(fun = "var"))
 ```
  
  
@@ -73,13 +73,13 @@ ctr %>% pmx_comp_shrink(strat.color = "SEX")
 
 We can 
 ```{r shrink_plot_strat, fig.width=9, fig.height=8}
-ctr %>% pmx_plot_ebe_hist(is.shrink = TRUE, strat.facet = ~SEX,
+ctr %>% pmx_plot_eta_hist(is.shrink = TRUE, strat.facet = ~SEX,
                           facets=list(scales="free_y"))
 ```
 or 
  
 ```{r fig.width=9, fig.height=8}
-ctr %>% pmx_plot_ebe_box(is.shrink = TRUE, strat.facet = "SEX",
+ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = "SEX",
                           facets=list(scales="free_y",ncol=2))
 ```
 

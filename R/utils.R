@@ -328,8 +328,6 @@ parse_mlxtran <- function(file_name) {
 
 
 #' Creates pkpd pmx controller using package internal data
-#' @param settings \code{pmxSettings} object
-
 #' @param code  can be 3 or 4
 #' @export
 pk_pd <- function(code = "4") {
