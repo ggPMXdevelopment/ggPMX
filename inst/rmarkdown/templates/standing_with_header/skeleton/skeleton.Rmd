@@ -43,7 +43,7 @@ ctr %>% pmx_plot_iwres_time
 
 ## EBE distribution
 ```{r ebe_box}
-ctr %>% pmx_plot_ebe_box
+ctr %>% pmx_plot_eta_box
 ```
 
 # Supplmentary diagnostics

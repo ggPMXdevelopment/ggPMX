@@ -182,8 +182,8 @@ ctr %>% pmx_plot_individual(1)
 ## Distribution plots
 ```{r 1_popPK_model_dis}
 
-ctr %>% pmx_plot_ebe_box
-ctr %>% pmx_plot_ebe_hist
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist
 ```
 
 ## Relationships between estimated inter-individual random effects (ETA) and covariates
@@ -260,8 +260,8 @@ ctr %>% pmx_plot_individual(1)
 ## Distribution plots
 ```{r PK_WITH_COVARIATE_dis}
 
-ctr %>% pmx_plot_ebe_box
-ctr %>% pmx_plot_ebe_hist
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist
 ```
 
 ## QQ plots
@@ -332,8 +332,8 @@ ctr %>% pmx_plot_individual(1,strat.facet=~DAY)
 
 ## Distribution plots
 ```{r PK_WITH_COVARIATE_2_dis}
-ctr %>% pmx_plot_ebe_box
-ctr %>% pmx_plot_ebe_hist
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist
 
 ```
 
@@ -409,8 +409,8 @@ ctr %>% pmx_plot_individual(1,strat.facet=~DAY)
 
 ## Distribution plots
 ```{r PK_WITH_COVARIATE_3_dis}
-ctr %>% pmx_plot_ebe_box(has.jitter=TRUE)
-ctr %>% pmx_plot_ebe_hist
+ctr %>% pmx_plot_eta_box(has.jitter=TRUE)
+ctr %>% pmx_plot_eta_hist
 
 ```
 

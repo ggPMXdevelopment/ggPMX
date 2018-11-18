@@ -410,7 +410,7 @@ vpc.plot <- function(x) {
 #' @export
 #'
 
-vpc <- function(
+pmx_vpc <- function(
                 type = c("percentile", "scatter"),
                 idv  ="TIME",
                 obs  = pmx_vpc_obs(),
@@ -439,12 +439,12 @@ vpc <- function(
       obs = obs, pi = pi, ci = ci, rug = rug, bin = bin,
       gp = pmx_gpar(labels = labels, ...)
     ),
-    class = c("vpc", "pmx_gpar")
+    class = c("pmx_vpc", "pmx_gpar")
   )
 }
 
 
-plot_pmx.vpc <- function(x, dx, ...) {
+plot_pmx.pmx_vpc <- function(x, dx, ...) {
   db <- x$db
   if (!is.null(db)) p <- vpc.plot(x)
   plot_pmx(x$gp, p)

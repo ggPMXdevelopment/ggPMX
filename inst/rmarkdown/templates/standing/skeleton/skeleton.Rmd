@@ -37,8 +37,8 @@ ctr %>% pmx_plot_iwres_ipred
 ctr %>% pmx_plot_iwres_time
 ```
 
-```{r ebe_box}
-ctr %>% pmx_plot_ebe_box
+```{r eta_box}
+ctr %>% pmx_plot_eta_box
 ```
 
 ```{r dv_pred}
@@ -71,7 +71,7 @@ ctr %>% pmx_plot_npde_qq
 ctr %>% pmx_plot_eta_qq
 ```
 \blandscape
-```{r ebe_matrix,out.width='1\\linewidth', fig.width=8, fig.height=6}
+```{r eta_matrix,out.width='1\\linewidth', fig.width=8, fig.height=6}
 ctr %>% pmx_plot_eta_matrix
 ```
 \elandscape

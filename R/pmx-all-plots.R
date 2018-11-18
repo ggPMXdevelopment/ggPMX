@@ -543,7 +543,7 @@ pmx_register_plot <-
 #' @param ... others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{vpc}} vpc object .
+#' \item \code{\link{pmx_vpc}} vpc object .
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @return ggplot2 object
@@ -553,7 +553,7 @@ pmx_register_plot <-
 pmx_plot_vpc <- function(ctr, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   params$is.smooth <- FALSE
-  wrap_pmx_plot_generic(ctr, "vpc", params)
+  wrap_pmx_plot_generic(ctr, "pmx_vpc", params)
 }
 
 

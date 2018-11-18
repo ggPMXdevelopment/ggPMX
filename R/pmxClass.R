@@ -62,8 +62,9 @@ check_argument <- function(value, pmxname) {
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} defalut to NULL
-#' @param sim \code{pmxSimClass} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
+#' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
+#' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
 #' @return a pmxClass object
 #' @seealso  \code{\link{pmx_mlx}}
 #' @export
@@ -265,7 +266,7 @@ pmx_endpoint <-
 #'
 #' @param cens \code{character} the censoring column name
 #' @param limit \code{character}  the limit column name (optional)
-#' @param color \code{character}  the color of the geom
+#' @param colour \code{character}  the color of the geom
 #' @param size \code{numeric}  the size of the geom
 #' @param alpha  \code{numeric}  the alpha of the geom
 #' @param show \code{logical} if FALSE remove all censory observations
@@ -379,7 +380,7 @@ set_plot <- function(
       ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
       PMX_QQ = do.call(pmx_qq, params),
       PMX_DENS = do.call(pmx_dens, params),
-      VPC = do.call(vpc, params)
+      VPC = do.call(pmx_vpc, params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
