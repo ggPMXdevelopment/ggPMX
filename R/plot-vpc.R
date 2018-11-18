@@ -13,7 +13,7 @@
 #' This is a warraper to
 #' @family vpc
 
-pmx_bin <-
+pmx_vpc_bin <-
   function(style, within_strat=FALSE, ...) {
     if (missing(style)) return(NULL)
     rr <- as.list(match.call()[-1])
@@ -34,7 +34,7 @@ pmx_bin <-
 #'
 #' @export
 #' @family vpc
-pmx_obs <-
+pmx_vpc_obs <-
   function(show=TRUE,
            color ="#000000",
            size =1,
@@ -48,7 +48,7 @@ pmx_obs <-
           alpha = alpha,
           shape = shape
         ),
-        class = c("pmx_obs", "list")
+        class = c("pmx_vpc_obs", "list")
       )
     }
   }
@@ -83,7 +83,7 @@ pmx_obs <-
 #'
 #' @family vpc
 #' @export
-pmx_pi <-
+pmx_vpc_pi <-
   function(show = c("all", "median"),
            interval=c(.05, .95),
            median=list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
@@ -109,7 +109,7 @@ pmx_pi <-
         median = median,
         extreme = extreme
       ),
-      class = c("pmx_pi", "list")
+      class = c("pmx_vpc_pi", "list")
     )
   }
 
@@ -145,7 +145,7 @@ pmx_pi <-
 #' @export
 
 #' @family vpc
-pmx_ci <-
+pmx_vpc_ci <-
   function(show = c("all", "median"),
            interval=c(.05, .95),
            method = c("ribbon", "rectangle"),
@@ -173,7 +173,7 @@ pmx_ci <-
         median = median,
         extreme = extreme
       ),
-      class = c("pmx_ci", "list")
+      class = c("pmx_vpc_ci", "list")
     )
   }
 
@@ -193,7 +193,7 @@ pmx_ci <-
 #' @export
 #'
 #' @family vpc
-pmx_rug <-
+pmx_vpc_rug <-
   function(show=TRUE,
            color = "#000000",
            size = 1,
@@ -205,7 +205,7 @@ pmx_rug <-
           size = size,
           alpha = alpha
         ),
-        class = c("pmx_rug", "list")
+        class = c("pmx_vpc_rug", "list")
       )
     }
   }
@@ -225,10 +225,10 @@ quantile_dt <-
     fmt <- ifelse(probs < .1, paste0(prefix, "0%1.f"), paste0(prefix, "%1.f"))
     probs.n <- sprintf(fmt, probs * 100)
     if (wide) {
-      dd <- dx[, as.list(quantile(get(ind), probs = probs)), grp]
+      dd <- dx[, as.list(stats::quantile(get(ind), probs = probs)), grp]
       setnames(dd, grep("%", names(dd)), probs.n)
     } else {
-      ds <- dx[, quantile(get(ind), probs = probs), grp]
+      ds <- dx[, stats::quantile(get(ind), probs = probs), grp]
       ds[, percentile := rep(probs.n, .N / length(probs))]
       setnames(ds, "V1", "value")
     }
@@ -395,11 +395,11 @@ vpc.plot <- function(x) {
 #'
 #' @param type \code{charcater} can be either perecentile or scatter
 #' @param idv \code{chracater} individual variable
-#' @param obs \code{vpc_obs} object observation layer \link{pmx_obs}
-#' @param pi \code{vpc_pi} object percentile layer  \link{pmx_pi}
-#' @param ci \code{vpc_ci} object confidence interval layer  \link{pmx_ci}
-#' @param rug  \code{vpc_rub} object rug layer  \link{pmx_rug}
-#' @param bin \code{vpc_bin} object  \link{pmx_bin}
+#' @param obs \code{pmx_vpc_obs} object observation layer \link{pmx_vpc_obs}
+#' @param pi \code{pmx_vpc_pi} object percentile layer  \link{pmx_vpc_pi}
+#' @param ci \code{pmx_vpc_ci} object confidence interval layer  \link{pmx_vpc_ci}
+#' @param rug  \code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}
+#' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin}
 #' @param labels \code{list} define title and axis labels
 #' @param is.legend \code{logical} if TRUE add legend
 #' @param dname added for compatibility with other ggPMX plots
@@ -413,11 +413,11 @@ vpc.plot <- function(x) {
 vpc <- function(
                 type = c("percentile", "scatter"),
                 idv  ="TIME",
-                obs  = pmx_obs(),
-                pi =  pmx_pi(),
-                ci =  pmx_ci(),
-                rug = pmx_rug(),
-                bin = pmx_bin(),
+                obs  = pmx_vpc_obs(),
+                pi =  pmx_vpc_pi(),
+                ci =  pmx_vpc_ci(),
+                rug = pmx_vpc_rug(),
+                bin = pmx_vpc_bin(),
                 labels = NULL,
                 facets = NULL,
                 is.legend=FALSE,

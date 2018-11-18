@@ -16,7 +16,6 @@
 
 #'
 #' @return a residual object
-#' @export
 #' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.residual}}
 #' @details

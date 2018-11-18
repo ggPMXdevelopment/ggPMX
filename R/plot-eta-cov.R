@@ -23,8 +23,6 @@
 #' \item {\strong{x:}} {x axis label default to "Etas"}
 #' \item {\strong{y:}} {y axis label default to empty}
 #' }
-#'
-#' @export
 eta_cov <- function(
                     labels,
                     type = c("cats", "conts"),
@@ -103,7 +101,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
       dx.cats <- dx[, c(cats, "VALUE", "EFFECT"), with = FALSE]
       ggplot(melt(dx.cats, measure.vars = cats)) +
         geom_boxplot(aes_string(x = "value", y = "VALUE")) +
-        facet_grid(as.formula("EFFECT~variable"), scales = "free")
+        facet_grid(stats::as.formula("EFFECT~variable"), scales = "free")
     }
   } else {
     value <- variable <- NULL
@@ -111,7 +109,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
     if (all(nzchar(x[["conts"]]))) {
       dx.conts <- dx[, c(conts, "VALUE", "EFFECT"), with = FALSE]
       dx.conts <- melt(dx.conts, id = c("VALUE", "EFFECT"))
-      x$facets$facets <- as.formula("EFFECT~variable")
+      x$facets$facets <- stats::as.formula("EFFECT~variable")
       p <- ggplot(dx.conts, aes_string(x = "value", y = "VALUE")) +
         do.call(geom_point, x$point) +
         ## do.call(geom_smooth, x$smooth) +

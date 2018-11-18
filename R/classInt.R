@@ -81,7 +81,7 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
   ovar <- var
   if (any(is.na(var))) {
     warning("var has missing values, omitted in finding classes")
-    var <- c(na.omit(var))
+    var <- c(stats::na.omit(var))
   }
   if (any(!is.finite(var))) {
     warning("var has infinite values, omitted in finding classes")
@@ -147,15 +147,15 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
       brks <- c(pretty(x = var, n = n, ...))
     } else if (style == "quantile") {
       # stats
-      brks <- c(quantile(x = var, probs = seq(0, 1, 1 / n), ...))
+      brks <- c(stats::quantile(x = var, probs = seq(0, 1, 1 / n), ...))
       names(brks) <- NULL
     } else if (style == "kmeans") {
       # stats
-      pars <- try(kmeans(x = var, centers = n, ...))
+      pars <- try(stats::kmeans(x = var, centers = n, ...))
       if (class(pars) == "try-error") {
         warning("jittering in kmeans")
         jvar <- jitter(rep(x = var, times = rtimes))
-        pars <- try(kmeans(x = jvar, centers = n, ...))
+        pars <- try(stats::kmeans(x = jvar, centers = n, ...))
         if (class(pars) == "try-error") {
           stop("kmeans failed after jittering")
         } else {
@@ -170,8 +170,8 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
       brks <- .rbrks(rbrks)
     } else if (style == "hclust") {
       # stats
-      pars <- hclust(dist(x = var, method = "euclidean"), ...)
-      rcluster <- cutree(tree = pars, k = n)
+      pars <- stats::hclust(stats::dist(x = var, method = "euclidean"), ...)
+      rcluster <- stats::cutree(tree = pars, k = n)
       rcenters <- unlist(tapply(var, factor(rcluster), mean))
       cols <- match(rcluster, order(c(rcenters)))
       rbrks <- unlist(tapply(var, factor(cols), range))
@@ -433,7 +433,7 @@ getBclustClassIntervals <- function(clI, k) {
   ovar <- clI$var
   var <- clI$var
   if (any(!is.finite(var))) is.na(var) <- !is.finite(var)
-  var <- c(na.omit(var))
+  var <- c(stats::na.omit(var))
 
   obj <- attr(clI, "parameters")
   cols <- match(clusters.bclust(obj, k = k), order(centers.bclust(obj, k = k)))
@@ -461,7 +461,7 @@ getHclustClassIntervals <- function(clI, k) {
   ovar <- clI$var
   var <- clI$var
   if (any(!is.finite(var))) is.na(var) <- !is.finite(var)
-  var <- c(na.omit(var))
+  var <- c(stats::na.omit(var))
 
   obj <- attr(clI, "parameters")
   rcluster <- cutree(tree = obj, k = k)

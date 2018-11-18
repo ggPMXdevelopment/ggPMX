@@ -31,9 +31,6 @@
 #' \item {\strong{color:}} {shrinkage text color}
 #' \item {\strong{vjust:}} {shrinkage position vertical adjustment}
 #' }
-#'
-#'
-#' @export
 distrib <- function(
                     labels,
                     is.shrink,

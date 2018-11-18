@@ -17,7 +17,6 @@
 #' @return ecorrel object
 #' @family plot_pmx
 #' @importFrom  GGally ggally_cor ggally_densityDiag
-#' @export
 eta_pairs <- function(
                       title,
                       dname=NULL,

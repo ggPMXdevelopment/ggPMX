@@ -17,11 +17,7 @@ pmx_qq_stats = function(points){
   y_coords <- quantile(sample, line.p)
   slope <- diff(y_coords) / diff(x_coords)
   intercept <- y_coords[1L] - slope * x_coords[1L]
-  x <- range(theoretical)
-  
-  res <- data.table(x = x, y = slope * x + intercept)
-  res
-  
+  data.table(intercept=intercept,slope=slope)
 }
 
 
@@ -56,8 +52,7 @@ pmx_qq_stats = function(points){
 #' \item {\strong{color:}} {default to black}
 #' \item {\strong{size:}} {default to 1}
 #' }
-#'
-#' @export
+
 pmx_qq <- function(
                    x,
                    labels,
@@ -137,9 +132,21 @@ pmx_qq <- function(
 plot_pmx.pmx_qq <- function(x, dx, ...) {
   if (!(x$x %in% names(dx))) return(NULL)
   dx <- dx[!is.infinite(get(x$x))]
-  if ("EFFECT" %in% names(dx)) {
-    dx[,c("x","y"):=pmx_qq_stats(get(x$x)),"EFFECT"]
+  
+  strat.facet <- x[["strat.facet"]]
+  strat.color <- x[["strat.color"]]
+  vec.color <- c(grep("~",strat.color,invert=TRUE,value=TRUE))
+  vec.facet <- c(grep("~",strat.facet,invert=TRUE,value=TRUE))
+  
+  grp <- c(vec.color,vec.facet)
+  if(sum(nchar(grp))==0) grp <- NULL
+  dx.ref <- if ("EFFECT" %in% names(dx)) {
+    dx[,pmx_qq_stats(get(x$x)),c("EFFECT",grp)]
+  }else{
+    dx[,pmx_qq_stats(get(x$x)),grp]
   }
+  
+  
   p <- ggplot(dx, aes_string(sample = x$x)) +
     with(
       x$point,
@@ -150,32 +157,41 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     )
   
 
-  strat.facet <- x[["strat.facet"]]
 
-  if ("EFFECT" %in% names(dx)) {
-    wrap.formula <- if (!is.null(strat.facet)) {
-      grp <- as.character(strat.facet)
-      grp <- unique(c("EFFECT",grep("~",grp,value = T,invert = T)))
-      wrap_formula(strat.facet, "EFFECT")
-    } else {
-      formula("~EFFECT")
+  if (!is.null(x$reference_line)){
+    x$reference_line$mapping <- aes_string(slope="slope",intercept = "intercept")
+    if (is.null(strat.color)){
+      x$reference_line$colour <- NULL
+      x$reference_line$mapping <- aes_string(slope="slope",intercept = "intercept",
+                                             colour=strat.color)
     }
-    if (!is.null(x$reference_line)){
-      x$reference_line$mapping <- aes_string(x="x",y="y")
-      p <- p + do.call(geom_line,x$reference_line)
+    x$reference_line$data <- dx.ref
+    p <- p + do.call("geom_abline",x$reference_line)
+  }
+  
+  layer_facet <- if ("EFFECT" %in% names(dx)) {
+     if (!is.null(strat.facet)){
+      wf <- wrap_formula(strat.facet, "EFFECT")
+       x$facets$nrow <- NULL
+       x$facets$ncol <- NULL
+       do.call("facet_grid", c(wf, x$facets))
+     }
+    else {
+      wf <- formula("~EFFECT")
+      do.call("facet_wrap", c(wf, x$facets))
     }
-    
-    p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
   } else {
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
-        wrap.formula <- formula(paste0("~", strat.facet))
-        p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
+        wf <- formula(paste0("~", strat.facet))
+        do.call("facet_wrap", c(wf, x$facets))
       }
     }
   }
+  if(!is.null(layer_facet))
+    p <- p + layer_facet
+  
 
-  strat.color <- x[["strat.color"]]
   if (!is.null(strat.color)) {
     p <- p %+% geom_point(stat = "qq", aes_string(colour = strat.color))
   }

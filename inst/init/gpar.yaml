@@ -14,8 +14,8 @@ smooth:
 is.band: no
 band:
   'yintercept':
-  - -2.0
-  - 2.0
+  - -1.96
+  - 1.96
   linetype: 2.0
   size: 0.5
 is.draft: yes

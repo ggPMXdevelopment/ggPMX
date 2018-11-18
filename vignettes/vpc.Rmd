@@ -45,7 +45,6 @@ ctr <- pmx_mlx(
   directory = WORK_DIR,
   input = input_file,
   dv = "Y",
-  dvid = "dvid",
   cats = c("SEX"),
   conts = c("WT0", "AGE0"),
   strats = "STUD",
@@ -56,11 +55,9 @@ ctr <- pmx_mlx(
     )
   ),
   sim = pmx_sim(
-    
     file = vpc_file,
     irun ="rep",
-    idv="TIME",
-    dv ="Y"
+    idv="TIME"
   )
 )
 
@@ -86,7 +83,7 @@ ctr %>% pmx_plot_vpc(type ="scatter")
 ## Binning
 
 ```{r}
-ctr %>% pmx_plot_vpc(bin=pmx_bin(style = "kmeans",n=5))
+ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
 ```
 
 ## Stratification 
@@ -104,11 +101,11 @@ ctr %>% pmx_plot_vpc(
   facets=list(nrow=2),
   type="percentile",
   is.draft = FALSE,
-  pi = pmx_pi(interval = c(0.1,0.9),
+  pi = pmx_vpc_pi(interval = c(0.1,0.9),
               median=list(color="green"),
               extreme= list(color="green")),
-  obs = pmx_obs(color="blue",shape=18,size=2),
-  ci = pmx_ci(interval = c(0.1,0.9),
+  obs = pmx_vpc_obs(color="blue",shape=18,size=2),
+  ci = pmx_vpc_ci(interval = c(0.1,0.9),
               median=list(fill="red"))
 )
 ```

@@ -127,7 +127,7 @@ NPDE_PRED:
   is.hline: yes
   hline:
     colour: black
-  is.band: no
+  is.band: yes
   is.smooth: yes
   smooth:
     se: no

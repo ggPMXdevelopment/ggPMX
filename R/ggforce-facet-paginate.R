@@ -14,7 +14,6 @@
 #' fall back to the standard \code{facet_wrap} functionality.
 #'
 #'
-#' @export
 #' @import ggplot2
 #'
 
@@ -191,8 +190,6 @@ FacetWrapPaginate <-
 #' @return If the plot uses  using either facet_wrap_paginate or
 #' facet_grid_paginate it returns the total number of pages. Otherwise it
 #' returns NULL
-#'
-#' @export
 #' @import ggplot2
 #'
 n_pages <- function(plot) {

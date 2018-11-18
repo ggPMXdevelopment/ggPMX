@@ -107,10 +107,7 @@ merge_defaults <-
 #' @param ... extra paremeters to geom text used to annotate the draft
 #'
 #' @return ggplot2 annotation
-#' @export
-#'
-#' @examples
-#' add_draft("DRAFT", size = 5, colour = "grey50")
+
 add_draft <- function(label = "DRAFT", size=10, colour="grey50", x = Inf, y = -Inf, ...) {
   do.call(annotate, list(
     geom = "text", label = label, size = size,
