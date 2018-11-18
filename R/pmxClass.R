@@ -54,7 +54,8 @@ check_argument <- function(value, pmxname) {
 #' @param directory \code{character} modelling output directory.
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
-#' @param dvid \code{character} observation type parameter
+#' @param dvid \emph{[Optional]} \code{character} observation type parameter. This is mondatory
+#' in case of multiple endpoint (PKPD).
 #' @param cats \emph{[Optional]}\code{character} vector of categorical covariates
 #' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
 #' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
@@ -65,8 +66,8 @@ check_argument <- function(value, pmxname) {
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
-#' @return a pmxClass object
-#' @seealso  \code{\link{pmx_mlx}}
+#' @return \code{pmxClass} controller object.
+
 #' @export
 #' @example inst/examples/controller.R
 pmx <-
@@ -103,25 +104,10 @@ pmx <-
     pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
   }
 
-#' Wrapper to pmx constructor
-#' @param config Can be either :
-#' The complete path for the configuration file, the name of configuration within the built-in
-#' list of configurations, or a configuration object.
-#' @param directory where the files are located.
-#' @param input \code{character} complete path to the modelling input file
-#' @param dv \code{character} the name of measurable variable used in the input modelling file
-#' @param dvid \code{character} observation type parameter
-#' @param cats \emph{[Optional]}\code{character} vector of categorical covariates
-#' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
-#' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
-#' @param strats \emph{[Optional]}\code{character} extra stratification variables
-#' @param settings \emph{[Optional]}\code{list} list of global settings parameters that be shared between all plots
-#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater}
-#' @param sim \code{pmxSimClass} default to NULL
-#' @param bloq \code{pmx_bloq} bloq parameters 
-#' of the endpoint code.   \code{\link{pmx_endpoint}}
-#' @seealso  \code{\link{pmx}}
-#' @return \code{pmxClass} object
+
+#' @rdname pmx
+#' @details 
+#' \code{pmx_mlx}  is a wrapper to mlx for the MONOLIX system ( \code{sys="mlx"})
 #' @export
 pmx_mlx <-
   function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq) {
@@ -133,22 +119,12 @@ pmx_mlx <-
 #' Create a controller from mlxtran file
 #'
 #' @param file_name mlxtran file
-#' @param config object as pmx controller
-#' @param endpoint \code{integer} value of the endpoint
 #' @param call \code{logical} if TRUE the result is the parameters parsed
-#' @param ... extra arguments to pmx_mlx
-#' to create the controller.
+#' @param ... extra arguments passed to pmx_mlx.
+#' @rdname pmx
 #'
-#' @return \code{pmxClass} controller object
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' mlxtran <- file.path(
-#'    system.file(package = "ggPMX"), "testdata",
-#'     "1_popPK_model","project.mlxtran")
-#' pmx_mlxtran(mlxtran)
-#' }
+
 pmx_mlxtran <- function(file_name, config="standing", call=FALSE, endpoint, ...) {
   params <- parse_mlxtran(file_name)
   params$config <- config

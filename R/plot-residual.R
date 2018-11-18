@@ -16,7 +16,6 @@
 
 #'
 #' @return a residual object
-#' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.residual}}
 #' @details
 #' Some parameters are a list of parameters :

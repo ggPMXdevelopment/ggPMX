@@ -448,7 +448,7 @@ pmx_plot_npde_qq <-
 #' Genereic pmx plot
 #'
 #' @param ctr \code{pmxClass} pmx controller
-#' @param pname plot name
+#' @param pname plot name. \s
 #' @param ...  others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
@@ -456,7 +456,8 @@ pmx_plot_npde_qq <-
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @export
-#'
+#' @family plot_pmx
+
 pmx_plot <- function(ctr, pname, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, pname, params)

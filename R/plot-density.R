@@ -14,7 +14,6 @@
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
-#' @family plot_pmx
 #' @details
 #'
 #' \strong{labels} is a list that contains:

@@ -38,4 +38,9 @@ ctr <- pmx(
   settings=list(is.draft=FALSE)
 )
 
+## using mlxtran file
+mlxtran_file <- file.path(system.file(package = "ggPMX"), "testdata","1_popPK_model","project.mlxtran")
+pmx_mlxtran(mlxtran_file)
+
+
 ## }
