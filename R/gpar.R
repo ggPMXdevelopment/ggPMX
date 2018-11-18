@@ -15,7 +15,6 @@
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
 #' @param scale_x_log10 logical if TRUE add scale_x_log10 layer
 #' @param scale_y_log10 logical if TRUE add scale_y_log10 layer
-#' @param ... extra arguments (not used yet)
 #' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
 #'
 #' @details
@@ -44,8 +43,7 @@ pmx_gpar <-
            identity_line,
            scale_x_log10,
            scale_y_log10,
-           color.scales,
-           ...) {
+           color.scales) {
 
 
     ## join with default values
