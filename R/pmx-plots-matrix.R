@@ -1,24 +1,29 @@
+# Eta matrix plot --------------------------------------------------------------
 
-#' Eta distribution plots 
-#' @name eta_distribution_plot
+
+#' Eta matrix plot
 #' @param ctr pmx controller
 #' @param ... others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{distrib}} generic object for distribution plots (histogram/boxplot).
+#' \item \code{\link{eta_pairs}} ggPMX internal function for eta matrix plot.
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' \cr \cr 
-#' \strong{distrib parameters} \cr
+#' \strong{eta_pairs parameters} \cr
 
-#' @param jitter list set jitter parameter
-#' @param facets list set the facet setting in case of histogram plot
-#' @param type box for boxplot or histogram
+#' @param title character the plot title
 #' @param dname name of dataset to be used
-#' @param is.shrink \code{logical} if TRUE add shrinkage layer
-#' @param shrink \code{list} list of parameters to tune the shrinkage
-#' @param is.jitter \code{logical} if TRUE add jitter operator for points
-#' @param histogram \code{list} histogram graphical parameters
+#' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' byd efault
+#' @param text_color color of the correlation text in the upper matrix
+#' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
+#' @param shrink \code{list} shrinkage graphical parameter
+#' @param point \code{list} geom_point graphical parameter
+#' @param is.smooth \code{logical} if TRUE add smoothing to lower matrix plots
+#' @param smooth \code{list} geom_smooth graphical parameters
+#' @param is.hline \code{logical} if TRUE add horizontalline to lower matrix plots
+#' @param hline \code{list} geom_hline graphical parameters
+
 
 
 #' \cr \cr 
@@ -54,42 +59,9 @@
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
 #' @return ggplot2 object
-#' @example inst/examples/residual.R
-
-
-NULL
-
-
-
-# Distribution boxplot --------------------------------------------------------------
-
-#' Eta Distribution boxplot
-#' @family eta_distribution_plot
-#' @rdname eta_distribution_plot
-#' @example inst/examples/distribution.R
-
-
-pmx_plot_eta_box <-
-  function(ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "eta_box", params)
-  }
-
-# Distribution histogram plot --------------------------------------------------------------
-
-
-#' Eta Distribution histogram plot
+#' @example inst/examples/eta_matrix.R
 #' @export
-#' @family eta_distribution_plot
-#' @rdname eta_distribution_plot
-#' @example inst/examples/distribution.R
-
-pmx_plot_eta_hist <-
-  function(
-    ctr,
-    ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "eta_hist", params)
-  }
-
+pmx_plot_eta_matrix <- function(ctr, ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, "eta_matrix", params)
+}

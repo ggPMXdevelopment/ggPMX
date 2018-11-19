@@ -15,8 +15,8 @@ pmx_plot_generic <-
     p
   }
 
-
-lang_to_expr <- function(params) {
+lang_to_expr <- 
+  function(params) {
   if ("filter" %in% names(params)) {
     if (is.language(params$filter)) {
       params$filter <- deparse(params$filter)
@@ -50,112 +50,33 @@ wrap_pmx_plot_generic <-
   }
 
 
-# Eta matrix plot --------------------------------------------------------------
 
 
-#' Eta matrix plot
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{eta_pairs}} ggPMX internal function for eta matrix plot.
-#' \item \code{\link{pmx_update}} function.
-#' }
-#' @return ggplot2 object
-#' @example inst/examples/eta_matrix.R
+
+#' Register plot
+#'
+#' @param ctr \code{pmxClass} controller
+#' @param pp \code{ggplot2} plot
+#' @param pname \code{character} plot nme
+#'
 #' @export
-pmx_plot_eta_matrix <- function(ctr, ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
-  wrap_pmx_plot_generic(ctr, "eta_matrix", params)
-}
-
-# eta cats plot --------------------------------------------------------------
-
-#' Relationships between (ETA) and categorical covariates
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{eta_cov}}  generic object for eta/covariates plots
-#' \item \code{\link{pmx_update}} function.
-#' }
-
-#' @return ggplot2 object
-#' @export
-#' @example inst/examples/eta_cov.R
-#' @family eta covariates
-pmx_plot_eta_cats <-
-  function(ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "eta_cats", params)
+pmx_register_plot <-
+  function(ctr, pp, pname=NULL) {
+    if (ctr$footnote) {
+      if (is.null(pname)) pname <- "extra-plot"
+      ctr$enqueue_plot(pname)
+      footnote <- paste0(pname, "-", ctr$report_n)
+      add_footnote(pp, footnote, ctr$save_dir)
+    } else {
+      pp
+    }
   }
-
-# eta conts plot --------------------------------------------------------------
-
-#' Relationships between (ETA) and continuous covariates
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} low level function grahical object
-#' \item \code{\link{eta_cov}} generic object for eta/covariates plots.
-#' \item \code{\link{pmx_update}} function.
-#' }
-#' @family eta covariates
-#' @export
-pmx_plot_eta_conts <-
-  function(ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "eta_conts", params)
-  }
-
-
-
-# Quantile-quantile plot of IWRES --------------------------------------------------------------
-
-#' Quantile-quantile plot of IWRES
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{pmx_qq}} quantile-quantile plot object.
-#' \item \code{\link{pmx_update}} function.
-#' }
-#' @return ggplot2 plot
-#' @export
-pmx_plot_iwres_qq <-
-  function(ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "iwres_qq", params)
-  }
-
-
-#' Quantile-quantile plot of NPDE
-#' @return ggplot2 plot
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{pmx_qq}} quantile-quantile plot object
-#' \item \code{\link{pmx_update}} function.
-#' }
-#' @export
-pmx_plot_npde_qq <-
-  function(ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "npde_qq", params)
-  }
-
-
 
 
 #' Genereic pmx plot
 #'
 #' @param ctr \code{pmxClass} pmx controller
-#' @param pname plot name.
+#' @param pname plot name
 #' @param ...  others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
@@ -163,12 +84,13 @@ pmx_plot_npde_qq <-
 #' \item \code{\link{pmx_update}} function.
 #' }
 #' @export
-#' @family plot_pmx
-
+#'
 pmx_plot <- function(ctr, pname, ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, pname, params)
 }
+
+
 
 #' Genereic pmx stratified plot
 #'
@@ -202,46 +124,6 @@ pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
   if (length(sp) > 0 && print) invisible(lapply(sp, print))
   invisible(sp)
 }
-
-
-#' Quantile-quantile plot of eta variables
-#' @return ggplot2 plot
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{pmx_qq}} quantile-quantile plot object
-#' \item \code{\link{pmx_update}} function.
-#' }
-#' @export
-pmx_plot_eta_qq <-
-  function(ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "eta_qq", params)
-  }
-
-
-
-
-#' Register plot
-#'
-#' @param ctr \code{pmxClass} controller
-#' @param pp \code{ggplot2} plot
-#' @param pname \code{character} plot nme
-#'
-#' @export
-pmx_register_plot <-
-  function(ctr, pp, pname=NULL) {
-    if (ctr$footnote) {
-      if (is.null(pname)) pname <- "extra-plot"
-      ctr$enqueue_plot(pname)
-      footnote <- paste0(pname, "-", ctr$report_n)
-      add_footnote(pp, footnote, ctr$save_dir)
-    } else {
-      pp
-    }
-  }
 
 
 # VPC plot --------------------------------------------------------------
