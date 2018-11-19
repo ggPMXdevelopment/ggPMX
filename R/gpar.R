@@ -1,6 +1,6 @@
 
 #' Handling pmx Graphical parameters
-#' @param labels list of labels, like title, subtitle, xlab , ylab
+#' @param labels list of labels, like title, subtitle, x , y
 #' @param  axis.title list or element_text (same as ggplot2 axis.title theme)
 #' @param axis.text list or element_text (same as ggplot2 axis.text theme)
 #' @param ranges limits of x/y ranges
