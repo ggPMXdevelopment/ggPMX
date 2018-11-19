@@ -69,52 +69,6 @@ pmx_plot_eta_matrix <- function(ctr, ...) {
   wrap_pmx_plot_generic(ctr, "eta_matrix", params)
 }
 
-
-
-# Distribution boxplot --------------------------------------------------------------
-
-#' Distribution boxplot
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{distrib}} generic object for distribution plots (histogram/boxplot).
-#' \item \code{\link{pmx_update}} function.
-#' }
-#' @return ggplot2 object
-#' @export
-#' @example inst/examples/distribution.R
-
-pmx_plot_eta_box <-
-  function(ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "eta_box", params)
-  }
-
-# Distribution histogram plot --------------------------------------------------------------
-
-
-#' Distribution histogram plot
-#' @param ctr pmx controller
-#' @param ... others graphics parameters passed :
-#' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
-#' \item \code{\link{distrib}} generic object for distribution plots (histogram/boxplot).
-#' \item \code{\link{pmx_update}} function.
-#' }
-#' @return ggplot2 object
-#' @export
-#' @example inst/examples/distribution.R
-
-pmx_plot_eta_hist <-
-  function(
-           ctr,
-           ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    wrap_pmx_plot_generic(ctr, "eta_hist", params)
-  }
-
 # eta cats plot --------------------------------------------------------------
 
 #' Relationships between (ETA) and categorical covariates
