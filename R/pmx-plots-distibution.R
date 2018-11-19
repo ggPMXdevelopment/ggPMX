@@ -12,7 +12,6 @@
 #' \strong{distrib parameters} \cr
 
 #' @param jitter list set jitter parameter
-#' @param facets list set the facet setting in case of histogram plot
 #' @param type box for boxplot or histogram
 #' @param dname name of dataset to be used
 #' @param is.shrink \code{logical} if TRUE add shrinkage layer
@@ -67,6 +66,7 @@ NULL
 #' @family eta_distribution_plot
 #' @rdname eta_distribution_plot
 #' @example inst/examples/distribution.R
+#' @export
 
 
 pmx_plot_eta_box <-
@@ -84,6 +84,7 @@ pmx_plot_eta_box <-
 #' @family eta_distribution_plot
 #' @rdname eta_distribution_plot
 #' @example inst/examples/distribution.R
+#' @export
 
 pmx_plot_eta_hist <-
   function(

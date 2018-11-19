@@ -19,10 +19,8 @@
 #' @param ci \code{pmx_vpc_ci} object confidence interval layer  \link{pmx_vpc_ci}
 #' @param rug  \code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}
 #' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin}
-#' @param labels \code{list} define title and axis labels
 #' @param is.legend \code{logical} if TRUE add legend
 #' @param dname added for compatibility with other ggPMX plots
-#' @param facets is a list of parameters passed to facet_wrap in case of startification
 
 
 

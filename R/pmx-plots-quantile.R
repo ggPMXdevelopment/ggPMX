@@ -14,9 +14,6 @@
 #' @param dname name of dataset to be used
 #' @param point \code{list} geom_point parameters.
 #' @param reference_line \code{list} geom_abline parameters.  
-#' @param facets \code{list} facet_wrap graphical parameters.
-
-
 
 #' \cr \cr 
 #' \strong{pmx_update parameters} \cr
