@@ -22,3 +22,27 @@ ctr %>% pmx_plot_eta_conts(
   correl=list(colour="magenta")
   )
 
+## set covariates custom labels 
+
+ctr %>% pmx_plot_eta_conts(
+  covariates=pmx_cov(values=list("WT0","AGE0"),
+                     labels=list("Weight","Age"))
+)
+
+## set effects and covaraites custom labels
+
+
+ctr <- theophylline( settings = pmx_settings(
+  effects=list( levels=c("ka", "V", "Cl"), 
+                labels=c("Concentration","Volume","Clearance")
+  )
+)
+)
+ctr %>% pmx_plot_eta_conts(
+  covariates=pmx_cov(values=list("WT0","AGE0"),
+                     labels=list("Weight","Age"))
+)
+
+
+
+

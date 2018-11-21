@@ -52,16 +52,13 @@ ctr %>% pmx_plot_dv_pred
 ```{r dv_abs_iwres_ipred}
 ctr %>% pmx_plot_abs_iwres_ipred
 ```
-
+\newpage
 # Supplmentary diagnostics
 
 ## Distribution of residuals
 
 ```{r iwres_qq}
 ctr %>% pmx_plot_iwres_qq
-```
-
-```{r npde_qq}
 ctr %>% pmx_plot_npde_qq
 ```
 
@@ -85,11 +82,11 @@ ctr %>%  pmx_plot_eta_conts
 ```
 
 
-
+\newpage
 # Individual plots
 
 
-```{r indiv,message=FALSE}
+```{r indiv,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
  ctr %>% pmx_plot_individual
 ```
 
