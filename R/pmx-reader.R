@@ -308,7 +308,7 @@ read_mlx18_pred <- function(path, x, ...) {
   if (exists("residuals", x)) {
     resi <- read_mlx18_res(path, x$residuals)
     if (is.null(resi)) return(NULL)
-    ds <- merge(ds, resi)
+    ds <- merge(ds, resi,by=c("ID","TIME"))
   }
   ds
 }
