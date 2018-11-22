@@ -3,6 +3,7 @@ title: "VPC"
 author: "Amine Gassem"
 date: "`r Sys.Date()`"
 output:
+  pdf_document: default
   html_document: default
 ---
 

@@ -808,16 +808,16 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (!is.null(sim)) {
     dx <- sim[["sim"]]
     inn <- copy(self$input)[, self$dv := NULL]
-    ## check for unique keys in the observation variables
-    # if (sum(duplicated(dx[, c("ID", "TIME"), with = FALSE])) > 0) {
-    #   warning(
-    #     paste(
-    #       " Different covariates for the same patient same time point\n",
-    #       "--> Duplicated created in the vpc data set."
-    #     ),
-    #     call. = FALSE
-    #   )
-    # }
+    # check for unique keys in the observation variables
+    if (sum(duplicated(inn[, c("ID", "TIME"), with = FALSE])) > 0) {
+      warning(
+        paste(
+          " Different covariates for the same patient same time point\n",
+          "--> Duplicated created in the vpc data set."
+        ),
+        call. = FALSE
+      )
+    }
 
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
 

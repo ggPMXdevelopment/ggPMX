@@ -173,6 +173,15 @@ before_add_check <- function(self, private, x, pname) {
   invisible(x)
 }
 
+
+
+find_interval <- function(x,vec,...){
+  
+  levels = seq_along(vec)
+  labels = as.character(vec)
+  as.numeric(as.character(factor(findInterval(x,vec,...),levels = levels,labels = labels)))
+  
+}
 .vpc_x <- function(x, self) {
   if (x$ptype == "VPC") {
     x$dv <- self$dv
@@ -184,17 +193,17 @@ before_add_check <- function(self, private, x, pname) {
 
         x$input[, bin := {
           grp <- get(x$strat.facet)
-          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet) == grp, brks])
+          find_interval(get(self$sim[["idv"]]), bins[get(x$strat.facet) == grp, brks])
         }, c(x$strat.facet)]
         x$dx[, bin := {
           grp <- get(x$strat.facet)
-          findInterval(get(self$sim[["idv"]]), bins[get(x$strat.facet) == grp, brks])
+          find_interval(get(self$sim[["idv"]]), bins[get(x$strat.facet) == grp, brks])
         }, c(x$strat.facet)]
       } else {
         bin_idv <- function(idv) do.call(classIntervals, append(list(var = idv), x$bin))
         bins <- x$input[, bin_idv(get(self$sim[["idv"]]))]
-        x$input[, bin := findInterval(get(self$sim[["idv"]]), bins$brks)]
-        x$dx[, bin := findInterval(get(self$sim[["idv"]]), bins$brks)]
+        x$input[, bin := find_interval(get(self$sim[["idv"]]), bins$brks)]
+        x$dx[, bin := find_interval(get(self$sim[["idv"]]), bins$brks)]
       }
     }
     res <- vpc.data(
