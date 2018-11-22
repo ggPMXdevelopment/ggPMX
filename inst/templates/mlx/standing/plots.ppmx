@@ -361,7 +361,7 @@ IWRES_DENS:
     'y': ''
 
     
-VPC:
+PMX_VPC:
   ptype: VPC
   type: percentile
   dname: sim
