@@ -45,3 +45,9 @@ ctr %>% pmx_plot_vpc(
               median=list(fill="pink")),
   bin=pmx_vpc_bin("kmeans",n=5)
 )
+
+ctr %>% 
+  pmx_plot_vpc(bin= pmx_vpc_bin(
+     style = "fixed",
+     fixedBreaks=c(-10,2, 5, 10,15,50))
+  )

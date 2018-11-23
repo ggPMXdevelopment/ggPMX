@@ -130,10 +130,9 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
       #        stop("mismatch between fixedBreaks and n")
       if (!is.numeric(fixedBreaks)) stop("fixedBreaks must be numeric")
       if (any(diff(fixedBreaks) < 0)) stop("decreasing fixedBreaks found")
-      if (min(var) < fixedBreaks[1] ||
-        max(var) > fixedBreaks[length(fixedBreaks)]) {
-        warning("variable range greater than fixedBreaks")
-      }
+      fixedBreaks[1] = max(fixedBreaks[1],min(var))
+      fixedBreaks[length(fixedBreaks)] = min(fixedBreaks[length(fixedBreaks)],max(var))
+    
       brks <- fixedBreaks
     } else if (style == "sd") {
       svar <- scale(var)
