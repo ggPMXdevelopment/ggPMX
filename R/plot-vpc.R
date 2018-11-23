@@ -325,7 +325,7 @@ vpc.plot <- function(x) {
     obs_layer <- if (!is.null(obs)) {
       params <- append(
         list(
-          mapping = aes_string(y = dv),
+          mapping = aes_string(y = dv,x=idv),
           data = input
         ),
         obs

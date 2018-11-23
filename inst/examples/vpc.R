@@ -37,11 +37,11 @@ ctr %>% pmx_plot_vpc(
   facets=list(nrow=2),
   type="percentile",
   is.draft = FALSE,
-  pi = pmx_pi(interval = c(0.1,0.9),
+  pi = pmx_vpc_pi(interval = c(0.1,0.9),
               median=list(color="green"),
               extreme= list(color="green")),
-  obs = pmx_obs(color="blue",shape=18,size=2),
-  ci = pmx_ci(interval = c(0.1,0.9),
+  obs = pmx_vpc_obs(color="blue",shape=18,size=2),
+  ci = pmx_vpc_ci(interval = c(0.1,0.9),
               median=list(fill="pink")),
-  bin=pmx_bin("kmeans",n=5)
+  bin=pmx_vpc_bin("kmeans",n=5)
 )
