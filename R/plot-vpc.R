@@ -271,6 +271,54 @@ vpc.data <-
     res
   }
 
+bin_idv <- function(idv,x) {
+  brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
+  if(max(brks)>max(idv)) brks[which.max(brks)] <- max(idv)
+  brks
+}
+
+.vpc_x <- function(x, self) {
+  if (x$ptype == "VPC") {
+    x$dv <- self$dv
+    idv <-self$sim[["idv"]]
+    if (!is.null(x$bin)) {
+      if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
+        x$bin$within_strat <- NULL
+        bins <- x$input[, list(brks = bin_idv(get(idv),x)), c(x$strat.facet)]
+        
+        x$input[, bin := {
+          grp <- get(x$strat.facet)
+          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
+        }, c(x$strat.facet)]
+        x$dx[, bin := {
+          grp <- get(x$strat.facet)
+          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
+        }, c(x$strat.facet)]
+      } else {
+        bins <- x$input[, bin_idv(get(idv),x)]
+        x$input[, bin := find_interval(get(idv), bins)]
+        x$dx[, bin := find_interval(get(idv), bins)]
+      }
+    }
+    res <- vpc.data(
+      x[["type"]],
+      x$input,
+      x$dx,
+      x$pi$probs,
+      x$ci$probs,
+      idv = if (!is.null(x$bin)) "bin" else self$sim[["idv"]],
+      irun = self$sim[["irun"]],
+      dv = self$dv,
+      strat = x$strat.facet
+    )
+    old_class <- class(x)
+    x$db <- res
+    class(x) <- old_class
+    x
+  } else {
+    x
+  }
+}
 
 
 
