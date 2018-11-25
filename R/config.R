@@ -93,10 +93,12 @@ print.configs <- function(x, ...) {
 load_config <- function(x, sys = c("mlx", "nm", "mlx18")) {
   assert_that(is_string(x))
   sys <- match.arg(sys)
-  configs. <- pmx_get_configs(sys)
-  cpath <- configs.[configs.$name == x, "path"]
-  ifile <- list.files(cpath, full.names = TRUE, pattern = "ipmx")
-  pfile <- list.files(cpath, full.names = TRUE, pattern = "ppmx")
+  input_dir <-
+    file.path(system.file(package = "ggPMX"), "templates",sys)
+  plot_dir <-
+    file.path(system.file(package = "ggPMX"), "init")
+  ifile <- file.path(input_dir,sprintf("%s.ipmx",x))
+  pfile <- file.path(plot_dir,sprintf("%s.ppmx",x))
   if (length(ifile) == 0) {
     stop(sprintf("No configuration found for: %s", x))
   }

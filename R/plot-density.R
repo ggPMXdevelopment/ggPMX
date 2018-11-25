@@ -44,7 +44,6 @@
 #' \item {\strong{size:}} {default to 1}
 #' }
 #'
-#' @export
 pmx_dens <- function(
                      x,
                      labels,

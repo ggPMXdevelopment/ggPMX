@@ -1,4 +1,4 @@
-## add comment 
+## IWRES plots
 ABS_IWRES_IPRED:
   ptype: SCATTER
   x: IPRED
@@ -27,7 +27,6 @@ ABS_IWRES_IPRED:
     size: 2.0
     alpha: 0.9
 
-
 IWRES_IPRED:
   ptype: SCATTER
   x: IPRED
@@ -55,7 +54,6 @@ IWRES_IPRED:
     size: 2.0
     alpha: 0.9
 
-
 IWRES_TIME:
   ptype: SCATTER
   x: TIME
@@ -82,6 +80,34 @@ IWRES_TIME:
     colour: pink
     size: 2.0
     alpha: 0.9
+
+IWRES_DENS:
+  ptype: PMX_DENS
+  x: IWRES
+  dname: predictions
+  labels:
+    title: 'Density plot of IWRES'
+    subtitle: ''
+    x: Etas
+    'y': ''
+
+IWRES_QQ:
+  ptype: PMX_QQ
+  x: IWRES
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': IWRES Quantiles
+  bloq:
+    show: yes
+    size: 2.0
+    alpha: 0.9
+  is.reference_line: yes
+  reference_line:
+    color: black
+
+## NPDE plots
 
 NPDE_TIME:
   ptype: SCATTER
@@ -141,6 +167,20 @@ NPDE_PRED:
     size: 2.0
     alpha: 0.9
 
+NPDE_QQ:
+  ptype: PMX_QQ
+  x: NPDE
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': NPDE Quantiles
+  is.reference_line: yes
+  reference_line:
+    color: black
+
+## DV plots
+
 DV_PRED:
   ptype: SCATTER
   labels:
@@ -196,6 +236,44 @@ DV_IPRED:
     colour: pink
     size: 2.0
     alpha: 0.9
+
+## Individual plots
+
+INDIVIDUAL:
+  ptype: IND
+  dname: IND
+  ranges: ~
+  is.smooth: no
+  ipred_line:
+    colour: black
+    size: 1
+  pred_line:
+    colour: black
+    size: 1
+  point:
+    colour: black
+    shape : 21
+    size: 1
+  is.legend: no
+  facets:
+    ncol: 3
+    nrow: 4
+    scales: free
+  labels:
+    title: Individual fits
+    subtitle: ''
+    x: TIME
+    'y': DV
+  use.finegrid: yes
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+    
+## Eta plots
     
 ETA_HIST:
   ptype: DIS
@@ -252,40 +330,6 @@ ETA_BOX:
   facets:
     scales: free_x
     nrow: 3.0
-    
-INDIVIDUAL:
-  ptype: IND
-  dname: IND
-  ranges: ~
-  is.smooth: no
-  ipred_line:
-    colour: black
-    size: 1
-  pred_line:
-    colour: black
-    size: 1
-  point:
-    colour: black
-    shape : 21
-    size: 1
-  is.legend: no
-  facets:
-    ncol: 3
-    nrow: 4
-    scales: free
-  labels:
-    title: Individual fits
-    subtitle: ''
-    x: TIME
-    'y': DV
-  use.finegrid: yes
-  bloq:
-    show: yes
-    cens: CENS
-    limit: LIMIT
-    colour: pink
-    size: 2.0
-    alpha: 0.9
 
 ETA_MATRIX:
   ptype: ETA_PAIRS
@@ -308,29 +352,6 @@ ETA_CONTS:
     linetype: 1.0
     method: lm
   
-IWRES_QQ:
-  ptype: PMX_QQ
-  x: IWRES
-  labels:
-    title: ''
-    subtitle: ''
-    x: Standard Normal Quantiles
-    'y': IWRES Quantiles
-  bloq:
-    show: yes
-    size: 2.0
-    alpha: 0.9
-
-    
-NPDE_QQ:
-  ptype: PMX_QQ
-  x: NPDE
-  labels:
-    title: ''
-    subtitle: ''
-    x: Standard Normal Quantiles
-    'y': NPDE Quantiles
-    
 ETA_QQ:
   ptype: PMX_QQ
   x: VALUE
@@ -343,23 +364,22 @@ ETA_QQ:
   facets:
     scales: free_y
     nrow: 2
+  is.reference_line: yes
   reference_line:
     color: black
   xmax: no
-
-
-
-
-IWRES_DENS:
-  ptype: PMX_DENS
-  x: IWRES
-  dname: predictions
-  labels:
-    title: 'Density plot of IWRES'
-    subtitle: ''
-    x: Etas
-    'y': ''
-
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    colour: black
+    hjust: -1
+    vjust: 2
+    annotation: shrink
+  is.hline: yes
+  hline:
+    colour: black
+## VPC plots
     
 PMX_VPC:
   ptype: VPC

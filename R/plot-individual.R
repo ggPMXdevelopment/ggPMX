@@ -2,7 +2,7 @@
 #' This function can be used to obtain individual prediction and compare with observed data and population prediction
 #' for each individual separately
 #'
-#' @param labels  plot tesxts. labels, axis,
+#' @param labels  plot texts. labels, axis,
 #' @param facets list facets settings nrow/ncol
 #' @param dname name of dataset to be used
 #' @param pred_line \code{list} some ipred line geom properties aesthetics
@@ -14,34 +14,8 @@
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object
-#' @export
 #' @family plot_pmx
 #' @seealso \code{\link{plot_pmx.individual}}
-#' @details
-#'
-#' \strong{labels} is a list that contains:
-#' \itemize{
-#' \item {\strong{title:}} {plot title default "Individual fits"}
-#' \item {\strong{subtitle:}} {plot subtitle default empty}
-#' \item {\strong{x:}} {x axis label default to "Time after first dose (hours)"}
-#' \item {\strong{y:}} {y axis label default to "ABC123 plasma concentration (ng/mL)"}
-#' }
-#'
-#' \strong{facets} is a list that contains:
-#' \itemize{
-#' \item {\strong{nrow:}} {number of facets row default to 2}
-#' \item {\strong{ncol:}} {number of facets columns default to 2}
-#' }
-
-#'
-#' @examples
-#' ## get individual plot using package default data set
-#' library(ggPMX)
-#' ctr <- theophylline()
-#' ## display the first page of the individual plot
-#' ctr %>% get_plot("individual",1)
-# display all pages ( default)
-#' ctr %>% get_plot("individual")
 
 
 individual <- function(labels,

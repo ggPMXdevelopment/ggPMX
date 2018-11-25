@@ -13,7 +13,13 @@
 
 #' @param dname name of dataset to be used
 #' @param point \code{list} geom_point parameters.
+#' @param is.reference_line \code{logical} if TRUE add reference line to the plot
 #' @param reference_line \code{list} geom_abline parameters.  
+#' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
+#' @param shrink \code{list} shrinkage graphical parameter (geom_text)
+#' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
+#' @param hline geom hline graphical parameters
+
 
 #' \cr \cr 
 #' \strong{pmx_update parameters} \cr

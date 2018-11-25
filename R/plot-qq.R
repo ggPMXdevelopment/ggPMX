@@ -60,7 +60,12 @@ pmx_qq <- function(
                    point=NULL,
                    xmax=TRUE,
                    facets=NULL,
+                   is.reference_line=NULL,
                    reference_line=NULL,
+                   is.shrink=NULL,
+                   shrink=NULL,
+                   is.hline=NULL,
+                   hline=NULL,
                    ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "predictions"
@@ -80,6 +85,8 @@ pmx_qq <- function(
   assert_that(is_list_or_null(facets))
   assert_that(is_list_or_null(point))
   assert_that(is_list_or_null(reference_line))
+  assert_that(is_list_or_null(hline))
+  assert_that(is_list_or_null(shrink))
   
   labels$subtitle <- ""
   structure(list(
@@ -88,9 +95,14 @@ pmx_qq <- function(
     x = x,
     dname = dname,
     point = point,
+    is.reference_line=is.reference_line,
     reference_line=reference_line,
     xmax = xmax,
     facets = facets,
+    is.shrink=is.shrink,
+    shrink=shrink,
+    is.hline=is.hline,
+    hline=hline,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -156,9 +168,11 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
       )
     )
   
-
-
-  if (!is.null(x$reference_line)){
+  hline_layer <- if (!is.null(x$is.hline) && x$is.hline) {
+      hline <- l_left_join(list(yintercept = 0), x$hline)
+      do.call(geom_hline, hline)
+  }
+  reference_layer <- if (!is.null(x$is.reference_line) && x$is.reference_line){
     x$reference_line$mapping <- aes_string(slope="slope",intercept = "intercept")
     if (is.null(strat.color)){
       x$reference_line$colour <- NULL
@@ -166,7 +180,24 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
                                              colour=strat.color)
     }
     x$reference_line$data <- dx.ref
-    p <- p + do.call("geom_abline",x$reference_line)
+    do.call("geom_abline",x$reference_line)
+  }
+  
+  layer_shrink <- if (!is.null(x$is.shrink) && x$is.shrink) {
+    
+    x$shrink$data <- x[["shrink.dx"]]
+    x$shrink$data$annotation <- x$shrink$annotation
+    x$shrink$annotation <- NULL
+    x$shrink$mapping <-
+      aes(
+        label = sprintf("%s=%s%%", annotation, round(SHRINK * 100))
+        )
+    x$shrink$inherit.aes=FALSE
+    x$shrink$x = -Inf
+    x$shrink$y =Inf
+      
+    x$shrink$fun <- NULL
+    do.call(geom_text, x$shrink)
   }
   
   layer_facet <- if ("EFFECT" %in% names(dx)) {
@@ -188,15 +219,14 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
       }
     }
   }
-  if(!is.null(layer_facet))
-    p <- p + layer_facet
   
-
-  if (!is.null(strat.color)) {
-    p <- p %+% geom_point(stat = "qq", aes_string(colour = strat.color))
+  layer_color <- if (!is.null(strat.color)) {
+    geom_point(stat = "qq", aes_string(colour = strat.color))
   }
-
-
+  p <- p + layer_facet + layer_shrink + 
+    layer_color + reference_layer + hline_layer
+        
+  
   if (!is.null(p)) p <- plot_pmx(x$gp, p)
 
   if (x$xmax) {
