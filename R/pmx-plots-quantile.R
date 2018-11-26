@@ -8,8 +8,8 @@
 #' \item \code{\link{pmx_qq}} quantile-quantile plot object.
 #' \item \code{\link{pmx_update}} function.
 #' }
-#' \cr \cr 
-#' \strong{pmx_qq parameters} \cr
+#'   
+#' \strong{pmx_qq parameters} 
 
 #' @param dname name of dataset to be used
 #' @param point \code{list} geom_point parameters.
@@ -18,11 +18,8 @@
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
 #' @param shrink \code{list} shrinkage graphical parameter (geom_text)
 #' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
-#' @param hline geom hline graphical parameters
-
-
-#' \cr \cr 
-#' \strong{pmx_update parameters} \cr
+#' @param hline geom hline graphical parameters 
+#' \strong {pmx_update parameters} 
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
 #' @param strat.facet \code{formula} optional stratification parameter by facetting.
@@ -31,10 +28,8 @@
 #' @param strat.color \code{character} optional stratification parameter by grouping.
 #' This will split the plot by group (color) of strat.
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
-#' @param pmxgpar a object of class pmx_gpar possibly the output of the
-
-#' \cr \cr 
-#' \strong{pmx_gpar: Shared basic graphics parameters} \cr
+#' @param pmxgpar an object of class pmx_gpar possibly the output of the 
+#' \strong{Shared basic graphics parameters} 
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
 #' @param axis.title \code{list} containing element_text attributes to customize 

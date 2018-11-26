@@ -8,8 +8,8 @@
 #' \item \code{\link{eta_cov}} generic object for eta/covariates plots.
 #' \item \code{\link{pmx_update}} function.
 #' }
-#' \cr \cr 
-#' \strong{eta_cov parameters} \cr
+#'   
+#' \strong{eta_cov parameters} 
 
 #' @param dname \code{character} name of dataset to be used
 #' @param show.correl \code{logical} if TRUE add correlation to the plot
@@ -18,8 +18,8 @@
 #' @param facets \code{list} facetting graphical parameter
 
 
-#' \cr \cr 
-#' \strong{pmx_update parameters} \cr
+#'   
+#' \strong{pmx_update parameters} 
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
 #' @param strat.facet \code{formula} optional stratification parameter by facetting.
@@ -29,8 +29,8 @@
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param pmxgpar a object of class pmx_gpar possibly the output of the
 
-#' \cr \cr 
-#' \strong{pmx_gpar: Shared basic graphics parameters} \cr
+#'   
+#' \strong{pmx_gpar: Shared basic graphics parameters} 
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
 #' @param axis.title \code{list} containing element_text attributes to customize 

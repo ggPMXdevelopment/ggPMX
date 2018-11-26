@@ -46,7 +46,7 @@ pmx_qq_stats = function(points){
 #' \item {\strong{y:}} {y axis label default to empty}
 #' }
 #'
-#' #' \strong{point} is a list that contains:
+#' \strong{point} is a list that contains:
 #' \itemize{
 #' \item {\strong{shape:}} {default to 1}
 #' \item {\strong{color:}} {default to black}

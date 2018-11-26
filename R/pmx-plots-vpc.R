@@ -8,8 +8,8 @@
 #' \item \code{\link{pmx_vpc}} pmx vpc object.
 #' \item \code{\link{pmx_update}} function.
 #' }
-#' \cr \cr 
-#' \strong{pmx_vpc parameters} \cr
+#'   
+#' \strong{pmx_vpc parameters} 
 
 
 #' @param type \code{charcater} can be either perecentile or scatter
@@ -24,8 +24,8 @@
 
 
 
-#' \cr \cr 
-#' \strong{pmx_update parameters} \cr
+#'   
+#' \strong{pmx_update parameters} 
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
 #' @param strat.facet \code{formula} optional stratification parameter by facetting.
@@ -36,8 +36,8 @@
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param pmxgpar a object of class pmx_gpar possibly the output of the
 
-#' \cr \cr 
-#' \strong{pmx_gpar: Shared basic graphics parameters} \cr
+#'   
+#' \strong{pmx_gpar: Shared basic graphics parameters} 
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
 #' @param axis.title \code{list} containing element_text attributes to customize 
