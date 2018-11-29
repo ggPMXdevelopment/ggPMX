@@ -202,32 +202,43 @@ pmx_settings <-
 
 #' Creates pmx endpoint object
 #'
-#' @param code \code{charcater} endpoint code
-#' @param label \code{charcater} endpoint label
-#' @param unit  \code{character} endpoint unit
-#' @param files  \code{list}
+#' @param code \code{charcater} endpoint code : used to filter observations DVID==code.
+#' @param label \code{charcater} endpoint label: used to set title and axis labels
+#' @param unit  \code{character} endpoint unit : used to set title and axis labels
+#' @param predictions  \code{character} endpoint unit
+#' @param finegrid  \code{character} endpoint unit
 #' @param trans  \code{list}
 #' @export
 #'
+#' @example inst/examples/endpoint.R
+#' @details 
+#' 
+#' In case of multiple endpoint, pkdd case for example, we need to pass endpoint to the \link{pmx} call. \cr
+#' Internally , \code{ggPMX} will filter the obserations data set to keep only rows satisfying `DVID==code`. 
+#' 
+#' The code is also used to set finegrid and predictions files. By default we use the convetion 
+#' finegrid{code}.txt and predictions{code}.txt for the name of the file. \cr
+#' In case the code used is different from the file extensions user should set the finegrid and predictions parameters.
+
 pmx_endpoint <-
   function(code,
            label="",
            unit="",
-           files=NULL,
+           predictions="",
+           finegrid="",
            trans =NULL) {
     assert_that(is.character(code))
     assert_that(is.character(unit))
     assert_that(is.character(label))
+    assert_that(is_character_or_null(finegrid))
+    assert_that(is_character_or_null(predictions))
     assert_that(is_character_or_null(trans))
-    if (is.list(files)) {
-      assert_that(any(names(files) %in% c("predictions", "finegrid")))
-    }
     res <- list(
       code = code,
       label = label,
       unit = unit,
-      files = files,
-      trans = trans
+      predictions = predictions,
+      finegrid = finegrid
     )
 
     structure(
@@ -249,7 +260,11 @@ pmx_endpoint <-
 #' @param ... any other graphical parameter
 #'
 #' @export
-#'
+#' @details 
+#' To define that a measurement is censored, the observation data set should include 
+#' a CENSORING column ( default to `CENS` ) and put 1 for lower limit or -1 for upper limit. \cr
+#' Optionally, data set can contain have a limit column ( default to `LIMIT`) column to set the other limit.
+
 pmx_bloq <-
   function(
            cens="CENS",

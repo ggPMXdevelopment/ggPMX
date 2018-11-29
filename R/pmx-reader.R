@@ -348,9 +348,9 @@ load_data_set <- function(x, path, sys, ...) {
   if (!file.exists(fpath)) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
-      if (!is.null(endpoint$files)) {
-        patt <- endpoint$files
-        ffiles <- list.files(path, pattern = patt)
+      if (!is.null(endpoint[[x$name]])) {
+        ##file_name <- sprintf("%s%s.txt", , endpoint$files)
+        ffiles <- list.files(path, pattern = endpoint[[x$name]])
         if (length(ffiles) > 0) file_name <- ffiles[1]
       } else {
         file_name <- sprintf("%s%s.txt", x[["pattern"]], endpoint$code)
@@ -409,9 +409,10 @@ load_data_set <- function(x, path, sys, ...) {
 #' @return list of data.table
 #' @export
 load_source <- function(sys, path, dconf, ...) {
-  dxs <- lapply(dconf, function(x) {
+  dxs <- Map(function(x,nn) {
+    x$name <- nn
     load_data_set(x, path = path, sys = sys, ...)
-  })
+  },dconf,names(dconf))
 
 
   dxs
