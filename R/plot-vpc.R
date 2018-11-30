@@ -225,10 +225,10 @@ quantile_dt <-
     fmt <- ifelse(probs < .1, paste0(prefix, "0%1.f"), paste0(prefix, "%1.f"))
     probs.n <- sprintf(fmt, probs * 100)
     if (wide) {
-      dd <- dx[, as.list(stats::quantile(get(ind), probs = probs)), grp]
+      dd <- dx[, as.list(stats::quantile(get(ind), probs = probs,na.rm=TRUE)), grp]
       setnames(dd, grep("%", names(dd)), probs.n)
     } else {
-      ds <- dx[, stats::quantile(get(ind), probs = probs), grp]
+      ds <- dx[, stats::quantile(get(ind), probs = probs,na.rm=TRUE), grp]
       ds[, percentile := rep(probs.n, .N / length(probs))]
       setnames(ds, "V1", "value")
     }
