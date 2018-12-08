@@ -12,15 +12,17 @@ before_add_check <- function(self, private, x, pname) {
   ## if(is.null(dx))return(NULL)
   if (is.null(dx) || nrow(dx) == 0) {
     private$.plots[[pname]] <- NULL
-    message(sprintf(
-      "No data %s provided for plot %s",
-      sprintf("%s", dname), sprintf("%s", pname)
-    ))
+    if(dname!="sim"){
+      message(sprintf(
+        "No data %s provided for plot %s",
+        sprintf("%s", dname), sprintf("%s", pname)
+      ))
+    }
     return(NULL)
   }
   assert_that(is.data.table(dx))
   x$input <- self %>% get_data("input")
-
+  
   x$dx <- dx
   x
 }
@@ -169,7 +171,7 @@ before_add_check <- function(self, private, x, pname) {
       }
     }
   }
-
+  
   invisible(x)
 }
 
@@ -200,7 +202,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     .settings_x(self) %>%
     .bloq_x(self) %>%
     .vpc_x(self)
-
+  
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)
   invisible(self)

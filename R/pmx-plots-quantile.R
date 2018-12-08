@@ -17,9 +17,11 @@
 #' @param reference_line \code{list} geom_abline parameters.  
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
 #' @param shrink \code{list} shrinkage graphical parameter (geom_text)
-#' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
-#' @param hline geom hline graphical parameters 
-#' \strong {pmx_update parameters} 
+#' @param is.hline \code{logical} if TRUE add horizontal line y=0 ( TRUE by default)
+#' @param hline \code{list} geom hline graphical parameters
+#' 
+#' \strong{pmx_update parameters} 
+
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
 #' @param strat.facet \code{formula} optional stratification parameter by facetting.
@@ -28,8 +30,8 @@
 #' @param strat.color \code{character} optional stratification parameter by grouping.
 #' This will split the plot by group (color) of strat.
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
-#' @param pmxgpar an object of class pmx_gpar possibly the output of the 
-#' \strong{Shared basic graphics parameters} 
+#' @param pmxgpar an object of class pmx_gpar 
+#' 
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
 #' @param axis.title \code{list} containing element_text attributes to customize 

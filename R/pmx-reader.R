@@ -36,6 +36,10 @@ read_mlx_ind_est <- function(path, x, ...) {
     ]
   }
   if (!is.null(occ) && occ %in% names(ds)) setnames(ds, occ, "OCC")
+  if(names(ds)=="ID"){
+    message("eta file is provided but no random effects:probably all columns are null.")
+    return(NULL)
+  }
   ds
 }
 
@@ -348,7 +352,7 @@ load_data_set <- function(x, path, sys, ...) {
   if (!file.exists(fpath)) {
     endpoint <- list(...)$endpoint
     if (!is.null(endpoint) && !is.null(x$pattern)) {
-      if (!is.null(endpoint[[x$name]])) {
+      if (!is.null(endpoint[[x$name]]) && nzchar(endpoint[[x$name]])) {
         ##file_name <- sprintf("%s%s.txt", , endpoint$files)
         ffiles <- list.files(path, pattern = endpoint[[x$name]])
         if (length(ffiles) > 0) file_name <- ffiles[1]

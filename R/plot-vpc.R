@@ -187,7 +187,7 @@ pmx_vpc_ci <-
 #'
 #' @details
 #'
-#' When the vpc confidence interval layer methid  ???rectangles??? we don't show rug separators.
+#' When the vpc confidence interval layer method  is rectangles we don't show rug separators.
 
 #'
 #' @export
