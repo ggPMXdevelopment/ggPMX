@@ -1,5 +1,5 @@
 predictions :
-    label : model predictions
+    label : model predictions file
     file  : predictions.txt
     pattern: predictions
     reader  : read_mlx_pred
@@ -12,7 +12,7 @@ predictions :
       IWRES: mlx_iwres
 
 estimates  :
-    label : parameter estimates
+    label : parameter estimates file
     file  : estimates.txt
     reader  : read_mlx_par_est
     names:
@@ -23,13 +23,13 @@ estimates  :
       - PVALUE
 
 eta :
-    label : invidual estimates of random effects
+    label : invidual estimates of random effects file
     file  : indiv_eta.txt
     reader  : read_mlx_ind_est
     
       
 finegrid :
-    label : finegrid
+    label : finegrid file
     file  : finegrid.txt
     pattern: finegrid
     reader  : read_mlx_pred

@@ -131,13 +131,16 @@ pmx_mlxtran <- function(file_name, config="standing", call=FALSE, endpoint, ...)
   rr <- as.list(match.call()[-1])
   rr$file_name <- NULL
   params <- append(params, rr)
+  if (!missing(endpoint)) {
+    params$endpoint <- NULL
+    params$endpoint <- endpoint
+  }
+  
   if (call) {
     params$call <- NULL
     return(params)
   }
-  if (!"endpoint" %in% names(params) && "dvid" %in% names(params) && missing(endpoint)) {
-    params$endpoint <- 1
-  }
+  
 
   do.call(pmx_mlx, params)
 }
@@ -205,8 +208,8 @@ pmx_settings <-
 #' @param code \code{charcater} endpoint code : used to filter observations DVID==code.
 #' @param label \code{charcater} endpoint label: used to set title and axis labels
 #' @param unit  \code{character} endpoint unit : used to set title and axis labels
-#' @param predictions  \code{character} endpoint unit
-#' @param finegrid  \code{character} endpoint unit
+#' @param name \code{charcater} endpoint name : used to fined prediections and finegrid \cr
+#' files extensions.
 #' @param trans  \code{list}
 #' @export
 #'
@@ -224,21 +227,19 @@ pmx_endpoint <-
   function(code,
            label="",
            unit="",
-           predictions="",
-           finegrid="",
+           name=code,
            trans =NULL) {
     assert_that(is.character(code))
+    assert_that(is.character(name))
     assert_that(is.character(unit))
     assert_that(is.character(label))
-    assert_that(is_character_or_null(finegrid))
-    assert_that(is_character_or_null(predictions))
     assert_that(is_character_or_null(trans))
     res <- list(
       code = code,
       label = label,
       unit = unit,
-      predictions = predictions,
-      finegrid = finegrid
+      name=name,
+      trans=trans
     )
 
     structure(

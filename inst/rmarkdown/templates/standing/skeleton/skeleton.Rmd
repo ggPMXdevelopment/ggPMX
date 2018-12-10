@@ -53,6 +53,7 @@ ctr %>% pmx_plot_dv_pred
 ctr %>% pmx_plot_abs_iwres_ipred
 ```
 \newpage
+
 # Supplmentary diagnostics
 
 ## Distribution of residuals
@@ -83,6 +84,7 @@ ctr %>%  pmx_plot_eta_conts
 
 
 \newpage
+
 # Individual plots
 
 

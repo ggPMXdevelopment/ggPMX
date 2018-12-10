@@ -1,5 +1,5 @@
 predictions :
-    label : model predictions
+    label : model predictions file
     file  : predictions.txt
     pattern: predictions
     reader  : read_mlx18_pred
@@ -20,14 +20,14 @@ predictions :
        NPDE: npde
   
 eta :
-    label : invidual estimates of random effects
+    label : invidual estimates of random effects file
     subfolder: IndividualParameters
     file  : estimatedRandomEffects.txt
     reader  : read_mlx18_ind_est 
     
     
 estimates  :
-    label : parameter estimates
+    label : parameter estimates file
     file  : populationParameters.txt
     reader  : read_mlx_par_est
     sep: ","
@@ -38,7 +38,7 @@ estimates  :
       - RSE
       
 finegrid :
-    label : finegrid
+    label : finegrid file
     file  : y_fits.txt
     subfolder: ChartsData/IndividualFits
     pattern: _fits

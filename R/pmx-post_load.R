@@ -78,7 +78,8 @@ post_load <- function(dxs, input, sys, dplot, occ) {
     if (!is.null(dxs[["finegrid"]])) {
       dxs[["finegrid"]] <- input_finegrid(input, dxs[["finegrid"]])
       dxs[["IND"]] <- dxs[["finegrid"]]
-    } else {
+    }
+    if (is.null(dxs[["finegrid"]]) && !is.null(dxs[["predictions"]])) {
       warn <-
         "NO FINEGRID FILE: 
         we will use instead predictions.txt for individual plots"

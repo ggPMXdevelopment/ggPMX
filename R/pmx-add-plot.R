@@ -13,10 +13,10 @@ before_add_check <- function(self, private, x, pname) {
   if (is.null(dx) || nrow(dx) == 0) {
     private$.plots[[pname]] <- NULL
     if(dname!="sim"){
-      message(sprintf(
+      cat(sprintf(
         "No data %s provided for plot %s",
         sprintf("%s", dname), sprintf("%s", pname)
-      ))
+      ),"\n")
     }
     return(NULL)
   }
