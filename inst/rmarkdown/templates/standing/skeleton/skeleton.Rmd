@@ -37,7 +37,10 @@ ctr %>% pmx_plot_iwres_ipred
 ctr %>% pmx_plot_iwres_time
 ```
 
-```{r eta_box}
+
+```{r eta_box,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
+
+
 ctr %>% pmx_plot_eta_box
 ```
 
@@ -65,7 +68,8 @@ ctr %>% pmx_plot_npde_qq
 
 ## Distribution of inter-individual random effects
 
-```{r eta_qq}
+```{r eta_qq,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
+
 ctr %>% pmx_plot_eta_qq
 ```
 \blandscape
@@ -74,11 +78,12 @@ ctr %>% pmx_plot_eta_matrix
 ```
 \elandscape
 
-```{r eta_cats}
+```{r eta_cats,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
+
 ctr %>% pmx_plot_eta_cats
 ```
 
-```{r eta_conts}
+```{r eta_conts,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
 ctr %>%  pmx_plot_eta_conts
 ```
 
