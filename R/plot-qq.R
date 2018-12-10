@@ -1,23 +1,23 @@
 
 
 
-pmx_qq_stats = function(points){
+pmx_qq_stats <- function(points) {
   sample <- sort(points)
-  distribution = stats::qnorm
+  distribution <- stats::qnorm
   n <- length(sample)
-  line.p = c(.25, .75)
+  line.p <- c(.25, .75)
   quantiles <- stats::ppoints(n)
 
   theoretical <- do.call(
     distribution,
     c(p = quote(quantiles))
   )
-  
+
   x_coords <- do.call(distribution, c(list(p = line.p)))
   y_coords <- quantile(sample, line.p)
   slope <- diff(y_coords) / diff(x_coords)
   intercept <- y_coords[1L] - slope * x_coords[1L]
-  data.table(intercept=intercept,slope=slope)
+  data.table(intercept = intercept, slope = slope)
 }
 
 
@@ -87,7 +87,7 @@ pmx_qq <- function(
   assert_that(is_list_or_null(reference_line))
   assert_that(is_list_or_null(hline))
   assert_that(is_list_or_null(shrink))
-  
+
   labels$subtitle <- ""
   structure(list(
     ptype = "PMX_QQ",
@@ -95,14 +95,14 @@ pmx_qq <- function(
     x = x,
     dname = dname,
     point = point,
-    is.reference_line=is.reference_line,
-    reference_line=reference_line,
+    is.reference_line = is.reference_line,
+    reference_line = reference_line,
     xmax = xmax,
     facets = facets,
-    is.shrink=is.shrink,
-    shrink=shrink,
-    is.hline=is.hline,
-    hline=hline,
+    is.shrink = is.shrink,
+    shrink = shrink,
+    is.hline = is.hline,
+    hline = hline,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -144,21 +144,21 @@ pmx_qq <- function(
 plot_pmx.pmx_qq <- function(x, dx, ...) {
   if (!(x$x %in% names(dx))) return(NULL)
   dx <- dx[!is.infinite(get(x$x))]
-  
+
   strat.facet <- x[["strat.facet"]]
   strat.color <- x[["strat.color"]]
-  vec.color <- c(grep("~",strat.color,invert=TRUE,value=TRUE))
-  vec.facet <- c(grep("~",strat.facet,invert=TRUE,value=TRUE))
-  
-  grp <- c(vec.color,vec.facet)
-  if(sum(nchar(grp))==0) grp <- NULL
+  vec.color <- c(grep("~", strat.color, invert = TRUE, value = TRUE))
+  vec.facet <- c(grep("~", strat.facet, invert = TRUE, value = TRUE))
+
+  grp <- c(vec.color, vec.facet)
+  if (sum(nchar(grp)) == 0) grp <- NULL
   dx.ref <- if ("EFFECT" %in% names(dx)) {
-    dx[,pmx_qq_stats(get(x$x)),c("EFFECT",grp)]
-  }else{
-    dx[,pmx_qq_stats(get(x$x)),grp]
+    dx[, pmx_qq_stats(get(x$x)), c("EFFECT", grp)]
+  } else {
+    dx[, pmx_qq_stats(get(x$x)), grp]
   }
-  
-  
+
+
   p <- ggplot(dx, aes_string(sample = x$x)) +
     with(
       x$point,
@@ -167,46 +167,47 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
         size = size
       )
     )
-  
+
   hline_layer <- if (!is.null(x$is.hline) && x$is.hline) {
-      hline <- l_left_join(list(yintercept = 0), x$hline)
-      do.call(geom_hline, hline)
+    hline <- l_left_join(list(yintercept = 0), x$hline)
+    do.call(geom_hline, hline)
   }
-  reference_layer <- if (!is.null(x$is.reference_line) && x$is.reference_line){
-    x$reference_line$mapping <- aes_string(slope="slope",intercept = "intercept")
-    if (is.null(strat.color)){
+  reference_layer <- if (!is.null(x$is.reference_line) && x$is.reference_line) {
+    x$reference_line$mapping <- aes_string(slope = "slope", intercept = "intercept")
+    if (is.null(strat.color)) {
       x$reference_line$colour <- NULL
-      x$reference_line$mapping <- aes_string(slope="slope",intercept = "intercept",
-                                             colour=strat.color)
+      x$reference_line$mapping <- aes_string(
+        slope = "slope", intercept = "intercept",
+        colour = strat.color
+      )
     }
     x$reference_line$data <- dx.ref
-    do.call("geom_abline",x$reference_line)
+    do.call("geom_abline", x$reference_line)
   }
-  
+
   layer_shrink <- if (!is.null(x$is.shrink) && x$is.shrink) {
-    
     x$shrink$data <- x[["shrink.dx"]]
     x$shrink$data$annotation <- x$shrink$annotation
     x$shrink$annotation <- NULL
     x$shrink$mapping <-
       aes(
         label = sprintf("%s=%s%%", annotation, round(SHRINK * 100))
-        )
-    x$shrink$inherit.aes=FALSE
-    x$shrink$x = -Inf
-    x$shrink$y =Inf
-      
+      )
+    x$shrink$inherit.aes <- FALSE
+    x$shrink$x <- -Inf
+    x$shrink$y <- Inf
+
     x$shrink$fun <- NULL
     do.call(geom_text, x$shrink)
   }
-  
+
   layer_facet <- if ("EFFECT" %in% names(dx)) {
-     if (!is.null(strat.facet)){
+    if (!is.null(strat.facet)) {
       wf <- wrap_formula(strat.facet, "EFFECT")
-       x$facets$nrow <- NULL
-       x$facets$ncol <- NULL
-       do.call("facet_grid", c(wf, x$facets))
-     }
+      x$facets$nrow <- NULL
+      x$facets$ncol <- NULL
+      do.call("facet_grid", c(wf, x$facets))
+    }
     else {
       wf <- formula("~EFFECT")
       do.call("facet_wrap", c(wf, x$facets))
@@ -219,14 +220,14 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
       }
     }
   }
-  
+
   layer_color <- if (!is.null(strat.color)) {
     geom_point(stat = "qq", aes_string(colour = strat.color))
   }
-  p <- p + layer_facet + layer_shrink + 
+  p <- p + layer_facet + layer_shrink +
     layer_color + reference_layer + hline_layer
-        
-  
+
+
   if (!is.null(p)) p <- plot_pmx(x$gp, p)
 
   if (x$xmax) {

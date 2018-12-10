@@ -15,15 +15,15 @@ pmx_plot_generic <-
     p
   }
 
-lang_to_expr <- 
+lang_to_expr <-
   function(params) {
-  if ("filter" %in% names(params)) {
-    if (is.language(params$filter)) {
-      params$filter <- deparse(params$filter)
+    if ("filter" %in% names(params)) {
+      if (is.language(params$filter)) {
+        params$filter <- deparse(params$filter)
+      }
     }
+    params
   }
-  params
-}
 
 wrap_pmx_plot_generic <-
   function(ctr, pname, params, defaults_) {
@@ -124,5 +124,3 @@ pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
   if (length(sp) > 0 && print) invisible(lapply(sp, print))
   invisible(sp)
 }
-
-

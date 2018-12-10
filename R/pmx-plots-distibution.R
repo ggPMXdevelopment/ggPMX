@@ -1,5 +1,5 @@
 
-#' Eta distribution plots 
+#' Eta distribution plots
 #' @name eta_distribution_plot
 #' @param ctr pmx controller
 #' @param ... others graphics parameters passed :
@@ -8,8 +8,8 @@
 #' \item \code{\link{distrib}} generic object for distribution plots (histogram/boxplot).
 #' \item \code{\link{pmx_update}} function.
 #' }
-#'   
-#' \strong{distrib parameters} 
+#'
+#' \strong{distrib parameters}
 
 #' @param jitter list set jitter parameter
 #' @param type box for boxplot or histogram
@@ -20,8 +20,8 @@
 #' @param histogram \code{list} histogram graphical parameters
 
 
-#'   
-#' \strong{pmx_update parameters} 
+#'
+#' \strong{pmx_update parameters}
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
 #' @param strat.facet \code{formula} optional stratification parameter by facetting.
@@ -32,13 +32,13 @@
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param pmxgpar a object of class pmx_gpar possibly the output of the
 
-#'   
-#' \strong{pmx_gpar: Shared basic graphics parameters} 
+#'
+#' \strong{pmx_gpar: Shared basic graphics parameters}
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
-#' @param axis.title \code{list} containing element_text attributes to customize 
+#' @param axis.title \code{list} containing element_text attributes to customize
 #' the axis title. (similiar to ggplot2 axis.title theme)
-#' @param axis.text \code{list} containing element_text attributes to customize 
+#' @param axis.text \code{list} containing element_text attributes to customize
 #' the axis text (similiar to ggplot2 axis.text theme)
 #' @param ranges \code{list} limits of x/y ranges
 #' @param is.smooth \code{logical} if set to TRUE add smooth layer
@@ -88,9 +88,8 @@ pmx_plot_eta_box <-
 
 pmx_plot_eta_hist <-
   function(
-    ctr,
-    ...) {
+           ctr,
+           ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_hist", params)
   }
-

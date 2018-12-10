@@ -130,9 +130,9 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
       #        stop("mismatch between fixedBreaks and n")
       if (!is.numeric(fixedBreaks)) stop("fixedBreaks must be numeric")
       if (any(diff(fixedBreaks) < 0)) stop("decreasing fixedBreaks found")
-      fixedBreaks[1] = max(fixedBreaks[1],min(var))
-      fixedBreaks[length(fixedBreaks)] = min(fixedBreaks[length(fixedBreaks)],max(var))
-    
+      fixedBreaks[1] <- max(fixedBreaks[1], min(var))
+      fixedBreaks[length(fixedBreaks)] <- min(fixedBreaks[length(fixedBreaks)], max(var))
+
       brks <- fixedBreaks
     } else if (style == "sd") {
       svar <- scale(var)
@@ -335,18 +335,18 @@ tableClassIntervals <- function(cols, brks, under="under", over="over",
   for (i in 2:(lx - 2)) {
     if (cutlabels) {
       nres[i] <- paste(
-          left, roundEndpoint(brks[i], intervalClosure, dataPrecision), between, roundEndpoint(brks[i + 1], intervalClosure, dataPrecision), right,
-          sep = sep
-        )
+        left, roundEndpoint(brks[i], intervalClosure, dataPrecision), between, roundEndpoint(brks[i + 1], intervalClosure, dataPrecision), right,
+        sep = sep
+      )
     } else {
       nres[i] <- paste(roundEndpoint(brks[i], intervalClosure, dataPrecision), between, roundEndpoint(brks[i + 1], intervalClosure, dataPrecision), sep = sep)
     }
   }
   if (cutlabels) {
     nres[lx - 1] <- paste(
-        left, roundEndpoint(brks[lx - 1], intervalClosure, dataPrecision), between, roundEndpoint(brks[lx], intervalClosure, dataPrecision), "]",
-        sep = sep
-      )
+      left, roundEndpoint(brks[lx - 1], intervalClosure, dataPrecision), between, roundEndpoint(brks[lx], intervalClosure, dataPrecision), "]",
+      sep = sep
+    )
   } else {
     nres[lx - 1] <- paste(over, roundEndpoint(brks[lx - 1], intervalClosure, dataPrecision), sep = sep)
   }

@@ -8,8 +8,8 @@
 #' \item \code{\link{pmx_dens}} pmx density object.
 #' \item \code{\link{pmx_update}} function.
 #' }
-#'   
-#' \strong{pmx_dens parameters} 
+#'
+#' \strong{pmx_dens parameters}
 
 
 #' @param dname \code{character} name of dataset to be used. User can create his own
@@ -20,8 +20,8 @@
 #' @param vline \code{list} vertical line graphics parameters
 
 
-#'   
-#' \strong{pmx_update parameters} 
+#'
+#' \strong{pmx_update parameters}
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
 #' @param strat.facet \code{formula} optional stratification parameter by facetting.
@@ -32,13 +32,13 @@
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param pmxgpar a object of class pmx_gpar possibly the output of the
 
-#'   
-#' \strong{pmx_gpar: Shared basic graphics parameters} 
+#'
+#' \strong{pmx_gpar: Shared basic graphics parameters}
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
-#' @param axis.title \code{list} containing element_text attributes to customize 
+#' @param axis.title \code{list} containing element_text attributes to customize
 #' the axis title. (similiar to ggplot2 axis.title theme)
-#' @param axis.text \code{list} containing element_text attributes to customize 
+#' @param axis.text \code{list} containing element_text attributes to customize
 #' the axis text (similiar to ggplot2 axis.text theme)
 #' @param ranges \code{list} limits of x/y ranges
 #' @param is.smooth \code{logical} if set to TRUE add smooth layer

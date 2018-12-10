@@ -33,10 +33,10 @@ read_mlx_ind_est <- function(path, x, ...) {
     ds[, c("ID", "OCC") := tstrsplit(ID, "#")       ][
       ,
       c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))
-      ]
+    ]
   }
   if (!is.null(occ) && occ %in% names(ds)) setnames(ds, occ, "OCC")
-  if(identical(names(ds),"ID")){
+  if (identical(names(ds), "ID")) {
     message("eta file is provided but no random effects:probably all columns are null.")
     return(NULL)
   }
@@ -67,14 +67,14 @@ read_mlx18_ind_est <- function(path, x, ...) {
 read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", endpoint=NULL) {
   TIME <- EVID <- MDV <- y <- NULL
   xx <- pmx_fread(ipath)
-  
+
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
     setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
     setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
     xx <- xx[!(EVID == 1 & MDV == 1)]
   }
-  
-  
+
+
   if (!is.null(endpoint)) {
     if (!is.null(dvid) && dvid %in% names(xx)) {
       rr <- dvid
@@ -86,7 +86,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     } else {
       msg <- sprintf("ggPMX can not filter by endpoint %s\n", endpoint$code)
       msg <- paste(msg, sprintf("%s is not a valid column in the observation data set", dvid))
-      
+
       stop(msg)
     }
   }
@@ -97,22 +97,22 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
       if (length(ends) > 1) {
         msg <- sprintf("Observation data contains multiple endpoints %s. \n ", paste(ends, collapse = " ; "))
         msg <- paste(msg, "Please select a single endpoint to continue.")
-        
+
         stop(msg)
       }
     }
   }
-  
-  
-  
-  
+
+
+
+
   id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
   if (length(id_col) == 0) {
     id_col <- names(xx)[1]
     message("input do not contain ID variable: ggPMX use first input variable ", id_col)
   }
   setnames(xx, id_col, "ID")
-  
+
   if (dv %in% names(xx)) {
     if (dv == "dv") {
       xx[, DV := dv]
@@ -126,19 +126,19 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
                         suggested names are : %s", dv, dv.names)
     stop(err.msg)
   }
-  
+
   if (nzchar(occ) && occ %in% names(xx)) {
     setnames(xx, occ, "OCC")
   }
   ## round time column for further merge
   setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
   xx[, TIME := round(TIME, 4)]
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {
     covariates <- covariates[covariates != ""]
@@ -161,7 +161,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     conts <- conts[conts != ""]
     xx[, (conts) := lapply(.SD, as.numeric), .SDcols = conts]
   }
-  
+
   xx
 }
 
@@ -200,7 +200,6 @@ mlx18_finegrid_ipred <- function(x) {
   return(NULL)
 }
 mlx_iwres <- function(x) {
-  
   if ("indwres_mode" %in% x) return("indwres_mode")
   if ("indwres_mean" %in% x) {
     message("NO indwres_mode found use indwres_mean instead")
@@ -264,11 +263,11 @@ read_mlx_pred <- function(path, x, ...) {
     names.nn <- c(names.nn, "OCC")
   }
   res <- setnames(xx[, nn, with = FALSE], names.nn)
-  
+
   ## select columns
-  
-  
-  
+
+
+
   res
 }
 
@@ -277,16 +276,17 @@ read_mlx18_res <- function(path, x, ...) {
   if (exists("subfolder", x)) {
     path <- file.path(dirname(path), x$subfolder)
   }
-  
+
   res_file <- file.path(path, x$file)
   file_path <- if (!file.exists(res_file)) {
     ffiles <- list.files(path, pattern = x$pattern, full.names = TRUE)
-    if(!is.null(x$endpoint))
-      fpath <- grep(x$endpoint,ffiles,value=TRUE)[1]
-    else fpath <- ffiles[1]
-    cat("use ", basename(fpath), " as ", x$label ,".\n",sep="")
+    if (!is.null(x$endpoint)) {
+      fpath <- grep(x$endpoint, ffiles, value = TRUE)[1]
+    } else {
+      fpath <- ffiles[1]
+    }
+    cat("use ", basename(fpath), " as ", x$label, ".\n", sep = "")
     fpath
-    
   } else {
     res_file
   }
@@ -294,7 +294,7 @@ read_mlx18_res <- function(path, x, ...) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
-  
+
   ds <- pmx_fread(file_path)
   ids <- match(tolower(names(x[["names"]])), tolower(names(ds)))
   new_vars <- names(x[["names"]])
@@ -312,14 +312,14 @@ read_mlx18_pred <- function(path, x, ...) {
       finegrid_file
     }
   }
-  
-  
+
+
   ds <- read_mlx_pred(path = path, x = x, ...)
   if (exists("residuals", x)) {
     x$residuals$endpoint <- x$endpoint
     resi <- read_mlx18_res(path, x$residuals)
     if (is.null(resi)) return(NULL)
-    ds <- merge(ds, resi,by=c("ID","TIME"))
+    ds <- merge(ds, resi, by = c("ID", "TIME"))
   }
   ds
 }
@@ -360,26 +360,28 @@ load_data_set <- function(x, path, sys, ...) {
   if (!exists_file) {
     ep <- list(...)$endpoint
     if (!is.null(ep) && !is.null(x$pattern)) {
-      ffiles <- list.files(path,x$pattern,recursive=TRUE,full.names = TRUE)
-      exists_file <- sum(grepl(ep$name,ffiles))>0
+      ffiles <- list.files(path, x$pattern, recursive = TRUE, full.names = TRUE)
+      exists_file <- sum(grepl(ep$name, ffiles)) > 0
       if (exists_file) {
-        
-        fpath <- 
-          if(length(ffiles)>1) ffiles[grep(ep$name,basename(ffiles))][1]
-        else ffiles[1]
+        fpath <-
+          if (length(ffiles) > 1) {
+            ffiles[grep(ep$name, basename(ffiles))][1]
+          } else {
+            ffiles[1]
+          }
         x$endpoint <- ep$name
-        cat("use ", basename(fpath), " as ", x$label ,".\n")
+        cat("use ", basename(fpath), " as ", x$label, ".\n")
       }
     }
   }
-  
-  if(!exists_file && sys !="mlx18"){
+
+  if (!exists_file && sys != "mlx18") {
     cat(x[["label"]], " file do not exist. \n")
     return(NULL)
   }
-  
-  
-  
+
+
+
   if (exists("reader", x)) {
     return(do.call(x[["reader"]], list(fpath, x, ...)))
   }
@@ -411,11 +413,11 @@ load_data_set <- function(x, path, sys, ...) {
 #' @return list of data.table
 #' @export
 load_source <- function(sys, path, dconf, ...) {
-  dxs <- Map(function(x,nn) {
+  dxs <- Map(function(x, nn) {
     x$name <- nn
     load_data_set(x, path = path, sys = sys, ...)
-  },dconf,names(dconf))
-  
-  
+  }, dconf, names(dconf))
+
+
   dxs
 }

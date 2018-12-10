@@ -10,4 +10,3 @@ test_that("can set option", {
   pmxOptions(myOption = 10L)
   expect_identical(getPmxOption("myOption"), 10L)
 })
-

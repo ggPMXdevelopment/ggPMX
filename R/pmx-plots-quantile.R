@@ -1,5 +1,5 @@
 
-#' Quantile-quantile plots 
+#' Quantile-quantile plots
 #' @name pmx_qq_plot
 #' @param ctr pmx controller
 #' @param ... others graphics parameters passed :
@@ -8,19 +8,19 @@
 #' \item \code{\link{pmx_qq}} quantile-quantile plot object.
 #' \item \code{\link{pmx_update}} function.
 #' }
-#'   
-#' \strong{pmx_qq parameters} 
+#'
+#' \strong{pmx_qq parameters}
 
 #' @param dname name of dataset to be used
 #' @param point \code{list} geom_point parameters.
 #' @param is.reference_line \code{logical} if TRUE add reference line to the plot
-#' @param reference_line \code{list} geom_abline parameters.  
+#' @param reference_line \code{list} geom_abline parameters.
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
 #' @param shrink \code{list} shrinkage graphical parameter (geom_text)
 #' @param is.hline \code{logical} if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline \code{list} geom hline graphical parameters
-#' 
-#' \strong{pmx_update parameters} 
+#'
+#' \strong{pmx_update parameters}
 
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
@@ -30,13 +30,13 @@
 #' @param strat.color \code{character} optional stratification parameter by grouping.
 #' This will split the plot by group (color) of strat.
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
-#' @param pmxgpar an object of class pmx_gpar 
-#' 
+#' @param pmxgpar an object of class pmx_gpar
+#'
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
-#' @param axis.title \code{list} containing element_text attributes to customize 
+#' @param axis.title \code{list} containing element_text attributes to customize
 #' the axis title. (similiar to ggplot2 axis.title theme)
-#' @param axis.text \code{list} containing element_text attributes to customize 
+#' @param axis.text \code{list} containing element_text attributes to customize
 #' the axis text (similiar to ggplot2 axis.text theme)
 #' @param ranges \code{list} limits of x/y ranges
 #' @param is.smooth \code{logical} if set to TRUE add smooth layer
@@ -96,6 +96,3 @@ pmx_plot_npde_qq <-
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "npde_qq", params)
   }
-
-
-

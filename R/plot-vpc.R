@@ -225,10 +225,10 @@ quantile_dt <-
     fmt <- ifelse(probs < .1, paste0(prefix, "0%1.f"), paste0(prefix, "%1.f"))
     probs.n <- sprintf(fmt, probs * 100)
     if (wide) {
-      dd <- dx[, as.list(stats::quantile(get(ind), probs = probs,na.rm=TRUE)), grp]
+      dd <- dx[, as.list(stats::quantile(get(ind), probs = probs, na.rm = TRUE)), grp]
       setnames(dd, grep("%", names(dd)), probs.n)
     } else {
-      ds <- dx[, stats::quantile(get(ind), probs = probs,na.rm=TRUE), grp]
+      ds <- dx[, stats::quantile(get(ind), probs = probs, na.rm = TRUE), grp]
       ds[, percentile := rep(probs.n, .N / length(probs))]
       setnames(ds, "V1", "value")
     }
@@ -271,21 +271,21 @@ vpc.data <-
     res
   }
 
-bin_idv <- function(idv,x) {
+bin_idv <- function(idv, x) {
   brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
-  if(max(brks)>max(idv)) brks[which.max(brks)] <- max(idv)
+  if (max(brks) > max(idv)) brks[which.max(brks)] <- max(idv)
   brks
 }
 
 .vpc_x <- function(x, self) {
   if (x$ptype == "VPC") {
     x$dv <- self$dv
-    idv <-self$sim[["idv"]]
+    idv <- self$sim[["idv"]]
     if (!is.null(x$bin)) {
       if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
         x$bin$within_strat <- NULL
-        bins <- x$input[, list(brks = bin_idv(get(idv),x)), c(x$strat.facet)]
-        
+        bins <- x$input[, list(brks = bin_idv(get(idv), x)), c(x$strat.facet)]
+
         x$input[, bin := {
           grp <- get(x$strat.facet)
           find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
@@ -295,7 +295,7 @@ bin_idv <- function(idv,x) {
           find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
         }, c(x$strat.facet)]
       } else {
-        bins <- x$input[, bin_idv(get(idv),x)]
+        bins <- x$input[, bin_idv(get(idv), x)]
         x$input[, bin := find_interval(get(idv), bins)]
         x$dx[, bin := find_interval(get(idv), bins)]
       }
@@ -373,7 +373,7 @@ vpc.plot <- function(x) {
     obs_layer <- if (!is.null(obs)) {
       params <- append(
         list(
-          mapping = aes_string(y = dv,x=idv),
+          mapping = aes_string(y = dv, x = idv),
           data = input
         ),
         obs
@@ -459,18 +459,18 @@ vpc.plot <- function(x) {
 #'
 
 pmx_vpc <- function(
-                type = c("percentile", "scatter"),
-                idv  ="TIME",
-                obs  = pmx_vpc_obs(),
-                pi =  pmx_vpc_pi(),
-                ci =  pmx_vpc_ci(),
-                rug = pmx_vpc_rug(),
-                bin = pmx_vpc_bin(),
-                labels = NULL,
-                facets = NULL,
-                is.legend=FALSE,
-                dname=NULL,
-                ...) {
+                    type = c("percentile", "scatter"),
+                    idv  ="TIME",
+                    obs  = pmx_vpc_obs(),
+                    pi =  pmx_vpc_pi(),
+                    ci =  pmx_vpc_ci(),
+                    rug = pmx_vpc_rug(),
+                    bin = pmx_vpc_bin(),
+                    labels = NULL,
+                    facets = NULL,
+                    is.legend=FALSE,
+                    dname=NULL,
+                    ...) {
   type <- match.arg(type)
   ## check args here
 

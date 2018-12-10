@@ -14,7 +14,7 @@ add_footnote <- function(pp, pname, save_dir) {
   pp
 }
 
-  
+
 
 #' Individual plot
 
@@ -26,7 +26,7 @@ add_footnote <- function(pp, pname, save_dir) {
 #' \item \code{\link{individual}} generic object for individual plots.
 #' \item \code{\link{pmx_update}} function.
 #' }
-#' \strong{individual parameters} 
+#' \strong{individual parameters}
 #' @param dname \code{character} name of dataset to be used. User can create his own
 #' dataset using \code{\link{set_data}} and pass it as dname to be plotted.
 #' @param pred_line \code{list} some ipred line geom properties aesthetics
@@ -37,8 +37,8 @@ add_footnote <- function(pp, pname, save_dir) {
 #' @param bloq \code{pmxBLOQ} object created by \code{\link{pmx_bloq}}.
 
 
-#'   
-#' \strong{pmx_update parameters} 
+#'
+#' \strong{pmx_update parameters}
 
 #' @param filter \code{expression} filter which will be applied to plotting data.
 #' @param strat.facet \code{formula} optional stratification parameter by facetting.
@@ -49,13 +49,13 @@ add_footnote <- function(pp, pname, save_dir) {
 #' @param trans \code{character} define the transformation to apply on x or y or both variables
 #' @param pmxgpar a object of class pmx_gpar possibly the output of the
 
-#'   
-#' \strong{pmx_gpar: Shared basic graphics parameters} 
+#'
+#' \strong{pmx_gpar: Shared basic graphics parameters}
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
-#' @param axis.title \code{list} containing element_text attributes to customize 
+#' @param axis.title \code{list} containing element_text attributes to customize
 #' the axis title. (similiar to ggplot2 axis.title theme)
-#' @param axis.text \code{list} containing element_text attributes to customize 
+#' @param axis.text \code{list} containing element_text attributes to customize
 #' the axis text (similiar to ggplot2 axis.text theme)
 #' @param ranges \code{list} limits of x/y ranges
 #' @param is.smooth \code{logical} if set to TRUE add smooth layer
@@ -74,37 +74,37 @@ add_footnote <- function(pp, pname, save_dir) {
 #' @export
 pmx_plot_individual <-
   function(
-    ctr,
-    npage=1,
-    print=FALSE,
-    ...) {
+           ctr,
+           npage=1,
+           print=FALSE,
+           ...) {
     stopifnot(is_pmxclass(ctr))
     if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
     cctr <- pmx_copy(ctr, ...)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
-    
+
     defaults_ <- ctr$config$plots[[toupper("individual")]]
-    
+
     if (!exists("bloq", params) && !is.null(ctr$bloq)) {
       defaults_[["bloq"]] <- ctr$bloq
     }
     params <- l_left_join(defaults_, params)
     params$pname <- "individual"
     params$ctr <- cctr
-    
-    
+
+
     do.call("pmx_update", params)
     p <- if (is.null(npage)) {
       cctr %>% get_plot("individual")
     } else {
       cctr %>% get_plot("individual", npage)
     }
-    
+
     cctr %>% pmx_warnings("MISSING_FINEGRID")
-    
-    
-    
+
+
+
     if (cctr$footnote) {
       if (!inherits(p, "ggplot")) {
         p <- Map(
@@ -119,14 +119,12 @@ pmx_plot_individual <-
         p <- add_footnote(p, ctr$plot_file_name, cctr$save_dir)
       }
     }
-    
+
     rm(cctr)
-    
+
     if (print) {
       if (is.list(p)) invisible(lapply(p, print)) else p
     } else {
       p
     }
   }
-
-

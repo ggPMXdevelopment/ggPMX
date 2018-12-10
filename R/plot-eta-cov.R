@@ -3,31 +3,31 @@
 #' Select/Map covariates using human labels
 #' @param values \code{list} of covariates to use to  create the plot
 #' @param labels \code{list} of covariates facets labels
-#' @details 
-#' 
+#' @details
+#'
 #' In case of `pmx_plot_eta_cats` and `pmx_plot_eta_conts` you can customize the covariates
 #' and covaraites labels using `pmx_cov`.
 #'
 #' @return \code{pmxCOVObject} object
 #' @export
 
-pmx_cov <- 
-  function(values,labels=NULL){
-    
+pmx_cov <-
+  function(values, labels=NULL) {
     assert_that(is_list(values))
     assert_that(is_list_or_null(labels))
-    if(missing(labels) || is.null(labels)) labels <- values
-    assert_that(length(values)==length(labels))
-    
+    if (missing(labels) || is.null(labels)) labels <- values
+    assert_that(length(values) == length(labels))
+
     structure(
       list(
-        values=values,
-        labels=labels
-      ), class = c("pmxCOVObject"))
+        values = values,
+        labels = labels
+      ), class = c("pmxCOVObject")
+    )
   }
 
 
-is_pmxcov <- function(x) 
+is_pmxcov <- function(x)
   inherits(x, "pmxCOVObject") || is.null(x)
 #' This creates an ETA covriance matrix which can be used to define the co-relation between the parameters and
 #' its shrinkage..
@@ -54,22 +54,22 @@ is_pmxcov <- function(x)
 #' \item {\strong{y:}} {y axis label default to empty}
 #' }
 eta_cov <- function(
-  labels,
-  type = c("cats", "conts"),
-  dname = NULL,
-  show.correl=TRUE,
-  correl=list(size = 5, colour = "blue"),
-  facets=list(scales = "free"),
-  point = list(colour = "gray"),
-  covariates=NULL,
-  ...) {
+                    labels,
+                    type = c("cats", "conts"),
+                    dname = NULL,
+                    show.correl=TRUE,
+                    correl=list(size = 5, colour = "blue"),
+                    facets=list(scales = "free"),
+                    point = list(colour = "gray"),
+                    covariates=NULL,
+                    ...) {
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
   assert_that(is_pmxcov(covariates))
-  
+
   if (is.null(dname)) dname <- "eta"
-  
-  
+
+
   if (missing(labels)) {
     labels <- list(
       title = "EBE vs. covariates",
@@ -89,7 +89,7 @@ eta_cov <- function(
     facets = facets,
     smooth = smooth,
     point = point,
-    covariates=covariates,
+    covariates = covariates,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -128,9 +128,8 @@ eta_cov <- function(
 #' @importFrom stats cor
 #'
 plot_pmx.eta_cov <- function(x, dx, ...) {
-  
   assert_that(is_pmxcov(x$covariates))
-  
+
   p <- if (x$type == "cats") {
     x$gp$is.smooth <- FALSE
     cats <- x[["cats"]]
@@ -146,13 +145,15 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
     if (all(nzchar(x[["conts"]]))) {
       dx.conts <- dx[, c(conts, "VALUE", "EFFECT"), with = FALSE]
       dx.conts <- melt(dx.conts, id = c("VALUE", "EFFECT"))
-      if(!is.null(x$covariates)){
-        dx.conts <- 
-        with(x$covariates,
-             dx.conts[variable %in% values][,
-                      variable := factor(variable, levels = values, labels = labels)]
-        )
-        
+      if (!is.null(x$covariates)) {
+        dx.conts <-
+          with(
+            x$covariates,
+            dx.conts[variable %in% values][
+              ,
+              variable := factor(variable, levels = values, labels = labels)
+            ]
+          )
       }
       x$facets$facets <- stats::as.formula("EFFECT~variable")
       p <- ggplot(dx.conts, aes_string(x = "value", y = "VALUE")) +
@@ -164,7 +165,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
           dx.conts[
             , "corr" := round(cor(get("value"), get("VALUE"), use = "na.or.complete"), 3)
             , "EFFECT,variable"
-            ]
+          ]
         p <- p +
           with(
             x$correl,

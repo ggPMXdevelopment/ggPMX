@@ -94,11 +94,11 @@ load_config <- function(x, sys = c("mlx", "nm", "mlx18")) {
   assert_that(is_string(x))
   sys <- match.arg(sys)
   input_dir <-
-    file.path(system.file(package = "ggPMX"), "templates",sys)
+    file.path(system.file(package = "ggPMX"), "templates", sys)
   plot_dir <-
     file.path(system.file(package = "ggPMX"), "init")
-  ifile <- file.path(input_dir,sprintf("%s.ipmx",x))
-  pfile <- file.path(plot_dir,sprintf("%s.ppmx",x))
+  ifile <- file.path(input_dir, sprintf("%s.ipmx", x))
+  pfile <- file.path(plot_dir, sprintf("%s.ppmx", x))
   if (length(ifile) == 0) {
     stop(sprintf("No configuration found for: %s", x))
   }

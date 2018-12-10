@@ -106,7 +106,7 @@ pmx <-
 
 
 #' @rdname pmx
-#' @details 
+#' @details
 #' \code{pmx_mlx}  is a wrapper to mlx for the MONOLIX system ( \code{sys="mlx"})
 #' @export
 pmx_mlx <-
@@ -135,12 +135,12 @@ pmx_mlxtran <- function(file_name, config="standing", call=FALSE, endpoint, ...)
     params$endpoint <- NULL
     params$endpoint <- endpoint
   }
-  
+
   if (call) {
     params$call <- NULL
     return(params)
   }
-  
+
 
   do.call(pmx_mlx, params)
 }
@@ -214,12 +214,12 @@ pmx_settings <-
 #' @export
 #'
 #' @example inst/examples/endpoint.R
-#' @details 
-#' 
+#' @details
+#'
 #' In case of multiple endpoint, pkdd case for example, we need to pass endpoint to the \link{pmx} call. \cr
-#' Internally , \code{ggPMX} will filter the obserations data set to keep only rows satisfying `DVID==code`. 
-#' 
-#' The code is also used to set finegrid and predictions files. By default we use the convetion 
+#' Internally , \code{ggPMX} will filter the obserations data set to keep only rows satisfying `DVID==code`.
+#'
+#' The code is also used to set finegrid and predictions files. By default we use the convetion
 #' finegrid{code}.txt and predictions{code}.txt for the name of the file. \cr
 #' In case the code used is different from the file extensions user should set the finegrid and predictions parameters.
 
@@ -238,8 +238,8 @@ pmx_endpoint <-
       code = code,
       label = label,
       unit = unit,
-      name=name,
-      trans=trans
+      name = name,
+      trans = trans
     )
 
     structure(
@@ -261,8 +261,8 @@ pmx_endpoint <-
 #' @param ... any other graphical parameter
 #'
 #' @export
-#' @details 
-#' To define that a measurement is censored, the observation data set should include 
+#' @details
+#' To define that a measurement is censored, the observation data set should include
 #' a CENSORING column ( default to `CENS` ) and put 1 for lower limit or -1 for upper limit. \cr
 #' Optionally, data set can contain have a limit column ( default to `LIMIT`) column to set the other limit.
 
