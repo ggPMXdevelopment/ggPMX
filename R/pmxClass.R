@@ -56,11 +56,11 @@ check_argument <- function(value, pmxname) {
 #' @param directory \code{character} modelling output directory.
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
-#' @param dvid \emph{[Optional]} \code{character} observation type parameter. This is mondatory
+#' @param dvid \emph{[Optional]} \code{character} observation type parameter. This is mandatory
 #' in case of multiple endpoint (PKPD).
 #' @param cats \emph{[Optional]}\code{character} vector of categorical covariates
 #' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
-#' @param occ \emph{[Optional]}\code{character} occasinal covariate variable name
+#' @param occ \emph{[Optional]}\code{character} occasional covariate variable name
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
@@ -158,7 +158,7 @@ formula_to_text <- function(form) {
 #' Create controller global settings
 #' @param is.draft \code{logical} if FALSE any plot is without draft annotation
 #' @param use.abbrev \code{logical} if TRUE use abbreviations mapping for axis names
-#' @param color.scales \code{list} list containg elements of scale_color_manual
+#' @param color.scales \code{list} list containing elements of scale_color_manual
 #' @param use.labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
 #' @param use.titles \code{logical} FALSE to generate plots without titles
@@ -210,8 +210,8 @@ pmx_settings <-
 #' @param code \code{charcter} endpoint code : used to filter observations DVID==code.
 #' @param label \code{charcter} endpoint label: used to set title and axis labels
 #' @param unit  \code{character} endpoint unit : used to set title and axis labels
-#' @param file.code \code{charcter} endpoint file code : used to fined predictions and finegrid \cr
-#' files extensions.
+#' @param file.code \code{charcter} endpoint file code : used to set predictions and finegrid \cr
+#' files extensions in case using code parameter is not enough.
 #' @param trans  \code{list} Transformation parameter not used yet.
 #' @export
 #'
@@ -423,7 +423,7 @@ set_abbrev <- function(ctr, ...) {
 
 #' S3 print abbrev
 #' @param x object of class configs
-#' @param ... pass additonal options (not used presently)
+#' @param ... pass additional options (not used presently)
 #' @return print abbrev
 #' @export
 print.abbrev <- function(x, ...) {
@@ -437,7 +437,7 @@ print.abbrev <- function(x, ...) {
 #' @param param abbreviation term
 #' @param ctr \code{pmxClass} controller
 #'
-#' @return characater abbreviation defintion
+#' @return \code{character} abbreviation definition
 #' @export
 
 get_abbrev <- function(ctr, param) {
@@ -590,7 +590,7 @@ get_data <- function(ctr, data_set = c(
 #' @family pmxclass
 #' @details
 #' This function can be used to set an existing data set or to create a new one. The basic
-#' idea is to change the  built-in data set (chnage the factor level names, change some rows
+#' idea is to change the  built-in data set (change the factor level names, change some rows
 #' values or apply any other data set operation) and use the new data set using the dname
 #' parameter of pmx_plot family functions.
 #' @examples
@@ -1034,7 +1034,7 @@ print.pmxClass <- function(x, ...) {
 #' Creates a deep copy of the controller
 #'
 #' @param ctr \code{pmxClass} object
-#' @param keep_globals \code{logical} if TRUE we keep the global parameters chnaged by pmx_settings
+#' @param keep_globals \code{logical} if TRUE we keep the global parameters changed by pmx_settings
 #' @param ...  extra parameters passed to \code{pmx_settings}
 #'
 #' @return an object of \code{pmxClass}

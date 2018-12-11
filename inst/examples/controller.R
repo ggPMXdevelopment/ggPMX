@@ -6,7 +6,7 @@ theophylline <- file.path(system.file(package = "ggPMX"), "testdata",
 WORK_DIR <- file.path(theophylline, "Monolix")
 input_file <- file.path(theophylline, "data_pk.csv")
 
-## using only mondatory varaibles
+## using only mandatory variables
 ctr <- pmx(
   sys="mlx",
   config = "standing",
@@ -27,7 +27,7 @@ ctr <- pmx(
   conts=c("WT0","AGE0"),
   strats="STUD"
 )
-## using settings paremeter
+## using settings parameter
 ctr <- pmx(
   sys="mlx",
   config = "standing",

@@ -104,7 +104,7 @@ merge_defaults <-
 #' @param colour color of the annotation default to grey50
 #' @param x \code{numeric} x coordinate of the draft label
 #' @param y \code{numeric} y coordinate of the draft label
-#' @param ... extra paremeters to geom text used to annotate the draft
+#' @param ... extra parameters to geom text used to annotate the draft
 #'
 #' @return ggplot2 annotation
 
@@ -121,7 +121,7 @@ add_draft <- function(label = "DRAFT", size=10, colour="grey50", x = Inf, y = -I
 #'
 #' @param param abbreviation term
 #'
-#' @return characater abbreviation defintion
+#' @return character abbreviation definition
 #' @export
 #' @examples
 #' abbrev("VPC")
@@ -228,7 +228,7 @@ is_mlxtran <- function(file_name)
 #'
 #' @param file_name absolute path to mlxtran file
 #'
-#' @return \code{list} key/values to initilize ggPMX controller
+#' @return \code{list} key/values to initialize ggPMX controller
 #' @export
 parse_mlxtran <- function(file_name) {
   on.exit(setwd(wd))

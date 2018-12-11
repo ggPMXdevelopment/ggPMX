@@ -58,7 +58,7 @@ read_mlx18_ind_est <- function(path, x, ...) {
 #' @param cats \emph{[Optional]}\code{character} vector of categorical covariates
 #' @param conts \emph{[Optional]}\code{character} vector of continuous covariates
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
-#' @param occ \emph{[Optional]}\code{character} inter individual occasion varaibles
+#' @param occ \emph{[Optional]}\code{character} inter individual occasion variables
 #' @param endpoint \code{integer}  null in case of a single endpoint otherwise the index of endpoints.
 
 #'

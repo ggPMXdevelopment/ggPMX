@@ -4,7 +4,7 @@
 #' @param ctr pmx controller
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
 #' \item \code{\link{eta_cov}} generic object for eta/covariates plots.
 #' \item \code{\link{pmx_update}} function.
 #' }
@@ -34,12 +34,12 @@
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
 #' @param axis.title \code{list} containing element_text attributes to customize
-#' the axis title. (similiar to ggplot2 axis.title theme)
+#' the axis title. (similar to ggplot2 axis.title theme)
 #' @param axis.text \code{list} containing element_text attributes to customize
-#' the axis text (similiar to ggplot2 axis.text theme)
+#' the axis text (similar to ggplot2 axis.text theme)
 #' @param ranges \code{list} limits of x/y ranges
 #' @param is.smooth \code{logical} if set to TRUE add smooth layer
-#' @param smooth \code{list} geom_smooth graphical/smooting fun parameters
+#' @param smooth \code{list} geom_smooth graphical/smoothing fun parameters
 #' @param is.band \code{logical} if TRUE add horizontal band
 #' @param band \code{list} horizontal band parameters. geom_hline graphical parameters.
 #' @param is.draft \code{logical} if TRUE add draft layer
@@ -48,7 +48,7 @@
 #' @param identity_line \code{list}geom_abline graphical parameters.
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
-#' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
+#' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
 #' @return ggplot2 object
 #' @example inst/examples/eta_cov.R
 

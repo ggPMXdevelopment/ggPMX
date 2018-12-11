@@ -9,7 +9,7 @@ WORK_DIR <- file.path(theophylline, "Monolix")
 input_file <- file.path(theophylline, "data_pk.csv")
 
 
-# create a controler with a custom plots template
+# create a controller with a custom plots template
 ctr <-  pmx_mlx(
   config = pmx_config(
     plots=file.path( system.file(package = "ggPMX"),"examples/plots.yaml"),

@@ -1,5 +1,5 @@
 
-#' This functionnn can be used to define the pmx configuration used in plots. e.g. Monolox/Nonmem
+#' This function can be used to define the pmx configuration used in plots. e.g. Monolox/Nonmem
 #'
 #' @param sys \code{charcarter} system used , monolix,nonmem,...
 #' @param inputs \code{charcater} path to the inputs settings file (yaml format)
@@ -67,7 +67,7 @@ pmx_get_configs <-
 
 #' This function can be used to print configuration of the defined object using S3 method.
 #' @param x object of class configs
-#' @param ... pass additonal options (not used presently)
+#' @param ... pass additional options (not used presently)
 #' @return print result
 #' @export
 print.configs <- function(x, ...) {
@@ -121,7 +121,7 @@ load_config_files <- function(ifile, pfile, sys) {
 #' S3 method print pmxConfig object
 #'
 #' @param x pmxConfig object
-#' @param ... addtional arguments to pass to print (ununsed currently)
+#' @param ... addtional arguments to pass to print (unused currently)
 #'
 #' @return invisible object
 #' @importFrom knitr kable

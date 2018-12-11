@@ -6,7 +6,7 @@ library(ggPMX)
 ## ctr %>% pmx_report_template()
 
 report_dir <- path.expand("/tmp")
-## case1: generate a single reprot
+## case1: generate a single report
 ## We use default save dir, 
 ctr <- theophylline()
 ctr %>% pmx_report(

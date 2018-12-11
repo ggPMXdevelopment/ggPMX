@@ -22,7 +22,7 @@
 #' \item {\strong{subtitle:}} {plot subtitle default empty}
 #' \item {\strong{x:}} {x axis label default to "Etas"}
 #' \item {\strong{y:}} {y axis label default to empty}
-#' \item {\strong{legend:}} {legend titile default to "random Effect"}
+#' \item {\strong{legend:}} {legend title default to "random Effect"}
 #' }
 #' \strong{shrink} is a list that contains:
 #' \itemize{
@@ -83,7 +83,7 @@ is.formula <- function(x) inherits(x, "formula")
 #' merge facets formula with new formula
 #'
 #' @param x \code{formula} object
-#' @param origin the origin formula defualt to ~lfacets
+#' @param origin the origin formula default to ~lfacets
 #'
 #' @return \code{formula} object
 #' @importFrom stats formula

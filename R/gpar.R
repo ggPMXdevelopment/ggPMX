@@ -15,12 +15,12 @@
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
 #' @param scale_x_log10 logical if TRUE add scale_x_log10 layer
 #' @param scale_y_log10 logical if TRUE add scale_y_log10 layer
-#' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
+#' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
 #'
 #' @details
 
 #' This object contains all general graphic settings. It used internally by all
-#' pmx_plot(generic fucntion) to set the default behavior.
+#' pmx_plot(generic function) to set the default behavior.
 
 
 #' @return  An object of class \code{"pmx_gpar"}.
@@ -75,7 +75,7 @@ is.pmx_gpar <- function(x) {
 #' Print pmx_gpar object
 #'
 #' @param x pmx_gpar object
-#' @param ... argument passed to print ( to statisfy generic)
+#' @param ... argument passed to print ( to satisfy generic)
 #'
 #' @return a character description of graphical parameters
 #' @export

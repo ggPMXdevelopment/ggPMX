@@ -3,7 +3,7 @@
 #' This extension to \code{\link[ggplot2]{facet_wrap}} will allow user to split
 #' a facetted plot over multiple pages. User define the specific number of rows and columns
 #' per page as well as the page number to plot, and the function will
-#' automatically plot in the correct panels. This will be renderd
+#' automatically plot in the correct panels. This will be rendered
 #' in a loop to plot pages one by one.
 #'
 #' @inheritParams ggplot2::facet_wrap

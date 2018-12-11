@@ -2,15 +2,15 @@
 #' VPC plot
 #' 
 #' @details 
-#' You can use \link{pmx_vpc_bin} to set the bin parameters. In case of stratfication
-#' bining can be different for each strat level (case \code{within_strat} equal to FALSE). 
+#' You can use \link{pmx_vpc_bin} to set the bin parameters. In case of stratification,
+#' binning can be different for each strat level (case \code{within_strat} equal to FALSE). 
 #' 
 
 
 #' @param ctr pmx controller
 #' @param ... others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
 #' \item \code{\link{pmx_vpc}} pmx vpc object.
 #' \item \code{\link{pmx_update}} function.
 #' }
@@ -18,7 +18,7 @@
 #' \strong{pmx_vpc parameters}
 
 
-#' @param type \code{charcater} can be either perecentile or scatter
+#' @param type \code{charcater} can be either percentile or scatter
 #' @param idv \code{chracater} individual variable
 #' @param obs \code{pmx_vpc_obs} object observation layer \link{pmx_vpc_obs}
 #' @param pi \code{pmx_vpc_pi} object percentile layer  \link{pmx_vpc_pi}
@@ -47,12 +47,12 @@
 
 #' @param labels \code{list} list containing plot and/or axis labels: title, subtitle, x , y
 #' @param axis.title \code{list} containing element_text attributes to customize
-#' the axis title. (similiar to ggplot2 axis.title theme)
+#' the axis title. (similar to ggplot2 axis.title theme)
 #' @param axis.text \code{list} containing element_text attributes to customize
-#' the axis text (similiar to ggplot2 axis.text theme)
+#' the axis text (similar to ggplot2 axis.text theme)
 #' @param ranges \code{list} limits of x/y ranges
 #' @param is.smooth \code{logical} if set to TRUE add smooth layer
-#' @param smooth \code{list} geom_smooth graphical/smooting fun parameters
+#' @param smooth \code{list} geom_smooth graphical/smoothing fun parameters
 #' @param is.band \code{logical} if TRUE add horizontal band
 #' @param band \code{list} horizontal band parameters. geom_hline graphical parameters.
 #' @param is.draft \code{logical} if TRUE add draft layer
@@ -61,7 +61,7 @@
 #' @param identity_line \code{list}geom_abline graphical parameters.
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
-#' @param color.scales \code{list} define scales paremeter in case of strat.color \code{\link{pmx_settings}}
+#' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
 #' @return ggplot2 or list of ggplot2 objects
 #' @export
 #' @family vpc

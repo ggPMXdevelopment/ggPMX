@@ -73,13 +73,13 @@ pmx_register_plot <-
   }
 
 
-#' Genereic pmx plot
+#' Generic pmx plot
 #'
 #' @param ctr \code{pmxClass} pmx controller
 #' @param pname plot name
 #' @param ...  others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
 #' \item \code{\link{pmx_qq}} quantile-quantile plot object
 #' \item \code{\link{pmx_update}} function.
 #' }
@@ -92,7 +92,7 @@ pmx_plot <- function(ctr, pname, ...) {
 
 
 
-#' Genereic pmx stratified plot
+#' Generic pmx stratified plot
 #'
 #' @param ctr \code{pmxClass} pmx controller
 #' @param pname plot name
@@ -101,7 +101,7 @@ pmx_plot <- function(ctr, pname, ...) {
 #' @param print \code{logical} if TRUE print plots otherwise the list of plots is returned
 #' @param ...  others graphics parameters passed :
 #' \itemize{
-#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical paramters
+#' \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
 #' \item \code{\link{pmx_qq}} quantile-quantile plot object
 #' \item \code{\link{pmx_update}} function.
 #' }

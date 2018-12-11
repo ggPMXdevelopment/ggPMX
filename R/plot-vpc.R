@@ -65,7 +65,7 @@ pmx_vpc_obs <-
 
 #' @param interval \code{numeric} quantiles values default
 #' to \code{c(.05,.95)}
-#' @param median \code{list} containg: \cr
+#' @param median \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{color}} {\code{charcater}  Color of the median percentile line. Default: "#000000". }
 #' \item {\strong{size}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
@@ -73,7 +73,7 @@ pmx_vpc_obs <-
 #' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid".}
 #' }
 
-#' @param extreme \code{list} containg: \cr
+#' @param extreme \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{color}} {\code{charcater} Color of the median percentile line. Default: "#000000". }
 #' \item {\strong{size}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
@@ -130,13 +130,13 @@ pmx_vpc_pi <-
 #' \item {\strong{method="rectangle"}} {ares are horizontal rectangles.}
 #' }
 
-#' @param median \code{list} containg: \cr
+#' @param median \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{fill}} { \code{character} Color of the area representing the CI for the median. Default: "#3388cc".}
 #' \item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the median. Default=0.3.}
 #' }
 
-#' @param extreme \code{list} containg: \cr
+#' @param extreme \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{fill}} {\code{character} Color of the area representing the CI for the extreme percentiles. Default: "#3388cc".}
 #' \item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the extreme percentiles. Default=0.3.}
@@ -441,7 +441,7 @@ vpc.plot <- function(x) {
 
 #' Creates vpc object
 #'
-#' @param type \code{charcater} can be either perecentile or scatter
+#' @param type \code{charcater} can be either percentile or scatter
 #' @param idv \code{chracater} individual variable
 #' @param obs \code{pmx_vpc_obs} object observation layer \link{pmx_vpc_obs}
 #' @param pi \code{pmx_vpc_pi} object percentile layer  \link{pmx_vpc_pi}

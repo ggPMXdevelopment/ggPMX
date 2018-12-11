@@ -4,14 +4,14 @@
 #'
 #' @param title character the plot title
 #' @param dname name of dataset to be used
-#' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' byd efault
+#' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' by default
 #' @param text_color color of the correlation text in the upper matrix
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
 #' @param shrink \code{list} shrinkage graphical parameter
 #' @param point \code{list} geom_point graphical parameter
 #' @param is.smooth \code{logical} if TRUE add smoothing to lower matrix plots
 #' @param smooth \code{list} geom_smooth graphical parameters
-#' @param is.hline \code{logical} if TRUE add horizontalline to lower matrix plots
+#' @param is.hline \code{logical} if TRUE add horizontal line to lower matrix plots
 #' @param hline \code{list} geom_hline graphical parameters
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #' @return ecorrel object
@@ -273,7 +273,7 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
     strip_r_1 <- gtable::gtable_filter(eta_gtable, "strip-r-1")
     ## make all table wider
     strip_r_1$grobs[[1]]$widths <- unit(4, "cm")
-    ## chnage text position,rot
+    ## change text position,rot
     text_shrink <- strip_r_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]]
     text_shrink$rot <- 0
     text_shrink$hjust <- 0.8

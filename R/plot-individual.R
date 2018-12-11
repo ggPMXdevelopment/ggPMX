@@ -10,7 +10,7 @@
 #' @param point \code{list} some point geom properties aesthetics
 #' @param is.legend \code{logical} if TRUE add a legend
 #' @param use.finegrid \code{logical} if FALSE use predictions data set
-#' @param bloq \code{pmxBLOQ} object createdby \code{\link{pmx_bloq}}
+#' @param bloq \code{pmxBLOQ} object created by \code{\link{pmx_bloq}}
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 #'
 #' @return individual fit object

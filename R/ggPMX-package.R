@@ -1,4 +1,4 @@
-#' ggPMX: A ggplt2 toolbox for Nonlinear Mixed-Effect Model graphical
+#' ggPMX: A ggplot2 toolbox for Nonlinear Mixed-Effect Model graphical
 #'
 #' This package aims to generate diagnostic plots in a standard way. The tool reads data
 #' from many sources (MONOLIX,NONMEM,others) and generates standard grahics

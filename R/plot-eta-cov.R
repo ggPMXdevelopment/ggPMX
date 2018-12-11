@@ -29,7 +29,7 @@ pmx_cov <-
 
 is_pmxcov <- function(x)
   inherits(x, "pmxCOVObject") || is.null(x)
-#' This creates an ETA covriance matrix which can be used to define the co-relation between the parameters and
+#' This creates an ETA covariance matrix which can be used to define the co-relation between the parameters and
 #' its shrinkage..
 #'
 #' @param labels list of texts/titles used within the plot
@@ -114,7 +114,7 @@ eta_cov <- function(
 
 
 
-#' This plots an ETA covriance matrix which can be used to define the co-relation between the parameters and
+#' This plots an ETA covariance matrix which can be used to define the co-relation between the parameters and
 #' its shrinkage
 #'
 #' @param x eta_cov object

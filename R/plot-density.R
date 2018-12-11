@@ -8,8 +8,8 @@
 #' @param labels list of texts/titles used within the plot
 #' @param dname name of dataset to be used
 #' @param xlim \code{numeric} x axis limits
-#' @param var_line \code{list} variable denstiy graphics parameters
-#' @param snd_line \code{list} normal denstiy graphics parameters
+#' @param var_line \code{list} variable density graphics parameters
+#' @param snd_line \code{list} normal density graphics parameters
 #' @param vline \code{list} vertical line graphics parameters
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 

@@ -22,7 +22,7 @@ ctr %>% pmx_plot_eta_matrix(
   shrink=list(mapping=aes(color="magenta"))
   )
 
-## custom point aes and static paremeters
+## custom point aes and static parameters
 ## we can customize any geom_point parameter
 ctr %>% pmx_plot_eta_matrix(
   point = list(color = "blue", shape = 4)
