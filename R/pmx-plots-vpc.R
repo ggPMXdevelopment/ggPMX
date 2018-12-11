@@ -1,5 +1,11 @@
 
 #' VPC plot
+#' 
+#' @details 
+#' You can use \link{pmx_vpc_bin} to set the bin parameters. In case of stratfication
+#' bining can be different for each strat level (case \code{within_strat} equal to FALSE). 
+#' 
+
 
 #' @param ctr pmx controller
 #' @param ... others graphics parameters passed :
@@ -61,6 +67,7 @@
 #' @family vpc
 
 #' @example inst/examples/vpc.R
+#' 
 
 
 pmx_plot_vpc <- function(ctr, ...) {

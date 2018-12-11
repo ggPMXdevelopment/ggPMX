@@ -5,6 +5,8 @@
 #' @param irun \code{character} name of the simulation column
 #' @param idv \code{character} name of the ind. variable
 #' @export
+
+#' @example inst/examples/vpc.R 
 pmx_sim <- function(
                     file,
                     irun,
@@ -205,32 +207,38 @@ pmx_settings <-
 
 #' Creates pmx endpoint object
 #'
-#' @param code \code{charcater} endpoint code : used to filter observations DVID==code.
-#' @param label \code{charcater} endpoint label: used to set title and axis labels
+#' @param code \code{charcter} endpoint code : used to filter observations DVID==code.
+#' @param label \code{charcter} endpoint label: used to set title and axis labels
 #' @param unit  \code{character} endpoint unit : used to set title and axis labels
-#' @param name \code{charcater} endpoint name : used to fined prediections and finegrid \cr
+#' @param file.code \code{charcter} endpoint file code : used to fined predictions and finegrid \cr
 #' files extensions.
-#' @param trans  \code{list}
+#' @param trans  \code{list} Transformation parameter not used yet.
 #' @export
 #'
 #' @example inst/examples/endpoint.R
 #' @details
-#'
-#' In case of multiple endpoint, pkdd case for example, we need to pass endpoint to the \link{pmx} call. \cr
-#' Internally , \code{ggPMX} will filter the obserations data set to keep only rows satisfying `DVID==code`.
-#'
-#' The code is also used to set finegrid and predictions files. By default we use the convetion
-#' finegrid{code}.txt and predictions{code}.txt for the name of the file. \cr
-#' In case the code used is different from the file extensions user should set the finegrid and predictions parameters.
+#' In case of multiple endpoint, pkpd case for example, we need to pass endpoint to the pmx call.  
+#' Internally , ggPMX will filter the observations data set to keep only rows satisfying \code{DVID==code}.
+#' The \code{code} is also used to find the right predictions and or fingrid files. 
+#' Internally ggPMX use the configuration file to fine the path of the predictions file 
+#' (like the single endpoint case) and then filter the right file using the code parameter. \cr
+#' For example:
+#' \itemize{
+#' \item predictions\{code\}.txt for mlx16 
+#' \item predictions\{code\}.txt  and y\{code\}_residual for mlx18 
+#' }
+#' 
+#' For some tricky examples the code parameter is not enough to find the files. In that the 
+#' \code{file.code} parameter is used to distinguish the endpoint files.
 
 pmx_endpoint <-
   function(code,
            label="",
            unit="",
-           name=code,
+           file.code=code,
            trans =NULL) {
     assert_that(is.character(code))
-    assert_that(is.character(name))
+    assert_that(is.character(file.code))
     assert_that(is.character(unit))
     assert_that(is.character(label))
     assert_that(is_character_or_null(trans))
@@ -238,7 +246,7 @@ pmx_endpoint <-
       code = code,
       label = label,
       unit = unit,
-      name = name,
+      file.code = file.code,
       trans = trans
     )
 

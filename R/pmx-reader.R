@@ -361,15 +361,15 @@ load_data_set <- function(x, path, sys, ...) {
     ep <- list(...)$endpoint
     if (!is.null(ep) && !is.null(x$pattern)) {
       ffiles <- list.files(path, x$pattern, recursive = TRUE, full.names = TRUE)
-      exists_file <- sum(grepl(ep$name, ffiles)) > 0
+      exists_file <- sum(grepl(ep$file.code, ffiles)) > 0
       if (exists_file) {
         fpath <-
           if (length(ffiles) > 1) {
-            ffiles[grep(ep$name, basename(ffiles))][1]
+            ffiles[grep(ep$file.code, basename(ffiles))][1]
           } else {
             ffiles[1]
           }
-        x$endpoint <- ep$name
+        x$endpoint <- ep$file.code
         cat("use ", basename(fpath), " as ", x$label, ".\n")
       }
     }

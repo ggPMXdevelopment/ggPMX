@@ -1,13 +1,13 @@
 
 library(ggPMX)
 
-theophylline <- file.path(
+theo_path <- file.path(
   system.file(package = "ggPMX"), "testdata",
   "theophylline"
 )
-WORK_DIR <- file.path(theophylline, "Monolix")
-input_file <- file.path(theophylline, "data_pk.csv")
-vpc_file <- file.path(theophylline, "sim.csv")
+WORK_DIR <- file.path(theo_path, "Monolix")
+input_file <- file.path(theo_path, "data_pk.csv")
+vpc_file <- file.path(theo_path, "sim.csv")
 
 ctr <- pmx_mlx(
   config = "standing",

@@ -47,15 +47,12 @@ pmx_get_configs <-
     template_dir <-
       file.path(system.file(package = "ggPMX"), "templates", sys)
     res <- if (dir.exists(template_dir)) {
-      template_name <- list.dirs(
-        template_dir, full.names = FALSE,
-        recursive = FALSE
-      )
-      if (length(template_name) == 0) return(NULL)
-      template_path <- list.dirs(
+      template_path <- list.files(
         template_dir, full.names = TRUE,
         recursive = FALSE
       )
+      if (length(template_path) == 0) return(NULL)
+      template_name = gsub('[.].*','',basename(template_path))
       dx <- data.frame(
         sys = sys,
         name = template_name,
@@ -110,6 +107,8 @@ load_config <- function(x, sys = c("mlx", "nm", "mlx18")) {
 
 
 load_config_files <- function(ifile, pfile, sys) {
+  if(!file.exists(ifile))return(NULL)
+  if(!file.exists(pfile))return(NULL)
   iconfig <- yaml.load_file(ifile)
   pconfig <- yaml.load_file(pfile)
   config <- list(data = iconfig, plots = pconfig)

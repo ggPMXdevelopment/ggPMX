@@ -1,13 +1,12 @@
 
-## use custom finegrid and predictions 
+## Use file.code parameter
 pk_pd_path <- file.path(system.file(package = "ggPMX"), "testdata","pk_pd")
 
 WORK_DIR <- file.path(pk_pd_path, "RESULTS")
 
 ep <- pmx_endpoint(
   code="4",
-  predictions="predictions2",
-   finegrid="finegrid2"
+  file.code="2"
 )
 
 input_file <- file.path(pk_pd_path, "pk_pd.csv")
@@ -27,8 +26,7 @@ ctr <- pmx_mlx(
 
 ep <- pmx_endpoint(
   code="3",
-  predictions="predictions1",
-  finegrid="finegrid1"
+ file.code="1"
 )
 
 mlxtran_file <- file.path(pk_pd_path, "pk_pd.mlxtran")

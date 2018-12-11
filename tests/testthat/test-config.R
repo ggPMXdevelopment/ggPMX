@@ -2,7 +2,7 @@ context("Test config")
 
 test_that("can source configs", {
   conf <- pmx_get_configs()
-  expect_identical(conf$name, c("standing", "submission"))
+  expect_identical(conf$name, c("standing"))
 })
 
 
@@ -21,6 +21,6 @@ test_that("can print loaded config", {
 })
 
 
-test_that("raise error if bad config name is provided", {
-  expect_error(load_config("BAD_CONFIG_NAME"))
+test_that("return NULL if bad config name is provided", {
+  expect_identical(load_config("BAD_CONFIG_NAME"),NULL)
 })

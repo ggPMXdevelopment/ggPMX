@@ -321,7 +321,7 @@ parse_mlxtran <- function(file_name) {
       if (grepl(",", yname[1])) {
         code <- strsplit(yname[2], ",")[[1]]
         files <- strsplit(yname[1], ",")[[1]]
-        pmx_endpoint(code = code[1], name = ifelse(mlx16, code[1], files[1]))
+        pmx_endpoint(code = code[1], file.code = ifelse(mlx16, code[1], files[1]))
       } else {
         pmx_endpoint(code = yname[2])
       }
