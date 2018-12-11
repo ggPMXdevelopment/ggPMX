@@ -23,3 +23,8 @@ test_that("l_left_join merge compound lists", {
   expected <- list(x = 1, h = list(z = 1, h = 4), y = 2)
   expect_identical(res, expected)
 })
+
+test_that("pk_pd is worrking",{
+  ctr <- pk_pd()
+  expect_s3_class(ctr,"pmxClass")
+})

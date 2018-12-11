@@ -337,16 +337,10 @@ parse_mlxtran <- function(file_name) {
 #' Creates pkpd pmx controller using package internal data
 #' @param code  can be 3 or 4
 #' @export
-pk_pd <- function(code = "4") {
-  files_ <- switch(code,
-    "3" = list(
-      predictions = "predictions1",
-      finegrid = "finegrid1"
-    ),
-    "4" = list(
-      predictions = "predictions2",
-      finegrid = "finegrid2"
-    )
+pk_pd <- function(code = "3") {
+  file.code <- switch(code,
+    "3" = "1",    
+    "4" = "2"
   )
 
 
@@ -358,7 +352,7 @@ pk_pd <- function(code = "4") {
   WORK_DIR <- file.path(pk_pd_path, "RESULTS")
   ep <- pmx_endpoint(
     code,
-    files = files_
+    file.code = file.code
   )
 
 

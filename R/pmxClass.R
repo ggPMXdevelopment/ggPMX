@@ -207,20 +207,20 @@ pmx_settings <-
 
 #' Creates pmx endpoint object
 #'
-#' @param code \code{charcter} endpoint code : used to filter observations DVID==code.
-#' @param label \code{charcter} endpoint label: used to set title and axis labels
+#' @param code \code{character} endpoint code : used to filter observations DVID==code.
+#' @param label \code{character} endpoint label: used to set title and axis labels
 #' @param unit  \code{character} endpoint unit : used to set title and axis labels
-#' @param file.code \code{charcter} endpoint file code : used to set predictions and finegrid \cr
+#' @param file.code \code{character} endpoint file code : used to set predictions and finegrid \cr
 #' files extensions in case using code parameter is not enough.
 #' @param trans  \code{list} Transformation parameter not used yet.
 #' @export
 #'
 #' @example inst/examples/endpoint.R
 #' @details
-#' In case of multiple endpoint, pkpd case for example, we need to pass endpoint to the pmx call.  
+#' In case of multiple endpoints, pkpd case for example, we need to pass endpoint to the pmx call.  
 #' Internally , ggPMX will filter the observations data set to keep only rows satisfying \code{DVID==code}.
 #' The \code{code} is also used to find the right predictions and or fingrid files. 
-#' Internally ggPMX use the configuration file to fine the path of the predictions file 
+#' ggPMX use the configuration file to fine the path of the predictions file 
 #' (like the single endpoint case) and then filter the right file using the code parameter. \cr
 #' For example:
 #' \itemize{
@@ -228,7 +228,7 @@ pmx_settings <-
 #' \item predictions\{code\}.txt  and y\{code\}_residual for mlx18 
 #' }
 #' 
-#' For some tricky examples the code parameter is not enough to find the files. In that the 
+#' For some tricky examples the code parameter is not enough to find the files. In that case the 
 #' \code{file.code} parameter is used to distinguish the endpoint files.
 
 pmx_endpoint <-
