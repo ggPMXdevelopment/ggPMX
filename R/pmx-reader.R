@@ -281,7 +281,7 @@ read_mlx18_res <- function(path, x, ...) {
   file_path <- if (!file.exists(res_file)) {
     ffiles <- list.files(path, pattern = x$pattern, full.names = TRUE)
     if (!is.null(x$endpoint)) {
-      fpath <- grep(x$endpoint, ffiles, value = TRUE)[1]
+      fpath <- ffiles[grep(x$endpoint, basename(ffiles))][1]
     } else {
       fpath <- ffiles[1]
     }
