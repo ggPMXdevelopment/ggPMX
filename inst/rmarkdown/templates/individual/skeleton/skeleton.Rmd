@@ -1,6 +1,5 @@
 ---
 title: "ggPMX individual plots report"
-author: "TODO"
 output: 
   pdf_document:
     toc: true
@@ -22,7 +21,8 @@ knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 # Individual plots
 
 
-```{r indiv,message=FALSE}
+```{r indiv,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
+
  ctr %>% pmx_plot_individual(npage=params$npage,print=TRUE)
 ```
 

@@ -1,6 +1,5 @@
 ---
 title: "ggPMX standing report"
-author: "TODO"
 output: 
   pdf_document:
     toc: true
@@ -44,17 +43,10 @@ ctr %>% pmx_plot_iwres_time
 ctr %>% pmx_plot_eta_box
 ```
 
-```{r dv_pred}
-ctr %>% pmx_plot_dv_pred
+```{r vpc,fig.align="center",fig.height=10, fig.width=10}
+ctr %>% pmx_plot_vpc
 ```
 
-```{r dv_ipred}
-ctr %>% pmx_plot_dv_pred
-```
-
-```{r dv_abs_iwres_ipred}
-ctr %>% pmx_plot_abs_iwres_ipred
-```
 \newpage
 
 # Supplmentary diagnostics
@@ -63,20 +55,29 @@ ctr %>% pmx_plot_abs_iwres_ipred
 
 ```{r iwres_qq}
 ctr %>% pmx_plot_iwres_qq
+```
+
+```{r iwres_dens}
+ctr %>% pmx_plot_iwres_dens
+```
+
+```{r npde_qq}
 ctr %>% pmx_plot_npde_qq
 ```
 
 ## Distribution of inter-individual random effects
 
-```{r eta_qq,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
 
+```{r eta_qq,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
 ctr %>% pmx_plot_eta_qq
 ```
+
 \blandscape
 ```{r eta_matrix,out.width='1\\linewidth', fig.width=8, fig.height=6}
 ctr %>% pmx_plot_eta_matrix
 ```
 \elandscape
+
 
 ```{r eta_cats,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
 
@@ -86,6 +87,23 @@ ctr %>% pmx_plot_eta_cats
 ```{r eta_conts,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
 ctr %>%  pmx_plot_eta_conts
 ```
+
+## Observations versus predictions and supplementary residual plots
+
+```{r dv_pred}
+ctr %>% pmx_plot_dv_pred
+```
+
+
+```{r dv_ipred}
+ctr %>% pmx_plot_dv_ipred
+```
+
+```{r dv_abs_iwres_ipred}
+ctr %>% pmx_plot_abs_iwres_ipred
+```
+
+
 
 
 \newpage
@@ -100,14 +118,18 @@ ctr %>%  pmx_plot_eta_conts
 
 # Stratified key diagnostics 
 
-```{r npde_time_strats}
+```{r npde_time_strats,fig.align="center",fig.height=10, fig.width=10}
 
 ctr %>% pmx_plot_cats("npde_time")
 ```
 
 
-```{r iwres_time_strats}
+```{r iwres_time_strats,fig.align="center",fig.height=10, fig.width=10}
 ctr %>% pmx_plot_cats("iwres_time")
 
 
+```
+
+```{r vpc_strats,fig.align="center",fig.height=10, fig.width=10}
+ctr %>% pmx_plot_cats("pmx_vpc")
 ```
