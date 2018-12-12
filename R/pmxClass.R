@@ -138,12 +138,14 @@ pmx_mlxtran <- function(file_name, config="standing", call=FALSE, endpoint, ...)
     params$endpoint <- endpoint
   }
 
+
   if (call) {
     params$call <- NULL
     return(params)
   }
 
-
+  params$call <- NULL
+  
   do.call(pmx_mlx, params)
 }
 
