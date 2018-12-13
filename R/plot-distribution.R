@@ -71,7 +71,7 @@ distrib <- function(
       labels = labels,
       discrete = TRUE,
       is.smooth = FALSE,
-      is.band = FALSE, ...
+      ...
     )
   ), class = c("distrib", "pmx_gpar"))
 }

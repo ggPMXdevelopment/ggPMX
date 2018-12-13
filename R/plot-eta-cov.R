@@ -58,9 +58,9 @@ eta_cov <- function(
                     type = c("cats", "conts"),
                     dname = NULL,
                     show.correl=TRUE,
-                    correl=list(size = 5, colour = "blue"),
-                    facets=list(scales = "free"),
-                    point = list(colour = "gray"),
+                    correl=NULL,
+                    facets=NULL,
+                    point = NULL,
                     covariates=NULL,
                     ...) {
   type <- match.arg(type)
@@ -87,7 +87,6 @@ eta_cov <- function(
     show.correl = show.correl,
     correl = correl,
     facets = facets,
-    smooth = smooth,
     point = point,
     covariates = covariates,
     gp = pmx_gpar(
@@ -166,14 +165,13 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
             , "corr" := round(cor(get("value"), get("VALUE"), use = "na.or.complete"), 3)
             , "EFFECT,variable"
           ]
-        p <- p +
-          with(
-            x$correl,
-            geom_text(
-              data = df_cor, aes_string(label = paste("correlation=", "corr")),
-              x = -Inf, y = Inf, hjust = -0.2, vjust = 1.2, size = size, colour = colour
-            )
-          )
+        
+        correl_obj <- list(
+          x = -Inf, y = Inf, hjust = -0.2, vjust = 1.2,
+          mapping = aes(label = sprintf('corr=%s',corr))
+        )
+        correl_obj <- l_left_join(x$correl,correl_obj)
+        p <- p + do.call("geom_text",correl_obj)
       }
       p
     }

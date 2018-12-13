@@ -14,6 +14,7 @@
 #' @param footnote \code{logical}  TRUE to add a footnote to the generated plots. The default footnote is to add \cr
 #' the path where the plot is saved.
 #' @param edit \code{logical}  TRUE to edit the template immediately
+#' @param title \code{character} report title (optional)
 #' @param ... extra parameters depending in the template used
 #' @export
 #' @importFrom rmarkdown draft render
@@ -31,6 +32,7 @@ pmx_report <-
            template="standing",
            footnote=format == "both",
            edit=FALSE,
+           title,
            ...) {
     assert_that(is_pmxclass(contr))
     format <- match.arg(format)
@@ -75,8 +77,10 @@ pmx_report <-
 
     envir <- new.env()
     envir$ctr <- contr
+    params <- list(ctr = contr, ...)
+    if (!missing(title)) params$title <- title
     suppressWarnings(render(
-      res, "all", params = list(ctr = contr, ...), envir = envir,
+      res, "all", params = params, envir = envir,
       output_dir = save_dir, clean = clean, quiet = TRUE
     ))
 

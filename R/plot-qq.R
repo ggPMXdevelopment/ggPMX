@@ -106,7 +106,8 @@ pmx_qq <- function(
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
-      is.smooth = FALSE
+      is.smooth = FALSE,
+      ...
     )
   ), class = c("pmx_qq", "pmx_gpar"))
 }

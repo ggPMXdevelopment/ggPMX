@@ -88,7 +88,7 @@ IWRES_DENS:
   labels:
     title: 'Density plot of IWRES'
     subtitle: ''
-    x: Etas
+    x: IWRES
     'y': ''
 
 IWRES_QQ:
@@ -99,13 +99,13 @@ IWRES_QQ:
     subtitle: ''
     x: Standard Normal Quantiles
     'y': IWRES Quantiles
-  bloq:
-    show: yes
-    size: 2.0
-    alpha: 0.9
-  is.reference_line: yes
+  is.reference_line: no
   reference_line:
     color: black
+  is.identity_line: yes
+  identity_line:
+    intercept: 0
+    colour: black
 
 ## NPDE plots
 
@@ -330,6 +330,13 @@ ETA_BOX:
   facets:
     scales: free_x
     nrow: 3.0
+  is.band: yes
+  band:
+    'yintercept':
+    - 0
+    - 0
+    linetype: 2.0
+    color: grey50
 
 ETA_MATRIX:
   ptype: ETA_PAIRS
@@ -345,10 +352,17 @@ ETA_CATS:
 ETA_CONTS:
   ptype: ETA_COV
   type: conts
+  facets:
+    scales: free
+  point:
+    color: grey50
+  correl:
+    colour: grey50
+    size: 5
   is.smooth: yes
   smooth:
     se: no
-    colour: red
+    color: black
     linetype: 1.0
     method: lm
   
