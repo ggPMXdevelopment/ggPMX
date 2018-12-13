@@ -574,10 +574,12 @@ get_plot_config <- function(ctr, pname) {
 #' @export
 get_data <- function(ctr, data_set = c(
                      "estimates", "predictions",
-                     "eta", "finegrid", "input","sim"
+                     "eta", "finegrid", "input","sim",
+                     "individual"
                    )) {
   assert_that(is_pmxclass(ctr))
   ## data_set <- match.arg(data_set)
+  if(data_set=="individual") data_set <- "IND"
   if (data_set == "input") {
     copy(ctr[["input"]])
   } else {

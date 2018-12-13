@@ -53,7 +53,7 @@
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
 #' @return ggplot2 object
-#' @example inst/examples/residual.R
+#' @example inst/examples/distribution.R
 
 
 NULL
@@ -65,7 +65,6 @@ NULL
 #' Eta Distribution boxplot
 #' @family eta_distribution_plot
 #' @rdname eta_distribution_plot
-#' @example inst/examples/distribution.R
 #' @export
 
 
@@ -83,7 +82,6 @@ pmx_plot_eta_box <-
 #' @export
 #' @family eta_distribution_plot
 #' @rdname eta_distribution_plot
-#' @example inst/examples/distribution.R
 #' @export
 
 pmx_plot_eta_hist <-

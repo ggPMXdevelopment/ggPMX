@@ -325,7 +325,7 @@ ETA_BOX:
     title: EBE distribution
     subtitle: ''
     x: 'Estimated eta'
-    'y': 'Density'
+    'y': ''
     legend: Random effect
   facets:
     scales: free_x

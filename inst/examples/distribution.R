@@ -3,7 +3,7 @@
 
 ctr <- theophylline()
 ## boxplot variation
-p <- ctr %>% pmx_plot_eta_hist()
+p <- ctr %>% pmx_plot_eta_box
 ## histogram variation
 p <- ctr %>% pmx_plot_eta_hist()
 
