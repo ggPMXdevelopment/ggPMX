@@ -20,7 +20,8 @@ pmx_filter <-
            "eta",
            "finegrid",
            "shrink",
-           "input"
+           "input",
+           "individual"
          ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)
@@ -29,6 +30,8 @@ pmx_filter <-
       pmx_exp <- expression(pmx_exp)
     }
     if (!is.null(substitute(pmx_exp))) {
+      if(data_set=="individual") data_set <- "IND"
+      
       filter <- deparse(substitute(pmx_exp))
       filter <- local_filter(filter)
       oldData <- ctr[["data"]][[data_set]]
