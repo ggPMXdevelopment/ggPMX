@@ -15,7 +15,7 @@ params:
   title: ggPMX standing report
 ---
 ---
-subtitle: `r basename(params$ctr$input_file) `
+subtitle: `r dirname(params$ctr$input_file) `
 title: `r params$title `
 ---
 

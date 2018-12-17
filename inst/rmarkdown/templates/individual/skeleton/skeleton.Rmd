@@ -17,7 +17,7 @@ params:
 ---
 
 ---
-subtitle: `r basename(params$ctr$input_file) `
+subtitle: `r direname(params$ctr$input_file) `
 title: `r params$title `
 ---
 
