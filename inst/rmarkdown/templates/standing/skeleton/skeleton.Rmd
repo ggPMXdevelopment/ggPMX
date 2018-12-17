@@ -140,7 +140,7 @@ ctr %>% pmx_plot_cats("npde_time")
 ```
 \newpage
 
-## IWRES vs TIIME by categorical covariates
+## IWRES vs TIME by categorical covariates
 ```{r iwres_time_strats,fig.align="center"}
 ctr %>% pmx_plot_cats("iwres_time")
 ```
