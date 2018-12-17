@@ -24,9 +24,9 @@ eta_pairs <- function(
                       text_color="black",
                       is.shrink=TRUE,
                       is.smooth=TRUE,
-                      smooth = list(se = FALSE, linetype = 2, size = 1.5, method = "loess", colour = "black"),
-                      point = list(shape = 1, size = 1, colour = "black"),
-                      shrink=list(fun = "sd", size = 5),
+                      smooth = NULL,
+                      point = NULL,
+                      shrink=NULL,
                       is.hline=FALSE,
                       hline=NULL,
                       ...) {
@@ -66,10 +66,9 @@ eta_pairs <- function(
 
 lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline) {
   p <-
-    ggplot(data = data, aes_string(x = x, y = y)) +
-    with(point, geom_point(shape = shape, size = size, colour = colour))
+    ggplot(data = data, aes_string(x = x, y = y)) + do.call(geom_point,point)
   if (is.smooth) {
-    p <- p + with(smooth, geom_smooth(method = method, se = se, size = size, colour = colour))
+    p <- p + do.call(geom_smooth, smooth)
   }
 
   if (is.hline) {

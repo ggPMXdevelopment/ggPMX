@@ -274,6 +274,7 @@ vpc.data <-
 bin_idv <- function(idv, x) {
   brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
   if (max(brks) > max(idv)) brks[which.max(brks)] <- max(idv)
+  if (min(brks) < min(idv)) brks[which.min(brks)] <- min(idv)
   brks
 }
 

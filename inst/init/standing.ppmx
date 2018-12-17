@@ -41,6 +41,7 @@ IWRES_IPRED:
     colour: black
     size: 1.0
   is.hline: yes
+  is.band: yes
   is.smooth: yes
   smooth:
     se: no
@@ -253,7 +254,7 @@ INDIVIDUAL:
   point:
     colour: black
     shape : 21
-    size: 1
+    size: 1.5
   is.legend: no
   facets:
     ncol: 3
@@ -324,8 +325,8 @@ ETA_BOX:
   labels:
     title: EBE distribution
     subtitle: ''
-    x: 'Estimated eta'
-    'y': ''
+    x: 'Model parameters'
+    'y': 'EBEs'
     legend: Random effect
   facets:
     scales: free_x
@@ -344,6 +345,20 @@ ETA_MATRIX:
   dname: eta
   type.eta: mode
   text_color: black
+  is.smooth: yes
+  point:
+    size: 1
+    colour: black
+  smooth:
+    se: FALSE
+    linetype: 1
+    size: 1.5
+    method: loess
+    colour: red
+  is.shrink: TRUE
+  shrink:
+    fun : sd
+    size: 5
   
 ETA_CATS:
   ptype: ETA_COV
@@ -355,7 +370,7 @@ ETA_CONTS:
   facets:
     scales: free
   point:
-    color: grey50
+    color: black
   correl:
     colour: grey50
     size: 5

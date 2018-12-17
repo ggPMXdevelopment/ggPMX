@@ -15,7 +15,7 @@ params:
   title: ggPMX standing report
 ---
 ---
-subtitle: `r params$ctr$input_file `
+subtitle: `r basename(params$ctr$input_file) `
 title: `r params$title `
 ---
 
@@ -67,7 +67,7 @@ ctr %>% pmx_plot_vpc
 
 # Supplementary diagnostics
 
-## Distribution of residuals
+## Distribution of IWRES
 
 ### QQ plot of IWRES
 ```{r iwres_qq, fig.height=5, fig.width=5}
@@ -83,14 +83,14 @@ ctr %>% pmx_plot_iwres_dens
 \newpage
 
 
-## Distribution of inter-individual random effects
+## EBE-based diagnostics
 
-### Correlation of random effects
-\blandscape
-```{r eta_matrix,out.width='1\\linewidth', fig.width=8, fig.height=6}
+### Distribution and correlation of EBEs
+
+```{r eta_matrix,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
 ctr %>% pmx_plot_eta_matrix
 ```
-\elandscape
+
 
 \newpage
 ### EBE vs discrete covariates
