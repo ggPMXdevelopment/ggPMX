@@ -33,5 +33,6 @@ identity_line:
 scale_x_log10: no
 scale_y_log10: no
 color.scales: ~
+is.legend: no
 
 

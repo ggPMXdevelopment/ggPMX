@@ -249,9 +249,11 @@ INDIVIDUAL:
   ipred_line:
     colour: black
     size: 1
+    linetype: 2
   pred_line:
     colour: black
     size: 1
+    linetype: 1
   point:
     colour: black
     shape : 21

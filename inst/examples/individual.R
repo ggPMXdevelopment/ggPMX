@@ -35,6 +35,14 @@ ctr %>% pmx_plot_individual(
 )
 
 
+## legend
+
+p <- ctr %>% pmx_plot_individual(
+  is.legend=TRUE,
+  point=list(shape=20),
+  pred_line=list(linetype=6),
+  pred_line=list(linetype=3)
+)
 
 # # stratification  ----------------------------------
 #
@@ -68,3 +76,4 @@ p <- ctr %>% pmx_plot_individual(
   facets = list(nrow = 5, ncol = 5),
   labels = list(title = "My individuals",x='my time',y='PD data')
 ) 
+
