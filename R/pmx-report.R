@@ -79,6 +79,7 @@ pmx_report <-
     envir$ctr <- contr
     params <- list(ctr = contr, ...)
     if (!missing(title)) params$title <- title
+    else params$title  <- "ggPMX standing report"
     suppressWarnings(render(
       res, "all", params = params, envir = envir,
       output_dir = save_dir, clean = clean, quiet = TRUE

@@ -12,7 +12,7 @@ output:
 ---
 params:
   ctr: ""
-  title: ggPMX standing report
+  title: ""
 ---
 ---
 subtitle: `r dirname(params$ctr$input_file) `
