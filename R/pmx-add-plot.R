@@ -201,7 +201,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     .settings_x(self) %>%
     .bloq_x(self) %>%
     .vpc_x(self)
-
+  
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)
   invisible(self)

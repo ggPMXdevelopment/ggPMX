@@ -70,6 +70,7 @@ IWRES_TIME:
     size: 1.0
   is.hline: yes
   is.smooth: yes
+  is.band: yes
   smooth:
     se: no
     colour: red
@@ -346,9 +347,13 @@ ETA_MATRIX:
   type.eta: mode
   text_color: black
   is.smooth: yes
+  is.hline: yes
+  hline: 
+    linetype: 2.0
   point:
     size: 1
     colour: black
+    shape: 21
   smooth:
     se: FALSE
     linetype: 1
@@ -370,16 +375,25 @@ ETA_CONTS:
   facets:
     scales: free
   point:
+    shape: 21
     color: black
   correl:
-    colour: grey50
+    colour: black
     size: 5
   is.smooth: yes
   smooth:
     se: no
+    size: 1
     color: black
     linetype: 1.0
     method: lm
+  is.band: yes
+  band:
+    'yintercept':
+    - 0
+    - 0
+    linetype: 2.0
+
   
 ETA_QQ:
   ptype: PMX_QQ
