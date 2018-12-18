@@ -120,12 +120,19 @@ pmx_mlx <-
 
 #' Create a controller from mlxtran file
 #'
-#' @param file_name mlxtran file
+#' @param file_name \code{character} mlxtran file path.
 #' @param call \code{logical} if TRUE the result is the parameters parsed
 #' @param ... extra arguments passed to pmx_mlx.
 #' @rdname pmx
 #'
 #' @export
+#' @details
+#' 
+#' \code{pmx_mlxtran} parses mlxtran file and guess \code{\link{pmx_mlx}} arguments. In case of 
+#' multi endpoint the first endpoint is selected. You can though set the endpoint through the same argument.
+#' When you set \code{call=TRUE},no controller is created but only the parameters parsed
+#' by mlxtran. This can be very helpful, in case you would like to customize parameters
+#' (adding settings vi pmx_settings, chnag eth edefault endpoint.)
 
 pmx_mlxtran <- function(file_name, config="standing", call=FALSE, endpoint, ...) {
   params <- parse_mlxtran(file_name)

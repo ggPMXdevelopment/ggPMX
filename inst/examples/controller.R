@@ -42,5 +42,23 @@ ctr <- pmx(
 mlxtran_file <- file.path(system.file(package = "ggPMX"), "testdata","1_popPK_model","project.mlxtran")
 pmx_mlxtran(mlxtran_file)
 
+## mlxtran , call =TRUE to get the pmx_mlx argument parsed by  pmx_mlxtran
+params <- pmx_mlxtran(mlxtran_file,call=TRUE)
 
+str(params)
+# $ directory: chr results_pathile 
+# $ input    : chr observation file path
+# $ dv       : chr "DV"
+# $ cats     : chr [1:4] "SEX" "RACE" "DISE" "ILOW"
+# $ conts    : chr [1:4] "AGE0" "WT0" "HT0" "TRT"
+# $ occ      : chr "ISS"
+# $ dvid     : chr "YTYPE"
+# $ endpoint :List of 5
+# ..$ code     : chr "1"
+# ..$ label    : chr ""
+# ..$ unit     : chr ""
+# ..$ file.code: chr "1"
+# ..$ trans    : NULL
+# ..- attr(*, "class")= chr "pmxEndpointClass"
+# $ config   : chr "standing"
 ## }
