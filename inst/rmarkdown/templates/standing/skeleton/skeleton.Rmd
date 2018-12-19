@@ -13,7 +13,7 @@ params:
   title: ""
 ---
 ---
-subtitle: `r dirname(params$ctr$input_file)`
+subtitle: `r params$ctr$save_dir`
 title: `r params$title `
 ---
 
