@@ -142,7 +142,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
     value <- variable <- NULL
     conts <- x[["conts"]]
     if (all(nzchar(x[["conts"]]))) {
-      dx.conts <- dx[, c(conts, "VALUE", "EFFECT"), with = FALSE]
+      dx.conts <- unique(dx[, c(conts, "VALUE", "EFFECT"), with = FALSE])
       dx.conts <- melt(dx.conts, id = c("VALUE", "EFFECT"))
       if (!is.null(x$covariates)) {
         dx.conts <-
@@ -162,13 +162,21 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
       if (x$show.correl) {
         df_cor <-
           dx.conts[
-            , "corr" := round(cor(get("value"), get("VALUE"), use = "na.or.complete"), 3)
+            , list(corr= round(cor(get("value"), get("VALUE"), use = "na.or.complete"), 3))
             , "EFFECT,variable"
           ]
         
+        corr_eqn <- function(x){
+          eq <- substitute(italic(corr) == a , list(a = x))
+          as.character(as.expression(eq))
+        }
+        
+        df_cor[,corr_exp:=corr_eqn(corr), "EFFECT,variable"]
+        
         correl_obj <- list(
+          data=df_cor,
           x = -Inf, y = Inf, hjust = -0.2, vjust = 1.2,
-          mapping = aes(label = sprintf('corr=%s',corr))
+          mapping = aes(label = corr_exp),parse=TRUE
         )
         correl_obj <- l_left_join(x$correl,correl_obj)
         p <- p + do.call("geom_text",correl_obj)

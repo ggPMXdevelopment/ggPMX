@@ -3,8 +3,6 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   pdf_document:
     toc: true
-    includes:
-        in_header: header.tex 
   word_document:
     toc: true
 ---
@@ -17,7 +15,7 @@ params:
 ---
 
 ---
-subtitle: `r direname(params$ctr$input_file) `
+subtitle: `r params$ctr$save_dir `
 title: `r params$title `
 ---
 

@@ -3,8 +3,6 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   pdf_document:
     toc: true
-    includes:
-        in_header: header.tex 
   word_document:
     toc: true
 ---
@@ -15,11 +13,12 @@ params:
   title: ""
 ---
 ---
-subtitle: `r dirname(params$ctr$input_file) `
+subtitle: `r params$ctr$save_dir`
 title: `r params$title `
 ---
 
 ```{r setup, include=FALSE}
+library(ggplot2)
 knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 cats <- ctr %>% get_cats
 
@@ -29,37 +28,37 @@ cats <- ctr %>% get_cats
 # Key model diagnostics
 
 ## NPDE vs PRED
-```{r npde_pred}
+```{r npde_pred,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_npde_pred
 ```
 \newpage
 
 ## NPDE vs TIME
-```{r npde_time}
+```{r npde_time,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_npde_time
 ```
 \newpage
 
 ## IWRES vs IPRED
-```{r iwres_ipred}
+```{r iwres_ipred,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_iwres_ipred
 ```
 \newpage
 
 ## IWRES vs TIME
-```{r iwres_time}
+```{r iwres_time,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_iwres_time
 ```
 \newpage
 
 ## Distribution of random effects 
 ```{r eta_box,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
-ctr %>% pmx_plot_eta_box 
+ctr %>% pmx_plot_eta_box
 ```
 \newpage
 
 ## VPC
-```{r vpc,fig.align="center",fig.height=10, fig.width=10}
+```{r vpc,fig.align="center",fig.height=6, fig.width=7}
 ctr %>% pmx_plot_vpc
 ```
 
@@ -70,7 +69,7 @@ ctr %>% pmx_plot_vpc
 ## Distribution of IWRES
 
 ### QQ plot of IWRES
-```{r iwres_qq, fig.height=5, fig.width=5}
+```{r iwres_qq, fig.height=7, fig.width=7}
 ctr %>% pmx_plot_iwres_qq
 ```
 
@@ -94,18 +93,18 @@ ctr %>% pmx_plot_eta_matrix
 
 \newpage
 ### EBE vs discrete covariates
-```{r eta_cats,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
+```{r eta_cats,message=FALSE,fig.align="center",fig.height=9, fig.width=7}
 ctr %>% pmx_plot_eta_cats
 ```
 \newpage
 
 ### EBE vs continuous covariates
-```{r eta_conts,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
+```{r eta_conts,message=FALSE,fig.align="center",fig.height=9, fig.width=7}
 ctr %>%  pmx_plot_eta_conts
 ```
 \newpage
 
-## Observations versus predictions and supplementary residual plots
+## Observations vs predictions
 
 ### DV vs PRED
 ```{r dv_pred, fig.height=7, fig.width=7}
@@ -119,15 +118,17 @@ ctr %>% pmx_plot_dv_ipred
 ```
 \newpage
 
+## Residual plots
+
 ### |IWRES| vs IPRED
-```{r dv_abs_iwres_ipred}
+```{r dv_abs_iwres_ipred,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_abs_iwres_ipred
 ```
 \newpage
 
-# Individual plots
+# Individual plots (selection)
 
-```{r indiv,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
+```{r indiv,message=FALSE,fig.align="center",fig.height=10, fig.width=8}
  ctr %>% pmx_plot_individual
 ```
 \newpage

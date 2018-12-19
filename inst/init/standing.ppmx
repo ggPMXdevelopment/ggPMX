@@ -258,7 +258,6 @@ INDIVIDUAL:
     colour: black
     shape : 21
     size: 1.5
-  is.legend: no
   facets:
     ncol: 3
     nrow: 4
@@ -276,6 +275,7 @@ INDIVIDUAL:
     colour: pink
     size: 2.0
     alpha: 0.9
+  is.legend: yes
     
 ## Eta plots
     
@@ -313,10 +313,10 @@ ETA_BOX:
   is.jitter: yes
   jitter:
     shape: 1.0
-    colour: grey50
+    colour: black
     width: 0.1
     height: 0.1
-    alpha: 0.3
+    alpha: 0.6
   is.shrink: yes
   shrink:
     fun: sd

@@ -486,7 +486,7 @@ pmx_vpc <- function(
       type = type,
       facets = facets,
       obs = obs, pi = pi, ci = ci, rug = rug, bin = bin,
-      gp = pmx_gpar(labels = labels, ...)
+      gp = pmx_gpar(labels = labels,is.legend=is.legend, ...)
     ),
     class = c("pmx_vpc", "pmx_gpar")
   )

@@ -64,7 +64,7 @@ eta_pairs <- function(
 }
 
 
-lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline) {
+lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline,ymax) {
   p <-
     ggplot(data = data, aes_string(x = x, y = y)) + do.call(geom_point,point)
   if (is.smooth) {
@@ -75,7 +75,7 @@ lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline
     hline <- l_left_join(list(yintercept = 0), hline)
     p <- p + do.call(geom_hline, hline)
   }
-
+  p <- p + scale_y_continuous(limits = c(-ymax,ymax))
   plot_pmx(gp, p)
 }
 
@@ -114,7 +114,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
           lower.plot(
             dx, x = z[1], y = z[2], point = point,
             is.smooth = is.smooth, smooth = smooth, gp = gp,
-            is.hline, hline
+            is.hline, hline,max(dx[,z[2],with=FALSE],na.rm=TRUE)
           )
         }
       )
