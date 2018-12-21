@@ -22,7 +22,7 @@ before_add_check <- function(self, private, x, pname) {
   }
   assert_that(is.data.table(dx))
   x$input <- self %>% get_data("input")
-
+  
   x$dx <- dx
   x
 }
@@ -171,16 +171,8 @@ before_add_check <- function(self, private, x, pname) {
       }
     }
   }
-
+  
   invisible(x)
-}
-
-
-
-find_interval <- function(x, vec, ...) {
-  levels <- seq_along(vec)
-  labels <- as.character(vec)
-  as.numeric(as.character(factor(findInterval(x, vec, ...), levels = levels, labels = labels)))
 }
 
 

@@ -1,17 +1,20 @@
 ---
-title: "This is a custom ggPMX report"
-author: "TODO"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   pdf_document:
-    fig_caption: true
     toc: true
-    includes:
-        in_header: header.tex 
   word_document:
     toc: true
+---
+
+---
 params:
   ctr: ""
-
+  title: ""
+---
+---
+subtitle: `r params$ctr$save_dir`
+title: `r params$title `
 ---
 
 ```{r setup, include=FALSE,fig.cap="toto"}

@@ -243,9 +243,11 @@ vpc.data <-
            idv = "time",
            irun="stu",
            dv="y",
-           strat = NULL) {
+           strat = NULL,
+           rug=NULL) {
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
-    rug <- data.frame(x = bins, y = NA_real_, stringsAsFactors = FALSE)
+    if (is.null(rug))
+      rug <- data.frame(x = bins, y = NA_real_, stringsAsFactors = FALSE)
 
     if (type == "percentile") {
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
@@ -273,15 +275,29 @@ vpc.data <-
 
 bin_idv <- function(idv, x) {
   brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
-  if (max(brks) > max(idv)) brks[which.max(brks)] <- max(idv)
-  if (min(brks) < min(idv)) brks[which.min(brks)] <- min(idv)
+  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv)
+  if (min(brks) <= min(idv)) brks[which.min(brks)] <- min(idv)
   brks
 }
+
+
+
+find_interval <- function(x, vec, labels=NULL,...) {
+  levels <- seq_along(vec)
+  
+  vals <- findInterval(x, vec, rightmost.closed = TRUE,...)
+  if(!is.null(labels))
+    as.numeric(as.character(factor(vals, levels = unique(vals), labels = labels)))
+  else ave(x,vals,FUN=median)
+}
+
+
 
 .vpc_x <- function(x, self) {
   if (x$ptype == "VPC") {
     x$dv <- self$dv
     idv <- self$sim[["idv"]]
+    rug=NULL
     if (!is.null(x$bin)) {
       if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
         x$bin$within_strat <- NULL
@@ -296,9 +312,10 @@ bin_idv <- function(idv, x) {
           find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
         }, c(x$strat.facet)]
       } else {
-        bins <- x$input[, bin_idv(get(idv), x)]
-        x$input[, bin := find_interval(get(idv), bins)]
-        x$dx[, bin := find_interval(get(idv), bins)]
+        rugs <- x$input[, bin_idv(get(idv), x)]
+        x$input[, bin := find_interval(get(idv), rugs)]
+        x$dx[, bin := find_interval(get(idv), rugs,labels=unique(x$input[, bin]))]
+        rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
       }
     }
     res <- vpc.data(
@@ -310,7 +327,8 @@ bin_idv <- function(idv, x) {
       idv = if (!is.null(x$bin)) "bin" else self$sim[["idv"]],
       irun = self$sim[["irun"]],
       dv = self$dv,
-      strat = x$strat.facet
+      strat = x$strat.facet,
+      rug=rug
     )
     old_class <- class(x)
     x$db <- res

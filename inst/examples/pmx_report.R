@@ -41,13 +41,7 @@ ctr %>% pmx_report(
   format="plots")
 
 
-##  case5: use a custom template 
-ctr <- theophylline(settings = pmx_settings(use.titles = FALSE))
-ctr %>% pmx_report(
-      name = "my_report",
-      save_dir = report_dir,
-      template="standing_with_header",
-      format="both")
+
 
 
 ##  case6: dynamic edit
