@@ -132,7 +132,10 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
       if (any(diff(fixedBreaks) < 0)) stop("decreasing fixedBreaks found")
       fixedBreaks[1] <- max(fixedBreaks[1], min(var))
       fixedBreaks[length(fixedBreaks)] <- min(fixedBreaks[length(fixedBreaks)], max(var))
-
+      if(fixedBreaks[1]> min(var))
+        fixedBreaks <- c(min(var),fixedBreaks)
+      if(fixedBreaks[length(fixedBreaks)]< max(var))
+        fixedBreaks <- c(fixedBreaks,max(var))
       brks <- fixedBreaks
     } else if (style == "sd") {
       svar <- scale(var)
