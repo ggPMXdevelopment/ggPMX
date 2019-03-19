@@ -236,6 +236,10 @@ mlx18_iwres <- function(x) {
 
 read_mlx_pred <- function(path, x, ...) {
   ID <- OCC <- NULL
+  if (!file.exists(path)) {
+    message(sub(".txt", "", x[["file"]]), " file do not exist")
+    return(NULL)
+  }
   xx <- pmx_fread(path)
   setnames(xx, tolower(names(xx)))
   id_col <- grep("^id", names(xx), ignore.case = TRUE, value = TRUE)
@@ -285,6 +289,10 @@ read_mlx18_res <- function(path, x, ...) {
       fpath <- ffiles[grep(x$endpoint, basename(ffiles))][1]
     } else {
       fpath <- ffiles[1]
+    }
+    if (is.na(fpath)){
+      message(sub(".txt", "", x[["file"]]), " file do not exist")
+      return(NULL)
     }
     cat("use ", basename(fpath), " as ", x$label, ".\n", sep = "")
     fpath
