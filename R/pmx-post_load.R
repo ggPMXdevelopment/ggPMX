@@ -42,7 +42,7 @@ post_load_eta <- function(ds, input, sys, occ) {
     stop("error cannot merge eta data with the modelling input: no individual match")
   }
   ## put in the long format
-  measures <- grep("_.*_", names(ds))
+  measures <- grep("eta_.*_", names(ds))
   if (length(measures) == 0) {
     message("NO random effect found")
     return(ds)
