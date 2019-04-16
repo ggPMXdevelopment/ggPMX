@@ -5,4 +5,4 @@ This is a temprary repository. ggPMX code is stilleprivate (under github). We wi
 
 ## Feedback
 
-- Please github [issues](!https://github.com/ggPMXdevelopment/ggPMX/issues) to fill your feedback.
+- Please use [ package issues](https://github.com/ggPMXdevelopment/ggPMX/issues) to fill your feedback.
