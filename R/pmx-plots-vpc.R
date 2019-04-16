@@ -1,10 +1,10 @@
 
 #' VPC plot
-#' 
-#' @details 
+#'
+#' @details
 #' You can use \link{pmx_vpc_bin} to set the bin parameters. In case of stratification,
-#' binning can be different for each strat level (case \code{within_strat} equal to FALSE). 
-#' 
+#' binning can be different for each strat level (case \code{within_strat} equal to FALSE).
+#'
 
 
 #' @param ctr pmx controller
@@ -67,11 +67,16 @@
 #' @family vpc
 
 #' @example inst/examples/vpc.R
-#' 
+#'
 
 
-pmx_plot_vpc <- function(ctr, ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
-  params$is.smooth <- FALSE
-  wrap_pmx_plot_generic(ctr, "pmx_vpc", params)
-}
+pmx_plot_vpc <-
+  function(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, dname, filter,
+           strat.facet, facets, strat.color, trans, pmxgpar, labels,
+           axis.title, axis.text, ranges, is.smooth, smooth, is.band,
+           band, is.draft, draft, is.identity_line, identity_line,
+           scale_x_log10, scale_y_log10, color.scales, ...) {
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params$is.smooth <- FALSE
+    wrap_pmx_plot_generic(ctr, "pmx_vpc", params)
+  }

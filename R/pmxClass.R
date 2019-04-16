@@ -6,7 +6,7 @@
 #' @param idv \code{character} name of the ind. variable
 #' @export
 
-#' @example inst/examples/vpc.R 
+#' @example inst/examples/vpc.R
 pmx_sim <- function(
                     file,
                     irun,
@@ -127,8 +127,8 @@ pmx_mlx <-
 #'
 #' @export
 #' @details
-#' 
-#' \code{pmx_mlxtran} parses mlxtran file and guess \code{\link{pmx_mlx}} arguments. In case of 
+#'
+#' \code{pmx_mlxtran} parses mlxtran file and guess \code{\link{pmx_mlx}} arguments. In case of
 #' multi endpoint the first endpoint is selected. You can though set the endpoint through the same argument.
 #' When you set \code{call=TRUE},no controller is created but only the parameters parsed
 #' by mlxtran. This can be very helpful, in case you would like to customize parameters
@@ -152,7 +152,7 @@ pmx_mlxtran <- function(file_name, config="standing", call=FALSE, endpoint, ...)
   }
 
   params$call <- NULL
-  
+
   do.call(pmx_mlx, params)
 }
 
@@ -226,18 +226,18 @@ pmx_settings <-
 #'
 #' @example inst/examples/endpoint.R
 #' @details
-#' In case of multiple endpoints, pkpd case for example, we need to pass endpoint to the pmx call.  
+#' In case of multiple endpoints, pkpd case for example, we need to pass endpoint to the pmx call.
 #' Internally , ggPMX will filter the observations data set to keep only rows satisfying \code{DVID==code}.
-#' The \code{code} is also used to find the right predictions and or fingrid files. 
-#' ggPMX use the configuration file to fine the path of the predictions file 
+#' The \code{code} is also used to find the right predictions and or fingrid files.
+#' ggPMX use the configuration file to fine the path of the predictions file
 #' (like the single endpoint case) and then filter the right file using the code parameter. \cr
 #' For example:
 #' \itemize{
-#' \item predictions\{code\}.txt for mlx16 
-#' \item predictions\{code\}.txt  and y\{code\}_residual for mlx18 
+#' \item predictions\{code\}.txt for mlx16
+#' \item predictions\{code\}.txt  and y\{code\}_residual for mlx18
 #' }
-#' 
-#' For some tricky examples the code parameter is not enough to find the files. In that case the 
+#'
+#' For some tricky examples the code parameter is not enough to find the files. In that case the
 #' \code{file.code} parameter is used to distinguish the endpoint files.
 
 pmx_endpoint <-
@@ -525,11 +525,12 @@ plot_names <- function(ctr) {
 #' @export
 
 plots <- function(ctr) {
+  existsF <- function(...) do.call("existsFunction", list(...))
   assert_that(is_pmxclass(ctr))
   x <- ctr$config
   function_name <- function(nn) {
     fn <- sprintf("pmx_plot_%s", nn)
-    if (!existsFunction(fn, where = asNamespace("ggPMX"))) {
+    if (!existsF(fn, where = asNamespace("ggPMX"))) {
       fn <- sprintf("pmx_plot('%s',...)", nn)
     }
     fn
@@ -581,12 +582,12 @@ get_plot_config <- function(ctr, pname) {
 #' @export
 get_data <- function(ctr, data_set = c(
                      "estimates", "predictions",
-                     "eta", "finegrid", "input","sim",
+                     "eta", "finegrid", "input", "sim",
                      "individual"
                    )) {
   assert_that(is_pmxclass(ctr))
   ## data_set <- match.arg(data_set)
-  if(data_set=="individual") data_set <- "IND"
+  if (data_set == "individual") data_set <- "IND"
   if (data_set == "input") {
     copy(ctr[["input"]])
   } else {

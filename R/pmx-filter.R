@@ -30,8 +30,8 @@ pmx_filter <-
       pmx_exp <- expression(pmx_exp)
     }
     if (!is.null(substitute(pmx_exp))) {
-      if(data_set=="individual") data_set <- "IND"
-      
+      if (data_set == "individual") data_set <- "IND"
+
       filter <- deparse(substitute(pmx_exp))
       filter <- local_filter(filter)
       oldData <- ctr[["data"]][[data_set]]

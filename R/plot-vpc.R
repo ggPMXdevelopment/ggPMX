@@ -221,6 +221,7 @@ pmx_vpc_rug <-
 
 quantile_dt <-
   function(dx, grp="time", ind="y", probs=c(.05, .95), prefix="p", wide=FALSE) {
+    percentile <- NULL
     probs <- sort(unique(c(0.5, probs)))
     fmt <- ifelse(probs < .1, paste0(prefix, "0%1.f"), paste0(prefix, "%1.f"))
     probs.n <- sprintf(fmt, probs * 100)
@@ -245,9 +246,11 @@ vpc.data <-
            dv="y",
            strat = NULL,
            rug=NULL) {
+    zmax <- zmin <- out_ <- value <- NULL
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
-    if (is.null(rug))
+    if (is.null(rug)) {
       rug <- data.frame(x = bins, y = NA_real_, stringsAsFactors = FALSE)
+    }
 
     if (type == "percentile") {
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
@@ -282,13 +285,15 @@ bin_idv <- function(idv, x) {
 
 
 
-find_interval <- function(x, vec, labels=NULL,...) {
+find_interval <- function(x, vec, labels=NULL, ...) {
   levels <- seq_along(vec)
-  
-  vals <- findInterval(x, vec, rightmost.closed = TRUE,...)
-  if(!is.null(labels))
+
+  vals <- findInterval(x, vec, rightmost.closed = TRUE, ...)
+  if (!is.null(labels)) {
     as.numeric(as.character(factor(vals, levels = unique(vals), labels = labels)))
-  else ave(x,vals,FUN=median)
+  } else {
+    stats::ave(x, vals, FUN = stats::median)
+  }
 }
 
 
@@ -297,7 +302,7 @@ find_interval <- function(x, vec, labels=NULL,...) {
   if (x$ptype == "VPC") {
     x$dv <- self$dv
     idv <- self$sim[["idv"]]
-    rug=NULL
+    rug <- bin <- brks <- NULL
     if (!is.null(x$bin)) {
       if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
         x$bin$within_strat <- NULL
@@ -314,7 +319,7 @@ find_interval <- function(x, vec, labels=NULL,...) {
       } else {
         rugs <- x$input[, bin_idv(get(idv), x)]
         x$input[, bin := find_interval(get(idv), rugs)]
-        x$dx[, bin := find_interval(get(idv), rugs,labels=unique(x$input[, bin]))]
+        x$dx[, bin := find_interval(get(idv), rugs, labels = unique(x$input[, bin]))]
         rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
       }
     }
@@ -328,7 +333,7 @@ find_interval <- function(x, vec, labels=NULL,...) {
       irun = self$sim[["irun"]],
       dv = self$dv,
       strat = x$strat.facet,
-      rug=rug
+      rug = rug
     )
     old_class <- class(x)
     x$db <- res
@@ -504,7 +509,7 @@ pmx_vpc <- function(
       type = type,
       facets = facets,
       obs = obs, pi = pi, ci = ci, rug = rug, bin = bin,
-      gp = pmx_gpar(labels = labels,is.legend=is.legend, ...)
+      gp = pmx_gpar(labels = labels, is.legend = is.legend, ...)
     ),
     class = c("pmx_vpc", "pmx_gpar")
   )

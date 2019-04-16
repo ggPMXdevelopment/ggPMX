@@ -1,4 +1,4 @@
-#' This is a generic plot method that produces all plots by default described in pmx model 
+#' This is a generic plot method that produces all plots by default described in pmx model
 #' evaluation guidance.
 #'
 #' @param x  object to plot

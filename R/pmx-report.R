@@ -22,6 +22,7 @@
 #' @details
 #' \code{pmx_report} uses pre-defined template .Rmd to generate the report.
 #' The idea is to pass the controller as a report argument using knitr \code{params} artifact.
+
 #' @example inst/examples/pmx_report.R
 
 pmx_report <-
@@ -78,8 +79,11 @@ pmx_report <-
     envir <- new.env()
     envir$ctr <- contr
     params <- list(ctr = contr, ...)
-    if (!missing(title)) params$title <- title
-    else params$title  <- "ggPMX standing report"
+    if (!missing(title)) {
+      params$title <- title
+    } else {
+      params$title <- "ggPMX standing report"
+    }
     suppressWarnings(render(
       res, "all", params = params, envir = envir,
       output_dir = save_dir, clean = clean, quiet = TRUE

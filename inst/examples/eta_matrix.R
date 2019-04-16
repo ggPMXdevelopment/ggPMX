@@ -1,5 +1,5 @@
 
-
+\dontrun{
 
 # basic use  ---------------------------------------
 
@@ -41,3 +41,4 @@ ctr %>% pmx_plot_eta_matrix(strat.facet = "SEX")
 
 ## we can use any expression involving the data
 ctr %>% pmx_plot_eta_matrix(filter = EFFECT%in%  c("Cl","ka"))
+}

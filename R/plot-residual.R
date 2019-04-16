@@ -140,11 +140,11 @@ plot_pmx.residual <- function(x, dx, ...) {
         coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)
     }
-    
-    
-    if (aess$y %in% c("NPDE","IWRES") && ! gp$scale_y_log10 && is.null(x$trans)) {
-      mm <- max(dx[,aess$y,with=FALSE],na.rm = TRUE)
-      gp$ranges <- list(y=c(-mm,mm))
+
+
+    if (aess$y %in% c("NPDE", "IWRES") && !gp$scale_y_log10 && is.null(x$trans)) {
+      mm <- max(dx[, aess$y, with = FALSE], na.rm = TRUE)
+      gp$ranges <- list(y = c(-mm, mm))
     }
     p <- plot_pmx(gp, p)
 

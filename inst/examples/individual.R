@@ -1,5 +1,5 @@
 # basic use  ---------------------------------------
-
+\dontrun{
 ctr <- theophylline()
 ctr %>% pmx_plot_individual(npage = 1)
 ## multiple pages
@@ -48,13 +48,7 @@ p <- ctr %>% pmx_plot_individual(
 #
 # ## continuous stratification
 ctr %>% pmx_plot_individual(strat.color = "WT0")
-## categorical stratification
-ctr %>% pmx_plot_individual(strat.facet = "SEX", facets = list(nrow = 5, ncol = 5))
-## using formula notation
-ctr %>% pmx_plot_individual(strat.facet = STUD~SEX,
-                            facets=list(nrow=5,ncol=5),
-                            2)
-#
+
 # # subsetting  --------------------------------------
 #
 # ## we can use any expression involving the data
@@ -77,3 +71,4 @@ p <- ctr %>% pmx_plot_individual(
   labels = list(title = "My individuals",x='my time',y='PD data')
 ) 
 
+}

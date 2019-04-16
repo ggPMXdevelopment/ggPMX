@@ -52,9 +52,13 @@
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
 #' @return ggplot2 object
 #' @example inst/examples/qq.R
-
-
-NULL
+pmx_qq_plot <-
+  function(dname, point, is.reference_line, reference_line, is.shrink,
+           shrink, is.hline, hline, filter, strat.facet, facets,
+           strat.color, trans, pmxgpar, labels, axis.title, axis.text,
+           ranges, is.smooth, smooth, is.band, band, is.draft, draft,
+           is.identity_line, identity_line, scale_x_log10, scale_y_log10,
+           color.scales, ...) {}
 
 
 
@@ -64,8 +68,6 @@ NULL
 #' @family qqq
 #' @rdname pmx_qq_plot
 #' @export
-
-
 pmx_plot_iwres_qq <-
   function(ctr,
            ...) {

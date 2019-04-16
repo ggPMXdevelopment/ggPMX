@@ -54,7 +54,12 @@
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
 #' @return ggplot2 or list of ggplot2 objects
 #' @export
-pmx_plot_iwres_dens <- function(ctr, ...) {
+pmx_plot_iwres_dens <- function(ctr, dname, xlim, var_line, snd_line, vline, filter, strat.facet,
+                                facets, strat.color, trans, pmxgpar, labels, axis.title,
+                                axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
+                                draft, is.identity_line, identity_line, scale_x_log10,
+                                scale_y_log10, color.scales,
+                                ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   params$is.smooth <- FALSE
   wrap_pmx_plot_generic(ctr, "iwres_dens", params)

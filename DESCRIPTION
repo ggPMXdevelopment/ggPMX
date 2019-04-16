@@ -1,12 +1,14 @@
 Package: ggPMX
-Title: to be determined
+Title: PMX ggplot2-based tool to facilitate diagnostic plots for NLME models
 Description: A ggplot2-based tool to facilitate diagnostic plots for NLME
-    models.
+    models. You provide your model data, you tell ggPMX reader how to map variables, 
+    ggPMX will take care of the generating all diagnotic plots for you or  a single report.
 Version: 0.9.9.9-6
-Authors@R: c(person("Amine Gassem", "AG STUDY", email="conatct@ag-study.com", role="cre")
-           ,person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="aut"))
-URL: http://www.github.com/someuser/somerepo
-BugReports: http://www.github.com/someuser/somerepo/issues
+Authors@R: c(person("Amine", "Gassem", email="contact@ag-study.com", role=c("cre","aut"))
+           ,person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="aut"),
+           person("Novartis Pharma AG", role = c("cph")))
+URL: https://github.com/ggPMXdevelopment/ggPMX
+BugReports: https://github.com/ggPMXdevelopment/ggPMX/issues
 Depends:
     R (>= 3.2.3)
 Imports:
@@ -23,7 +25,7 @@ Imports:
     zoo,
     knitr,
     rmarkdown
-License: file LICENSE
+License: GPL-2
 LazyData: true
 Suggests:
     testthat,

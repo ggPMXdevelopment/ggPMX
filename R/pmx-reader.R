@@ -65,7 +65,7 @@ read_mlx18_ind_est <- function(path, x, ...) {
 #' @return data.table well formatted containing modelling input data
 #'
 read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", endpoint=NULL) {
-  TIME <- EVID <- MDV <- y <- NULL
+  TIME <- EVID <- MDV <- y <- DV <- NULL
   xx <- pmx_fread(ipath)
 
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
@@ -119,7 +119,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
     } else {
       xx[, DV := get(dv)]
     }
-    xx <- xx[DV!=0]
+    xx <- xx[DV != 0]
   } else {
     dv.names <- paste(setdiff(names(xx), c("ID", "id", "time", "TIME")), collapse = " or ")
     dv.names <- sprintf("'%s'", dv.names)
@@ -235,7 +235,7 @@ mlx18_iwres <- function(x) {
 #' @import data.table
 
 read_mlx_pred <- function(path, x, ...) {
-  ID <- OCC <- NULL
+  ID <- OCC <- id <- NULL
   if (!file.exists(path)) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
@@ -290,7 +290,7 @@ read_mlx18_res <- function(path, x, ...) {
     } else {
       fpath <- ffiles[1]
     }
-    if (is.na(fpath)){
+    if (is.na(fpath)) {
       message(sub(".txt", "", x[["file"]]), " file do not exist")
       return(NULL)
     }

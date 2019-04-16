@@ -124,6 +124,3 @@ pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
   if (length(sp) > 0 && print) invisible(lapply(sp, print))
   invisible(sp)
 }
-
-
-

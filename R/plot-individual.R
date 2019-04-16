@@ -31,10 +31,10 @@ individual <- function(labels,
   assert_that(is_list(facets))
   assert_that(is_string_or_null(dname))
   assert_that(is_list(labels))
-  
-  
+
+
   if (!use.finegrid) dname <- "predictions"
-  
+
   structure(list(
     ptype = "IND",
     strat = TRUE,
@@ -48,7 +48,7 @@ individual <- function(labels,
     pred_line = pred_line,
     facets = facets,
     bloq = bloq,
-    gp = pmx_gpar(labels = labels, is.legend=is.legend,...)
+    gp = pmx_gpar(labels = labels, is.legend = is.legend, ...)
   ), class = c("individual", "pmx_gpar"))
 }
 
@@ -74,7 +74,7 @@ plot_pmx.individual <-
     if (x$dname == "predictions") cat("USE predictions data set \n")
     strat.facet <- x[["strat.facet"]]
     strat.color <- x[["strat.color"]]
-    
+
     wrap.formula <- if (!is.null(strat.facet)) {
       wrap_formula(strat.facet, "ID")
     } else {
@@ -96,18 +96,18 @@ plot_pmx.individual <-
         ipred_line.lty <- ipred_line$linetype
         ipred_line$linetype <- NULL
         ipred_line$mapping <- aes(y = IPRED, linetype = "individual predictions")
-        values.lty = c("individual predictions"=as.integer(ipred_line.lty))
+        values.lty <- c("individual predictions" = as.integer(ipred_line.lty))
         do.call(geom_line, ipred_line)
       }
       p_pred <- if (!is.null(pred_line)) {
         pred_line.lty <- pred_line$linetype
         pred_line$linetype <- NULL
-        pred_line$mapping <- aes(y = PRED, linetype =  "population predictions")
-        values.lty <- c(values.lty,"population predictions"=as.integer(pred_line.lty))
+        pred_line$mapping <- aes(y = PRED, linetype = "population predictions")
+        values.lty <- c(values.lty, "population predictions" = as.integer(pred_line.lty))
         do.call(geom_line, pred_line)
       }
-      
-      
+
+
       p_bloq <- if (!is.null(bloq)) {
         bloq$data <- x$input[get(bloq$cens) != 0]
         bloq$data[, "y_end" := ifelse(get(bloq$cens) > 0, -Inf, Inf)]
@@ -122,26 +122,26 @@ plot_pmx.individual <-
         bloq$cens <- bloq$limit <- NULL
         do.call(geom_segment, bloq)
       }
-      
-      p <- ggplot(dx, aes(TIME, DV,shape="observations")) +
+
+      p <- ggplot(dx, aes(TIME, DV, shape = "observations")) +
         p_point + p_ipred + p_pred + p_bloq
-      
-   
+
+
       if (is.legend) {
-        p <-  p + scale_linetype_manual("",values = values.lty) +
-          guides(linetype=guide_legend(keywidth = 2)) +
-          scale_shape_manual("",values=c("observations"=point.shape))
+        p <- p + scale_linetype_manual("", values = values.lty) +
+          guides(linetype = guide_legend(keywidth = 2)) +
+          scale_shape_manual("", values = c("observations" = point.shape))
         gp$is.legend <- is.legend
       }
-      
+
       p <- plot_pmx(gp, p)
-      
+
       ## split pages
       npages <- ceiling(with(
         facets,
         length(unique(dx$ID)) / nrow / ncol
       ))
-      
+
       function(i) {
         res <- list()
         if (is.null(i)) i <- seq_len(npages)
@@ -157,6 +157,6 @@ plot_pmx.individual <-
         if (length(res) == 1) res[[1]] else res
       }
     })
-    
+
     get_page
   }

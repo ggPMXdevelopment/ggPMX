@@ -339,7 +339,7 @@ parse_mlxtran <- function(file_name) {
 #' @export
 pk_pd <- function(code = "3") {
   file.code <- switch(code,
-    "3" = "1",    
+    "3" = "1",
     "4" = "2"
   )
 
@@ -369,3 +369,6 @@ pk_pd <- function(code = "3") {
     endpoint = ep
   )
 }
+
+
+quantile <- function(...) do.call(stats::quantile, list(...))

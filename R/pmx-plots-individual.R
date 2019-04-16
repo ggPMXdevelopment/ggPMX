@@ -69,6 +69,8 @@ add_footnote <- function(pp, pname, save_dir) {
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
+#' @param print  \code{logical} if TRUE the ouptut will be a print not a ggplot2. This
+#' is useful for rmarkdwon output to avoid verbose list index print.
 #' @return ggplot2 or list of ggplot2 objects
 #' @example inst/examples/individual.R
 #' @export
@@ -77,6 +79,11 @@ pmx_plot_individual <-
            ctr,
            npage=1,
            print=FALSE,
+           dname, pred_line, ipred_line, point, is.legend, use.finegrid,
+           bloq, filter, strat.facet, facets, strat.color, trans,
+           pmxgpar, labels, axis.title, axis.text, ranges, is.smooth,
+           smooth, is.band, band, is.draft, draft, is.identity_line,
+           identity_line, scale_x_log10, scale_y_log10, color.scales,
            ...) {
     stopifnot(is_pmxclass(ctr))
     if (!"individual" %in% (ctr %>% plot_names())) return(NULL)

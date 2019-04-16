@@ -160,9 +160,10 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
     p <- p + do.call("facet_wrap", c(strat.facet, x$facets))
   }
 
-  if (x$is.shrink && !is.null(x[["shrink.dx"]])) 
+  if (x$is.shrink && !is.null(x[["shrink.dx"]])) {
     p <- p + shrinkage_layer(x[["shrink.dx"]], x$shrink, "box", strat.color)
-  
+  }
+
   ## if (x$is.hline) p <- p + do.call(geom_hline, x$hline)
 
   p

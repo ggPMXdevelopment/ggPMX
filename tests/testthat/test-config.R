@@ -22,5 +22,5 @@ test_that("can print loaded config", {
 
 
 test_that("return NULL if bad config name is provided", {
-  expect_identical(load_config("BAD_CONFIG_NAME"),NULL)
+  expect_identical(load_config("BAD_CONFIG_NAME"), NULL)
 })

@@ -51,9 +51,15 @@
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
 #' @return ggplot2 object
 #' @example inst/examples/eta_cov.R
+dummy <-
+  function(dname, show.correl, correl, point, facets, filter,
+           strat.facet, strat.color, trans, pmxgpar, labels, axis.title,
+           axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
+           draft, is.identity_line, identity_line, scale_x_log10,
+           scale_y_log10, color.scales) {
 
+  }
 
-NULL
 
 
 

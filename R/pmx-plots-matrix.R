@@ -47,8 +47,6 @@
 #' @param axis.text \code{list} containing element_text attributes to customize
 #' the axis text (similar to ggplot2 axis.text theme)
 #' @param ranges \code{list} limits of x/y ranges
-#' @param is.smooth \code{logical} if set to TRUE add smooth layer
-#' @param smooth \code{list} geom_smooth graphical/smoothing fun parameters
 #' @param is.band \code{logical} if TRUE add horizontal band
 #' @param band \code{list} horizontal band parameters. geom_hline graphical parameters.
 #' @param is.draft \code{logical} if TRUE add draft layer
@@ -61,7 +59,13 @@
 #' @return ggplot2 object
 #' @example inst/examples/eta_matrix.R
 #' @export
-pmx_plot_eta_matrix <- function(ctr, ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
-  wrap_pmx_plot_generic(ctr, "eta_matrix", params)
-}
+pmx_plot_eta_matrix <-
+  function(ctr, title, dname, type.eta, text_color, is.shrink, shrink, point,
+           is.smooth, smooth, is.hline, hline, filter, strat.facet,
+           facets, strat.color, trans, pmxgpar, labels, axis.title,
+           axis.text, ranges, is.band, band, is.draft, draft,
+           is.identity_line, identity_line, scale_x_log10, scale_y_log10,
+           color.scales, ...) {
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr, "eta_matrix", params)
+  }

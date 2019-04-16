@@ -39,7 +39,9 @@ ctr <- pmx(
 )
 
 ## using mlxtran file
-mlxtran_file <- file.path(system.file(package = "ggPMX"), "testdata","1_popPK_model","project.mlxtran")
+mlxtran_file <- 
+  file.path(system.file(package = "ggPMX"), 
+    "testdata","1_popPK_model","project.mlxtran")
 pmx_mlxtran(mlxtran_file)
 
 ## mlxtran , call =TRUE to get the pmx_mlx argument parsed by  pmx_mlxtran

@@ -54,8 +54,8 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       axis.text = gpar$axis.text,
       axis.title = gpar$axis.title
     )
-    
-    if(is.legend) p <- p + pmx_theme(legend.position="top")
+
+    if (is.legend) p <- p + pmx_theme(legend.position = "top")
 
     if (scale_x_log10) {
       if (is.draft) draft$y <- 0

@@ -1,6 +1,6 @@
 
 
-
+\dontrun{
 # basic use  ---------------------------------------
 
 ctr <- theophylline()
@@ -43,6 +43,7 @@ ctr %>% pmx_plot_eta_conts(
                      labels=list("Weight","Age"))
 )
 
+}
 
 
 

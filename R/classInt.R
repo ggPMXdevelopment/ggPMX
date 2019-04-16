@@ -40,19 +40,7 @@ jenks.tests <- function(clI, area) {
   res
 }
 
-plot.classIntervals <- function(x, pal, ...) {
-  if (class(x) != "classIntervals") stop("Class interval object required")
-  if (length(pal) < 2) stop("pal must contain at least two colours")
-  pal_out <- colorRampPalette(pal)(length(x$brks) - 1)
-  plot(ecdf(x$var), ...)
-  stbrks <- cbind(x$brks[-length(x$brks)], x$brks[-1])
-  abline(v = x$brks, col = "grey")
-  for (i in 1:nrow(stbrks))
-    rect(
-      stbrks[i, 1], par("usr")[3], stbrks[i, 2], 0, col = pal_out[i],
-      border = "transparent"
-    )
-}
+
 
 classIntervals2shingle <- function(x) {
   res <- x$var
@@ -89,7 +77,7 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
   }
   nobs <- length(unique(var))
   if (nobs == 1) stop("single unique value")
-  if (missing(n)) n <- nclass.Sturges(var)
+  if (missing(n)) n <- do.call("nclass.Sturges", list(var))
   if (n < 2) stop("n less than 2")
   n <- as.integer(n)
   pars <- NULL
@@ -132,10 +120,12 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
       if (any(diff(fixedBreaks) < 0)) stop("decreasing fixedBreaks found")
       fixedBreaks[1] <- max(fixedBreaks[1], min(var))
       fixedBreaks[length(fixedBreaks)] <- min(fixedBreaks[length(fixedBreaks)], max(var))
-      if(fixedBreaks[1]> min(var))
-        fixedBreaks <- c(min(var),fixedBreaks)
-      if(fixedBreaks[length(fixedBreaks)]< max(var))
-        fixedBreaks <- c(fixedBreaks,max(var))
+      if (fixedBreaks[1] > min(var)) {
+        fixedBreaks <- c(min(var), fixedBreaks)
+      }
+      if (fixedBreaks[length(fixedBreaks)] < max(var)) {
+        fixedBreaks <- c(fixedBreaks, max(var))
+      }
       brks <- fixedBreaks
     } else if (style == "sd") {
       svar <- scale(var)
@@ -274,7 +264,7 @@ findColours <- function(clI, pal, under="under", over="over", between="-",
   if (is.null(clI$brks)) stop("Null breaks")
   if (length(pal) < 2) stop("pal must contain at least two colours")
   cols <- findCols(clI)
-  palette <- colorRampPalette(pal)(length(clI$brks) - 1)
+  palette <- grDevices::colorRampPalette(pal)(length(clI$brks) - 1)
   res <- palette[cols]
   attr(res, "palette") <- palette
   tab <- tableClassIntervals(
@@ -423,62 +413,4 @@ nPartitions <- function(x) {
     ret <- (factorial(n - 1)) / (factorial(n - k) * factorial(k - 1))
   }
   ret
-}
-
-getBclustClassIntervals <- function(clI, k) {
-  if (class(clI) != "classIntervals") stop("Class interval object required")
-  if (missing(k)) k <- length(clI$brks) - 1
-  if (class(attr(clI, "parameters")) != "bclust") {
-    stop("Class interval object not made with style=\"bclust\"")
-  }
-
-  ovar <- clI$var
-  var <- clI$var
-  if (any(!is.finite(var))) is.na(var) <- !is.finite(var)
-  var <- c(stats::na.omit(var))
-
-  obj <- attr(clI, "parameters")
-  cols <- match(clusters.bclust(obj, k = k), order(centers.bclust(obj, k = k)))
-  rbrks <- unlist(tapply(var, factor(cols), range))
-  names(rbrks) <- NULL
-  brks <- .rbrks(rbrks)
-
-  res <- list(var = ovar, brks = brks)
-  attr(res, "style") <- attr(clI, "style")
-  attr(res, "parameters") <- attr(clI, "parameters")
-  attr(res, "nobs") <- attr(clI, "nobs")
-  attr(res, "call") <- attr(clI, "call")
-  attr(res, "modified") <- c(attr(clI, "modified"), k)
-  class(res) <- "classIntervals"
-  res
-}
-
-getHclustClassIntervals <- function(clI, k) {
-  if (class(clI) != "classIntervals") stop("Class interval object required")
-  if (missing(k)) k <- length(clI$brks) - 1
-  if (class(attr(clI, "parameters")) != "hclust") {
-    stop("Class interval object not made with style=\"hclust\"")
-  }
-
-  ovar <- clI$var
-  var <- clI$var
-  if (any(!is.finite(var))) is.na(var) <- !is.finite(var)
-  var <- c(stats::na.omit(var))
-
-  obj <- attr(clI, "parameters")
-  rcluster <- cutree(tree = obj, k = k)
-  rcenters <- unlist(tapply(var, factor(rcluster), mean))
-  cols <- match(rcluster, order(c(rcenters)))
-  rbrks <- unlist(tapply(var, factor(cols), range))
-  names(rbrks) <- NULL
-  brks <- .rbrks(rbrks)
-
-  res <- list(var = ovar, brks = brks)
-  attr(res, "style") <- attr(clI, "style")
-  attr(res, "parameters") <- attr(clI, "parameters")
-  attr(res, "nobs") <- attr(clI, "nobs")
-  attr(res, "call") <- attr(clI, "call")
-  attr(res, "modified") <- c(attr(clI, "modified"), k)
-  class(res) <- "classIntervals"
-  res
 }

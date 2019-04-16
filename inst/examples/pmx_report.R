@@ -1,7 +1,6 @@
+
+\dontrun{
 library(ggPMX)
-
-
-
 ## list of templates
 ## ctr %>% pmx_report_template()
 
@@ -88,3 +87,5 @@ ctr %>% pmx_report(
   template=misc_template,
   format="both"
 )
+}
+

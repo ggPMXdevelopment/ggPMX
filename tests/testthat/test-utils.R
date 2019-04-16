@@ -24,7 +24,7 @@ test_that("l_left_join merge compound lists", {
   expect_identical(res, expected)
 })
 
-test_that("pk_pd is worrking",{
+test_that("pk_pd is worrking", {
   ctr <- pk_pd()
-  expect_s3_class(ctr,"pmxClass")
+  expect_s3_class(ctr, "pmxClass")
 })

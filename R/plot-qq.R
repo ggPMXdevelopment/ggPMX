@@ -30,6 +30,7 @@ pmx_qq_stats <- function(points) {
 #' @param dname name of dataset to be used
 #' @param point \code{list} geom_point attributes color, shape,...
 #' @param reference_line \code{list} geom_line attributes. Used only for pmx_plot_eta_qq
+#' @param is.reference_line \code{logical} if TRUE add reference line to the plot
 #' @param facets \code{list}
 #' @param xmax \code{logical} if FALSE do not use max(aes(x)) as limits default to TRUE
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
@@ -52,6 +53,10 @@ pmx_qq_stats <- function(points) {
 #' \item {\strong{color:}} {default to black}
 #' \item {\strong{size:}} {default to 1}
 #' }
+#' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
+#' @param hline geom hline graphical parameters
+#' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
+#' @param shrink \code{list} shrinkage graphical parameter
 
 pmx_qq <- function(
                    x,
@@ -143,6 +148,7 @@ pmx_qq <- function(
 #' @import ggplot2
 #'
 plot_pmx.pmx_qq <- function(x, dx, ...) {
+  SHRINK <- annotation <- NULL
   if (!(x$x %in% names(dx))) return(NULL)
   dx <- dx[!is.infinite(get(x$x))]
 

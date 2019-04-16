@@ -16,6 +16,6 @@ pmx_theme <- function(...) {
       axis.text = element_text(size = 10),
       plot.margin = unit(c(1, 1, 1, 1), "cm"),
       legend.position = "none"
-      ) %+replace%
+    ) %+replace%
     theme(...)
 }
