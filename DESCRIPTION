@@ -1,12 +1,19 @@
 Package: ggPMX
-Title: PMX ggplot2-based tool to facilitate diagnostic plots for NLME models
-Description: A ggplot2-based tool to facilitate diagnostic plots for NLME
-    models. You provide your model data, you tell ggPMX reader how to map variables, 
-    ggPMX will take care of the generating all diagnotic plots for you or  a single report.
-Version: 0.9.9.9-6
-Authors@R: c(person("Amine", "Gassem", email="contact@ag-study.com", role=c("cre","aut"))
-           ,person("Workstream", "ggPMX development team", email="ggPMX_ORG@dl.mgd.novartis.com", role="aut"),
-           person("Novartis Pharma AG", role = c("cph")))
+Title: This is a 'ggplot2' Based Tool to Facilitate Diagnostic Plots for NLME Models
+Description: A 'ggplot2' based tool to facilitate diagnostic plots for NLME
+    models. You provide your model data, you tell 'ggPMX' reader how to map variables, 
+    'ggPMX' will take care of the generating all diagnotic plots for you or  a single report.
+Version: 0.9.9.9-7
+Authors@R: c(
+              person("Bruno", "Bieth", email="bruno.bieth@novartis.com", role="aut"),
+              person("Irina", "Baltcheva", email="irina.baltcheva@novartis.com", role="aut"),
+              person("Christian", "Bartels", email="christian.bartels@novartis.com", role="aut"),
+              person("Souvik", "Bhattacharya", email="souvik.bhattacharya@novartis.com", role="aut"),
+              person("Inga", "Ludwig", email="inga.ludwig@novartis.com", role="aut"),
+              person("Amine", "Gassem", email="contact@ag-study.com", role=c("cre","aut")),
+              person("Novartis Pharma AG", role = c("cph"))
+            )
+Maintainer: Amine Gassem <contact@ag-study.com>
 URL: https://github.com/ggPMXdevelopment/ggPMX
 BugReports: https://github.com/ggPMXdevelopment/ggPMX/issues
 Depends:

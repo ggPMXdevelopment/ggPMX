@@ -83,11 +83,11 @@ ctr %>% pmx_plot_iwres_time(use.abbrev=TRUE)
 To list all abbreviations we use use  `abbrev` functions. 
 
 ```{r, eval=FALSE}
-abbrev()
+abbreviation()
 ```
 But you can also the value of a single parameter : 
 ```{r}
-abbrev("TIME")
+abbreviation("TIME")
 ```
 We don't change those default values But we can set the value of a parameter related to a controller using :
 

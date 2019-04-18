@@ -34,7 +34,7 @@ pmx_sim <- function(
 
 check_argument <- function(value, pmxname) {
   call <- match.call()
-  if (missing(value) || is.null(value)) {
+  if (any(missing(value) | is.null(value))) {
     stop(
       sprintf(
         "Please set a %s argument",
@@ -426,17 +426,17 @@ set_abbrev <- function(ctr, ...) {
   } else {
     unlist(list(...), recursive = FALSE)
   }
-  class(abbrev) <- c("abbrev", "list")
+  class(abbrev) <- c("abbreviation", "list")
   ctr$abbrev <- abbrev
 }
 
-#' S3 print abbrev
+#' S3 print abbreviation
 #' @param x object of class configs
 #' @param ... pass additional options (not used presently)
-#' @return print abbrev
+#' @return print abbreviation
 #' @export
-print.abbrev <- function(x, ...) {
-  assert_that(inherits(x, "abbrev"))
+print.abbreviation <- function(x, ...) {
+  assert_that(inherits(x, "abbreviation"))
   for (i in seq_len(length(x)))
     cat(sprintf("%s : %s \n", names(x)[i], x[[i]]))
 }
@@ -781,10 +781,10 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     )
   }
   if (missing(dvid)) dvid <- NULL
-  if (missing(occ) || is.null(occ) || is.na(occ)) occ <- ""
-  if (missing(cats) || is.null(cats) || is.na(cats)) cats <- ""
-  if (missing(conts) || is.null(conts) || is.na(conts)) conts <- ""
-  if (missing(strats) || is.null(strats) || is.na(strats)) strats <- ""
+  if (any(missing(occ) | is.null(occ) | is.na(occ))) occ <- ""
+  if (any(missing(cats) | is.null(cats) | is.na(cats))) cats <- ""
+  if (any(missing(conts) | is.null(conts) | is.na(conts))) conts <- ""
+  if (any(missing(strats) | is.null(strats) | is.na(strats))) strats <- ""
   if (missing(settings)) settings <- NULL
   if (missing(bloq)) bloq <- NULL
 

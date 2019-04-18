@@ -1,4 +1,4 @@
-
+\dontrun{
 # *************** basic use ***************** ------
 
 ctr <- theophylline()
@@ -49,3 +49,5 @@ ctr %>% pmx_plot_eta_hist(
 ctr %>% pmx_plot_eta_hist(
   filter = EFFECT %in% c("ka", "Cl"), strat.facet = "SEX"
 )
+
+}
