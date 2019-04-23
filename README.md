@@ -9,7 +9,6 @@ Using simple syntax, the toolbox produces various goodness-of-fit diagnostics su
 
 In addition, shrinkage and summary parameters tables can be also produced. By default, the PDF- or Word-format diagnostic report contains essential goodness-of-fit plots. However, these can be adapted to produce different sets of diagnostics as desired by the user, and any of the plots may be customized individually. The types of supported customizations include modifications of the graphical parameters, labels, and various stratifications by covariates.
 
-- Link to a report or image.
 
 ## Feedback
 
