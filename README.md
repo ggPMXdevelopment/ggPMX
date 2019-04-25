@@ -19,17 +19,9 @@ ggPMX is now ready for inputs and enhancements by the pharmacometric community.
 
 ## Install ggPMX
 
-Development version:
+Github version:
 ```R
-devtools::install_github(
-  "Novartis-DevelopmentInformatics/ggPMX",
-  auth_token="XXXXX",
-  ref="develop", args="--preclean",
-  upgrade_dependencies=FALSE,
-  build_vignettes = TRUE)
-
-# TODO: Check if we'll have a publicly available development version
-#       and update accordingly before publishing on CRAN
+devtools::install_github(  "ggPMXdevelopment/ggPMX", build_vignettes = TRUE)
 ```
 
 ## CRAN:
