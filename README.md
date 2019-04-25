@@ -15,7 +15,11 @@ In addition, shrinkage and summary parameters tables can be also produced. By de
 ggPMX is now ready for inputs and enhancements by the pharmacometric community.
 - Please use [ package issues](https://github.com/ggPMXdevelopment/ggPMX/issues) to fill in your feedback.
 
+## Documentation
 
+```R
+[Vignette](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX-guide_2019-04-25.pdf)
+```
 
 ## Install ggPMX
 
@@ -26,16 +30,8 @@ devtools::install_github(  "ggPMXdevelopment/ggPMX")
 
 ## CRAN:
 
-sumbitted to CRAN. Coming soon...
+Sumbitted to CRAN. Coming soon...
 
 
 
-## Vignette
-
-First step is to explore vignette 
-
-```R
-vignette("ggPMX-guide",pack="ggPMX")
-
-```
 
