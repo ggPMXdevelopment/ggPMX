@@ -1,0 +1,91 @@
+---
+title: "ggPMX - User guide"
+author: "Amine Gassem, Irina Baltcheva"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    toc: yes
+    toc_depth: '3'
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: '3'
+vignette: >
+  %\VignetteIndexEntry{ggPMX: User guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+\clearpage  
+```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+```
+
+
+# Introduction 
+```{r child = 'intro.txt'}
+```
+
+\clearpage
+
+# General architecture
+
+```{r child = 'archi.txt'}
+```
+\clearpage
+
+# Basics: PK models
+
+```{r child = 'basics.txt'}
+```
+\clearpage
+
+# Advanced features
+
+```{r child = 'advanced.txt'}
+```
+\clearpage
+
+# Stratification
+
+```{r child = 'strat.txt'}
+```
+\clearpage
+
+# Shrinkage
+
+```{r child = 'shrink.txt'}
+```
+\clearpage
+
+# Filtering
+
+```{r child = 'subset.txt'}
+```
+\clearpage
+
+# Global settings
+
+```{r child = 'settings.txt'}
+```
+\clearpage
+
+## Visual predictive checks (VPCs)
+
+In a next release.
+
+# `ggPMX` with PKPD models
+
+In a next release.
+
+\clearpage
+
+# Appendix A: 
+
+```{r child = 'annex_a.txt'}
+```

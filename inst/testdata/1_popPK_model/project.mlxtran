@@ -1,0 +1,109 @@
+; this script is generated automatically
+
+<DATAFILE>
+
+[FILEINFO]
+file = 'PKdata_ggPMX.csv'
+delimiter = comma
+header = {ID, AGE0, WT0, HT0, BMI0, SEX, RACE, DISE, TRT, TRT_NAME, CMT, EVID, DV, UNIT, MDV, BLOQ, AMT, ADM, TINF, NTIM, NTIM1, DAY, ND, TIMEUNIT, DESC, TIME, VARNAME, YTYPE, TRT_TYPE, ILOW, ISS, DOSE}
+
+[CONTENT]
+ID = {use=identifier}
+AGE0 = {use=covariate, type=continuous}
+WT0 = {use=covariate, type=continuous}
+HT0 = {use=covariate, type=continuous}
+SEX = {use=covariate, type=categorical}
+RACE = {use=covariate, type=categorical}
+DISE = {use=covariate, type=categorical}
+TRT = {use=covariate, type=continuous}
+EVID = {use=eventIdentifier}
+DV = {use=observation, name=y1, ytype=1, type=continuous}
+MDV = {use=missingDependentVariable}
+AMT = {use=amount}
+ADM = {use=administration}
+TINF = {use=infusionTime}
+TIME = {use=time}
+YTYPE = {use=observationType}
+ILOW = {use=covariate, type=categorical}
+ISS = {use=occasion}
+
+<MODEL>
+
+[COVARIATE]
+input = {AGE0, WT0, HT0, TRT, SEX, RACE, DISE, ILOW, OCC, sOCC}
+SEX = {type=categorical, categories={1, 2}}
+RACE = {type=categorical, categories={1, 2, 88}}
+DISE = {type=categorical, categories={1, 2}}
+ILOW = {type=categorical, categories={1, 2}}
+OCC = {type=categorical, categories={1, 2}}
+sOCC = {type=categorical, categories={1, 1_2}}
+
+EQUATION:
+t_AGE0 = log(AGE0/54)
+t_WT0 = log(WT0/75.2)
+t_HT0 = log(HT0/170)
+t_TRT = log(TRT/3)
+
+[INDIVIDUAL]
+input = {F_pop, beta_F_ILOW_2, beta_F_OCC_2, ILOW, OCC, omega_F, gamma_F, CL_pop, omega_CL, Vc_pop, omega_Vc, Q1_pop, Vp1_pop, omega_Vp1, ka_input2_pop, Tlag_input2_pop}
+ILOW = {type=categorical, categories={1, 2}}
+OCC = {type=categorical, categories={1, 2}}
+
+DEFINITION:
+F = {distribution=logitnormal, typical=F_pop, covariate={ILOW, OCC}, coefficient={{0, beta_F_ILOW_2}, {0, beta_F_OCC_2}}, varlevel={id, id*occ}, sd={omega_F, gamma_F}}
+CL = {distribution=lognormal, typical=CL_pop, sd=omega_CL}
+Vc = {distribution=lognormal, typical=Vc_pop, sd=omega_Vc}
+Q1 = {distribution=lognormal, typical=Q1_pop, no-variability}
+Vp1 = {distribution=lognormal, typical=Vp1_pop, sd=omega_Vp1}
+ka_input2 = {distribution=lognormal, typical=ka_input2_pop, no-variability}
+Tlag_input2 = {distribution=lognormal, typical=Tlag_input2_pop, no-variability}
+
+[LONGITUDINAL]
+input = {a, b}
+
+file = './popPKmodel_MLXTRAN.txt'
+
+DEFINITION:
+y1 = {distribution=normal, prediction=Cc, errorModel=combined1(a, b)}
+
+<FIT>
+data = y1
+model = y1
+
+<PARAMETER>
+F_pop = {value=0.52, method=MLE}
+beta_F_ILOW_2 = {value=0.1, method=MLE}
+beta_F_OCC_2 = {value=0, method=MLE}
+omega_F = {value=0.5, method=MLE}
+gamma_F = {value=1, method=MLE}
+CL_pop = {value=0.75, method=MLE}
+omega_CL = {value=0.5, method=MLE}
+Vc_pop = {value=3.5, method=MLE}
+omega_Vc = {value=0.5, method=MLE}
+Q1_pop = {value=0.79, method=MLE}
+Vp1_pop = {value=3.3, method=MLE}
+omega_Vp1 = {value=0.5, method=MLE}
+ka_input2_pop = {value=0.2, method=MLE}
+Tlag_input2_pop = {value=1e-10, method=FIXED}
+a = {value=1, method=MLE}
+b = {value=0.3, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = conditionalMode)
+fim(method = Linearization)
+logLikelihood(method = Linearization)
+plotResult()
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'RESULTS'
+autochains = no
+
+POPULATION:
+exploratoryautostop = no
+smoothingautostop = no
+mixturesinitbeta = 1
+

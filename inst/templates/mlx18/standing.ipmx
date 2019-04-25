@@ -1,0 +1,51 @@
+predictions :
+    label : model predictions file
+    file  : predictions.txt
+    pattern: predictions
+    reader  : read_mlx18_pred
+    names:
+      ID: id
+      TIME: time
+      PRED: poppred
+      IPRED: mlx18_ipred
+      IWRES: mlx18_iwres 
+    residuals:
+      label : residuals file
+      subfolder: ChartsData/ScatterPlotOfTheResiduals 
+      file : y_residuals.txt
+      pattern: _residuals
+      names:
+       ID: id
+       TIME: time
+       NPDE: npde
+  
+eta :
+    label : invidual estimates of random effects file
+    subfolder: IndividualParameters
+    file  : estimatedRandomEffects.txt
+    reader  : read_mlx18_ind_est 
+    
+    
+estimates  :
+    label : parameter estimates file
+    file  : populationParameters.txt
+    reader  : read_mlx_par_est
+    sep: ","
+    names:
+      - PARAM
+      - VALUE
+      - SE
+      - RSE
+      
+finegrid :
+    label : finegrid file
+    file  : y_fits.txt
+    subfolder: ChartsData/IndividualFits
+    pattern: _fits
+    reader  : read_mlx18_pred
+    names:
+      ID: id
+      TIME: time
+      PRED: poppred
+      IPRED: mlx18_finegrid_ipred      
+

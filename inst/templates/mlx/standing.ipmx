@@ -1,0 +1,40 @@
+predictions :
+    label : model predictions file
+    file  : predictions.txt
+    pattern: predictions
+    reader  : read_mlx_pred
+    names:
+      ID: id
+      TIME: time
+      PRED: poppred
+      NPDE: npde
+      IPRED: mlx_ipred
+      IWRES: mlx_iwres
+
+estimates  :
+    label : parameter estimates file
+    file  : estimates.txt
+    reader  : read_mlx_par_est
+    names:
+      - PARAM
+      - VALUE
+      - SE
+      - RSE
+      - PVALUE
+
+eta :
+    label : invidual estimates of random effects file
+    file  : indiv_eta.txt
+    reader  : read_mlx_ind_est
+    
+      
+finegrid :
+    label : finegrid file
+    file  : finegrid.txt
+    pattern: finegrid
+    reader  : read_mlx_pred
+    names:
+      ID: id
+      TIME: time
+      PRED: poppred
+      IPRED: mlx_ipred

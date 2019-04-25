@@ -1,0 +1,28 @@
+                 ; parameter;  s.e._lin;r.s.e._lin;pvalues_lin
+            F_pop;   0.30741;   0.06417;     20.87;        NaN
+    beta_F_ILOW_1;   0.00000;       NaN;       NaN;        NaN
+    beta_F_ILOW_2;   0.73168;   0.34554;     47.23;   0.034217
+     beta_F_OCC_1;   0.00000;       NaN;       NaN;        NaN
+     beta_F_OCC_2;   0.39844;   0.15243;     38.26;  0.0089497
+           CL_pop;   0.71938;   0.03212;      4.47;        NaN
+           Vc_pop;   3.42074;   0.14598;      4.27;        NaN
+           Q1_pop;   0.40524;   0.02497;      6.16;        NaN
+          Vp1_pop;   2.90321;   0.13124;      4.52;        NaN
+    ka_input2_pop;   0.26678;   0.01798;      6.74;        NaN
+  Tlag_input2_pop;   0.00000;   0.00000;      0.00;        NaN
+          omega_F;   0.58835;   0.13606;     23.13;        NaN
+         omega_CL;   0.28985;   0.01851;      6.39;        NaN
+         omega_Vc;   0.23675;   0.02833;     11.97;        NaN
+         omega_Q1;   0.00000;   0.00000;      0.00;        NaN
+        omega_Vp1;   0.15945;   0.03369;     21.13;        NaN
+  omega_ka_input2;   0.00000;   0.00000;      0.00;        NaN
+omega_Tlag_input2;   0.00000;   0.00000;      0.00;        NaN
+          gamma_F;   0.32521;   0.09054;     27.84;        NaN
+         gamma_CL;   0.00000;   0.00000;      0.00;        NaN
+         gamma_Vc;   0.00000;   0.00000;      0.00;        NaN
+         gamma_Q1;   0.00000;   0.00000;      0.00;        NaN
+        gamma_Vp1;   0.00000;   0.00000;      0.00;        NaN
+  gamma_ka_input2;   0.00000;   0.00000;      0.00;        NaN
+gamma_Tlag_input2;   0.00000;   0.00000;      0.00;        NaN
+                a;  29.92288;   3.88990;     13.00;        NaN
+                b;   0.15724;   0.00719;      4.57;        NaN

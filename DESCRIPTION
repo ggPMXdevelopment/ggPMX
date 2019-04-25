@@ -1,0 +1,48 @@
+Package: ggPMX
+Title: 'ggplot2' Based Tool to Facilitate Diagnostic Plots for NLME Models
+Description: At Novartis, we aimed at standardizing the set of diagnostic plots used for modeling 
+  activities in order to reduce the overall effort required for generating such plots. 
+  For this, we developed a guidance that proposes an adequate set of diagnostics and a toolbox, 
+  called 'ggPMX' to execute them. 'ggPMX' is a toolbox that can generate all diagnostic plots at a quality sufficient 
+  for publication and submissions using few lines of code. 
+Version: 0.9.997
+Authors@R: c(
+              person("Amine", "Gassem", email="contact@ag-study.com", role=c("cre","aut")),
+              person("Bruno", "Bieth", email="biethb@hotmail.com", role="aut"),
+              person("Irina", "Baltcheva", email="thomas.dumortier@novartis.com", role="aut"),
+              person("Thomas", "Dumortier", email="christian.bartels@novartis.com", role="aut"),
+              person("Christian", "Bartels", email="christian.bartels@novartis.com", role="aut"),
+              person("Souvik", "Bhattacharya", email="souvik.bhattacharya@novartis.com", role="aut"),
+              person("Inga", "Ludwig", email="ines.paule@novartis.com", role="aut"),
+              person("Ines", "Paule", email="ines.paule@novartis.com", role="aut"),
+              person("Didier", "Renard", email="didier.renard@novartis.com", role="aut"),
+              person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctr"),
+              person("Novartis Pharma AG", role = c("cph"))
+            )
+Maintainer: Amine Gassem <contact@ag-study.com>
+URL: https://github.com/ggPMXdevelopment/ggPMX
+BugReports: https://github.com/ggPMXdevelopment/ggPMX/issues
+Depends:
+    R (>= 3.2.3)
+Imports:
+    data.table,
+    yaml,
+    R6,
+    gtable,
+    ggplot2 (>= 2.2.0),
+    magrittr,
+    stringr,
+    assertthat,
+    checkmate,
+    GGally,
+    zoo,
+    knitr,
+    rmarkdown
+License: GPL-2
+LazyData: true
+Suggests:
+    testthat,
+    xtable
+VignetteBuilder: knitr
+NeedsCompilation: no
+RoxygenNote: 6.0.1

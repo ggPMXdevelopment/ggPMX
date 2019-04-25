@@ -1,0 +1,42 @@
+CUSTOM_RES_TIME:
+  ptype: SCATTER
+  x: TIME
+  'y': IWRES
+  labels:
+    title: IWRES vs TIME
+    subtitle: ''
+    x: TIME
+    'y': Individual predictions
+  point:
+    shape: 20
+    color: black
+    size: 3.0
+  is.hline: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 1.0
+    method: lm
+
+CUSTOM_NPDE_TIME:
+  ptype: SCATTER
+  x: TIME
+  'y': NPDE
+  labels:
+    title: NPDE vs TIME
+    subtitle: ''
+    x: TIME
+    'y': NPDE
+  point:
+    shape: 1.0
+    color: black
+    size: 1.0
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    color: red
+    linetype: 2.0
+  strat.facet: ~SEX

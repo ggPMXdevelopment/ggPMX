@@ -1,0 +1,37 @@
+---
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  pdf_document:
+    toc: true
+  word_document:
+    toc: true
+---
+
+---
+params:
+  ctr: ""
+  npage: ~
+  title: ggPMX standing report
+---
+
+---
+subtitle: `r params$ctr$save_dir `
+title: `r params$title `
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message=FALSE)
+
+```
+
+
+# Individual plots
+
+
+```{r indiv,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
+
+ ctr %>% pmx_plot_individual(npage=params$npage,print=TRUE)
+```
+
+

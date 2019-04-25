@@ -1,0 +1,37 @@
+```{r load_filter, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
+
+ctr <- theophylline()
+```
+
+
+
+## global filtering 
+```{r}
+
+## this will change controller 
+ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME <2)
+ctr %>% get_data("prediction")
+```
+
+
+## local filtering 
+
+```{r local_filtering}
+ctr <- theophylline()
+
+## we can use any expression involving the data
+ctr %>% pmx_plot_dv_pred(filter = DV > mean(DV) & PRED < median(PRED))
+## filter and stratify
+ctr %>% pmx_plot_dv_pred(filter = SEX == 1, strat.facet = ~SEX)
+
+
+```

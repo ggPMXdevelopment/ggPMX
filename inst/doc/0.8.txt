@@ -1,0 +1,147 @@
+---
+title: "ggPMX 0.8"
+author: "Amine Gassem"
+date: "May 3, 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(ggPMX)
+library(data.table)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Scope 
+
+Allo. Test.
+
+The additional new components of the 0.8 version are : 
+
+- Set the input parameter of the controller creator as a data.frame or data.table
+- Generalize the default abbreviations tables and create set/get helper to manipulate abbreviations
+- New effects global settings to rename effects variables
+- Generate a single endpoint report
+
+## Use data.frame as input 
+
+We can now use a data.frame as an input to pmx controller. 
+
+First we create a controller as usual and we get the input data using `get_data`
+```{r}
+ctr <- theophylline()
+inn <- ctr %>% get_data("input")
+```
+
+We modify the input data. For example here we use pretty labels for the categorical covariates
+```{r}
+dat <- inn[,SEXL:=factor(SEX,levels=0:1,labels=c("Male","Female"))]
+
+``` 
+
+We create a new controller using the the modified data:
+
+```{r}
+
+
+  WORK_DIR <- 
+    file.path( 
+      system.file(package = "ggPMX"), 
+      "testdata","theophylline", "Monolix")
+  ctr1 <- pmx_mlx(
+    config = "standing",
+    directory = WORK_DIR,
+    input = dat,
+    dv = "Y",
+    dvid = "DVID",
+    cats = c("SEXL"),
+    conts = c("WT0", "AGE0"),
+    strats = "STUD",
+    settings=pmx_settings(use.abbrev = TRUE)
+  )
+  
+```
+We can check this using : 
+
+```{r}
+
+ctr1 %>% pmx_plot_cats("eta_box")
+```
+
+
+
+## Use abbreviations
+
+`ggPMX` contains a set of default abbreviations that are basically used to change the names of axes labels for one or all the plot at once.  
+
+here an example: 
+```{r}
+ctr %>% pmx_plot_iwres_time(use.abbrev=TRUE)
+```
+
+To list all abbreviations we use use  `abbrev` functions. 
+
+```{r, eval=FALSE}
+abbreviation()
+```
+But you can also the value of a single parameter : 
+```{r}
+abbreviation("TIME")
+```
+We don't change those default values But we can set the value of a parameter related to a controller using :
+
+```{r}
+ctr %>% set_abbrev(TIME="NEW TIME VALUE")
+```
+and 
+```{r}
+ctr %>% get_abbrev("TIME")
+```
+
+```{r}
+ctr %>% pmx_plot_iwres_time(use.abbrev=TRUE)
+```
+
+## new global settings : effects 
+
+In order to rename effects varaibles we intrduce a new settings parameters `effects`
+```{r}
+ctr <- theophylline(
+  settings = pmx_settings(
+    effects=list(
+      levels=c("ka", "V", "Cl"),
+      labels=c("Concentration","Volume","Clearance")
+    )
+  )
+)
+
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist
+ctr %>% pmx_plot_eta_matrix
+```
+
+## pmx_report
+
+`pmx_report` engine is the main enhancements of the 0.8 version. The function is well documented and contains many examples. 
+
+
+1. Create a standard report using a predefined template: `standing`. This is a built-in template defined by ggPMX team. 
+2. Standlone plots :  Create a standalone directory of satdnalone plots 
+3. footnote feature : Plots may contain a footnote to define locations
+4. Individual report; report that contain all or some of the individual plots. Buil-in template `individual`
+5. Templates can be modified on the fly using the `edit` feature
+6. user can define his own template as a markdwon and pass it to the `pms_report` engine
+
+
+Here the simplest way to create a report using default settings: 
+```{r, eval=FALSE}
+ctr <- theophylline()
+ctr %>% pmx_report(
+  name = "my_report",
+  output_type="report",
+  save_dir = "some_location")
+```
+
+
+  

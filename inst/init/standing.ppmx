@@ -1,0 +1,438 @@
+## IWRES plots
+ABS_IWRES_IPRED:
+  ptype: SCATTER
+  x: IPRED
+  'y': IWRES
+  labels:
+    title: '|IWRES| vs IPRED'
+    subtitle: ''
+    'y': '|IWRES|'
+    x: IPRED
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  trans: abs_y
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+IWRES_IPRED:
+  ptype: SCATTER
+  x: IPRED
+  'y': IWRES
+  labels:
+    title: IWRES vs IPRED
+    subtitle: ''
+    x: IPRED
+    'y': IWRES
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+IWRES_TIME:
+  ptype: SCATTER
+  x: TIME
+  'y': IWRES
+  labels:
+    title: IWRES vs TIME
+    subtitle: ''
+    x: TIME
+    'y': IWRES
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  is.smooth: yes
+  is.band: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+IWRES_DENS:
+  ptype: PMX_DENS
+  x: IWRES
+  dname: predictions
+  labels:
+    title: 'Density plot of IWRES'
+    subtitle: ''
+    x: IWRES
+    'y': ''
+
+IWRES_QQ:
+  ptype: PMX_QQ
+  x: IWRES
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': IWRES Quantiles
+  is.reference_line: no
+  reference_line:
+    color: black
+  is.identity_line: yes
+  identity_line:
+    intercept: 0
+    colour: black
+
+## NPDE plots
+
+NPDE_TIME:
+  ptype: SCATTER
+  x: TIME
+  'y': NPDE
+  labels:
+    title: NPDE vs TIME
+    subtitle: ''
+    x: TIME
+    'y': NPDE
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+NPDE_PRED:
+  ptype: SCATTER
+  x: PRED
+  'y': NPDE
+  labels:
+    title: NPDE vs PRED
+    subtitle: ''
+    x: PRED
+    'y': NPDE
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  hline:
+    colour: black
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+NPDE_QQ:
+  ptype: PMX_QQ
+  x: NPDE
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': NPDE Quantiles
+  is.reference_line: yes
+  reference_line:
+    color: black
+
+## DV plots
+
+DV_PRED:
+  ptype: SCATTER
+  labels:
+    title: DV vs PRED
+    subtitle: ''
+  x: PRED
+  'y': DV
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  is.identity_line: yes
+  identity_line:
+    intercept: 0
+    colour: black
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+    
+DV_IPRED:
+  ptype: SCATTER
+  labels:
+    title: DV vs IPRED
+    subtitle: ''
+  x: IPRED
+  'y': DV
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  is.identity_line: yes
+  identity_line:
+    intercept: 0
+    colour: black
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+## Individual plots
+
+INDIVIDUAL:
+  ptype: IND
+  dname: IND
+  ranges: ~
+  is.smooth: no
+  ipred_line:
+    colour: black
+    size: 1
+    linetype: 2
+  pred_line:
+    colour: black
+    size: 1
+    linetype: 1
+  point:
+    colour: black
+    shape : 21
+    size: 1.5
+  facets:
+    ncol: 3
+    nrow: 4
+    scales: free
+  labels:
+    title: Individual fits
+    subtitle: ''
+    x: TIME
+    'y': DV
+  use.finegrid: yes
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+  is.legend: yes
+    
+## Eta plots
+    
+ETA_HIST:
+  ptype: DIS
+  type: hist
+  dname: eta
+  facets:
+    scales: free_x
+    nrow: 3.0
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    colour: black
+    hjust: -1
+    vjust: 2
+    annotation: shrinkage
+  histogram:
+    binwidth: 0.034
+    position: dodge
+    fill: white
+    colour: black
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: 'Estimated eta'
+    'y': 'Histogram'
+    legend: Random effect
+
+ETA_BOX:
+  ptype: DIS
+  dname: eta
+  type: box
+  is.jitter: yes
+  jitter:
+    shape: 1.0
+    colour: black
+    width: 0.1
+    height: 0.1
+    alpha: 0.6
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    colour: black
+    hjust: 0.5
+    vjust: 2.0
+    annotation: shrinkage
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: 'Model parameters'
+    'y': 'EBEs'
+    legend: Random effect
+  facets:
+    scales: free_x
+    nrow: 3.0
+  is.band: yes
+  band:
+    'yintercept':
+    - 0
+    - 0
+    linetype: 2.0
+    color: grey50
+
+ETA_MATRIX:
+  ptype: ETA_PAIRS
+  title: Correlations of random effects
+  dname: eta
+  type.eta: mode
+  text_color: black
+  is.smooth: yes
+  is.hline: yes
+  hline: 
+    linetype: 2.0
+  point:
+    size: 1
+    colour: black
+    shape: 21
+  smooth:
+    se: FALSE
+    linetype: 1
+    size: 1.5
+    method: loess
+    colour: red
+  is.shrink: TRUE
+  shrink:
+    fun : sd
+    size: 5
+  
+ETA_CATS:
+  ptype: ETA_COV
+  type: cats
+  
+ETA_CONTS:
+  ptype: ETA_COV
+  type: conts
+  facets:
+    scales: free
+  point:
+    shape: 21
+    color: black
+  correl:
+    colour: black
+    size: 5
+  is.smooth: yes
+  smooth:
+    se: no
+    size: 1
+    color: black
+    linetype: 1.0
+    method: lm
+  is.band: yes
+  band:
+    'yintercept':
+    - 0
+    - 0
+    linetype: 2.0
+
+  
+ETA_QQ:
+  ptype: PMX_QQ
+  x: VALUE
+  dname: eta
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': ETA Quantiles
+  facets:
+    scales: free_y
+    nrow: 2
+  is.reference_line: yes
+  reference_line:
+    color: black
+  xmax: no
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    colour: black
+    hjust: -1
+    vjust: 2
+    annotation: shrink
+  is.hline: yes
+  hline:
+    colour: black
+## VPC plots
+    
+PMX_VPC:
+  ptype: VPC
+  type: percentile
+  dname: sim
+  labels:
+    title: 'Percentile VPC'
+    subtitle: '(with observations)'
+    x: TIME
+    'y': DV
+  is.smooth: no

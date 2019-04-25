@@ -1,0 +1,85 @@
+```{r load_shrink, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
+
+ctr <- theophylline()
+```
+
+## Default call
+
+The shrinkage is a computation within controller data. In general it is used to annotate the plots. Although one can get it independently from any plot using `pmx_comp_shrink`. It is part of the `pmx_compt_xx` layer( In the future we will add , `pmx_comp_cor` , `pmx_comp_summary`,..)
+
+Here the basic call:
+
+```{r shrink_comp}
+ctr %>% pmx_comp_shrink
+```
+
+
+We get the shrinkage for each effect (**SHRINK** column).
+
+The same values can be shown on distribution plot , for example  : 
+
+```{r shrink_plot_box}
+ctr %>% pmx_plot_eta_box
+
+```
+or : 
+```{r shrink_plot_hist}
+ctr %>% pmx_plot_eta_hist
+
+```
+
+You can add or remove shrinkage annotation using `is.shrink` argument ( TRUE by default) : 
+
+```{r shrink_plot_no}
+ctr %>%   pmx_plot_eta_box( is.shrink = FALSE) 
+
+```
+
+
+
+## Var function
+
+You can compute shrinkage by applying either standard deviation `sd` or variance `var` : 
+```{r, compute_var }
+ctr %>% pmx_comp_shrink(  fun = "var")
+```
+
+```{r, shrink_plot_var}
+ctr %>% pmx_plot_eta_box( shrink=list(fun = "var"))
+```
+ 
+ 
+## Shrinkage and stratification
+
+Shrinkage can be applied after stratification :
+
+```{r shrink_comp_strat}
+ctr %>% pmx_comp_shrink(strat.facet = ~SEX)
+```
+or by grouping like : 
+
+```{r shrink_comp_strat_color}
+ctr %>% pmx_comp_shrink(strat.color = "SEX")
+```
+
+We can 
+```{r shrink_plot_strat, fig.width=9, fig.height=8}
+ctr %>% pmx_plot_eta_hist(is.shrink = TRUE, strat.facet = ~SEX,
+                          facets=list(scales="free_y"))
+```
+or 
+ 
+```{r fig.width=9, fig.height=8}
+ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = "SEX",
+                          facets=list(scales="free_y",ncol=2))
+```
+

@@ -1,0 +1,100 @@
+---
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  pdf_document:
+    toc: true
+  word_document:
+    toc: true
+---
+
+---
+params:
+  ctr: ""
+  title: ""
+---
+---
+subtitle: `r params$ctr$save_dir`
+title: `r params$title `
+---
+
+```{r setup, include=FALSE,fig.cap="toto"}
+cats <- ctr %>% get_cats
+
+```
+
+
+# Key model diagnostics
+
+
+## multiple ggPMX
+
+We  can create many plots under the same chunk. 
+```{r multiple_ggpmx,pmx=TRUE}
+ctr %>% pmx_plot_iwres_time
+
+ctr %>% pmx_plot_dv_ipred
+
+ctr %>% pmx_plot_eta_box
+```
+
+
+## no ggPMX included
+
+To include custom plot within the ggPMX framework , we should register the created plot. Here we are using `pmx_register_plot`. If we are in a case that we need to add footnote , ggPMX will add the right footnote under the custom plot. 
+
+```{r no_ggpmx,message=FALSE, warning=FALSE}
+library(ggplot2)
+inn <- ctr %>% get_data("input")
+pp <- ggplot(inn, aes(WT0,AGE0)) + geom_smooth() + pmx_theme()
+ctr %>% pmx_register_plot(pp,"age0_vs_wt0")
+```
+
+## no ggPMX + ggPMX
+
+We can mix ggPMX and no ggPMX plots under the same chunk. Note that here if we do not register pp, footnotes may wrong; see section on Erroneous usage. 
+
+```{r ggpmx_no_ggpmx}
+pp
+```
+
+Here we register the custom plot: 
+```{r ggpmx_no_ggpmx_regsitred}
+ctr %>% pmx_register_plot(pp,"age0_vs_wt0")
+ctr %>% pmx_plot_eta_box
+```
+
+## Erroneous usage of package
+
+When mixing ggPMX plots and other plots within one chunk, the package cannot keep track of the numbering of plots. 
+Footnotes may be wrong. `ggPMX` will throw a message to indicate that the plot was not regisered.
+
+```{r error1}
+inn <- ctr %>% get_data("input")   
+ggplot(inn, aes(WT0,AGE0)) + geom_point()
+
+print(ctr %>% pmx_plot_iwres_time)
+
+
+```
+
+Similarly, when plotting a ggPMX plot twice, the package cannot keep track of the numbering of plots. 
+Footnotes may be wrong. `ggPMX` will throw a message to indicate that the plot was not regisered.
+
+```{r error2}
+pp <- ctr %>% pmx_plot_iwres_time   
+plot(pp)   
+plot(pp + scale_x_log10())
+```
+
+Plot that does not get rendered will throw error to prevent errors in footnotes.
+
+```{r error3}
+# for(i in 1:2) {
+#   ctr %>% pmx_plot_iwres_time   
+# }
+# ctr %>% pmx_plot_iwres_time
+
+
+```
+
+

@@ -1,0 +1,38 @@
+labels: ~
+axis.title: 
+  size: 12.0
+axis.text: 
+  size: 10.0
+ranges: ~
+is.smooth: yes
+smooth:
+  se: no
+  linetype: 1.0
+  size: 1.5
+  method: loess
+  colour: red
+is.band: no
+band:
+  'yintercept':
+  - -1.96
+  - 1.96
+  linetype: 2.0
+  size: 0.5
+is.draft: yes
+draft:
+  size: 5.0
+  label: DRAFT
+  colour: grey50
+  x: .inf
+  'y': -.inf
+discrete: no
+is.identity_line: no 
+identity_line:
+  colour: blue
+  intercept: 0
+scale_x_log10: no
+scale_y_log10: no
+color.scales: ~
+is.legend: no
+
+

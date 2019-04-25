@@ -1,0 +1,92 @@
+```{r load_annex, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+```
+
+
+
+## Plots table
+
+The main target of ggPMX is to create a report containing the following plots (see abbreviation list below): 
+
+```{r plots_list,echo=FALSE,results='asis'}
+
+out <- rbind(
+  c("Scatter plot of NPDE vs population predictions", "SCATTER", "npde_pred"),
+  c("Scatter plot of NPDE vs time", "SCATTER", "npde_time"),
+  c("Scatter plot of IWRES vs time", "SCATTER", "iwres_time"),
+  c("Scatter plot of observations vs population predictions", "SCATTER", "dv_pred"),
+  c("Scatter plot of observations vs individual predictions", "SCATTER", "dv_ipred"),
+  c("Scatter plot of absolute value of IWRES vs individual predictions", "SCATTER", "abs_iwres_ipred"),
+  c("Scatter plot of IWRES vs individual predictions", "SCATTER", "iwres_ipred"),
+  c("Plots of observations and model predictions per individual", "IND", "individual"),
+  c("Histogram of EBE", "DIS", "eta_hist"),
+  c("Boxplot of EBE", "DIS", "eta_box"),
+  c("Distribution and quantile-quantile plot of IWRES", "QQ", "qq_iwres"),
+  c("Distribution and correlation structure of RE (`ETA`)", "ETA_PAIRS", "eta_matrix"),
+  c("Relationships between RE and categorical covariates", "ETA_COV", "eta_cats"),
+  c("Relationships between RE and continuous covariates", "ETA_COV", "eta_conts"),
+  c("Visual predictive check (VPC)", "VPC", "vpc")
+)
+
+colnames(out) <- c("Plot Name", "ggPMX type", "ggPMX name")
+xt <- xtable(out, label = "tab:plots_list", caption = "List of all diagnostic plots")
+print(xt, comment = F)
+```
+Abbreviations:
+
+- NPDE: normalized prediction distribution errors
+- IWRES: individual weighted residuals
+- EBE: empirical Bayes estimates
+- RE: random effects
+- VPC: visual predivtive check
+
+## ggPMX main functions
+
+`ggPMX` implements few functions to generate and manipulate diagnostic plots. 
+(Should we list pmx and pmx_mlx separately and say the differences? Or it's maybe clear from the previous sections.)
+
+```{r functions_list,echo=FALSE,results='asis'}
+
+out <- rbind(
+  c("1", "pmx, or pmx_mlx", "Creates a controller"),
+  c("2", "plot_names or plots", "Lists controller plots"),
+  c("3", "get_data", "Lists controller data"),
+  c("4", "get_plot", "Prints a plot"),
+  c("5", "set_plot", "Creates a new plot"),
+  c("6", "pmx_update", "Updates an existing plot"),
+  c("7", "pmx_filter", "Filters globally the data of the current session"),
+  c("8", "pmx_copy", "Returns a deep copy of the controller")
+)
+
+colnames(out) <- c(" ", "Function name", "Description")
+
+xt <- xtable(out, label = "tab:func_list", caption = "List of all `ggPMX` functions")
+print(xt, comment = F)
+```
+
+(Apparently, it's not the full list. Add all functions.)
+The design of the package is around the central object: the controller. It can introspected or piped using the `%>%` operand. 
+
+**Note that**:
+
+The controller is an `R6` object, it behaves like a reference object.  Some functions (methods) can have a side effect on the controller and modify it internally. Technically speaking we talk about chaining not piping here. However, using `pmx_copy` user can work on a copy of the controller.
+
+
+## ggPMX graphical parameters 
+
+Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function. A number of graphical parameters can be set for the different plot types. 
+
+```{r pmx_gpar_args}
+args(pmx_gpar)
+```
+More information can be found in the help document `?pmx_gpar` and in the examples that follow.
+
+## Pre-defined configurations
+
+For the moment we are mainly using standing configuration. In the next release user can specfiy configuration either by cretaing a custom yaml file or an R configuration object. Also ggPMX will create many helper functions to manipulate the configuration objects.
+
+

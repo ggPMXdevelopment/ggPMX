@@ -1,0 +1,153 @@
+---
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  pdf_document:
+    toc: true
+  word_document:
+    toc: true
+---
+
+---
+params:
+  ctr: ""
+  title: ""
+---
+---
+subtitle: `r params$ctr$save_dir`
+title: `r params$title `
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+knitr::opts_chunk$set(echo = FALSE,message=FALSE)
+cats <- ctr %>% get_cats
+
+```
+\newpage
+
+# Key model diagnostics
+
+## NPDE vs PRED
+```{r npde_pred,fig.align="center",fig.height=5, fig.width=6}
+ctr %>% pmx_plot_npde_pred
+```
+\newpage
+
+## NPDE vs TIME
+```{r npde_time,fig.align="center",fig.height=5, fig.width=6}
+ctr %>% pmx_plot_npde_time
+```
+\newpage
+
+## IWRES vs IPRED
+```{r iwres_ipred,fig.align="center",fig.height=5, fig.width=6}
+ctr %>% pmx_plot_iwres_ipred
+```
+\newpage
+
+## IWRES vs TIME
+```{r iwres_time,fig.align="center",fig.height=5, fig.width=6}
+ctr %>% pmx_plot_iwres_time
+```
+\newpage
+
+## Distribution of random effects 
+```{r eta_box,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
+ctr %>% pmx_plot_eta_box
+```
+\newpage
+
+## VPC
+```{r vpc,fig.align="center",fig.height=6, fig.width=7}
+ctr %>% pmx_plot_vpc
+```
+
+\newpage
+
+# Supplementary diagnostics
+
+## Distribution of IWRES
+
+### QQ plot of IWRES
+```{r iwres_qq, fig.height=7, fig.width=7}
+ctr %>% pmx_plot_iwres_qq
+```
+
+\newpage
+
+### Distribution of IWRES
+```{r iwres_dens, fig.width=7, fig.height=7}
+ctr %>% pmx_plot_iwres_dens
+```
+\newpage
+
+
+## EBE-based diagnostics
+
+### Distribution and correlation of EBEs
+
+```{r eta_matrix,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
+ctr %>% pmx_plot_eta_matrix
+```
+
+
+\newpage
+### EBE vs discrete covariates
+```{r eta_cats,message=FALSE,fig.align="center",fig.height=9, fig.width=7}
+ctr %>% pmx_plot_eta_cats
+```
+\newpage
+
+### EBE vs continuous covariates
+```{r eta_conts,message=FALSE,fig.align="center",fig.height=9, fig.width=7}
+ctr %>%  pmx_plot_eta_conts
+```
+\newpage
+
+## Observations vs predictions
+
+### DV vs PRED
+```{r dv_pred, fig.height=7, fig.width=7}
+ctr %>% pmx_plot_dv_pred
+```
+\newpage
+
+### DV vs IPRED
+```{r dv_ipred, fig.height=7, fig.width=7}
+ctr %>% pmx_plot_dv_ipred
+```
+\newpage
+
+## Residual plots
+
+### |IWRES| vs IPRED
+```{r dv_abs_iwres_ipred,fig.align="center",fig.height=5, fig.width=6}
+ctr %>% pmx_plot_abs_iwres_ipred
+```
+\newpage
+
+# Individual plots (selection)
+
+```{r indiv,message=FALSE,fig.align="center",fig.height=10, fig.width=8}
+ ctr %>% pmx_plot_individual
+```
+\newpage
+
+# Stratified key diagnostics 
+
+## NPDE vs TIME by categorical covariates
+```{r npde_time_strats,fig.align="center"}
+ctr %>% pmx_plot_cats("npde_time")
+```
+\newpage
+
+## IWRES vs TIME by categorical covariates
+```{r iwres_time_strats,fig.align="center"}
+ctr %>% pmx_plot_cats("iwres_time")
+```
+\newpage
+
+## VPC by categorical covariates
+```{r vpc_strats,fig.align="center"}
+ctr %>% pmx_plot_cats("pmx_vpc")
+```

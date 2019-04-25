@@ -1,0 +1,160 @@
+---
+title: "ggPMX multiple endpoints"
+author: "Amine Gassem"
+date: "July 2, 2018"
+output:
+  pdf_document:
+    toc: yes
+    number_sections: yes
+  html_document:
+    df_print: paged
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+library(ggPMX)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Context
+
+- A model aims at predicting one (e.g., PK), two (e.g., PK and PD) endpoints. 
+
+- The measured value of the endpoint is denoted by *DV*. *IPRED* and *PRED* are predictions for the endpoint.
+
+- Each report is about one single endpoint. By consequence, the endpoint (if needed) is setted at the controller call `pmx` to filter the observations data set and to keep only the right values.
+
+# ggPMX endpoint
+
+Endpoint is defined by : 
+
+- The name of the DVID column : `DVID` charcater value to be passed to `pmx`. can be omited if not present in the observation data.
+
+- The endpoint value : `endpoint` can be an integer or any character value to be passed to `pmx`. `NULL` by default.
+
+
+Internally , `ggPMX` will filter the obserations data set to keep only rows satisfying `DVID==endpoint`. 
+
+
+# Use cases
+
+## Case of a single endpoint (PK model)
+
+In this case , the observation data set do not contain a `DVID` column. 
+The controller will be created without passing the dvid parameter. `ggPMX` will use all the observations data set.
+
+## Multiple endpoint (PKPD)
+
+### Output files without prefix (first PK example)
+
+The observation data set contains a DVID parameter with different values. 
+Output files do not have a prefix ( similiar to the PK model). `ggPMX` will check the DVID values and filter data set using the given endpoint. If no endpoint is given an error will be raised to ask user to set one endpoint. 
+
+### Output files with a prefix (other PKPD examples)
+
+- Similiar to the previous case but `ggPMX` will use the endpoint code to  guess the output files. Basically `predictions{code}.txt` and `finegrid{code}.txt` 
+
+To create a controller with the first endpoint, We call `pmx` like:
+
+
+```{r , eval = FALSE}
+
+pmx_mlx(
+  dvid = "YTYPE", ## use this column as obseration id 
+  endpoint = 1,   ## select the first endpoint 
+  ...)            ## other pmx parameters , config, input,etc..
+```
+
+Intrenallay, a pmxEndpoint object will be created(see next section):
+
+- ggPMX will filter observation keeping only `YTYPE==1`
+- read predictions**1**.txt
+- read finegrid**1**.txt ( if exists)
+
+# General case:  `pmx_endpoint`
+
+
+To manage the genral case , we define more endpoint attributes:
+
+- **code** (charcater :how the endpoint is coded)
+- **label** (can be used in some plots title or the report file name)
+- **unit**  (used in the axis label for some plots)
+- **files** list of files :`list(predictions="predictions1.txt",finegrid ="finegrid1.txt")` 
+- **trans**: Whether the value must be transformed before being displayed and which transformation to use.
+
+This obkect is created through `pmx_endpoint` as :
+```{r, eval = FALSE}
+ep <- pmx_endpoint(
+  code = "zz",
+  label = "some_label",
+  unit = "some_unit",
+  files = list(predictions="predictions1.txt",finegrid ="finegrid1.txt"),
+  trans="log10"
+)
+
+```
+
+Then we create  the controller using ep :  
+
+```{r , eval = FALSE}
+
+library(ggPMX)
+pmx_mlx(
+  dvid = "YTYPE",  
+  endpoint = ep,    
+  ...)            
+```
+
+Note that general no need
+
+# Complete PKPD Example 
+
+`ggPMX` cotains a  new built-in example of PKPD data. The DVID column is coded as {3,4} and the data contains predictions1,predictions2
+
+```{r}
+
+pk_pd_path <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  "pk_pd"
+)
+WORK_DIR <- file.path(pk_pd_path, "RESULTS")
+ep <- pmx_endpoint(
+  "4",
+  files = list(
+    predictions="predictions2",
+    finegrid="finegrid2")
+)
+
+
+input_file <- file.path(pk_pd_path, "pk_pd.csv")
+
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = WORK_DIR,
+  input = input_file,
+  dv = "dv",
+  dvid = "dvid",
+  cats = "sex",
+  conts = "wt",
+  endpoint = ep
+)
+
+
+```
+`ggPMX` contains a wrapper   `pk_pd` : 
+
+```{r}
+ctr <- pk_pd("3")
+ctr %>% pmx_plot_cats("iwres_time")
+```
+
+and for the second endpoint: 
+
+```{r}
+ctr <- pk_pd("4")
+ctr %>% pmx_plot_cats("iwres_time")
+```
+
+

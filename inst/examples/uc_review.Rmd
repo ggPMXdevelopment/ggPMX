@@ -1,0 +1,442 @@
+---
+title: "Uses cases Review"
+author: "Amine Gassem"
+date: "October 3, 2017"
+output:
+  html_document:
+    toc: yes
+  pdf_document:
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+---
+
+
+# PK uses cases
+
+```{r uc_tables,results='asis',message=FALSE,echo=FALSE,warning=FALSE}
+library(ggPMX)
+
+
+svn_path <- "~/projects/ggPMX_doc/USER_EXAMPLES/MLX//"
+options(xtable.comment = FALSE)
+uc <- read.csv(text="case,work_dir,type,input,dv,dvid,occ,cats,conts
+1_popPK_model,PK_WITH_COVARIATE_IOV/1_popPK_model,PK,PKdata_ggPMX.csv,DV,ytype,iss,SEX;RACE;DISE;ILOW,AGE0;WT0;HT0;TRT
+PK_NO_COVARIATE,PK_NO_COVARIATE,PK,oral_data.txt,y,,,,
+PK_NO_RE,PK_NO_RE,PK,warfarin_data2.csv,dv,dvid,,sex,wt
+PK_WITH_COVARIATE,PK_WITH_COVARIATE,PK,warfarin_data3.csv,dv,dvid,,sex,wt
+PK_WITH_COVARIATE_2,PK_WITH_COVARIATE_2,PK,warfarin_data4.csv,dv,dvid,,sex,wt
+PK_WITH_COVARIATE_3,PK_WITH_COVARIATE_3,PK,PKdata_ggPMX.csv,DV,YTYPE,,SEX;RACE;ILOW,AGE0;WT0;TRT",
+header=TRUE,
+stringsAsFactors = FALSE)
+
+uc1 <- uc
+uc1$work_dir <- NULL
+
+# knitr::opts_knit$get(kable.force.latex = TRUE)
+print(xtable::xtable(uc1,caption="PK uses cases parameters"), scalebox='0.75')
+
+
+```
+
+
+# PK_NO_COVARIATE
+
+## init the controller 
+
+```{r init_pk_no_covariate}
+
+work_dir <- "PK_NO_COVARIATE"
+work_dir <- file.path(svn_path,work_dir)
+ctr <- pmx_mlx(
+  "standing",
+  directory=file.path(work_dir,"RESULTS_NO_FINEGRID"),
+  input=file.path(work_dir,"oral_data.txt"),
+  dv="y",
+  dvid="dvid")
+
+```
+
+## Residual plots
+```{r PK_NO_COVARIATE_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+# ctr %>% pmx_plot_dv_pred
+# ctr %>% pmx_plot_iwres_ipred
+# ctr %>% pmx_plot_iwres_time
+# ctr %>% pmx_plot_npde_pred
+# ctr %>% pmx_plot_npde_time
+# ctr %>% pmx_plot_dv_pred
+# ctr %>% pmx_plot_abs_iwres_ipred
+
+```
+
+## Individual plots
+```{r PK_NO_COVARIATE_ind}
+# ctr %>% pmx_plot_individual(1)
+
+```
+
+
+## QQ plots
+```{r PK_NO_COVARIATE_qq, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,warning=FALSE}
+# ctr %>% pmx_plot_iwres_qq
+# ctr %>% pmx_plot_npde_qq
+
+```
+
+
+
+# PK_NO_RE
+
+## init the controller 
+
+```{r init_PK_NO_RE}
+work_dir <- "PK_NO_RE"
+work_dir <- file.path(svn_path,work_dir)
+ctr <- pmx_mlx(
+  "standing",
+  directory=file.path(work_dir,"RESULTS"),
+  input=file.path(work_dir,"warfarin_data2.csv"),
+  dv="dv",
+  dvid="dvid",
+  cats="sex",
+  conts="wt")
+
+```
+
+## Residual plots
+
+```{r PK_NO_RE_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_pred
+ctr %>% pmx_plot_npde_time
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+
+```
+
+
+## Individual plots
+```{r PK_NO_RE_ind}
+ctr %>% pmx_plot_individual(1)
+```
+
+
+## QQ plots
+```{r PK_NO_RE_qq, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,warning=FALSE}
+ctr %>% pmx_plot_iwres_qq
+ctr %>% pmx_plot_npde_qq
+
+```
+
+
+
+
+## Stratification 
+
+
+# 1_popPK_model
+
+
+## init the controller 
+
+```{r init_1_popPK_model}
+
+
+work_dir <- "PK_WITH_COVARIATE_IOV/1_popPK_model"
+work_dir <- file.path(svn_path,work_dir)
+ctr <- pmx_mlx(
+  "standing",
+  directory=file.path(work_dir,"RESULTS"),
+  input=file.path(work_dir,"PKdata_ggPMX.csv"),
+  dv="DV",
+  dvid="YTYPE",
+  cats=c("SEX","RACE","DISE","ILOW"),
+  conts=c("AGE0","WT0","HT0","TRT"),
+  occ="ISS")
+
+```
+
+## Residual plots
+```{r 1_popPK_model_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_pred
+ctr %>% pmx_plot_npde_time
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+```
+
+## Individual plots
+```{r 1_popPK_model_ind}
+ctr %>% pmx_plot_individual(1)
+
+```
+
+## Distribution plots
+```{r 1_popPK_model_dis}
+
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist
+```
+
+## Relationships between estimated inter-individual random effects (ETA) and covariates
+
+```{r 1_popPK_model_cov}
+
+ctr %>% pmx_plot_eta_cats
+ctr %>% pmx_plot_eta_conts
+
+
+```
+
+
+
+## QQ plots
+```{r 1_popPK_model_qq, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,warning=FALSE}
+ctr %>% pmx_plot_iwres_qq
+ctr %>% pmx_plot_npde_qq
+
+```
+
+
+## Distribution and correlation structure of estimated inter-individual random effects (ETA)
+
+```{r 1_popPK_model_ebe1, message=FALSE}
+ctr %>% pmx_plot_eta_matrix
+
+```
+
+
+
+## Stratification 
+
+
+# PK_WITH_COVARIATE
+
+## init the controller 
+
+```{r init_PK_WITH_COVARIATE}
+
+work_dir <- "PK_WITH_COVARIATE"
+work_dir <- file.path(svn_path,work_dir)
+ctr <- pmx_mlx(
+  "standing",
+  directory=file.path(work_dir,"RESULTS"),
+  input=file.path(work_dir,"warfarin_data3.csv"),
+  dv="dv",
+  dvid="dvid",
+  cats=c("sex"),
+  conts=c("wt"))
+
+```
+
+## Residual plots
+```{r PK_WITH_COVARIATE_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_pred
+ctr %>% pmx_plot_npde_time
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+```
+
+## Individual plots
+```{r PK_WITH_COVARIATE_ind}
+ctr %>% pmx_plot_individual(1)
+
+
+```
+
+## Distribution plots
+```{r PK_WITH_COVARIATE_dis}
+
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist
+```
+
+## QQ plots
+```{r PK_WITH_COVARIATE_qq, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,warning=FALSE}
+ctr %>% pmx_plot_iwres_qq
+ctr %>% pmx_plot_npde_qq
+
+```
+
+
+## Distribution and correlation structure of estimated inter-individual random effects (ETA)
+
+```{r PK_WITH_COVARIATE_ebe1, message=FALSE}
+ctr %>% pmx_plot_eta_matrix
+
+```
+
+## Relationships between estimated inter-individual random effects (ETA) and covariates
+
+```{r PK_WITH_COVARIATE_ebe2}
+ctr %>% pmx_plot_eta_cats
+ctr %>% pmx_plot_eta_conts
+```
+
+
+## Stratification 
+
+# PK_WITH_COVARIATE_2
+
+
+## init the controller 
+
+```{r init_PK_WITH_COVARIATE_2}
+
+work_dir <- "PK_WITH_COVARIATE_2"
+work_dir <- file.path(svn_path,work_dir)
+ctr <- pmx_mlx(
+  "standing",
+  directory=file.path(work_dir,"RESULTS"),
+  input=file.path(work_dir,"warfarin_data4.csv"),
+  dv="dv",
+  dvid="dvid",
+  cats=c("sex"),
+  conts=c("wt"),
+  strats="day")
+
+```
+
+## Residual plots
+```{r PK_WITH_COVARIATE_2_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_pred
+ctr %>% pmx_plot_npde_time
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+```
+
+## Individual plots
+
+```{r PK_WITH_COVARIATE_2_ind}
+
+ctr %>% pmx_plot_individual(1,strat.facet=~DAY)
+```
+
+## Distribution plots
+```{r PK_WITH_COVARIATE_2_dis}
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist
+
+```
+
+## QQ plots
+```{r PK_WITH_COVARIATE_2_qq, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,warning=FALSE}
+ctr %>% pmx_plot_iwres_qq
+ctr %>% pmx_plot_npde_qq
+
+```
+
+
+## Distribution and correlation structure of estimated inter-individual random effects (ETA)
+
+```{r PK_WITH_COVARIATE_2_ebe1, message=FALSE}
+ctr %>% pmx_plot_eta_matrix
+
+```
+
+## Relationships between estimated inter-individual random effects (ETA) and covariates
+
+```{r PK_WITH_COVARIATE_2_ebe2}
+
+ctr %>% pmx_plot_eta_cats
+ctr %>% pmx_plot_eta_conts
+```
+
+
+## Stratification 
+
+
+# PK_WITH_COVARIATE_3
+
+
+## init the controller 
+
+```{r init_PK_WITH_COVARIATE_3}
+#svn_path = "~/ggPMX/trunk/USER_EXAMPLES/MLX"
+work_dir <- "PK_WITH_COVARIATE_3"
+work_dir <- file.path(svn_path,work_dir)
+ctr <- pmx_mlx(
+  "standing",
+  directory=file.path(work_dir,"RESULTS"),
+  input=file.path(work_dir,"PKdata_ggPMX.csv"),
+  dv="DV",
+  dvid="DVID",
+  cats=c("SEX", "RACE", "ILOW"),
+  conts=c("AGE0", "WT0","TRT"),
+  strats="DOSE")
+
+
+
+```
+
+## Residual plots
+```{r PK_WITH_COVARIATE_3_res, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE}
+
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_pred
+ctr %>% pmx_plot_npde_time
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+```
+
+## Individual plots
+
+```{r PK_WITH_COVARIATE_3_ind}
+
+ctr %>% pmx_plot_individual(1,strat.facet=~DAY)
+```
+
+## Distribution plots
+```{r PK_WITH_COVARIATE_3_dis}
+ctr %>% pmx_plot_eta_box(has.jitter=TRUE)
+ctr %>% pmx_plot_eta_hist
+
+```
+
+## QQ plots
+```{r PK_WITH_COVARIATE_3_qq, out.width='.49\\linewidth', fig.width=4, fig.height=3,fig.show='hold',fig.align='left',message=FALSE,warning=FALSE}
+ctr %>% pmx_plot_iwres_qq
+ctr %>% pmx_plot_npde_qq
+
+```
+
+
+## Distribution and correlation structure of estimated inter-individual random effects (ETA)
+
+```{r PK_WITH_COVARIATE_3_ebe1, message=FALSE}
+ctr %>% pmx_plot_eta_matrix
+
+```
+
+## Relationships between estimated inter-individual random effects (ETA) and covariates
+
+```{r PK_WITH_COVARIATE_3_ebe2}
+
+ctr %>% pmx_plot_eta_cats
+ctr %>% pmx_plot_eta_conts
+```
+
+
+## Stratification 
+

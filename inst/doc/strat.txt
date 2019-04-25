@@ -1,0 +1,75 @@
+```{r load_strat, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
+library(ggPMX)
+library(ggplot2)
+library(xtable)
+library(knitr)
+```
+
+
+
+
+```{r create_controller_uc}
+
+uc.name <- "1_popPK_model"
+data_file <- "PKdata_ggPMX.csv"
+
+uc.dir <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  uc.name
+)
+wd.mlx <- file.path(uc.dir, "RESULTS")
+input_file <- file.path(uc.dir, data_file)
+
+ctr <- pmx_mlx(
+  "standing",
+  directory = wd.mlx,
+  input = input_file,
+  dv = "DV",
+  dvid = "YTYPE",
+  cats = c("SEX", "RACE", "DISE", "ILOW"),
+  conts = c("AGE0", "WT0", "HT0", "TRT"),
+  occ = "ISS"
+)
+```
+
+## Residual plot: categorical covariates
+```{r}
+
+ctr %>% pmx_plot_iwres_ipred(strat.facet = SEX + ILOW~RACE + DISE)
+```
+
+## Residual plot: continuous covariates
+```{r fig.width=4, fig.height=3}
+
+## simpler 
+ctr %>% pmx_plot_iwres_ipred(strat.color = "AGE0")
+```
+
+## Residual plot: mix of categorical and continuous covariates
+```{r}
+
+ctr %>% pmx_plot_iwres_ipred(strat.facet = SEX~RACE)
+```
+
+## Distribution boxplot: categorical covariates
+ 
+```{r fig.width=3, fig.height=5}
+ctr %>% pmx_plot_eta_box(strat.facet = ~SEX)
+```
+
+## Distribution boxplot: mix of categorical and continuous covariates
+```{r}
+ctr %>% pmx_plot_eta_box(
+  strat.facet = SEX~RACE,
+  strat.color="DISE",
+  is.jitter = FALSE,
+  shrink=list(hjust=0.7)
+)
+```
+
+## Distribution histogram plot: categorical covariates
+```{r}
+ctr %>% pmx_plot_eta_hist(strat.facet = "SEX")
+```
+

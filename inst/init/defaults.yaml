@@ -1,0 +1,130 @@
+RES:
+  labels:
+    title: Residual plot
+    subtitle: ''
+    'y': ''
+    x: ''
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: no
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+
+DIS_hist:
+  type: hist
+  dname: eta
+  facets:
+    scales: free_x
+    nrow: 3.0
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    colour: black
+    hjust: -1
+    vjust: 2
+    annotation: shrinkage
+  histogram:
+    binwidth: 0.034
+    position: dodge
+    fill: white
+    colour: black
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: ''
+    'y': ''
+    legend: Random effect
+
+DIS_box:
+  dname: eta
+  type: box
+  is.jitter: yes
+  jitter:
+    shape: 1.0
+    colour: grey50
+    width: 0.1
+    height: 0.1
+    alpha: 0.3
+  is.shrink: yes
+  shrink:
+    fun: sd
+    size: 4.0
+    colour: black
+    hjust: -1.5
+    vjust: 2.0
+    annotation: shrinkage
+  labels:
+    title: EBE distribution
+    subtitle: ''
+    x: ''
+    'y': ''
+    legend: Random effect
+    
+IND:
+  ptype: IND
+  dname: IND
+  ranges: ~
+  is.smooth: no
+  ipred_line:
+    colour: black
+    size: 1
+  pred_line:
+    colour: black
+    size: 1
+  point:
+    colour: black
+    shape : 21
+    size: 1
+  is.legend: no
+  facets:
+    ncol: 3
+    nrow: 4
+    scales: free
+  labels:
+    title: Individual fits
+    subtitle: ''
+    x: TIME
+    'y': DV
+  use.finegrid: yes
+
+ETA_PAIRS:
+  title: Correlations of random effects
+  dname: eta
+  type.eta: mode
+  text_color: black
+  labels:
+    title: ''
+    subtitle: ''
+    x: ''
+    'y': ''
+  
+ETA_COV:
+  type: cats
+  labels:
+    title: ''
+    subtitle: ''
+    x: ''
+    'y': ''
+  
+ETA_CONTS:
+  type: conts
+  labels:
+    title: ''
+    subtitle: ''
+    x: ''
+    'y': ''
+  
+PMX_QQ:
+  ptype: PMX_QQ
+  labels:
+    title: ''
+    subtitle: ''
+    x: ''
+    'y': ''
+    
