@@ -17,15 +17,13 @@ ggPMX is now ready for inputs and enhancements by the pharmacometric community.
 
 ## Documentation
 
-```R
 [Vignette](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX-guide_2019-04-25.pdf)
-```
 
 ## Install ggPMX
 
 Github version:
 ```R
-devtools::install_github(  "ggPMXdevelopment/ggPMX")
+devtools::install_github("ggPMXdevelopment/ggPMX")
 ```
 
 ## CRAN:
