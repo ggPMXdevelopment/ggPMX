@@ -21,7 +21,7 @@ ggPMX is now ready for inputs and enhancements by the pharmacometric community.
 
 Github version:
 ```R
-devtools::install_github(  "ggPMXdevelopment/ggPMX", build_vignettes = TRUE)
+devtools::install_github(  "ggPMXdevelopment/ggPMX")
 ```
 
 ## CRAN:
