@@ -1,6 +1,6 @@
 
 
-\dontrun{
+\donttest{
 # basic use  ---------------------------------------
 
 ctr <- theophylline()

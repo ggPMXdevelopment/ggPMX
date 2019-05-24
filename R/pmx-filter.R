@@ -7,7 +7,7 @@
 #' @return Returns a pmx controller with a filtered data set.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ## example of global filter
 #' ctr <- theophylline()
 #' ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME <2)

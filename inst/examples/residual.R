@@ -1,4 +1,4 @@
-
+\donttest{
 # NOTES ######################
 # examples are availables for all residual plots:
 # - pmx_plot_abs_iwres_ipred
@@ -58,4 +58,4 @@ ctr %>% pmx_plot_dv_pred(filter = SEX == 1, strat.facet = ~SEX)
 
 ## apply a log transformation in y
 ctr %>% pmx_plot_dv_pred(trans = "log10_y")
-
+}
