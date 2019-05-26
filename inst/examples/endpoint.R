@@ -1,4 +1,4 @@
-
+\donttest{
 ## Use file.code parameter
 pk_pd_path <- file.path(system.file(package = "ggPMX"), "testdata","pk_pd")
 
@@ -31,3 +31,4 @@ ep <- pmx_endpoint(
 
 mlxtran_file <- file.path(pk_pd_path, "pk_pd.mlxtran")
 ctr <- pmx_mlxtran(mlxtran_file,endpoint=ep)
+}

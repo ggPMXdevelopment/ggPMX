@@ -1,4 +1,4 @@
-
+\donttest{
 library(ggPMX)
 
 theo_path <- file.path(
@@ -51,3 +51,5 @@ ctr %>%
      style = "fixed",
      fixedBreaks=c(-10,2, 5, 10,15,50))
   )
+
+}

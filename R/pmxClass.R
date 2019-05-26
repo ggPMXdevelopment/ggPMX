@@ -469,7 +469,7 @@ get_abbrev <- function(ctr, param) {
 #' @return ggplot object
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(ggPMX)
 #' ctr <- theophylline()
 #' p1 <- ctr %>% get_plot("iwres_ipred")
@@ -561,7 +561,7 @@ plots <- function(ctr) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ctr <- theophylline()
 #' ctr %>% set_plot("IND", pname = "indiv1")
 #' ctr %>% get_plot_config("distr1")

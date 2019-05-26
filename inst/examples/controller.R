@@ -1,4 +1,4 @@
-## \dontrun{
+\donttest{
 
 ## Example to create the controller using theophylline data
 theophylline <- file.path(system.file(package = "ggPMX"), "testdata",
@@ -63,4 +63,4 @@ str(params)
 # ..$ trans    : NULL
 # ..- attr(*, "class")= chr "pmxEndpointClass"
 # $ config   : chr "standing"
-## }
+}

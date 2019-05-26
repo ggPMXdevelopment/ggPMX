@@ -1,5 +1,5 @@
 # basic use  ---------------------------------------
-\dontrun{
+\donttest{
 ctr <- theophylline()
 ctr %>% pmx_plot_individual(npage = 1)
 ## multiple pages

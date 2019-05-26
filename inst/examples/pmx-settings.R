@@ -1,4 +1,4 @@
-
+\donttest{
 
 library(ggPMX)
 library(ggplot2)
@@ -29,3 +29,4 @@ ctr  %>%
   pmx_plot_eta_box(strat.color="STUD", strat.facet =~SEX)
 
 ctr  %>%  pmx_plot_eta_hist
+}

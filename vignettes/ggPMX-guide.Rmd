@@ -1,17 +1,16 @@
 ---
-title: "ggPMX - User guide"
-author: "Amine Gassem, Irina Baltcheva"
-date: '`r Sys.Date()`'
+title: "ggPMX - User Guide"
 output:
-  html_document:
-    toc: yes
-    toc_depth: '3'
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
     toc: yes
     toc_depth: '3'
+  html_document:
+    toc: yes
+    toc_depth: '3'
+date: '`r Sys.Date()`'
 vignette: >
   %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
@@ -28,64 +27,1001 @@ library(knitr)
 
 
 # Introduction 
-```{r child = 'intro.txt'}
+
+
+The `ggPMX` package generates standard diagnostic plots and tables for mixed effect models used in Pharmacometric (PMX) activities. The tool is built upon the ggplot2 package and is planned to support models developped either with Monolix or nlmixr software. The current release (0.9.9.9-7) supports models fitted with Monolix versions 2016 and later.
+
+The package aims to provide a workflow that is consistent, efficient and which results in high quality graphics ready to use in official documents and reports. The package allows a high degree of flexibility and customization, yet providing an acceptable default setting. The package also allows to fully automate plots and report generation. 
+
+The general context is the analysis of mixed effect models fitted to data. ggPMX was developed in the framework of Pharmacometric activities, in which case the model is a population pharmacokinetic (PK) and/or pharmacodynamic (PD) model and the data is clinical or pre-clinical PK and/or PD data.
+
+In the context of model building, evaluation and qualification, it is good practice to assess the goodness-of-fit of models by inspecting (qualitatively and quantitatively) a set of graphs that indicate how well the model describes the data. Several types of diagnostic plots allow to evaluate a mixed effects model fit, the most common being:
+
+a. residual-based plots
+b. prediction-based plots
+c. empirical Bayes estimates (EBE)-based plots
+d. simulation-based plots.
+
+The following figures are examples of diagnotic plots. 
+```{r illustrate_diagnostic, out.width='.25\\linewidth', fig.width=4, fig.height=4, fig.show='hold', fig.align='center', echo=FALSE}
+ctr <- theophylline()
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_hist(facets=list(scales="free_y"))
+ctr %>% pmx_plot_individual(npage = 1,
+                            is.legend=FALSE,
+                            facets=list(ncol=2,nrow=3))
+ctr %>% pmx_plot_eta_matrix(
+  shrink=list(size=3,hjust=1.5))
 ```
 
-\clearpage
+This document introduces the ggPMX functionalities and syntax. 
 
-# General architecture
+<!-- THE FOLLWING NEEDS TO BE CHANGED: Section X describes the general architecture and defines key design elements (the controller and several data frames). Section X+1 describes how to initialize a controller using a built-in model. This section allows to have a quick grasp of the package capabilities by showing how to display plots, update existing ones, how to filter and stratify data. Section X+2 explains how to use the package with custom models.  -->
 
-```{r child = 'archi.txt'}
+## Architecture 
+
+The high level architecture is represented in the figure below. The key components of the package are the following:
+
+* **Reader** - reads model outputs from different sources (i.e. text files containing population parameters, model predictions, individual random effects, simulations and data-related inputs like covariates) and restructures these outputs into standard formats for internal processing.
+* **Generator** ??? processes outputs from Reader. It contains R language code to produce the plots and is factorized into a small set of flexible key functions.  A set of default plots is defined in a configuration file. The configuration file can be adapted, e.g., to have different configurations for different types of modeling activities. 
+* **Controller** - serves as user interface. The user will call Generator functions via wrapper functions in the Controller to produce either all the default plots or selected plots of interest. In addition to editing the configuration, the user has different options to adapt aspects of the plots to specific requirements. Plots may be adapted by setting parameters of the wrapper functions that generate the plots; there exist additional wrapper functions to change aspects of the existing default plots. The plots are, in general, returned as ggplot objects that can be further customized using ggplot functionalities. 
+* **Reporter** - generates sets of graphs and tables and integrates them into an output file (Word or PDF) with annotations.
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics("./ggPMX_arch.png")
 ```
-\clearpage
 
-# Basics: PK models
+The package is coded using object-oriented programming meaning that information is encoded in objects. The user can change or print the content of objets via functions. Such an implementation allows to have code that is modular and easily customizable. 
 
-```{r child = 'basics.txt'}
+## Workflow overview
+
+The typical workflow of ggPMX is as follows:
+
+1. The user creates the Controller using pre-defined configurations (yaml templates) for plot settings.
+2. The Controller implicitly calls the Reader that reads and stores modelling outputs into a standard format. As a result, the Controller contains all available plots with their default values according to the configuration used.
+3. The Generator allows to print the available plots by calling the corresponding functions. Plots can be modified by using optional arguments.
+4. A call to the Reporter allows to create a pdf or docx report. The report Rmarkdown template can also be personalized.
+
+The most important task for the user is the Controller creation. This step requires careful consideration because it involves different options according to the type of model (PK or PKPD) and software (Monolix or nlmixr) used for model fitting. The next section describes the Controller creation for the different possible cases.
+
+Once the Controller is created, it implicitly calls the Reader and creates the diagnostic plots. The user can then generate the graphs by calling pre-defined functions as described in Section 3. The same syntax is used independent of the model structure (PK or PKPD model) and of the fitting software.
+
+The Reporter creates one report per endpoint, i.e., one report for PK and one for each PD endpoint. 
+
+## Modeling datasets
+
+For the sake of this document, three types of datasets are defined.
+
+* The *input modeling dataset* is the one used for model fitting (the actual data). There are no particular requirements regarding this dataset.
+* The *output modeling datasets* are those output from the fitting tool (Monolix or nlmixr). For version 1.0 of ggPMX, these datasets have to follow the structure of outputs of Monolix 2016 or 2018 (See Appendix for more details on Monolix requirements).  A "standard" format for nlmixr output datasets will be defined for the the ggPMX version that allows usage of nlmixr as the fitting software.
+* The *ggPMX datasets* are the ones created within (internal to) ggPMX. More details on the ggPMX datasets can be found in Section 2.4.3.
+
+
+
+# Controller
+
+A diagnostic session starts with the creation of a Controller. The Controller is the "user interface" of the package and allows to conrol all possible options. It is a container that stores configuration fields (model- and input data-related information), datasets and plots. It can be used as a reference object in which the user can see the names of the exisitng plots, the names of the `ggPMX` datasets, etc. The syntax of the Controller creation differs depending on the software used for model fitting and on the number of model endpoints (or outputs). This section presents different cases of Controller creation. For simplicity, the case of models with one single output is presented first (Section 2.1), then generalized to several outputs (Section 2.2). In Section 2.1 are presented other Controller creation functions that can be used with the different fitting softwares. Note that all these functions can also be used with models with several outputs.
+Section 2.7 provides details on the content of the Controller.
+
+## Single-endpoint models
+
+In general, models with only one endpoint (or output) are mostly PK models, but these could also be k-PD models. 
+
+To illustrate `ggPMX` functionalities, the single-endpoint built-in model called **theophylline** is used hereafter. The **theophylline** population PK example has the following characteristics:
+
+- The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline. 
+- The model is a simple one-compartmental PK model with first-order absorption. 
+- The following covariates are used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance. 
+- Random effects on all three parameters (ka, Cl, V) are included. 
+- The residual error is proportional.
+
+The input modeling dataset has the following columns:
+```{r,echo=FALSE}
+theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir          <- file.path(theophylline_path, "Monolix")
+input_data_path   <- file.path(theophylline_path, "data_pk.csv")
+
+input_data_theo   <- read.csv(input_data_path)
+head(input_data_theo)
 ```
-\clearpage
+Note that the DVID (or CMT/YTYPE) column is missing, but since this is a single-endpoint model, it is not necessary in that case.
 
-# Advanced features
+### Generic Controller creation with `pmx()`
 
-```{r child = 'advanced.txt'}
+The function `pmx()` is the generic function for greating a Controller. The user needs to specify a set of arguments such as the path to the model directory, the software used for model fitting (Monolix or nlmixr), the name of a configuration. A list of all existing configurations is provided in the Appendix. All **mandatory** arguments of `pmx()` are listed in Table \ref{tab:pmx_mandatory}.
+
+```{r,echo=FALSE,results='asis',out.width='.9\\linewidth'}
+
+out <- rbind(
+  c("sys", "Software used for model fittng (Monolix or nlmixr)", "mlx, mlx2018, nm"),
+  c("config", "A pre-defined configuration is a set of default settings", "standing"),
+  c("directory", "Path to the directory containing model output files", ""),
+  c("input", "Path to input modeling dataset (dataset used for model fitting)", ""),
+  c("dv", "Measurable variable name, as defined in the input modeling dataset", "DV, LIDV, LNDV, Y, etc."),
+  c("dvid", "Endpoint (output) name, as defined in the input modeling dataset", "DVID, YTYPE, CMT, etc.")
+)
+
+colnames(out) <- c("Argument", "Description", "Values")
+
+xt <- xtable(head(out), label = "tab:pmx_mandatory", caption = "Mandatory arguments of pmx() function")
+print(xt, comment = F)
 ```
-\clearpage
 
-# Stratification
+The example below defines a Controller with the *standing* (standard) configuration. 
+```{r init_ctr1}
+theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir          <- file.path(theophylline_path, "Monolix")
+input_data_path   <- file.path(theophylline_path, "data_pk.csv")
 
-```{r child = 'strat.txt'}
+ctr <- pmx(
+  sys       = "mlx",
+  config    = "standing",
+  directory = work_dir,
+  input     = input_data_path,
+  dv        = "Y",
+  dvid      = "DVID"
+)
 ```
-\clearpage
+Note that the column "DVID" of data_pk.csv does not exist; however it is not needed here because there is only one single output of the model. As dvid is a mandatory argument, it still needs to be provided and was set arbritrarly to "DVID" in the example above. 
 
-# Shrinkage
+The input dataset can be provided to ggPMX via its location (as in the example above) or as a data frame (maybe give an example). The modeling output datasets have to be in the location that is indicated as working directory (`work_dir` in the example above).
 
-```{r child = 'shrink.txt'}
+The above example of Contoller creation is wrapped in a function called "theophylline()" for quick reference:
+```{r}
+ctr <- theophylline()
 ```
-\clearpage
 
-# Filtering
+The following are optional arguments to the `pmx()` function (for details of each option, see the corresponding section):
 
-```{r child = 'subset.txt'}
+* cats: character vector of categorical covariates (Section 2.3)
+* conts: character vector of continuous covariates (Section 2.3)
+* occ: character occasinal covariate variable name
+* strats: character extra stratification variables (Section 2.3)
+* settings: global pmxSettingsClass (`pmx_settings()`) shared between all plots
+* endpoint: pmxEndpointClass (`pmx_endpoint()`) or integer or charcater of the endpoint code (Section 2.2)
+* sim: pmxSimClass object for VPC generation.
+
+
+### Models fitted with Monolix (versions 2016 and later) 
+
+####`pmx_mlx()`
+
+The controller initialization can be simplified by using the Monolix controller `pmx_mlx()`, which is a wrapper function for `pmx()` with `sys="mlx"`. Note that the `sys` argument is no longer required.
+```{r}
+ctr <- pmx_mlx(
+  config    = "standing",
+  directory = work_dir,
+  input     = input_data_path,
+  dv        = "Y",
+  dvid      = "DVID"
+)
 ```
-\clearpage
 
-# Global settings
+#### `pmx_mlxtran()`
 
-```{r child = 'settings.txt'}
+The controller initialization can be simplified even further by using the Monolix controller `pmx_mlxtran()`. This function parses the mlxtran file of a Monolix project and assigns automatically the different fields necessary to the Controller creation. The only mandatory argument is file_name, the path to the mlxtran file.
+```{r}
+mlxtran_path <- file.path(system.file(package = "ggPMX"), 
+                          "testdata", "1_popPK_model", "project.mlxtran")
+
+ctr <- pmx_mlxtran(file_name = mlxtran_path)
 ```
-\clearpage
+The user can verify the content of the Controller and how parameters are assigned by printing it (see Section 2.4). 
 
-## Visual predictive checks (VPCs)
 
-In a next release.
+## Multiple-endpoint models
 
-# `ggPMX` with PKPD models
+Models with more than one endpoint (or output) are mostly PKPD models, but these could also be, for example, PK binding models in which there are measurements and predictions of both PK and its target.
 
-In a next release.
+ggPMX produces one diagnostics report per endpoint. As a consequence, the endpoint (if more than one) should be set at the time of the Controller creation in order to filter the observations dataset and to keep only the values corresponding to the endpoint of interest. To handle this, the user creates an "endpoint" object using the function `pmx_endpoint()` having the following attributes:
 
-\clearpage
+- **code** (charcater): how the endpoint is coded in the input (modeling) dataset
+- **label**: can be used in the title of some plots or for the report file name
+- **unit**: used in the axis label for some plots
+- **files** (list): `list(predictions="predictions1",finegrid ="finegrid1")` 
+- **trans**: whether the value must be transformed before being displayed and which transformation to use.
 
-# Appendix A: 
+To illustrate the Controller creation with multiple-endpoint models, a built-in PKPD example is used. The input dataset is called pk_pd.csv and has the following columns.
 
-```{r child = 'annex_a.txt'}
+```{r, echo=F}
+pkpd_path       <- file.path(system.file(package = "ggPMX"), "testdata", "pk_pd")
+pkpd_work_dir   <- file.path(pkpd_path, "RESULTS")
+pkpd_input_file <- file.path(pkpd_path, "pk_pd.csv")
+
+input_data <- read.csv(pkpd_input_file)
+head(input_data)
 ```
+The dvid column contains values=3 for PK (first endpoint) and dose and =4 for PD (second endpoint). Monolix2016 outputs are found in folder RESULTS/ which contains predictions1.txt and finegrid1.txt for PK predictions, and predictions2.txt and finegrid2.txt for PD predictions. The Endpoint and Controller objects are created as follows:
+```{r}
+pkpd_path       <- file.path(system.file(package = "ggPMX"), "testdata", "pk_pd")
+pkpd_work_dir   <- file.path(pkpd_path, "RESULTS")
+pkpd_input_file <- file.path(pkpd_path, "pk_pd.csv")
+
+ep <- pmx_endpoint(
+  code  = "4",
+  label = "some_label",
+  unit  = "some_unit",
+  file.code = "2", # will use predictions2.txt and finegrig2.txt
+  trans = "log10"
+)
+
+ctr <- pmx_mlx(
+  config    = "standing",
+  directory = pkpd_work_dir,
+  input     = pkpd_input_file,
+  dv        = "dv",
+  dvid      = "dvid",
+  endpoint  = ep
+)
+```
+
+A simplified syntax for the Endpoint creation exists in the case where the endpoint code matches the files post-fixes (code=1 corresponds to predictions1.txt, code=2 corresponds to predictions2.txt). Instead of passing a pmxEndpoint object as argument of the Controller, the user can specify the numerical value corresponding to the YTYPE/CMT/DVID column.
+```{r, echo=T, eval = FALSE}
+pmx_mlx(
+  dvid = "YTYPE", ## use this column as obseration id 
+  endpoint = 1,   ## select the first endpoint 
+  ...)            ## other pmx parameters , config, input,etc..
+```
+Internally, a pmxEndpoint object will be created, and observations having YTYPE=x will be filered. 
+
+## Controller with covariates
+
+Besides the mandatory fields to initialize a Controller, the user can set optional parameters related to covariates. This feature is illustrated below with the Theophylline example.
+
+```{r init_ctr_covar}
+theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir          <- file.path(theophylline_path, "Monolix")
+input_data_path   <- file.path(theophylline_path, "data_pk.csv")
+
+ctr <- pmx_mlx(
+  config    = "standing",
+  directory = work_dir,
+  input     = input_data_path,
+  dv        = "Y",
+  dvid      = "DVID",
+  cats      = c("SEX"),
+  conts     = c("WT0", "AGE0"),
+  strats    = c("STUD", "SEX")
+)
+```
+`Conts` are the continuous covariates. `Cats` are categorical covariates used in the model, whereas `strats` are categorical variables that can be used for plot stratification, but are not used as covariates in the model.
+
+The covariates can be accessed using helper functions:
+
+```{r get_covar1}
+ctr %>% get_cats()
+ctr %>% get_conts()
+ctr %>% get_strats()
+ctr %>% get_covariates()
+```
+
+
+## Controller content
+The content of the Controller can be seen by printing it:
+```{r display_ctr1}
+ctr
+```
+
+It contains three tables:
+
+- The first table is the Controller configuration. The user can see the working directory, the input modeling dataset name, the dependent variable (DV) name and other fields related to the model (e.g., continuous and discrete covariates).
+
+- The second table lists the `ggPMX` datasets (see Section 2.4.3). The first column (`data_name`) of this table contains the ggPMX name of the dataset; the second column (data_file) contains the names of the output modeling datasets (for example estimates.txt); in the third column (data_label) contains the dataset description.
+
+- The third table provides the list of available plots in the Generator. It corresponds to Table \ref{tab:plots_list} in Section 4. Plot types are explained in Section 2.4.2.
+
+
+### Plot names
+
+The Controller is a container that stores all plots. To get the list of plots, the function `plot_names()` is used:
+```{r plot_lists2}
+ctr %>% plot_names()
+```
+An alternative way to display the names of the existing plots is by printing the content of the Controller as done above.
+
+`ggPMX` provides a specialized function to create and update each plot `pmx_plot_xx()` where `xx` is the plot name from the list above. These functions are described in detail in Section 3.
+
+### Plot types
+
+Each plot type is a class of similar plots. `ggPMX` defines the following plot types:
+
+  + SCATTER: residual plots
+  + IND: individual plots display longitudinal (time course) predictions and data (one panel per individual)
+  + DIS: distribution of empirical Bayes estimates (EBE) histogram or boxplot
+  + ETA_PAIRS: random effects (ETA) distributions and correlations structure
+  + ETA_COV: relationships between random effects (ETA) and continuous or categorical covariates
+  + PMX_QQ: quantile-quantile plot (qq-plot)
+
+The following syntax allows to see which type of plot corresponds to which plot name:
+```{r plot_types2}
+ctr %>% plots()
+```
+
+
+### Datasets
+
+`ggPMX` uses the following dataset name convention. The *input modeling dataset* is the one used for model fitting (the actual data). The *output modeling datasets* are those output from the fitting tool (Monolix or NONMEM). The *ggPMX datasets* are the ones created within ggPMX. Table \ref{tab:ggPMX_datasets} provides a list of all ggPMX datasets.
+
+```{r datasets_list,echo=FALSE,results='asis'}
+
+out <- rbind(
+  c("input", "Input modeling dataset"),
+  c("estimates", "Estimated population parameters"),
+  c("eta", "Random effects, their standard deviation and residual errors (to calculate shrinkage)"),
+  c("predictions", "Observations and predictions at times of observations dataset"),
+  c("finegrid", "Additional predictions (at times without observations)")
+)
+
+colnames(out) <- c("ggPMX dataset", "Description")
+# knitr::kable(out)
+# latex(head(out), file='', label='tab:ggPMX_datasets', caption='ggPMX datasets',where = "!htbp")
+xt <- xtable(head(out), label = "tab:ggPMX_datasets", caption = "ggPMX datasets")
+print(xt, comment = F)
+```
+
+# Default diagnostic plots
+
+To illustrate `ggPMX` functionalities, we use a built-in model: the **theophylline** example. 
+
+- The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline. 
+- A simple one-compartmental PK model with first-order absorption was fitted to the data. 
+- The following covariates were used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance. 
+- Random effects on all three parameters (ka, Cl, V) were included. 
+- The residual error was proportional.
+
+As a convention, when plots are described as "Y vs. X", we mean that Y is plotted on the vertical axis and X on the horizontal axis.
+
+## Create a controller with `pmx()`
+
+A diagnostic session starts by creating a controller using the function `pmx()`. The user has to specify the path to his model directory, the software used for model fitting (Monolix or Nonmem) and a configuration. A pre-defined configuration is a set of default settings. Below is an example where we instantiate a controller with the *standing* configuration (a list of all existing configurations is provided in the Appendix):
+
+```{r init_ctr}
+
+theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theophylline, "Monolix")
+input_data <- file.path(theophylline, "data_pk.csv")
+
+ctr <- pmx(
+  sys = "mlx",
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID"
+)
+```
+This is example of contoller , is wrapped in a function ( massively used to illustrate the package examples) 
+
+```{r theophylline_ctr}
+ctr <- theophylline()
+```
+
+
+
+All mandatory arguments of `pmx()` are listed below:
+
+- `sys` : modeling software, either Monolix ('mlx') or Nonmem ('nm')
+- `config` : configuration used can be 'standing' or a custom defined file (clarify if the path to the file has to be provided)
+- `directory`: path to the directory containing model output files
+- `input`: path to input modeling dataset
+- `dv` : measurable variable name, as defined in the input modeling dataset
+- `dvid` : endpoint type (compartment) name, as defined in the input modeling dataset
+
+The controller is an object of class `r class(ctr)[1]`. It behaves like a container that stores configuration fields (model- and input data-related information), datasets and plots. It can be used as a reference object in which the user can see the names of the exisitng plots, the names of the `ggPMX` datasets, etc. We can see the content of the controller by printing it:
+```{r display_ctr}
+ctr
+```
+
+ctr is diplayed in 3 table: 
+
+- The first table is the controller configuration. We see the working directory, the input modeling dataset name, the dependent variable (DV) name and other fields related to the model (e.g., continuous and discrete covariates).
+
+- The second table lists the `ggPMX` datasets. The first column (`data_name`) of this table contains the ggPMX name of the dataset; the second column (data_file) contains the names of the output modeling datasets (for example estimates.txt); in the third column (data_label) contains the dataset description.
+
+- The third table of the controller provides the list of the available plots. It corresponds to Table \ref{tab:plots_list} in Section 4. Plot_type is explained in Section 3.3.
+
+### Monolix controller with `pmx_mlx()`
+The above controller initialization can be simplified by using the Monolix controller `pmx_mlx()`, which is a wrapper function for `pmx()` with `sys="mlx"`:
+```{r init_pmx_mlx}
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID"
+)
+```
+### Nonmem controller
+Similarly, there will be (in a future release) a Nonmem controller.
+
+
+
+### Controller with covariates
+
+Besides the mandatory fields to initialize a controller, the user can set optional parameters related to covariates 
+
+```{r init_ctr_covar1}
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = work_dir,
+  input = input_data,
+  dv = "Y",
+  dvid = "DVID",
+  cats = c("SEX"),
+  conts = c("WT0", "AGE0"),
+  strats = c("STUD", "SEX")
+)
+```
+`Conts` are the continuous covariates. `Cats` are categorical covariates used in the model, whereas `strats` are categorical variables that can be used for plot stratification, but are not used as covariates in the model.
+
+We can access different covariates using helpers functions:
+
+```{r get_covar}
+ctr %>% get_cats()
+ctr %>% get_conts()
+ctr %>% get_strats()
+ctr %>% get_covariates()
+```
+
+## Plot names
+
+The controller is a container that stores all plots. To get the list of plots, we use the function `plot_names()`:
+```{r plot_lists}
+ctr %>% plot_names()
+```
+Note here the use of piping. An alternative way to display the names of the existing plots is by printing the content of the controller as done in the previous section.
+
+## Plot types 
+
+`ggPMX` comes with a list of plot types. This is not to be confused with plot names. Each plot type is a class of similar plots that helps to mak ethe code more efficient and factorized.
+```{r plot_types}
+ctr %>% plots()
+```
+
+A short description of each plot type is given below:
+
+  + SCATTER: residual plots are scatter plots
+  + IND: individual plots display longitudinal (time course) predictions and data (one panel per individual)
+  + DIS: Distribution of empirical Bayes estimates (EBE) histogram or boxplot
+  + ETA_PAIRS: random effects (ETA) distributions and correlations structure
+  + ETA_COV: Relationships between random effects (ETA) and continuous or categorical covariates
+  + PMX_QQ: quantile-quantile plot (qq-plot)
+  
+`ggPMX` provides a specialized function to create and update each plot :`pmx_plot_xx()` where `xx` is the plot name. 
+
+NOTE: **`pmx` and `pmx_plot_xx()` functions are just what you need to know to generate and customize any plot.**
+  
+## View default plots
+
+To view all standard diagnostig plots, call the corresponding `pmx_plot_xx()` function. See the Advanced features section to learn how to modify default plot settings.
+
+- List  of residual plots (**SCATTER**)
+```{r basics_res, out.width='.48\\linewidth', fig.height=4, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_dv_ipred
+
+ctr %>% pmx_plot_iwres_time
+ctr %>% pmx_plot_npde_time
+
+ctr %>% pmx_plot_iwres_ipred
+ctr %>% pmx_plot_abs_iwres_ipred
+
+ctr %>% pmx_plot_npde_pred
+```
+
+- ebe histogram/boxplot plot (**DIS**)
+```{r basics_ebe_hist , fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_eta_hist()
+ctr %>% pmx_plot_eta_box()
+
+```
+- individual plot (**IND**)
+```{r basics_indiv, fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_individual(npage = 1)
+```
+- qq plot (**PMX_QQ**)
+```{r basics_qq, fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_npde_qq()
+ctr %>% pmx_plot_iwres_qq()
+```
+- matrix plot (**ETA_PAIRS**)
+```{r basics_matrix_plot,  fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_eta_matrix
+```
+
+## Update default plots
+
+To update default plots, one can use the same functions as above, but with additional arguments. Here for example, to update the individual plot:
+```{r basics_update_defaults, out.width='.98\\linewidth', fig.height=6, fig.width=9, fig.show='hold', fig.align='center'}
+ctr %>% pmx_plot_individual(
+  npage = 1, 
+  facets = list(nrow = 2, ncol = 2),
+  labels = list(title = "My individuals")
+) + ggplot2::scale_y_log10()
+```
+
+Using the help , you can get the list of possible parameters to update the plot.
+
+# Visual Predictive Checks (VPC)
+
+## Initialization
+
+
+`pmx_sim` creates a simulation object. It takes the following arguments:
+
+Arguments
+
+1. **file**	character path to the simulation file
+2. **irun**	character name of the simulation column
+3. **idv**	character name of the ind. variable
+4. **dv**	character name of the observation variable
+
+Within pmx vpc controller, it is called like : 
+
+```{r }
+
+theoph_path <- file.path(
+  system.file(package = "ggPMX"), "testdata",
+  "theophylline"
+)
+WORK_DIR <- file.path(theoph_path, "Monolix")
+input_file <- file.path(theoph_path, "data_pk.csv")
+vpc_file <- file.path(theoph_path, "sim.csv")
+
+ctr <- pmx_mlx(
+  config = "standing",
+  directory = WORK_DIR,
+  input = input_file,
+  dv = "Y",
+  cats = c("SEX"),
+  conts = c("WT0", "AGE0"),
+  strats = "STUD",
+  settings = pmx_settings(
+    use.labels=TRUE,
+    cats.labels=list(
+      SEX=c("0"="Male","1"="Female")
+    )
+  ),
+  sim = pmx_sim(
+    file = vpc_file,
+    irun ="rep",
+    idv="TIME"
+  )
+)
+
+
+```
+
+# vpc plot
+
+vpc plot options are described in `vpc??` function. Here some examples:
+
+## Default
+
+```{r}
+ctr %>% pmx_plot_vpc
+```
+
+## Scatter/Percentile
+
+By default the vpc plot is **percentile** ; , but we can plot the **scatter** type:
+```{r}
+ctr %>% pmx_plot_vpc(type ="scatter")
+```
+
+## Binning
+
+```{r}
+ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
+```
+
+## Stratification 
+
+```{r}
+ctr %>% pmx_plot_vpc(strat.facet="SEX",facets=list(nrow=2))
+```
+
+## Monolix like Customisation
+
+User can customize the options to get a monolix like display.
+
+```{r}
+ctr %>% pmx_plot_vpc(
+  strat.facet="SEX",
+  facets=list(nrow=2),
+  type="percentile",
+  is.draft = FALSE,
+  pi = pmx_vpc_pi(interval = c(0.1,0.9),
+              median=list(color="green"),
+              extreme= list(color="green")),
+  obs = pmx_vpc_obs(color="blue",shape=18,size=2),
+  ci = pmx_vpc_ci(interval = c(0.1,0.9),
+              median=list(fill="red"))
+)
+```
+
+
+# Diagnostics report
+
+A report (in pdf and docx format) containing all default diagnostic plots can be created using the *pmx_report* function. The *format* can take three different values:
+
+- "report": produces a pdf and a docx file (named `name.pdf` and `name.png` specified in argument *name*, located in *save_dir*) with default diagnostic plots
+- "plots": produces a folder named `ggpmx_GOF` located in *save_dir* that contains all default diagnotic plots, each in a pdf and png file. The different plots are numerated in order to have an unique identifier for each plot (ex: ebe_box-1.pdf). This is necessary for having correct footnotes that indicated the path to the source file (for submission reports).
+- "both": is a combination of both options above.
+
+Example:
+```{r eval=FALSE}
+ctr %>% pmx_report(name='Diagnostic_plots2',
+                   save_dir = work_dir,
+                   format='both')
+```
+
+Note that running the same command first with the option "format='plots'" and then with the option "format='report'" will remove the *ggpmx_GOF* folder. 
+
+Note also that by default, the report will have the DRAFT label on all plots. The label can be removed by using the settings argument in the Controller creation, as described in Section 6.3.1.
+
+The user can customize the default report by creating a "template". To create a template, the user should create first a default report with the following command:
+```{r eval=FALSE}
+ctr %>% pmx_report(name='Diagnostic_plots1',
+                   save_dir = work_dir,
+                   format='report')
+```
+The Rmarkdown (.Rmd) file is the "template". The user can modify the Rmarkdown file as desired (ex: changing the size of some figures) and save the modified file. The new template can be used with the following command:
+```{r eval=FALSE}
+ctr %>% pmx_report(name='Diagnostic_plots3',
+                   save_dir = work_dir,
+                   format='report',
+                   template=file.path(work_dir,'Diagnostic_plots1.Rmd'))
+```
+
+
+
+# Customizing plots
+
+Any particular plot can be customized in two ways:
+
+-	Specifying options in each call of a plot: 
+```{r eval=F}
+ctr %>% pmx_plot_xx(list of options)
+```
+
+-	Customizing a type of plot for all subsequent calls in the session by modifying the Controller:
+```{r eval=F}
+ctr %>% pmx_update(???xx???, list of options)
+```
+
+Help(pmx_gpar) lists some options. 
+
+Help(pmx_plot_xx) lists some possible parameters to update a particular plot. 
+
+To obtain an exhaustive list of possible options for a particular plot, use the following:
+```{r eval=F}
+ctr %>% get_plot_config("xx")
+```
+
+
+## Options relevant for many plots
+
+### BLQ
+```{r}
+ctr = theophylline()
+bloq = list(show = FALSE, color = "blue", alpha = 0.2, size = 3, pch = 8)
+```
+
+
+## Customizing global settings - `pmx_settings()`
+
+The user can define a Controller with global settings that will be applied to all plots. For example remove draft annoataion, use abbreviation defintions to define axis labels, etc. 
+
+A settings object is defined by using the function `pmx_settings()`. The created object is passed as the parameter "settings" to `pmx()`. By doing so, the settings are defined globally and apply to all plots. For a complete list of global settings with their corresponding default values, please consult the ggPMX Help (`?pmx_settings`).
+
+```{r settings_example, fig.width=5, fig.height=4,eval=FALSE}
+
+## set one or more settings
+my_settings <- pmx_settings(
+  is.draft   = FALSE,
+  use.abbrev = TRUE,
+  ...) ### set other settings parameters here 
+ctr <-
+  pmx_mlx(
+    ..., ## put here other pmx parametes 
+    settings = my_settings
+  ) 
+```
+
+
+### Remove DRAFT label globally 
+
+By default in the "standing" configuration, a DRAFT label is printed on all plots. In order to switch this label off, the user sets the `is.draft` option of `pmx_settings()` to `FALSE`.
+
+```{r settings_is_draft,fig.height=3, fig.width=3, fig.show='hold', fig.align='center'}
+
+ctr <- theophylline(settings = pmx_settings(is.draft = FALSE))
+
+```
+
+
+### Use abbreviation definitions 
+
+The standing configuration initializes all plots using abbreviations for axis labels. Each abbreviation has its corresponding definition. To get the list of abbreviation : 
+
+```{r settings_get_abbrev}
+ctr %>% get_abbrev
+```
+You can update one abbreviation to set a custom label 
+
+```{r settings_set_abbrev}
+ctr %>% set_abbrev(TIME="TIME after the first dose")
+```
+
+Using `use.abbrev` flag you can use abbreviation definition to set axis labels:
+
+```{r settings_use.abbrev}
+ctr <- theophylline(settings=pmx_settings(use.abbrev = TRUE))
+ctr %>% set_abbrev(TIME="Custom TIME axis")
+ctr %>% pmx_plot_npde_time
+
+```
+
+### Use `finegrid.txt` file for individual plots
+
+within Monolix, user can choose to not use finegrid file even if it is present. 
+
+```{r settings_use.finegrid,fig.height=9, fig.width=7}
+ctr <- theophylline()
+ctr %>% pmx_plot_individual(use.finegrid =FALSE)
+```
+
+### Set stratification color legend
+
+In case of color startfication user can customize the legend. For example here using the `ggplot2::scale_color_manual`:
+
+```{r settings_color_scales_local}
+ctr <- theophylline()
+ctr %>% pmx_plot_npde_time(strat.color="STUD")+ 
+      ggplot2::scale_color_manual(
+        "Study",
+        labels=c("Study 1","Study 2"),
+        values=c("1"="green","2"="blue"))
+    
+
+```
+
+Another way to do it is to define a global `scales.color` parameter that will applied to all plots with strat.color :
+```{r settings_solor_scales,fig.height=5, fig.width=8}
+
+ctr <- theophylline(
+  settings=
+    pmx_settings(
+      color.scales=list(
+        "Study",
+        labels=c("Study 1","Study 2"),
+        values=c("1"="orange","2"="magenta"))
+    )
+)
+
+ctr %>% pmx_plot_npde_time(strat.color="STUD")
+```
+
+```{r settings_solor_scales_a,fig.height=5, fig.width=11}
+ctr %>% pmx_plot_eta_box(strat.color="STUD")
+```
+
+
+### Define labels of categorical variables
+
+In case of faceting by stratification user can redfine categorical labels to have more human readables strips. Lables are defined within `cats.labels` argument and user can use them by setting `use.lables` to TRUE.
+
+```{r settings_cat_labels}
+
+
+ctr <- theophylline(
+  settings=
+    pmx_settings(
+      cats.labels=list(
+        SEX=c("0"="M","1"="F"),
+        STUD=c("1"="Study 1","2"="Study 2")
+      ),
+      use.labels = TRUE
+    )
+)
+
+ctr %>% pmx_plot_npde_time(strat.facet=~SEX)
+```
+
+```{r settings_cat_labels2, fig.height=5, fig.width=8}
+
+
+ctr <- theophylline(
+  settings=
+    pmx_settings(
+      cats.labels=list(
+        SEX=c("0"="M","1"="F"),
+        STUD=c("1"="Study 1","2"="Study 2")
+      ),
+      use.labels = TRUE
+    )
+)
+
+ctr %>% pmx_plot_npde_time(strat.facet=~SEX)
+```
+
+```{r settings_cat_labels3, fig.height=8, fig.width=8}
+ctr %>% pmx_plot_eta_box(strat.facet =~SEX)
+
+```
+
+
+
+
+# Appendix A 
+
+## Monolix requirements
+
+In order to be able to produce all possible diagnostic plots, the following tasks should be executed in Monolix during the model fitting procedure:
+
+* Population parameters;
+* Individual parameters (EBEs);
+* Standard errors.
+
+In addition, all output data tables should be selected. 
+
+## Plots table
+
+The main target of ggPMX is to create a report containing the following plots (see abbreviation list below): 
+
+```{r plots_list,echo=FALSE,results='asis'}
+
+out <- rbind(
+  c("Scatter plot of NPDE vs population predictions", "SCATTER", "npde_pred"),
+  c("Scatter plot of NPDE vs time", "SCATTER", "npde_time"),
+  c("Scatter plot of IWRES vs time", "SCATTER", "iwres_time"),
+  c("Scatter plot of observations vs population predictions", "SCATTER", "dv_pred"),
+  c("Scatter plot of observations vs individual predictions", "SCATTER", "dv_ipred"),
+  c("Scatter plot of absolute value of IWRES vs individual predictions", "SCATTER", "abs_iwres_ipred"),
+  c("Scatter plot of IWRES vs individual predictions", "SCATTER", "iwres_ipred"),
+  c("Plots of observations and model predictions per individual", "IND", "individual"),
+  c("Histogram of EBE", "DIS", "ebe_hist"),
+  c("Boxplot of EBE", "DIS", "ebe_box"),
+  c("Distribution and quantile-quantile plot of IWRES", "QQ", "qq_iwres"),
+  c("Distribution and correlation structure of RE (`ETA`)", "ETA_PAIRS", "eta_matrix"),
+  c("Relationships between RE and categorical covariates", "ETA_COV", "eta_cats"),
+  c("Relationships between RE and continuous covariates", "ETA_COV", "eta_conts"),
+  c("Visual predictive check (VPC)", "VPC", "vpc")
+)
+
+colnames(out) <- c("Plot Name", "ggPMX type", "ggPMX name")
+xt <- xtable(out, label = "tab:plots_list", caption = "List of all diagnostic plots")
+print(xt, comment = F)
+```
+Abbreviations:
+
+- NPDE: normalized prediction distribution errors
+- IWRES: individual weighted residuals
+- EBE: empirical Bayes estimates
+- RE: random effects
+- VPC: visual predivtive check
+
+## ggPMX main functions
+
+`ggPMX` implements few functions to generate and manipulate diagnostic plots. 
+(Should we list pmx and pmx_mlx separately and say the differences? Or it's maybe clear from the previous sections.)
+
+```{r functions_list,echo=FALSE,results='asis'}
+
+out <- rbind(
+  c("1", "pmx, or pmx_mlx", "Creates a controller"),
+  c("2", "plot_names or plots", "Lists controller plots"),
+  c("3", "get_data", "Lists controller data"),
+  c("4", "get_plot", "Prints a plot"),
+  c("5", "set_plot", "Creates a new plot"),
+  c("6", "pmx_update", "Updates an existing plot"),
+  c("7", "pmx_filter", "Filters globally the data of the current session"),
+  c("8", "pmx_copy", "Returns a deep copy of the controller")
+)
+
+colnames(out) <- c(" ", "Function name", "Description")
+
+xt <- xtable(out, label = "tab:func_list", caption = "List of all `ggPMX` functions")
+print(xt, comment = F)
+```
+
+(Apparently, it's not the full list. Add all functions.)
+The design of the package is around the central object: the controller. It can introspected or piped using the `%>%` operand. 
+
+**Note that**:
+
+The controller is an `R6` object, it behaves like a reference object.  Some functions (methods) can have a side effect on the controller and modify it internally. Technically speaking we talk about chaining not piping here. However, using `pmx_copy` user can work on a copy of the controller.
+
+
+## ggPMX graphical parameters 
+
+Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function. A number of graphical parameters can be set for the different plot types. 
+
+```{r pmx_gpar_args}
+args(pmx_gpar)
+```
+More information can be found in the help document `?pmx_gpar` and in the examples that follow.
+
+## Pre-defined configurations
+
+For the moment we are mainly using standing configuration. In the next release user can specfiy configuration either by cretaing a custom yaml file or an R configuration object. Also ggPMX will create many helper functions to manipulate the configuration objects.
+
+
+
+
+## Shrinkage
+## Default call
+
+The shrinkage is a computation within controller data. In general it is used to annotate the plots. Although one can get it independently from any plot using `pmx_comp_shrink`. It is part of the `pmx_compt_xx` layer( In the future we will add , `pmx_comp_cor` , `pmx_comp_summary`,..)
+
+Here the basic call:
+
+```{r shrink_comp}
+ctr %>% pmx_comp_shrink
+```
+
+
+We get the shrinkage for each effect (**SHRINK** column).
+
+The same values can be shown on distribution plot , for example  : 
+
+```{r shrink_plot_box}
+ctr %>% pmx_plot_eta_box
+
+```
+or : 
+```{r shrink_plot_hist}
+ctr %>% pmx_plot_eta_hist
+
+```
+
+You can add or remove shrinkage annotation using `is.shrink` argument ( TRUE by default) : 
+
+```{r shrink_plot_no}
+ctr %>%   pmx_plot_eta_box( is.shrink = FALSE) 
+
+```
+
+
+
+## Var function
+
+You can compute shrinkage by applying either standard deviation `sd` or variance `var` : 
+```{r, compute_var }
+ctr %>% pmx_comp_shrink(  fun = "var")
+```
+
+```{r, shrink_plot_var}
+ctr %>% pmx_plot_eta_box( shrink=list(fun = "var"))
+```
+ 
+ 
+## Shrinkage and stratification
+
+Shrinkage can be applied after stratification :
+
+```{r shrink_comp_strat}
+ctr %>% pmx_comp_shrink(strat.facet = ~SEX)
+```
+or by grouping like : 
+
+```{r shrink_comp_strat_color}
+ctr %>% pmx_comp_shrink(strat.color = "SEX")
+```
+
+We can 
+```{r shrink_plot_strat, fig.width=9, fig.height=8}
+ctr %>% pmx_plot_eta_hist(is.shrink = TRUE, strat.facet = ~SEX,
+                          facets=list(scales="free_y"))
+```
+or 
+ 
+```{r fig.width=9, fig.height=8}
+ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = "SEX",
+                          facets=list(scales="free_y",ncol=2))
+```
+
+
+\clearpage

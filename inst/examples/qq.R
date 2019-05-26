@@ -1,4 +1,5 @@
 
+\donttest{
 # *************** basic use ***************** ------
 
 ctr <- theophylline()
@@ -24,4 +25,5 @@ ctr %>% pmx_plot_eta_qq(strat.facet = "SEX")
 
 ## do not use symmetric axis
 ctr %>% pmx_plot_npde_qq(xmax=FALSE,reference_line=list())
+}
 

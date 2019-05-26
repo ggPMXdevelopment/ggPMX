@@ -13,3 +13,4 @@ cleanup
 NAMESPACE
 cont.sh
 .Rbuildignore
+inst/doc

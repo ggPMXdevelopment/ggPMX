@@ -1,10 +1,10 @@
 
-\dontrun{
+\donttest{
 library(ggPMX)
 ## list of templates
 ## ctr %>% pmx_report_template()
 
-report_dir <- path.expand("/tmp")
+report_dir <- tempdir()
 ## case1: generate a single report
 ## We use default save dir, 
 ctr <- theophylline()
