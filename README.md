@@ -15,14 +15,17 @@ In addition, shrinkage and summary parameters tables can be also produced. By de
 
 ## Install ggPMX
 
-Github version:
+
+### CRAN:
+
+```R
+install.packages("ggPMX")
+```
+### Github version:
+
 ```R
 devtools::install_github("ggPMXdevelopment/ggPMX")
 ```
-
-## CRAN:
-
-Sumbitted to CRAN. Coming soon...
 
 ## Feedback
 
