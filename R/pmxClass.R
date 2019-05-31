@@ -706,26 +706,20 @@ pmxClass <- R6::R6Class(
 
   # Public methods -------------------------------------------------------------
   public = list(
-    data = NULL,
-    config = NULL,
-    input = NULL, input_file = NULL,
-    dv = NULL,
-    dvid = NULL, cats = NULL, conts = NULL, occ = NULL,
-    strats = NULL,
-    settings = NULL,
-    has_re = FALSE, re = NULL,
-    abbrev = list(),
-    endpoint = NULL,
-    warnings = list(),
-    footnote = FALSE,
-    save_dir = NULL,
+    data = NULL,  config = NULL,  input = NULL, 
+    input_file = NULL,  dv = NULL,  dvid = NULL, cats = NULL, conts = NULL, occ = NULL,
+    strats = NULL, settings = NULL, has_re = FALSE, re = NULL,
+    abbrev = list(), endpoint = NULL, warnings = list(),
+    footnote = FALSE, save_dir = NULL,
     report_queue = list(),
     report_n = 0,
     plot_file_name = "",
     sim = NULL,
     bloq = NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq),
+    id= NULL ,
+    time= NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id ,time)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -772,7 +766,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
-                           settings, endpoint, sim, bloq) {
+                           settings, endpoint, sim, bloq, id,time) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -787,6 +781,8 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (any(missing(strats) | is.null(strats) | is.na(strats))) strats <- ""
   if (missing(settings)) settings <- NULL
   if (missing(bloq)) bloq <- NULL
+  if(missing(id)) id <- NULL
+  if (missing(time)) time <- NULL
 
   private$.data_path <- data_path
   self$save_dir <- data_path
@@ -802,6 +798,8 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$strats <- strats
   self$settings <- settings
   self$bloq <- bloq
+  self$id <- id
+  self$time<- time
 
   if (!is.null(endpoint) && is.atomic(endpoint)) {
     endpoint <- pmx_endpoint(code = as.character(endpoint))
@@ -809,7 +807,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$endpoint <- endpoint
   if (is.character(input) && file.exists(input)) {
     self$input_file <- input
-    self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint)
+    self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint,self$id,self$time)
   } else {
     if (!inherits(input, "data.frame")) {
       stop("observation data should be either a file or a data.frame")
