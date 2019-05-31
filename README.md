@@ -33,3 +33,4 @@ ggPMX is now ready for inputs and enhancements by the pharmacometric community.
 - Please use [ package issues](https://github.com/ggPMXdevelopment/ggPMX/issues) to fill in your feedback.
 
 
+[![Travis-CI Build Status](https://travis-ci.org/Novartis-DevelopmentInformatics/ggPMX.svg?branch=master)](https://travis-ci.org/Novartis-DevelopmentInformatics/ggPMX)

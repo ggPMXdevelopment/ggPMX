@@ -5,3 +5,4 @@
 
 ^packrat/
 ^\.Rprofile$
+^\.travis\.yml$
