@@ -1,6 +1,2 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
-sudo: false
-cache: packages
-warnings_are_errors: false
+codecov:
+  token: 6e04c811-b9e9-4846-9696-20cf5c215826
