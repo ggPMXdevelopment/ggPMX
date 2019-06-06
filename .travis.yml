@@ -5,6 +5,10 @@ sudo: false
 cache: packages
 warnings_are_errors: false
 
+r_packages:
+  - covr
+  - devtools
+
 env:
   token: 6e04c811-b9e9-4846-9696-20cf5c215826
 
