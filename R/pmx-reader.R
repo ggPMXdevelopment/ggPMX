@@ -60,11 +60,14 @@ read_mlx18_ind_est <- function(path, x, ...) {
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param occ \emph{[Optional]}\code{character} inter individual occasion variables
 #' @param endpoint \code{integer}  null in case of a single endpoint otherwise the index of endpoints.
+#' @param id \code{character} the name of identifier variable used in the input modelling file.
+#' @param time \code{character} the name of time variable used in the input modelling file
 
 #'
 #' @return data.table well formatted containing modelling input data
 #'
-read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", endpoint=NULL, id=NULL, time=NULL) {
+read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
+                       endpoint=NULL, id=NULL, time=NULL) {
   TIME <- EVID <- MDV <- y <- DV <- NULL
   xx <- pmx_fread(ipath)
   
