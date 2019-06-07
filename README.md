@@ -5,6 +5,7 @@
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
 [![Coverage Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.svg)](https://codecov.io/gh/ggPMXdevelopment/ggPMX)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/ggPMX?color=green)](https://cran.r-project.org/package=ggPMX)
+[![Rdoc](http://www.rdocumentation.org/badges/version/ggPMX)](http://www.rdocumentation.org/packages/ggPMX)
 
 ![](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX%20Logo.jpg)
 
