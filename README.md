@@ -5,6 +5,9 @@
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
 [![Coverage Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.svg)](https://codecov.io/gh/ggPMXdevelopment/ggPMX)
 
+![](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX%20Logo.jpg)
+
+### Authors: Bruno, Bieth, Irina Baltcheva, Amine Gassem, Christian Bartels, Thomas Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard 
 
 ggPMX is an open-source R package freely available on CRAN since April 2019. It generates standard diagnostic plots for mixed effect models used in pharmacometric activities. The package builds on the R-package ggplot2 and aims at providing a workflow that is **consistent**, **reproducible** and **efficient**, resulting in **high quality graphics** ready-to-use in submission documents and publications. Intuitive functions and options allow for optimal figure customization and graphics stratification. ggPMX enables straightforward generation of PDF, Word or PNG output files that contain all diagnostic plots for keeping track of modeling results. The package is currently compatible with Monolix versions 2016 and 2018R1.
 
