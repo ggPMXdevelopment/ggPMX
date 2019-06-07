@@ -37,6 +37,15 @@ install.packages("ggPMX")
 ```R
 devtools::install_github("ggPMXdevelopment/ggPMX")
 ```
+## Testing the install
+
+Once ggPMX is installed, you can test if everything is working well.  If successful you should see a plot created after the following build-in example.
+
+```R
+library(ggPMX)
+ctr <- theophylline()
+ctr %>% pmx_plot_eta_matrix()
+```
 
 ## Feedback
 
