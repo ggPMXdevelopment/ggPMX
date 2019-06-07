@@ -19,6 +19,8 @@ In addition, shrinkage and summary parameters tables can be also produced. By de
 
 [Vignette](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX-guide_2019-04-25.pdf)
 
+## Cheat Sheet
+
 ## Install ggPMX
 
 
