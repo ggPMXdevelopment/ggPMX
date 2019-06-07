@@ -46,7 +46,7 @@ library(ggPMX)
 ctr <- theophylline()
 ctr %>% pmx_plot_eta_matrix()
 ```
-![](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX_Plot_Example.jpg)
+![](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX_Plot_Example1.jpg)
 
 ## Feedback
 
