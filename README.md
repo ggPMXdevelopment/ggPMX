@@ -24,6 +24,7 @@ In addition, shrinkage and summary parameters tables can be also produced. By de
 
 ### CRAN:
 
+Install R 3.2.3 (or later) from the R website and perform the CRAN installation
 ```R
 install.packages("ggPMX")
 ```
