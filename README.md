@@ -24,7 +24,7 @@ In addition, shrinkage and summary parameters tables can be also produced. By de
 
 ## Cheat Sheet
 
-[Cheat Sheet](ggPMX_cheat_sheet_0_9_4_png.png)
+![](ggPMX_cheat_sheet_0_9_4_png.png)
 
 ## Install ggPMX
 
