@@ -53,7 +53,9 @@ ctr %>% pmx_plot_eta_matrix()
 ```
 ![](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX_Plot_Example1.jpg)
 
-## PAGE2019 Training Material
+## PAGE2019 Workshop 
+
+[Training Materials](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX-Workshop_Wide_PAGE2019.pptx)
 
 ## Feedback
 
