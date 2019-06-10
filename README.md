@@ -53,6 +53,8 @@ ctr %>% pmx_plot_eta_matrix()
 ```
 ![](https://github.com/ggPMXdevelopment/ggPMX/blob/master/ggPMX_Plot_Example1.jpg)
 
+## PAGE2019 Training Material
+
 ## Feedback
 
 ggPMX is now ready for inputs and enhancements by the pharmacometric community.
