@@ -5,15 +5,15 @@ Description: At Novartis, we aimed at standardizing the set of diagnostic plots 
   For this, we developed a guidance that proposes an adequate set of diagnostics and a toolbox, 
   called 'ggPMX' to execute them. 'ggPMX' is a toolbox that can generate all diagnostic plots at a quality sufficient 
   for publication and submissions using few lines of code. 
-Version: 0.9.4
+Version: 0.9.5
 Authors@R: c(
               person("Amine", "Gassem", email="contact@ag-study.com", role=c("cre","aut")),
               person("Bruno", "Bieth", email="biethb@hotmail.com", role="aut"),
-              person("Irina", "Baltcheva", email="thomas.dumortier@novartis.com", role="aut"),
-              person("Thomas", "Dumortier", email="christian.bartels@novartis.com", role="aut"),
+              person("Irina", "Baltcheva", email="irina.baltcheva@gmail.com", role="aut"),
+              person("Thomas", "Dumortier", email=" thomas.dumortier@novartis.com", role="aut"),
               person("Christian", "Bartels", email="christian.bartels@novartis.com", role="aut"),
               person("Souvik", "Bhattacharya", email="souvik.bhattacharya@novartis.com", role="aut"),
-              person("Inga", "Ludwig", email="ines.paule@novartis.com", role="aut"),
+              person("Inga", "Ludwig", email="inga.ludwig@novartis.com", role="aut"),
               person("Ines", "Paule", email="ines.paule@novartis.com", role="aut"),
               person("Didier", "Renard", email="didier.renard@novartis.com", role="aut"),
               person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctr"),

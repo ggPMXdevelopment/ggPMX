@@ -51,14 +51,14 @@ residual <- function(x, y, labels = NULL, point = NULL, is.hline=FALSE,
   assert_that(is_list_or_null(point))
   assert_that(is_list_or_null(hline))
   assert_that(is_string_or_null(dname))
-
+  
   labels <- l_left_join(default_labels, labels)
   default_point <- list(shape = 1, colour = "black", size = 1)
   default_hline <- list(yintercept = 0)
   point <- l_left_join(default_point, point)
   hline <- l_left_join(default_hline, hline)
   if (is.null(dname)) dname <- "predictions"
-
+  
   structure(
     list(
       ptype = "SCATTER",
@@ -102,20 +102,20 @@ plot_pmx.residual <- function(x, dx, ...) {
   with(x, {
     if (!all(c(aess$x, aess$y) %in% names(dx))) return(NULL)
     dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
-
+    
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
-
+    
     p <- p + do.call(geom_point, point)
-
+    
     if (!is.null(bloq)) {
       bloq$data <- dx[get(bloq$cens) != 0]
       bloq$cens <- bloq$limit <- NULL
       p <- p + do.call(geom_point, bloq)
     }
-
+    
     if (is.hline) p <- p + do.call(geom_hline, hline)
-
-
+    
+    
     if (aess$y == "DV" && !(gp$scale_x_log10 || gp$scale_y_log10)) {
       xrange <- extend_range(dx[, c(aess$x, aess$y), with = FALSE])
       if (!is.null(gp$ranges)) {
@@ -140,30 +140,32 @@ plot_pmx.residual <- function(x, dx, ...) {
         coord_cartesian(xlim = xrange, ylim = xrange) +
         theme(aspect.ratio = 1)
     }
-
-
-    if (aess$y %in% c("NPDE", "IWRES") && !gp$scale_y_log10 && is.null(x$trans)) {
-      mm <- max(dx[, aess$y, with = FALSE], na.rm = TRUE)
-      gp$ranges <- list(y = c(-mm, mm))
+    
+    if (!(exists("ranges",gp) && is.null(gp$y))){
+      if (aess$y %in% c("NPDE", "IWRES") && !gp$scale_y_log10 && is.null(x$trans)) {
+        mm <- max(dx[, aess$y, with = FALSE], na.rm = TRUE)
+        if (is.null(gp$ranges))  gp$ranges <- list(y = c(-mm, mm))
+        else gp$ranges$y <- c(-mm, mm)
+      }
     }
     p <- plot_pmx(gp, p)
-
+    
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
     if (!is.null(strat.color)) {
       p <- p %+% geom_point(aes_string(colour = strat.color))
     }
-
+    
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
       p <- p + do.call("facet_wrap", c(strat.facet, facets))
     }
-
-
-
-
+    
+    
+    
+    
     p
   })
 }
