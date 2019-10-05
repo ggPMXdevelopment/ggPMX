@@ -91,7 +91,7 @@ before_add_check <- function(self, private, x, pname) {
   grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
   if (x$ptype == "DIS") {
     VAR <- FUN <- NULL
-    dx <- dx[grepl("mode", FUN)]
+    if (exists("FUN",dx))   dx <- dx[grepl("mode", FUN)]
     cols <- c("ID", "EFFECT", "VALUE", grp)
     x$dx <- unique(dx[, cols, with = FALSE])
   }

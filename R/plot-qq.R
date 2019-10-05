@@ -192,7 +192,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     do.call("geom_abline", x$reference_line)
   }
 
-  layer_shrink <- if (!is.null(x$is.shrink) && x$is.shrink) {
+  layer_shrink <- if (!is.null(x$is.shrink) && x$is.shrink && !is.null(x[["shrink.dx"]])) {
     x$shrink$data <- x[["shrink.dx"]]
     x$shrink$data$annotation <- x$shrink$annotation
     x$shrink$annotation <- NULL

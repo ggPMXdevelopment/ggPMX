@@ -9,11 +9,14 @@
 #' @example inst/examples/vpc.R
 pmx_sim <- function(
                     file,
+                    data,
                     irun,
                     idv) {
   if (missing(idv)) idv <- "TIME"
-  if (file.exists(file)) {
-    sim <- pmx_fread(file)
+  if (!missing(file) && file.exists(file)) sim <- pmx_fread(file)
+  if (!is.null(data)&& is.data.table(data)) sim <- data
+  
+  if (is.data.table(sim)){
     if (tolower(idv) == "time") {
       idvn <- names(sim)[tolower(names(sim)) == "time"]
       setnames(sim, idvn, "TIME")
@@ -21,6 +24,7 @@ pmx_sim <- function(
     }
     id_col <- grep("^id$", names(sim), ignore.case = TRUE, value = TRUE)
     setnames(sim, id_col, "ID")
+    sim[,ID:=as.integer(ID)]
     obj <- list(
       sim = sim,
       idv = idv,
@@ -28,6 +32,7 @@ pmx_sim <- function(
     )
     structure(obj, class = c("pmxSimClass", "list"))
   }
+  
 }
 
 
@@ -858,8 +863,16 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 
     self$sim <- sim
   }
-
-
+  
+  if (config$sys =="nlmixr"){
+    self$data$predictions <- input
+    self$data$IND <- config$finegrid
+    self$data$eta <- config$eta
+    self$data$omega <- config$omega
+    self$has_re <- TRUE
+    
+  }
+  
 
   ## abbrev
   keys_file <- file.path(

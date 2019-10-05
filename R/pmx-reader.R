@@ -432,6 +432,7 @@ load_data_set <- function(x, path, sys, ...) {
 #' @return list of data.table
 #' @export
 load_source <- function(sys, path, dconf, ...) {
+  
   dxs <- Map(function(x, nn) {
     x$name <- nn
     load_data_set(x, path = path, sys = sys, ...)
