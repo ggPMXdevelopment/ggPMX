@@ -859,14 +859,12 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     }
 
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
-
-
     self$sim <- sim
   }
   
   if (config$sys =="nlmixr"){
     self$data$predictions <- input
-    self$data$IND <- config$finegrid
+    self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input 
     self$data$eta <- config$eta
     self$data$omega <- config$omega
     self$has_re <- TRUE

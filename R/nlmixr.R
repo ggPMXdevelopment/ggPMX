@@ -11,15 +11,30 @@
 #' @return ctor
 #' @export
 #'
-pmx_nlmixr <- function(fit,config="standing", ...){
+pmx_nlmixr <- function(fit,config="standing",dvid, conts,cats, endpoint, strats, ...){
   
   if (missing(fit)) return(NULL)
-  if (!"NPDE" %in% names(fit)) fit <- addNpde(fit)
   
-  finegrid <- nlmixr::augPred(fit)
-  finegrid <- dcast(setDT(finegrid), id+time~ind,value.var="values")
-  setnames(finegrid,c("id","time","Population" ,"Individual" ,"Observed"),
-           c("ID","TIME","PRED","IPRED","DV"))
+  directory <- ""
+  dv <- "DV"
+  cats <- if (missing(cats)) "" else cats
+  conts <- if (missing(conts)) "" else conts
+  occ <- ""
+  strats <- if (missing(strats)) "" else strats
+  dvid <- if (missing(dvid)) "" else dvid
+  endpoint <- if (missing(endpoint)) NULL else endpoint
+  
+  if (!"NPDE" %in% names(fit)) try(fit <- addNpde(fit),silent=TRUE)
+  
+  finegrid <- try(invisible(nlmixr::augPred(fit)),silent=TRUE)
+  if(inherits(finegrid,"try-error")) {
+    finegrid <- NULL 
+  }else{
+    finegrid <- dcast(setDT(finegrid), id+time~ind,value.var="values")
+    setnames(finegrid,c("id","time","Population" ,"Individual" ,"Observed"),
+             c("ID","TIME","PRED","IPRED","DV"))
+  }
+
   
   
   sim_data <- try(invisible(setDT(nlmixr::vpc(fit)$rxsim)),silent=TRUE)
@@ -34,12 +49,44 @@ pmx_nlmixr <- function(fit,config="standing", ...){
   domega <- diag(fit$omega)
   omega <- data.table(
     EFFECT=sub("eta.","",names(domega)),
-    OMEGA=as.vector(domega))
+    OMEGA=sqrt(as.vector(domega)))
   
 
   
   
   FIT <- as.data.table(fit)
+
+  
+  
+  if (!is.null(endpoint)) {
+    if (!is.null(dvid) && dvid %in% names(FIT)) {
+      rr <- dvid
+      FIT <- FIT[get(rr) == endpoint$code]
+      if (!nrow(FIT)) {
+        msg <- sprintf("No observations data for endpoint %s\n", endpoint$code)
+        stop(msg)
+      }
+    } else {
+      msg <- sprintf("ggPMX can not filter by endpoint %s\n", endpoint$code)
+      msg <- paste(msg, sprintf("%s is not a valid column in the observation data set", dvid))
+      
+      stop(msg)
+    }
+  }
+  else {
+    if (!is.null(dvid) && dvid %in% names(FIT)) {
+      rr <- dvid
+      ends <- unique(FIT[, get(rr)])
+      if (length(ends) > 1) {
+        msg <- sprintf("Observation data contains multiple endpoints %s. \n ", paste(ends, collapse = " ; "))
+        msg <- paste(msg, "Please select a single endpoint to continue.")
+        
+        stop(msg)
+      }
+    }
+  }
+  
+  
   
   eta <- copy(FIT)
   measures <- grep("^eta.*", names(eta))
@@ -52,15 +99,7 @@ pmx_nlmixr <- function(fit,config="standing", ...){
   eta[,EFFECT:=sub("eta.","",EFFECT)]
   
   
-  directory <- ""
-  input <- FIT[,ID:=as.integer(ID)]
-  dv <- "DV"
-  cats <- ""
-  endpoint <- NULL
-  conts <- ""
-  occ <- ""
-  strats <- ""
-  dvid <- ""
+
   
   
   plot_dir <- file.path(system.file(package = "ggPMX"), "init")
@@ -81,6 +120,7 @@ pmx_nlmixr <- function(fit,config="standing", ...){
   bloq <- NULL
   
   
+  input <- FIT[,ID:=as.integer(ID)]
   
   pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
 }

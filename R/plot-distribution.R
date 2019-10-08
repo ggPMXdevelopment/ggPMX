@@ -177,7 +177,7 @@ shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
   res <- if (type == "box") {
     shrink$mapping <-
       aes(
-        label = sprintf("%s=%s%%", annotation, round(SHRINK * 100)),
+        label = sprintf("%s %s=%s%%", FUN,annotation, round(SHRINK * 100)),
         y = Inf
       )
     shrink$data <- dx

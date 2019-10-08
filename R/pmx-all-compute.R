@@ -73,6 +73,6 @@ pmx_comp_shrink <-
     dx[, {
       coef <- if (fun == "sd") OMEGA else OMEGA ^ 2
       shrink <- 1 - get(fun)(EBE) / coef
-      list(SHRINK = shrink, POS = max(EBE) / 2)
+      list(SHRINK = shrink, POS = max(EBE) / 2,FUN=fun)
     }, by]
   }
