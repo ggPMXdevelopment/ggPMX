@@ -50,6 +50,10 @@ before_add_check <- function(self, private, x, pname) {
   if (!is.null(x[["filter"]])) {
     x$dx <- x[["filter"]](x$dx)
     if (x$ptype == "IND") x$input <- x[["filter"]](x$input)
+    if (x$ptype =="VPC"){
+      x$db <- lapply(x$db, function(ds)ds<- x[["filter"]](ds))
+      x$input <- x[["filter"]](x$input)
+    }
   }
   invisible(x)
 }

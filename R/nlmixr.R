@@ -55,7 +55,8 @@ pmx_nlmixr <- function(fit,config="standing",dvid, conts,cats, endpoint, strats,
   
   
   FIT <- as.data.table(fit)
-
+  FIT[,ID:=as.integer(ID)]
+  
   
   
   if (!is.null(endpoint)) {
@@ -86,9 +87,13 @@ pmx_nlmixr <- function(fit,config="standing",dvid, conts,cats, endpoint, strats,
     }
   }
   
+  obs <- as.data.table(nlmixr::getData(fit))
+  obs <- obs[!(EVID == 1 & MDV == 1)]
+  no_cols <- setdiff(intersect(names(FIT),names(obs)),c("ID","TIME"))
+  input <- merge(obs,FIT[,!(no_cols),with=FALSE],by=c("ID","TIME"))
   
   
-  eta <- copy(FIT)
+  eta <- copy(input)
   measures <- grep("^eta.*", names(eta))
   if (length(measures) == 0) {
     message("NO random effect found")
@@ -120,7 +125,7 @@ pmx_nlmixr <- function(fit,config="standing",dvid, conts,cats, endpoint, strats,
   bloq <- NULL
   
   
-  input <- FIT[,ID:=as.integer(ID)]
+
   
   pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
 }
