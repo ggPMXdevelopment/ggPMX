@@ -8,7 +8,9 @@
 input_finegrid <- function(input, finegrid) {
   ## this for R CMD check purpose
   ID <- TIME <- NULL
-  if (is.null(finegrid)) return(NULL)
+  if (is.null(finegrid)) {
+    return(NULL)
+  }
   input[, source := "in"]
   dx <- rbind(finegrid, input, fill = TRUE)[order(ID, TIME)]
 
@@ -31,8 +33,8 @@ post_load_eta <- function(ds, input, sys, occ) {
     merge(
       ds, input,
       by = keys
-    )
-    , silent = TRUE
+    ),
+    silent = TRUE
   )
 
   if (inherits(ds, "try-error")) {

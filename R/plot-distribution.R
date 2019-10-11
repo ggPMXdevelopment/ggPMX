@@ -36,10 +36,10 @@ distrib <- function(
                     is.shrink,
                     type = c("box", "hist"),
                     is.jitter = FALSE,
-                    jitter =NULL,
+                    jitter = NULL,
                     facets = NULL,
-                    histogram=NULL,
-                    shrink=NULL,
+                    histogram = NULL,
+                    shrink = NULL,
                     dname = NULL,
                     ...) {
   assert_that(is_logical(is.jitter))
@@ -88,7 +88,7 @@ is.formula <- function(x) inherits(x, "formula")
 #' @return \code{formula} object
 #' @importFrom stats formula
 
-wrap_formula <- function(x, origin="lfacet") {
+wrap_formula <- function(x, origin = "lfacet") {
   str <- sprintf("~ %s", origin)
   if (is.character(x) && length(x) == 1) {
     str <- sprintf("%s ~ %s", origin, x)
@@ -171,13 +171,13 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
 
 
 
-shrinkage_layer <- function(dx, shrink, type="hist", strat.color) {
+shrinkage_layer <- function(dx, shrink, type = "hist", strat.color) {
   ##
-  SHRINK <- EFFECT <- POS <- annotation <- NULL
+  SHRINK <- EFFECT <- POS <- annotation <- FUN <- NULL
   res <- if (type == "box") {
     shrink$mapping <-
       aes(
-        label = sprintf("%s %s=%s%%", FUN,annotation, round(SHRINK * 100)),
+        label = sprintf("%s %s=%s%%", FUN, annotation, round(SHRINK * 100)),
         y = Inf
       )
     shrink$data <- dx

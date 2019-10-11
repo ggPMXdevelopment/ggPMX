@@ -23,7 +23,8 @@ facet_wrap_paginate <- function(facets, nrow = NULL, ncol = NULL,
                                 switch = NULL, drop = TRUE, dir = "h",
                                 strip.position = "top", page = 1) {
   facet <- ggplot2::facet_wrap(
-    facets, nrow = nrow, ncol = ncol, scales = scales,
+    facets,
+    nrow = nrow, ncol = ncol, scales = scales,
     shrink = shrink, labeller = labeller,
     as.table = as.table,
     switch = switch, drop = drop, dir = dir,
@@ -33,7 +34,8 @@ facet_wrap_paginate <- function(facets, nrow = NULL, ncol = NULL,
     facet
   } else {
     ggplot2::ggproto(
-      NULL, FacetWrapPaginate, shrink = shrink,
+      NULL, FacetWrapPaginate,
+      shrink = shrink,
       params = c(facet$params, list(page = page))
     )
   }
@@ -69,8 +71,8 @@ FacetWrapPaginate <-
       layout
     },
     draw_panels = function(panels, layout, x_scales,
-                           y_scales, ranges, coord, data,
-                           theme, params) {
+                               y_scales, ranges, coord, data,
+                               theme, params) {
       include <- which(layout$page == params$page)
       panels <- panels[include]
       ranges <- ranges[include]

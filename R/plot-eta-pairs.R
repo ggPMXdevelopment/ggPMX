@@ -19,16 +19,16 @@
 #' @importFrom  GGally ggally_cor ggally_densityDiag
 eta_pairs <- function(
                       title,
-                      dname=NULL,
-                      type.eta=c("mode", "mean"),
-                      text_color="black",
-                      is.shrink=TRUE,
-                      is.smooth=TRUE,
+                      dname = NULL,
+                      type.eta = c("mode", "mean"),
+                      text_color = "black",
+                      is.shrink = TRUE,
+                      is.smooth = TRUE,
                       smooth = NULL,
                       point = NULL,
-                      shrink=NULL,
-                      is.hline=FALSE,
-                      hline=NULL,
+                      shrink = NULL,
+                      is.hline = FALSE,
+                      hline = NULL,
                       ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "eta"
@@ -93,7 +93,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 
 
 .plot_matrix <-
-  function(dx, text_color=text_color, point=point, is.smooth, smooth, gp, is.hline, hline) {
+  function(dx, text_color = text_color, point = point, is.smooth, smooth, gp, is.hline, hline) {
     nn <- colnames(dx)
     mat <- outer(nn, nn, paste, sep = ";")
     uppers <-
@@ -112,7 +112,8 @@ upper.plot <- function(data, x, y, text_color, gp) {
         function(z) {
           z <- strsplit(z, ";")[[1]]
           lower.plot(
-            dx, x = z[1], y = z[2], point = point,
+            dx,
+            x = z[1], y = z[2], point = point,
             is.smooth = is.smooth, smooth = smooth, gp = gp,
             is.hline, hline, max(dx[, z[2], with = FALSE], na.rm = TRUE)
           )
@@ -198,14 +199,14 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
 
 
   ## filter by type of eta
-  if (exists("FUN",dx)) dx <- dx[FUN == x$type.eta]
+  if (exists("FUN", dx)) dx <- dx[FUN == x$type.eta]
   if (nrow(dx) == 0) {
     message("No rows find for eta of type ", x$type.eta, "\n")
     return(NULL)
   }
   data_plot <-
     dcast(
-      dx[, list(ID, EFFECT, VALUE)], ID~EFFECT,
+      dx[, list(ID, EFFECT, VALUE)], ID ~ EFFECT,
       fun.aggregate = max, value.var = "VALUE"
     )[, -"ID", with = F]
   nn <- colnames(data_plot)

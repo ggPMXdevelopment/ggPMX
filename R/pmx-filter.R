@@ -10,19 +10,19 @@
 #' \donttest{
 #' ## example of global filter
 #' ctr <- theophylline()
-#' ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME <2)
+#' ctr %>% pmx_filter(data_set = "prediction", ID == 5 & TIME < 2)
 #' ctr %>% get_data("prediction")
 #' }
 pmx_filter <-
   function(ctr, data_set = c(
-           "estimates",
-           "predictions",
-           "eta",
-           "finegrid",
-           "shrink",
-           "input",
-           "individual"
-         ), pmx_exp) {
+               "estimates",
+               "predictions",
+               "eta",
+               "finegrid",
+               "shrink",
+               "input",
+               "individual"
+             ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)
     assert_that(is_language_or_string(substitute(pmx_exp)))
@@ -37,8 +37,9 @@ pmx_filter <-
       oldData <- ctr[["data"]][[data_set]]
       ctr[["data"]][[data_set]] <- filter(oldData)
       ## update all plots after global filtering
-      for (nn in ctr %>% plot_names())
+      for (nn in ctr %>% plot_names()) {
         ctr %>% pmx_update(pname = nn)
+      }
     }
 
     ctr
@@ -74,9 +75,9 @@ pmx_filter <-
 #'  var_xy apply variance to both
 #' This mechanism is applied internally to scale log.
 
-pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
-                       color.scales=NULL,
-                       filter = NULL, trans=NULL, ..., pmxgpar = NULL) {
+pmx_update <- function(ctr, pname, strat.color = NULL, strat.facet = NULL,
+                       color.scales = NULL,
+                       filter = NULL, trans = NULL, ..., pmxgpar = NULL) {
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
   ## assert_that(is_string_or_null(strat.color))
@@ -103,7 +104,7 @@ pmx_update <- function(ctr, pname, strat.color=NULL, strat.facet=NULL,
 
 
 pmx_update_plot <- function(self, private, pname, strat.facet,
-                            strat.color, filter=NULL, trans=NULL,
+                            strat.color, filter = NULL, trans = NULL,
                             color.scales, ..., pmxgpar) {
   # assertthat::assert_that(isnullOrPmxgpar(pmxgpar))
   x <- private$.plots_configs[[pname]]

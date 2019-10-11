@@ -15,7 +15,7 @@
 #'  - or a plot template file \cr
 #'  - or both. \cr
 #' By default the 'standing' configuration will be used.
-pmx_config <- function(sys="mlx", inputs, plots, ...) {
+pmx_config <- function(sys = "mlx", inputs, plots, ...) {
   standing_dir <-
     file.path(system.file(package = "ggPMX"), "templates", sys, "standing")
 
@@ -48,10 +48,13 @@ pmx_get_configs <-
       file.path(system.file(package = "ggPMX"), "templates", sys)
     res <- if (dir.exists(template_dir)) {
       template_path <- list.files(
-        template_dir, full.names = TRUE,
+        template_dir,
+        full.names = TRUE,
         recursive = FALSE
       )
-      if (length(template_path) == 0) return(NULL)
+      if (length(template_path) == 0) {
+        return(NULL)
+      }
       template_name <- gsub("[.].*", "", basename(template_path))
       dx <- data.frame(
         sys = sys,
@@ -76,8 +79,9 @@ print.configs <- function(x, ...) {
     "There are %i configs for %s system \n",
     nrow(x), unique(x$sys)
   ))
-  for (i in seq_len(nrow(x)))
+  for (i in seq_len(nrow(x))) {
     cat(sprintf("config %i : name %s \n", i, x[i, "name"]))
+  }
 }
 
 #' Obtain the data source config
@@ -107,8 +111,12 @@ load_config <- function(x, sys = c("mlx", "nm", "mlx18")) {
 
 
 load_config_files <- function(ifile, pfile, sys) {
-  if (!file.exists(ifile)) return(NULL)
-  if (!file.exists(pfile)) return(NULL)
+  if (!file.exists(ifile)) {
+    return(NULL)
+  }
+  if (!file.exists(pfile)) {
+    return(NULL)
+  }
   iconfig <- yaml.load_file(ifile)
   pconfig <- yaml.load_file(pfile)
   config <- list(data = iconfig, plots = pconfig)

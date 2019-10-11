@@ -54,11 +54,11 @@
 #' @example inst/examples/qq.R
 pmx_qq_plot <-
   function(dname, point, is.reference_line, reference_line, is.shrink,
-           shrink, is.hline, hline, filter, strat.facet, facets,
-           strat.color, trans, pmxgpar, labels, axis.title, axis.text,
-           ranges, is.smooth, smooth, is.band, band, is.draft, draft,
-           is.identity_line, identity_line, scale_x_log10, scale_y_log10,
-           color.scales, ...) {}
+             shrink, is.hline, hline, filter, strat.facet, facets,
+             strat.color, trans, pmxgpar, labels, axis.title, axis.text,
+             ranges, is.smooth, smooth, is.band, band, is.draft, draft,
+             is.identity_line, identity_line, scale_x_log10, scale_y_log10,
+             color.scales, ...) {}
 
 
 
@@ -70,7 +70,7 @@ pmx_qq_plot <-
 #' @export
 pmx_plot_iwres_qq <-
   function(ctr,
-           ...) {
+             ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "iwres_qq", params)
   }
@@ -83,7 +83,7 @@ pmx_plot_iwres_qq <-
 
 pmx_plot_eta_qq <-
   function(ctr,
-           ...) {
+             ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_qq", params)
   }
@@ -94,7 +94,7 @@ pmx_plot_eta_qq <-
 #' @export
 pmx_plot_npde_qq <-
   function(ctr,
-           ...) {
+             ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "npde_qq", params)
   }

@@ -48,10 +48,10 @@ pmx_dens <- function(
                      x,
                      labels,
                      dname = NULL,
-                     xlim= 3,
-                     var_line=NULL,
-                     snd_line=NULL,
-                     vline=NULL,
+                     xlim = 3,
+                     var_line = NULL,
+                     snd_line = NULL,
+                     vline = NULL,
                      ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "predictions"

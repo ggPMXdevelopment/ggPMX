@@ -58,10 +58,10 @@
 
 eta_distribution_plot <-
   function(jitter, type, dname, is.shrink, shrink, is.jitter, histogram,
-           filter, strat.facet, facets, strat.color, trans, pmxgpar,
-           labels, axis.title, axis.text, ranges, is.smooth, smooth,
-           is.band, band, is.draft, draft, is.identity_line,
-           identity_line, scale_x_log10, scale_y_log10, color.scales, ...) {
+             filter, strat.facet, facets, strat.color, trans, pmxgpar,
+             labels, axis.title, axis.text, ranges, is.smooth, smooth,
+             is.band, band, is.draft, draft, is.identity_line,
+             identity_line, scale_x_log10, scale_y_log10, color.scales, ...) {
 
   }
 
@@ -77,7 +77,7 @@ eta_distribution_plot <-
 
 pmx_plot_eta_box <-
   function(ctr,
-           ...) {
+             ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_box", params)
   }
@@ -93,8 +93,8 @@ pmx_plot_eta_box <-
 
 pmx_plot_eta_hist <-
   function(
-           ctr,
-           ...) {
+             ctr,
+             ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_hist", params)
   }

@@ -8,7 +8,7 @@ test_that("test shrinkage for standing config", {
 
   res <- ctr %>% pmx_comp_shrink()
   expect_is(res, "data.frame")
-  expect_equal(colnames(res), c("EFFECT", "OMEGA", "SHRINK", "POS"))
+  expect_equal(colnames(res), c("EFFECT", "OMEGA", "SHRINK", "POS", "FUN"))
   expect_true(all(res$SHRNK < 1))
 })
 

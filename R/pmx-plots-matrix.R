@@ -61,11 +61,11 @@
 #' @export
 pmx_plot_eta_matrix <-
   function(ctr, title, dname, type.eta, text_color, is.shrink, shrink, point,
-           is.smooth, smooth, is.hline, hline, filter, strat.facet,
-           facets, strat.color, trans, pmxgpar, labels, axis.title,
-           axis.text, ranges, is.band, band, is.draft, draft,
-           is.identity_line, identity_line, scale_x_log10, scale_y_log10,
-           color.scales, ...) {
+             is.smooth, smooth, is.hline, hline, filter, strat.facet,
+             facets, strat.color, trans, pmxgpar, labels, axis.title,
+             axis.text, ranges, is.band, band, is.draft, draft,
+             is.identity_line, identity_line, scale_x_log10, scale_y_log10,
+             color.scales, ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_matrix", params)
   }

@@ -12,7 +12,7 @@
 #' @export
 
 pmx_cov <-
-  function(values, labels=NULL) {
+  function(values, labels = NULL) {
     assert_that(is_list(values))
     assert_that(is_list_or_null(labels))
     if (missing(labels) || is.null(labels)) labels <- values
@@ -22,7 +22,8 @@ pmx_cov <-
       list(
         values = values,
         labels = labels
-      ), class = c("pmxCOVObject")
+      ),
+      class = c("pmxCOVObject")
     )
   }
 
@@ -57,11 +58,11 @@ eta_cov <- function(
                     labels,
                     type = c("cats", "conts"),
                     dname = NULL,
-                    show.correl=TRUE,
-                    correl=NULL,
-                    facets=NULL,
+                    show.correl = TRUE,
+                    correl = NULL,
+                    facets = NULL,
                     point = NULL,
-                    covariates=NULL,
+                    covariates = NULL,
                     ...) {
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
@@ -162,8 +163,8 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
       if (x$show.correl) {
         df_cor <-
           dx.conts[
-            , list(corr = round(cor(get("value"), get("VALUE"), use = "na.or.complete"), 3))
-            , "EFFECT,variable"
+            , list(corr = round(cor(get("value"), get("VALUE"), use = "na.or.complete"), 3)),
+            "EFFECT,variable"
           ]
 
         corr_eqn <- function(x) {

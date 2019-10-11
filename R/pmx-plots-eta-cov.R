@@ -53,10 +53,10 @@
 #' @example inst/examples/eta_cov.R
 dummy <-
   function(dname, show.correl, correl, point, facets, filter,
-           strat.facet, strat.color, trans, pmxgpar, labels, axis.title,
-           axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
-           draft, is.identity_line, identity_line, scale_x_log10,
-           scale_y_log10, color.scales) {
+             strat.facet, strat.color, trans, pmxgpar, labels, axis.title,
+             axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
+             draft, is.identity_line, identity_line, scale_x_log10,
+             scale_y_log10, color.scales) {
 
   }
 
@@ -72,7 +72,7 @@ dummy <-
 
 pmx_plot_eta_cats <-
   function(ctr,
-           ...) {
+             ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_cats", params)
   }
@@ -85,7 +85,7 @@ pmx_plot_eta_cats <-
 #' @export
 pmx_plot_eta_conts <-
   function(ctr,
-           ...) {
+             ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_conts", params)
   }

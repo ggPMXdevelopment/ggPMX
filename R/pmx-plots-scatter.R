@@ -56,10 +56,10 @@
 
 residual_scatter <-
   function(point, is.hline, hline, dname, bloq, filter, strat.facet,
-           facets, strat.color, trans, pmxgpar, labels, axis.title,
-           axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
-           draft, is.identity_line, identity_line, scale_x_log10,
-           scale_y_log10, color.scales, ...) {}
+             facets, strat.color, trans, pmxgpar, labels, axis.title,
+             axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
+             draft, is.identity_line, identity_line, scale_x_log10,
+             scale_y_log10, color.scales, ...) {}
 
 
 

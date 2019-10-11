@@ -2,6 +2,7 @@
 #' Create simulation object
 #'
 #' @param file \code{character} path to the simulation file
+#' @param data \code{data.table} simulation data
 #' @param irun \code{character} name of the simulation column
 #' @param idv \code{character} name of the ind. variable
 #' @export
@@ -12,11 +13,13 @@ pmx_sim <- function(
                     data,
                     irun,
                     idv) {
+  ID <- NULL
+  if (missing(data)) data <- NULL
   if (missing(idv)) idv <- "TIME"
   if (!missing(file) && file.exists(file)) sim <- pmx_fread(file)
-  if (!is.null(data)&& is.data.table(data)) sim <- data
-  
-  if (is.data.table(sim)){
+  if (!is.null(data) && is.data.table(data)) sim <- data
+
+  if (is.data.table(sim)) {
     if (tolower(idv) == "time") {
       idvn <- names(sim)[tolower(names(sim)) == "time"]
       setnames(sim, idvn, "TIME")
@@ -24,7 +27,7 @@ pmx_sim <- function(
     }
     id_col <- grep("^id$", names(sim), ignore.case = TRUE, value = TRUE)
     setnames(sim, id_col, "ID")
-    sim[,ID:=as.integer(ID)]
+    sim[, ID := as.integer(ID)]
     obj <- list(
       sim = sim,
       idv = idv,
@@ -32,7 +35,6 @@ pmx_sim <- function(
     )
     structure(obj, class = c("pmxSimClass", "list"))
   }
-  
 }
 
 
@@ -78,8 +80,8 @@ check_argument <- function(value, pmxname) {
 #' @export
 #' @example inst/examples/controller.R
 pmx <-
-  function(config, sys=c("mlx", "nm"), directory, input, dv, dvid, cats=NULL, conts=NULL, occ=NULL, strats=NULL,
-           settings=NULL, endpoint=NULL, sim=NULL, bloq=NULL) {
+  function(config, sys = c("mlx", "nm"), directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
+             settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL) {
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
@@ -139,7 +141,7 @@ pmx_mlx <-
 #' by mlxtran. This can be very helpful, in case you would like to customize parameters
 #' (adding settings vi pmx_settings, chnag eth edefault endpoint.)
 
-pmx_mlxtran <- function(file_name, config="standing", call=FALSE, endpoint, ...) {
+pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, ...) {
   params <- parse_mlxtran(file_name)
   params$config <- config
   rr <- as.list(match.call()[-1])
@@ -182,10 +184,10 @@ formula_to_text <- function(form) {
 #' @example inst/examples/pmx-settings.R
 #' @export
 pmx_settings <-
-  function(is.draft=TRUE, use.abbrev=FALSE, color.scales=NULL,
-           cats.labels=NULL, use.labels=FALSE, use.titles=TRUE,
-           effects=NULL,
-           ...) {
+  function(is.draft = TRUE, use.abbrev = FALSE, color.scales = NULL,
+             cats.labels = NULL, use.labels = FALSE, use.titles = TRUE,
+             effects = NULL,
+             ...) {
     if (!missing(effects) && !is.null(effects)) {
       if (!is.list(effects)) stop("effects should be a list")
 
@@ -247,10 +249,10 @@ pmx_settings <-
 
 pmx_endpoint <-
   function(code,
-           label="",
-           unit="",
-           file.code=code,
-           trans =NULL) {
+             label = "",
+             unit = "",
+             file.code = code,
+             trans = NULL) {
     assert_that(is.character(code))
     assert_that(is.character(file.code))
     assert_that(is.character(unit))
@@ -290,13 +292,13 @@ pmx_endpoint <-
 
 pmx_bloq <-
   function(
-           cens="CENS",
-           limit ="LIMIT",
-           colour="pink",
-           size=2,
-           alpha=0.9,
-           show=TRUE,
-           ...) {
+             cens = "CENS",
+             limit = "LIMIT",
+             colour = "pink",
+             size = 2,
+             alpha = 0.9,
+             show = TRUE,
+             ...) {
     res <- list(
       cens = cens,
       limit = limit,
@@ -344,12 +346,12 @@ set_plot <- function(
                        "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS"
                      ),
                      pname,
-                     use.defaults=TRUE,
-                     filter =NULL,
-                     strat.color=NULL,
-                     strat.facet=NULL,
-                     color.scales=NULL,
-                     trans=NULL, ...) {
+                     use.defaults = TRUE,
+                     filter = NULL,
+                     strat.color = NULL,
+                     strat.facet = NULL,
+                     color.scales = NULL,
+                     trans = NULL, ...) {
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
@@ -420,10 +422,8 @@ set_plot <- function(
 #' @export
 #' @examples
 #' ctr <- theophylline()
-#' ctr %>% set_abbrev("new_param"="new value")
+#' ctr %>% set_abbrev("new_param" = "new value")
 #' ctr %>% get_abbrev("new_param")
-
-
 set_abbrev <- function(ctr, ...) {
   assert_that(is_pmxclass(ctr))
   abbrev <- if (length(ctr$abbrev) > 0) {
@@ -442,8 +442,9 @@ set_abbrev <- function(ctr, ...) {
 #' @export
 print.abbreviation <- function(x, ...) {
   assert_that(inherits(x, "abbreviation"))
-  for (i in seq_len(length(x)))
+  for (i in seq_len(length(x))) {
     cat(sprintf("%s : %s \n", names(x)[i], x[[i]]))
+  }
 }
 
 #' Get abbreviation definition by key
@@ -481,13 +482,12 @@ get_abbrev <- function(ctr, param) {
 #' ## get all pages or some pages
 #' p2 <- ctr %>% get_plot("individual")
 #' ## returns one page of individual plot
-#' p2 <- ctr %>% get_plot("individual",npage=1)
-#' p3 <- ctr %>% get_plot("individual",npage=c(1,3))
+#' p2 <- ctr %>% get_plot("individual", npage = 1)
+#' p3 <- ctr %>% get_plot("individual", npage = c(1, 3))
 #' ## get distribution plot
 #' pdistri <- ctr %>% get_plot("eta_hist")
-#'
 #' }
-
+#'
 get_plot <- function(ctr, nplot, npage = NULL) {
   if (is.numeric(npage)) {
     npage <- as.integer(npage)
@@ -586,10 +586,10 @@ get_plot_config <- function(ctr, pname) {
 #' @return a data.table of the named data set if available.
 #' @export
 get_data <- function(ctr, data_set = c(
-                     "estimates", "predictions",
-                     "eta", "finegrid", "input", "sim",
-                     "individual"
-                   )) {
+                       "estimates", "predictions",
+                       "eta", "finegrid", "input", "sim",
+                       "individual"
+                     )) {
   assert_that(is_pmxclass(ctr))
   ## data_set <- match.arg(data_set)
   if (data_set == "individual") data_set <- "IND"
@@ -613,13 +613,15 @@ get_data <- function(ctr, data_set = c(
 #' @examples
 #' ctr <- theophylline()
 #' dx <- ctr %>% get_data("eta")
-#' dx <- dx[,EFFECT:=factor(
-#'         EFFECT,levels=c("ka", "V", "Cl"),
-#'         labels=c("Concentration","Volume","Clearance"))]
+#' dx <- dx[, EFFECT := factor(
+#'   EFFECT,
+#'   levels = c("ka", "V", "Cl"),
+#'   labels = c("Concentration", "Volume", "Clearance")
+#' )]
 #' ## update existing data set
-#' ctr %>% set_data(eta=dx)
+#' ctr %>% set_data(eta = dx)
 #' ## or create a new data set
-#' ctr %>% set_data(eta_long=dx)
+#' ctr %>% set_data(eta_long = dx)
 #' @export
 set_data <- function(ctr, ...) {
   assert_that(is_pmxclass(ctr))
@@ -711,8 +713,8 @@ pmxClass <- R6::R6Class(
 
   # Public methods -------------------------------------------------------------
   public = list(
-    data = NULL,  config = NULL,  input = NULL, 
-    input_file = NULL,  dv = NULL,  dvid = NULL, cats = NULL, conts = NULL, occ = NULL,
+    data = NULL, config = NULL, input = NULL,
+    input_file = NULL, dv = NULL, dvid = NULL, cats = NULL, conts = NULL, occ = NULL,
     strats = NULL, settings = NULL, has_re = FALSE, re = NULL,
     abbrev = list(), endpoint = NULL, warnings = list(),
     footnote = FALSE, save_dir = NULL,
@@ -721,10 +723,10 @@ pmxClass <- R6::R6Class(
     plot_file_name = "",
     sim = NULL,
     bloq = NULL,
-    id= NULL ,
-    time= NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id ,time)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time),
+    id = NULL,
+    time = NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -740,9 +742,9 @@ pmxClass <- R6::R6Class(
     add_plot = function(x, pname)
       pmx_add_plot(self, private, x, pname),
 
-    update_plot = function(pname, strat.facet=NULL, strat.color=NULL,
-                           filter=NULL, trans=NULL,
-                           ..., pmxgpar = NULL) {
+    update_plot = function(pname, strat.facet = NULL, strat.color = NULL,
+                               filter = NULL, trans = NULL,
+                               ..., pmxgpar = NULL) {
       pmx_update_plot(
         self, private, pname,
         strat.color = strat.color, strat.facet = strat.facet,
@@ -771,7 +773,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
-                           settings, endpoint, sim, bloq, id,time) {
+                           settings, endpoint, sim, bloq, id, time) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -786,7 +788,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (any(missing(strats) | is.null(strats) | is.na(strats))) strats <- ""
   if (missing(settings)) settings <- NULL
   if (missing(bloq)) bloq <- NULL
-  if(missing(id)) id <- NULL
+  if (missing(id)) id <- NULL
   if (missing(time)) time <- NULL
 
   private$.data_path <- data_path
@@ -804,7 +806,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$settings <- settings
   self$bloq <- bloq
   self$id <- id
-  self$time<- time
+  self$time <- time
 
   if (!is.null(endpoint) && is.atomic(endpoint)) {
     endpoint <- pmx_endpoint(code = as.character(endpoint))
@@ -812,7 +814,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$endpoint <- endpoint
   if (is.character(input) && file.exists(input)) {
     self$input_file <- input
-    self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint,self$id,self$time)
+    self$input <- read_input(input, self$dv, self$dvid, self$cats, self$conts, self$strats, self$occ, self$endpoint, self$id, self$time)
   } else {
     if (!inherits(input, "data.frame")) {
       stop("observation data should be either a file or a data.frame")
@@ -861,16 +863,15 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
     self$sim <- sim
   }
-  
-  if (config$sys =="nlmixr"){
+
+  if (config$sys == "nlmixr") {
     self$data$predictions <- input
-    self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input 
+    self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input
     self$data$eta <- config$eta
     self$data$omega <- config$omega
     self$has_re <- TRUE
-    
   }
-  
+
 
   ## abbrev
   keys_file <- file.path(
@@ -1071,10 +1072,10 @@ print.pmxClass <- function(x, ...) {
 
 #'
 #' @examples
-#'  ctr <- theophylline()
-#'  cctr <- ctr %>% pmx_copy
-#'  ## Any change in the ctr has no side effect in the ctr and vice versa
-pmx_copy <- function(ctr, keep_globals=FALSE, ...) {
+#' ctr <- theophylline()
+#' cctr <- ctr %>% pmx_copy()
+#' ## Any change in the ctr has no side effect in the ctr and vice versa
+pmx_copy <- function(ctr, keep_globals = FALSE, ...) {
   assert_that(is_pmxclass(ctr))
   cctr <- ctr$clone()
   params <- as.list(match.call(expand.dots = TRUE))[-1]

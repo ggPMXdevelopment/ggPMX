@@ -76,17 +76,19 @@ add_footnote <- function(pp, pname, save_dir) {
 #' @export
 pmx_plot_individual <-
   function(
-           ctr,
-           npage=1,
-           print=FALSE,
-           dname, pred_line, ipred_line, point, is.legend, use.finegrid,
-           bloq, filter, strat.facet, facets, strat.color, trans,
-           pmxgpar, labels, axis.title, axis.text, ranges, is.smooth,
-           smooth, is.band, band, is.draft, draft, is.identity_line,
-           identity_line, scale_x_log10, scale_y_log10, color.scales,
-           ...) {
+             ctr,
+             npage = 1,
+             print = FALSE,
+             dname, pred_line, ipred_line, point, is.legend, use.finegrid,
+             bloq, filter, strat.facet, facets, strat.color, trans,
+             pmxgpar, labels, axis.title, axis.text, ranges, is.smooth,
+             smooth, is.band, band, is.draft, draft, is.identity_line,
+             identity_line, scale_x_log10, scale_y_log10, color.scales,
+             ...) {
     stopifnot(is_pmxclass(ctr))
-    if (!"individual" %in% (ctr %>% plot_names())) return(NULL)
+    if (!"individual" %in% (ctr %>% plot_names())) {
+      return(NULL)
+    }
     cctr <- pmx_copy(ctr, ...)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)

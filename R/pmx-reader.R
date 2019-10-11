@@ -33,7 +33,7 @@ read_mlx_ind_est <- function(path, x, ...) {
     ds[, c("ID", "OCC") := tstrsplit(ID, "#")       ][
       ,
       c("ID", "OCC") := list(as.integer(ID), as.integer(OCC))
-      ]
+    ]
   }
   if (!is.null(occ) && occ %in% names(ds)) setnames(ds, occ, "OCC")
   if (identical(names(ds), "ID")) {
@@ -66,18 +66,18 @@ read_mlx18_ind_est <- function(path, x, ...) {
 #'
 #' @return data.table well formatted containing modelling input data
 #'
-read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="", 
-                       endpoint=NULL, id=NULL, time=NULL) {
+read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ = "",
+                       endpoint = NULL, id = NULL, time = NULL) {
   TIME <- EVID <- MDV <- y <- DV <- NULL
   xx <- pmx_fread(ipath)
-  
+
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
     setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
     setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
     xx <- xx[!(EVID == 1 & MDV == 1)]
   }
-  
-  
+
+
   if (!is.null(endpoint)) {
     if (!is.null(dvid) && dvid %in% names(xx)) {
       rr <- dvid
@@ -89,7 +89,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",
     } else {
       msg <- sprintf("ggPMX can not filter by endpoint %s\n", endpoint$code)
       msg <- paste(msg, sprintf("%s is not a valid column in the observation data set", dvid))
-      
+
       stop(msg)
     }
   }
@@ -100,17 +100,17 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",
       if (length(ends) > 1) {
         msg <- sprintf("Observation data contains multiple endpoints %s. \n ", paste(ends, collapse = " ; "))
         msg <- paste(msg, "Please select a single endpoint to continue.")
-        
+
         stop(msg)
       }
     }
   }
-  
-  
-  
-  if(!is.null(id)  && id %in% names(xx)){
+
+
+
+  if (!is.null(id) && id %in% names(xx)) {
     setnames(xx, id_col, "ID")
-  } else{
+  } else {
     id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
     if (length(id_col) == 0) {
       id_col <- names(xx)[1]
@@ -118,7 +118,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",
     }
     setnames(xx, id_col, "ID")
   }
-  
+
   if (dv %in% names(xx)) {
     if (dv == "dv") {
       xx[, DV := dv]
@@ -133,23 +133,23 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",
                         suggested names are : %s", dv, dv.names)
     stop(err.msg)
   }
-  
+
   if (nzchar(occ) && occ %in% names(xx)) {
     setnames(xx, occ, "OCC")
   }
   ## round time column for further merge
-  if(!is.null(time)  && time %in% names(xx)){
+  if (!is.null(time) && time %in% names(xx)) {
     setnames(xx, time, "TIME")
-  } else{
+  } else {
     setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
   }
   xx[, TIME := round(TIME, 4)]
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   covariates <- unique(c(cats, conts))
   if (length(covariates[covariates != ""])) {
     covariates <- covariates[covariates != ""]
@@ -172,12 +172,14 @@ read_input <- function(ipath, dv, dvid, cats = "", conts="", strats="", occ="",
     conts <- conts[conts != ""]
     xx[, (conts) := lapply(.SD, as.numeric), .SDcols = conts]
   }
-  
+
   xx
 }
 
 mlx_ipred <- function(x) {
-  if ("indpred_mode" %in% x) return("indpred_mode")
+  if ("indpred_mode" %in% x) {
+    return("indpred_mode")
+  }
   if ("indpred_mean" %in% x) {
     message("NO indpred_mode found use indpred_mean instead")
     return("indpred_mean")
@@ -192,7 +194,9 @@ mlx_ipred <- function(x) {
 
 
 mlx18_ipred <- function(x) {
-  if ("indivpred_mode" %in% x) return("indivpred_mode")
+  if ("indivpred_mode" %in% x) {
+    return("indivpred_mode")
+  }
   if ("indivpred_mean" %in% x) {
     message("NO indivpred_mode found use indivpred_mean instead")
     return("indivpred_mean")
@@ -202,7 +206,9 @@ mlx18_ipred <- function(x) {
 }
 
 mlx18_finegrid_ipred <- function(x) {
-  if ("indivpredmode" %in% x) return("indivpredmode")
+  if ("indivpredmode" %in% x) {
+    return("indivpredmode")
+  }
   if ("indivpredmean" %in% x) {
     message("NO indivPredMode found use indivPredMean instead")
     return("indivpredmean")
@@ -211,7 +217,9 @@ mlx18_finegrid_ipred <- function(x) {
   return(NULL)
 }
 mlx_iwres <- function(x) {
-  if ("indwres_mode" %in% x) return("indwres_mode")
+  if ("indwres_mode" %in% x) {
+    return("indwres_mode")
+  }
   if ("indwres_mean" %in% x) {
     message("NO indwres_mode found use indwres_mean instead")
     return("indpred_mean")
@@ -225,7 +233,9 @@ mlx_iwres <- function(x) {
 }
 
 mlx18_iwres <- function(x) {
-  if ("indwres_mode" %in% x) return("indwres_mode")
+  if ("indwres_mode" %in% x) {
+    return("indwres_mode")
+  }
   if ("indwres_mean" %in% x) {
     message("NO indwres_mode found use indwres_mean instead")
     return("indpred_mean")
@@ -278,11 +288,11 @@ read_mlx_pred <- function(path, x, ...) {
     names.nn <- c(names.nn, "OCC")
   }
   res <- setnames(xx[, nn, with = FALSE], names.nn)
-  
+
   ## select columns
-  
-  
-  
+
+
+
   res
 }
 
@@ -291,7 +301,7 @@ read_mlx18_res <- function(path, x, ...) {
   if (exists("subfolder", x)) {
     path <- file.path(dirname(path), x$subfolder)
   }
-  
+
   res_file <- file.path(path, x$file)
   file_path <- if (!file.exists(res_file)) {
     ffiles <- list.files(path, pattern = x$pattern, full.names = TRUE)
@@ -313,7 +323,7 @@ read_mlx18_res <- function(path, x, ...) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
-  
+
   ds <- pmx_fread(file_path)
   ids <- match(tolower(names(x[["names"]])), tolower(names(ds)))
   new_vars <- names(x[["names"]])
@@ -331,13 +341,15 @@ read_mlx18_pred <- function(path, x, ...) {
       finegrid_file
     }
   }
-  
-  
+
+
   ds <- read_mlx_pred(path = path, x = x, ...)
   if (exists("residuals", x)) {
     x$residuals$endpoint <- x$endpoint
     resi <- read_mlx18_res(path, x$residuals)
-    if (is.null(resi)) return(NULL)
+    if (is.null(resi)) {
+      return(NULL)
+    }
     ds <- merge(ds, resi, by = c("ID", "TIME"))
   }
   ds
@@ -393,14 +405,14 @@ load_data_set <- function(x, path, sys, ...) {
       }
     }
   }
-  
+
   if (!exists_file && sys != "mlx18") {
     cat(x[["label"]], " file do not exist. \n")
     return(NULL)
   }
-  
-  
-  
+
+
+
   if (exists("reader", x)) {
     return(do.call(x[["reader"]], list(fpath, x, ...)))
   }
@@ -432,12 +444,11 @@ load_data_set <- function(x, path, sys, ...) {
 #' @return list of data.table
 #' @export
 load_source <- function(sys, path, dconf, ...) {
-  
   dxs <- Map(function(x, nn) {
     x$name <- nn
     load_data_set(x, path = path, sys = sys, ...)
   }, dconf, names(dconf))
-  
-  
+
+
   dxs
 }

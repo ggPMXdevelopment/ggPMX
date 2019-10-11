@@ -108,7 +108,7 @@ merge_defaults <-
 #'
 #' @return ggplot2 annotation
 
-add_draft <- function(label = "DRAFT", size=10, colour="grey50", x = Inf, y = -Inf, ...) {
+add_draft <- function(label = "DRAFT", size = 10, colour = "grey50", x = Inf, y = -Inf, ...) {
   do.call(annotate, list(
     geom = "text", label = label, size = size,
     colour = colour, family = "Courier",
@@ -159,7 +159,7 @@ is.formula <- function(x) {
 #' \dontrun{
 #' theophylline()
 #' }
-theophylline <- function(settings=NULL, ...) {
+theophylline <- function(settings = NULL, ...) {
   theophylline <- file.path(
     system.file(package = "ggPMX"), "testdata",
     "theophylline"

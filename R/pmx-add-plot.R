@@ -50,8 +50,8 @@ before_add_check <- function(self, private, x, pname) {
   if (!is.null(x[["filter"]])) {
     x$dx <- x[["filter"]](x$dx)
     if (x$ptype == "IND") x$input <- x[["filter"]](x$input)
-    if (x$ptype =="VPC"){
-      x$db <- lapply(x$db, function(ds)ds<- x[["filter"]](ds))
+    if (x$ptype == "VPC") {
+      x$db <- lapply(x$db, function(ds) ds <- x[["filter"]](ds))
       x$input <- x[["filter"]](x$input)
     }
   }
@@ -95,7 +95,7 @@ before_add_check <- function(self, private, x, pname) {
   grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
   if (x$ptype == "DIS") {
     VAR <- FUN <- NULL
-    if (exists("FUN",dx))   dx <- dx[grepl("mode", FUN)]
+    if (exists("FUN", dx)) dx <- dx[grepl("mode", FUN)]
     cols <- c("ID", "EFFECT", "VALUE", grp)
     x$dx <- unique(dx[, cols, with = FALSE])
   }
@@ -184,7 +184,9 @@ before_add_check <- function(self, private, x, pname) {
 
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)
-  if (is.null(x)) return(invisible(self))
+  if (is.null(x)) {
+    return(invisible(self))
+  }
   assert_that(is_pmx_gpar(x))
   x <- x %>%
     .strat_supported() %>%

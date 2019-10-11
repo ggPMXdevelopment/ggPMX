@@ -62,15 +62,15 @@ pmx_qq <- function(
                    x,
                    labels,
                    dname = NULL,
-                   point=NULL,
-                   xmax=TRUE,
-                   facets=NULL,
-                   is.reference_line=NULL,
-                   reference_line=NULL,
-                   is.shrink=NULL,
-                   shrink=NULL,
-                   is.hline=NULL,
-                   hline=NULL,
+                   point = NULL,
+                   xmax = TRUE,
+                   facets = NULL,
+                   is.reference_line = NULL,
+                   reference_line = NULL,
+                   is.shrink = NULL,
+                   shrink = NULL,
+                   is.hline = NULL,
+                   hline = NULL,
                    ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "predictions"
@@ -149,7 +149,9 @@ pmx_qq <- function(
 #'
 plot_pmx.pmx_qq <- function(x, dx, ...) {
   SHRINK <- annotation <- NULL
-  if (!(x$x %in% names(dx))) return(NULL)
+  if (!(x$x %in% names(dx))) {
+    return(NULL)
+  }
   dx <- dx[!is.infinite(get(x$x))]
 
   strat.facet <- x[["strat.facet"]]

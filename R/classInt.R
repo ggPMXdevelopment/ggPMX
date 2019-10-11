@@ -1,5 +1,5 @@
 gvf <- function(var, cols) {
-  sumsq <- function(x) sum((x - mean(x)) ^ 2)
+  sumsq <- function(x) sum((x - mean(x))^2)
   sdam <- sumsq(var)
   sdcm <- sum(tapply(var, factor(cols), sumsq))
   res <- 1 - (sdcm / sdam)
@@ -61,7 +61,7 @@ classIntervals2shingle <- function(x) {
 # to the precision -- the argument equals the number of
 # decimal places in the data.  Negative numbers retain the usual
 # convention for rounding.
-classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClosure=c("left", "right"), dataPrecision=NULL, warnSmallN=TRUE) {
+classIntervals <- function(var, n, style = "quantile", rtimes = 3, ..., intervalClosure = c("left", "right"), dataPrecision = NULL, warnSmallN = TRUE) {
   if (is.factor(var)) stop("var is categorical")
   if (!is.numeric(var)) stop("var is not numeric")
   # Matthieu Stigler 120705
@@ -85,7 +85,8 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
     if (warnSmallN) {
       warning(paste(
         "n greater than number of different finite values",
-        "n reset to number of different finite values", sep = "\\n"
+        "n reset to number of different finite values",
+        sep = "\\n"
       ))
     }
     n <- nobs
@@ -94,7 +95,8 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
     if (warnSmallN) {
       warning(paste(
         "n same as number of different finite values",
-        "each different finite value is a separate class", sep = "\\n"
+        "each different finite value is a separate class",
+        sep = "\\n"
       ))
     }
     sVar <- sort(unique(var))
@@ -258,8 +260,8 @@ classIntervals <- function(var, n, style="quantile", rtimes=3, ..., intervalClos
   brks
 }
 
-findColours <- function(clI, pal, under="under", over="over", between="-",
-                        digits = getOption("digits"), cutlabels=TRUE) {
+findColours <- function(clI, pal, under = "under", over = "over", between = "-",
+                        digits = getOption("digits"), cutlabels = TRUE) {
   if (class(clI) != "classIntervals") stop("Class interval object required")
   if (is.null(clI$brks)) stop("Null breaks")
   if (length(pal) < 2) stop("pal must contain at least two colours")
@@ -296,8 +298,8 @@ findCols <- function(clI) {
 # Added intervalClosure argument to allow specification of whether
 # partition intervals are closed on the left or the right
 # Added dataPrecision for rounding of the interval endpoints
-tableClassIntervals <- function(cols, brks, under="under", over="over",
-                                between="-", digits = getOption("digits"), cutlabels=TRUE, intervalClosure=c("left", "right"), dataPrecision=NULL, unique=FALSE, var) {
+tableClassIntervals <- function(cols, brks, under = "under", over = "over",
+                                between = "-", digits = getOption("digits"), cutlabels = TRUE, intervalClosure = c("left", "right"), dataPrecision = NULL, unique = FALSE, var) {
   # Matthieu Stigler 120705 unique
   # Matthieu Stigler 120705
   intervalClosure <- match.arg(intervalClosure)
@@ -366,23 +368,23 @@ tableClassIntervals <- function(cols, brks, under="under", over="over",
 
 # change contributed by Richard Dunlap 090512
 # New helper method for tableClassIntervals
-roundEndpoint <- function(x, intervalClosure=c("left", "right"), dataPrecision) {
+roundEndpoint <- function(x, intervalClosure = c("left", "right"), dataPrecision) {
   # Matthieu Stigler 120705
   intervalClosure <- match.arg(intervalClosure)
   if (is.null(dataPrecision)) {
     retval <- x
   }
   else if (is.null(intervalClosure) || (intervalClosure == "left")) {
-    retval <- ceiling(x * 10 ^ dataPrecision) / 10 ^ dataPrecision
+    retval <- ceiling(x * 10^dataPrecision) / 10^dataPrecision
   }
   else {
-    retval <- floor(x * 10 ^ dataPrecision) / 10 ^ dataPrecision
+    retval <- floor(x * 10^dataPrecision) / 10^dataPrecision
   }
   digits <- getOption("digits")
   format(retval, digits = digits, trim = TRUE)
 } # FIXME output trailing zeros in decimals
 
-print.classIntervals <- function(x, digits = getOption("digits"), ..., under="under", over="over", between="-", cutlabels=TRUE, unique=FALSE) {
+print.classIntervals <- function(x, digits = getOption("digits"), ..., under = "under", over = "over", between = "-", cutlabels = TRUE, unique = FALSE) {
   if (class(x) != "classIntervals") stop("Class interval object required")
   cat("style: ", attr(x, "style"), "\n", sep = "")
   nP <- nPartitions(x)
@@ -390,7 +392,8 @@ print.classIntervals <- function(x, digits = getOption("digits"), ..., under="un
     cat(
       "  one of ", prettyNum(nP, big.mark = ","),
       " possible partitions of this variable into ", length(x$brks) - 1,
-      " classes\n", sep = ""
+      " classes\n",
+      sep = ""
     )
   }
   cols <- findCols(x)

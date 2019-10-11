@@ -27,14 +27,14 @@
 
 pmx_report <-
   function(contr,
-           name,
-           save_dir,
-           format=c("both", "plots", "report"),
-           template="standing",
-           footnote=format == "both",
-           edit=FALSE,
-           title,
-           ...) {
+             name,
+             save_dir,
+             format = c("both", "plots", "report"),
+             template = "standing",
+             footnote = format == "both",
+             edit = FALSE,
+             title,
+             ...) {
     assert_that(is_pmxclass(contr))
     format <- match.arg(format)
     on.exit({
@@ -85,7 +85,8 @@ pmx_report <-
       params$title <- "ggPMX standing report"
     }
     suppressWarnings(render(
-      res, "all", params = params, envir = envir,
+      res, "all",
+      params = params, envir = envir,
       output_dir = save_dir, clean = clean, quiet = TRUE
     ))
 
@@ -139,7 +140,8 @@ pmx_draft <- function(ctr, name, template, edit) {
   if (file.exists(template)) {
     template_path <- system.file(
       "rmarkdown", "templates",
-      "standing", package = "ggPMX"
+      "standing",
+      package = "ggPMX"
     )
     temp_dir <- tempdir()
     invisible(file.copy(template_path, temp_dir, recursive = TRUE))

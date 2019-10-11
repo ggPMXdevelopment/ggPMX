@@ -29,23 +29,23 @@
 
 pmx_gpar <-
   function(
-           labels,
-           axis.title,
-           axis.text,
-           ranges,
-           is.smooth,
-           smooth,
-           is.band,
-           band,
-           is.draft,
-           draft,
-           discrete,
-           is.identity_line,
-           identity_line,
-           scale_x_log10,
-           scale_y_log10,
-           color.scales,
-           is.legend) {
+             labels,
+             axis.title,
+             axis.text,
+             ranges,
+             is.smooth,
+             smooth,
+             is.band,
+             band,
+             is.draft,
+             draft,
+             discrete,
+             is.identity_line,
+             identity_line,
+             scale_x_log10,
+             scale_y_log10,
+             color.scales,
+             is.legend) {
 
 
     ## join with default values

@@ -24,7 +24,7 @@ individual <- function(labels,
                        ipred_line = NULL,
                        pred_line = NULL,
                        point = NULL,
-                       bloq=NULL,
+                       bloq = NULL,
                        is.legend,
                        use.finegrid,
                        ...) {

@@ -14,8 +14,10 @@
 #' @family vpc
 
 pmx_vpc_bin <-
-  function(style, within_strat=FALSE, ...) {
-    if (missing(style)) return(NULL)
+  function(style, within_strat = FALSE, ...) {
+    if (missing(style)) {
+      return(NULL)
+    }
     rr <- as.list(match.call()[-1])
     rr
   }
@@ -35,11 +37,11 @@ pmx_vpc_bin <-
 #' @export
 #' @family vpc
 pmx_vpc_obs <-
-  function(show=TRUE,
-           color ="#000000",
-           size =1,
-           alpha = 0.7,
-           shape = 1) {
+  function(show = TRUE,
+             color = "#000000",
+             size = 1,
+             alpha = 0.7,
+             shape = 1) {
     if (show) {
       structure(
         list(
@@ -85,9 +87,9 @@ pmx_vpc_obs <-
 #' @export
 pmx_vpc_pi <-
   function(show = c("all", "median"),
-           interval=c(.05, .95),
-           median=list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
-           extreme=list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")) {
+             interval = c(.05, .95),
+             median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
+             extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")) {
     show <- match.arg(show)
     median_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
     extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
@@ -147,10 +149,10 @@ pmx_vpc_pi <-
 #' @family vpc
 pmx_vpc_ci <-
   function(show = c("all", "median"),
-           interval=c(.05, .95),
-           method = c("ribbon", "rectangle"),
-           median=list(fill = "#3388cc", alpha = 0.3),
-           extreme=list(fill = "#3388cc", alpha = 0.3)) {
+             interval = c(.05, .95),
+             method = c("ribbon", "rectangle"),
+             median = list(fill = "#3388cc", alpha = 0.3),
+             extreme = list(fill = "#3388cc", alpha = 0.3)) {
     show <- match.arg(show)
     method <- match.arg(method)
     median_default <- list(fill = "#3388cc", alpha = 0.3)
@@ -194,10 +196,10 @@ pmx_vpc_ci <-
 #'
 #' @family vpc
 pmx_vpc_rug <-
-  function(show=TRUE,
-           color = "#000000",
-           size = 1,
-           alpha =0.7) {
+  function(show = TRUE,
+             color = "#000000",
+             size = 1,
+             alpha = 0.7) {
     if (show) {
       structure(
         list(
@@ -220,7 +222,7 @@ pmx_vpc_rug <-
 
 
 quantile_dt <-
-  function(dx, grp="time", ind="y", probs=c(.05, .95), prefix="p", wide=FALSE) {
+  function(dx, grp = "time", ind = "y", probs = c(.05, .95), prefix = "p", wide = FALSE) {
     percentile <- NULL
     probs <- sort(unique(c(0.5, probs)))
     fmt <- ifelse(probs < .1, paste0(prefix, "0%1.f"), paste0(prefix, "%1.f"))
@@ -237,15 +239,15 @@ quantile_dt <-
 
 vpc.data <-
   function(type = c("percentile", "scatter"),
-           dobs,
-           dsim,
-           probs.pi,
-           probs.ci,
-           idv = "time",
-           irun="stu",
-           dv="y",
-           strat = NULL,
-           rug=NULL) {
+             dobs,
+             dsim,
+             probs.pi,
+             probs.ci,
+             idv = "time",
+             irun = "stu",
+             dv = "y",
+             strat = NULL,
+             rug = NULL) {
     zmax <- zmin <- out_ <- value <- NULL
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
     if (is.null(rug)) {
@@ -256,7 +258,8 @@ vpc.data <-
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
       res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
       ci <- quantile_dt(
-        res2, probs = probs.ci, grp = c("percentile", idv, strat),
+        res2,
+        probs = probs.ci, grp = c("percentile", idv, strat),
         prefix = "CL", ind = "value", wide = TRUE
       )
     } else {
@@ -285,7 +288,7 @@ bin_idv <- function(idv, x) {
 
 
 
-find_interval <- function(x, vec, labels=NULL, ...) {
+find_interval <- function(x, vec, labels = NULL, ...) {
   levels <- seq_along(vec)
 
   vals <- findInterval(x, vec, rightmost.closed = TRUE, ...)
@@ -484,16 +487,16 @@ vpc.plot <- function(x) {
 
 pmx_vpc <- function(
                     type = c("percentile", "scatter"),
-                    idv  ="TIME",
-                    obs  = pmx_vpc_obs(),
-                    pi =  pmx_vpc_pi(),
-                    ci =  pmx_vpc_ci(),
+                    idv = "TIME",
+                    obs = pmx_vpc_obs(),
+                    pi = pmx_vpc_pi(),
+                    ci = pmx_vpc_ci(),
                     rug = pmx_vpc_rug(),
                     bin = pmx_vpc_bin(),
                     labels = NULL,
                     facets = NULL,
-                    is.legend=FALSE,
-                    dname=NULL,
+                    is.legend = FALSE,
+                    dname = NULL,
                     ...) {
   type <- match.arg(type)
   ## check args here

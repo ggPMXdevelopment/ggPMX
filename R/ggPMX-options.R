@@ -61,7 +61,7 @@ getPmxOption <- function(name, default = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' pmxOptions(template_dir=PATH_TO_CUSTOM_CONFIGURATION)
+#' pmxOptions(template_dir = PATH_TO_CUSTOM_CONFIGURATION)
 #' }
 #' @export
 pmxOptions <- function(...) {
@@ -81,7 +81,7 @@ pmxOptions <- function(...) {
 }
 
 
-checkPmxOption <- function(value, pmxname, default=NULL) {
+checkPmxOption <- function(value, pmxname, default = NULL) {
   call <- match.call()
   if (missing(value)) {
     value <- getPmxOption(pmxname, default)

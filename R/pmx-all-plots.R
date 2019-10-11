@@ -1,7 +1,9 @@
 pmx_plot_generic <-
   function(ctr, pname, defaults_, ...) {
     stopifnot(is_pmxclass(ctr))
-    if (!pname %in% (ctr %>% plot_names())) return(NULL)
+    if (!pname %in% (ctr %>% plot_names())) {
+      return(NULL)
+    }
     cctr <- pmx_copy(ctr, ...)
 
     params <- c(
@@ -61,7 +63,7 @@ wrap_pmx_plot_generic <-
 #'
 #' @export
 pmx_register_plot <-
-  function(ctr, pp, pname=NULL) {
+  function(ctr, pp, pname = NULL) {
     if (ctr$footnote) {
       if (is.null(pname)) pname <- "extra-plot"
       ctr$enqueue_plot(pname)
@@ -108,7 +110,7 @@ pmx_plot <- function(ctr, pname, ...) {
 #' @export
 #'
 
-pmx_plot_cats <- function(ctr, pname, cats, chunk="", print=TRUE, ...) {
+pmx_plot_cats <- function(ctr, pname, cats, chunk = "", print = TRUE, ...) {
   sp <- list()
   if (missing(cats)) cats <- ctr %>% get_cats()
   if (length(cats) == 0 || cats == "") {
