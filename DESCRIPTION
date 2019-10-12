@@ -42,7 +42,8 @@ License: GPL-2
 LazyData: true
 Suggests:
     testthat,
-    xtable
+    xtable,
+    nlmixr
 VignetteBuilder: knitr
 NeedsCompilation: no
 RoxygenNote: 6.1.1
