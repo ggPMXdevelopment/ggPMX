@@ -99,7 +99,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
     }
   }
 
-  obs <- as.data.table(nlmixr::getData(fit))
+  obs <- as.data.table(nlme::getData(fit))
   obs <- obs[!(EVID == 1 & MDV == 1)]
   no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
   input <- merge(obs, FIT[, !(no_cols), with = FALSE], by = c("ID", "TIME"))
