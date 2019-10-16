@@ -109,22 +109,17 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
   no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME", "DV"))
   input <- merge(obs, FIT[, !(no_cols), with = FALSE], by = c("ID", "TIME", "DV"))
 
-  print(input);
-
   eta <- copy(input)
   ## The eta parameters do not have to be named eta
   measures <- names(fit$eta)[-1]
   if (length(measures) == 0) {
     message("NO random effect found")
   }
+  ## Not necessary these are already numeric... Perhaps a good practice?
   eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
   eta <- melt(eta, measure = measures)
   setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
   eta[, EFFECT := sub("[.]?eta[.]?", "", EFFECT)]
-
-
-
-
 
   plot_dir <- file.path(system.file(package = "ggPMX"), "init")
   pfile <- file.path(plot_dir, sprintf("%s.ppmx", config))
@@ -141,8 +136,6 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
 
   bloq <- NULL
 
-
-
-
   pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
+
 }
