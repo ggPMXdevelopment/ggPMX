@@ -114,7 +114,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
   eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
   eta <- melt(eta, measure = measures)
   setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
-  eta[, EFFECT := sub("eta.", "", EFFECT)]
+  eta[, EFFECT := sub("[.]?eta[.]?", "", EFFECT)]
 
 
 
