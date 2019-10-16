@@ -25,7 +25,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
   conts <- if (missing(conts)) "" else conts
   occ <- ""
   strats <- if (missing(strats)) "" else strats
-  dvid <- if (missing(dvid)) "" else dvid
+  dvid <- if (missing(dvid)) ifelse(any(names(fit) == "CMT") , "CMT", "") else dvid
   endpoint <- if (missing(endpoint)) NULL else endpoint
   if (missing(settings)) settings <- pmx_settings()
   if (!inherits(settings, "pmxSettingsClass")) {
