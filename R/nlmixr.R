@@ -106,7 +106,8 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
 
 
   eta <- copy(input)
-  measures <- grep("^eta.*", names(eta))
+  ## The eta parameters do not have to be named eta
+  eta <- names(fit$eta)[-1]
   if (length(measures) == 0) {
     message("NO random effect found")
   }
