@@ -31,6 +31,7 @@ Imports:
     gtable,
     ggplot2 (>= 2.2.0),
     magrittr,
+    memoise,
     stringr,
     assertthat,
     checkmate,

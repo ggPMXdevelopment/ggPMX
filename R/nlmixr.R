@@ -1,3 +1,6 @@
+pmx_nlmixr_vpc <- memoise::memoise(function(fit){
+  try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
+})
 
 #' Creates pmx controller from  an nlimxr fit object
 #'
@@ -48,10 +51,12 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
 
 
 
-  sim_data <- try(invisible(setDT(nlmixr::vpc(fit)$rxsim)), silent = TRUE)
+  sim_data <- pmx_nlmixr_vpc(fit)
   if (inherits(sim_data, "try-error")) {
     sim <- NULL
   } else {
+    sim_data <- setDT(sim_data)
+    print(sim_data);
     setnames(sim_data, "dv", "DV")
     sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
   }
@@ -98,16 +103,17 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
       }
     }
   }
-
   obs <- as.data.table(nlme::getData(fit))
   obs <- obs[!(EVID == 1 & MDV == 1)]
-  no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
-  input <- merge(obs, FIT[, !(no_cols), with = FALSE], by = c("ID", "TIME"))
 
+  no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME", "DV"))
+  input <- merge(obs, FIT[, !(no_cols), with = FALSE], by = c("ID", "TIME", "DV"))
+
+  print(input);
 
   eta <- copy(input)
   ## The eta parameters do not have to be named eta
-  eta <- names(fit$eta)[-1]
+  measures <- names(fit$eta)[-1]
   if (length(measures) == 0) {
     message("NO random effect found")
   }
