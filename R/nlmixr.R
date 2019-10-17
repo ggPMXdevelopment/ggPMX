@@ -64,7 +64,6 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=T
     EFFECT = sub("[.]?(eta|bsv)[.]?", "", names(domega)),
     OMEGA = sqrt(as.vector(domega))
   )
-  print(omega)
 
   ## nlmixr ID datasets are actually factors.  Merging by ID with the
   ## original dataset is risky.
@@ -99,7 +98,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=T
       }
     }
   }
-  obs <- as.data.table(nlme::getData(fit))
+  obs <- as.data.table(nlmixr::getData(fit))
   ## obs <- obs[!(EVID == 1 & MDV == 1)]
   if (any(names(obs) == "EVID")){
       obs <- obs[EVID == 0 || EVID == 2]
