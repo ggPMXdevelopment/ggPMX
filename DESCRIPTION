@@ -16,6 +16,7 @@ Authors@R: c(
               person("Inga", "Ludwig", email="inga.ludwig@novartis.com", role="aut"),
               person("Ines", "Paule", email="ines.paule@novartis.com", role="aut"),
               person("Didier", "Renard", email="didier.renard@novartis.com", role="aut"),
+	      person("Matthew","Fidler", role = "ctb", email = "matthew.fidler@gmail.com", comment=c(ORCID="0000-0001-8538-6691")),
               person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctr"),
               person("Novartis Pharma AG", role = c("cph"))
             )
