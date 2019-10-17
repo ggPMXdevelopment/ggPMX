@@ -1,7 +1,3 @@
-pmx_nlmixr_vpc <- memoise::memoise(function(fit){
-  try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
-})
-
 #' Creates pmx controller from  an nlimxr fit object
 #'
 #' @param fit nlmixr object
@@ -51,7 +47,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
 
 
 
-  sim_data <- pmx_nlmixr_vpc(fit)
+  sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
   if (inherits(sim_data, "try-error")) {
     sim <- NULL
   } else {
