@@ -10,10 +10,6 @@ r:
   - 3.6
   - devel
 
-os:
-  - linux
-  - osx
-
 r_packages:
   - covr
   - devtools
