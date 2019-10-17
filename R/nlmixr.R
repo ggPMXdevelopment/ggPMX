@@ -60,17 +60,12 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
 
   domega <- diag(fit$omega)
   omega <- data.table(
-    EFFECT = sub("eta.", "", names(domega)),
+    EFFECT = sub("[.](eta|bsv)[.]", "", names(domega)),
     OMEGA = sqrt(as.vector(domega))
   )
 
-
-
-
   FIT <- as.data.table(fit)
   FIT[, ID := as.integer(ID)]
-
-
 
   if (!is.null(endpoint)) {
     if (!is.null(dvid) && dvid %in% names(FIT)) {
@@ -102,6 +97,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
   obs <- as.data.table(nlme::getData(fit))
   obs <- obs[!(EVID == 1 & MDV == 1)]
 
+  ## Merge with DV too
   no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME", "DV"))
   input <- merge(obs, FIT[, !(no_cols), with = FALSE], by = c("ID", "TIME", "DV"))
 
@@ -115,7 +111,10 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
   eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
   eta <- melt(eta, measure = measures)
   setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
-  eta[, EFFECT := sub("[.]?eta[.]?", "", EFFECT)]
+  eta[, EFFECT := sub("[.]?(eta|bsv)[.]?", "", EFFECT)]
+
+  print(eta)
+  print(input)
 
   plot_dir <- file.path(system.file(package = "ggPMX"), "init")
   pfile <- file.path(plot_dir, sprintf("%s.ppmx", config))
