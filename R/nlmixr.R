@@ -8,11 +8,12 @@
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} defalut to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
+#' @param vpc \emph{[Optional]} \code{logical} a boolean indiacting if vpc should be calculated (by default \code{TRUE})
 
 #' @return \code{pmxClass} controller object.
 #' @export
 
-pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
+pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=TRUE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
   if (missing(fit)) {
     return(NULL)
@@ -45,27 +46,28 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
     )
   }
 
-
-
-  sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
-  if (inherits(sim_data, "try-error")) {
-    sim <- NULL
-  } else {
-    sim_data <- setDT(sim_data)
-    setnames(sim_data, "dv", "DV")
-    sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
+  sim <- NULL
+  if(vpc){
+    sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
+    if (inherits(sim_data, "try-error")) {
+      sim <- NULL
+    } else {
+      sim_data <- setDT(sim_data)
+      setnames(sim_data, "dv", "DV")
+      sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
+    }
   }
 
 
   domega <- diag(fit$omega)
   omega <- data.table(
-    EFFECT = sub("[.](eta|bsv)[.]", "", names(domega)),
+    EFFECT = sub("[.]?(eta|bsv)[.]?", "", names(domega)),
     OMEGA = sqrt(as.vector(domega))
   )
+  print(omega)
 
   ## nlmixr ID datasets are actually factors.  Merging by ID with the
   ## original dataset is risky.
-  .lvl <- levels(fit$ID)
   FIT <- as.data.frame(fit)
   FIT$ID <- paste(FIT$ID)
   FIT <- data.table(FIT)
@@ -98,12 +100,26 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
     }
   }
   obs <- as.data.table(nlme::getData(fit))
-  obs <- obs[!(EVID == 1 & MDV == 1)]
-
+  ## obs <- obs[!(EVID == 1 & MDV == 1)]
+  if (any(names(obs) == "EVID")){
+      obs <- obs[EVID == 0 || EVID == 2]
+  } else if (any(names(obs) == "MDV")){
+      obs <- obs[MDV == 0]
+  }
+  if (any(names(obs) == "ID")){
+      obs$ID <- paste(obs$ID)
+  }
   ## Merge with DV too
-  no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME", "DV"))
-  input <- merge(obs, FIT[, !(no_cols), with = FALSE], by = c("ID", "TIME", "DV"))
-
+  no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
+  obs[, (no_cols) := NULL]
+  uID <- unique(FIT$ID)
+  obs <- subset(obs, ID %in% uID)
+  obs$ID <- factor(obs$ID, levels=levels(fit$ID))
+  FIT$ID <- factor(FIT$ID, levels=levels(fit$ID))
+  input <- merge(obs, FIT, by = c("ID", "TIME"))
+  if (length(input$ID) == 0L){
+      stop("Cannot merge nlmixr fit with observation dataset")
+  }
   eta <- copy(input)
   ## The eta parameters do not have to be named eta
   measures <- names(fit$eta)[-1]
@@ -111,7 +127,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
     message("NO random effect found")
   }
   ## Not necessary these are already numeric... Perhaps a good practice?
-  ## eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
+  eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
   eta <- melt(eta, measure = measures)
   setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
   eta[, EFFECT := sub("[.]?(eta|bsv)[.]?", "", EFFECT)]
