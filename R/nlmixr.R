@@ -52,7 +52,6 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
     sim <- NULL
   } else {
     sim_data <- setDT(sim_data)
-    print(sim_data);
     setnames(sim_data, "dv", "DV")
     sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
   }
@@ -64,8 +63,12 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
     OMEGA = sqrt(as.vector(domega))
   )
 
-  FIT <- as.data.table(fit)
-  FIT[, ID := as.integer(ID)]
+  ## nlmixr ID datasets are actually factors.  Merging by ID with the
+  ## original dataset is risky.
+  .lvl <- levels(fit$ID)
+  FIT <- as.data.frame(fit)
+  FIT$ID <- paste(FIT$ID)
+  FIT <- data.table(FIT)
 
   if (!is.null(endpoint)) {
     if (!is.null(dvid) && dvid %in% names(FIT)) {
@@ -108,13 +111,10 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings) {
     message("NO random effect found")
   }
   ## Not necessary these are already numeric... Perhaps a good practice?
-  eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
+  ## eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
   eta <- melt(eta, measure = measures)
   setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
   eta[, EFFECT := sub("[.]?(eta|bsv)[.]?", "", EFFECT)]
-
-  print(eta)
-  print(input)
 
   plot_dir <- file.path(system.file(package = "ggPMX"), "init")
   pfile <- file.path(plot_dir, sprintf("%s.ppmx", config))
