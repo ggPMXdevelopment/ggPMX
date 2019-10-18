@@ -27,7 +27,9 @@ pmx_sim <- function(
     }
     id_col <- grep("^id$", names(sim), ignore.case = TRUE, value = TRUE)
     setnames(sim, id_col, "ID")
-    sim[, ID := as.integer(ID)]
+    if (!inherits(sim$ID, "factor")){
+        sim[, ID := as.integer(ID)]
+    }
     obj <- list(
       sim = sim,
       idv = idv,
