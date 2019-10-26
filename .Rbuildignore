@@ -6,3 +6,11 @@
 ^packrat/
 ^\.Rprofile$
 ^\.travis\.yml$
+^codecov\.yml$
+^ggPMX\ Logo\.jpg$
+^ggPMX-Workshop_Wide_HandsOnPAGE2019.pptx$
+^ggPMX-Workshop_Wide_PAGE2019.pptx$
+^ggPMX-guide_2019-04-25.pdf$
+^ggPMX_Plot_Example1.jpg$
+^ggPMX_cheat_sheet_0_9_4.png$
+^ggPMX_cheat_sheet_0_9_4.pptx$

@@ -110,17 +110,19 @@ plot_pmx.individual <-
 
       p_bloq <- if (!is.null(bloq)) {
         bloq$data <- x$input[get(bloq$cens) != 0]
-        bloq$data[, "y_end" := ifelse(get(bloq$cens) > 0, -Inf, Inf)]
-        if (bloq$limit %in% names(bloq$data)) {
-          bloq$data[!is.na(get(bloq$limit)), "y_end" := as.numeric(get(bloq$limit))]
+        if (length(bloq$data$ID) > 0){
+          ## While cens may be in the dataset, all the data in the fit may be uncensored
+          if (bloq$limit %in% names(bloq$data)) {
+            bloq$data[!is.na(get(bloq$limit)), "y_end" := as.numeric(get(bloq$limit))]
+          }
+          bloq$mapping <-
+            aes_string(
+              xend = "TIME",
+              yend = "y_end"
+            )
+          bloq$cens <- bloq$limit <- NULL
+          do.call(geom_segment, bloq)
         }
-        bloq$mapping <-
-          aes_string(
-            xend = "TIME",
-            yend = "y_end"
-          )
-        bloq$cens <- bloq$limit <- NULL
-        do.call(geom_segment, bloq)
       }
 
       p <- ggplot(dx, aes(TIME, DV, shape = "observations")) +
