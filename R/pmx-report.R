@@ -14,6 +14,8 @@
 #' @param footnote \code{logical}  TRUE to add a footnote to the generated plots. The default footnote is to add \cr
 #' the path where the plot is saved.
 #' @param edit \code{logical}  TRUE to edit the template immediately
+#' @param extension \code{character} The output document format. By default, a word report is generated. \cr
+#'  User can specify one or more formats from c("word","pdf","html","all"). extnestion "all" to generate all formats. 
 #' @param title \code{character} report title (optional)
 #' @param ... extra parameters depending in the template used
 #' @export
@@ -33,10 +35,15 @@ pmx_report <-
              template = "standing",
              footnote = format == "both",
              edit = FALSE,
+             extension=NULL,
              title,
              ...) {
     assert_that(is_pmxclass(contr))
     format <- match.arg(format)
+    if (missing(extension) || is.null(extension)) extension <- "word"
+    
+    if (!"all" %in% extension)extension <- sprintf("%s_document",extension)
+    else extension <- "all"
     on.exit({
       remove_temp_files(contr$save_dir)
       contr$footnote <- FALSE
@@ -85,9 +92,13 @@ pmx_report <-
       params$title <- "ggPMX standing report"
     }
     suppressWarnings(render(
-      res, "all",
-      params = params, envir = envir,
-      output_dir = save_dir, clean = clean, quiet = TRUE
+      res, 
+      params = params, 
+      envir = envir,
+      output_format = extension,
+      output_dir = save_dir, 
+      clean = clean, 
+      quiet = TRUE
     ))
 
     knitr::opts_chunk$set(fig.process = old_fig_process)
