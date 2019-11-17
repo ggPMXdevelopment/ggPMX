@@ -166,7 +166,7 @@ plot_pmx.residual <- function(x, dx, ...) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
-      p <- p + do.call("facet_wrap", c(strat.facet, facets))
+      p <- p + do.call("facet_grid", c(strat.facet, facets))
     }
 
 
