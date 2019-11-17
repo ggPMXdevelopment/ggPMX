@@ -33,7 +33,7 @@ pmx_report <-
              save_dir,
              format = c("both", "plots", "report"),
              template = "standing",
-             footnote = format == "both",
+             footnote = format=="both",
              edit = FALSE,
              extension=NULL,
              title,
@@ -60,7 +60,6 @@ pmx_report <-
     contr$footnote <- footnote
     res <- pmx_draft(contr, name, template, edit)
     standalone <- format %in% c("plots", "both")
-    footnote <- format == "both" || footnote
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
 
