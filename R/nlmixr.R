@@ -13,7 +13,7 @@
 #' @return \code{pmxClass} controller object.
 #' @export
 
-pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=TRUE) {
+pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
   if (missing(fit)) {
     return(NULL)
@@ -25,7 +25,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=T
   conts <- if (missing(conts)) "" else conts
   occ <- ""
   strats <- if (missing(strats)) "" else strats
-  dvid <- if (missing(dvid)) ifelse(any(names(fit) == "CMT") , "CMT", "") else dvid
+  dvid <- if (missing(dvid)) ifelse(any(names(fit) == "CMT"), "CMT", "") else dvid
   endpoint <- if (missing(endpoint)) NULL else endpoint
   if (missing(settings)) settings <- pmx_settings()
   if (!inherits(settings, "pmxSettingsClass")) {
@@ -47,7 +47,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=T
   }
 
   sim <- NULL
-  if(vpc){
+  if (vpc) {
     sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
     if (inherits(sim_data, "try-error")) {
       sim <- NULL
@@ -100,24 +100,24 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=T
   }
   obs <- as.data.table(nlmixr::getData(fit))
   ## obs <- obs[!(EVID == 1 & MDV == 1)]
-  if (any(names(obs) == "EVID")){
-      obs <- obs[EVID == 0 || EVID == 2]
-  } else if (any(names(obs) == "MDV")){
-      obs <- obs[MDV == 0]
+  if (any(names(obs) == "EVID")) {
+    obs <- obs[EVID == 0 || EVID == 2]
+  } else if (any(names(obs) == "MDV")) {
+    obs <- obs[MDV == 0]
   }
-  if (any(names(obs) == "ID")){
-      obs$ID <- paste(obs$ID)
+  if (any(names(obs) == "ID")) {
+    obs$ID <- paste(obs$ID)
   }
   ## Merge with DV too
   no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
   obs[, (no_cols) := NULL]
   uID <- unique(FIT$ID)
   obs <- subset(obs, ID %in% uID)
-  obs$ID <- factor(obs$ID, levels=levels(fit$ID))
-  FIT$ID <- factor(FIT$ID, levels=levels(fit$ID))
+  obs$ID <- factor(obs$ID, levels = levels(fit$ID))
+  FIT$ID <- factor(FIT$ID, levels = levels(fit$ID))
   input <- merge(obs, FIT, by = c("ID", "TIME"))
-  if (length(input$ID) == 0L){
-      stop("Cannot merge nlmixr fit with observation dataset")
+  if (length(input$ID) == 0L) {
+    stop("Cannot merge nlmixr fit with observation dataset")
   }
   eta <- copy(input)
   ## The eta parameters do not have to be named eta
@@ -147,5 +147,4 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc=T
   bloq <- NULL
 
   pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
-
 }

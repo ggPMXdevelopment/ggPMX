@@ -27,8 +27,8 @@ pmx_sim <- function(
     }
     id_col <- grep("^id$", names(sim), ignore.case = TRUE, value = TRUE)
     setnames(sim, id_col, "ID")
-    if (!inherits(sim$ID, "factor")){
-        sim[, ID := as.integer(ID)]
+    if (!inherits(sim$ID, "factor")) {
+      sim[, ID := as.integer(ID)]
     }
     obj <- list(
       sim = sim,
@@ -1001,7 +1001,6 @@ pmx_set_config <- function(self, private, pname, new) {
 
 pmx_dequeue_plot <- function(self) {
   ## assert_that(is_none_empty_queue(self))
-
   if (length(self$report_queue)) {
     first <- self$report_queue[[1]]
     self$report_queue <- self$report_queue[-1]
