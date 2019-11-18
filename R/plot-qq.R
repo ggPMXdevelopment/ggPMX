@@ -183,7 +183,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   }
   reference_layer <- if (!is.null(x$is.reference_line) && x$is.reference_line) {
     x$reference_line$mapping <- aes_string(slope = "slope", intercept = "intercept")
-    if (is.null(strat.color)) {
+    if (!is.null(strat.color)) {
       x$reference_line$colour <- NULL
       x$reference_line$mapping <- aes_string(
         slope = "slope", intercept = "intercept",

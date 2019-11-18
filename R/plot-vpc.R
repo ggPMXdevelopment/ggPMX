@@ -522,5 +522,6 @@ pmx_vpc <- function(
 plot_pmx.pmx_vpc <- function(x, dx, ...) {
   db <- x$db
   if (!is.null(db)) p <- vpc.plot(x)
+  x$gp$is.legend <- x$is.legend
   plot_pmx(x$gp, p)
 }
