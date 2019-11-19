@@ -551,6 +551,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   ## obs legend 
   x$obs_legend <- NULL
   x$sim_legend <- NULL
+  percentile <- NULL
   if (!is.null(x$pi)) {
     obs_legend <- list(breaks="p50",values=x$pi$median$linetype,labels="Median")
     if (x$pi$show == "all") {
