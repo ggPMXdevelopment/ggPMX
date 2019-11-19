@@ -468,6 +468,9 @@ vpc.plot <- function(x) {
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
     
+    if (is.legend){
+      pp <- pp +labs(caption=x$footnote)
+    }
     
     if (type == "percentile") {
       pp + labs(title = "Percentile VPC", subtitle = "(with observations)")
@@ -530,6 +533,19 @@ pmx_vpc <- function(
 }
 
 
+vpc_footnote <- function(x){
+  perc <- min(x$ci$probs)*100
+  
+  area_statement <- if(x$type=="percentile"){
+    extension <- if(x$ci$show=="all") "s" else "" 
+    sprintf("The area%s represents the %s%% confidence intervals for the percentile%s. ",extension,perc,extension)
+  }
+  obs_statement <- if(!is.null(x$obs)) "The dots are the observations."
+  rug_statement <- if(!is.null(x$rug)) "The rugs represent the limits of the bins." 
+  paste(area_statement, paste(obs_statement,rug_statement,collapse=" "),
+        "The percentiles are plotted at the median independent variables in the bins.",sep="\n")
+}
+
 plot_pmx.pmx_vpc <- function(x, dx, ...) {
   db <- x$db
   ## obs legend 
@@ -562,7 +578,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     }
     x$sim_legend <- sim_legend
   }
-  
+  x$footnote <- vpc_footnote(x)
   
   if (!is.null(db)) p <- vpc.plot(x)
   x$gp$is.legend <- x$is.legend
