@@ -52,4 +52,12 @@ ctr %>%
      fixedBreaks=c(-10,2, 5, 10,15,50))
   )
 
+# example with legend 
+
+ctr %>% pmx_plot_vpc(
+  is.legend = TRUE,
+  pi = pmx_vpc_pi(interval=c(0.02,0.98),median = list(linetype="dotted")),
+  ci = pmx_vpc_ci(interval = c(0.05,0.95),median=list(fill="red"))
+)
+
 }
