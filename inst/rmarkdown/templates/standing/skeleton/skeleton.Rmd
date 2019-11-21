@@ -5,6 +5,8 @@ output:
     toc: true
   word_document:
     toc: true
+  html_document:
+    toc: true
 ---
 
 ---

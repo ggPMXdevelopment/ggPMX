@@ -57,24 +57,30 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
 
     if (is.legend) p <- p + pmx_theme(legend.position = "top")
 
-    if (scale_x_log10) {
-      if (is.draft) draft$y <- 0
-      p <- p + scale_x_log10()
-    }
-    if (scale_y_log10) {
-      p <- p + scale_y_log10()
-    }
+    
 
     ## draft layer
     if (is.draft) {
+      if (scale_y_log10 && !scale_x_log10) draft$y <- 0
       p <- p + do.call(add_draft, draft)
     }
 
     ## draft layer
     if (is.identity_line) {
-      p <- p + do.call(geom_abline, identity_line)
+      if ((scale_x_log10 && !scale_y_log10) || 
+         (scale_y_log10 && !scale_x_log10))
+        p <- p + geom_smooth(method="lm", se=FALSE)
+        else p <- p + do.call(geom_abline, identity_line)
+      
     }
-
+    
+    if (scale_x_log10) {
+      p <- p + scale_x_log10()
+    }
+    if (scale_y_log10) {
+      p <- p + scale_y_log10()
+    }
+    
     if (exists("color.scales", gpar) && !is.null(color.scales)) {
       p <- p + do.call("scale_colour_manual", color.scales)
       p <- p + do.call("scale_fill_manual", color.scales)

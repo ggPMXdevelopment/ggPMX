@@ -38,10 +38,10 @@ pmx_vpc_bin <-
 #' @family vpc
 pmx_vpc_obs <-
   function(show = TRUE,
-             color = "#000000",
-             size = 1,
-             alpha = 0.7,
-             shape = 1) {
+           color = "#000000",
+           size = 1,
+           alpha = 0.7,
+           shape = 1) {
     if (show) {
       structure(
         list(
@@ -87,13 +87,13 @@ pmx_vpc_obs <-
 #' @export
 pmx_vpc_pi <-
   function(show = c("all", "median"),
-             interval = c(.05, .95),
-             median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
-             extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")) {
+           interval = c(.05, .95),
+           median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
+           extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")) {
     show <- match.arg(show)
     median_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
     extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
-
+    
     median <- if (!missing(median)) {
       l_left_join(median_default, median)
     } else {
@@ -149,10 +149,10 @@ pmx_vpc_pi <-
 #' @family vpc
 pmx_vpc_ci <-
   function(show = c("all", "median"),
-             interval = c(.05, .95),
-             method = c("ribbon", "rectangle"),
-             median = list(fill = "#3388cc", alpha = 0.3),
-             extreme = list(fill = "#3388cc", alpha = 0.3)) {
+           interval = c(.05, .95),
+           method = c("ribbon", "rectangle"),
+           median = list(fill = "#3388cc", alpha = 0.3),
+           extreme = list(fill = "#3388cc", alpha = 0.3)) {
     show <- match.arg(show)
     method <- match.arg(method)
     median_default <- list(fill = "#3388cc", alpha = 0.3)
@@ -197,9 +197,9 @@ pmx_vpc_ci <-
 #' @family vpc
 pmx_vpc_rug <-
   function(show = TRUE,
-             color = "#000000",
-             size = 1,
-             alpha = 0.7) {
+           color = "#000000",
+           size = 1,
+           alpha = 0.7) {
     if (show) {
       structure(
         list(
@@ -239,21 +239,21 @@ quantile_dt <-
 
 vpc.data <-
   function(type = c("percentile", "scatter"),
-             dobs,
-             dsim,
-             probs.pi,
-             probs.ci,
-             idv = "time",
-             irun = "stu",
-             dv = "y",
-             strat = NULL,
-             rug = NULL) {
+           dobs,
+           dsim,
+           probs.pi,
+           probs.ci,
+           idv = "time",
+           irun = "stu",
+           dv = "y",
+           strat = NULL,
+           rug = NULL) {
     zmax <- zmin <- out_ <- value <- NULL
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
     if (is.null(rug)) {
       rug <- data.frame(x = bins, y = NA_real_, stringsAsFactors = FALSE)
     }
-
+    
     if (type == "percentile") {
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
       res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
@@ -265,16 +265,19 @@ vpc.data <-
     } else {
       pi <- quantile_dt(dsim, probs = probs.pi, grp = c(idv, strat), ind = dv)
     }
-
+    
     res <- list(pi_dt = pi, rug_dt = rug)
     if (type == "percentile") {
-      res$ci_dt <- ci
-      out <- merge(ci, pi, by = c(idv, "percentile"))
-      nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
-      out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
-      out[, zmax := pmax(get(nn[[2]]), value)]
-      out[, zmin := pmin(get(nn[[1]]), value)]
-      res$out <- out
+      nn <- sum(grepl("CL", names(ci)))
+      if (nn==3){
+        res$ci_dt <- ci
+        out <- merge(ci, pi, by = c(idv, "percentile"))
+        nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
+        out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
+        out[, zmax := pmax(get(nn[[2]]), value)]
+        out[, zmin := pmin(get(nn[[1]]), value)]
+        res$out <- out
+      }
     }
     res
   }
@@ -290,7 +293,7 @@ bin_idv <- function(idv, x) {
 
 find_interval <- function(x, vec, labels = NULL, ...) {
   levels <- seq_along(vec)
-
+  
   vals <- findInterval(x, vec, rightmost.closed = TRUE, ...)
   if (!is.null(labels)) {
     as.numeric(as.character(factor(vals, levels = unique(vals), labels = labels)))
@@ -310,7 +313,7 @@ find_interval <- function(x, vec, labels = NULL, ...) {
       if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
         x$bin$within_strat <- NULL
         bins <- x$input[, list(brks = bin_idv(get(idv), x)), c(x$strat.facet)]
-
+        
         x$input[, bin := {
           grp <- get(x$strat.facet)
           find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
@@ -350,14 +353,15 @@ find_interval <- function(x, vec, labels = NULL, ...) {
 
 
 
-vpc.pi_line <- function(dt, left, geom) {
-  mapping <- aes_string(group = "percentile", y = "value")
+vpc.pi_line <- function(dt, left, geom ) {
+  mapping <- aes_string(group = "percentile", y = "value", linetype="percentile")
   right <- list(data = dt, mapping = mapping)
+  left$linetype <- NULL
   do.call("geom_line", append(right, left))
 }
 
 .vpc.area <- function() {
-
+  
   # out <- list(color="red")
   # out_layer <- if(!is.null(out)){
   #   params <- append(
@@ -385,14 +389,14 @@ vpc.pi_line <- function(dt, left, geom) {
   #   params <- append(ll1,out_area)
   #   do.call(geom_ribbon,params)
   # }
-
+  
   # list( out_layer , out_layer_area_min , out_layer_area_max )
 }
 vpc.plot <- function(x) {
   with(x, {
     pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv))
     pi_med_layer <- if (!is.null(pi)) {
-      vpc.pi_line(db$pi_dt[percentile == "p50"], pi$median)
+      vpc.pi_line(db$pi_dt[percentile == "p50"], pi$median) 
     }
     pi_ext_layer <- if (!is.null(pi) && pi$show == "all") {
       vpc.pi_line(db$pi_dt[percentile != "p50"], pi$extreme)
@@ -416,7 +420,7 @@ vpc.plot <- function(x) {
         ),
         rug
       )
-
+      
       do.call(geom_rug, params)
     }
     ci_med_layer <- if (!is.null(ci) && type == "percentile") {
@@ -424,10 +428,11 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$ci_dt[percentile == "p50"],
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile")
+          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile",fill="percentile")
         ),
         ci$median
       )
+      params$fill <- NULL
       do.call(geom_ribbon, params)
     }
     ci_ext_layer <- if (!is.null(ci) && type == "percentile" && ci$show == "all") {
@@ -435,29 +440,38 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$ci_dt[percentile != "p50"],
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile")
+          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile",fill="percentile")
         ),
         ci$extreme
       )
+      params$fill <- NULL
       do.call(geom_ribbon, params)
     }
-
+    
     pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv)) +
       obs_layer + pi_med_layer + pi_ext_layer +
       rug_layer + ci_med_layer + ci_ext_layer
-
-
-
+    if(!is.null(x$obs_legend)){
+      pp <- pp + do.call("scale_linetype_manual",c("Observations",obs_legend))
+    }
+    if(!is.null(x$sim_legend) && type=="percentile"){
+      pp <- pp + do.call("scale_fill_manual",c("Simulations",sim_legend))
+    }
+    
+    
     strat.facet <- x[["strat.facet"]]
-
+    
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
-
-
+    
+    if (is.legend){
+      pp <- pp +labs(caption=x$footnote)
+    }
+    
     if (type == "percentile") {
       pp + labs(title = "Percentile VPC", subtitle = "(with observations)")
     } else {
@@ -486,21 +500,21 @@ vpc.plot <- function(x) {
 #'
 
 pmx_vpc <- function(
-                    type = c("percentile", "scatter"),
-                    idv = "TIME",
-                    obs = pmx_vpc_obs(),
-                    pi = pmx_vpc_pi(),
-                    ci = pmx_vpc_ci(),
-                    rug = pmx_vpc_rug(),
-                    bin = pmx_vpc_bin(),
-                    labels = NULL,
-                    facets = NULL,
-                    is.legend = FALSE,
-                    dname = NULL,
-                    ...) {
+  type = c("percentile", "scatter"),
+  idv = "TIME",
+  obs = pmx_vpc_obs(),
+  pi = pmx_vpc_pi(),
+  ci = pmx_vpc_ci(),
+  rug = pmx_vpc_rug(),
+  bin = pmx_vpc_bin(),
+  labels = NULL,
+  facets = NULL,
+  is.legend = FALSE,
+  dname = NULL,
+  ...) {
   type <- match.arg(type)
   ## check args here
-
+  
   structure(
     list(
       ptype = "VPC",
@@ -519,8 +533,55 @@ pmx_vpc <- function(
 }
 
 
+vpc_footnote <- function(x){
+  perc <- min(x$ci$probs)*100
+  
+  area_statement <- if(x$type=="percentile"){
+    extension <- if(x$ci$show=="all") "s" else "" 
+    sprintf("The area%s represents the %s%% confidence intervals for the percentile%s. ",extension,perc,extension)
+  }
+  obs_statement <- if(!is.null(x$obs)) "The dots are the observations."
+  rug_statement <- if(!is.null(x$rug)) "The rugs represent the limits of the bins." 
+  paste(area_statement, paste(obs_statement,rug_statement,collapse=" "),
+        "The percentiles are plotted at the median independent variables in the bins.",sep="\n")
+}
+
 plot_pmx.pmx_vpc <- function(x, dx, ...) {
   db <- x$db
+  ## obs legend 
+  x$obs_legend <- NULL
+  x$sim_legend <- NULL
+  percentile <- NULL
+  if (!is.null(x$pi)) {
+    obs_legend <- list(breaks="p50",values=x$pi$median$linetype,labels="Median")
+    if (x$pi$show == "all") {
+      breaks <- sort(unique(db$pi_dt[,percentile]),decreasing = TRUE)
+      labels <- sprintf("%sth percentile",gsub("p0?","",breaks))
+      labels <- sub("50th percentile","Median",labels)
+      extr_lty <- x$pi$extreme$linetype
+      if(length(extr_lty)==1) extr_lty <- rep(extr_lty,2)
+      values <- c(extr_lty[2],x$pi$median$linetype,extr_lty[1])
+      obs_legend <- list(breaks=breaks,values=values, labels=labels)
+    }
+    x$obs_legend <- obs_legend
+  }
+  
+  if (!is.null(x$ci) && x$type=="percentile") {
+    sim_legend <- list(breaks="p50",values=x$ci$median$fill,labels="Median")
+    if (x$ci$show == "all") {
+      breaks <- sort(unique(db$ci_dt[,percentile]),decreasing = TRUE)
+      labels <- sprintf("%sth percentile",gsub("p0?","",breaks))
+      labels <- sub("50th percentile","Median",labels)
+      extr_lty <- x$ci$extreme$fill
+      if(length(extr_lty)==1) extr_lty <- rep(extr_lty,2)
+      values <- c(extr_lty[2],x$ci$median$fill,extr_lty[1])
+      sim_legend <- list(breaks=breaks,values=values, labels=labels)
+    }
+    x$sim_legend <- sim_legend
+  }
+  x$footnote <- vpc_footnote(x)
+  
   if (!is.null(db)) p <- vpc.plot(x)
+  x$gp$is.legend <- x$is.legend
   plot_pmx(x$gp, p)
 }

@@ -137,8 +137,10 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
         x$shrink, "hist", strat.color
       )
     }
-    p <- p + do.call("facet_wrap", c(wrap.formula, x$facets))
-
+    rr <- gsub("~","",as.character(wrap.formula))
+    rr <- unique(rr[nzchar(rr)])
+    p <-  p + if(length(rr)>=2) do.call("facet_grid", c(wrap.formula))
+      else do.call("facet_wrap", c(wrap.formula, x$facets))
     p
   })
 }
@@ -157,7 +159,10 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
 
 
   if (!is.null(strat.facet)) {
-    p <- p + do.call("facet_wrap", c(strat.facet, x$facets))
+    rr <- gsub("~","",as.character(x$strat.facet))
+    rr <- unique(rr[nzchar(rr)])
+    p <-  p + if(length(rr)==2) do.call("facet_grid", c(strat.facet))
+    else do.call("facet_wrap", c(strat.facet, x$facets))
   }
 
   if (x$is.shrink && !is.null(x[["shrink.dx"]])) {

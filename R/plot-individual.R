@@ -110,7 +110,7 @@ plot_pmx.individual <-
 
       p_bloq <- if (!is.null(bloq)) {
         bloq$data <- x$input[get(bloq$cens) != 0]
-        if (length(bloq$data$ID) > 0){
+        if (length(bloq$data$ID) > 0) {
           ## While cens may be in the dataset, all the data in the fit may be uncensored
           if (bloq$limit %in% names(bloq$data)) {
             bloq$data[!is.na(get(bloq$limit)), "y_end" := as.numeric(get(bloq$limit))]
