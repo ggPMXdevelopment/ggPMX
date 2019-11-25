@@ -89,7 +89,7 @@ pmx_vpc_pi <-
   function(show = c("all", "median"),
            interval = c(.05, .95),
            median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
-           extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")) {
+           extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "dotted")) {
     show <- match.arg(show)
     median_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
     extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
@@ -151,11 +151,11 @@ pmx_vpc_ci <-
   function(show = c("all", "median"),
            interval = c(.025, .975),
            method = c("ribbon", "rectangle"),
-           median = list(fill = "#3388cc", alpha = 0.3),
+           median = list(fill = "red", alpha = 0.3),
            extreme = list(fill = "#3388cc", alpha = 0.3)) {
     show <- match.arg(show)
     method <- match.arg(method)
-    median_default <- list(fill = "#3388cc", alpha = 0.3)
+    median_default <- list(fill = "red", alpha = 0.3)
     extreme_default <- list(fill = "#3388cc", alpha = 0.3)
     median <- if (!missing(median)) {
       l_left_join(median_default, median)
@@ -511,8 +511,8 @@ pmx_vpc <- function(
   bin = pmx_vpc_bin(),
   labels = NULL,
   facets = NULL,
-  is.legend = FALSE,
-  is.footnote= FALSE,
+  is.legend = TRUE,
+  is.footnote= TRUE,
   dname = NULL,
   ...) {
   type <- match.arg(type)
