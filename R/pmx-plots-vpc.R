@@ -26,6 +26,7 @@
 #' @param rug  \code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}
 #' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin}
 #' @param is.legend \code{logical} if TRUE add legend
+#' @param is.footnote \code{logical} if TRUE add footnote
 #' @param dname added for compatibility with other ggPMX plots
 
 
@@ -75,7 +76,7 @@ pmx_plot_vpc <-
              strat.facet, facets, strat.color, trans, pmxgpar, labels,
              axis.title, axis.text, ranges, is.smooth, smooth, is.band,
              band, is.draft, draft, is.identity_line, identity_line,
-             scale_x_log10, scale_y_log10, color.scales, ...) {
+             scale_x_log10, scale_y_log10, color.scales, is.footnote,...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params$is.smooth <- FALSE
     wrap_pmx_plot_generic(ctr, "pmx_vpc", params)
