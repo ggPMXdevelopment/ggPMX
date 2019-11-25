@@ -27,8 +27,6 @@ before_add_check <- function(self, private, x, pname) {
   x
 }
 
-
-
 .strat_supported <- function(x) {
   if (!x$strat && !is.null(x[["strat.facet"]])) {
     message("facet stratification is not yet implemented")
@@ -40,11 +38,6 @@ before_add_check <- function(self, private, x, pname) {
   }
   invisible(x)
 }
-
-
-
-
-
 
 .filter_x <- function(x) {
   if (!is.null(x[["filter"]])) {
@@ -178,9 +171,6 @@ before_add_check <- function(self, private, x, pname) {
 
   invisible(x)
 }
-
-
-
 
 pmx_add_plot <- function(self, private, x, pname) {
   x <- before_add_check(self, private, x, pname)

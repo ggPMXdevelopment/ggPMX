@@ -149,7 +149,7 @@ pmx_vpc_pi <-
 #' @family vpc
 pmx_vpc_ci <-
   function(show = c("all", "median"),
-           interval = c(.05, .95),
+           interval = c(.025, .975),
            method = c("ribbon", "rectangle"),
            median = list(fill = "#3388cc", alpha = 0.3),
            extreme = list(fill = "#3388cc", alpha = 0.3)) {
@@ -455,7 +455,8 @@ vpc.plot <- function(x) {
       pp <- pp + do.call("scale_linetype_manual",c("Observations",obs_legend))
     }
     if(!is.null(x$sim_legend) && type=="percentile"){
-      pp <- pp + do.call("scale_fill_manual",c("Simulations",sim_legend))
+      leg_title <- sprintf("Simulations\n(%s%% CI)",diff(x$ci$probs)*100)
+      pp <- pp + do.call("scale_fill_manual",c(leg_title,sim_legend))
     }
     
     
@@ -468,7 +469,7 @@ vpc.plot <- function(x) {
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
     
-    if (is.legend){
+    if (is.footnote){
       pp <- pp +labs(caption=x$footnote)
     }
     
@@ -491,6 +492,7 @@ vpc.plot <- function(x) {
 #' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin}
 #' @param labels \code{list} define title and axis labels
 #' @param is.legend \code{logical} if TRUE add legend
+#' @param is.footnote \code{logical} if TRUE add footnote
 #' @param dname added for compatibility with other ggPMX plots
 #' @param facets is a list of parameters passed to facet_wrap in case of startification
 #' @param ...  extra parameters passed to base graphical parameters
@@ -510,6 +512,7 @@ pmx_vpc <- function(
   labels = NULL,
   facets = NULL,
   is.legend = FALSE,
+  is.footnote= FALSE,
   dname = NULL,
   ...) {
   type <- match.arg(type)
@@ -523,6 +526,7 @@ pmx_vpc <- function(
       dname = dname,
       labels = labels,
       is.legend = is.legend,
+      is.footnote = is.footnote,
       type = type,
       facets = facets,
       obs = obs, pi = pi, ci = ci, rug = rug, bin = bin,
@@ -534,7 +538,7 @@ pmx_vpc <- function(
 
 
 vpc_footnote <- function(x){
-  perc <- min(x$ci$probs)*100
+  perc <- diff(x$ci$probs)*100
   
   area_statement <- if(x$type=="percentile"){
     extension <- if(x$ci$show=="all") "s" else "" 
