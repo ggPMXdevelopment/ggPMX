@@ -89,10 +89,10 @@ pmx_vpc_pi <-
   function(show = c("all", "median"),
            interval = c(.05, .95),
            median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
-           extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "dotted")) {
+           extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed")) {
     show <- match.arg(show)
     median_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
-    extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
+    extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed")
     
     median <- if (!missing(median)) {
       l_left_join(median_default, median)
