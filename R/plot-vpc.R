@@ -418,11 +418,12 @@ vpc.plot <- function(x) {
       vpc.pi_line(db$pi_dt[percentile != "p50"], pi$extreme)
     }}
     pi_shaded_layer <- function() {if (!is.null(pi) && pi$show %in% c("all","area") ) {
-      nn <- names(db$pi_area_dt)
+      nn <- grep("^p\\d+$", names(db$pi_area_dt), value = TRUE)
+      
       params <- append(
         list(
           data = db$pi_area_dt,
-          mapping = aes_string(ymin = nn[[2]], ymax = nn[[3]])
+          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]])
         ),
         pi$area
       )
