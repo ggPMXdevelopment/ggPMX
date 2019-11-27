@@ -264,7 +264,7 @@ vpc.data <-
            dv = "y",
            strat = NULL,
            rug = NULL) {
-    zmax <- zmin <- out_ <- value <- NULL
+    zmax <- zmin <- out_ <- value <- percentile <- NULL
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
     
     if (type == "percentile") {
@@ -292,8 +292,8 @@ vpc.data <-
     }
     if (is.null(rug)) {
       rug <- data.frame(x = bins, y = NA_real_, stringsAsFactors = FALSE)
-      res$rug_dt <- rug
     }
+    res$rug_dt <- rug
     res
   }
 
