@@ -16,18 +16,16 @@
 #'  - or both. \cr
 #' By default the 'standing' configuration will be used.
 pmx_config <- function(sys = "mlx", inputs, plots, ...) {
-  standing_dir <-
-    file.path(system.file(package = "ggPMX"), "templates", sys, "standing")
-
+ 
   if (missing(inputs)) {
-    inputs <- file.path(standing_dir, "inputs.ipmx")
+     inputs <-  system.file(package = "ggPMX", "init", "mlx","standing.ipmx")
   }
   if (missing(plots)) {
-    plots <- file.path(standing_dir, "plots.ppmx")
+    plots <-  system.file(package = "ggPMX", "init","standing.ppmx")
   }
 
-  if (!file.exists(inputs)) stop("plots template file does not exist")
-  if (!file.exists(plots)) stop("inputs template file does not exist")
+  if (!file.exists(inputs)) stop("inputs template file does not exist")
+  if (!file.exists(plots)) stop("plots template file does not exist")
   load_config_files(inputs, plots, sys)
 }
 

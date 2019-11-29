@@ -145,10 +145,11 @@ pmx_mlx <-
 
 pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, ...) {
   params <- parse_mlxtran(file_name)
-  params$config <- config
   rr <- as.list(match.call()[-1])
   rr$file_name <- NULL
   params <- append(params, rr)
+  if (!exists("config",params))  params$config <- config
+  
   if (!missing(endpoint)) {
     params$endpoint <- NULL
     params$endpoint <- endpoint
