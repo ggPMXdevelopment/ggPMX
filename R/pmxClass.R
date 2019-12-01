@@ -77,13 +77,15 @@ check_argument <- function(value, pmxname) {
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
+#' @param id \emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file
+#' @param time \emph{[Optional]} \code{character} Time variable. 
 #' @return \code{pmxClass} controller object.
 
 #' @export
 #' @example inst/examples/controller.R
 pmx <-
   function(config, sys = c("mlx", "nm"), directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
-             settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL) {
+             settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
     directory <- check_argument(directory, "work_dir")
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
@@ -112,7 +114,7 @@ pmx <-
     if (missing(bloq)) bloq <- NULL
     assert_that(inherits(bloq, "pmxBLOQClass") || is.null(bloq))
 
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time)
   }
 
 
@@ -121,8 +123,8 @@ pmx <-
 #' \code{pmx_mlx}  is a wrapper to mlx for the MONOLIX system ( \code{sys="mlx"})
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id, time) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time)
   }
 
 
