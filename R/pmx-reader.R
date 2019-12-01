@@ -70,7 +70,14 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
                        endpoint = NULL, id = NULL, time = NULL) {
   TIME <- EVID <- MDV <- y <- DV <- NULL
   xx <- pmx_fread(ipath)
-
+  
+  if (!is.null(id) && !exists(id,xx)) {
+    stop(sprintf("observation data does not contain id variable: %s",id))
+  } 
+  if (!is.null(time) && !exists(time,xx)) {
+    stop(sprintf("observation data does not contain time variable: %s",time))
+  } 
+  
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
     setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
     setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
@@ -108,8 +115,8 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
 
 
 
-  if (!is.null(id) && id %in% names(xx)) {
-    setnames(xx, id_col, "ID")
+  if (!is.null(id) ) {
+    setnames(xx, id, "ID")
   } else {
     id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
     if (length(id_col) == 0) {
@@ -138,7 +145,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
     setnames(xx, occ, "OCC")
   }
   ## round time column for further merge
-  if (!is.null(time) && time %in% names(xx)) {
+  if (!is.null(time)) {
     setnames(xx, time, "TIME")
   } else {
     setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
@@ -295,7 +302,6 @@ read_mlx_pred <- function(path, x, ...) {
 
   res
 }
-
 
 read_mlx18_res <- function(path, x, ...) {
   if (exists("subfolder", x)) {
