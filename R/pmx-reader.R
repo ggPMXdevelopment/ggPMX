@@ -394,6 +394,7 @@ read_mlx_par_est <- function(path, x, ...) {
 load_data_set <- function(x, path, sys, ...) {
   fpath <- file.path(path, x[["file"]])
   exists_file <- file.exists(fpath)
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
   if (!exists_file) {
     ep <- list(...)$endpoint
     if (!is.null(ep) && !is.null(x$pattern)) {
@@ -435,9 +436,6 @@ load_data_set <- function(x, path, sys, ...) {
   }
   ds
 }
-
-
-
 
 
 #' Load all/or some source data set
