@@ -299,12 +299,19 @@ parse_mlxtran <- function(file_name) {
   conts <- dat[grepl("use=covariate, type=continuous", value), key]
   ## occ
   occ <- dat[grepl("use=occasion", value), key]
+  ## id 
+  id <- dat[grepl("use=identifier", value), key]
+  ## time 
+  time <- dat[grepl("use=time", value), key]
+  
 
 
   res <- list(
     directory = directory,
     input = input,
-    dv = dv
+    dv = dv,
+    id = id,
+    time=time
   )
   if (length(cats) > 0) res$cats <- cats
   if (length(conts) > 0) res$conts <- conts

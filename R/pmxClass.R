@@ -831,7 +831,8 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
     endpoint = self$endpoint,
-    occ = self$occ
+    occ = self$occ,
+    id = self$id
   )
   ##
   ## check random effect
