@@ -72,11 +72,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
                        endpoint = NULL, id = NULL, time = NULL) {
   TIME <- EVID <- MDV <- y <- DV <- NULL
   xx <- pmx_fread(ipath)
-<<<<<<< HEAD
-=======
 
->>>>>>> fb_vpc
-  
   if (!is.null(id) && !exists(id,xx)) {
     stop(sprintf("observation data does not contain id variable: %s",id))
   } 
