@@ -9,6 +9,8 @@
 read_mlx_ind_est <- function(path, x, ...) {
   ID <- OCC <- NULL
   ds <- pmx_fread(path)
+  if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
+  
   occ <- list(...)$occ
   if (is.null(occ)) occ <- ""
   patt_fields <- "^id|^%s|^eta_.*_(mode|mean)$"
@@ -70,6 +72,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
                        endpoint = NULL, id = NULL, time = NULL) {
   TIME <- EVID <- MDV <- y <- DV <- NULL
   xx <- pmx_fread(ipath)
+
   
   if (!is.null(id) && !exists(id,xx)) {
     stop(sprintf("observation data does not contain id variable: %s",id))
@@ -268,6 +271,8 @@ read_mlx_pred <- function(path, x, ...) {
     return(NULL)
   }
   xx <- pmx_fread(path)
+  if(!is.null(x$id) && exists(x$id,xx)) setnames(xx,x$id,"id")
+  
   setnames(xx, tolower(names(xx)))
   id_col <- grep("^id", names(xx), ignore.case = TRUE, value = TRUE)
   if (length(id_col) > 0 && nzchar(id_col)) setnames(xx, id_col, "id")
@@ -331,6 +336,7 @@ read_mlx18_res <- function(path, x, ...) {
   }
 
   ds <- pmx_fread(file_path)
+  if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
   ids <- match(tolower(names(x[["names"]])), tolower(names(ds)))
   new_vars <- names(x[["names"]])
   setnames(ds, ids, new_vars)
@@ -352,6 +358,7 @@ read_mlx18_pred <- function(path, x, ...) {
   ds <- read_mlx_pred(path = path, x = x, ...)
   if (exists("residuals", x)) {
     x$residuals$endpoint <- x$endpoint
+    x$residuals$id <- x$id
     resi <- read_mlx18_res(path, x$residuals)
     if (is.null(resi)) {
       return(NULL)
@@ -418,12 +425,13 @@ load_data_set <- function(x, path, sys, ...) {
     return(NULL)
   }
 
-
-
   if (exists("reader", x)) {
     return(do.call(x[["reader"]], list(fpath, x, ...)))
   }
   ds <- pmx_fread(fpath)
+  if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
+  
+  
   ds <- ds[, !grep("^V[0-9]+", names(ds)), with = FALSE]
   data.table::setnames(ds, tolower(names(ds)))
   if ("names" %in% names(x)) {
@@ -450,6 +458,7 @@ load_data_set <- function(x, path, sys, ...) {
 load_source <- function(sys, path, dconf, ...) {
   dxs <- Map(function(x, nn) {
     x$name <- nn
+    if(!is.null(list(...)$id)) x$id <- list(...)$id
     load_data_set(x, path = path, sys = sys, ...)
   }, dconf, names(dconf))
 
