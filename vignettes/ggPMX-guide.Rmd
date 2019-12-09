@@ -33,7 +33,7 @@ ctr <- theophylline()
 
 
 # Introduction 
-The `ggPMX` package generates standard diagnostic plots and tables for mixed effect models used in Pharmacometric (PMX) activities. The tool is built upon the ggplot2 package and is planned to support models developped either with Monolix or nlmixr software. The current release (0.9.9.9-7) supports models fitted with Monolix versions 2016 and later.
+The `ggPMX` package generates standard diagnostic plots and tables for mixed effect models used in Pharmacometric (PMX) activities. The tool is built upon the ggplot2 package and is planned to support models developped either with Monolix or nlmixr software. The current release (0.9.9.9-7) supports models fitted with Monolix versions 2016 and later. 
 
 The package aims to provide a workflow that is consistent, efficient and which results in high quality graphics ready to use in official documents and reports. The package allows a high degree of flexibility and customization, yet providing an acceptable default setting. The package also allows to fully automate plots and report generation. 
 
