@@ -4,13 +4,13 @@
 \alias{pmx_comp_shrink}
 \title{Compute Shrinkage}
 \usage{
-pmx_comp_shrink(ctr, fun = c("sd", "var"), strat.facet, strat.color,
+pmx_comp_shrink(ctr, fun = c("var", "sd"), strat.facet, strat.color,
   filter, ...)
 }
 \arguments{
 \item{ctr}{\code{pmxClass} controller object}
 
-\item{fun}{\code{character} can be sd or var}
+\item{fun}{\code{character} can be sd or var , var by default}
 
 \item{strat.facet}{\code{formula} optional stratification parameter}
 

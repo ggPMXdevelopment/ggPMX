@@ -169,6 +169,7 @@ plot_shrink <-
       EFFECT == x,
       sprintf("%s%%", round(SHRINK * 100))
     ]
+    if (length(label)>0){
     params <- c(label = label, shrink)
     params$fun <- NULL
     do.call(ggally_text, params) +
@@ -178,6 +179,7 @@ plot_shrink <-
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank()
       )
+    }
   }
 
 

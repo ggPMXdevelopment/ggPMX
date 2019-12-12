@@ -1,7 +1,7 @@
 #' Compute Shrinkage
 #'
 #' @param ctr \code{pmxClass} controller object
-#' @param fun \code{character} can be sd or var
+#' @param fun \code{character} can be sd or var , var by default
 #' @param filter optional filter which will be applied to plotting data
 #' @param strat.facet \code{formula} optional stratification parameter
 #' @param strat.color \code{character} optional stratification parameter
@@ -12,7 +12,7 @@
 #' @export
 #'
 pmx_comp_shrink <-
-  function(ctr, fun = c("sd", "var"), strat.facet, strat.color, filter, ...) {
+  function(ctr, fun = c( "var","sd"), strat.facet, strat.color, filter, ...) {
     VAR <- FUN <- PARAM <- EFFECT <- NULL
     VALUE <- OMEGA <- EBE <- NULL
     stopifnot(is_pmxclass(ctr))

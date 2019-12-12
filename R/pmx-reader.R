@@ -118,7 +118,10 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
 
 
   if (!is.null(id) ) {
-    setnames(xx, id, "ID")
+    if(id!="ID"){
+      if (exists("ID",xx))xx[,ID:=NULL]
+      setnames(xx, id, "ID")
+    }
   } else {
     id_col <- grep("^id$", names(xx), ignore.case = TRUE, value = TRUE)
     if (length(id_col) == 0) {
@@ -142,9 +145,11 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
                         suggested names are : %s", dv, dv.names)
     stop(err.msg)
   }
-
-  if (nzchar(occ) && occ %in% names(xx)) {
-    setnames(xx, occ, "OCC")
+    if (nzchar(occ) && occ %in% names(xx)) {
+      if(occ!="OCC"){
+        if(exists("OCC",xx))xx[,OCC:=NULL]
+        setnames(xx, occ, "OCC")
+      }
   }
   ## round time column for further merge
   if (!is.null(time)) {
