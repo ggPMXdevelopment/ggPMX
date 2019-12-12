@@ -18,6 +18,6 @@ test_that("test shrinkage fun parameter", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   res.var <- ctr %>% pmx_comp_shrink(fun = "var")
-  res.sd <- ctr %>% pmx_comp_shrink()
+  res.sd <- ctr %>% pmx_comp_shrink(fun="sd")
   expect_true(all(res.var$SHRINK > res.sd$SHRINK))
 })
