@@ -114,14 +114,14 @@ plot_pmx.individual <-
           ## While cens may be in the dataset, all the data in the fit may be uncensored
           if (bloq$limit %in% names(bloq$data)) {
             bloq$data[!is.na(get(bloq$limit)), "y_end" := as.numeric(get(bloq$limit))]
-          }
-          bloq$mapping <-
+            bloq$mapping <-
             aes_string(
               xend = "TIME",
               yend = "y_end"
             )
           bloq$cens <- bloq$limit <- NULL
           do.call(geom_segment, bloq)
+          }
         }
       }
 
