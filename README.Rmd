@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-**ggPMX** <img src="man/figures/logo.jpg" align="right" width="120" />
+# ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
 
 **Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
 
@@ -55,7 +55,7 @@ ctr <- theophylline()
 ctr %>% pmx_plot_eta_matrix()
 ```
 
-ggPMX <img src="man/figures/ggpmx_example1.png" />
+<img src="man/figures/ggpmx_example1.png" />
 
 
 
@@ -530,26 +530,26 @@ The plot options are described in `?pmx_plot_vpc` function.
 
 ### Default
 
-```{r fig.height=4, fig.width=6}
+```{r}
 ctr %>% pmx_plot_vpc
 ```
 
 ### Scatter/Percentile
 
 By default the vpc plot is **percentile** ; , but we can plot the **scatter** type:
-```{r  fig.height=3.5, fig.width=5.5}
+```{r}
 ctr %>% pmx_plot_vpc(type ="scatter")
 ```
 
 ### Binning
 
-```{r  fig.height=3.5, fig.width=5.5}
+```{r}
 ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
 ```
 
 ### Stratification 
 
-```{r fig.height=7, fig.width=6}
+```{r}
 ctr %>% pmx_plot_vpc(strat.facet="SEX",facets=list(nrow=2))
 ```
 
@@ -557,7 +557,7 @@ ctr %>% pmx_plot_vpc(strat.facet="SEX",facets=list(nrow=2))
 
 User can customize the options to get a Monolix-like display.
 
-```{r fig.height=7, fig.width=6}
+```{r}
 ctr %>% pmx_plot_vpc(
   strat.facet="SEX",
   facets=list(nrow=2),
@@ -701,9 +701,9 @@ ctr %>% pmx_plot_npde_time
 
 within Monolix, user can choose to not use finegrid file even if it is present. 
 
-```{r settings_use.finegrid,fig.height=9, fig.width=7}
+```{r settings_use.finegrid}
 ctr <- theophylline()
-ctr %>% pmx_plot_individual(use.finegrid =FALSE)
+ctr %>% pmx_plot_individual(use.finegrid =FALSE, legend.position="top")
 ```
 
 ### Set stratification color legend

@@ -1,9 +1,7 @@
 
-
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-**ggPMX** <img src="man/figures/logo.jpg" align="right" width="120" />
+# ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
 
 **Authors**: Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas
 Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard,
@@ -16,6 +14,10 @@ Status](https://travis-ci.org/ggPMXdevelopment/ggPMX.svg?branch=master)](https:/
 Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.svg)](https://codecov.io/gh/ggPMXdevelopment/ggPMX)
 [![](http://cranlogs.r-pkg.org/badges/last-week/ggPMX?color=green)](https://cran.r-project.org/package=ggPMX)
 [![Rdoc](http://www.rdocumentation.org/badges/version/ggPMX)](http://www.rdocumentation.org/packages/ggPMX)
+
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
 - [Overview](#overview)
@@ -69,7 +71,6 @@ Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.s
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
 # Overview
 
 ggPMX is an open-source R package freely available on CRAN since April
@@ -120,7 +121,7 @@ ctr <- theophylline()
 ctr %>% pmx_plot_eta_matrix()
 ```
 
-ggPMX <img src="man/figures/ggpmx_example1.png" />
+<img src="man/figures/ggpmx_example1.png" />
 
 # Cheatsheet
 
@@ -1048,7 +1049,7 @@ present.
 
 ``` r
 ctr <- theophylline()
-ctr %>% pmx_plot_individual(use.finegrid =FALSE)
+ctr %>% pmx_plot_individual(use.finegrid =FALSE, legend.position="top")
 #> USE predictions data set
 ```
 
