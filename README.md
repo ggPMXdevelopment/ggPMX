@@ -1,9 +1,13 @@
 
+
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
+**ggPMX** <img src="man/figures/logo.jpg" align="right" width="120" />
 
-##### Authors: Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
+**Authors**: Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas
+Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard,
+Bruno Bieth
 
 [![Travis-CI Build
 Status](https://travis-ci.org/ggPMXdevelopment/ggPMX.svg?branch=master)](https://travis-ci.org/ggPMXdevelopment/ggPMX)
@@ -13,7 +17,60 @@ Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.s
 [![](http://cranlogs.r-pkg.org/badges/last-week/ggPMX?color=green)](https://cran.r-project.org/package=ggPMX)
 [![Rdoc](http://www.rdocumentation.org/badges/version/ggPMX)](http://www.rdocumentation.org/packages/ggPMX)
 
-## Overview
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [Testing the install](#testing-the-install)
+- [Cheatsheet](#cheatsheet)
+- [Feedback](#feedback)
+- [Introduction](#introduction)
+  - [Architecture](#architecture)
+  - [Workflow overview](#workflow-overview)
+  - [Modeling datasets](#modeling-datasets)
+- [Controller](#controller)
+  - [Single-endpoint models](#single-endpoint-models)
+    - [Generic Controller creation with `pmx()`](#generic-controller-creation-with-pmx)
+    - [Models fitted with Monolix (versions 2016 and later)](#models-fitted-with-monolix-versions-2016-and-later)
+      - [`pmx_mlxtran()`](#pmx_mlxtran)
+  - [Multiple-endpoint models](#multiple-endpoint-models)
+  - [Controller with covariates](#controller-with-covariates)
+  - [Controller content](#controller-content)
+    - [Plot names](#plot-names)
+    - [Plot types](#plot-types)
+    - [Datasets](#datasets)
+- [Default diagnostic plots](#default-diagnostic-plots)
+- [Visual Predictive Checks (VPC)](#visual-predictive-checks-vpc)
+  - [Initialization](#initialization)
+  - [VPC plot](#vpc-plot)
+    - [Default](#default)
+    - [Scatter/Percentile](#scatterpercentile)
+    - [Binning](#binning)
+    - [Stratification](#stratification)
+    - [Monolix-like customisation](#monolix-like-customisation)
+- [Diagnostics report](#diagnostics-report)
+- [Customizing plots](#customizing-plots)
+  - [BLQ](#blq)
+  - [Customizing global settings - `pmx_settings()`](#customizing-global-settings---pmx_settings)
+    - [Remove DRAFT label globally](#remove-draft-label-globally)
+    - [Use abbreviation definitions](#use-abbreviation-definitions)
+    - [Use `finegrid.txt` file for individual plots](#use-finegridtxt-file-for-individual-plots)
+    - [Set stratification color legend](#set-stratification-color-legend)
+    - [Define labels of categorical variables](#define-labels-of-categorical-variables)
+- [Appendix A](#appendix-a)
+  - [Monolix requirements](#monolix-requirements)
+  - [Plots table](#plots-table)
+  - [ggPMX main functions](#ggpmx-main-functions)
+  - [ggPMX graphical parameters](#ggpmx-graphical-parameters)
+  - [Pre-defined configurations](#pre-defined-configurations)
+  - [Shrinkage](#shrinkage)
+  - [Default call](#default-call)
+  - [Var function](#var-function)
+  - [Shrinkage and stratification](#shrinkage-and-stratification)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+# Overview
 
 ggPMX is an open-source R package freely available on CRAN since April
 2019. It generates standard diagnostic plots for mixed effect models
@@ -40,7 +97,7 @@ the plots may be customized individually. The types of supported
 customizations include modifications of the graphical parameters,
 labels, and various stratifications by covariates.
 
-## Installation
+# Installation
 
 ``` r
 
@@ -51,7 +108,7 @@ install.packages("ggPMX")
 devtools::install_github("ggPMXdevelopment/ggPMX")
 ```
 
-## Testing the install
+# Testing the install
 
 Once ggPMX is installed, you can test if everything is working well. If
 successful you should see a plot created after the following build-in
@@ -63,13 +120,13 @@ ctr <- theophylline()
 ctr %>% pmx_plot_eta_matrix()
 ```
 
-# ggPMX <img src="man/figures/ggpmx_example1.png" />
+ggPMX <img src="man/figures/ggpmx_example1.png" />
 
-## Cheatsheet
+# Cheatsheet
 
 <img src="man/figures/ggPMX_cheat_sheet_0_9_4.png"  />
 
-## Feedback
+# Feedback
 
 ggPMX is now ready for inputs and enhancements by the pharmacometric
 community. - Please use [package
@@ -117,7 +174,7 @@ This document introduces the ggPMX functionalities and syntax.
 The high level architecture is represented in the figure below. The key
 components of the package are the following:
 
-  - **Reader** - reads model outputs from different sources (i.e. text
+  - **Reader** - reads model outputs from different sources (i.e.??text
     files containing population parameters, model predictions,
     individual random effects, simulations and data-related inputs like
     covariates) and restructures these outputs into standard formats for
@@ -190,7 +247,7 @@ For the sake of this document, three types of datasets are defined.
   - The *output modeling datasets* are those output from the fitting
     tool (Monolix or nlmixr). For version 1.0 of ggPMX, these datasets
     have to follow the structure of outputs of Monolix 2016 or 2018 (See
-    Appendix for more details on Monolix requirements). A “standard”
+    Appendix for more details on Monolix requirements). A ???standard???
     format for nlmixr output datasets will be defined for the the ggPMX
     version that allows usage of nlmixr as the fitting software.
   - The *ggPMX datasets* are the ones created within (internal to)
@@ -200,7 +257,7 @@ For the sake of this document, three types of datasets are defined.
 # Controller
 
 A diagnostic session starts with the creation of a Controller. The
-Controller is the “user interface” of the package and allows to conrol
+Controller is the ???user interface??? of the package and allows to conrol
 all possible options. It is a container that stores configuration fields
 (model- and input data-related information), datasets and plots. It can
 be used as a reference object in which the user can see the names of the
@@ -273,10 +330,10 @@ ctr <- pmx(
 )
 ```
 
-Note that the column “DVID” of data\_pk.csv does not exist; however it
+Note that the column ???DVID??? of data\_pk.csv does not exist; however it
 is not needed here because there is only one single output of the model.
 As dvid is a mandatory argument, it still needs to be provided and was
-set arbritrarly to “DVID” in the example above.
+set arbritrarly to ???DVID??? in the example above.
 
 The input dataset can be provided to ggPMX via its location (as in the
 example above) or as a data frame (maybe give an example). The modeling
@@ -284,7 +341,7 @@ output datasets have to be in the location that is indicated as working
 directory (`work_dir` in the example above).
 
 The above example of Contoller creation is wrapped in a function called
-“theophylline()” for quick reference:
+???theophylline()??? for quick reference:
 
 ``` r
 ctr <- theophylline()
@@ -349,7 +406,7 @@ ggPMX produces one diagnostics report per endpoint. As a consequence,
 the endpoint (if more than one) should be set at the time of the
 Controller creation in order to filter the observations dataset and to
 keep only the values corresponding to the endpoint of interest. To
-handle this, the user creates an “endpoint” object using the function
+handle this, the user creates an ???endpoint??? object using the function
 `pmx_endpoint()` having the following attributes:
 
   - **code** (charcater): how the endpoint is coded in the input
@@ -619,7 +676,7 @@ ctr %>% plot_names()
 #> [16] "eta_conts"       "eta_qq"          "pmx_vpc"
 ```
 
-As a convention, when plots are described as ???Y vs. X???, it is meant
+As a convention, when plots are described as ???Y vs.??X???, it is meant
 that Y is plotted on the vertical axis and X on the horizontal axis.
 
 As an example, a plot of individual weighted residuals (IWRES) versus
@@ -651,7 +708,7 @@ ctr %>% pmx_plot_abs_iwres_ipred
 ctr %>% pmx_plot_npde_pred
 ```
 
-  - Empirical Bayes Estimates (EBE), also called “eta”, histogram and
+  - Empirical Bayes Estimates (EBE), also called ???eta???, histogram and
     boxplot (**DIS**)
 
 <!-- end list -->
@@ -800,16 +857,16 @@ A report (in pdf and docx format) containing all default diagnostic
 plots can be created using the *pmx\_report* function. The *format* can
 take three different values:
 
-  - “report”: produces a pdf and a docx file (named `name.pdf` and
+  - ???report???: produces a pdf and a docx file (named `name.pdf` and
     `name.png` specified in argument *name*, located in *save\_dir*)
     with default diagnostic plots
-  - “plots”: produces a folder named `ggpmx_GOF` located in *save\_dir*
+  - ???plots???: produces a folder named `ggpmx_GOF` located in *save\_dir*
     that contains all default diagnotic plots, each in a pdf and png
     file. The different plots are numerated in order to have an unique
     identifier for each plot (ex: ebe\_box-1.pdf). This is necessary for
     having correct footnotes that indicated the path to the source file
     (for submission reports).
-  - “both”: is a combination of both options above.
+  - ???both???: is a combination of both options above.
 
 Example:
 
@@ -820,14 +877,14 @@ ctr %>% pmx_report(name='Diagnostic_plots2',
 ```
 
 Note that running the same command first with the option
-“format=‘plots’” and then with the option “format=‘report’” will
+???format=???plots?????? and then with the option ???format=???report?????? will
 remove the *ggpmx\_GOF* folder.
 
 Note also that by default, the report will have the DRAFT label on all
 plots. The label can be removed by using the settings argument in the
 Controller creation, as described in Section 6.3.1.
 
-The user can customize the default report by creating a “template”. To
+The user can customize the default report by creating a ???template???. To
 create a template, the user should create first a default report with
 the following command:
 
@@ -837,7 +894,7 @@ ctr %>% pmx_report(name='Diagnostic_plots1',
                    format='report')
 ```
 
-The Rmarkdown (.Rmd) file is the “template”. The user can modify the
+The Rmarkdown (.Rmd) file is the ???template???. The user can modify the
 Rmarkdown file as desired (ex: changing the size of some figures) and
 save the modified file. The new template can be used with the following
 command:
@@ -896,7 +953,7 @@ applied to all plots. For example remove draft annoataion, use
 abbreviation defintions to define axis labels, etc.
 
 A settings object is defined by using the function `pmx_settings()`. The
-created object is passed as the parameter “settings” to `pmx()`. By
+created object is passed as the parameter ???settings??? to `pmx()`. By
 doing so, the settings are defined globally and apply to all plots. For
 a complete list of global settings with their corresponding default
 values, please consult the ggPMX Help (`?pmx_settings`).
@@ -917,7 +974,7 @@ ctr <-
 
 ### Remove DRAFT label globally
 
-By default in the “standing” configuration, a DRAFT label is printed on
+By default in the ???standing??? configuration, a DRAFT label is printed on
 all plots. In order to switch this label off, the user sets the
 `is.draft` option of `pmx_settings()` to `FALSE`.
 
@@ -1125,9 +1182,9 @@ Abbreviations:
 
 `ggPMX` implements few functions to generate and manipulate diagnostic
 plots. (Should we list pmx and pmx\_mlx separately and say the
-differences? Or it’s maybe clear from the previous sections.)
+differences? Or it???s maybe clear from the previous sections.)
 
-(Apparently, it’s not the full list. Add all functions.) The design of
+(Apparently, it???s not the full list. Add all functions.) The design of
 the package is around the central object: the controller. It can
 introspected or piped using the `%>%` operand.
 

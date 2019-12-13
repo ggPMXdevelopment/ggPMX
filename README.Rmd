@@ -12,9 +12,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
+**ggPMX** <img src="man/figures/logo.jpg" align="right" width="120" />
 
-##### Authors:  Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
+**Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
 
 [![Travis-CI Build Status](https://travis-ci.org/ggPMXdevelopment/ggPMX.svg?branch=master)](https://travis-ci.org/ggPMXdevelopment/ggPMX)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 [![Rdoc](http://www.rdocumentation.org/badges/version/ggPMX)](http://www.rdocumentation.org/packages/ggPMX)
 
 
-## Overview
+# Overview
 
 ggPMX is an open-source R package freely available on CRAN since April 2019. It generates standard diagnostic plots for mixed effect models used in pharmacometric activities. The package builds on the R-package ggplot2 and aims at providing a workflow that is **consistent**, **reproducible** and **efficient**, resulting in **high quality graphics** ready-to-use in submission documents and publications. Intuitive functions and options allow for optimal figure customization and graphics stratification. ggPMX enables straightforward generation of PDF, Word or PNG output files that contain all diagnostic plots for keeping track of modeling results. The package is currently compatible with Monolix versions 2016 and later.
 
@@ -34,7 +34,7 @@ Using simple syntax, the toolbox produces various goodness-of-fit diagnostics su
 
 In addition, shrinkage and summary parameters tables can be also produced. By default, the PDF- or Word-format diagnostic report contains essential goodness-of-fit plots. However, these can be adapted to produce different sets of diagnostics as desired by the user, and any of the plots may be customized individually. The types of supported customizations include modifications of the graphical parameters, labels, and various stratifications by covariates.
 
-## Installation
+# Installation
 
 ```{r, eval = FALSE}
 
@@ -45,7 +45,7 @@ install.packages("ggPMX")
 devtools::install_github("ggPMXdevelopment/ggPMX")
 ```
 
-## Testing the install
+# Testing the install
 
 Once ggPMX is installed, you can test if everything is working well.  If successful you should see a plot created after the following build-in example.
 
@@ -55,16 +55,16 @@ ctr <- theophylline()
 ctr %>% pmx_plot_eta_matrix()
 ```
 
-# ggPMX <img src="man/figures/ggpmx_example1.png" />
+ggPMX <img src="man/figures/ggpmx_example1.png" />
 
 
 
-## Cheatsheet
+# Cheatsheet
 
 <img src="man/figures/ggPMX_cheat_sheet_0_9_4.png"  />
 
 
-## Feedback
+# Feedback
 
 ggPMX is now ready for inputs and enhancements by the pharmacometric community.
 - Please use [ package issues](https://github.com/ggPMXdevelopment/ggPMX/issues) to fill in your feedback.
