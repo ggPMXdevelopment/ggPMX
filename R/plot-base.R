@@ -55,7 +55,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       axis.title = gpar$axis.title
     )
 
-    if (is.legend) p <- p + pmx_theme(legend.position = gpar$legend.position)
+    if (is.legend) p <- p + pmx_theme(legend.position = legend.position)
 
     
 
