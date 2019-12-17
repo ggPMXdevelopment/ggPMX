@@ -276,6 +276,7 @@ INDIVIDUAL:
     size: 2.0
     alpha: 0.9
   is.legend: yes
+  legend.position: top
     
 ## Eta plots
     
