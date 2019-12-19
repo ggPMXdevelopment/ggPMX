@@ -101,7 +101,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   obs <- as.data.table(nlmixr::getData(fit))
   ## obs <- obs[!(EVID == 1 & MDV == 1)]
   if (any(names(obs) == "EVID")) {
-    obs <- obs[EVID == 0 || EVID == 2]
+    obs <- obs[EVID == 0 | EVID == 2]
   } else if (any(names(obs) == "MDV")) {
     obs <- obs[MDV == 0]
   }
