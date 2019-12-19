@@ -152,7 +152,8 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
       }
   }
   ## round time column for further merge
-  if (!is.null(time)) {
+  if(time!="TIME"){
+    if (exists("TIME",xx))xx[,TIME:=NULL]
     setnames(xx, time, "TIME")
   } else {
     setnames(xx, grep("^time$", names(xx), ignore.case = TRUE, value = TRUE), "TIME")
