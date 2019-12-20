@@ -87,6 +87,8 @@ pmx <-
   function(config, sys = c("mlx", "nm"), directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
              settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
     directory <- check_argument(directory, "work_dir")
+    ll <- list.files(directory)
+    
     input <- check_argument(input, "input")
     dv <- check_argument(dv, "dv")
     ## dvid <- check_argument(dvid, "dvid")
@@ -105,6 +107,17 @@ pmx <-
 
     if (!inherits(config, "pmxConfig")) {
       if ("populationParameters.txt" %in% list.files(directory)) sys <- "mlx18"
+      else{
+        is_mlx <- list.files(directory,pattern="txt$")
+        if(length(is_mlx)==0){
+          stop(
+            sprintf(
+              "%s is not valid directory results path: please set a valid directory argument",
+              directory
+            )
+          )
+        }
+      }
       config <- load_config(config, sys)
     }
     if (missing(settings)) settings <- pmx_settings()
