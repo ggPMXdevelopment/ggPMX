@@ -1,0 +1,87 @@
+---
+title: "ggPMX with nlmixr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ggPMX with nlmixr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ggPMX)
+library(nlmixr)
+```
+
+It is simple to create a ggPMX controller for a nlmixr object.
+
+Using the theophylline example with a nlmixr model we have:
+
+```{r}
+one.compartment <- function() {
+    ini({
+        tka <- 0.45 # Log Ka
+        tcl <- 1 # Log Cl
+        tv <- 3.45    # Log V
+        eta.ka ~ 0.6
+        eta.cl ~ 0.3
+        eta.v ~ 0.1
+        add.sd <- 0.7
+    })
+    model({
+        ka <- exp(tka + eta.ka)
+        cl <- exp(tcl + eta.cl)
+        v <- exp(tv + eta.v)
+        d/dt(depot) = -ka * depot
+        d/dt(center) = ka * depot - cl / v * center
+        cp = center / v
+        cp ~ add(add.sd)
+    })
+}
+nlmixr(one.compartment)
+```
+
+At the time of this writing, nlmixr requires python; Since cran does
+not have python installed, we run this model locally by:
+
+```{r, eval=FALSE}
+fit <- nlmixr(one.compartment, theo_sd, est="saem", control=list(print=0))
+saveRDS(fit,"fit.rds")
+```
+
+Then we can read this into the system
+
+```{r}
+fit <- readRDS("fit.rds")
+print(fit)
+```
+
+The `fit` object is a nlmixr fit; You can read it into the nlmixr
+controller by:
+
+```{r}
+fit %>%
+    pmx_nlmixr(vpc = FALSE) -> ## VPC is turned on by default, can turn off.
+    ctr ## Assigned to controller 
+```
+
+Once the controller is created, you can of course have the same types
+of diagnostic plots as the standard ggPMX package; Using the same
+examples as the user manual:
+
+```{r}
+ctr %>% pmx_plot_dv_pred
+ctr %>% pmx_plot_npde_time
+ctr %>% pmx_plot_vpc
+ctr %>% pmx_plot_eta_box
+ctr %>% pmx_plot_eta_matrix(
+  shrink=list(size=3,hjust=1.5))
+```
+
+This shows the standard plots for theophylline
