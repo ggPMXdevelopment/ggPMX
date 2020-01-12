@@ -1,9 +1,6 @@
 ---
 title: "ggPMX - User Guide"
 output:
-  html_document:
-    toc: yes
-    toc_depth: '3'
   pdf_document:
     fig_caption: yes
     keep_tex: yes
