@@ -141,8 +141,7 @@ ctr \%>\% pmx_plot_individual(
 p <- ctr \%>\% pmx_plot_individual(
   is.legend=TRUE,
   point=list(shape=20),
-  pred_line=list(linetype=6),
-  pred_line=list(linetype=3)
+  pred_line=list(linetype=6)
 )
 
 # # stratification  ----------------------------------
