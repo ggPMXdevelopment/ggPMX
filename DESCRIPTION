@@ -35,7 +35,6 @@ Imports:
     magrittr,
     stringr,
     assertthat,
-    checkmate,
     GGally,
     zoo,
     knitr,
