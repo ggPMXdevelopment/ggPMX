@@ -6,11 +6,37 @@
 \alias{pmx_plot_eta_hist}
 \title{Eta distribution plots}
 \usage{
-eta_distribution_plot(jitter, type, dname, is.shrink, shrink, is.jitter,
-  histogram, filter, strat.facet, facets, strat.color, trans, pmxgpar,
-  labels, axis.title, axis.text, ranges, is.smooth, smooth, is.band, band,
-  is.draft, draft, is.identity_line, identity_line, scale_x_log10,
-  scale_y_log10, color.scales, ...)
+eta_distribution_plot(
+  jitter,
+  type,
+  dname,
+  is.shrink,
+  shrink,
+  is.jitter,
+  histogram,
+  filter,
+  strat.facet,
+  facets,
+  strat.color,
+  trans,
+  pmxgpar,
+  labels,
+  axis.title,
+  axis.text,
+  ranges,
+  is.smooth,
+  smooth,
+  is.band,
+  band,
+  is.draft,
+  draft,
+  is.identity_line,
+  identity_line,
+  scale_x_log10,
+  scale_y_log10,
+  color.scales,
+  ...
+)
 
 pmx_plot_eta_box(ctr, ...)
 

@@ -4,8 +4,11 @@
 \alias{get_data}
 \title{Get controller data set}
 \usage{
-get_data(ctr, data_set = c("estimates", "predictions", "eta", "finegrid",
-  "input", "sim", "individual"))
+get_data(
+  ctr,
+  data_set = c("estimates", "predictions", "eta", "finegrid", "input", "sim",
+    "individual")
+)
 }
 \arguments{
 \item{ctr}{the controller object}
@@ -19,12 +22,18 @@ a data.table of the named data set if available.
 Get controller data set
 }
 \seealso{
-Other pmxclass: \code{\link{get_cats}},
-  \code{\link{get_conts}}, \code{\link{get_covariates}},
-  \code{\link{get_occ}}, \code{\link{get_plot_config}},
-  \code{\link{get_plot}}, \code{\link{get_strats}},
-  \code{\link{plot_names}}, \code{\link{plots}},
-  \code{\link{pmx_update}}, \code{\link{set_data}},
-  \code{\link{set_plot}}
+Other pmxclass: 
+\code{\link{get_cats}()},
+\code{\link{get_conts}()},
+\code{\link{get_covariates}()},
+\code{\link{get_occ}()},
+\code{\link{get_plot_config}()},
+\code{\link{get_plot}()},
+\code{\link{get_strats}()},
+\code{\link{plot_names}()},
+\code{\link{plots}()},
+\code{\link{pmx_update}()},
+\code{\link{set_data}()},
+\code{\link{set_plot}()}
 }
 \concept{pmxclass}

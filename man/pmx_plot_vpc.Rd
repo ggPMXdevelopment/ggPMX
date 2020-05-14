@@ -4,11 +4,41 @@
 \alias{pmx_plot_vpc}
 \title{VPC plot}
 \usage{
-pmx_plot_vpc(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, dname,
-  filter, strat.facet, facets, strat.color, trans, pmxgpar, labels,
-  axis.title, axis.text, ranges, is.smooth, smooth, is.band, band,
-  is.draft, draft, is.identity_line, identity_line, scale_x_log10,
-  scale_y_log10, color.scales, is.footnote, ...)
+pmx_plot_vpc(
+  ctr,
+  type,
+  idv,
+  obs,
+  pi,
+  ci,
+  rug,
+  bin,
+  is.legend,
+  dname,
+  filter,
+  strat.facet,
+  facets,
+  strat.color,
+  trans,
+  pmxgpar,
+  labels,
+  axis.title,
+  axis.text,
+  ranges,
+  is.smooth,
+  smooth,
+  is.band,
+  band,
+  is.draft,
+  draft,
+  is.identity_line,
+  identity_line,
+  scale_x_log10,
+  scale_y_log10,
+  color.scales,
+  is.footnote,
+  ...
+)
 }
 \arguments{
 \item{ctr}{pmx controller}
@@ -168,9 +198,12 @@ ctr \%>\% pmx_plot_vpc(
 }
 }
 \seealso{
-Other vpc: \code{\link{pmx_vpc_bin}},
-  \code{\link{pmx_vpc_ci}}, \code{\link{pmx_vpc_obs}},
-  \code{\link{pmx_vpc_pi}}, \code{\link{pmx_vpc_rug}},
-  \code{\link{pmx_vpc}}
+Other vpc: 
+\code{\link{pmx_vpc_bin}()},
+\code{\link{pmx_vpc_ci}()},
+\code{\link{pmx_vpc_obs}()},
+\code{\link{pmx_vpc_pi}()},
+\code{\link{pmx_vpc_rug}()},
+\code{\link{pmx_vpc}()}
 }
 \concept{vpc}

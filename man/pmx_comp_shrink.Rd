@@ -4,8 +4,14 @@
 \alias{pmx_comp_shrink}
 \title{Compute Shrinkage}
 \usage{
-pmx_comp_shrink(ctr, fun = c("var", "sd"), strat.facet, strat.color,
-  filter, ...)
+pmx_comp_shrink(
+  ctr,
+  fun = c("var", "sd"),
+  strat.facet,
+  strat.color,
+  filter,
+  ...
+)
 }
 \arguments{
 \item{ctr}{\code{pmxClass} controller object}

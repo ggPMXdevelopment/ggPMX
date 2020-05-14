@@ -4,9 +4,18 @@
 \alias{distrib}
 \title{creates a graphic distribution object}
 \usage{
-distrib(labels, is.shrink, type = c("box", "hist"), is.jitter = FALSE,
-  jitter = NULL, facets = NULL, histogram = NULL, shrink = NULL,
-  dname = NULL, ...)
+distrib(
+  labels,
+  is.shrink,
+  type = c("box", "hist"),
+  is.jitter = FALSE,
+  jitter = NULL,
+  facets = NULL,
+  histogram = NULL,
+  shrink = NULL,
+  dname = NULL,
+  ...
+)
 }
 \arguments{
 \item{labels}{list of texts/titles used within the plot}
@@ -53,15 +62,18 @@ creates a graphic distribution object
 }
 }
 \seealso{
-Other plot_pmx: \code{\link{eta_cov}},
-  \code{\link{eta_pairs}}, \code{\link{individual}},
-  \code{\link{plot_pmx.distrib}},
-  \code{\link{plot_pmx.eta_cov}},
-  \code{\link{plot_pmx.eta_pairs}},
-  \code{\link{plot_pmx.individual}},
-  \code{\link{plot_pmx.pmx_dens}},
-  \code{\link{plot_pmx.pmx_gpar}},
-  \code{\link{plot_pmx.pmx_qq}},
-  \code{\link{plot_pmx.residual}}, \code{\link{plot_pmx}}
+Other plot_pmx: 
+\code{\link{eta_cov}()},
+\code{\link{eta_pairs}()},
+\code{\link{individual}()},
+\code{\link{plot_pmx.distrib}()},
+\code{\link{plot_pmx.eta_cov}()},
+\code{\link{plot_pmx.eta_pairs}()},
+\code{\link{plot_pmx.individual}()},
+\code{\link{plot_pmx.pmx_dens}()},
+\code{\link{plot_pmx.pmx_gpar}()},
+\code{\link{plot_pmx.pmx_qq}()},
+\code{\link{plot_pmx.residual}()},
+\code{\link{plot_pmx}()}
 }
 \concept{plot_pmx}

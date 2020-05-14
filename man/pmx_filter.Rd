@@ -4,8 +4,12 @@
 \alias{pmx_filter}
 \title{filter data in a pmx controller}
 \usage{
-pmx_filter(ctr, data_set = c("estimates", "predictions", "eta",
-  "finegrid", "shrink", "input", "individual"), pmx_exp)
+pmx_filter(
+  ctr,
+  data_set = c("estimates", "predictions", "eta", "finegrid", "shrink", "input",
+    "individual"),
+  pmx_exp
+)
 }
 \arguments{
 \item{ctr}{A controller. An object of 'pmxClass'}

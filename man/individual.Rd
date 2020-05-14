@@ -5,9 +5,18 @@
 \title{This function can be used to obtain individual prediction and compare with observed data and population prediction
 for each individual separately}
 \usage{
-individual(labels, facets = NULL, dname = NULL, ipred_line = NULL,
-  pred_line = NULL, point = NULL, bloq = NULL, is.legend,
-  use.finegrid, ...)
+individual(
+  labels,
+  facets = NULL,
+  dname = NULL,
+  ipred_line = NULL,
+  pred_line = NULL,
+  point = NULL,
+  bloq = NULL,
+  is.legend,
+  use.finegrid,
+  ...
+)
 }
 \arguments{
 \item{labels}{plot texts. labels, axis,}
@@ -40,15 +49,18 @@ for each individual separately
 \seealso{
 \code{\link{plot_pmx.individual}}
 
-Other plot_pmx: \code{\link{distrib}},
-  \code{\link{eta_cov}}, \code{\link{eta_pairs}},
-  \code{\link{plot_pmx.distrib}},
-  \code{\link{plot_pmx.eta_cov}},
-  \code{\link{plot_pmx.eta_pairs}},
-  \code{\link{plot_pmx.individual}},
-  \code{\link{plot_pmx.pmx_dens}},
-  \code{\link{plot_pmx.pmx_gpar}},
-  \code{\link{plot_pmx.pmx_qq}},
-  \code{\link{plot_pmx.residual}}, \code{\link{plot_pmx}}
+Other plot_pmx: 
+\code{\link{distrib}()},
+\code{\link{eta_cov}()},
+\code{\link{eta_pairs}()},
+\code{\link{plot_pmx.distrib}()},
+\code{\link{plot_pmx.eta_cov}()},
+\code{\link{plot_pmx.eta_pairs}()},
+\code{\link{plot_pmx.individual}()},
+\code{\link{plot_pmx.pmx_dens}()},
+\code{\link{plot_pmx.pmx_gpar}()},
+\code{\link{plot_pmx.pmx_qq}()},
+\code{\link{plot_pmx.residual}()},
+\code{\link{plot_pmx}()}
 }
 \concept{plot_pmx}

@@ -4,9 +4,16 @@
 \alias{pmx_settings}
 \title{Create controller global settings}
 \usage{
-pmx_settings(is.draft = TRUE, use.abbrev = FALSE,
-  color.scales = NULL, cats.labels = NULL, use.labels = FALSE,
-  use.titles = TRUE, effects = NULL, ...)
+pmx_settings(
+  is.draft = TRUE,
+  use.abbrev = FALSE,
+  color.scales = NULL,
+  cats.labels = NULL,
+  use.labels = FALSE,
+  use.titles = TRUE,
+  effects = NULL,
+  ...
+)
 }
 \arguments{
 \item{is.draft}{\code{logical} if FALSE any plot is without draft annotation}

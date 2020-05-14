@@ -16,12 +16,18 @@ a charcater vector
 Get controller occasional covariates
 }
 \seealso{
-Other pmxclass: \code{\link{get_cats}},
-  \code{\link{get_conts}}, \code{\link{get_covariates}},
-  \code{\link{get_data}}, \code{\link{get_plot_config}},
-  \code{\link{get_plot}}, \code{\link{get_strats}},
-  \code{\link{plot_names}}, \code{\link{plots}},
-  \code{\link{pmx_update}}, \code{\link{set_data}},
-  \code{\link{set_plot}}
+Other pmxclass: 
+\code{\link{get_cats}()},
+\code{\link{get_conts}()},
+\code{\link{get_covariates}()},
+\code{\link{get_data}()},
+\code{\link{get_plot_config}()},
+\code{\link{get_plot}()},
+\code{\link{get_strats}()},
+\code{\link{plot_names}()},
+\code{\link{plots}()},
+\code{\link{pmx_update}()},
+\code{\link{set_data}()},
+\code{\link{set_plot}()}
 }
 \concept{pmxclass}

@@ -22,9 +22,12 @@ Sets vpc rug layer
 When the vpc confidence interval layer method  is rectangles we don't show rug separators.
 }
 \seealso{
-Other vpc: \code{\link{pmx_plot_vpc}},
-  \code{\link{pmx_vpc_bin}}, \code{\link{pmx_vpc_ci}},
-  \code{\link{pmx_vpc_obs}}, \code{\link{pmx_vpc_pi}},
-  \code{\link{pmx_vpc}}
+Other vpc: 
+\code{\link{pmx_plot_vpc}()},
+\code{\link{pmx_vpc_bin}()},
+\code{\link{pmx_vpc_ci}()},
+\code{\link{pmx_vpc_obs}()},
+\code{\link{pmx_vpc_pi}()},
+\code{\link{pmx_vpc}()}
 }
 \concept{vpc}

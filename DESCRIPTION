@@ -7,7 +7,7 @@ Description: At Novartis, we aimed at standardizing the set of diagnostic plots 
   for publication and submissions using few lines of code. 
 Version: 1.0
 Authors@R: c(
-              person("Amine", "Gassem", email="contact@ag-study.com", role=c("cre","aut")),
+              person("Amine", "Gassem", email="contact@ag-study.com", role=c("aut")),
               person("Bruno", "Bieth", email="biethb@hotmail.com", role="aut"),
               person("Irina", "Baltcheva", email="irina.baltcheva@gmail.com", role="aut"),
               person("Thomas", "Dumortier", email=" thomas.dumortier@novartis.com", role="aut"),
@@ -16,15 +16,15 @@ Authors@R: c(
               person("Inga", "Ludwig", email="inga.ludwig@novartis.com", role="aut"),
               person("Ines", "Paule", email="ines.paule@novartis.com", role="aut"),
               person("Didier", "Renard", email="didier.renard@novartis.com", role="aut"),
-	            person("Matthew","Fidler", role = "ctb", email = "matthew.fidler@gmail.com", comment=c(ORCID="0000-0001-8538-6691")),
+	            person("Matthew","Fidler", role = c("ctb", "cre"), email = "matthew.fidler@gmail.com", comment=c(ORCID="0000-0001-8538-6691")),
               person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctr"),
               person("Novartis Pharma AG", role = c("cph"))
             )
-Maintainer: Amine Gassem <contact@ag-study.com>
+Maintainer: Matthew L. F.dler <matthew.fidler@gmail.com>
 URL: https://github.com/ggPMXdevelopment/ggPMX
 BugReports: https://github.com/ggPMXdevelopment/ggPMX/issues
 Depends:
-    R (>= 3.2.3)
+    R (>= 3.5)
 Imports:
     data.table,
     yaml,
@@ -47,4 +47,4 @@ Suggests:
     nlmixr
 VignetteBuilder: knitr
 NeedsCompilation: no
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

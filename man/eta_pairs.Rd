@@ -4,10 +4,20 @@
 \alias{eta_pairs}
 \title{This creates an eta correlation which defines the relationship between parameters}
 \usage{
-eta_pairs(title, dname = NULL, type.eta = c("mode", "mean"),
-  text_color = "black", is.shrink = TRUE, is.smooth = TRUE,
-  smooth = NULL, point = NULL, shrink = NULL, is.hline = FALSE,
-  hline = NULL, ...)
+eta_pairs(
+  title,
+  dname = NULL,
+  type.eta = c("mode", "mean"),
+  text_color = "black",
+  is.shrink = TRUE,
+  is.smooth = TRUE,
+  smooth = NULL,
+  point = NULL,
+  shrink = NULL,
+  is.hline = FALSE,
+  hline = NULL,
+  ...
+)
 }
 \arguments{
 \item{title}{character the plot title}
@@ -41,15 +51,18 @@ ecorrel object
 This creates an eta correlation which defines the relationship between parameters
 }
 \seealso{
-Other plot_pmx: \code{\link{distrib}},
-  \code{\link{eta_cov}}, \code{\link{individual}},
-  \code{\link{plot_pmx.distrib}},
-  \code{\link{plot_pmx.eta_cov}},
-  \code{\link{plot_pmx.eta_pairs}},
-  \code{\link{plot_pmx.individual}},
-  \code{\link{plot_pmx.pmx_dens}},
-  \code{\link{plot_pmx.pmx_gpar}},
-  \code{\link{plot_pmx.pmx_qq}},
-  \code{\link{plot_pmx.residual}}, \code{\link{plot_pmx}}
+Other plot_pmx: 
+\code{\link{distrib}()},
+\code{\link{eta_cov}()},
+\code{\link{individual}()},
+\code{\link{plot_pmx.distrib}()},
+\code{\link{plot_pmx.eta_cov}()},
+\code{\link{plot_pmx.eta_pairs}()},
+\code{\link{plot_pmx.individual}()},
+\code{\link{plot_pmx.pmx_dens}()},
+\code{\link{plot_pmx.pmx_gpar}()},
+\code{\link{plot_pmx.pmx_qq}()},
+\code{\link{plot_pmx.residual}()},
+\code{\link{plot_pmx}()}
 }
 \concept{plot_pmx}

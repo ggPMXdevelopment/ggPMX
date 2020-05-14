@@ -4,11 +4,36 @@
 \alias{pmx_plot_iwres_dens}
 \title{IWRES density plot}
 \usage{
-pmx_plot_iwres_dens(ctr, dname, xlim, var_line, snd_line, vline, filter,
-  strat.facet, facets, strat.color, trans, pmxgpar, labels, axis.title,
-  axis.text, ranges, is.smooth, smooth, is.band, band, is.draft, draft,
-  is.identity_line, identity_line, scale_x_log10, scale_y_log10,
-  color.scales, ...)
+pmx_plot_iwres_dens(
+  ctr,
+  dname,
+  xlim,
+  var_line,
+  snd_line,
+  vline,
+  filter,
+  strat.facet,
+  facets,
+  strat.color,
+  trans,
+  pmxgpar,
+  labels,
+  axis.title,
+  axis.text,
+  ranges,
+  is.smooth,
+  smooth,
+  is.band,
+  band,
+  is.draft,
+  draft,
+  is.identity_line,
+  identity_line,
+  scale_x_log10,
+  scale_y_log10,
+  color.scales,
+  ...
+)
 }
 \arguments{
 \item{ctr}{pmx controller}

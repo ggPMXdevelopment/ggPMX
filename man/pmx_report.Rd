@@ -4,9 +4,18 @@
 \alias{pmx_report}
 \title{Generates ggpmX report from a pre-defined template}
 \usage{
-pmx_report(contr, name, save_dir, format = c("both", "plots", "report"),
-  template = "standing", footnote = format == "both", edit = FALSE,
-  extension = NULL, title, ...)
+pmx_report(
+  contr,
+  name,
+  save_dir,
+  format = c("both", "plots", "report"),
+  template = "standing",
+  footnote = format == "both",
+  edit = FALSE,
+  extension = NULL,
+  title,
+  ...
+)
 }
 \arguments{
 \item{contr}{\code{pmxClass} controller}
