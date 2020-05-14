@@ -21,7 +21,7 @@ Authors@R: c(
               person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctr"),
               person("Novartis Pharma AG", role = c("cph"))
             )
-Maintainer: Matthew L. F.dler <matthew.fidler@gmail.com>
+Maintainer: Matthew Fidler <matthew.fidler@gmail.com>
 URL: https://github.com/ggPMXdevelopment/ggPMX
 BugReports: https://github.com/ggPMXdevelopment/ggPMX/issues
 Depends:
