@@ -2,7 +2,7 @@
 ^\.Rproj\.user$
 ^data-raw$
 ^tools$
-
+^README.rmd$
 ^packrat/
 ^\.Rprofile$
 ^\.travis\.yml$
