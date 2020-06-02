@@ -191,7 +191,7 @@ formula_to_text <- function(form) {
 
 #' Create controller global settings
 #' @param is.draft \code{logical} if FALSE any plot is without draft annotation
-#' @param use.abbrev \code{logical} if TRUE use abbreviations mapping for axis names
+#' @param use.abbrev \code{logical} if FALSE use full description from abbreviation mapping for axis names 
 #' @param color.scales \code{list} list containing elements of scale_color_manual
 #' @param use.labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
@@ -202,7 +202,7 @@ formula_to_text <- function(form) {
 #' @example inst/examples/pmx-settings.R
 #' @export
 pmx_settings <-
-  function(is.draft = TRUE, use.abbrev = FALSE, color.scales = NULL,
+  function(is.draft = TRUE, use.abbrev = TRUE, color.scales = NULL,
              cats.labels = NULL, use.labels = FALSE, use.titles = TRUE,
              effects = NULL,
              ...) {

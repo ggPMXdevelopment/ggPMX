@@ -54,7 +54,7 @@ ctr <- theophylline(
         SEX=c("0"="M","1"="F"),
         STUD=c("1"="Study 1","2"="Study 2")
       ),
-      use.abbrev=TRUE,
+      use.abbrev=FALSE,
       is.draft=TRUE,
       use.labels=TRUE
     )
