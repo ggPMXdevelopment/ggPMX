@@ -19,7 +19,6 @@ We will create simple  ggPMX controller using the theophylline example:
 ```{r, warning=FALSE, message=FALSE}
 
 library(ggPMX)
-library(nlmixr)
 library(ggplot2)
 
 ctr <- theophylline()
