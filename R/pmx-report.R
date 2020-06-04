@@ -2,7 +2,7 @@
 #'
 #' @param contr \code{pmxClass} controller
 #' @param name \code{character} The report name
-#' @param format \code{character} the result type, can be \cr
+#' @param output \code{character} the result type, can be \cr
 #' a standalone directory of plots or a report document as defined in the template \cr
 #' (pdf, docx,..) ,or both
 #' @param template \code{character} ggPMX predefined template or the
@@ -31,15 +31,15 @@ pmx_report <-
   function(contr,
              name,
              save_dir,
-             format = c("both", "plots", "report"),
+             output = c("both", "plots", "report"),
              template = "standing",
-             footnote = format == "both",
+             footnote = output == "both",
              edit = FALSE,
              extension = NULL,
              title,
              ...) {
     assert_that(is_pmxclass(contr))
-    format <- match.arg(format)
+    output <- match.arg(output)
     if (missing(extension) || is.null(extension)) extension <- "word"
 
     if (!"all" %in% extension) {
@@ -62,7 +62,7 @@ pmx_report <-
 
     contr$footnote <- footnote
     res <- pmx_draft(contr, name, template, edit)
-    standalone <- format %in% c("plots", "both")
+    standalone <- output %in% c("plots", "both")
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
 
@@ -113,9 +113,9 @@ pmx_report <-
 
     if (!clean) {
       ## create_ggpmx_gof(ctr$save_dir, name)
-      remove_reports(format, contr$save_dir)
+      remove_reports(output, contr$save_dir)
     }
-    if (format == "report") rm_dir(out_)
+    if (output == "report") rm_dir(out_)
   }
 
 
@@ -191,8 +191,8 @@ remove_temp_files <-
     invisible(file.remove(temp_files))
   }
 
-remove_reports <- function(format, save_dir) {
-  if (format == "plots") {
+remove_reports <- function(output, save_dir) {
+  if (output == "plots") {
     invisible(file.remove(list.files(
       pattern = "(.pdf|.docx|Rmd)$",
       path = save_dir, full.names = TRUE
