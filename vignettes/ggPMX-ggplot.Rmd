@@ -1,5 +1,5 @@
 ---
-title: "How to use ggplot syntax with ggPMX"
+title: "How to use ggplot2 syntax with ggPMX"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{How to use ggplot syntax with ggPMX}
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-We will create simple  ggPMX controller using the theophylline example:
+We will create a simple ggPMX controller using the theophylline example:
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -24,7 +24,7 @@ library(ggplot2)
 ctr <- theophylline()
 ```
 
-Each ggPMX plot is ggplot object:
+Each ggPMX plot is an object with class ggplot:
 
 ```{r, warning=FALSE, message=FALSE}
 p <- ctr %>% pmx_plot_dv_ipred()
@@ -32,9 +32,9 @@ class(p)
 ```
 
 
-We could use usual ggplot syntax to customize particular plot.
+Therefore we can use usual ggplot2 syntax to customize a ggPMX plot.
 
-Let's look on some examples.
+Let's look at some examples.
 
 1. Facet
 
@@ -47,10 +47,10 @@ ctr %>% pmx_plot_npde_pred(strat.facet= ~SEX)
 ggplot:
 
 ```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
-ctr %>% pmx_plot_npde_pred()+facet_wrap(~SEX)
+ctr %>% pmx_plot_npde_pred() + facet_wrap(~SEX)
 ```
 
-As we see in general we have the same chart, but ggPMX also automatically creates appropriate title.
+As we see in general we have the same chart, but ggPMX also automatically creates an appropriate title.
 
 2. Title
 
@@ -63,10 +63,10 @@ ctr %>% pmx_plot_npde_pred(labels=c(title="New title!"))
 ggplot:
 
 ```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
-ctr %>% pmx_plot_npde_pred()+ggtitle("New title!")
+ctr %>% pmx_plot_npde_pred() + ggtitle("New title!")
 ```
 
-3. X and Y axis label 
+3. X and Y axis labels
 
 ggPMX :
 
