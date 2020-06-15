@@ -8,6 +8,7 @@ warnings_are_errors: false
 r:
   - 3.5
   - 3.6
+  - 4.0
   - devel
 
 r_packages:
