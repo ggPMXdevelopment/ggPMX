@@ -1,7 +1,7 @@
 ---
 title: "ggPMX - User Guide"
 output:
-  pdf_document:
+  html_document:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
