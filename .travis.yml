@@ -21,6 +21,8 @@ addons:
 
 env:
   token: 6e04c811-b9e9-4846-9696-20cf5c215826
+  global:
+   - _R_CHECK_FORCE_SUGGESTS_: FALSE
 
 after_success:
   - Rscript -e 'covr::codecov()'
