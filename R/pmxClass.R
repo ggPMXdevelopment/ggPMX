@@ -206,6 +206,11 @@ pmx_settings <-
              cats.labels = NULL, use.labels = FALSE, use.titles = TRUE,
              effects = NULL,
              ...) {
+    checkmate::assert_logical(x=is.draft, len=1, any.missing=FALSE)
+    checkmate::assert_logical(x=use.abbrev, len=1, any.missing=FALSE)
+    checkmate::assert_logical(x=use.labels, len=1, any.missing=FALSE)
+    checkmate::assert_logical(x=use.titles, len=1, any.missing=FALSE)
+
     if (!missing(effects) && !is.null(effects)) {
       if (!is.list(effects)) stop("effects should be a list")
 
