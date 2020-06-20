@@ -38,7 +38,8 @@ Imports:
     GGally,
     zoo,
     knitr,
-    rmarkdown
+    rmarkdown,
+    checkmate
 License: GPL-2
 LazyData: true
 Suggests:
