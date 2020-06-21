@@ -7,16 +7,22 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  out.width = "100%",
+  warning = FALSE,
+  message = FALSE,
+  fig.height=5,
+  fig.width=8
 )
+
 ```
 
 We will create a simple ggPMX controller using the theophylline example:
 
-```{r, warning=FALSE, message=FALSE}
+```{r}
 
 library(ggPMX)
 library(ggplot2)
@@ -26,7 +32,7 @@ ctr <- theophylline()
 
 Each ggPMX plot is an object with class ggplot:
 
-```{r, warning=FALSE, message=FALSE}
+```{r}
 p <- ctr %>% pmx_plot_dv_ipred()
 class(p)
 ```
@@ -38,44 +44,45 @@ Let's look at some examples.
 
 1. Facet
 
-ggPMX :
+ggPMX:
 
-```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+```{r}
 ctr %>% pmx_plot_npde_pred(strat.facet= ~SEX)
 ```
 
 ggplot:
 
-```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+```{r}
 ctr %>% pmx_plot_npde_pred() + facet_wrap(~SEX)
 ```
 
 As we see in general we have the same chart, but ggPMX also automatically creates an appropriate title.
+Notice, ggplot2 doesn't use the pipe %>% operator!
 
 2. Title
 
-ggPMX :
+ggPMX:
 
-```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+```{r}
 ctr %>% pmx_plot_npde_pred(labels=c(title="New title!"))
 ```
 
 ggplot:
 
-```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+```{r}
 ctr %>% pmx_plot_npde_pred() + ggtitle("New title!")
 ```
 
 3. X and Y axis labels
 
-ggPMX :
+ggPMX:
 
-```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+```{r}
 ctr %>% pmx_plot_dv_ipred(labels=c(x="X axis", y = "Y axis"))
 ```
 
 ggplot:
 
-```{r fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+```{r}
 ctr %>% pmx_plot_dv_ipred()+xlab("X axis") + ylab("Y axis")
 ```
