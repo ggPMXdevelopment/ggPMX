@@ -33,7 +33,7 @@ is_string_or_formula_or_null <- function(x) {
 }
 
 is_null_or_named_vector <- function(v) {
-  is.null(c) || is.vector(v) & !is.null(names(v)) & all(!is.na(names(v)))
+  is.null(v) || is.vector(v) & !is.null(names(v)) & all(!is.na(names(v)))
 }
 
 assertthat::on_failure(is_null_or_named_vector) <- function(call, env) {
