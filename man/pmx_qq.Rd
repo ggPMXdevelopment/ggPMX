@@ -4,21 +4,10 @@
 \alias{pmx_qq}
 \title{This function creates a qq plot object}
 \usage{
-pmx_qq(
-  x,
-  labels,
-  dname = NULL,
-  point = NULL,
-  xmax = TRUE,
-  facets = NULL,
-  is.reference_line = NULL,
-  reference_line = NULL,
-  is.shrink = NULL,
-  shrink = NULL,
-  is.hline = NULL,
-  hline = NULL,
-  ...
-)
+pmx_qq(x, labels, dname = NULL, point = NULL, xmax = TRUE,
+  facets = NULL, is.reference_line = NULL, reference_line = NULL,
+  is.shrink = NULL, shrink = NULL, is.hline = NULL, hline = NULL,
+  ...)
 }
 \arguments{
 \item{x}{\code{character} variable name to sample}

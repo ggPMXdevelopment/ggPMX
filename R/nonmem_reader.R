@@ -1,97 +1,256 @@
-#load is.readable.file
-#load read_nm_tabl3
-#load read.nm.tables
-
-#dependent on readr function
-
+#' Creates pmx controller from  NONMEM output
+#'
+#' @param runno 
+#' @param table_suffix 
+#' @param sim.suffix 
+#' @param cwres.suffix 
+#' @param directory 
+#' @param quiet 
+#' @param table_names 
+#' @param cwres.name 
+#' @param dvid 
+#' @param conts 
+#' @param cats 
+#' @param strats 
+#' @param endpoint 
+#' @param settings 
+#' @param vpc 
+#' @param pred 
+#' @param bloq 
+#' @param dv 
+#' @param obs 
+#' @param time 
+#'
+#' @return
+#' @export
+#'
+#' @examples ##add TIME!
 pmx_nm <-function(runno = NULL,
-                      tab.suffix="",
+                      table_suffix="",
                       sim.suffix="sim",
                       cwres.suffix="",
                       directory=".",
                       quiet=TRUE,
-                      table.names=c("sdtab","mutab","patab","catab",
+                      table_names=c("sdtab","mutab","patab","catab",
                                     "cotab","mytab","extra","xptab","cwtab"),
                       cwres.name=c("cwtab"),
-                      mod.prefix="run",
-                      mod.suffix=".mod",
-                      phi.suffix=".phi",
-                      phi.file=NULL,
-                      ##vpc.name="vpctab",
-                      nm7=NULL,  # T/F if table files are for NM7, NULL for undefined
-                      dvid, conts, cats, strats, endpoint, settings, vpc = FALSE, pred = "PRED", bloq) {
+                      dvid = "DVID", 
+                      dv = "DV", 
+                      conts, 
+                      cats, 
+                      strats="", 
+                      endpoint, 
+                      settings = pmx_settings(), 
+                      vpc = FALSE, 
+                      pred = "PRED", 
+                      bloq = NULL, 
+                      obs = TRUE, 
+                      time = "TIME") {
   
   
   
 
   
-  ##handling like pmx_nlmixr, however might not be required(?)
-  EFFECT <- EVID <- ID <- MDV <- NULL
-  runno <- if (missing(runno)) NULL else runno
+  ##
   config <- "standing"
-  dv <- "DV"
-  cats <- if (missing(cats)) "" else cats #maybe parse out from files
-  conts <- if (missing(conts)) "" else conts #maybe parse out from files
   occ <- ""
-  strats <- if (missing(strats)) "" else strats
-  if (missing(settings)) settings <- pmx_settings()
-  if (!inherits(settings, "pmxSettingsClass")) {
-    settings <- pmx_settings()
-  }
-  
-  finegrid <- NULL #
-  
+  finegrid <- NULL
 
   ##
   ##options(warn=-1) # suppress warnings
   ## make table lists
-  match.pos <- match(cwres.name,table.names) #shows position of cwtab
-  if (!is.na(match.pos)) table.names <- table.names[-match.pos] #remove cwtab from table_names if its there
+  match.pos <- match(cwres.name,table_names) #shows position of cwtab
+  if (!is.na(match.pos)) table_names <- table_names[-match.pos] #remove cwtab from table_names if its there
   
   ## Create the table file names to process
-  myfun <- function(x,directory,runno,cwres.suffix,sim.suffix,tab.suffix) {
-    filename <- paste0(x,runno,cwres.suffix,sim.suffix,tab.suffix)
+  myfun <- function(x,directory,runno,cwres.suffix,sim.suffix,table_suffix) {
+    filename <- paste0(x,runno,cwres.suffix,sim.suffix,table_suffix)
     file.path(directory, filename)
   }
   
-  tab.files   <- sapply(table.names,myfun,directory,runno,cwres.suffix="",sim.suffix="",tab.suffix)
+  cotab.file <- myfun("cotab",directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
   
-  cwres.files <- sapply(cwres.name,myfun,directory,runno,cwres.suffix,sim.suffix="",tab.suffix)
+  catab.file <- myfun("catab",directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
   
-  sim.files   <- sapply(table.names,myfun,directory,runno,cwres.suffix="",sim.suffix,tab.suffix)
+  sdtab.file <- myfun("sdtab",directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
   
-  cwres.sim.files <- sapply(cwres.name,myfun,directory,runno,cwres.suffix,sim.suffix,tab.suffix)
+  tab.files   <- sapply(table_names,myfun,directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
+  
+  cwres.files <- sapply(cwres.name,myfun,directory,runno,cwres.suffix,sim.suffix="",table_suffix)
+  
+  sim.files   <- sapply(table_names,myfun,directory,runno,cwres.suffix="",sim.suffix,table_suffix)
+  
+  cwres.sim.files <- sapply(cwres.name,myfun,directory,runno,cwres.suffix,sim.suffix,table_suffix)
   
   tab.files <- c(tab.files,cwres.files)
   sim.files <- c(sim.files,cwres.sim.files)
   
   ## Read the table files.
   cat("\nLooking for NONMEM table files.\n")
-  tmp <- read.nm.tables(table.files=tab.files,
-                        quiet=quiet)
   
-  ## Fail if we can't find any.
-  if(is.null(tmp)) {
-    cat("Table files not read!\n")
-    return(NULL)
+  tmp_lst <- read.nm.tables(table.files=tab.files,
+                            quiet=quiet)
+  
+  if (missing(tmp_lst)) tmp_lst <- NULL
+  
+  if (is.null(tmp_lst)) {
+    stop("No files found! Controller could not be created")
+  }
+    
+  
+  tmp    <- tmp_lst[[1]] #containing the merged dataset
+  ca_tmp <- tmp_lst[[2]] #containing cats header names
+  co_tmp <- tmp_lst[[3]] #containing conts header names
+  sd_tmp <- tmp_lst[[4]] #containing conts header names
+  
+  
+  #tmp$TIM2 <- log(tmp$TIME) #for testing purposes
+  #tmp$LNDV <- log(tmp$DV) #for testing purposes
+  
+  ## Extracting covariates from catab/cotab files if they're not specified
+  if(missing(cats) & !is.null(sd_tmp)) {
+    
+    if(is.null(ca_tmp)){
+      cat("\nNo catab file found\n")
+      cats <- ""
+    }
+    
+    if(missing(cats)) {
+      cats <- ca_tmp[which(is.na(sd_tmp[match(ca_tmp,sd_tmp)]))] ## Change to setdiff cuntion
+      cat(paste0("\n",cats, " was extracted from catab file\n"))
+    }
+    
+  } else {
+    if (missing(cats)) cats <- "" else cats
   }
   
-  ## check if NM.version is > 6
-  if(is.null(nm7)){
-    if(any(!is.na(match(c("IPRED","IWRES"),names(tmp))))){
-      nm7 <- T
+  
+  if(missing(conts) & !is.null(sd_tmp)) {
+    
+    if(is.null(co_tmp)){
+      cat("\nNo cotab file found\n")
+      conts <- ""
+    }
+    
+    if(missing(conts)) {
+      conts <- co_tmp[which(is.na(sd_tmp[match(co_tmp,sd_tmp)]))]
+      cat(paste0("\n",conts, " was extracted from cotab file\n"))
+    }
+    
+  } else {
+    if (missing(conts)) conts <- "" else conts
+  }
+  
+  if(is.null(sd_tmp) & (!is.null(ca_tmp) | !is.null(co_tmp))){
+    cat("\nsdtab is needed to specificy covariates automatically\n")
+  }
+
+  
+  ## Rename variables to ggPMX nomenclature
+  
+  ## Rename variables which cannot be specified in the pmx_nm() function, which rely on convetions
+  tmp$IPRED <- tmp[,grep("IPRED", names(tmp))]
+  tmp$NPDE <- tmp[,grep("NPD", names(tmp))]
+  tmp$IWRES <- tmp[,grep("IWRES", names(tmp))]
+  
+  ## Rename variables which can be specified in the pmx_nm() function
+  # x = ggPMX nomenclature name
+  # y = user defined name
+  # data = dataset
+  naming_fun <- function(x,y,data) { 
+    if(x != y) {
+      data[[x]] <- NULL
+      if(any(y == names(data))){
+        data[[x]] <- data[[y]]
+        cat(paste(y,"has been specified as",x,"\n"))
+        return(data)
+      } else {
+        stop(paste(y,"not found in dataset! Please check naming of",x))
+        return(data)
+      }
     } else {
-      nm7 <- F
+      return(data)
     }
   }
   
+  tmp <- naming_fun("DV",dv,tmp)
+  tmp <- naming_fun("DVID",dvid,tmp)
+  tmp <- naming_fun("TIME",time,tmp)
+  tmp <- naming_fun("PRED",pred,tmp)
   
-  ##placeholder of handling of simulations, however might be already done by xpose_functions
+  
+  ## remove non-observation rows if obs = TRUE
+  MDV <- c()
+  if(obs){
+    if(any("MDV"==names(tmp))){
+      tmp <- dplyr::filter(tmp,MDV==0)   
+    } else {
+      
+        if(any("EVID"==names(tmp))) {
+          tmp$MDV <- tmp[,grep("EVID", names(tmp))]
+          tmp <- dplyr::filter(tmp,MDV==0) 
+        } else {
+          
+          warning('\nMDV or EVID data item not listed in header, 
+              Could not remove dose events!\n')
+        }
+      
+    }
+  }
+  
+  ###generate input variable
+  input <- as.data.table(tmp)
+  input_names <- names(input)
+  
+  ###endpoint handling
+  endpoint <- if (missing(endpoint)) NULL else endpoint
+  
+  if(!is.null(endpoint)) {
+    
+    if(!(endpoint %in% unique(input$DVID))) {
+      warning("Endpoint value does not correspond to", dvid ,"values!\n")
+    } else {
+      input <- dplyr::filter(input,DVID==endpoint)
+    }
+    
+  }
+  
+  
+  ## Generation of eta data.table
+  eta <- input
+  measures <- input_names[grep("ETA", input_names)]
+  eta <- melt(eta, measure = measures)
+  setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
+  eta <- as.data.table(eta)
+  
+  
+  ## Parse parameters from .ext. file using read_nmext() function
+  ext_file <- list.files(path = directory, pattern = "\\.ext$")
+  
+  if(length(ext_file) != 1) {
+  if(length(ext_file) == 0) {
+     warning("There is no .ext file in the directory\n")
+  } else {
+     warning(paste("There are multiple .ext files in the directory\n The current file is now being used:", ext_file[1]))
+     ext_file <- ext_file[1]
+   }
+  }
+  
+  parameters <- read_nmext(file = ext_file, project = directory, run = "")
+  
+  momega <- parameters$omega
+  domega <- as.double(diag(momega))
+  names(domega) <- input_names[grepl("ETA", input_names)]
+  omega <- data.table(
+    EFFECT = sub("[.]?(eta|bsv)[.]?", "", names(domega)),
+    OMEGA = sqrt(as.vector(domega))
+  )
+  
+  
+  ## Add code to restructure Parameters to a nicer output
+  
+  ##placeholder of handling of simulations for VPC, however might be already done by xpose_functions
   sim <- NULL
-  #sim_data <- NULL
-  #setnames(sim_data, "dv", "DV")
-  #if(vpc) {}
-  #sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
   
   
   ## error handling for simulations!
@@ -135,7 +294,7 @@ pmx_nm <-function(runno = NULL,
   if (gosim==TRUE) {
     simtmp <- read.nm.tables(sim.files,
                              #runno,
-                             #tab.suffix=paste(sim.suffix,tab.suffix,sep=""),
+                             #table_suffix=paste(sim.suffix,table_suffix,sep=""),
                              #cwres.suffix=paste(sim.suffix,cwres.suffix,sep=""),
                              quiet=quiet)
     
@@ -150,146 +309,14 @@ pmx_nm <-function(runno = NULL,
     
   }
   
-  #RENAME the output to work on ggPMX (Maybe add warning if NAMES are not recognized or one of the Names Missing or not recognized)
-  
-  #evtl add, if !EVID then (so if evid FALSE, execute the code)
-  if("EVID" %in% names(tmp)) {
-    tmp <- tmp[which(tmp$EVID == 0),] #remove EVID != 0
-    tmp$EVID <- NULL #Remove EVID columng
-  }
-  
-  tmp_names_org <- names(tmp)
-  
-  ##handling of DVID, so user can specificy
-  dvid <- if (missing(dvid)) "DVID" else dvid
-  if(dvid != "DVID") { #error if specified column does not matach dataset
-    if(!(dvid %in% tmp_names_org)) {
-      stop(paste(dvid, "column not found in dataset!\n"))
-    } 
-  }
-  
-  if("DVID" %in% tmp_names_org & dvid != "DVID") {
-    cat("DVID already present in the dataset!\n")
-    cat(paste("DVID will be replaced by values of ",dvid,"!\n"))
-    tmp <- tmp[,-grep("DVID", tmp_names_org)]
-    tmp_names_org <- names(tmp)
-    tmp_names_org[grep(dvid, tmp_names_org)] <- "DVID"
-  }
-  
-  tmp_names_new <- tmp_names_org
-  tmp_names_new[grep("IPRED", tmp_names_org)] <- "IPRED"
-  tmp_names_new[grep("NPD", tmp_names_org)] <- "NPDE"
-  tmp_names_new[grep("IWRES", tmp_names_org)] <- "IWRES"
-  
-  # handling of PRED because NONMEM can output multiple types of PRED
-  ##User has to choose it, the rest of the preds is removed is removed, but notify the user.
-  
-  ##
-  
-  if(!grepl("PRED", pred, fixed = TRUE) | length(pred) != 1) {
-    stop("PRED variable has to contain <PRED> (e.g. PRED, CPRED, CPREDI etc.) Check naming of PRED.\n  Only one PRED variable can be specified.")
-  }
-  
-  if(grepl("IPRED", pred)) {
-    stop("PRED might be wrongly specified as IPRED!\n")
-  }
-  
-  if(!(pred %in% tmp_names_new)) {
-    stop(paste(pred,"not found in dataset! PRED might be wrongly specified\n"))
-  }
-  
-  to_keep_vec <- which(pred == tmp_names_new | "IPRED" == tmp_names_new) ##keep these ones
-  pred_vec <- grep("PRED", tmp_names_new) ##get positions of all variables including "PRED"
-  
-  to_remove_vec <- pred_vec[!(pred_vec %in% to_keep_vec)] ##these PREDs have to be removed
-  to_remove_names <- tmp_names_new[to_remove_vec]
-  
-  cat(paste(pred, "was chosen as PRED variable\n"))
-  
-  if (pred != "PRED") {
-    tmp_names_new[pred == tmp_names_org] <- "PRED" #rename to "PRED" for ggPMX
-    cat(paste(pred, "column was renamed to PRED \n"))
-  }
-  
-  names(tmp) <- tmp_names_new
-  
-  if(length(to_remove_vec) != 0L) {
-    tmp <- tmp[,-to_remove_vec]
-  }
-  
-  input <- as.data.table(tmp)
-  input_names <- names(input)
-  
-  
-  ###endpoint handling
-  endpoint <- if (missing(endpoint)) NULL else endpoint
-  
-  if(!is.null(endpoint)) {
-    
-    if(!(endpoint %in% unique(input$DVID))) {
-      warning("Endpoint value does not correspond to", dvid ,"values!\n")
-    } else {
-      input <- input[which(input$DVID == endpoint),]
-    }
-    
-  }
-  
-  
-  ###generation of eta
-  eta <- input
-  measures <- input_names[grep("ETA", input_names)]
-  eta <- melt(eta, measure = measures)
-  setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
-  
-  eta <- as.data.table(eta)
-  
-  
-  ###Parse .lst file to retrieve OMEGA matrix
-  #specify header for omega
-  omega <- NULL
-  
-  #maybe add error handling if omega is not found
-  
-  omega_header <- "OMEGA - COV MATRIX FOR RANDOM EFFECTS" #don't know if best way to handle it
-  sigma_header <- "SIGMA - COV MATRIX FOR RANDOM EFFECTS"
-  
-  lst_file <- list.files(path = directory, pattern = "\\.lst$")
-  
-  if(length(lst_file) != 1) {
-    if(length(lst_file) == 0) {
-      warning("There is no .lst file in the directory\n")
-    } else {
-      warning(paste("There are multiple .lst files in the directory\n The current file is now being used:", lst_file[1]))
-      lst_file <- lst_file[1]
-    }
-  }
-  
-  lst_path <- file.path(directory, lst_file)
-  lst <- read_lines(lst_path, n_max = -1L)
-  
-  top <- grep(omega_header, lst)
-  bottom <- grep(sigma_header, lst)
-
-  lst <- lst[(top+3):(bottom-4)]
-  lst <- lst[-2]
-  header_vec <- input_names[grep("ETA", input_names)]
-  tbble_lst <- read_table(lst, col_names = c("X1",header_vec))
-  tbble_lst <- tbble_lst[-1,-1]
-  names_tbble <- names(tbble_lst) #probably not necessary and could use precified header_vec
-  tbble_lst <- suppressWarnings(tbble_lst[!is.na(tbble_lst),]) #notoptimal to surpressWarning, maybe need optimization
-  matrix_lst <- as.matrix(tbble_lst)
-  domega <- as.double(diag(matrix_lst))
-  names(domega) <- names_tbble
-  
-  omega <- data.table(
-    EFFECT = sub("[.]?(eta|bsv)[.]?", "", names(domega)),
-    OMEGA = sqrt(as.vector(domega))
-  )
-  
-  if (missing(bloq)) bloq <- NULL
-  assert_that(inherits(bloq, "pmxBLOQClass") || is.null(bloq))
   
   ##Generater the controller
+  
+  if (!inherits(settings, "pmxSettingsClass")) {
+    settings <- pmx_settings()
+  }
+  
+  assert_that(inherits(bloq, "pmxBLOQClass") || is.null(bloq))
   
   plot_dir <- file.path(system.file(package = "ggPMX"), "init")
   pfile <- file.path(plot_dir, sprintf("%s.ppmx", config))
@@ -300,12 +327,13 @@ pmx_nm <-function(runno = NULL,
     omega = omega,
     finegrid = finegrid,
     eta = eta,
-    bloq = bloq
+    bloq = bloq,
+    parameters = parameters
   )
   class(config) <- "pmxConfig"
   
 
   
-  pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
+  pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, time) ##add TIME!
   
 }

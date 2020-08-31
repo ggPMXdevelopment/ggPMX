@@ -38,7 +38,9 @@ Imports:
     GGally,
     zoo,
     knitr,
-    rmarkdown
+    rmarkdown,
+    readr,
+    mrgsolve
 License: GPL-2
 LazyData: true
 Suggests:

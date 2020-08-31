@@ -84,7 +84,7 @@ check_argument <- function(value, pmxname) {
 #' @export
 #' @example inst/examples/controller.R
 pmx <-
-  function(config, sys = c("mlx", "nm"), directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
+  function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
              settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
@@ -891,7 +891,16 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$has_re <- TRUE
   }
 
-
+  if (config$sys == "nm") {
+    self$data$predictions <- input
+    self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input
+    self$data$eta <- config$eta
+    self$data$omega <- config$omega
+    self$has_re <- TRUE
+    self$bloq <- bloq
+    self$data$estimates <- config$parameters
+  }
+  
   ## abbrev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"
