@@ -44,8 +44,11 @@ pmx_nm <-function(runno = NULL,
                       vpc = FALSE, 
                       pred = "PRED", 
                       bloq = NULL, 
-                      obs = TRUE, 
-                      time = "TIME") {
+                      obs = FALSE, 
+                      time = "TIME",
+                      npd,
+                      iwres,
+                      ipred) {
   
   
   
@@ -106,6 +109,9 @@ pmx_nm <-function(runno = NULL,
   
   #tmp$TIM2 <- log(tmp$TIME) #for testing purposes
   #tmp$LNDV <- log(tmp$DV) #for testing purposes
+  #tmp$EPRED <- log(tmp$PRED) #for testing purposes
+  #tmp$CMT <- tmp$EVID #for testing purposes
+  #tmp$NPDE <- tmp$NPD #for testing purposes
   
   ## Extracting covariates from catab/cotab files if they're not specified
   if(missing(cats) & !is.null(sd_tmp)) {
@@ -149,14 +155,50 @@ pmx_nm <-function(runno = NULL,
   ## Rename variables to ggPMX nomenclature
   
   ## Rename variables which cannot be specified in the pmx_nm() function, which rely on convetions
-  tmp$IPRED <- tmp[,grep("IPRED", names(tmp))]
-  tmp$NPDE <- tmp[,grep("NPD", names(tmp))]
-  tmp$IWRES <- tmp[,grep("IWRES", names(tmp))]
+  check_nam_fun <- function(x,z,data) {
+    if(length(names(data)[grep(z,names(data))]) == 1)  {
+      y <- names(data)[grep(z,names(data))]
+      data[[x]] <- data[[y]]
+      return(data)
+    } else if (length(names(data)[grep(z,names(data))]) == 0) {
+      y <- names(data)[grep(z,names(data))]
+      stop(paste(z,"not found in dataset! Please check naming of",x))
+    } else{
+      y <- names(data)[grep(z,names(data))]
+      stop(paste("Multiple variables found containing",z,":",paste(c(y), collapse = ", "),"please specifiy",z))
+    }
+    
+  }
+  
+  if(missing(npd)) {
+    tmp <- check_nam_fun("NPDE", "NPD",tmp)
+  } else {
+    tmp$NPDE <- tmp[[npd]]
+  }
+  
+  if(missing(ipred)) {
+    tmp <- check_nam_fun("IPRED", "IPRED",tmp)
+  } else {
+    tmp$IPRED <- tmp[[ipred]]
+  }
+  
+  if(missing(iwres)) {
+    tmp <- check_nam_fun("IWRES", "IWRES",tmp)
+  } else {
+    tmp$IWRES <- tmp[[iwres]]
+  }
+  
+  
+  #tmp$IPRED <- tmp[,grep("IPRED", names(tmp))]
+  #tmp$NPDE <- tmp[,grep("NPD", names(tmp))]
+  #tmp$IWRES <- tmp[,grep("IWRES", names(tmp))]
+  
   
   ## Rename variables which can be specified in the pmx_nm() function
   # x = ggPMX nomenclature name
   # y = user defined name
   # data = dataset
+  
   naming_fun <- function(x,y,data) { 
     if(x != y) {
       data[[x]] <- NULL
@@ -179,24 +221,25 @@ pmx_nm <-function(runno = NULL,
   tmp <- naming_fun("PRED",pred,tmp)
   
   
-  ## remove non-observation rows if obs = TRUE
+  ## remove missing rows if obs = TRUE (if obs = FALSE, missing values (MDV == 1) will be kept)
+  
   MDV <- c()
+  
   if(obs){
     if(any("MDV"==names(tmp))){
       tmp <- dplyr::filter(tmp,MDV==0)   
     } else {
-      
-        if(any("EVID"==names(tmp))) {
-          tmp$MDV <- tmp[,grep("EVID", names(tmp))]
-          tmp <- dplyr::filter(tmp,MDV==0) 
-        } else {
-          
-          warning('\nMDV or EVID data item not listed in header, 
-              Could not remove dose events!\n')
-        }
-      
+      warning('\nMDV item not listed in header, 
+              could not remove missing values!\n')
     }
   }
+  
+  ## remove non-observation rows
+  
+  if(any("EVID"==names(tmp))) {
+        tmp <- dplyr::filter(tmp,EVID==0) 
+  }
+  
   
   ###generate input variable
   input <- as.data.table(tmp)
@@ -206,7 +249,6 @@ pmx_nm <-function(runno = NULL,
   endpoint <- if (missing(endpoint)) NULL else endpoint
   
   if(!is.null(endpoint)) {
-    
     if(!(endpoint %in% unique(input$DVID))) {
       warning("Endpoint value does not correspond to", dvid ,"values!\n")
     } else {
@@ -246,8 +288,23 @@ pmx_nm <-function(runno = NULL,
     OMEGA = sqrt(as.vector(domega))
   )
   
+  ## Formatting the output for the parameters
+  df_val <- as.data.frame(t(parameters$df)) #extract values form param list ITERATION -1E9
+  df_se <- as.data.frame(t(parameters$df2)) #extract SE form param list ITERATION -100000001
   
-  ## Add code to restructure Parameters to a nicer output
+  if(ncol(df_se) != 0) { #check if  ITERATION -1000000001 is exported
+    df_param <- cbind(rownames(df_val),df_val, df_se,(df_se/df_val)*100)
+    rownames(df_param) <- NULL
+    colnames(df_param) <- c("PARAM","VALUE","SE","RSE")
+    df_param <- df_param[-which(df_param$PARAM == "ITERATION"),]
+    df_param <- dplyr::filter(df_param,PARAM != "ITERATION")
+  } else {
+    df_param <- cbind(rownames(df_val),df_val,NA,NA)
+    rownames(df_param) <- NULL
+    colnames(df_param) <- c("PARAM","VALUE","SE","RSE")
+    df_param <- df_param[-which(df_param$PARAM == "ITERATION"),]
+  }
+  
   
   ##placeholder of handling of simulations for VPC, however might be already done by xpose_functions
   sim <- NULL
@@ -328,7 +385,7 @@ pmx_nm <-function(runno = NULL,
     finegrid = finegrid,
     eta = eta,
     bloq = bloq,
-    parameters = parameters
+    parameters = df_param
   )
   class(config) <- "pmxConfig"
   

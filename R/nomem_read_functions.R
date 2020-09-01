@@ -311,10 +311,8 @@ read_nmext <- function(run=NA_real_, project = getwd(), file=paste0(run,".ext"),
     colon <- regexpr(":",ext_tmp[last_table])[1]
     last_table_name <- substr(ext_tmp[last_table],1,colon-1)
     last_table <- last_table-1
-    warning(paste("Multiple Problems found in",file,"only using",last_table_name,"used \n")) #multiple problems not currently supported add to vignette
+    warning(paste("Multiple Problems found in",file,"only using",last_table_name,"\n")) #multiple problems not currently supported
   }
-  
-  
   
   if(use_dt) {
     df <- data.table::fread(
@@ -333,7 +331,15 @@ read_nmext <- function(run=NA_real_, project = getwd(), file=paste0(run,".ext"),
     )
   }
   
+  ans <- ""
   ans <- df[df[["ITERATION"]] == -1E9,]
+  
+  ans_se <- ""
+  ans_se <- df[df[["ITERATION"]] == -1000000001,]
+  
+  df_ans <- ans
+  
+  df_ans_se <- ans_se
   
   if(nrow(ans)==0) {
     stop(
@@ -348,11 +354,12 @@ read_nmext <- function(run=NA_real_, project = getwd(), file=paste0(run,".ext"),
     param = ans[grepl("THETA", names(ans))],
     omega = mrgsolve::as_bmat(ans, "OMEGA"), 
     sigma = mrgsolve::as_bmat(ans, "SIGMA"),
-    raw = ans  
+    raw = ans,
+    df = df_ans,
+    df2 = df_ans_se
   )
   return(ans)
 }
-
 
 
 ########################
@@ -365,7 +372,6 @@ read_header <- function(nm_table) {
   header_names <- strsplit(header_line,"\\s+,*\\s*")[[1]]
   
   return(header_names)
-  
 }
 
 
