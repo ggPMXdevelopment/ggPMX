@@ -16,3 +16,4 @@
 ^ggPMX_cheat_sheet_0_9_4.pptx$
 ^vignettes/ggPMX-nlmixr.Rmd$
 ^vignettes/bloq.Rmd$
+^man/figures/*.png$
