@@ -17,3 +17,4 @@
 ^vignettes/ggPMX-nlmixr.Rmd$
 ^vignettes/bloq.Rmd$
 ^man/figures/*.png$
+^.github/*
