@@ -25,7 +25,9 @@
 #' @export
 #'
 #' @examples ##add TIME!
-pmx_nm <-function(runno = NULL,
+pmx_nm <-function(runno = NULL, 
+                      file = NULL,
+                      ext = ".lst",
                       table_suffix="",
                       sim.suffix="sim",
                       cwres.suffix="",
@@ -46,134 +48,181 @@ pmx_nm <-function(runno = NULL,
                       bloq = NULL, 
                       obs = FALSE, 
                       time = "TIME",
-                      npd,
+                      npde,
                       iwres,
-                      ipred) {
-  
-  
-  
-
+                      ipred, 
+                      xp_reader = FALSE,
+                      manual_import = NULL,
+                      ignore = NULL,
+                      simtab = NULL,
+                      simfile = NULL,
+                      prefix = "run") {
   
   ##
   config <- "standing"
   occ <- ""
   finegrid <- NULL
-
-  ##
-  ##options(warn=-1) # suppress warnings
-  ## make table lists
-  match.pos <- match(cwres.name,table_names) #shows position of cwtab
-  if (!is.na(match.pos)) table_names <- table_names[-match.pos] #remove cwtab from table_names if its there
   
-  ## Create the table file names to process
-  myfun <- function(x,directory,runno,cwres.suffix,sim.suffix,table_suffix) {
-    filename <- paste0(x,runno,cwres.suffix,sim.suffix,table_suffix)
-    file.path(directory, filename)
-  }
-  
-  cotab.file <- myfun("cotab",directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
-  
-  catab.file <- myfun("catab",directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
-  
-  sdtab.file <- myfun("sdtab",directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
-  
-  tab.files   <- sapply(table_names,myfun,directory,runno,cwres.suffix="",sim.suffix="",table_suffix)
-  
-  cwres.files <- sapply(cwres.name,myfun,directory,runno,cwres.suffix,sim.suffix="",table_suffix)
-  
-  sim.files   <- sapply(table_names,myfun,directory,runno,cwres.suffix="",sim.suffix,table_suffix)
-  
-  cwres.sim.files <- sapply(cwres.name,myfun,directory,runno,cwres.suffix,sim.suffix,table_suffix)
-  
-  tab.files <- c(tab.files,cwres.files)
-  sim.files <- c(sim.files,cwres.sim.files)
   
   ## Read the table files.
-  cat("\nLooking for NONMEM table files.\n")
-  
-  tmp_lst <- read.nm.tables(table.files=tab.files,
-                            quiet=quiet)
-  
-  if (missing(tmp_lst)) tmp_lst <- NULL
-  
-  if (is.null(tmp_lst)) {
-    stop("No files found! Controller could not be created")
-  }
     
-  
-  tmp    <- tmp_lst[[1]] #containing the merged dataset
-  ca_tmp <- tmp_lst[[2]] #containing cats header names
-  co_tmp <- tmp_lst[[3]] #containing conts header names
-  sd_tmp <- tmp_lst[[4]] #containing conts header names
-  
-  
-  #tmp$TIM2 <- log(tmp$TIME) #for testing purposes
-  #tmp$LNDV <- log(tmp$DV) #for testing purposes
-  #tmp$EPRED <- log(tmp$PRED) #for testing purposes
-  #tmp$CMT <- tmp$EVID #for testing purposes
-  #tmp$NPDE <- tmp$NPD #for testing purposes
-  
-  ## Extracting covariates from catab/cotab files if they're not specified
-  if(missing(cats) & !is.null(sd_tmp)) {
+    dir <- directory
+    table_vec <- c("sdtab","mutab","patab","catab","cotab","mytab","extra","xptab","cwtab")
     
-    if(is.null(ca_tmp)){
-      cat("\nNo catab file found\n")
-      cats <- ""
+    tab_man_specified <- NULL
+    if(!identical(table_vec,table_names)) {
+      tab_man_specified <- TRUE
     }
     
-    if(missing(cats)) {
-      cats <- ca_tmp[which(is.na(sd_tmp[match(ca_tmp,sd_tmp)]))] ## Change to setdiff cuntion
-      cat(paste0("\n",cats, " was extracted from catab file\n"))
+    
+    if (is.null(runno) && is.null(file) && is.null(tab_man_specified)) {
+      stop('Argument `runno`, `file` or  `table_names` required.', call. = FALSE)
+    }
+      
+    
+    # Check extensions
+    if (!is.null(runno)) {
+      ext <- make_extension(ext)
+      full_path <- file_path(dir, stringr::str_c(prefix, runno, ext))
+    } else {
+      ext <- get_extension(file)
+      if(length(ext) == 0) {
+        ext <- ".lst"
+        file <- "nofile"
+      }
+      if (ext == '') stop('An extension should be provided in the `file` name.', call. = FALSE)
+      full_path <- file_path(dir, file)
     }
     
-  } else {
-    if (missing(cats)) cats <- "" else cats
-  }
-  
-  
-  if(missing(conts) & !is.null(sd_tmp)) {
+    alternative_import = FALSE
+      if(!file.exists(full_path)){
+        cat("Alternative import is used without model file\n")
+        warning("No model file was found, check naming of files\n")
+        alternative_import = TRUE
+        file = NULL
+      }
     
-    if(is.null(co_tmp)){
-      cat("\nNo cotab file found\n")
-      conts <- ""
-    }
     
-    if(missing(conts)) {
-      conts <- co_tmp[which(is.na(sd_tmp[match(co_tmp,sd_tmp)]))]
-      cat(paste0("\n",conts, " was extracted from cotab file\n"))
-    }
-    
-  } else {
-    if (missing(conts)) conts <- "" else conts
-  }
-  
-  if(is.null(sd_tmp) & (!is.null(ca_tmp) | !is.null(co_tmp))){
-    cat("\nsdtab is needed to specificy covariates automatically\n")
-  }
+    ## Alternative report with loading model files (e.g. similar to xpose4)
+    if(alternative_import){
+      software   <- 'nonmem'
+      tab_list <- manual_nm_import(tab_names = table_names, tab_suffix = table_suffix, sim_suffix = sim.suffix)
+      
+      
+      if(is.null(runno)){
+        
+        cat()
+        tbl_names <- file.path(dir,tab_list$tab_names)
+        
+        data <- tryCatch(read_nm_tables(file = tbl_names, dir = NULL, 
+                                        quiet = quiet, simtab = FALSE, user_mode = FALSE), 
+                         error = function(e) {
+                           warning(e$message, call. = FALSE)
+                           return()
+                         })
+        
+      } else {
+        
+        tbl_names <- list_nm_tables_manual(runno = runno, dir = dir, tab_list = tab_list)
+        
+        data <- tryCatch(read_nm_tables(file = tbl_names, dir = NULL, 
+                                        quiet = quiet, simtab = FALSE), ##cannot handle if cotab/patab are not long enough as sdtab
+                         error = function(e) {
+                           warning(e$message, call. = FALSE)
+                           return()
+                         })
+        
+      }
 
+    }
+    
+    if(!alternative_import) {
+      # List tables
+      if (ext %in% c('.lst', '.out', '.res', '.mod', '.ctl')) {
+        software   <- 'nonmem'
+        model_code <- read_nm_model(file = basename(full_path), 
+                                    dir  = dirname(full_path))
+        
+        if (is.null(manual_import)) {
+          tbl_names <- list_nm_tables(model_code)
+        } else {
+          tbl_names <- list_nm_tables_manual(runno = runno, file = basename(full_path), 
+                                             dir = dirname(full_path), tab_list = manual_import)
+        }
+      } else {
+        stop('Model file currently not supported by read_nm_tables', call. = FALSE)
+      }  
+      
+      
+      # Import estimation tables
+      if ('data' %in% ignore) {
+        msg('Ignoring data import.', quiet)
+        data <- NULL
+      } else if (software == 'nonmem') {
+        data <- tryCatch(read_nm_tables(file = tbl_names, dir = NULL, 
+                                        quiet = quiet, simtab = simtab), 
+                         error = function(e) {
+                           warning(e$message, call. = FALSE)
+                           return()
+                         })
+      } 
+      
+    }
+    
+    
+    tmp <- data$data[data$simtab == FALSE]
+    tmp <- as.data.table(tmp)
+    
+    sim_tmp <- data$data[data$simtab == TRUE]
+    
+    if(length(tmp) == 0){
+      stop("Error, no data could be loaded")
+    }
+    
+    index <- as.data.table(data$index[[1]])
+    
+    if(missing(conts)){
+      conts <- index$col[which(index$type == "contcov")]
+      if(length(conts) == 0) conts <- ""
+    }
+
+    if(missing(cats)){
+      cats <- index$col[which(index$type == "catcov")]
+      if(length(cats) == 0) cats <- ""
+    }
+
+  
   
   ## Rename variables to ggPMX nomenclature
   
   ## Rename variables which cannot be specified in the pmx_nm() function, which rely on convetions
+  # x = ggPMX nomenclature name
+  # y = user defined name
+  # z = substring which is used to "grep" variable name 
+  # data = dataset
+  
   check_nam_fun <- function(x,z,data) {
-    if(length(names(data)[grep(z,names(data))]) == 1)  {
+    if(any(x == names(data))){
+      return(data)
+    } else if(length(names(data)[grep(z,names(data))]) == 1)  {
       y <- names(data)[grep(z,names(data))]
       data[[x]] <- data[[y]]
+      cat(paste(y,"has been specified as",x,"\n"))
       return(data)
     } else if (length(names(data)[grep(z,names(data))]) == 0) {
       y <- names(data)[grep(z,names(data))]
-      stop(paste(z,"not found in dataset! Please check naming of",x))
+      warning(paste(z,"not found in dataset! Please check naming of",x))
+      return(data)
     } else{
       y <- names(data)[grep(z,names(data))]
       stop(paste("Multiple variables found containing",z,":",paste(c(y), collapse = ", "),"please specifiy",z))
     }
-    
   }
   
-  if(missing(npd)) {
+  if(missing(npde)) {
     tmp <- check_nam_fun("NPDE", "NPD",tmp)
   } else {
-    tmp$NPDE <- tmp[[npd]]
+    tmp$NPDE <- tmp[[npde]]
   }
   
   if(missing(ipred)) {
@@ -189,11 +238,6 @@ pmx_nm <-function(runno = NULL,
   }
   
   
-  #tmp$IPRED <- tmp[,grep("IPRED", names(tmp))]
-  #tmp$NPDE <- tmp[,grep("NPD", names(tmp))]
-  #tmp$IWRES <- tmp[,grep("IWRES", names(tmp))]
-  
-  
   ## Rename variables which can be specified in the pmx_nm() function
   # x = ggPMX nomenclature name
   # y = user defined name
@@ -207,7 +251,7 @@ pmx_nm <-function(runno = NULL,
         cat(paste(y,"has been specified as",x,"\n"))
         return(data)
       } else {
-        stop(paste(y,"not found in dataset! Please check naming of",x))
+        warning(paste(y,"not found in dataset! Please check naming of",x))
         return(data)
       }
     } else {
@@ -220,6 +264,93 @@ pmx_nm <-function(runno = NULL,
   tmp <- naming_fun("TIME",time,tmp)
   tmp <- naming_fun("PRED",pred,tmp)
   
+  
+  
+  #dt_sim <- as.data.table(simtmp[[1]]) ##read simulaiton file
+
+  
+if(!is.null(simfile)){
+  vpc <- TRUE
+}
+  
+  
+dt_sim <- NULL    
+if(vpc & !alternative_import & length(sim_tmp) == 0) {
+  
+  file <- simfile
+  
+  # Check extensions
+  if (!is.null(runno)) {
+    ext <- make_extension(ext)
+    full_path <- file_path(dir, stringr::str_c(prefix, runno, ext))
+  } else {
+    ext <- get_extension(file)
+    if (ext == '') stop('An extension should be provided in the `file` name.', call. = FALSE)
+    full_path <- file_path(dir, file)
+  }
+  
+  # List tables
+  if (ext %in% c('.lst', '.out', '.res', '.mod', '.ctl')) {
+    software   <- 'nonmem'
+    model_code <- read_nm_model(file = basename(full_path), 
+                                dir  = dirname(full_path))
+    
+    if (is.null(manual_import)) {
+      tbl_names <- list_nm_tables(model_code)
+    } else {
+      tbl_names <- list_nm_tables_manual(runno = runno, file = basename(full_path), 
+                                         dir = dirname(full_path), tab_list = manual_import)
+    }
+  } else {
+    stop('Model file currently not supported by xpose.', call. = FALSE)
+  }  
+  
+  # Import estimation tables
+  simdata <- tryCatch(read_nm_tables(file = tbl_names, dir = NULL, 
+                                     quiet = quiet, simtab = simtab), 
+                      error = function(e) {
+                        warning(e$message, call. = FALSE)
+                        return()
+                      })
+  
+  
+  dt_sim <- as.data.table(simdata$data)
+  
+  sim_name_vec <- c("REP","ID","TIME","DV")
+  dt_sim <- dt_sim[,..sim_name_vec]
+  
+  #dt_sim <- dt_sim[dt_sim$EVID == 0,]
+  
+  
+}
+  
+  if(length(sim_tmp) != 0 & vpc) {
+    dt_sim <- as.data.table(sim_tmp)
+    
+    sim_name_vec <- c("REP","ID","TIME","DV")
+    dt_sim <- dt_sim[,..sim_name_vec]
+    
+  }
+
+  
+  if(vpc & alternative_import) {
+    
+    simdata <- tryCatch(read_nm_tables(file = tbl_names, dir = NULL, 
+                                    quiet = quiet, simtab = TRUE), 
+                     error = function(e) {
+                       warning(e$message, call. = FALSE)
+                       return()
+                     })
+    
+    
+    dt_sim <- as.data.table(simdata$data)
+    
+    #dt_sim <- dt_sim[dt_sim$EVID == 0,]
+    
+    sim_name_vec <- c("REP","ID","TIME","DV")
+    dt_sim <- dt_sim[,..sim_name_vec]
+    
+  }
   
   ## remove missing rows if obs = TRUE (if obs = FALSE, missing values (MDV == 1) will be kept)
   
@@ -306,69 +437,13 @@ pmx_nm <-function(runno = NULL,
   }
   
   
-  ##placeholder of handling of simulations for VPC, however might be already done by xpose_functions
-  sim <- NULL
-  
-  
-  ## error handling for simulations!
-  cat("\nLooking for NONMEM simulation table files.\n")
-  gosim <- TRUE
-  simct <- FALSE
-  
-  ## check if there are any simulation files
-  for(i in 1:length(sim.files)) {
-    if (is.readable.file(sim.files[i]))  {
-      simct <- TRUE
-    }
-  }
-  
-  if (simct){
-    for(i in 1:length(tab.files)) {
-      if ((is.readable.file(tab.files[i])) && (!is.readable.file(sim.files[i])))  {
-        err.mess <- paste(sim.files[i],"not found!")
-        gosim <- FALSE
-        break
-      }
-    }
-  } else {
-    gosim <- FALSE
-  }
-  
-  
-  if (gosim==FALSE) {
-    
-    if (!simct) {
-      #cat("  Files are either not present or not named correctly\n")
-      #cat("  (e.g. sdtab1a instead of sdtab1sim)\n")
-    } else {
-      cat("  There is not the same number of normal and \n")
-      cat("  simulation table files for the current run number:\n")
-      cat(paste("  ",err.mess,"\n",sep=""))
-    }
-    cat("No simulated table files read.\n\n")
-  }
-  
-  if (gosim==TRUE) {
-    simtmp <- read.nm.tables(sim.files,
-                             #runno,
-                             #table_suffix=paste(sim.suffix,table_suffix,sep=""),
-                             #cwres.suffix=paste(sim.suffix,cwres.suffix,sep=""),
-                             quiet=quiet)
-    
-    if(!is.null(tmp)) {
-      simtmp <- simtmp
-      cat("Simulation table files read.\n")
-    } else {
-      cat("There was a problem reading the simulation tables!\n")
-      cat("Simulation tables not read!\n")
-      return(NULL)
-    }
-    
-  }
-  
-  
   ##Generater the controller
-  
+  if(!is.null(dt_sim)) {
+    sim <- pmx_sim(data = dt_sim, idv = "TIME", irun = "REP")
+  } else {
+    sim = NULL
+  }
+
   if (!inherits(settings, "pmxSettingsClass")) {
     settings <- pmx_settings()
   }
@@ -394,3 +469,5 @@ pmx_nm <-function(runno = NULL,
   pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, time) ##add TIME!
   
 }
+
+
