@@ -2,61 +2,67 @@
 % Please edit documentation in R/nonmem_reader.R
 \name{pmx_nm}
 \alias{pmx_nm}
-\title{Creates pmx controller from  NONMEM output}
+\title{Creates pmx controller from NONMEM model outputs}
 \usage{
-pmx_nm(runno = NULL, table_suffix = "", sim.suffix = "sim",
-  cwres.suffix = "", directory = ".", quiet = TRUE,
-  table_names = c("sdtab", "mutab", "patab", "catab", "cotab", "mytab",
-  "extra", "xptab", "cwtab"), cwres.name = c("cwtab"),
-  mod.prefix = "run", mod.suffix = ".mod", phi.suffix = ".phi",
-  phi.file = NULL, nm7 = NULL, dvid, conts, cats, strats, endpoint,
-  settings, vpc = FALSE, pred = "PRED", bloq)
+pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
+  table_suffix = "", sim_suffix = "sim", table_names = c("sdtab",
+  "mutab", "patab", "catab", "cotab", "mytab", "extra", "xptab", "cwtab"),
+  dvid = "DVID", pred = "PRED", time = "TIME", dv = "DV", conts,
+  cats, npde, iwres, ipred, endpoint, strats = "",
+  settings = pmx_settings(), vpc = TRUE, bloq = NULL, obs = FALSE,
+  simfile = NULL, prefix = "run", quiet = FALSE)
 }
 \arguments{
-\item{runno}{}
+\item{runno}{run number which is used for generating the model file name, or used for alternative import of NONMEM-output tables.}
 
-\item{table_suffix}{}
+\item{file}{A character vector of path to the files or a \code{nm_table_list} object created with \code{list_nm_tables}.}
 
-\item{sim.suffix}{}
+\item{directory}{directory of the model files.}
 
-\item{cwres.suffix}{}
+\item{ext}{Extension to be used to generate model file name. Should be one of'.lst' (default), '.out', '.res', '.mod' or '.ctl' for NONMEM.}
 
-\item{directory}{}
+\item{table_suffix}{suffix of the output tables, standard is "" (no suffix).}
 
-\item{quiet}{}
+\item{sim_suffix}{suffix of the simulaiton output tables, standard is "sim" (e.g. stdab1sim).}
 
-\item{table_names}{}
+\item{table_names}{Contains the names of the NONMEM-output tables e.g. "sdtab", "patab", "cotab", "catab".}
 
-\item{cwres.name}{}
+\item{dvid}{\emph{[Optional]} \code{character} observation type parameter, mandatory in case of multiple endpoint (PKPD). Standard = "DVID"}
 
-\item{mod.prefix}{}
+\item{pred}{\emph{[Optional]}\code{character} specifing variable name of the population prediction (standard ggPMX nomenclautre  = "PRED")}
 
-\item{mod.suffix}{}
+\item{time}{\emph{[Optional]}\code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")}
 
-\item{phi.suffix}{}
+\item{dv}{\code{character} the name of measurable variable used in the input modelling file}
 
-\item{phi.file}{}
+\item{conts}{\emph{[Optional]}\code{character} vector of continuous covariates (automatically detected if "cotab" is provided)}
 
-\item{nm7}{}
+\item{cats}{\emph{[Optional]}\code{character} vector of categorical covariates (automatically detected if "catab" is provided)}
 
-\item{dvid}{}
+\item{npde}{\emph{[Optional]}\code{character} specifing variable name of the normalized population predictor (standard ggPMX nomenclautre  = "NPDE")}
 
-\item{conts}{}
+\item{iwres}{\emph{[Optional]}\code{character} specifing variable name of the individual weighted residuals (standard ggPMX nomenclautre  = "IWRES")}
 
-\item{cats}{}
+\item{ipred}{\emph{[Optional]}\code{character} specifing variable name of the individual population prediction (standard ggPMX nomenclautre  = "IPRED")}
 
-\item{strats}{}
+\item{endpoint}{\code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL of the endpoint code. \code{\link{pmx_endpoint}}}
 
-\item{endpoint}{}
+\item{strats}{\emph{[Optional]}\code{character} extra stratification variables}
 
-\item{settings}{}
+\item{settings}{\emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}} shared between all plots}
 
-\item{vpc}{}
+\item{vpc}{\emph{[Optional]} \code{logical} a boolean indiacting if vpc should be calculated (by default \code{TRUE})}
 
-\item{pred}{}
+\item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}}
 
-\item{bloq}{}
+\item{obs}{\code{logical} the name of measurable variable used in the input modelling file}
+
+\item{simfile}{Usefull if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulaiion.lst"; similar to "file" see above.}
+
+\item{prefix}{Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.}
+
+\item{quiet}{Logical, if \code{FALSE} messages are printed to the console.}
 }
 \description{
-Creates pmx controller from  NONMEM output
+Creates pmx controller from NONMEM model outputs
 }

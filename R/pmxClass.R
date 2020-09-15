@@ -61,7 +61,7 @@ check_argument <- function(value, pmxname) {
 #' @param config Can be either :
 #' The complete path for the configuration file, the name of configuration within the built-in
 #' list of configurations, or a configuration object.
-#' @param sys the system name can be MLX/NM
+#' @param sys the system name can be only "mlx"
 #' @param directory \code{character} modelling output directory.
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
@@ -73,7 +73,7 @@ check_argument <- function(value, pmxname) {
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
-#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} defalut to NULL
+#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
