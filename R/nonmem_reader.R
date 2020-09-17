@@ -57,7 +57,6 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       tab_man_specified <- TRUE
     }
     
-    
     if (is.null(runno) && is.null(file) && is.null(tab_man_specified)) { #check if a
       stop('Argument `runno`, `file` or  `table_names` required.', call. = FALSE)
     }
@@ -315,7 +314,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
         msg("REP column generated",quiet)
       } else {
         dt_sim <- NULL
-        warning("REP column could not be generated, simulation data not loaded")
+        warning("No REP column found and REP column could not be generated, simulation data not loaded")
       }
 
     
@@ -380,7 +379,6 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       ext_file <- ext_file[1]
     }
     }
-  
     parameters <- read_nmext(file = ext_file, project = directory, run = "")
   
     momega <- parameters$omega
