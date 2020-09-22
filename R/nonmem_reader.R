@@ -81,7 +81,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     alternative_import = FALSE
       if(!file.exists(full_path)){
         msg("Alternative import is used without model file",quiet)
-        warning("No model file was found, check naming of files\n")
+        #warning("No model file was found, check naming of files\n")
         alternative_import = TRUE
         file = NULL
       }
@@ -246,7 +246,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     if(!is.null(simfile)){
       vpc <- TRUE
     }
-  
+    
     dt_sim <- NULL    
     if(vpc & !is.null(simfile) & length(sim_tmp) == 0) {
     
@@ -355,7 +355,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       if(!(endpoint %in% unique(input$DVID))) {
         warning("Endpoint value does not correspond to", dvid ,"values!\n")
       } else {
-        input <- dplyr::filter(input,DVID==endpoint)
+        input <- as.data.table(dplyr::filter(input,DVID==endpoint))
       }
     }
   
@@ -369,8 +369,17 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
   
   
   ## Parse parameters from .ext. file using read_nmext() function
-    ext_file <- list.files(path = directory, pattern = "\\.ext$")
-  
+    
+    ext_file_exist_by_runno <- file.exists(file.path(directory,paste0(prefix,runno,".ext")))
+    ext_file_exist_by_file  <- file.exists(file.path(directory,paste0(gsub(ext, "", file),".ext")))
+    if(ext_file_exist_by_runno) {
+      ext_file <- paste0(prefix,runno,".ext")
+    } else if(ext_file_exist_by_file){
+      ext_file <- paste0(gsub(ext, "", file),".ext")
+    } else {
+      ext_file <- list.files(path = directory, pattern = "\\.ext$")
+    }
+    
     if(length(ext_file) != 1) {
     if(length(ext_file) == 0) {
       warning("There is no .ext file in the directory\n")

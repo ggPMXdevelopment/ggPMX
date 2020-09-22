@@ -145,7 +145,7 @@ classIntervals <- function(var, n, style = "quantile", rtimes = 3, ..., interval
       names(brks) <- NULL
     } else if (style == "kmeans") {
       # stats
-      pars <- try(stats::kmeans(x = var, centers = n, ...))
+      pars <- try(stats::kmeans(x = var, centers = n, ...)) ##pars <- try(stats::kmeans(x = var, centers = n, ...))
       if (class(pars) == "try-error") {
         warning("jittering in kmeans")
         jvar <- jitter(rep(x = var, times = rtimes))
