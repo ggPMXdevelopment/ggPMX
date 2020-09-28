@@ -109,6 +109,7 @@ wrap_formula <- function(x, origin = "lfacet") {
 
 jitter_layer <- function(jitter, strat.color) {
   if (is.null(strat.color)) {
+    jitter$height <- 0 #no jitter in height (y-axis required)
     do.call(geom_jitter, jitter)
   } else {
     jitter$position <- position_jitterdodge(jitter.width = 0.1, dodge.width = 0.9)

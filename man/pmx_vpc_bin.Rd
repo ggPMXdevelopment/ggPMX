@@ -4,7 +4,7 @@
 \alias{pmx_vpc_bin}
 \title{Creates vpc bins}
 \usage{
-pmx_vpc_bin(style, within_strat = FALSE, ...)
+pmx_vpc_bin(style, within_strat = TRUE, ...)
 }
 \arguments{
 \item{style}{\code{character} style    chosen on of the:\cr

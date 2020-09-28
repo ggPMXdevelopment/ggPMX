@@ -14,7 +14,7 @@
 #' @family vpc
 
 pmx_vpc_bin <-
-  function(style, within_strat = TRUE, ...) { #changed within strat = TRUE, as standard
+  function(style, within_strat = TRUE, ...) { #within strat = TRUE, as standard in order to avoid bugs
     if (missing(style)) {
       return(NULL)
     }
@@ -434,6 +434,11 @@ vpc.plot <- function(x) {
       )
       do.call(geom_point, params)
     }
+    
+    ## Rug layer was removed because of two reasons:
+      # - Didn't work properly with within_strats = TRUE, Rugs did not represent the bins
+      # - Rugs are not vital for the interpretation of VPCs plots
+    
     #rug_layer <- if (!is.null(rug)) {
       #params <- append(
        # list(
@@ -445,6 +450,8 @@ vpc.plot <- function(x) {
       #)
       #do.call(geom_rug, params)
     #}
+    
+    
     ci_med_layer <- function() {if (!is.null(ci)) {
       nn <- grep("CL", names(db$ci_dt), value = TRUE)[c(1, 3)]
       params <- append(
@@ -470,6 +477,10 @@ vpc.plot <- function(x) {
       do.call(geom_ribbon, params)
     }}
     
+    
+    ## + rug_layer was removed because of two reasons:
+    # - Didn't work properly with within_strats = TRUE, Rugs did not represent the bins
+    # - Rugs are not vital for the interpretation of VPCs plots
     
     pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv)) +
       obs_layer + pi_med_layer() + pi_ext_layer()  #+ rug_layer

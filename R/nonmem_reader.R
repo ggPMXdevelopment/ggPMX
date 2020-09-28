@@ -42,33 +42,39 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     occ <- "" # Not implemented yet
     finegrid <- NULL
   
-  ## Currently not set as user-defined parameters
+  ## Currently not set as user-defined parameters in ggPMX
+    
     ignore = NULL
     manual_import = NULL
     simtab = NULL
     
   ## Read the table files.
+    
     dir <- directory # rename directory to xpose definition
     table_vec <- c("sdtab","mutab","patab","catab","cotab","mytab","extra","xptab","cwtab") #standard table names
     
     # Check if table names were manually specified for individual loading
+    
     tab_man_specified <- NULL
     if(!identical(table_vec,table_names)) { 
       tab_man_specified <- TRUE
     }
     
-    if (is.null(runno) && is.null(file) && is.null(tab_man_specified)) { #check if a
+    # Check if runno file or table_names were specified
+    
+    if (is.null(runno) && is.null(file) && is.null(tab_man_specified)) { 
       stop('Argument `runno`, `file` or  `table_names` required.', call. = FALSE)
     }
       
     
     # Check extensions
+    
     if (!is.null(runno)) {
       ext <- make_extension(ext)
       full_path <- file_path(dir, stringr::str_c(prefix, runno, ext))
     } else {
       ext <- get_extension(file)
-      if(length(ext) == 0) {
+      if(length(ext) == 0) { #this is different to the code in xpose to allow alternative_import without model file (.lst/.ctl)
         ext <- ".lst"
         file <- "nofile"
       }
@@ -76,8 +82,9 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       full_path <- file_path(dir, file)
     }
     
-    # Allow alternative import when model file (.lst/.ctl) not found
-    # Alternative import is independent of the model file
+    # Allow alternative import when model file (.lst/.ctl) is not found
+    # Alternative import is independent of the model file (.lst/.ctl) and similar to xpose4
+    
     alternative_import = FALSE
       if(!file.exists(full_path)){
         msg("Alternative import is used without model file",quiet)
@@ -87,7 +94,8 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       }
     
     
-    ## Alternative import without loading model files (e.g. similar to xpose4)
+    ## Alternative import without loading model files (.lst/.ctl) (e.g. similar to xpose4)
+    
     if(alternative_import){
       software   <- 'nonmem'
       tab_list <- manual_nm_import(tab_names = table_names, tab_suffix = table_suffix, sim_suffix = sim_suffix)
@@ -112,7 +120,8 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       }
     }
     
-    ## "Normal" import with loading model files (according to xpose)
+    ## "Normal" import with loading model files(.lst/.ctl) (according to xpose)
+    
     if(!alternative_import) {
       # List tables
       if (ext %in% c('.lst', '.out', '.res', '.mod', '.ctl')) {
@@ -146,7 +155,8 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       
     }
     
-    # Get model predictions
+    ## Get model predictions as data.table
+    
     tmp <- data$data[data$simtab == FALSE]
     tmp <- as.data.table(tmp)
     
@@ -154,7 +164,8 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       stop("Error, no data could be loaded")
     }
     
-    # Get covariates
+    ## Get covariates
+    
     index <- as.data.table(data$index[[1]])
     
     if(missing(conts)){
@@ -169,8 +180,12 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
 
 
   ## Rename variables to ggPMX nomenclature
+    
+  # Two functions are used to rename variables: check_nam_fun and naming_fun,
+  # main difference is that check_nam_fun uses patterns to recognize variables using grep, 
+  # whereas naming_fun is looking for the exact match
+  # probably this is possible to simplify for future versions...
   
-  ## Rename variables which cannot be specified in the pmx_nm() function, which rely on convetions
   # x = ggPMX nomenclature name
   # y = user defined name
   # z = substring which is used to "grep" variable name 
@@ -186,7 +201,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
         return(data)
       } else if (length(names(data)[grep(z,names(data))]) == 0) {
         y <- names(data)[grep(z,names(data))]
-        warning(paste(z,"not found in dataset! Please check naming of",x))
+        msg(paste(z,"not found in dataset! Please check naming of",x),quiet)
         return(data)
       } else{
         y <- names(data)[grep(z,names(data))]
@@ -212,8 +227,6 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       tmp$IWRES <- tmp[[iwres]]
     }
   
-  
-  ## Rename variables which can be specified in the pmx_nm() function
   # x = ggPMX nomenclature name
   # y = user defined name
   # data = dataset
@@ -239,14 +252,17 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     tmp <- naming_fun("TIME",time,tmp)
     tmp <- naming_fun("PRED",pred,tmp)
 
+    
   ## Handling of Simulation files
-  
+    
     sim_tmp <- data$data[data$simtab == TRUE]
     
-    if(!is.null(simfile)){
+    #if sim model file (e.g. sim.lst/.ctl) is provided make a vpc automatically
+    if(!is.null(simfile)){ 
       vpc <- TRUE
     }
     
+    #if sim model file (e.g. sim.lst/.ctl) is provided load simfile according xpose 
     dt_sim <- NULL    
     if(vpc & !is.null(simfile) & length(sim_tmp) == 0) {
     
@@ -290,11 +306,13 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
   
     dt_sim <- as.data.table(simdata$data)
   
-    } else if(length(sim_tmp) != 0 & vpc) {
+    } else if(length(sim_tmp) != 0 & vpc) { 
       dt_sim <- as.data.table(sim_tmp)
     }
   
-
+    
+    # Try to generate REP column if its not provided in the dataset
+    
   if(!is.null(dt_sim)){
     if(is.null(dt_sim$REP)){
       msg("No REP column found, try to generate REP column",quiet)
@@ -316,10 +334,11 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
         dt_sim <- NULL
         warning("No REP column found and REP column could not be generated, simulation data not loaded")
       }
-
     
   }
   
+    # Format simulation table to create simulaiton object for pmx (see down below ## Generate the Controller)
+    
     sim_name_vec <- c("REP","ID","TIME","DV")
     dt_sim <- dt_sim[,..sim_name_vec]
     dt_sim$ID <- as.factor(dt_sim$ID)
@@ -337,7 +356,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       }
     }
   
-  ## remove non-observation rows
+  ## remove non-observation rows according to EVID
   
   if(any("EVID"==names(tmp))) {
         tmp <- dplyr::filter(tmp,EVID==0) 
@@ -345,10 +364,12 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
   
   
   ## Generate "input" variable
+    
     input <- as.data.table(tmp)
     input_names <- names(input)
   
   ## Endpoint handling
+    
     endpoint <- if (missing(endpoint)) NULL else endpoint
   
     if(!is.null(endpoint)) {
@@ -370,8 +391,11 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
   
   ## Parse parameters from .ext. file using read_nmext() function
     
+    # Check if unqiue .ext file can be recognized accoridng to model file or runno
+    
     ext_file_exist_by_runno <- file.exists(file.path(directory,paste0(prefix,runno,".ext")))
     ext_file_exist_by_file  <- file.exists(file.path(directory,paste0(gsub(ext, "", file),".ext")))
+    
     if(ext_file_exist_by_runno) {
       ext_file <- paste0(prefix,runno,".ext")
     } else if(ext_file_exist_by_file){
@@ -379,6 +403,8 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     } else {
       ext_file <- list.files(path = directory, pattern = "\\.ext$")
     }
+    
+    # Check if there are multiple/ or no .ext files found in the directory (only problem if alternative reader is used --> reading without .lst/.ctl file or runno)
     
     if(length(ext_file) != 1) {
     if(length(ext_file) == 0) {
@@ -388,8 +414,12 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       ext_file <- ext_file[1]
     }
     }
+    
+    # Read .ext file
     parameters <- read_nmext(file = ext_file, project = directory, run = "")
   
+    
+    # Reformat omegas so that it fits pmx object
     momega <- parameters$omega
     domega <- as.double(diag(momega))
     names(domega) <- input_names[grepl("ETA", input_names)]
@@ -399,6 +429,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     )
   
   ## Formatting the output for the parameters
+    
     df_val <- as.data.frame(t(parameters$df)) #extract values form param list ITERATION -1E9
     df_se <- as.data.frame(t(parameters$df2)) #extract SE form param list ITERATION -100000001
   
@@ -416,13 +447,18 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     }
   
   
-  ## Generater the controller
+  ## Generate the controller
+    
+    # generating the simulation object for the simulation dataset
     if(!is.null(dt_sim)) {
       sim <- pmx_sim(data = dt_sim, idv = "TIME", irun = "REP")
     } else {
       sim = NULL
     }
-
+    
+    
+    # assign settings
+    
     if (!inherits(settings, "pmxSettingsClass")) {
       settings <- pmx_settings()
     }
