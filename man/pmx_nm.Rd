@@ -29,35 +29,35 @@ pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
 
 \item{dvid}{\emph{[Optional]} \code{character} observation type parameter, mandatory in case of multiple endpoint (PKPD). Standard = "DVID"}
 
-\item{pred}{\emph{[Optional]}\code{character} specifing variable name of the population prediction (standard ggPMX nomenclautre  = "PRED")}
+\item{pred}{\emph{[Optional]} \code{character} specifing variable name of the population prediction (standard ggPMX nomenclautre  = "PRED")}
 
-\item{time}{\emph{[Optional]}\code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")}
+\item{time}{\emph{[Optional]} \code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")}
 
 \item{dv}{\code{character} the name of measurable variable used in the input modelling file}
 
-\item{conts}{\emph{[Optional]}\code{character} vector of continuous covariates (automatically detected if "cotab" is provided)}
+\item{conts}{\emph{[Optional]} \code{character} vector of continuous covariates (automatically detected if "cotab" is provided)}
 
-\item{cats}{\emph{[Optional]}\code{character} vector of categorical covariates (automatically detected if "catab" is provided)}
+\item{cats}{\emph{[Optional]} \code{character} vector of categorical covariates (automatically detected if "catab" is provided)}
 
-\item{npde}{\emph{[Optional]}\code{character} specifing variable name of the normalized population predictor (standard ggPMX nomenclautre  = "NPDE")}
+\item{npde}{\emph{[Optional]} \code{character} specifing variable name of the normalized population predictor (standard ggPMX nomenclautre  = "NPDE")}
 
-\item{iwres}{\emph{[Optional]}\code{character} specifing variable name of the individual weighted residuals (standard ggPMX nomenclautre  = "IWRES")}
+\item{iwres}{\emph{[Optional]} \code{character} specifing variable name of the individual weighted residuals (standard ggPMX nomenclautre  = "IWRES")}
 
-\item{ipred}{\emph{[Optional]}\code{character} specifing variable name of the individual population prediction (standard ggPMX nomenclautre  = "IPRED")}
+\item{ipred}{\emph{[Optional]} \code{character} specifing variable name of the individual population prediction (standard ggPMX nomenclautre  = "IPRED")}
 
-\item{endpoint}{\code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL of the endpoint code. \code{\link{pmx_endpoint}}}
+\item{endpoint}{\emph{[Optional]} \code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL of the endpoint code. \code{\link{pmx_endpoint}}}
 
-\item{strats}{\emph{[Optional]}\code{character} extra stratification variables}
+\item{strats}{\emph{[Optional]} \code{character} extra stratification variables}
 
-\item{settings}{\emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}} shared between all plots}
+\item{settings}{\code{pmxSettingsClass} \code{\link{pmx_settings}} shared between all plots}
 
-\item{vpc}{\emph{[Optional]} \code{logical} a boolean indiacting if vpc should be calculated (by default \code{TRUE})}
+\item{vpc}{\code{logical} a boolean indiacting if vpc should be calculated, simulation tables are required for VPC generation (by default \code{TRUE})}
 
 \item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}}
 
-\item{obs}{\code{logical} the name of measurable variable used in the input modelling file}
+\item{obs}{\emph{[Optional]} \code{logical} the name of measurable variable used in the input modelling file}
 
-\item{simfile}{Usefull if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulaiion.lst"; similar to "file" see above.}
+\item{simfile}{Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.}
 
 \item{prefix}{Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.}
 

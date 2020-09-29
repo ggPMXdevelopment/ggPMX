@@ -1,3 +1,10 @@
+# The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+# The code was slightly adjusted to allow import without a model file (.lst/.ctl) (see alternative_import = TRUE)
+# Furthermore, manual table import is possible without using "manual_nm_import()" as a user specified parameter in the function.
+# Instead the user can specifiy manual tables in "table_names" (see tab_man_specified).
+# Additionally, it is possible to include a simulation model file (e.g. simfile = simulation.ctl) to load post-hoc simulations, if no run number is specified.
+# Reading the .ext files for parameters is done by using the read_nmext function (see read_nmext.R)
+
 #' Creates pmx controller from NONMEM model outputs
 #'
 #' @param runno run number which is used for generating the model file name, or used for alternative import of NONMEM-output tables. 
@@ -5,24 +12,24 @@
 #' @param directory directory of the model files.
 #' @param table_names Contains the names of the NONMEM-output tables e.g. "sdtab", "patab", "cotab", "catab".
 #' @param dvid \emph{[Optional]} \code{character} observation type parameter, mandatory in case of multiple endpoint (PKPD). Standard = "DVID"
-#' @param conts \emph{[Optional]}\code{character} vector of continuous covariates (automatically detected if "cotab" is provided)
-#' @param cats \emph{[Optional]}\code{character} vector of categorical covariates (automatically detected if "catab" is provided)
-#' @param strats \emph{[Optional]}\code{character} extra stratification variables
-#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL of the endpoint code. \code{\link{pmx_endpoint}}
-#' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}} shared between all plots
-#' @param vpc \emph{[Optional]} \code{logical} a boolean indiacting if vpc should be calculated (by default \code{TRUE})
-#' @param pred \emph{[Optional]}\code{character} specifing variable name of the population prediction (standard ggPMX nomenclautre  = "PRED")
+#' @param conts \emph{[Optional]} \code{character} vector of continuous covariates (automatically detected if "cotab" is provided)
+#' @param cats \emph{[Optional]} \code{character} vector of categorical covariates (automatically detected if "catab" is provided)
+#' @param strats \emph{[Optional]} \code{character} extra stratification variables
+#' @param endpoint \emph{[Optional]} \code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL of the endpoint code. \code{\link{pmx_endpoint}}
+#' @param settings \code{pmxSettingsClass} \code{\link{pmx_settings}} shared between all plots
+#' @param vpc \code{logical} a boolean indiacting if vpc should be calculated, simulation tables are required for VPC generation (by default \code{TRUE})
+#' @param pred \emph{[Optional]} \code{character} specifing variable name of the population prediction (standard ggPMX nomenclautre  = "PRED")
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
-#' @param obs \code{logical} the name of measurable variable used in the input modelling file
-#' @param time \emph{[Optional]}\code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")
+#' @param obs \emph{[Optional]} \code{logical} the name of measurable variable used in the input modelling file
+#' @param time \emph{[Optional]} \code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")
 #' @param file A character vector of path to the files or a \code{nm_table_list} object created with \code{list_nm_tables}.
 #' @param ext Extension to be used to generate model file name. Should be one of'.lst' (default), '.out', '.res', '.mod' or '.ctl' for NONMEM.
 #' @param sim_suffix suffix of the simulaiton output tables, standard is "sim" (e.g. stdab1sim).
-#' @param npde \emph{[Optional]}\code{character} specifing variable name of the normalized population predictor (standard ggPMX nomenclautre  = "NPDE")
-#' @param iwres \emph{[Optional]}\code{character} specifing variable name of the individual weighted residuals (standard ggPMX nomenclautre  = "IWRES")
-#' @param ipred \emph{[Optional]}\code{character} specifing variable name of the individual population prediction (standard ggPMX nomenclautre  = "IPRED")
-#' @param simfile Usefull if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulaiion.lst"; similar to "file" see above.
+#' @param npde \emph{[Optional]} \code{character} specifing variable name of the normalized population predictor (standard ggPMX nomenclautre  = "NPDE")
+#' @param iwres \emph{[Optional]} \code{character} specifing variable name of the individual weighted residuals (standard ggPMX nomenclautre  = "IWRES")
+#' @param ipred \emph{[Optional]} \code{character} specifing variable name of the individual population prediction (standard ggPMX nomenclautre  = "IPRED")
+#' @param simfile Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.
 #' @param prefix Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.
 #' @param quiet Logical, if \code{FALSE} messages are printed to the console.
 #'
