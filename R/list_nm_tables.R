@@ -1,8 +1,10 @@
+# The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+#
 #' List NONMEM output tables
 #'
 #' @description List NONMEM output tables file names from a \code{nm_model} object.
 #'
-#' @param nm_model An xpose nm_model object generated with \code{\link{read_nm_model}}.
+#' @param nm_model An nm_model object generated with \code{\link{read_nm_model}}.
 #'
 #' @seealso \code{\link{read_nm_model}}, \code{\link{read_nm_tables}}
 #' @examples

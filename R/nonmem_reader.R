@@ -1,4 +1,5 @@
 # The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+# Dependent on read_nm_tables.R, read_nm_files.R, read_nm_model.R, list_nmtables.R, manual_import.R and utils_nonmem_reader.R
 # The code was slightly adjusted to allow import without a model file (.lst/.ctl) (see alternative_import = TRUE)
 # Furthermore, manual table import is possible without using "manual_nm_import()" as a user specified parameter in the function.
 # Instead the user can specifiy manual tables in "table_names" (see tab_man_specified).

@@ -1,18 +1,9 @@
+# The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
 #' NONMEM model file parser
 #'
 #' @description Parse NONMEM model files in R format
 #' 
-#' @inheritParams xpose_data
-#' @inheritSection xpose_data File path generation
-#'
-#' @details 
-#' A NONMEM model output file (i.e. .lst, .out or .res) should preferably be provided to \code{read_nm_model} to allow for a more extensive xpose 
-#' summary. However in some cases these output files may not contain the model code, thus preventing xpose from identifying the associated output 
-#' tables names. In such cases xpose will attempt to read the associated model file (i.e. .mod or .ctl) instead to find the model code. Note: it 
-#' is important that between the naming convention between the NONMEM output and the model file remains consistent e.g. run001.lst should be 
-#' associated with run001.mod.
-#' 
-#' @seealso \code{\link{xpose_data}}, \code{\link{read_nm_tables}}
+#' @seealso \code{\link{read_nm_tables}}
 #' @return A \code{\link[dplyr]{tibble}} of class \code{model} containing the following columns: 
 #' \itemize{
 #'  \item{\strong{problem}}{: a numeric identifier for the $PROBLEM associated with the code.}

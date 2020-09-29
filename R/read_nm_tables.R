@@ -1,3 +1,7 @@
+# The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+# Adjustment to the original code: usermode is set to "usermode = TRUE" in order to improve this function for purposes of pmx_nm() (nonmem_reader.R)
+# In order to use this function seperatly, the use of the original function in the xpose package is advised.
+
 #' NONMEM output table import function
 #'
 #' @description Quickly import NONMEM output tables into R. This function automatically 
@@ -12,6 +16,8 @@
 #' @param simtab If \code{TRUE} only reads in simulation tables, if \code{FALSE} only reads estimation tables. 
 #' Default \code{NULL} reads all tables.
 #' @param ziptab If \code{TRUE} search for the tables that have been compressed and renamed ??<file>.zip'.
+#' @param user_mode Adjustment to the original code: usermode is set to "usermode = TRUE" in order to improve this function for purposes of pmx_nm() 
+#' (nonmem_reader.R), In order to use this function seperatly, the use of the original function in the xpose package is advised.
 #' @param ... Additional arguments to be passed to the \code{\link[readr]{read_table2}} or \code{\link[readr]{read_csv}} functions.
 #' 
 #' @section Table format requirement:
@@ -21,11 +27,17 @@
 #' to properly combine/merge tables and removing \code{NA} records. If the \code{ID} column is missing from a table and 
 #' \code{combined = FALSE} \code{read_nm_tables} will return the following warning: \code{Unknown variables: `ID`}. While
 #' the data is returned beware that \code{NA} records might be left in the data and the output should be checked carefully.
-#' If \code{combined = TRUE} \code{read_nm_tables} xpose is more strict and will return the following warning instead: 
+#' If \code{combined = TRUE} \code{read_nm_tables} is more strict and will return the following warning instead: 
 #' \code{Dropped `<tablenames>` due to missing required `ID` column.}.
 #' 
 #' @examples
 #' \dontrun{
+#' 
+#' # Adjustment to the original code: usermode is set to "usermode = TRUE" 
+#' # in order to improve this function for purposes of pmx_nm() (nonmem_reader.R)
+#' # In order to use this function seperatly, the use of the original function in 
+#' # the xpose package is advised.
+#' 
 #' # Import tables manually and return them as a list of individual tables
 #' nm_tables <- read_nm_tables(file = c('sdtab001', 'patab001'), 
 #'                             dir = 'models', combined = FALSE)
@@ -33,17 +45,6 @@
 #' # Import tables manually and return them as a single merged table
 #' nm_tables <- read_nm_tables(file = c('sdtab001', 'patab001'), 
 #'                             dir = 'models', combined = TRUE)
-#' 
-#' # Import tables automatically (used internally by xpose_data())
-#' nm_tables <- read_nm_model(file = 'run001.lst', dir = 'models') %>% 
-#'               list_nm_tables() %>% 
-#'               read_nm_tables()
-#' 
-#' # Passing arguments to readr via `...` 
-#' # (e.g. import columns as character and only first 10 rows)
-#' nm_tables <- read_nm_tables(file = 'sdtab001', dir = 'models', 
-#'                             col_type = readr::cols(.default = 'c'), 
-#'                             n_max = 10)
 #' 
 #' }
 #' @export

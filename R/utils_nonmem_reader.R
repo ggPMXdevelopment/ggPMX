@@ -1,3 +1,6 @@
+# The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+# Utils needed for the pmx_nm()
+
 #' Test for nm_table_list class
 #' 
 #' @description Reports whether x is a `nm_table_list` object

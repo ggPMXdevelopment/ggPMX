@@ -1,4 +1,5 @@
-
+# The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+#
 #' NONMEM output file import function
 #'
 #' @description Quickly import NONMEM output files into R.
@@ -12,8 +13,7 @@
 #' @param dir Location of the model files.
 #' @param quiet Logical, if \code{FALSE} messages are printed to the console.
 #' 
-#' @inheritSection xpose_data File path generation
-#' @seealso \code{\link{xpose_data}}, \code{\link{read_nm_tables}}
+#' @seealso \code{\link{read_nm_tables}}
 #' @examples
 #' \dontrun{
 #' # Using the `file` argument to import a model file:
