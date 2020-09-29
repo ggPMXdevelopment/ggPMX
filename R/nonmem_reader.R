@@ -26,10 +26,10 @@
 #' @param prefix Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.
 #' @param quiet Logical, if \code{FALSE} messages are printed to the console.
 #'
-#' @return
+#' @return \code{pmxClass} controller object.
 #' @export
 #'
-#' @examples 
+#' @example inst/examples/pmx_nm.R
 pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_suffix="", sim_suffix="sim", 
                   table_names=c("sdtab","mutab","patab","catab","cotab","mytab","extra","xptab","cwtab"), dvid = "DVID", 
                   pred = "PRED", time = "TIME", dv = "DV", conts, cats, npde, iwres, ipred, endpoint, strats="",  
@@ -416,7 +416,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     }
     
     # Read .ext file
-    parameters <- read_nmext(file = ext_file, project = directory, run = "")
+    parameters <- read_nmext(file = ext_file, project = directory, run = "", quiet = quiet)
   
     
     # Reformat omegas so that it fits pmx object
