@@ -90,13 +90,12 @@ pmx <-
     ll <- list.files(directory)
     
     input <- check_argument(input, "input")
-    dv <- check_argument(dv, "dv")
-    ## dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
     if (missing(sim)) sim <- NULL
     if (missing(endpoint)) {
       endpoint <- NULL
     }
+    if (missing(config)) config <- "standing"
     assert_that(is_character_or_null(cats))
     if (missing(conts)) conts <- ""
     assert_that(is_character_or_null(conts))
@@ -104,6 +103,9 @@ pmx <-
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
+    
+    if (missing(dv)) dv <- "DV"
+    if (missing(dvid)) dvid <- "DVID"
 
     if (!inherits(config, "pmxConfig")) {
       if ("populationParameters.txt" %in% list.files(directory)) sys <- "mlx18"

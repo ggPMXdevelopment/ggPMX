@@ -163,6 +163,10 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       
     }
     
+    ## Store file variable for getting the .ext file (used later in read_nmext)
+    
+    file_tab <- file
+    
     ## Get model predictions as data.table
     
     tmp <- data$data[data$simtab == FALSE]
@@ -402,12 +406,12 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     # Check if unqiue .ext file can be recognized accoridng to model file or runno
     
     ext_file_exist_by_runno <- file.exists(file.path(directory,paste0(prefix,runno,".ext")))
-    ext_file_exist_by_file  <- file.exists(file.path(directory,paste0(gsub(ext, "", file),".ext")))
+    ext_file_exist_by_file  <- file.exists(file.path(directory,paste0(gsub(ext, "", file_tab),".ext")))
     
     if(ext_file_exist_by_runno) {
       ext_file <- paste0(prefix,runno,".ext")
     } else if(ext_file_exist_by_file){
-      ext_file <- paste0(gsub(ext, "", file),".ext")
+      ext_file <- paste0(gsub(ext, "", file_tab),".ext")
     } else {
       ext_file <- list.files(path = directory, pattern = "\\.ext$")
     }
