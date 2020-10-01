@@ -121,7 +121,8 @@ before_add_check <- function(self, private, x, pname) {
   if (!is.null(self$settings)) {
     x$gp$is.draft <- self$settings$is.draft
     x$gp$color.scales <- self$settings$color.scales
-    if ("use.abbrev" %in% names(self$settings) && self$settings$use.abbrev) {
+    ## If use.abbrev = TRUE - show abbreviation, else full description
+    if ("use.abbrev" %in% names(self$settings) && !self$settings$use.abbrev) {
       x$gp$labels$x <- self %>% get_abbrev(x$gp$labels$x)
       x$gp$labels$y <- self %>% get_abbrev(x$gp$labels$y)
     }

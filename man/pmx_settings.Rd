@@ -6,7 +6,7 @@
 \usage{
 pmx_settings(
   is.draft = TRUE,
-  use.abbrev = FALSE,
+  use.abbrev = TRUE,
   color.scales = NULL,
   cats.labels = NULL,
   use.labels = FALSE,
@@ -18,7 +18,7 @@ pmx_settings(
 \arguments{
 \item{is.draft}{\code{logical} if FALSE any plot is without draft annotation}
 
-\item{use.abbrev}{\code{logical} if TRUE use abbreviations mapping for axis names}
+\item{use.abbrev}{\code{logical} if FALSE use full description from abbreviation mapping for axis names}
 
 \item{color.scales}{\code{list} list containing elements of scale_color_manual}
 
