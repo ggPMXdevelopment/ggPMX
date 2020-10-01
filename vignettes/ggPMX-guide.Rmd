@@ -1,11 +1,11 @@
 ---
 title: "ggPMX - User Guide"
 output:
-  word_document:
-    toc: yes
-    toc_depth: '3'
   html_document:
     df_print: paged
+    toc: yes
+    toc_depth: '3'
+  word_document:
     toc: yes
     toc_depth: '3'
   pdf_document:
@@ -97,8 +97,8 @@ The Reporter creates one report per endpoint, i.e., one report for PK and one fo
 For the sake of this document, three types of datasets are defined.
 
 * The *input modeling dataset* is the one used for model fitting (the actual data). There are no particular requirements regarding this dataset. (Only in Monolix)
-* The *output modeling datasets* are those output from the fitting tool (Monolix, NONMEM or nlmixr). For version 1.0 of ggPMX, these datasets have to follow the structure of outputs of Monolix 2016 or 2018 (See Appendix for more details on Monolix requirements).  A "standard" format for nlmixr output datasets will be defined for the the ggPMX version that allows usage of nlmixr as the fitting software.
-* The *ggPMX datasets* are the ones created within (internal to) ggPMX. More details on the ggPMX datasets can be found in Section 2.4.3.
+* The *output modeling datasets* are those output from the fitting tool (Monolix, NONMEM or nlmixr). For version 1.0 of ggPMX, these datasets have to follow the structure of outputs of Monolix 2016 or 2018 (See Appendix for more details on Monolix requirements).
+* The *ggPMX datasets* are the ones created within (internal to) ggPMX.
 
 
 # Controller
@@ -396,11 +396,6 @@ The following syntax allows to see which type of plot corresponds to which plot 
 ctr %>% plots()
 ```
 
-
-### Datasets
-
-`ggPMX` uses the following dataset name convention. The *input modeling dataset* is the one used for model fitting (the actual data) (only for Monolix). The *output modeling datasets* are those output from the fitting tool (Monolix,NONMEM or nlmixr). The *ggPMX datasets* are the ones created within ggPMX. Table \ref{tab:ggPMX_datasets} provides a list of all ggPMX datasets.
-
 ```{r datasets_list,echo=FALSE,results='asis'}
 
 out <- rbind(
@@ -484,18 +479,44 @@ ctr %>% pmx_plot_eta_matrix
 ## Initialization
 
 In order to generate VPCs a simulation dataset is requried. Creation of VPC is slightly different dependening on the fitting software used (Monolix, NONMEM or nlmixr).
-Reaassigning the ID, adding simdata2 to the vignette
 
 ### Models fitted with Monolix (versions 2016 and later) 
 
+Monolix users, need to run a simulation with simulx. Here's an example code
+
+```{r, eval = FALSE}
+## Create simulated object using simulx
+mysim <- simulx(project=project_dir, nrep=100) #
+## Retrieve simulated dataset (assumed to be in y1)
+simdata <- mysim$LIDV
+```
+
+For use with ggPMX, it is required that the IDs are reverted to the original IDs as in the modelling dataset for ggPMX.
+
+```{r, eval = FALSE}
+## Need to revert the original IDs as in modeling dataset for ggPMX
+## Rename IDs column to same name as in modeling dataset, e.g.
+## ???id??? in the example below
+simdata2 <- simdata %>% 
+  mutate(newId = as.numeric(as.character(id))) %>%
+  left_join(., mysim$originalId) %>%
+  mutate(id = as.numeric(as.character(oriId))) %>%
+  select(-oriId, -newId) %>%
+  data.table::data.table()
+
+## It's highly recommended to store your simulation as .csv
+vpc_file <- write.csv(simdata2, file = "my_VPC.csv", quote=FALSE, row.names = FALSE)
+```
+
 `pmx_sim` creates a simulation object. It takes the following arguments:
 
-Arguments
+Argumentss
 
 1. **file**	character path to the simulation file
 2. **irun**	character name of the simulation column
 3. **idv**	character name of the ind. variable
 4. **dv**	character name of the observation variable
+
 
 Within pmx vpc controller, it is called like : 
 
@@ -534,8 +555,7 @@ ctr <- pmx_mlx(
 
 ### Models fitted with NONMEM (versions 7.2 and later) 
 
-It is required to provide simulation tables to generate VPCs. Furthermore, it is highly recommended that simulation tables have a "sim"-suffix and are kept with the same naming convetion as for the prediction tables (e.g sdtab001sim, catab001sim)). In this case they're automatically recognized by the runnumber (runno) or 
-by the model file if specified there. For post-hoc simulation it is possible to include an additional simfile:
+It is required to provide simulation tables to generate VPCs. Furthermore, it is highly recommended that simulation tables have a "sim"-suffix and are kept with the same naming convetion as for the prediction tables (e.g sdtab001sim, catab001sim)). In this case they're automatically recognized by the runnumber (runno) or by the model file if specified there. For post-hoc simulation it is possible to include an additional simfile:
 
 ```{r, eval = FALSE}
 ctr <- pmx_nm(
@@ -545,6 +565,17 @@ ctr <- pmx_nm(
 )
 ```
 
+### Models fitted with nlmixr
+
+For nlmixr users, the VPC is generated automatically with the controller creation and turned on by default `vpc = TRUE`.
+
+```{r, eval = FALSE}
+ctr <- pmx_nlmixr(fit) ## VPC will be generated automatically, vpc = TRUE
+
+ctr <- pmx_nlmixr(fit, 
+                  vpc = FALSE ## But can be turned off
+)
+```
 
 ## VPC plot
 

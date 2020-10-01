@@ -4,7 +4,7 @@
 # Furthermore, manual table import is possible without using "manual_nm_import()" as a user specified parameter in the function.
 # Instead the user can specifiy manual tables in "table_names" (see tab_man_specified).
 # Additionally, it is possible to include a simulation model file (e.g. simfile = simulation.ctl) to load post-hoc simulations, if no run number is specified.
-# Reading the .ext files for parameters is done by using the read_nmext function (see read_nmext.R)
+# Reading the .ext files for parameters is done by using the read_extfile function (see read_extfile.R)
 
 #' Creates pmx controller from NONMEM model outputs
 #'
@@ -33,6 +33,8 @@
 #' @param simfile Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.
 #' @param prefix Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.
 #' @param quiet Logical, if \code{FALSE} messages are printed to the console.
+#' 
+#' @author Seid Hamzic, Benjamin Guiastrennec
 #'
 #' @return \code{pmxClass} controller object.
 #' @export
@@ -163,7 +165,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       
     }
     
-    ## Store file variable for getting the .ext file (used later in read_nmext)
+    ## Store file variable for getting the .ext file (used later in read_extfile)
     
     file_tab <- file
     
@@ -401,7 +403,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     eta <- as.data.table(eta)
   
   
-  ## Parse parameters from .ext. file using read_nmext() function
+  ## Parse parameters from .ext. file using read_extfile() function
     
     # Check if unqiue .ext file can be recognized accoridng to model file or runno
     
@@ -428,7 +430,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     }
     
     # Read .ext file
-    parameters <- read_nmext(file = ext_file, project = directory, run = "", quiet = quiet)
+    parameters <- read_extfile(file = ext_file, project = directory, run = "", quiet = quiet)
   
     
     # Reformat omegas so that it fits pmx object

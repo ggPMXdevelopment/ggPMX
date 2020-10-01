@@ -97,3 +97,6 @@ ctr <- pmx_nm(directory = model_dir,
               table_names = "xptab")
 }
 }
+\author{
+Seid Hamzic, Benjamin Guiastrennec
+}
