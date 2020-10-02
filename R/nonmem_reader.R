@@ -34,7 +34,7 @@
 #' @param prefix Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.
 #' @param quiet Logical, if \code{FALSE} messages are printed to the console.
 #' 
-#' @author Seid Hamzic, Benjamin Guiastrennec
+#' @author The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
 #'
 #' @return \code{pmxClass} controller object.
 #' @export
@@ -45,6 +45,9 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
                   pred = "PRED", time = "TIME", dv = "DV", conts, cats, npde, iwres, ipred, endpoint, strats="",  
                   settings = pmx_settings(), vpc = TRUE, bloq = NULL, obs = FALSE, simfile = NULL, prefix = "run", quiet = FALSE) {
   
+  ## Avoid error message in cmd check
+  
+  MDV <- EVID <- DVID <- PARAM <- NULL
   
   ## Configuration for ggPMX
   
@@ -168,6 +171,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     ## Store file variable for getting the .ext file (used later in read_extfile)
     
     file_tab <- file
+    ext_tab <- ext
     
     ## Get model predictions as data.table
     
@@ -349,12 +353,10 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
         warning("No REP column found and REP column could not be generated, simulation data not loaded")
       }
     
-  }
+    }
   
     # Format simulation table to create simulaiton object for pmx (see down below ## Generate the Controller)
-    
-    sim_name_vec <- c("REP","ID","TIME","DV")
-    dt_sim <- dt_sim[,..sim_name_vec]
+    dt_sim <- dt_sim[,c("REP","ID","TIME","DV")]
     dt_sim$ID <- as.factor(dt_sim$ID)
   }
   
@@ -408,12 +410,12 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     # Check if unqiue .ext file can be recognized accoridng to model file or runno
     
     ext_file_exist_by_runno <- file.exists(file.path(directory,paste0(prefix,runno,".ext")))
-    ext_file_exist_by_file  <- file.exists(file.path(directory,paste0(gsub(ext, "", file_tab),".ext")))
-    
+    ext_file_exist_by_file  <- file.exists(file.path(directory,paste0(gsub(ext_tab, "", file_tab),".ext")))
+
     if(ext_file_exist_by_runno) {
       ext_file <- paste0(prefix,runno,".ext")
     } else if(ext_file_exist_by_file){
-      ext_file <- paste0(gsub(ext, "", file_tab),".ext")
+      ext_file <- paste0(gsub(ext_tab, "", file_tab),".ext")
     } else {
       ext_file <- list.files(path = directory, pattern = "\\.ext$")
     }
@@ -431,8 +433,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     
     # Read .ext file
     parameters <- read_extfile(file = ext_file, project = directory, run = "", quiet = quiet)
-  
-    
+
     # Reformat omegas so that it fits pmx object
     momega <- parameters$omega
     domega <- as.double(diag(momega))

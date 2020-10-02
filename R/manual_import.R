@@ -32,6 +32,7 @@ manual_nm_import <- function(tab_names = c('sdtab', 'mutab', 'patab', 'catab', '
 #' @keywords internal
 #' @export
 list_nm_tables_manual <- function(runno = NULL, file = NULL, dir = NULL, tab_list) {
+  . <- NULL
   if (is.null(runno)) {
     # Attempt to guess runno if file has been used
     runno <- stringr::str_match(string = update_extension(file, ''), 

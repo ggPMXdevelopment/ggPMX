@@ -70,33 +70,30 @@ pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
 Creates pmx controller from NONMEM model outputs
 }
 \examples{
-\donttest{
-
 ## using only runnumber 
-ctr <- pmx_nm(
-  directory=model_dir,
-  runno = "001" 
-)
+# ctr <- pmx_nm(
+#  directory=model_dir,
+#  runno = "001" 
+#)
 
 ## using a model file (e.g. run001.lst)
-ctr <- pmx_nm(
-  directory=model_dir,
-  file = "run001.lst" 
-)
+#ctr <- pmx_nm(
+#  directory=model_dir,
+#  file = "run001.lst" 
+#)
 
 ## if simulation was performed post-hoc, an additional simulation file can be loaded for VPC
-ctr <- pmx_nm(
-  directory=model_dir,
-  file = "run001.lst", 
-  simfile = "simulation.ctl"
-)
+#ctr <- pmx_nm(
+#  directory=model_dir,
+#  file = "run001.lst", 
+#  simfile = "simulation.ctl"
+#)
 
 ## loading with individual table(s)-names
-ctr <- pmx_nm(directory = model_dir,
-              runno = 3, 
-              table_names = "xptab")
-}
+#ctr <- pmx_nm(directory = model_dir,
+#              runno = 3, 
+#              table_names = "xptab")
 }
 \author{
-Seid Hamzic, Benjamin Guiastrennec
+The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
 }

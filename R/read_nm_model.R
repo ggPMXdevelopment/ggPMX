@@ -16,6 +16,12 @@
 #'  \item{\strong{comment}}{: the last comment of a record e.g. '0.5 ; Clearance (L/h) ; TVCL' will return 'TVCL'.}
 #' }
 #' 
+#' @param runno run number which is used for generating the model file name
+#' @param prefix Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.
+#' @param ext Extension to be used to generate model file name. Should be one of'.lst' (default), '.out', '.res', '.mod' or '.ctl' for NONMEM.
+#' @param file A character vector of path to the files or a \code{nm_table_list} object created with \code{list_nm_tables}.
+#' @param dir directory of the model files.
+#' 
 #' @examples
 #' \dontrun{
 #' # Using the `file` argument to import a model file:
@@ -32,6 +38,8 @@ read_nm_model <- function(runno   = NULL,
                           ext     = '.lst',
                           file    = NULL,
                           dir     = NULL) {
+  
+  . <- NULL
   
   if (is.null(runno) && is.null(file)) {
     stop('Argument `runno` or `file` required.', call. = FALSE)

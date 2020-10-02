@@ -16,6 +16,8 @@
 #' @export
 list_nm_tables <- function(nm_model = NULL) {
   
+  . <- NULL
+  
   if (is.null(nm_model) || !is.nm.model(nm_model)) {
     stop('Object of class `nm_model` required.', call. = FALSE)
   }

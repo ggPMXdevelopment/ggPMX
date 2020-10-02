@@ -30,6 +30,8 @@ read_nm_files <- function(runno  = NULL,
                           dir    = NULL,
                           quiet  = FALSE) {
   
+  . <- NULL
+  
   # Check inputs
   if (is.null(runno) && is.null(file)) {
     stop('Argument `runno` or `file` required.', call. = FALSE)
@@ -94,6 +96,7 @@ read_nm_files <- function(runno  = NULL,
 #' @keywords internal
 #' @export
 parse_nm_files <- function(dat, quiet) {
+  . <- NULL
   if (length(unlist(dat$raw)) == 0) {
     tab_rows <- NULL 
   } else {
@@ -161,6 +164,7 @@ parse_nm_files <- function(dat, quiet) {
 #' @keywords internal
 #' @export
 raw_to_tibble <- function(x, sep, file) {
+  . <- NULL
   header <- x$raw[x$header] %>% 
     stringr::str_split(pattern = sep) %>% 
     purrr::flatten_chr()

@@ -57,6 +57,8 @@ read_nm_tables <- function(file          = NULL,
                            ziptab        = TRUE,
                            user_mode     = TRUE,
                            ...) {
+  . <- NULL
+  
   # Check inputs
   if (is.null(file)) stop('Argument `file` required.', call. = FALSE)
   
@@ -412,6 +414,7 @@ merge_firstonly <- function(x, quiet) {
 #' @keywords internal
 #' @export
 index_table <- function(x) {
+  . <- NULL
   tab_type <- dplyr::case_when(
     stringr::str_detect(x$name, 'patab') ~ 'param',   # model parameters
     stringr::str_detect(x$name, 'catab') ~ 'catcov',  # categorical covariate

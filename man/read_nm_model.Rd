@@ -7,6 +7,17 @@
 read_nm_model(runno = NULL, prefix = "run", ext = ".lst",
   file = NULL, dir = NULL)
 }
+\arguments{
+\item{runno}{run number which is used for generating the model file name}
+
+\item{prefix}{Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.}
+
+\item{ext}{Extension to be used to generate model file name. Should be one of'.lst' (default), '.out', '.res', '.mod' or '.ctl' for NONMEM.}
+
+\item{file}{A character vector of path to the files or a \code{nm_table_list} object created with \code{list_nm_tables}.}
+
+\item{dir}{directory of the model files.}
+}
 \value{
 A \code{\link[dplyr]{tibble}} of class \code{model} containing the following columns: 
 \itemize{
