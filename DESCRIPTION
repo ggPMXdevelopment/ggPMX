@@ -47,7 +47,8 @@ Imports:
     purrr,
     readr,
     rlang,
-    tibble
+    tibble,
+    checkmate
 License: GPL-2
 LazyData: true
 Suggests:
