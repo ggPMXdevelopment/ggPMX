@@ -4,7 +4,7 @@
 \alias{pmx_vpc_bin}
 \title{Creates vpc bins}
 \usage{
-pmx_vpc_bin(style, within_strat = FALSE, ...)
+pmx_vpc_bin(style, within_strat = TRUE, ...)
 }
 \arguments{
 \item{style}{\code{character} style    chosen on of the:\cr
@@ -22,12 +22,9 @@ Creates vpc bins
 This is a warraper to
 }
 \seealso{
-Other vpc: 
-\code{\link{pmx_plot_vpc}()},
-\code{\link{pmx_vpc_ci}()},
-\code{\link{pmx_vpc_obs}()},
-\code{\link{pmx_vpc_pi}()},
-\code{\link{pmx_vpc_rug}()},
-\code{\link{pmx_vpc}()}
+Other vpc: \code{\link{pmx_plot_vpc}},
+  \code{\link{pmx_vpc_ci}}, \code{\link{pmx_vpc_obs}},
+  \code{\link{pmx_vpc_pi}}, \code{\link{pmx_vpc_rug}},
+  \code{\link{pmx_vpc}}
 }
 \concept{vpc}

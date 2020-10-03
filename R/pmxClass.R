@@ -61,7 +61,7 @@ check_argument <- function(value, pmxname) {
 #' @param config Can be either :
 #' The complete path for the configuration file, the name of configuration within the built-in
 #' list of configurations, or a configuration object.
-#' @param sys the system name can be MLX/NM
+#' @param sys the system name can be only "mlx"
 #' @param directory \code{character} modelling output directory.
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
@@ -73,7 +73,7 @@ check_argument <- function(value, pmxname) {
 #' @param strats \emph{[Optional]}\code{character} extra stratification variables
 #' @param settings \emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 #' shared between all plots
-#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} defalut to NULL
+#' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
@@ -84,19 +84,18 @@ check_argument <- function(value, pmxname) {
 #' @export
 #' @example inst/examples/controller.R
 pmx <-
-  function(config, sys = c("mlx", "nm"), directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
+  function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
              settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
     
     input <- check_argument(input, "input")
-    dv <- check_argument(dv, "dv")
-    ## dvid <- check_argument(dvid, "dvid")
     if (missing(cats)) cats <- ""
     if (missing(sim)) sim <- NULL
     if (missing(endpoint)) {
       endpoint <- NULL
     }
+    if (missing(config)) config <- "standing"
     assert_that(is_character_or_null(cats))
     if (missing(conts)) conts <- ""
     assert_that(is_character_or_null(conts))
@@ -104,6 +103,9 @@ pmx <-
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
+    
+    if (missing(dv)) dv <- "DV"
+    if (missing(dvid)) dvid <- "DVID"
 
     if (!inherits(config, "pmxConfig")) {
       if ("populationParameters.txt" %in% list.files(directory)) sys <- "mlx18"
@@ -887,7 +889,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
     self$sim <- sim
   }
-
+  
   if (config$sys == "nlmixr") {
     self$data$predictions <- input
     self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input
@@ -896,7 +898,16 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$has_re <- TRUE
   }
 
-
+  if (config$sys == "nm") {
+    self$data$predictions <- input
+    self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input
+    self$data$eta <- config$eta
+    self$data$omega <- config$omega
+    self$has_re <- TRUE
+    self$bloq <- bloq
+    self$data$estimates <- config$parameters
+  }
+  
   ## abbrev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"

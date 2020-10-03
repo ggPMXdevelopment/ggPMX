@@ -4,13 +4,9 @@
 \alias{pmx_vpc_ci}
 \title{Sets vpc confidence interval layer}
 \usage{
-pmx_vpc_ci(
-  show = c("all", "median"),
-  interval = c(0.025, 0.975),
-  method = c("ribbon", "rectangle"),
-  median = list(fill = "red", alpha = 0.3),
-  extreme = list(fill = "#3388cc", alpha = 0.3)
-)
+pmx_vpc_ci(show = c("all", "median"), interval = c(0.025, 0.975),
+  method = c("ribbon", "rectangle"), median = list(fill = "red", alpha
+  = 0.3), extreme = list(fill = "#3388cc", alpha = 0.3))
 }
 \arguments{
 \item{show}{\code{charcater} how areas are displayed:
@@ -43,12 +39,9 @@ pmx_vpc_ci(
 Sets vpc confidence interval layer
 }
 \seealso{
-Other vpc: 
-\code{\link{pmx_plot_vpc}()},
-\code{\link{pmx_vpc_bin}()},
-\code{\link{pmx_vpc_obs}()},
-\code{\link{pmx_vpc_pi}()},
-\code{\link{pmx_vpc_rug}()},
-\code{\link{pmx_vpc}()}
+Other vpc: \code{\link{pmx_plot_vpc}},
+  \code{\link{pmx_vpc_bin}}, \code{\link{pmx_vpc_obs}},
+  \code{\link{pmx_vpc_pi}}, \code{\link{pmx_vpc_rug}},
+  \code{\link{pmx_vpc}}
 }
 \concept{vpc}

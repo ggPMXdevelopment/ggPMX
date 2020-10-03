@@ -3,6 +3,7 @@
 \docType{package}
 \name{ggPMX}
 \alias{ggPMX}
+\alias{ggPMX-package}
 \title{ggPMX: A ggplot2 toolbox for Nonlinear Mixed-Effect Model graphical}
 \description{
 This package aims to generate diagnostic plots in a standard way. The tool reads data

@@ -6,51 +6,23 @@
 \alias{pmx_mlxtran}
 \title{Create a pmx object}
 \usage{
-pmx(
-  config,
-  sys = c("mlx", "nm"),
-  directory,
-  input,
-  dv,
-  dvid,
-  cats = NULL,
-  conts = NULL,
-  occ = NULL,
-  strats = NULL,
-  settings = NULL,
-  endpoint = NULL,
-  sim = NULL,
-  bloq = NULL,
-  id = NULL,
-  time = NULL
-)
+pmx(config, sys = "mlx", directory, input, dv, dvid, cats = NULL,
+  conts = NULL, occ = NULL, strats = NULL, settings = NULL,
+  endpoint = NULL, sim = NULL, bloq = NULL, id = NULL,
+  time = NULL)
 
-pmx_mlx(
-  config,
-  directory,
-  input,
-  dv,
-  dvid,
-  cats,
-  conts,
-  occ,
-  strats,
-  settings,
-  endpoint,
-  sim,
-  bloq,
-  id,
-  time
-)
+pmx_mlx(config, directory, input, dv, dvid, cats, conts, occ, strats,
+  settings, endpoint, sim, bloq, id, time)
 
-pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint, ...)
+pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint,
+  ...)
 }
 \arguments{
 \item{config}{Can be either :
 The complete path for the configuration file, the name of configuration within the built-in
 list of configurations, or a configuration object.}
 
-\item{sys}{the system name can be MLX/NM}
+\item{sys}{the system name can be only "mlx"}
 
 \item{directory}{\code{character} modelling output directory.}
 
@@ -72,7 +44,7 @@ in case of multiple endpoint (PKPD).}
 \item{settings}{\emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 shared between all plots}
 
-\item{endpoint}{\code{pmxEndpointClass} or \code{integer} or \code{charcater} defalut to NULL
+\item{endpoint}{\code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL
 of the endpoint code.   \code{\link{pmx_endpoint}}}
 
 \item{sim}{\code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}}

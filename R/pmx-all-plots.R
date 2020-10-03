@@ -36,7 +36,6 @@ wrap_pmx_plot_generic <-
     if (!exists("bloq", params) && !is.null(ctr$bloq)) {
       params$defaults_[["bloq"]] <- ctr$bloq
     }
-
     pp <- do.call(pmx_plot_generic, params)
     if (ctr$footnote && !is.null(pp)) {
       ctr$enqueue_plot(pname)
