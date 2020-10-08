@@ -885,7 +885,12 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         call. = FALSE
       )
     }
-
+    if (inherits(dx$ID,"factor") & !inherits(inn$ID,"factor")) {
+      inn$ID <- factor(inn$ID, levels=levels(dx$ID))
+    }
+    if (!inherits(dx$ID, "factor") & inherits(inn$ID, "factor")) {
+      dx$ID <- factor(dx$ID, levels=levels(inn$ID))    
+    }
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
     self$sim <- sim
   }
