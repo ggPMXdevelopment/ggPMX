@@ -54,7 +54,7 @@ pmx_dens <- function(
                      vline = NULL,
                      ...) {
   assert_that(is_string_or_null(dname))
-  if (is.null(dname)) dname <- "predictions"
+  if (is.null(dname)) dname <- "notspecified"
 
 
   if (missing(labels)) {

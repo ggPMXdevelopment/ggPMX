@@ -260,7 +260,6 @@ vpc.data <-
            rug = NULL) {
     zmax <- zmin <- out_ <- value <- percentile <- NULL
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
-    
     if (type == "percentile") {
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
       res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
@@ -269,7 +268,6 @@ vpc.data <-
         probs = probs.ci, grp = c("percentile", idv, strat),
         prefix = "CL", ind = "value", wide = TRUE
       )
-      
       res <- list(ci_dt = ci,pi_dt = pi)
       nn <- sum(grepl("CL", names(ci)))
       if (nn==3){
@@ -337,7 +335,8 @@ find_interval <- function(x, vec, labels = NULL, ...) {
         rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
       }
     }
-    res <- vpc.data(#check original daten
+    
+    res <- vpc.data(
       x[["type"]],
       x$input,
       x$dx,

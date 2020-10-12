@@ -24,9 +24,6 @@ pmx_comp_shrink <-
 
     cctr <- pmx_copy(ctr)
 
-
-
-
     eta <- cctr %>% get_data("eta")
 
     ## filtering
@@ -67,8 +64,7 @@ pmx_comp_shrink <-
     dx <- merge(eta, omega, by = "EFFECT")
 
     by <- setdiff(names(dx), c("EBE", "ID"))
-
-
+    
     dx[, {
       coef <- if (fun == "sd") OMEGA else OMEGA^2
       shrink <- 1 - get(fun)(EBE) / coef

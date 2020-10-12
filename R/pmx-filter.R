@@ -21,7 +21,8 @@ pmx_filter <-
                "finegrid",
                "shrink",
                "input",
-               "individual"
+               "individual",
+               "merged_sim_blq"
              ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)

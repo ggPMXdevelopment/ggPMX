@@ -1,17 +1,17 @@
 ---
 title: "ggPMX - User Guide"
 output:
-  html_document:
-    df_print: paged
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
     toc: yes
     toc_depth: '3'
   word_document:
     toc: yes
     toc_depth: '3'
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    number_sections: yes
+  html_document:
+    df_print: paged
     toc: yes
     toc_depth: '3'
 date: "`r Sys.Date()`"
@@ -23,7 +23,6 @@ vignette: >
 \clearpage  
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
-library(ggPMX)
 library(ggplot2)
 library(xtable)
 library(knitr)

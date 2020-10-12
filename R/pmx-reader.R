@@ -344,8 +344,32 @@ read_mlx18_res <- function(path, x, ...) {
 
   ds <- pmx_fread(file_path)
   if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
+  if(x$pattern == "_obsVsPred") {
+    xnames <- names(x[["names"]])
+    yname <- substring(ffiles, regexpr("s/", ffiles) + 2)
+    yname <- sub("_obsVsPred.txt", "", yname)
+    names(x[["names"]])[which(xnames == "y_simBlq_mean")] <- paste0(yname,"_simBlq_mean")
+  }
   ids <- match(tolower(names(x[["names"]])), tolower(names(ds)))
-  new_vars <- names(x[["names"]])
+
+  if(!is.null(x[["newnames"]])) {
+    new_vars <- names(x[["newnames"]])
+  } else {
+    new_vars <- names(x[["names"]])
+  }
+  
+  occ <- list(...)$occ
+  if (is.null(occ)) occ <- ""
+  if ("OCC" %in% names(ds)) {
+    new_vars <- c(new_vars, "OCC")
+    ids <- c(ids,grep("OCC", names(ds)))
+  }
+  
+  if (occ != "" && !"OCC" %in% names(ds)) {
+    new_vars <- c(new_vars, "OCC")
+    ids <- c(ids,grep(occ, names(ds)))
+  }
+  
   setnames(ds, ids, new_vars)
   ds[, new_vars, with = FALSE]
 }
@@ -371,6 +395,7 @@ read_mlx18_pred <- function(path, x, ...) {
       return(NULL)
     }
     ds <- merge(ds, resi, by = c("ID", "TIME"))
+    
   }
   ds
 }
@@ -468,7 +493,6 @@ load_source <- function(sys, path, dconf, ...) {
     if(!is.null(list(...)$id)) x$id <- list(...)$id
     load_data_set(x, path = path, sys = sys, ...)
   }, dconf, names(dconf))
-
 
   dxs
 }

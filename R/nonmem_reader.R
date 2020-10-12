@@ -440,7 +440,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     names(domega) <- input_names[grepl("ETA", input_names)]
     omega <- data.table(
       EFFECT = sub("[.]?(eta|bsv)[.]?", "", names(domega)),
-      OMEGA = sqrt(as.vector(domega))
+      OMEGA = sqrt(as.vector(domega)) ## omegas here is defined as standard deviation
     )
   
   ## Formatting the output for the parameters

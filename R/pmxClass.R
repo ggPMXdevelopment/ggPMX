@@ -83,12 +83,10 @@ check_argument <- function(value, pmxname) {
 
 #' @export
 #' @example inst/examples/controller.R
-pmx <-
-  function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
+pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
              settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
-    
     input <- check_argument(input, "input")
     if (missing(cats)) cats <- ""
     if (missing(sim)) sim <- NULL
@@ -206,7 +204,7 @@ formula_to_text <- function(form) {
 pmx_settings <-
   function(is.draft = TRUE, use.abbrev = FALSE, color.scales = NULL,
              cats.labels = NULL, use.labels = FALSE, use.titles = TRUE,
-             effects = NULL,
+             effects = NULL,sim_blq = FALSE,
              ...) {
     if (!missing(effects) && !is.null(effects)) {
       if (!is.list(effects)) stop("effects should be a list")
@@ -226,7 +224,8 @@ pmx_settings <-
       use.labels = use.labels,
       cats.labels = cats.labels,
       use.titles = use.titles,
-      effects = effects
+      effects = effects,
+      sim_blq = sim_blq #workinprogress
     )
     if (use.labels) {
       res$labeller <- do.call("labeller", cats.labels)
@@ -509,6 +508,7 @@ get_abbrev <- function(ctr, param) {
 #' }
 #'
 get_plot <- function(ctr, nplot, npage = NULL) {
+  
   if (is.numeric(npage)) {
     npage <- as.integer(npage)
   }
@@ -518,7 +518,7 @@ get_plot <- function(ctr, nplot, npage = NULL) {
   nplot <- tolower(nplot)
   assert_that(is_valid_plot_name(nplot, plot_names(ctr)))
   xx <- ctr$get_plot(nplot)
-
+  
   if (is.function(xx)) {
     xx(npage)
   } else {
@@ -816,6 +816,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (is.character(input)) {
     private$.input_path <- input
   }
+  
   self$config <- config
   self$dv <- dv
   self$dvid <- dvid
@@ -841,7 +842,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     }
     self$input <- setDT(input)
   }
-
+  
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
@@ -849,8 +850,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     occ = self$occ,
     id = self$id
   )
-  ##
-  ## check random effect
 
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
@@ -866,7 +865,15 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   }
 
   self$post_load()
+  
+#replace values of sim_blq with ggPMX naming convention
+  if(!is.null(self$data$merged_sim_blq)){
+    self$data$merged_sim_blq <- self$data$merged_sim_blq[,c("NPDE","IWRES",paste(dv), "DV") := NULL]
+    names(self$data$merged_sim_blq) <- toupper(gsub("mean|simBlq|_","", names(self$data$merged_sim_blq)))
+    self$data$merged_sim_blq$DV <- self$data$merged_sim_blq[[paste(dv)]]
+  }
 
+  
   if (!is.null(sim)) {
     dx <- sim[["sim"]]
     inn <- copy(self$input)[, self$dv := NULL]

@@ -53,7 +53,6 @@
 #' @return ggplot2 object
 #' @example inst/examples/residual.R
 
-
 residual_scatter <-
   function(point, is.hline, hline, dname, bloq, filter, strat.facet,
              facets, strat.color, trans, pmxgpar, labels, axis.title,
@@ -103,6 +102,7 @@ pmx_plot_dv_ipred <- function(
 
 pmx_plot_iwres_ipred <- function(
                                  ctr, ...) {
+  
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "iwres_ipred", params)
 }
@@ -151,6 +151,7 @@ pmx_plot_iwres_time <- function(ctr, ...) {
 
 pmx_plot_npde_time <- function(
                                ctr, ...) {
+  
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "npde_time", params)
 }

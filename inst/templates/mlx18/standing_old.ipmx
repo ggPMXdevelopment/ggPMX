@@ -1,26 +1,3 @@
-sim_blq_y:
-      label : obsvspred file
-      subfolder: ChartsData/ObservationsVsPredictions
-      file : y_obsVsPred.txt
-      pattern: _obsVsPred
-      reader  : read_mlx18_res
-      names:
-       ID: id
-       TIME: time
-       y_simBlq_mean: y_simBlq_mean
-
-sim_blq:
-    label : residuals file
-    subfolder: ChartsData/ScatterPlotOfTheResiduals 
-    file : y_residuals.txt
-    pattern: _residuals
-    reader  : read_mlx18_res
-    names:
-      ID: id
-      TIME: time
-      npde_simBlq: npde_simBlq
-      iwRes_mean_simBlq: iwRes_mean_simBlq
-
 predictions :
     label : model predictions file
     file  : predictions.txt

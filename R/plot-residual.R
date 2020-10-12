@@ -36,6 +36,7 @@
 #' }
 residual <- function(x, y, labels = NULL, point = NULL, is.hline = FALSE,
                      hline = NULL, dname = NULL, facets = NULL, bloq = NULL, ...) {
+  
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -57,7 +58,7 @@ residual <- function(x, y, labels = NULL, point = NULL, is.hline = FALSE,
   default_hline <- list(yintercept = 0)
   point <- l_left_join(default_point, point)
   hline <- l_left_join(default_hline, hline)
-  if (is.null(dname)) dname <- "predictions"
+  if (is.null(dname)) dname <- "notspecified"
 
   structure(
     list(

@@ -19,8 +19,6 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     assert_that(is_list_or_null(labels))
   })
 
-
-
   ## smoothing
   p <- with(gpar, {
     if (is.smooth) {
