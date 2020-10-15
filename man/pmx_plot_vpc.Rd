@@ -4,8 +4,8 @@
 \alias{pmx_plot_vpc}
 \title{VPC plot}
 \usage{
-pmx_plot_vpc(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, dname,
-  filter, strat.facet, facets, strat.color, trans, pmxgpar, labels,
+pmx_plot_vpc(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, sim_blq,
+  dname, filter, strat.facet, facets, strat.color, trans, pmxgpar, labels,
   axis.title, axis.text, ranges, is.smooth, smooth, is.band, band,
   is.draft, draft, is.identity_line, identity_line, scale_x_log10,
   scale_y_log10, color.scales, is.footnote, ...)
@@ -28,6 +28,8 @@ pmx_plot_vpc(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, dname,
 \item{bin}{\code{pmx_vpc_bin} object  \link{pmx_vpc_bin}}
 
 \item{is.legend}{\code{logical} if TRUE add legend}
+
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq as dataset for plotting instead of predictions.}
 
 \item{dname}{added for compatibility with other ggPMX plots
 

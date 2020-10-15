@@ -5,7 +5,7 @@ pmx_plot_generic <-
       return(NULL)
     }
     cctr <- pmx_copy(ctr, ...)
-
+#browser()
     params <- c(
       ctr = cctr,
       pname = pname,

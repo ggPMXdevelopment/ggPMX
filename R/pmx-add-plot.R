@@ -6,21 +6,26 @@ before_add_check <- function(self, private, x, pname) {
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
 
   ##check if use sim_blq
-  set <- self$settings
-  
-  if(x$dname == "notspecified") { #it's controller generation or "normal call"
-    if(set$sim_blq){
-      if (x$ptype == "SCATTER" | x$ptype == "IND" && !x$use.finegrid | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ"){
-        x$dname <- "merged_sim_blq"
-      }
-      
-    } else{
-      if (x$ptype == "SCATTER" | x$ptype == "IND" && !x$use.finegrid | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ") {
-        x$dname <- "predictions"
-      }
-    }
+  if(is.null(x$gp$sim_blq)){
+    use_sim_blq <- self$sim_blq
+  } else {
+    use_sim_blq <- x$gp$sim_blq
   }
   
+  if(use_sim_blq){
+    if (x$ptype == "SCATTER" | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ"){ #Check wich plots needs to include sim_blq
+      x$dname <- "sim_blq"
+    }
+    
+  } else{
+    if (x$ptype == "SCATTER" | x$ptype == "IND" && !x$use.finegrid | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ") {
+      x$dname <- "predictions"
+    }
+  }
+  #browser()
+  if(pname == "eta_qq") { #hot fix
+    x$dname <- "eta"
+  }
   
   dname <- x$dname
   dx <- copy(self$data[[dname]])
@@ -38,8 +43,8 @@ before_add_check <- function(self, private, x, pname) {
   assert_that(is.data.table(dx))
   x$input <- self %>% get_data("input")
 
-  if(pname == "pmx_vpc" & set$sim_blq){
-    x$input <- self %>% get_data("merged_sim_blq")
+  if(pname == "pmx_vpc" & use_sim_blq){
+    x$input <- self %>% get_data("sim_blq")
   }
   
   x$dx <- dx

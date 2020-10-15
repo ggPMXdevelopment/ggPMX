@@ -9,7 +9,7 @@ sim_blq_y:
        TIME: time
        y_simBlq_mean: y_simBlq_mean
 
-sim_blq:
+sim_blq_npde_iwres:
     label : residuals file
     subfolder: ChartsData/ScatterPlotOfTheResiduals 
     file : y_residuals.txt

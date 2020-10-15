@@ -261,6 +261,14 @@ vpc.data <-
     zmax <- zmin <- out_ <- value <- percentile <- NULL
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
     if (type == "percentile") {
+
+      #allow for input e.g. pmx_plot_vpc(strat.facet = ~SEX)
+      if(!is.character(strat)){
+        strat <- as.character(strat)
+        strat <- sub("~","",strat)
+        strat <- strat[strat != ""]
+      }
+      
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
       res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
       ci <- quantile_dt(
@@ -268,6 +276,7 @@ vpc.data <-
         probs = probs.ci, grp = c("percentile", idv, strat),
         prefix = "CL", ind = "value", wide = TRUE
       )
+
       res <- list(ci_dt = ci,pi_dt = pi)
       nn <- sum(grepl("CL", names(ci)))
       if (nn==3){

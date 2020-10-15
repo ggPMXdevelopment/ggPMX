@@ -84,7 +84,7 @@ check_argument <- function(value, pmxname) {
 #' @export
 #' @example inst/examples/controller.R
 pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
-             settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
+             settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL, sim_blq = NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
     input <- check_argument(input, "input")
@@ -101,7 +101,7 @@ pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, co
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
-    
+    if (missing(sim_blq)) sim_blq <- FALSE
     if (missing(dv)) dv <- "DV"
     if (missing(dvid)) dvid <- "DVID"
 
@@ -127,7 +127,7 @@ pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, co
     if (missing(bloq)) bloq <- NULL
     assert_that(inherits(bloq, "pmxBLOQClass") || is.null(bloq))
 
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time)
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time, sim_blq)
   }
 
 
@@ -136,8 +136,8 @@ pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, co
 #' \code{pmx_mlx}  is a wrapper to mlx for the MONOLIX system ( \code{sys="mlx"})
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id, time) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id, time, sim_blq) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time, sim_blq)
   }
 
 
@@ -204,7 +204,7 @@ formula_to_text <- function(form) {
 pmx_settings <-
   function(is.draft = TRUE, use.abbrev = FALSE, color.scales = NULL,
              cats.labels = NULL, use.labels = FALSE, use.titles = TRUE,
-             effects = NULL,sim_blq = FALSE,
+             effects = NULL,
              ...) {
     if (!missing(effects) && !is.null(effects)) {
       if (!is.list(effects)) stop("effects should be a list")
@@ -224,8 +224,7 @@ pmx_settings <-
       use.labels = use.labels,
       cats.labels = cats.labels,
       use.titles = use.titles,
-      effects = effects,
-      sim_blq = sim_blq #workinprogress
+      effects = effects
     )
     if (use.labels) {
       res$labeller <- do.call("labeller", cats.labels)
@@ -518,7 +517,7 @@ get_plot <- function(ctr, nplot, npage = NULL) {
   nplot <- tolower(nplot)
   assert_that(is_valid_plot_name(nplot, plot_names(ctr)))
   xx <- ctr$get_plot(nplot)
-  
+  #browser()
   if (is.function(xx)) {
     xx(npage)
   } else {
@@ -745,8 +744,9 @@ pmxClass <- R6::R6Class(
     bloq = NULL,
     id = NULL,
     time = NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time),
+    sim_blq = FALSE,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -793,7 +793,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
-                           settings, endpoint, sim, bloq, id, time) {
+                           settings, endpoint, sim, bloq, id, time, sim_blq) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -810,6 +810,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(bloq)) bloq <- NULL
   if (missing(id)) id <- NULL
   if (missing(time)) time <- NULL
+  if (missing(sim_blq)) sim_blq <- FALSE
 
   private$.data_path <- data_path
   self$save_dir <- data_path
@@ -828,6 +829,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$bloq <- bloq
   self$id <- id
   self$time <- time
+  self$sim_blq <- sim_blq
 
   if (!is.null(endpoint) && is.atomic(endpoint)) {
     endpoint <- pmx_endpoint(code = as.character(endpoint))
@@ -867,10 +869,10 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$post_load()
   
 #replace values of sim_blq with ggPMX naming convention
-  if(!is.null(self$data$merged_sim_blq)){
-    self$data$merged_sim_blq <- self$data$merged_sim_blq[,c("NPDE","IWRES",paste(dv), "DV") := NULL]
-    names(self$data$merged_sim_blq) <- toupper(gsub("mean|simBlq|_","", names(self$data$merged_sim_blq)))
-    self$data$merged_sim_blq$DV <- self$data$merged_sim_blq[[paste(dv)]]
+  if(!is.null(self$data$sim_blq)){
+    self$data$sim_blq <- self$data$sim_blq[,c("NPDE","IWRES",paste(dv), "DV") := NULL]
+    names(self$data$sim_blq) <- toupper(gsub("mean|simBlq|_","", names(self$data$sim_blq)))
+    self$data$sim_blq$DV <- self$data$sim_blq[[paste(dv)]]
   }
 
   

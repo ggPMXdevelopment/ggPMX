@@ -63,6 +63,7 @@
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
+#' @param sim_blq \code{logical} if TRUE uses sim_blq as dataset for plotting instead of predictions.
 #' @return ggplot2 or list of ggplot2 objects
 #' @export
 #' @family vpc
@@ -72,7 +73,7 @@
 
 
 pmx_plot_vpc <-
-  function(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, dname, filter,
+  function(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, sim_blq, dname, filter,
              strat.facet, facets, strat.color, trans, pmxgpar, labels,
              axis.title, axis.text, ranges, is.smooth, smooth, is.band,
              band, is.draft, draft, is.identity_line, identity_line,

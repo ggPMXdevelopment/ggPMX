@@ -54,6 +54,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     config <- "standing"
     occ <- "" # Not implemented yet
     finegrid <- NULL
+    sim_blq <- FALSE
   
   ## Currently not set as user-defined parameters in ggPMX
     
@@ -493,8 +494,8 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       parameters = df_param
     )
     class(config) <- "pmxConfig"
-  
-  pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, time)
+  #browser()
+  pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, time, sim_blq)
   
 }
 

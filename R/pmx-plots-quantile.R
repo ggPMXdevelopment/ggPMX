@@ -50,10 +50,11 @@
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
+#' @param sim_blq \code{logical} if TRUE uses sim_blq as dataset for plotting instead of predictions.
 #' @return ggplot2 object
 #' @example inst/examples/qq.R
 pmx_qq_plot <-
-  function(dname, point, is.reference_line, reference_line, is.shrink,
+  function(sim_blq,dname, point, is.reference_line, reference_line, is.shrink,
              shrink, is.hline, hline, filter, strat.facet, facets,
              strat.color, trans, pmxgpar, labels, axis.title, axis.text,
              ranges, is.smooth, smooth, is.band, band, is.draft, draft,

@@ -22,7 +22,7 @@ pmx_filter <-
                "shrink",
                "input",
                "individual",
-               "merged_sim_blq"
+               "sim_blq"
              ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)
@@ -89,7 +89,7 @@ pmx_update <- function(ctr, pname, strat.color = NULL, strat.facet = NULL,
     filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
   }
-
+#browser()
 
   ctr$update_plot(
     pname,

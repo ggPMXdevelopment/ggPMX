@@ -75,10 +75,10 @@ post_load <- function(dxs, input, sys, dplot, occ) {
     keys <- c("ID", "TIME")
     if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
     
-    if (!is.null(dxs[["predictions"]]) & !is.null(dxs[["sim_blq"]]) & !is.null(dxs[["sim_blq_y"]])) {
-      dxs[["merged_sim_blq"]] <- merge(dxs[["sim_blq"]], dxs[["sim_blq_y"]], by = keys)
-      dxs[["merged_sim_blq"]] <- merge(dxs[["merged_sim_blq"]], input, by = keys)
-      dxs[["merged_sim_blq"]] <- merge(dxs[["merged_sim_blq"]], dxs[["predictions"]], by = keys)
+    if (!is.null(dxs[["predictions"]]) & !is.null(dxs[["sim_blq_npde_iwres"]]) & !is.null(dxs[["sim_blq_y"]])) {
+      dxs[["sim_blq"]] <- merge(dxs[["sim_blq_npde_iwres"]], dxs[["sim_blq_y"]], by = keys)
+      dxs[["sim_blq"]] <- merge(dxs[["sim_blq"]], input, by = keys)
+      dxs[["sim_blq"]] <- merge(dxs[["sim_blq"]], dxs[["predictions"]], by = keys)
     }
     
     if (!is.null(dxs[["predictions"]])) {
