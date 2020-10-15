@@ -85,7 +85,9 @@ plot_pmx.individual <-
     } else {
       formula("~ID")
     }
+
     get_page <- with(x, {
+
       p_point <- if (!is.null(point)) {
         point$data <- if (is.null(bloq)) {
           input
@@ -94,15 +96,54 @@ plot_pmx.individual <-
         }
         point.shape <- point$shape
         point$shape <- NULL
+
         max_y <- aggregate(TIME ~ ID, data=dx, max)
         colnames(max_y) <- c("ID", "maxValue")
         dx <- base::merge(dx, max_y, by="ID", all.x = T)
         dx$isobserv <- with(dx, TIME < maxValue)
         point$data <- base::merge(point$data, max_y, by="ID")
         point$data$isobserv <- ifelse(point$data$TIME < point$data$maxValue, "accepted", "ignored")
-        points <- copy(point) 
-        points$colour <- NULL
+        points <- copy(point)
+        points[["colour"]] <- NULL
+        points[["color"]] <- NULL
         do.call(geom_point, points)
+      }
+
+      values.lty <- c()
+
+      p_ipred <- if (!is.null(ipred_line)) {
+        ipred_line.lty <- ipred_line$linetype
+
+        ipred_line.colour <- {
+          if(!is.null(ipred_line[["color"]])) {ipred_line[["color"]]}
+          else if (!is.null(ipred_line["colour"])) {ipred_line[["colour"]]}
+          else {NULL}
+        }
+
+        ipred_line$linetype <- NULL
+        ipred_line$colour <- NULL
+        ipred_line$mapping <- aes(y = IPRED, linetype = "individual predictions", colour="individual predictions")
+        values.lty <- c("individual predictions" = as.integer(ipred_line.lty))
+        values.colour <- c("individual predictions" = ipred_line.colour)
+        do.call(geom_line, ipred_line)
+      }
+
+      p_pred <- if (!is.null(pred_line)) {
+        pred_line.lty <- pred_line$linetype
+        pred_line.colour <- pred_line$colour
+
+        pred_line.colour <- {
+          if(!is.null(pred_line[["color"]])) {pred_line[["color"]]}
+          else if (!is.null(pred_line["colour"])) {pred_line[["colour"]]}
+          else {NULL}
+        }
+
+        pred_line$linetype <- NULL
+        pred_line$colour <- NULL
+        pred_line$mapping <- aes(y = PRED, linetype = "population predictions", colour="population predictions")
+        values.lty <- c(values.lty, "population predictions" = as.integer(pred_line.lty))
+        values.colour <- c(values.colour, "population predictions" = pred_line.colour)
+        do.call(geom_line, pred_line)
       }
 
       p_bloq <- if (!is.null(bloq)) {
@@ -121,7 +162,7 @@ plot_pmx.individual <-
           }
         }
       }
-      
+
       n <- ifelse(any(point$data$isobserv == "ignored"), 3, 2)
       linetype_values <- c(rep("solid", n), "dashed")
       if (any(point$data$isobserv == "ignored"))
@@ -133,7 +174,7 @@ plot_pmx.individual <-
         linetype_labels <- c("accepted",
                              "individual predictions",
                              "population predictions")
-      
+
       shape_values <- c(rep(point.shape, n + 1))
       shape_values_leg <- c(rep(point.shape, n - 1), rep(20, 2))
       size_values <- c(rep(1, n - 1), ipred_line$size, pred_line$size)
@@ -151,22 +192,8 @@ plot_pmx.individual <-
       p <-
         ggplot(dx, aes(TIME, DV, shape = isobserv, colour = isobserv)) +
         p_point +
-        geom_line(
-          aes(
-            y = IPRED,
-            linetype = "individual predictions",
-            colour = "individual predictions"
-          ),
-          size = ipred_line$size
-        ) +
-        geom_line(
-          aes(
-            y = PRED,
-            linetype = "population predictions",
-            colour = "population predictions"
-          ),
-          size = pred_line$size
-        ) +
+        p_ipred +
+        p_pred +
         scale_linetype_manual(values = setNames(linetype_values,
                                                 linetype_labels),
                               guide = FALSE) +
@@ -188,7 +215,14 @@ plot_pmx.individual <-
         ) +
         p_bloq
 
-        gp$is.legend <- is.legend
+      if (is.legend) {
+        p <- p + scale_linetype_manual("", values = values.lty) +
+          scale_colour_manual("", values = values.colour) +
+          guides(linetype = guide_legend(keywidth = 2)) +
+          scale_shape_manual("", values = c("observations" = point.shape))
+      }
+
+      gp$is.legend <- is.legend
 
       p <- plot_pmx(gp, p)
 
