@@ -140,3 +140,8 @@ test_that("can create a controller with data.frame as input", {
 
   expect_equal(nrow(ctr4 %>% get_data("input")), nrow(dat))
 })
+
+
+test_that("can create controller global settings",
+  expect_is(pmx_settings(), "pmxSettingsClass")
+)
