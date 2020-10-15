@@ -6,7 +6,7 @@
 \usage{
 pmx_plot_individual(
   ctr,
-  npage = 1,
+  which_pages = 1L,
   print = FALSE,
   dname,
   pred_line,
@@ -42,7 +42,8 @@ pmx_plot_individual(
 \arguments{
 \item{ctr}{pmx controller}
 
-\item{npage}{\code{integer} page(s) to display , set npage to NULL}
+\item{which_pages}{\code{integer} page(s) to display, or \code{character}
+"all" to display all pages (argument previously called npage, now deprecated)}
 
 \item{print}{\code{logical} if TRUE the ouptut will be a print not a ggplot2. This
 is useful for rmarkdwon output to avoid verbose list index print.}
@@ -130,11 +131,11 @@ Individual plot
 # basic use  ---------------------------------------
 \donttest{
 ctr <- theophylline()
-ctr \%>\% pmx_plot_individual(npage = 1)
+ctr \%>\% pmx_plot_individual(which_pages = 1)
 ## multiple pages
-ctr \%>\% pmx_plot_individual(npage = c(1, 3))
+ctr \%>\% pmx_plot_individual(which_pages = c(1, 3))
 ## change faceting
-ctr \%>\% pmx_plot_individual(facets = list(nrow = 5, ncol = 5), npage = 2)
+ctr \%>\% pmx_plot_individual(facets = list(nrow = 5, ncol = 5), which_pages = 2)
 
 
 # update graphical parameter  ----------------------
@@ -193,7 +194,7 @@ ctr \%>\% pmx_plot_individual(trans = "log10_y")
 
 ## get a list of parameter
 p <- ctr \%>\% pmx_plot_individual(
-  npage=NULL,
+  which_pages="all",
   point=list(shape=4,color='blue',size=10),
   facets = list(nrow = 5, ncol = 5),
   labels = list(title = "My individuals",x='my time',y='PD data')

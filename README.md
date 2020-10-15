@@ -596,7 +596,6 @@ ctr %>% pmx_plot_eta_box
 
 - Individual plots (**IND**)
 
-```r
 ctr %>% pmx_plot_individual(npage = 1)
 ```
 

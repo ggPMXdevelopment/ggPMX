@@ -4,14 +4,14 @@
 \alias{get_plot}
 \title{Get plot object}
 \usage{
-get_plot(ctr, nplot, npage = NULL)
+get_plot(ctr, nplot, which_pages = "all")
 }
 \arguments{
 \item{ctr}{\code{pmxClass} controller object}
 
 \item{nplot}{character the plot name}
 
-\item{npage}{integer or integer vector, set page number in case of multi pages plot}
+\item{which_pages}{integer vector (can be length 1), set page number in case of multi pages plot, or character "all" to plot all pages.}
 }
 \value{
 ggplot object
@@ -27,8 +27,8 @@ p1 <- ctr \%>\% get_plot("iwres_ipred")
 ## get all pages or some pages
 p2 <- ctr \%>\% get_plot("individual")
 ## returns one page of individual plot
-p2 <- ctr \%>\% get_plot("individual", npage = 1)
-p3 <- ctr \%>\% get_plot("individual", npage = c(1, 3))
+p2 <- ctr \%>\% get_plot("individual", which_pages = 1)
+p3 <- ctr \%>\% get_plot("individual", which_pages = c(1, 3))
 ## get distribution plot
 pdistri <- ctr \%>\% get_plot("eta_hist")
 }

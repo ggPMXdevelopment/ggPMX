@@ -71,7 +71,7 @@ test_that("can update indivual plot labels", {
       "individual",
       labels = list(x = "Time (days)", y = "Free serum concentration (nmol)")
     ) %>%
-    get_plot("individual", npage = 1)
+    get_plot("individual", which_pages = 1)
   expect_identical(
     list(
       x = p2$labels$x,

@@ -31,7 +31,7 @@ test_that("plot_pmx.individual: params: point and pred_line; result: ggplot",
                 bloq = pmx_bloq(cens = "BLOQ"),
                 point = list(colour = c("blue", "red")),
                 pred_line = list(color = 'red', alpha = 0.5),
-                npage = 1
+                which_pages = 1
               ),
               "ggplot"
             ))
