@@ -43,20 +43,20 @@ test_that("can update with filter", {
   ctr %>% get_plot("distr1")
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 4)
+  expect_equal(length(pconf$data), 5)
 
   # Update plot with filter
   ctr %>% pmx_update("distr1", filter = ID < 10)
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
-  expect_equal(length(pconf$data), 4)
+  expect_equal(length(pconf$data), 5)
 
   # test can remove filter
   ctr %>% pmx_update("distr1", filter = NULL)
   p <- ctr %>% get_plot("distr1")
   pconf <- ggplot2::ggplot_build(p)
 
-  expect_equal(length(pconf$data), 4)
+  expect_equal(length(pconf$data), 5)
 })
 
 
