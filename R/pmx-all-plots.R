@@ -5,13 +5,18 @@ pmx_plot_generic <-
       return(NULL)
     }
     cctr <- pmx_copy(ctr, ...)
-    params <- c(
-      ctr = cctr,
-      pname = pname,
-      l_left_join(defaults_, list(...))
-    )
-    do.call("pmx_update", params)
-    p <- cctr %>% get_plot(pname)
+
+    if (length(list(...)) != 0){
+         params <- c(
+                     ctr = cctr,
+                     pname = pname,
+                     l_left_join(defaults_, list(...))
+                  )
+         do.call("pmx_update", params)
+         p <- cctr %>% get_plot(pname)
+    }
+     else
+         p <- ctr %>% get_plot(pname)
     rm(cctr)
     p
   }
@@ -35,6 +40,7 @@ wrap_pmx_plot_generic <-
     if (!exists("bloq", params) && !is.null(ctr$bloq)) {
       params$defaults_[["bloq"]] <- ctr$bloq
     }
+    
     pp <- do.call(pmx_plot_generic, params)
     if (ctr$footnote && !is.null(pp)) {
       ctr$enqueue_plot(pname)
