@@ -78,7 +78,7 @@ check_argument <- function(value, pmxname) {
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
 #' @param id \emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file
-#' @param time \emph{[Optional]} \code{character} Time variable. 
+#' @param time \emph{[Optional]} \code{character} Time variable.
 #' @return \code{pmxClass} controller object.
 
 #' @export
@@ -88,7 +88,7 @@ pmx <-
              settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
-    
+
     input <- check_argument(input, "input")
     if (missing(cats)) cats <- ""
     if (missing(sim)) sim <- NULL
@@ -103,7 +103,7 @@ pmx <-
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
-    
+
     if (missing(dv)) dv <- "DV"
     if (missing(dvid)) dvid <- "DVID"
 
@@ -166,7 +166,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
   rr$file_name <- NULL
   params <- append(params, rr)
   if (!exists("config",params))  params$config <- config
-  
+
   if (!missing(endpoint)) {
     params$endpoint <- NULL
     params$endpoint <- endpoint
@@ -193,7 +193,7 @@ formula_to_text <- function(form) {
 
 #' Create controller global settings
 #' @param is.draft \code{logical} if FALSE any plot is without draft annotation
-#' @param use.abbrev \code{logical} if FALSE use full description from abbreviation mapping for axis names 
+#' @param use.abbrev \code{logical} if FALSE use full description from abbreviation mapping for axis names
 #' @param color.scales \code{list} list containing elements of scale_color_manual
 #' @param use.labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
@@ -886,15 +886,15 @@ pmx_initialize <- function(self, private, data_path, input, dv,
       )
     }
     if (inherits(dx$ID,"factor") & !inherits(inn$ID,"factor")) {
-      inn$ID <- factor(inn$ID, levels=levels(dx$ID))
+      inn[, ID := factor(ID, levels = levels(ID))]
     }
     if (!inherits(dx$ID, "factor") & inherits(inn$ID, "factor")) {
-      dx$ID <- factor(dx$ID, levels=levels(inn$ID))    
+      dx[, ID := factor(ID, levels = levels(ID))]
     }
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
     self$sim <- sim
   }
-  
+
   if (config$sys == "nlmixr") {
     self$data$predictions <- input
     self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input
@@ -912,7 +912,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$bloq <- bloq
     self$data$estimates <- config$parameters
   }
-  
+
   ## abbrev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"
