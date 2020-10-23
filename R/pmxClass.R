@@ -88,7 +88,7 @@ pmx <-
              settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
-    
+
     input <- check_argument(input, "input")
     if (missing(cats)) cats <- ""
     if (missing(sim)) sim <- NULL
@@ -103,7 +103,7 @@ pmx <-
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
-    
+
     if (missing(dv)) dv <- "DV"
     if (missing(dvid)) dvid <- "DVID"
 
@@ -889,7 +889,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
     self$sim <- sim
   }
-  
+
   if (config$sys == "nlmixr") {
     self$data$predictions <- input
     self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input
@@ -907,7 +907,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$bloq <- bloq
     self$data$estimates <- config$parameters
   }
-  
+
   ## abbrev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"

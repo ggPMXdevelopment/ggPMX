@@ -75,11 +75,11 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
 
   if (!is.null(id) && !exists(id,xx)) {
     stop(sprintf("observation data does not contain id variable: %s",id))
-  } 
+  }
   if (!is.null(time) && !exists(time,xx)) {
     stop(sprintf("observation data does not contain time variable: %s",time))
-  } 
-  
+  }
+
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
     setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
     setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
