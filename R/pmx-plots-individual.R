@@ -93,6 +93,7 @@ pmx_plot_individual <-
     if (!"individual" %in% (ctr %>% plot_names())) {
       return(NULL)
     }
+
     cctr <- pmx_copy(ctr, ...)
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params <- lang_to_expr(params)
@@ -136,7 +137,11 @@ pmx_plot_individual <-
     rm(cctr)
 
     if (print) {
-      if (is.list(p)) invisible(lapply(p, print)) else p
+      if (is.list(p) & (!inherits(p, "ggplot"))) {
+        invisible(lapply(p, print))
+      } else {
+        invisible(print(p))
+      }
     } else {
       p
     }
