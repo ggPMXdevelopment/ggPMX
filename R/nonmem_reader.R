@@ -22,7 +22,7 @@
 #' @param pred \emph{[Optional]} \code{character} specifing variable name of the population prediction (standard ggPMX nomenclautre  = "PRED")
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
-#' @param obs \emph{[Optional]} \code{logical} the name of measurable variable used in the input modelling file
+#' @param obs \code{logical} if set to TRUE will filter dataset according to "MDV", default is FALSE
 #' @param time \emph{[Optional]} \code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")
 #' @param file A character vector of path to the files or a \code{nm_table_list} object created with \code{pmx_list_nm_tables}.
 #' @param ext Extension to be used to generate model file name. Should be one of'.lst' (default), '.out', '.res', '.mod' or '.ctl' for NONMEM.

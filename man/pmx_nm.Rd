@@ -55,7 +55,7 @@ pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
 
 \item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}}
 
-\item{obs}{\emph{[Optional]} \code{logical} the name of measurable variable used in the input modelling file}
+\item{obs}{\code{logical} if set to TRUE will filter dataset according to "MDV", default is FALSE}
 
 \item{simfile}{Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.}
 

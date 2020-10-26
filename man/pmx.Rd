@@ -55,13 +55,13 @@ of the endpoint code.   \code{\link{pmx_endpoint}}}
 
 \item{time}{\emph{[Optional]} \code{character} Time variable.}
 
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
+
 \item{file_name}{\code{character} mlxtran file path.}
 
 \item{call}{\code{logical} if TRUE the result is the parameters parsed}
 
 \item{...}{extra arguments passed to pmx_mlx.}
-
-\item{sim_bloq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 }
 \value{
 \code{pmxClass} controller object.
