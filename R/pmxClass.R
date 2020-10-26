@@ -77,6 +77,7 @@ check_argument <- function(value, pmxname) {
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
+#' @param sim_bloq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @param id \emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file
 #' @param time \emph{[Optional]} \code{character} Time variable. 
 #' @return \code{pmxClass} controller object.
@@ -522,7 +523,7 @@ get_plot <- function(ctr, nplot, npage = NULL) {
   nplot <- tolower(nplot)
   assert_that(is_valid_plot_name(nplot, plot_names(ctr)))
   xx <- ctr$get_plot(nplot)
-  #browser()
+
   if (is.function(xx)) {
     xx(npage)
   } else {
@@ -876,7 +877,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 #replace values of sim_blq with ggPMX naming convention
   if(!is.null(self$data$sim_blq)){
     self$data$sim_blq <- self$data$sim_blq[,c("NPDE","IWRES",paste(dv), "DV") := NULL]
-    names(self$data$sim_blq) <- toupper(gsub("mean|simBlq|_","", names(self$data$sim_blq)))
+    names(self$data$sim_blq) <- toupper(gsub("mode|mean|simBlq|_","", names(self$data$sim_blq)))
     self$data$sim_blq$DV <- self$data$sim_blq[[paste(dv)]]
   }
 

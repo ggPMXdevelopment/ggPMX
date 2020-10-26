@@ -31,7 +31,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     }
 
     ## labels:title,axis,subtitle...
-
+    
     ## limits
     if (!is.null(ranges$y)) {
       p <- p %+% scale_y_continuous(limits = ranges[["y"]])

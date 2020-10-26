@@ -13,17 +13,15 @@
 #' @param dir Location of the model files.
 #' @param quiet Logical, if \code{FALSE} messages are printed to the console.
 #' 
-#' @seealso \code{\link{read_nm_tables}}
 #' @examples
 #' \dontrun{
 #' # Using the `file` argument to import a model file:
-#' ext_file <- read_nm_files(file = 'run001.ext', dir = 'models')
+#' ext_file <- pmx_read_nm_files(file = 'run001.ext', dir = 'models')
 #' 
 #' # Using the `runno` argument to import a model file:
-#' ext_file <- read_nm_files(runno = '001', ext = '.ext', dir = 'models')
+#' ext_file <- pmx_read_nm_files(runno = '001', ext = '.ext', dir = 'models')
 #' }
-#' @export
-read_nm_files <- function(runno  = NULL,
+pmx_read_nm_files <- function(runno  = NULL,
                           prefix = 'run',
                           ext    = c('.ext', '.cor', '.cov', '.phi', '.grd', '.shk'),
                           file   = NULL,
@@ -41,21 +39,21 @@ read_nm_files <- function(runno  = NULL,
   
   # Generate full paths
   if (!is.null(runno)) {
-    full_path <- file_path(dir, stringr::str_c(prefix, runno, make_extension(ext)))
+    full_path <- pmx_file_path(dir, stringr::str_c(prefix, runno, pmx_make_extension(ext)))
   } else {
-    full_path <- file_path(dir, file)
+    full_path <- pmx_file_path(dir, file)
   }
   
   full_path <- sort(unique(full_path))
   bases     <- basename(full_path)
   
-  msg('\nLooking for nonmem output files', quiet)
+  pmx_msg('\nLooking for nonmem output files', quiet)
   
   if (!any(file.exists(full_path))) {
     stop('No output files could be found.', call. = FALSE)
   }
   
-  msg(c('Reading: ', stringr::str_c(bases[file.exists(full_path)], collapse = ', ')), quiet)
+  pmx_msg(c('Reading: ', stringr::str_c(bases[file.exists(full_path)], collapse = ', ')), quiet)
   
   out <- full_path %>% 
     dplyr::tibble(path = ., name = basename(.)) %>% 
@@ -65,7 +63,7 @@ read_nm_files <- function(runno  = NULL,
     dplyr::group_by_at(.vars = 'grouping') %>% 
     tidyr::nest() %>% 
     dplyr::ungroup() %>% 
-    dplyr::mutate(tmp = purrr::map(.$data, .f = parse_nm_files, quiet)) %>% 
+    dplyr::mutate(tmp = purrr::map(.$data, .f = pmx_parse_nm_files, quiet)) %>% 
     dplyr::mutate(drop = purrr::map_lgl(.$tmp, is.null)) 
   
   if (all(out$drop)) stop('No output file imported.', call. = FALSE)
@@ -74,7 +72,7 @@ read_nm_files <- function(runno  = NULL,
     dplyr::filter(!.$drop) %>% 
     tidyr::unnest(dplyr::one_of('data')) %>% 
     tidyr::unnest(dplyr::one_of('tmp')) %>% 
-    dplyr::mutate(extension = get_extension(.$name, dot = FALSE),
+    dplyr::mutate(extension = pmx_get_extension(.$name, dot = FALSE),
                   modified = FALSE) %>% 
     dplyr::select(dplyr::one_of('name', 'extension', 'problem', 'subprob', 
                                 'method', 'data', 'modified'))
@@ -94,8 +92,7 @@ read_nm_files <- function(runno  = NULL,
 #' `subprob`, and `method`.
 #' 
 #' @keywords internal
-#' @export
-parse_nm_files <- function(dat, quiet) {
+pmx_parse_nm_files <- function(dat, quiet) {
   . <- NULL
   if (length(unlist(dat$raw)) == 0) {
     tab_rows <- NULL 
@@ -145,7 +142,7 @@ parse_nm_files <- function(dat, quiet) {
     tidyr::nest() %>% 
     dplyr::ungroup() %>% 
     dplyr::mutate(data = purrr::map(.$data, 
-                                    .f   = raw_to_tibble, 
+                                    .f   = pmx_raw_to_tibble, 
                                     sep  = sep, 
                                     file = dat$name))
 }  
@@ -162,8 +159,7 @@ parse_nm_files <- function(dat, quiet) {
 #' @return A tibble.
 #' 
 #' @keywords internal
-#' @export
-raw_to_tibble <- function(x, sep, file) {
+pmx_raw_to_tibble <- function(x, sep, file) {
   . <- NULL
   header <- x$raw[x$header] %>% 
     stringr::str_split(pattern = sep) %>% 

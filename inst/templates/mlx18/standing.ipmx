@@ -19,7 +19,7 @@ sim_blq_npde_iwres:
       ID: id
       TIME: time
       npde_simBlq: npde_simBlq
-      iwRes_mean_simBlq: iwRes_mean_simBlq
+      iwRes_mode_simBlq: iwRes_mode_simBlq
 
 predictions :
     label : model predictions file

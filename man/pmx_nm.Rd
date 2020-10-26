@@ -15,7 +15,7 @@ pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
 \arguments{
 \item{runno}{run number which is used for generating the model file name, or used for alternative import of NONMEM-output tables.}
 
-\item{file}{A character vector of path to the files or a \code{nm_table_list} object created with \code{list_nm_tables}.}
+\item{file}{A character vector of path to the files or a \code{nm_table_list} object created with \code{pmx_list_nm_tables}.}
 
 \item{directory}{directory of the model files.}
 

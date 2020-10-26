@@ -89,7 +89,6 @@ pmx_update <- function(ctr, pname, strat.color = NULL, strat.facet = NULL,
     filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
   }
-#browser()
 
   ctr$update_plot(
     pname,

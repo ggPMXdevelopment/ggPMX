@@ -22,7 +22,7 @@ before_add_check <- function(self, private, x, pname) {
       x$dname <- "predictions"
     }
   }
-  #browser()
+
   if(pname == "eta_qq") { #hot fix
     x$dname <- "eta"
   }

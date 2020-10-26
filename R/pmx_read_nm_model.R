@@ -3,7 +3,7 @@
 #'
 #' @description Parse NONMEM model files in R format
 #' 
-#' @seealso \code{\link{read_nm_tables}}
+#' @seealso \code{\link{pmx_read_nm_tables}}
 #' @return A \code{\link[dplyr]{tibble}} of class \code{model} containing the following columns: 
 #' \itemize{
 #'  \item{\strong{problem}}{: a numeric identifier for the $PROBLEM associated with the code.}
@@ -25,15 +25,14 @@
 #' @examples
 #' \dontrun{
 #' # Using the `file` argument to import a model file:
-#' nm_model <- read_nm_model(file = 'run001.lst', dir = 'models')
+#' nm_model <- pmx_read_nm_model(file = 'run001.lst', dir = 'models')
 #' 
 #' # Using the `runno` argument to import a model file:
-#' nm_model <- read_nm_model(runno = '001', ext = '.lst', dir = 'models')
+#' nm_model <- pmx_read_nm_model(runno = '001', ext = '.lst', dir = 'models')
 #' }
 #' 
-#' @export
 
-read_nm_model <- function(runno   = NULL,
+pmx_read_nm_model <- function(runno   = NULL,
                           prefix  = 'run',
                           ext     = '.lst',
                           file    = NULL,
@@ -46,11 +45,11 @@ read_nm_model <- function(runno   = NULL,
   }
   
   if (!is.null(runno)) {
-    ext       <- make_extension(ext)
-    full_path <- file_path(dir, stringr::str_c(prefix, runno, ext))
+    ext       <- pmx_make_extension(ext)
+    full_path <- pmx_file_path(dir, stringr::str_c(prefix, runno, ext))
   } else {
-    ext       <- get_extension(file)
-    full_path <- file_path(dir, file)
+    ext       <- pmx_get_extension(file)
+    full_path <- pmx_file_path(dir, file)
   }
   
   if (!ext %in% c('.lst', '.out', '.res', '.mod', '.ctl')) {
@@ -65,12 +64,12 @@ read_nm_model <- function(runno   = NULL,
   
   if (!any(stringr::str_detect(model, '^\\s*\\$PROB.+')) && ext %in% c('.lst', '.out', '.res')) {
     # Attempts to recover the model code from model file rather than in the nonmem output file
-    full_path <- update_extension(full_path, c('.mod', '.ctl'))
+    full_path <- pmx_update_extension(full_path, c('.mod', '.ctl'))
     full_path <- full_path[file.exists(full_path)]
     
     if (any(file.exists(full_path))) {
       warning(c('No model code found in `', ext, '` NONMEM output file importing `', 
-                get_extension(full_path)[1], '` instead.'), call. = FALSE)
+                pmx_get_extension(full_path)[1], '` instead.'), call. = FALSE)
       model <- readr::read_lines(full_path[1])
     }
   }

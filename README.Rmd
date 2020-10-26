@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
 
-**Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
+**Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Seid Hamzic, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
 
 [![Travis-CI Build Status](https://travis-ci.org/ggPMXdevelopment/ggPMX.svg?branch=master)](https://travis-ci.org/ggPMXdevelopment/ggPMX)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 # Overview
 
-ggPMX is an open-source R package freely available on CRAN since April 2019. It generates standard diagnostic plots for mixed effect models used in pharmacometric activities. The package builds on the R-package ggplot2 and aims at providing a workflow that is **consistent**, **reproducible** and **efficient**, resulting in **high quality graphics** ready-to-use in submission documents and publications. Intuitive functions and options allow for optimal figure customization and graphics stratification. ggPMX enables straightforward generation of PDF, Word or PNG output files that contain all diagnostic plots for keeping track of modeling results. The package is currently compatible with Monolix versions 2016 and later.
+ggPMX is an open-source R package freely available on CRAN since April 2019. It generates standard diagnostic plots for mixed effect models used in pharmacometric activities. The package builds on the R-package ggplot2 and aims at providing a workflow that is **consistent**, **reproducible** and **efficient**, resulting in **high quality graphics** ready-to-use in submission documents and publications. Intuitive functions and options allow for optimal figure customization and graphics stratification. ggPMX enables straightforward generation of PDF, Word or PNG output files that contain all diagnostic plots for keeping track of modeling results. The package is currently compatible with Monolix versions 2016 and later, NONMEM version 7.2 and later and nlmixr.
 
 Using simple syntax, the toolbox produces various goodness-of-fit diagnostics such as:
 - residual- and empirical Bayes estimate (EBE)-based plots, 
@@ -87,7 +87,7 @@ ctr <- theophylline()
 
 
 # Introduction 
-The `ggPMX` package generates standard diagnostic plots and tables for mixed effect models used in Pharmacometric (PMX) activities. The tool is built upon the ggplot2 package and is planned to support models developped either with Monolix or nlmixr software. The current release (0.9.9.9-7) supports models fitted with Monolix versions 2016 and later.
+The `ggPMX` package generates standard diagnostic plots and tables for mixed effect models used in Pharmacometric (PMX) activities. The tool is built upon the ggplot2 package and supports models developped with Monolix, NONMEM and nlmixr software. The current release (1.2) supports models fitted with Monolix versions 2016 and later, NONMEM version 7.2 and later and nlmixr.
 
 The package aims to provide a workflow that is consistent, efficient and which results in high quality graphics ready to use in official documents and reports. The package allows a high degree of flexibility and customization, yet providing an acceptable default setting. The package also allows to fully automate plots and report generation. 
 
@@ -137,9 +137,9 @@ The typical workflow of ggPMX is as follows:
 3. The Generator allows to print the available plots by calling the corresponding functions. Plots can be modified by using optional arguments.
 4. A call to the Reporter allows to create a pdf or docx report. The report Rmarkdown template can also be personalized.
 
-The most important task for the user is the Controller creation. This step requires careful consideration because it involves different options according to the type of model (PK or PKPD) and software (Monolix or nlmixr) used for model fitting. The next section describes the Controller creation for the different possible cases.
+The most important task for the user is the Controller creation. This step requires careful consideration because it involves different options according to the type of model (PK or PKPD) and software (Monolix, NONMEM or nlmixr) used for model fitting. The next section describes the Controller creation for the different possible cases.
 
-Once the Controller is created, it implicitly calls the Reader and creates the diagnostic plots. The user can then generate the graphs by calling pre-defined functions as described in Section 3. The same syntax is used independent of the model structure (PK or PKPD model) and of the fitting software.
+Once the Controller is created, it implicitly calls the Reader and creates the diagnostic plots. The user can then generate the graphs by calling pre-defined functions. The same syntax is used independent of the model structure (PK or PKPD model) and of the fitting software.
 
 The Reporter creates one report per endpoint, i.e., one report for PK and one for each PD endpoint. 
 
@@ -148,14 +148,12 @@ The Reporter creates one report per endpoint, i.e., one report for PK and one fo
 For the sake of this document, three types of datasets are defined.
 
 * The *input modeling dataset* is the one used for model fitting (the actual data). There are no particular requirements regarding this dataset.
-* The *output modeling datasets* are those output from the fitting tool (Monolix or nlmixr). For version 1.0 of ggPMX, these datasets have to follow the structure of outputs of Monolix 2016 or 2018 (See Appendix for more details on Monolix requirements).  A "standard" format for nlmixr output datasets will be defined for the the ggPMX version that allows usage of nlmixr as the fitting software.
-* The *ggPMX datasets* are the ones created within (internal to) ggPMX. More details on the ggPMX datasets can be found in Section 2.4.3.
+* The *output modeling datasets* are those output from the fitting tool (Monolix, NONMEM or nlmixr). See the appendix for more details on software requirements.
+* The *ggPMX datasets* are the ones created within (internal to) ggPMX. 
 
 
 # Controller
-A diagnostic session starts with the creation of a Controller. The Controller is the "user interface" of the package and allows to conrol all possible options. It is a container that stores configuration fields (model- and input data-related information), datasets and plots. It can be used as a reference object in which the user can see the names of the exisitng plots, the names of the `ggPMX` datasets, etc. The syntax of the Controller creation differs depending on the software used for model fitting and on the number of model endpoints (or outputs). This section presents different cases of Controller creation. For simplicity, the case of models with one single output is presented first (Section 2.1), then generalized to several outputs (Section 2.2). In Section 2.1 are presented other Controller creation functions that can be used with the different fitting softwares. Note that all these functions can also be used with models with several outputs.
-Section 2.7 provides details on the content of the Controller.
-
+A diagnostic session starts with the creation of a Controller. The Controller is the "user interface" of the package and allows to conrol all possible options. It is a container that stores configuration fields (model- and input data-related information), datasets and plots. It can be used as a reference object in which the user can see the names of the exisitng plots, the names of the `ggPMX` datasets, etc. The syntax of the Controller creation differs depending on the software used for model fitting and on the number of model endpoints (or outputs). This section presents different cases of Controller creation. For simplicity, the case of models with one single output is presented first, then generalized to several outputs.
 ## Single-endpoint models
 
 In general, models with only one endpoint (or output) are mostly PK models, but these could also be k-PD models. 
@@ -179,10 +177,6 @@ head(input_data_theo)
 ```
 Note that the DVID (or CMT/YTYPE) column is missing, but since this is a single-endpoint model, it is not necessary in that case.
 
-### Generic Controller creation with `pmx()`
-
-The function `pmx()` is the generic function for greating a Controller. The user needs to specify a set of arguments such as the path to the model directory, the software used for model fitting (Monolix or nlmixr), the name of a configuration. A list of all existing configurations is provided in the Appendix. All **mandatory** arguments of `pmx()` are listed in Table \ref{tab:pmx_mandatory}.
-
 ```{r,echo=FALSE,results='asis',out.width='.9\\linewidth'}
 
 out <- rbind(
@@ -200,73 +194,133 @@ xt <- xtable(head(out), label = "tab:pmx_mandatory", caption = "Mandatory argume
 print(xt, comment = F)
 ```
 
-The example below defines a Controller with the *standing* (standard) configuration. 
-```{r init_ctr}
-theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
-work_dir          <- file.path(theophylline_path, "Monolix")
-input_data_path   <- file.path(theophylline_path, "data_pk.csv")
+## Controller creation
 
-ctr <- pmx(
-  sys       = "mlx",
-  config    = "standing",
-  directory = work_dir,
-  input     = input_data_path,
-  dv        = "Y",
-  dvid      = "DVID"
-)
-```
-Note that the column "DVID" of data_pk.csv does not exist; however it is not needed here because there is only one single output of the model. As dvid is a mandatory argument, it still needs to be provided and was set arbritrarly to "DVID" in the example above. 
-
-The input dataset can be provided to ggPMX via its location (as in the example above) or as a data frame (maybe give an example). The modeling output datasets have to be in the location that is indicated as working directory (`work_dir` in the example above).
-
-The above example of Contoller creation is wrapped in a function called "theophylline()" for quick reference:
+The Contoller creation is wrapped in a function called "theophylline()" for quick reference:
 ```{r}
 ctr <- theophylline()
 ```
-
-The following are optional arguments to the `pmx()` function (for details of each option, see the corresponding section):
-
-* cats: character vector of categorical covariates (Section 2.3)
-* conts: character vector of continuous covariates (Section 2.3)
-* occ: character occasinal covariate variable name
-* strats: character extra stratification variables (Section 2.3)
-* settings: global pmxSettingsClass (`pmx_settings()`) shared between all plots
-* endpoint: pmxEndpointClass (`pmx_endpoint()`) or integer or charcater of the endpoint code (Section 2.2)
-* sim: pmxSimClass object for VPC generation.
-
 
 ### Models fitted with Monolix (versions 2016 and later) 
 
 ####`pmx_mlx()`
 
-The controller initialization can be simplified by using the Monolix controller `pmx_mlx()`, which is a wrapper function for `pmx()` with `sys="mlx"`. Note that the `sys` argument is no longer required.
-```{r}
+The controller initialization using the Monolix controller `pmx_mlx()`, which is a wrapper function for `pmx()` with `sys="mlx"` (See Appendix A).
+```{r, eval = FALSE}
+theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir          <- file.path(theophylline_path, "Monolix")
+input_data_path   <- file.path(theophylline_path, "data_pk.csv")
+
 ctr <- pmx_mlx(
-  config    = "standing",
   directory = work_dir,
   input     = input_data_path,
-  dv        = "Y",
-  dvid      = "DVID"
+  dv        = "Y"
 )
 ```
 
-#### `pmx_mlxtran()`
+####`pmx_mlxtran()`
 
-The controller initialization can be simplified even further by using the Monolix controller `pmx_mlxtran()`. This function parses the mlxtran file of a Monolix project and assigns automatically the different fields necessary to the Controller creation. The only mandatory argument is file_name, the path to the mlxtran file.
-```{r}
+The controller initialization can be simplified by using the Monolix controller `pmx_mlxtran()`. This function parses the mlxtran file of a Monolix project and assigns automatically the different fields necessary to the Controller creation. The only mandatory argument is file_name, the path to the mlxtran file.
+```{r, eval = FALSE}
 mlxtran_path <- file.path(system.file(package = "ggPMX"), 
                           "testdata", "1_popPK_model", "project.mlxtran")
 
 ctr <- pmx_mlxtran(file_name = mlxtran_path)
 ```
-The user can verify the content of the Controller and how parameters are assigned by printing it (see Section 2.4). 
+The user can verify the content of the Controller and how parameters are assigned by printing it. 
+
+
+### Models fitted with NONMEM (versions 7.2 and later) 
+
+####`pmx_nm()`
+
+The controller initialization using the NONMEM controller `pmx_nm()` is based on reading functions of the xpose package.
+It is highly recommended (but not required) to use the "sdtab, patab, cotab, catab" table naming convention followed by a run number (e.g. sdtab001,cotab001)
+This will enable automatic recognition of covariates. It is also recommended to name the model files accordingly (e.g. run001.lst). 
+In order to generate a VPC a simulation dataset is required (see section about VPC)
+
+For controller generation it is recommended to use the model file:
+```{r, eval = FALSE}
+nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata","extdata")
+ctr <- pmx_nm(
+  directory = nonmem_dir,
+  file     = "run001.lst" 
+)
+```
+
+or the run number
+```{r, eval = FALSE}
+nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata","extdata")
+ctr <- pmx_nm(
+  directory = nonmem_dir,
+  runno     = "001" #can be a string or a number
+)
+```
+
+
+### Models fitted with nlmixr
+
+####`pmx_nlmixr()`
+
+It is simple to create a ggPMX controller for a nlmixr object using `pmx_nlmixr()`.
+Using the theophylline example with a nlmixr model we have:
+
+```{r, eval = FALSE}
+one.cmt <- function() {
+  ini({
+    ## You may label each parameter with a comment
+    tka <- 0.45 # Log Ka
+    tcl <- 1 # Log Cl
+    ## This works with interactive models
+    ## You may also label the preceding line with label("label text")
+    tv <- 3.45; label("log V")
+    ## the label("Label name") works with all models
+    eta.ka ~ 0.6
+    eta.cl ~ 0.3
+    eta.v ~ 0.1
+    add.sd <- 0.7
+  })
+  model({
+    ka <- exp(tka + eta.ka)
+    cl <- exp(tcl + eta.cl)
+    v <- exp(tv + eta.v)
+    linCmt() ~ add(add.sd)
+  })
+}
+
+fit <- nlmixr(one.cmt, theo_sd, est="saem", control=list(print=0))
+```
+
+The `fit` object is a nlmixr fit; You can read it into the nlmixr controller by:
+
+```{r, eval = FALSE}
+ctr <- pmx_nlmixr(fit, 
+                  vpc = FALSE ## VPC is turned on by default, can turn off
+)
+```
+
+### Optional arguments for controller creation
+
+The following are some optional arguments to the controller function (for details of each option, see the corresponding section or use `?pmx_mlx`, `?pmx_nm`, `?pmx_nlmixr`):
+
+* cats: character vector of categorical covariates
+* conts: character vector of continuous covariates
+* occ: character occasinal covariate variable name (currently not available for NONMEM or nlmixr)
+* strats: character extra stratification variables
+* settings: global pmxSettingsClass (`pmx_settings()`) shared between all plots
+* endpoint: pmxEndpointClass (`pmx_endpoint()`) or integer or charcater of the endpoint code (depends on the fitting software)
+* sim: pmxSimClass object for VPC generation. (syntax for VPC generation is depending on the fitting software)
 
 
 ## Multiple-endpoint models
 
 Models with more than one endpoint (or output) are mostly PKPD models, but these could also be, for example, PK binding models in which there are measurements and predictions of both PK and its target.
 
-ggPMX produces one diagnostics report per endpoint. As a consequence, the endpoint (if more than one) should be set at the time of the Controller creation in order to filter the observations dataset and to keep only the values corresponding to the endpoint of interest. To handle this, the user creates an "endpoint" object using the function `pmx_endpoint()` having the following attributes:
+ggPMX produces one diagnostics report per endpoint. As a consequence, the endpoint (if more than one) should be set at the time of the Controller creation in order to filter the observations dataset and to keep only the values corresponding to the endpoint of interest. There are two ways of dealing with endpoints, using pmx_endpoint() (only for Monolix), or a simplified syntax for endpoints which is supported by all software outputs.
+
+### Using pmx_endpoint() (only for Monolix)
+
+To handle this, the user creates an "endpoint" object using the function `pmx_endpoint()` having the following attributes:
 
 - **code** (charcater): how the endpoint is coded in the input (modeling) dataset
 - **label**: can be used in the title of some plots or for the report file name
@@ -300,7 +354,6 @@ ep <- pmx_endpoint(
 )
 
 ctr <- pmx_mlx(
-  config    = "standing",
   directory = pkpd_work_dir,
   input     = pkpd_input_file,
   dv        = "dv",
@@ -309,14 +362,35 @@ ctr <- pmx_mlx(
 )
 ```
 
-A simplified syntax for the Endpoint creation exists in the case where the endpoint code matches the files post-fixes (code=1 corresponds to predictions1.txt, code=2 corresponds to predictions2.txt). Instead of passing a pmxEndpoint object as argument of the Controller, the user can specify the numerical value corresponding to the YTYPE/CMT/DVID column.
+### A simplified syntax for endpoints (for Monolix, NONMEM and nlmixr)
+For NONMEM and nlmixr users, endpoint can be simply specified  in the controller creation by e.g. `endpoint = 1`
+
+NONMEM
+```{r, eval = FALSE}
+ctr <- pmx_nm(
+  directory = nonmem_dir,
+  file     = "run001.lst",
+  endpoint = 1 ## select the first endpoint 
+  dvid = "DVID" ## use this column as observation id 
+)
+```
+
+nlmixr
+```{r, eval = FALSE}
+ctr <- pmx_nlmixr(fit, 
+                  endpoint = 1 ## select the first endpoint 
+                  dvid = "DVID" ## use this column as observation id 
+)
+```
+
+Also for Monolix users, a simplified syntax for the Endpoint creation exists in the case where the endpoint code matches the files post-fixes (code=1 corresponds to predictions1.txt, code=2 corresponds to predictions2.txt). Instead of passing a pmxEndpoint object as argument of the Controller, the user can specify the numerical value corresponding to the YTYPE/CMT/DVID column.
 ```{r, echo=T, eval = FALSE}
 pmx_mlx(
-  dvid = "YTYPE", ## use this column as obseration id 
+  dvid = "YTYPE", ## use this column as observation id 
   endpoint = 1,   ## select the first endpoint 
   ...)            ## other pmx parameters , config, input,etc..
 ```
-Internally, a pmxEndpoint object will be created, and observations having YTYPE=x will be filered. 
+Internally, a pmxEndpoint object will be created, and observations having YTYPE=x will be filtered.  
 
 ## Controller with covariates
 
@@ -328,11 +402,9 @@ work_dir          <- file.path(theophylline_path, "Monolix")
 input_data_path   <- file.path(theophylline_path, "data_pk.csv")
 
 ctr <- pmx_mlx(
-  config    = "standing",
   directory = work_dir,
   input     = input_data_path,
   dv        = "Y",
-  dvid      = "DVID",
   cats      = c("SEX"),
   conts     = c("WT0", "AGE0"),
   strats    = c("STUD", "SEX")
@@ -360,9 +432,9 @@ It contains three tables:
 
 - The first table is the Controller configuration. The user can see the working directory, the input modeling dataset name, the dependent variable (DV) name and other fields related to the model (e.g., continuous and discrete covariates).
 
-- The second table lists the `ggPMX` datasets (see Section 2.4.3). The first column (`data_name`) of this table contains the ggPMX name of the dataset; the second column (data_file) contains the names of the output modeling datasets (for example estimates.txt); in the third column (data_label) contains the dataset description.
+- The second table lists the `ggPMX` datasets. The first column (`data_name`) of this table contains the ggPMX name of the dataset; the second column (data_file) contains the names of the output modeling datasets (for example estimates.txt); in the third column (data_label) contains the dataset description.
 
-- The third table provides the list of available plots in the Generator. It corresponds to Table \ref{tab:plots_list} in Section 4. Plot types are explained in Section 2.4.2.
+- The third table provides the list of available plots in the Generator. It corresponds to Table \ref{tab:plots_list}.
 
 
 ### Plot names
@@ -373,7 +445,7 @@ ctr %>% plot_names()
 ```
 An alternative way to display the names of the existing plots is by printing the content of the Controller as done above.
 
-`ggPMX` provides a specialized function to create and update each plot `pmx_plot_xx()` where `xx` is the plot name from the list above. These functions are described in detail in Section 3.
+`ggPMX` provides a specialized function to create and update each plot `pmx_plot_xx()` where `xx` is the plot name from the list above. 
 
 ### Plot types
 
@@ -390,11 +462,6 @@ The following syntax allows to see which type of plot corresponds to which plot 
 ```{r plot_types}
 ctr %>% plots()
 ```
-
-
-### Datasets
-
-`ggPMX` uses the following dataset name convention. The *input modeling dataset* is the one used for model fitting (the actual data). The *output modeling datasets* are those output from the fitting tool (Monolix or NONMEM). The *ggPMX datasets* are the ones created within ggPMX. Table \ref{tab:ggPMX_datasets} provides a list of all ggPMX datasets.
 
 ```{r datasets_list,echo=FALSE,results='asis'}
 
@@ -472,21 +539,49 @@ ctr %>% pmx_plot_iwres_qq
 ctr %>% pmx_plot_eta_matrix
 ```
 
-
-
 # Visual Predictive Checks (VPC)
 
 ## Initialization
 
+In order to generate VPCs a simulation dataset is requried. Creation of VPC is slightly different dependening on the fitting software used (Monolix, NONMEM or nlmixr).
+
+### Models fitted with Monolix (versions 2016 and later) 
+
+Monolix users, need to run a simulation with simulx. Here's an example code
+
+```{r, eval = FALSE}
+## Create simulated object using simulx
+mysim <- simulx(project=project_dir, nrep=100) #
+## Retrieve simulated dataset (assumed to be in y1)
+simdata <- mysim$LIDV
+```
+
+For use with ggPMX, it is required that the IDs are reverted to the original IDs as in the modelling dataset for ggPMX.
+
+```{r, eval = FALSE}
+## Need to revert the original IDs as in modeling dataset for ggPMX
+## Rename IDs column to same name as in modeling dataset, e.g.
+## ???id??? in the example below
+simdata <- simdata %>% 
+  mutate(newId = as.numeric(as.character(id))) %>%
+  left_join(., mysim$originalId) %>%
+  mutate(id = as.numeric(as.character(oriId))) %>%
+  select(-oriId, -newId) %>%
+  data.table::data.table()
+
+## It's highly recommended to store your simulation as .csv
+vpc_file <- write.csv(simdata, file = "my_VPC.csv", quote=FALSE, row.names = FALSE)
+```
 
 `pmx_sim` creates a simulation object. It takes the following arguments:
 
-Arguments
+Argumentss
 
 1. **file**	character path to the simulation file
 2. **irun**	character name of the simulation column
 3. **idv**	character name of the ind. variable
 4. **dv**	character name of the observation variable
+
 
 Within pmx vpc controller, it is called like : 
 
@@ -501,7 +596,6 @@ input_file <- file.path(theoph_path, "data_pk.csv")
 vpc_file <- file.path(theoph_path, "sim.csv")
 
 ctr <- pmx_mlx(
-  config = "standing",
   directory = WORK_DIR,
   input = input_file,
   dv = "Y",
@@ -522,6 +616,32 @@ ctr <- pmx_mlx(
 )
 
 
+```
+
+### Models fitted with NONMEM (versions 7.2 and later) 
+
+It is required to provide simulation tables to generate VPCs. Furthermore, it is highly recommended that simulation tables have a "sim"-suffix and are kept with the same naming convetion as for the prediction tables (e.g sdtab001sim, catab001sim)). In this case they're automatically recognized by the runnumber (runno) or by the model file if specified there. For post-hoc simulation it is possible to include an additional simfile:
+
+```{r, eval = FALSE}
+ctr <- pmx_nm(
+  directory = model_dir,
+  file      = "modelfile.ctl" #or .lst
+  simfile   = "simulation_modelfile.ctl" #or .lst
+)
+```
+
+Important: When simulations are performed post-hoc and the controller is generated by run number, the reader might load the wrong .ext file (used for parameters). A warning message is displayed.
+
+### Models fitted with nlmixr
+
+For nlmixr users, the VPC is generated automatically with the controller creation and turned on by default `vpc = TRUE`.
+
+```{r, eval = FALSE}
+ctr <- pmx_nlmixr(fit) ## VPC will be generated automatically, vpc = TRUE
+
+ctr <- pmx_nlmixr(fit, 
+                  vpc = FALSE ## But can be turned off
+)
 ```
 
 ## VPC plot
@@ -598,7 +718,7 @@ ctr %>% pmx_report(name='Diagnostic_plots2',
 
 Note that running the same command first with the option "format='plots'" and then with the option "format='report'" will remove the *ggpmx_GOF* folder. 
 
-Note also that by default, the report will have the DRAFT label on all plots. The label can be removed by using the settings argument in the Controller creation, as described in Section 6.3.1.
+Note also that by default, the report will have the DRAFT label on all plots. The label can be removed by using the settings argument in the Controller creation.
 
 The user can customize the default report by creating a "template". To create a template, the user should create first a default report with the following command:
 ```{r eval=FALSE}
@@ -637,11 +757,32 @@ To obtain an exhaustive list of possible options for a particular plot, use the 
 ctr %>% get_plot_config("xx")
 ```
 
-## BLQ
-```{r}
-ctr = theophylline()
-bloq = list(show = FALSE, color = "blue", alpha = 0.2, size = 3, pch = 8)
+## Visualization of BLQs (Monolix and NONMEM)
+It is possible to visualize BLQ (below the limit of quantification) values in the individual plots.
+For this, `bloq` needs to be specified using the pmx_bloq function (see example below with the `pmx_mlxtran()` function).
+```{r eval=F}
+ctr %>% pmx_mlxtran(file_name = mlx_file, bloq=pmx_bloq(cens = ???BLQ???, limit = ???LIMIT???))
+ctr %>% pmx_plot_individual()
 ```
+
+## Simulated BLOQ (Monolix 2018 and later)
+
+Monolix users may want to plot simulated BLQs. This is possible for outputs with Monolix 2018 and later.
+An additional dataset is loaded (sim_blq), which will be used for plotting insted the regular "predictions"-dataset.
+
+The `sim_blq` statment can be specified within the plot (locally) ...
+```{r eval=F}
+ctr %>% pmx_mlxtran(file_name = mlx_file))
+ctr %>% pmx_plot_iwres_ipred(sim_blq = TRUE)
+```
+
+... or within the controller (globally).
+If this statment is used within the controller, all corresponding plots will plot simulated BLOQs by default.
+```{r eval=F}
+ctr %>% pmx_mlxtran(file_name = mlx_file, sim_blq = TRUE))
+ctr %>% pmx_plot_iwres_ipred()
+```
+
 
 ## Customizing global settings - `pmx_settings()`
 
@@ -787,10 +928,38 @@ ctr %>% pmx_plot_eta_box(strat.facet =~SEX)
 
 
 
-# Appendix A 
-## Monolix requirements
+# Appendix
 
-ggPMX is compatible with Monolix versions 2016 and later.
+## Generic Controller creation with `pmx()`
+
+The function `pmx()` is the generic function for greating a Controller. The user needs to specify a set of arguments such as the path to the model directory, the software used for model fitting (Monolix or nlmixr), the name of a configuration. A list of all existing configurations is provided in the Appendix. All **mandatory** arguments of `pmx()` are listed in Table \ref{tab:pmx_mandatory}.
+
+The example below defines a Controller with the *standing* (standard) configuration. 
+```{r init_ctr}
+theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir          <- file.path(theophylline_path, "Monolix")
+input_data_path   <- file.path(theophylline_path, "data_pk.csv")
+
+ctr <- pmx(
+  sys       = "mlx",
+  config    = "standing",
+  directory = work_dir,
+  input     = input_data_path,
+  dv        = "Y",
+  dvid      = "DVID"
+)
+```
+Note that the column "DVID" of data_pk.csv does not exist; however it is not needed here because there is only one single output of the model. As dvid is a mandatory argument, it still needs to be provided and was set arbritrarly to "DVID" in the example above. 
+
+The input dataset can be provided to ggPMX via its location (as in the example above) or as a data frame (maybe give an example). The modeling output datasets have to be in the location that is indicated as working directory (`work_dir` in the example above).
+
+
+## Software requirements
+
+ggPMX is compatible with Monolix versions 2016 and later, NONMEM version 7.2 and later, and nlmixr.
+
+### Monolix
+
 In order to be able to produce all available diagnostic plots, the following tasks should be executed in Monolix during the model fitting procedure:
 
 * Population parameters;
@@ -800,6 +969,18 @@ In order to be able to produce all available diagnostic plots, the following tas
 
 In addition, make sure to export charts data (In Monolix 2018: Settings -> Preferences -> Export -> switch on the Export charts data button).
 Select at least the following plots to be displayed and saved: individual fits and scatter plot of the residuals.
+
+### NONMEM
+
+NONMEM Version 7.2/7.3/7.4
+Preferred output tables according ???sdtab, patab, cotab, catab??? convention
+Simulation are required for creation of VPC (e.g. sdtab1sim)
+
+### nlmixr
+
+Fit objects need to be generated by nlmixr and have data attached.
+Standard errors are required (a successful covariance plot) for full diagnostic checks. Can use `boostrapFit()` to get standard error estimates if necessary
+
 
 ## Plots table
 
