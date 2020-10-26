@@ -29,7 +29,7 @@ pmx_plot_vpc(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, sim_blq,
 
 \item{is.legend}{\code{logical} if TRUE add legend}
 
-\item{sim_blq}{\code{logical} if TRUE uses sim_blq as dataset for plotting instead of predictions.}
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 
 \item{dname}{added for compatibility with other ggPMX plots
 

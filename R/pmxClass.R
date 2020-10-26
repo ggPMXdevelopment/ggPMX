@@ -77,7 +77,7 @@ check_argument <- function(value, pmxname) {
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
-#' @param sim_bloq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
+#' @param sim_blq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @param id \emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file
 #' @param time \emph{[Optional]} \code{character} Time variable. 
 #' @return \code{pmxClass} controller object.

@@ -60,6 +60,8 @@ of the endpoint code.   \code{\link{pmx_endpoint}}}
 \item{call}{\code{logical} if TRUE the result is the parameters parsed}
 
 \item{...}{extra arguments passed to pmx_mlx.}
+
+\item{sim_bloq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 }
 \value{
 \code{pmxClass} controller object.

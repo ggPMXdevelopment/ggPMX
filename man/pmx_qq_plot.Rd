@@ -20,7 +20,7 @@ pmx_plot_eta_qq(ctr, ...)
 pmx_plot_npde_qq(ctr, ...)
 }
 \arguments{
-\item{sim_blq}{\code{logical} if TRUE uses sim_blq as dataset for plotting instead of predictions.}
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 
 \item{dname}{name of dataset to be used}
 

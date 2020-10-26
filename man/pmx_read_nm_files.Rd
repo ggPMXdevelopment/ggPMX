@@ -35,6 +35,3 @@ ext_file <- pmx_read_nm_files(file = 'run001.ext', dir = 'models')
 ext_file <- pmx_read_nm_files(runno = '001', ext = '.ext', dir = 'models')
 }
 }
-\seealso{
-\code{\link{read_nm_tables}}
-}

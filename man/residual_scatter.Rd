@@ -32,7 +32,7 @@ pmx_plot_npde_time(ctr, ...)
 pmx_plot_npde_pred(ctr, ...)
 }
 \arguments{
-\item{sim_blq}{\code{logical} if TRUE uses sim_blq as dataset for plotting instead of predictions.}
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 
 \item{point}{\code{list} geom_point graphical parameters.}
 
