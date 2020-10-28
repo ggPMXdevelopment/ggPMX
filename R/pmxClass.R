@@ -76,7 +76,7 @@ check_argument <- function(value, pmxname) {
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
 #' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}} used for VPC, e.g.: sim = pmx_sim(file=vpc_file, irun="rep",idv="TIME")
-#' @param bloq\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")
+#' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")
 #' @param sim_blq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @param id \emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file
 #' @param time \emph{[Optional]} \code{character} Time variable. 
@@ -84,8 +84,8 @@ check_argument <- function(value, pmxname) {
 
 #' @export
 #' @example inst/examples/controller.R
-pmx <- function(directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL, sys = "mlx", 
-             settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL, sim_blq = NULL, config) {
+pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
+                settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL, sim_blq = NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
     input <- check_argument(input, "input")
