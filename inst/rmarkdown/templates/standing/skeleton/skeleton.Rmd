@@ -30,7 +30,6 @@ cats <- ctr %>% get_cats
 # Key model diagnostics
 
 ## Parameter Table
-
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 ctr %>% param_table(return_table = FALSE)
 ```

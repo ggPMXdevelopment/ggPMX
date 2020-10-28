@@ -7,7 +7,7 @@ sim_blq_y:
       names:
        ID: id
        TIME: time
-       y_simBlq_mean: y_simBlq_mean
+       y_simBlq_mode: y_simBlq_mode
 
 sim_blq_npde_iwres:
     label : residuals file

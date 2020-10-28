@@ -14,7 +14,7 @@
 #' @family vpc
 
 pmx_vpc_bin <-
-  function(style, within_strat = TRUE, ...) { #within strat = TRUE, as standard in order to avoid bugs
+  function(style, within_strat = TRUE, ...) { #within strat = TRUE, as default in order to avoid bugs
     if (missing(style)) {
       return(NULL)
     }
@@ -301,7 +301,7 @@ vpc.data <-
 
 bin_idv <- function(idv, x) {
   brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
-  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv) #probably to limit brks to max and min time, otherwise it makes no sense 
+  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv)  
   if (min(brks) <= min(idv)) brks[which.min(brks)] <- min(idv)
   brks
 }
@@ -320,7 +320,7 @@ find_interval <- function(x, vec, labels = NULL, ...) {
 
 
 
-.vpc_x <- function(x, self) { #generating x
+.vpc_x <- function(x, self) {
   if (x$ptype == "VPC") {
     x$dv <- self$dv
     idv <- self$sim[["idv"]]

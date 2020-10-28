@@ -10,8 +10,10 @@
 #'
 #' @param runno run number which is used for generating the model file name, or used for alternative import of NONMEM-output tables. 
 #' @param table_suffix suffix of the output tables, standard is "" (no suffix).
+#' @param prefix Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.
 #' @param directory directory of the model files.
-#' @param table_names Contains the names of the NONMEM-output tables e.g. "sdtab", "patab", "cotab", "catab".
+#' @param table_names contains the names of the NONMEM-output tables e.g. "sdtab", "patab", "cotab", "catab".
+#' @param simfile Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.
 #' @param dvid \emph{[Optional]} \code{character} observation type parameter, mandatory in case of multiple endpoint (PKPD). Standard = "DVID"
 #' @param conts \emph{[Optional]} \code{character} vector of continuous covariates (automatically detected if "cotab" is provided)
 #' @param cats \emph{[Optional]} \code{character} vector of categorical covariates (automatically detected if "catab" is provided)
@@ -20,30 +22,30 @@
 #' @param settings \code{pmxSettingsClass} \code{\link{pmx_settings}} shared between all plots
 #' @param vpc \code{logical} a boolean indiacting if vpc should be calculated, simulation tables are required for VPC generation (by default \code{TRUE})
 #' @param pred \emph{[Optional]} \code{character} specifing variable name of the population prediction (standard ggPMX nomenclautre  = "PRED")
-#' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
-#' @param dv \code{character} the name of measurable variable used in the input modelling file
+#' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")
+#' @param dv \code{character} the name of measurable variable used in the input modelling file (standard ggPMX nomenclautre  = "DV")
 #' @param obs \code{logical} if set to TRUE will filter dataset according to "MDV", default is FALSE
 #' @param time \emph{[Optional]} \code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")
 #' @param file A character vector of path to the files or a \code{nm_table_list} object created with \code{pmx_list_nm_tables}.
 #' @param ext Extension to be used to generate model file name. Should be one of'.lst' (default), '.out', '.res', '.mod' or '.ctl' for NONMEM.
-#' @param sim_suffix suffix of the simulaiton output tables, standard is "sim" (e.g. stdab1sim).
+#' @param sim_suffix suffix of the simulation output tables, standard is "sim" (e.g. stdab1sim).
 #' @param npde \emph{[Optional]} \code{character} specifing variable name of the normalized population predictor (standard ggPMX nomenclautre  = "NPDE")
 #' @param iwres \emph{[Optional]} \code{character} specifing variable name of the individual weighted residuals (standard ggPMX nomenclautre  = "IWRES")
 #' @param ipred \emph{[Optional]} \code{character} specifing variable name of the individual population prediction (standard ggPMX nomenclautre  = "IPRED")
-#' @param simfile Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.
-#' @param prefix Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.
 #' @param quiet Logical, if \code{FALSE} messages are printed to the console.
 #' 
-#' @author The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+#' @author The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec) 
+#' To avoid conflicts with the xpose package, the necessary xpose-based functions have been renamed with a "pmx_" prefix. If the user wants to use individual functions
+#' e.g. "read_nm_tables" please use the xpose-package
 #'
 #' @return \code{pmxClass} controller object.
 #' @export
 #'
 #' @example inst/examples/pmx_nm.R
-pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_suffix="", sim_suffix="sim", 
+pmx_nm <-function(file = NULL, directory=".", runno = NULL, ext =".lst", table_suffix="", sim_suffix="sim", simfile = NULL, prefix = "run", 
                   table_names=c("sdtab","mutab","patab","catab","cotab","mytab","extra","xptab","cwtab"), dvid = "DVID", 
                   pred = "PRED", time = "TIME", dv = "DV", conts, cats, npde, iwres, ipred, endpoint, strats="",  
-                  settings = pmx_settings(), vpc = TRUE, bloq = NULL, obs = FALSE, simfile = NULL, prefix = "run", quiet = FALSE) {
+                  settings = pmx_settings(), vpc = TRUE, bloq = NULL, obs = FALSE, quiet = FALSE) {
   
   ## Avoid error message in cmd check
   
@@ -283,7 +285,7 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     
     #if sim model file (e.g. sim.lst/.ctl) is provided load simfile according xpose 
     dt_sim <- NULL    
-    if(vpc & !is.null(simfile) & length(sim_tmp) == 0) {
+    if(vpc & !is.null(simfile)) {
     
       file <- simfile
   
@@ -397,15 +399,18 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
       }
     }
   
-  
+    
   ## Generation of eta data.table
-    eta <- input
-    measures <- input_names[grep("ETA", input_names)]
-    eta <- melt(eta, measure = measures)
-    setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
-    eta <- as.data.table(eta)
-  
-  
+    if(!length(input_names[grep("ETA", input_names)]) == 0){
+      eta <- input
+      measures <- input_names[grep("ETA", input_names)]
+      eta <- melt(eta, measure = measures)
+      setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
+      eta <- as.data.table(eta)
+    } else {
+      eta <- NULL
+    }
+
   ## Parse parameters from .ext. file using read_extfile() function
     
     # Check if unqiue .ext file can be recognized accoridng to model file or runno
@@ -434,8 +439,9 @@ pmx_nm <-function(runno = NULL, file = NULL, directory=".", ext =".lst", table_s
     
     # Read .ext file
     parameters <- read_extfile(file = ext_file, project = directory, run = "", quiet = quiet)
-
+    
     # Reformat omegas so that it fits pmx object
+    
     momega <- parameters$omega
     domega <- as.double(diag(momega))
     names(domega) <- input_names[grepl("ETA", input_names)]

@@ -25,7 +25,7 @@ pmx_plot_vpc(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, sim_blq,
 
 \item{rug}{\code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}}
 
-\item{bin}{\code{pmx_vpc_bin} object  \link{pmx_vpc_bin}}
+\item{bin}{\code{pmx_vpc_bin} object  \link{pmx_vpc_bin} specify within pmx_plot_vpc() e.g.: bin = pmx_vpc_bin(style = "kmeans", n = 10)}
 
 \item{is.legend}{\code{logical} if TRUE add legend}
 

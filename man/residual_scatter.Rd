@@ -100,6 +100,7 @@ the axis text (similar to ggplot2 axis.text theme)}
 \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
 \item \code{\link{residual}} generic object for all residual (scatter) plots .
 \item \code{\link{pmx_update}} function.
+\item aess can be used to change time variable within the plot (e.g. aess = list(x="TADQBW"))
 }
 
 \strong{residual parameters}}

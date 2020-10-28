@@ -228,7 +228,7 @@ ctr <- pmx_nm(
 )
 ```
 
-or the run number
+or the run number. The standard prefix is "run", however can be specified using `prefix`
 
 ```r
 nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata","extdata")

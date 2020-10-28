@@ -13,7 +13,7 @@ before_add_check <- function(self, private, x, pname) {
   }
   
   if(use_sim_blq){
-    if (x$ptype == "SCATTER" | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ"){ #Check wich plots needs to include sim_blq
+    if (x$ptype == "SCATTER" | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ"){
       x$dname <- "sim_blq"
     }
     
@@ -23,7 +23,7 @@ before_add_check <- function(self, private, x, pname) {
     }
   }
 
-  if(pname == "eta_qq") { #hot fix
+  if(pname == "eta_qq") { #quick fix for eta
     x$dname <- "eta"
   }
   

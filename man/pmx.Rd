@@ -6,10 +6,10 @@
 \alias{pmx_mlxtran}
 \title{Create a pmx object}
 \usage{
-pmx(config, sys = "mlx", directory, input, dv, dvid, cats = NULL,
-  conts = NULL, occ = NULL, strats = NULL, settings = NULL,
+pmx(directory, input, dv, dvid, cats = NULL, conts = NULL,
+  occ = NULL, strats = NULL, sys = "mlx", settings = NULL,
   endpoint = NULL, sim = NULL, bloq = NULL, id = NULL,
-  time = NULL, sim_blq = NULL)
+  time = NULL, sim_blq = NULL, config)
 
 pmx_mlx(config, directory, input, dv, dvid, cats, conts, occ, strats,
   settings, endpoint, sim, bloq, id, time, sim_blq)
@@ -18,12 +18,6 @@ pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint,
   ...)
 }
 \arguments{
-\item{config}{Can be either :
-The complete path for the configuration file, the name of configuration within the built-in
-list of configurations, or a configuration object.}
-
-\item{sys}{the system name can be only "mlx"}
-
 \item{directory}{\code{character} modelling output directory.}
 
 \item{input}{\code{character} complete path to the modelling input file}
@@ -41,15 +35,15 @@ in case of multiple endpoint (PKPD).}
 
 \item{strats}{\emph{[Optional]}\code{character} extra stratification variables}
 
+\item{sys}{the system name can "mlx" (for Monolix 2016) or "mlx18" (for Monolix 2018/19 and later)}
+
 \item{settings}{\emph{[Optional]}\code{pmxSettingsClass} \code{\link{pmx_settings}}
 shared between all plots}
 
 \item{endpoint}{\code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL
 of the endpoint code.   \code{\link{pmx_endpoint}}}
 
-\item{sim}{\code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}}
-
-\item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}}
+\item{sim}{\code{pmxSimClass} default to NULL. \code{\link{pmx_sim}} used for VPC, e.g.: sim = pmx_sim(file=vpc_file, irun="rep",idv="TIME")}
 
 \item{id}{\emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file}
 
@@ -57,11 +51,17 @@ of the endpoint code.   \code{\link{pmx_endpoint}}}
 
 \item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 
+\item{config}{Can be either :
+The complete path for the configuration file, the name of configuration within the built-in
+list of configurations, or a configuration object.}
+
 \item{file_name}{\code{character} mlxtran file path.}
 
 \item{call}{\code{logical} if TRUE the result is the parameters parsed}
 
 \item{...}{extra arguments passed to pmx_mlx.}
+
+\item{bloq\code{pmxBLOQClass}}{default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")}
 }
 \value{
 \code{pmxClass} controller object.

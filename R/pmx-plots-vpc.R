@@ -24,7 +24,7 @@
 #' @param pi \code{pmx_vpc_pi} object percentile layer  \link{pmx_vpc_pi}
 #' @param ci \code{pmx_vpc_ci} object confidence interval layer  \link{pmx_vpc_ci}
 #' @param rug  \code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}
-#' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin}
+#' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin} specify within pmx_plot_vpc() e.g.: bin = pmx_vpc_bin(style = "kmeans", n = 10)
 #' @param is.legend \code{logical} if TRUE add legend
 #' @param is.footnote \code{logical} if TRUE add footnote
 #' @param dname added for compatibility with other ggPMX plots
