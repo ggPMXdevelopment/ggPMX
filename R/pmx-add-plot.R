@@ -4,9 +4,29 @@ before_add_check <- function(self, private, x, pname) {
   pname <- tolower(pname)
   private$.plots_configs[[pname]] <- x
   ptype <- self[["config"]][["plots"]][[toupper(pname)]][["ptype"]]
-  if (x$ptype == "IND" && !x$use.finegrid) {
-    x$dname <- "predictions"
+
+  ##check if use sim_blq
+  if(is.null(x$gp$sim_blq)){
+    use_sim_blq <- self$sim_blq
+  } else {
+    use_sim_blq <- x$gp$sim_blq
   }
+  
+  if(use_sim_blq){
+    if (x$ptype == "SCATTER" | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ"){
+      x$dname <- "sim_blq"
+    }
+    
+  } else{
+    if (x$ptype == "SCATTER" | x$ptype == "IND" && !x$use.finegrid | x$ptype == "PMX_DENS" | x$ptype == "PMX_QQ") {
+      x$dname <- "predictions"
+    }
+  }
+
+  if(pname == "eta_qq") { #quick fix for eta
+    x$dname <- "eta"
+  }
+  
   dname <- x$dname
   dx <- copy(self$data[[dname]])
   ## if(is.null(dx))return(NULL)
@@ -23,6 +43,10 @@ before_add_check <- function(self, private, x, pname) {
   assert_that(is.data.table(dx))
   x$input <- self %>% get_data("input")
 
+  if(pname == "pmx_vpc" & use_sim_blq){
+    x$input <- self %>% get_data("sim_blq")
+  }
+  
   x$dx <- dx
   x
 }
@@ -83,6 +107,7 @@ before_add_check <- function(self, private, x, pname) {
 }
 
 .filter_eta_x <- function(x) {
+
   dx <- x$dx
   grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
   grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
@@ -118,6 +143,7 @@ before_add_check <- function(self, private, x, pname) {
 }
 
 .settings_x <- function(x, self) {
+  
   if (!is.null(self$settings)) {
     x$gp$is.draft <- self$settings$is.draft
     x$gp$color.scales <- self$settings$color.scales
@@ -179,6 +205,7 @@ pmx_add_plot <- function(self, private, x, pname) {
     return(invisible(self))
   }
   assert_that(is_pmx_gpar(x))
+  
   x <- x %>%
     .strat_supported() %>%
     .filter_x() %>%
@@ -190,7 +217,6 @@ pmx_add_plot <- function(self, private, x, pname) {
     .settings_x(self) %>%
     .bloq_x(self) %>%
     .vpc_x(self)
-
   self$set_config(pname, x)
   private$.plots[[pname]] <- plot_pmx(x, dx = x$dx)
   invisible(self)

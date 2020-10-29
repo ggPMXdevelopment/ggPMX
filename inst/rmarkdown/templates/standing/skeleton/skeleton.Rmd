@@ -29,6 +29,11 @@ cats <- ctr %>% get_cats
 
 # Key model diagnostics
 
+## Parameter Table
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+ctr %>% param_table(return_table = FALSE)
+```
+
 ## NPDE vs PRED
 ```{r npde_pred,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_npde_pred

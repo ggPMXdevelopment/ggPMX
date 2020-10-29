@@ -5,7 +5,8 @@
 #' NONMEM output table import function
 #'
 #' @description Quickly import NONMEM output tables into R. This function automatically 
-#' detects the optimal settings to import the tables from nonmem.
+#' detects the optimal settings to import the tables from nonmem. It is based on the read_nm_tables function of xpose.
+#' Slight adjustment were made for purposes of pmx_nm()
 #'
 #' @param file A character vector of path to the files or a \code{nm_table_list} object created with \code{list_nm_tables}.
 #' @param dir Location of the model files.
@@ -21,13 +22,13 @@
 #' @param ... Additional arguments to be passed to the \code{\link[readr]{read_table2}} or \code{\link[readr]{read_csv}} functions.
 #' 
 #' @section Table format requirement:
-#' When using \code{read_nm_tables} with the \code{combined} argument set to \code{FALSE} an \code{ID} column 
+#' When using \code{pmx_read_nm_tables} with the \code{combined} argument set to \code{FALSE} an \code{ID} column 
 #' must be present in all data tables. When \code{combined} is set to \code{TRUE} instead an \code{ID} column must be 
 #' present in at least one table for each problem and for each `firstonly` category. \code{ID} columns are required 
 #' to properly combine/merge tables and removing \code{NA} records. If the \code{ID} column is missing from a table and 
-#' \code{combined = FALSE} \code{read_nm_tables} will return the following warning: \code{Unknown variables: `ID`}. While
+#' \code{combined = FALSE} \code{pmx_read_nm_tables} will return the following warning: \code{Unknown variables: `ID`}. While
 #' the data is returned beware that \code{NA} records might be left in the data and the output should be checked carefully.
-#' If \code{combined = TRUE} \code{read_nm_tables} is more strict and will return the following warning instead: 
+#' If \code{combined = TRUE} \code{pmx_read_nm_tables} is more strict and will return the following warning instead: 
 #' \code{Dropped `<tablenames>` due to missing required `ID` column.}.
 #' 
 #' @examples
@@ -39,16 +40,15 @@
 #' # the xpose package is advised.
 #' 
 #' # Import tables manually and return them as a list of individual tables
-#' nm_tables <- read_nm_tables(file = c('sdtab001', 'patab001'), 
+#' nm_tables <- pmx_read_nm_tables(file = c('sdtab001', 'patab001'), 
 #'                             dir = 'models', combined = FALSE)
 #' 
 #' # Import tables manually and return them as a single merged table
-#' nm_tables <- read_nm_tables(file = c('sdtab001', 'patab001'), 
+#' nm_tables <- pmx_read_nm_tables(file = c('sdtab001', 'patab001'), 
 #'                             dir = 'models', combined = TRUE)
 #' 
 #' }
-#' @export
-read_nm_tables <- function(file          = NULL,
+pmx_read_nm_tables <- function(file          = NULL,
                            dir           = NULL,
                            combined      = TRUE,
                            rm_duplicates = TRUE,
@@ -62,21 +62,21 @@ read_nm_tables <- function(file          = NULL,
   # Check inputs
   if (is.null(file)) stop('Argument `file` required.', call. = FALSE)
   
-  if (!is.null(file) && !is.nm.table.list(file)) {
+  if (!is.null(file) && !pmx_is.nm.table.list(file)) {
     file <- dplyr::tibble(problem   = 1, 
-                          file      = file_path(dir, file),
+                          file      = pmx_file_path(dir, file),
                           firstonly = FALSE,
                           simtab    = FALSE)
   }
   
   if(user_mode){
-    user_mode <- !is.nm.table.list(file)
+    user_mode <- !pmx_is.nm.table.list(file)
   }
   
   
   # Filter tables if needed
   if (!is.null(simtab)) file <- file[file$simtab == simtab, ]
-  msg('\nLooking for nonmem output tables.', quiet)
+  pmx_msg('\nLooking for nonmem output tables.', quiet)
   
   # Check that file exists
   if (is.null(file) || !any(file.exists(file$file))) {
@@ -113,7 +113,7 @@ read_nm_tables <- function(file          = NULL,
     dplyr::mutate(string = purrr::map_chr(.$data, ~stringr::str_c(.$name, collapse = ', '))) %>% 
     {stringr::str_c(.$string, ' [$prob no.', .$problem, dplyr::if_else(.$simtab, ', simulation', ''), 
                     ']', collapse = '\n         ')} %>% 
-    {msg(c('Reading: ', .), quiet)}
+    {pmx_msg(c('Reading: ', .), quiet)}
   
   # Collect options for table import
   tables <- tables %>% 
@@ -122,7 +122,7 @@ read_nm_tables <- function(file          = NULL,
     dplyr::group_by_at(.vars = 'grouping') %>% 
     tidyr::nest() %>% 
     dplyr::ungroup() %>%
-    dplyr::mutate(args = purrr::map(.x = .$data, .f = read_args, quiet, ...)) %>% 
+    dplyr::mutate(args = purrr::map(.x = .$data, .f = pmx_read_args, quiet, ...)) %>% 
     tidyr::unnest(dplyr::one_of('data')) %>% 
     tidyr::unnest(dplyr::one_of('args')) %>% 
     dplyr::mutate(name = basename(.$file)) %>% 
@@ -148,7 +148,7 @@ read_nm_tables <- function(file          = NULL,
     dplyr::group_by_at(.vars = 'grouping')
   
   ## TEMP handling
-  if (tidyr_new_interface()) {
+  if (pmx_tidyr_new_interface()) {
     tables <- tables %>% tidyr::nest(tmp = -dplyr::one_of('grouping'))
   } else {
     tables <- tables %>% tidyr::nest(.key = 'tmp')
@@ -157,7 +157,7 @@ read_nm_tables <- function(file          = NULL,
   
   tables <- tables %>%
     dplyr::ungroup() %>% 
-    dplyr::mutate(index = purrr::map(.$tmp, index_table),
+    dplyr::mutate(index = purrr::map(.$tmp, pmx_index_table),
                   nrow =  purrr::map_dbl(.$tmp, ~nrow(.$data[[1]]))) %>% 
     tidyr::unnest(dplyr::one_of('tmp')) %>% 
     dplyr::ungroup()
@@ -168,7 +168,7 @@ read_nm_tables <- function(file          = NULL,
     dplyr::group_by_at(.vars = c('problem', 'simtab', 'firstonly'))
   
   ## TEMP handling
-  if (tidyr_new_interface()) {
+  if (pmx_tidyr_new_interface()) {
     tables <- tables %>% tidyr::nest(tmp = -dplyr::one_of('problem', 'simtab', 'firstonly'))
   } else {
     tables <- tables %>% tidyr::nest(.key = 'tmp')
@@ -177,7 +177,7 @@ read_nm_tables <- function(file          = NULL,
   
   tables <- tables %>% 
     dplyr::ungroup() %>% 
-    dplyr::mutate(out = purrr::map(.$tmp, combine_tables)) %>% 
+    dplyr::mutate(out = purrr::map(.$tmp, pmx_combine_tables)) %>% 
     tidyr::unnest(dplyr::one_of('out')) %>% 
     dplyr::select(dplyr::one_of('problem', 'simtab', 'firstonly', 'data', 'index'))
   
@@ -190,7 +190,7 @@ read_nm_tables <- function(file          = NULL,
       dplyr::group_by_at(.vars = 'grouping')
     
     ## TEMP handling
-    if (tidyr_new_interface()) {
+    if (pmx_tidyr_new_interface()) {
       tables <- tables %>% tidyr::nest(tmp = -dplyr::one_of('grouping'))
     } else {
       tables <- tables %>% tidyr::nest(.key = 'tmp')
@@ -208,12 +208,12 @@ read_nm_tables <- function(file          = NULL,
   
   # Merge firsonly tables with main tables
   if (any(tables$firstonly)) {
-    msg('Consolidating tables with `firstonly`', quiet)
+    pmx_msg('Consolidating tables with `firstonly`', quiet)
     tables <- tables %>%
       dplyr::group_by_at(.vars = c('problem', 'simtab'))
     
     ## TEMP handling
-    if (tidyr_new_interface()) {
+    if (pmx_tidyr_new_interface()) {
       tables <- tables %>% tidyr::nest(tmp = -dplyr::one_of('problem', 'simtab'))
     } else {
       tables <- tables %>% tidyr::nest(.key = 'tmp')
@@ -222,7 +222,7 @@ read_nm_tables <- function(file          = NULL,
     
     tables <- tables %>% 
       dplyr::ungroup() %>%
-      dplyr::mutate(out = purrr::map(.$tmp, merge_firstonly, quiet)) %>% 
+      dplyr::mutate(out = purrr::map(.$tmp, pmx_merge_firstonly, quiet)) %>% 
       tidyr::unnest(dplyr::one_of('out')) %>% 
       dplyr::select(dplyr::one_of('problem', 'simtab', 'data', 'index'))
   }
@@ -235,7 +235,7 @@ read_nm_tables <- function(file          = NULL,
     dplyr::group_by_at(.vars = 'grouping')
   
   ## TEMP handling
-  if (tidyr_new_interface()) {
+  if (pmx_tidyr_new_interface()) {
     tables <- tables %>% tidyr::nest(tmp = -dplyr::one_of('grouping'))
   } else {
     tables <- tables %>% tidyr::nest(.key = 'tmp')
@@ -267,8 +267,7 @@ read_nm_tables <- function(file          = NULL,
 #' @return A data import function.
 #' 
 #' @keywords internal
-#' @export
-read_funs <- function(fun) {
+pmx_read_funs <- function(fun) {
   c(csv   = readr::read_csv,
     csv2  = readr::read_csv2,
     table = readr::read_table2)[fun]
@@ -291,8 +290,7 @@ read_funs <- function(fun) {
 #' of arguments to be used when calling fun).
 #' 
 #' @keywords internal
-#' @export
-read_args <- function(x, quiet, col_types = readr::cols(.default = 'd'), 
+pmx_read_args <- function(x, quiet, col_types = readr::cols(.default = 'd'), 
                       na = 'NA', comment = 'TABLE', skip = 1, ...) {
   
   top <- x$top[[1]]
@@ -321,7 +319,7 @@ read_args <- function(x, quiet, col_types = readr::cols(.default = 'd'),
     purrr::flatten_chr() %>% 
     stringr::str_trim()
   
-  dplyr::tibble(fun = read_funs(fun),
+  dplyr::tibble(fun = pmx_read_funs(fun),
                 params = list(list(file = x$file, skip = skip, comment = comment, 
                                    na = c(na, col_names), col_names = col_names, 
                                    col_types = col_types, ...)))
@@ -337,8 +335,7 @@ read_args <- function(x, quiet, col_types = readr::cols(.default = 'd'),
 #' @return A list containing `data` and `index` of the combined table.
 #' 
 #' @keywords internal
-#' @export
-combine_tables <- function(x) {
+pmx_combine_tables <- function(x) {
   # Check for matching length
   if (length(unique(x$nrow)) > 1) {
     warning(c('Dropped ', stringr::str_c('`', x$name, '`', collapse = ', '), 
@@ -380,8 +377,7 @@ combine_tables <- function(x) {
 #' @return A list containing `data` and `index` of the merged table.
 #' 
 #' @keywords internal
-#' @export
-merge_firstonly <- function(x, quiet) {
+pmx_merge_firstonly <- function(x, quiet) {
   if (nrow(x) == 1) {
     # No merge needed
     return(dplyr::tibble(data = x$data, index = x$index))
@@ -394,7 +390,7 @@ merge_firstonly <- function(x, quiet) {
   xdata   <- x$data[x$firstonly == FALSE][[1]]
   ydata   <- x$data[x$firstonly == TRUE][[1]]
   by_vars <- intersect(colnames(xdata), colnames(ydata))
-  msg(c(' * Joining by: ', stringr::str_c(by_vars, collapse = ', ')), quiet)
+  pmx_msg(c(' * Joining by: ', stringr::str_c(by_vars, collapse = ', ')), quiet)
   dplyr::tibble(data = list(dplyr::left_join(x  = xdata, 
                                              y  = ydata,
                                              by = by_vars)),
@@ -412,8 +408,7 @@ merge_firstonly <- function(x, quiet) {
 #' @return A tibble of the index.
 #' 
 #' @keywords internal
-#' @export
-index_table <- function(x) {
+pmx_index_table <- function(x) {
   . <- NULL
   tab_type <- dplyr::case_when(
     stringr::str_detect(x$name, 'patab') ~ 'param',   # model parameters

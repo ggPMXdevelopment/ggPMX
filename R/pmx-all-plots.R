@@ -5,7 +5,6 @@ pmx_plot_generic <-
       return(NULL)
     }
     cctr <- pmx_copy(ctr, ...)
-
     params <- c(
       ctr = cctr,
       pname = pname,

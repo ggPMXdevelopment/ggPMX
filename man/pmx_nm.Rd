@@ -4,28 +4,32 @@
 \alias{pmx_nm}
 \title{Creates pmx controller from NONMEM model outputs}
 \usage{
-pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
-  table_suffix = "", sim_suffix = "sim", table_names = c("sdtab",
-  "mutab", "patab", "catab", "cotab", "mytab", "extra", "xptab", "cwtab"),
-  dvid = "DVID", pred = "PRED", time = "TIME", dv = "DV", conts,
-  cats, npde, iwres, ipred, endpoint, strats = "",
-  settings = pmx_settings(), vpc = TRUE, bloq = NULL, obs = FALSE,
-  simfile = NULL, prefix = "run", quiet = FALSE)
+pmx_nm(file = NULL, directory = ".", runno = NULL, ext = ".lst",
+  table_suffix = "", sim_suffix = "sim", simfile = NULL,
+  prefix = "run", table_names = c("sdtab", "mutab", "patab", "catab",
+  "cotab", "mytab", "extra", "xptab", "cwtab"), dvid = "DVID",
+  pred = "PRED", time = "TIME", dv = "DV", conts, cats, npde, iwres,
+  ipred, endpoint, strats = "", settings = pmx_settings(),
+  vpc = TRUE, bloq = NULL, obs = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{runno}{run number which is used for generating the model file name, or used for alternative import of NONMEM-output tables.}
-
-\item{file}{A character vector of path to the files or a \code{nm_table_list} object created with \code{list_nm_tables}.}
+\item{file}{A character vector of path to the files or a \code{nm_table_list} object created with \code{pmx_list_nm_tables}.}
 
 \item{directory}{directory of the model files.}
+
+\item{runno}{run number which is used for generating the model file name, or used for alternative import of NONMEM-output tables.}
 
 \item{ext}{Extension to be used to generate model file name. Should be one of'.lst' (default), '.out', '.res', '.mod' or '.ctl' for NONMEM.}
 
 \item{table_suffix}{suffix of the output tables, standard is "" (no suffix).}
 
-\item{sim_suffix}{suffix of the simulaiton output tables, standard is "sim" (e.g. stdab1sim).}
+\item{sim_suffix}{suffix of the simulation output tables, standard is "sim" (e.g. stdab1sim).}
 
-\item{table_names}{Contains the names of the NONMEM-output tables e.g. "sdtab", "patab", "cotab", "catab".}
+\item{simfile}{Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.}
+
+\item{prefix}{Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.}
+
+\item{table_names}{contains the names of the NONMEM-output tables e.g. "sdtab", "patab", "cotab", "catab".}
 
 \item{dvid}{\emph{[Optional]} \code{character} observation type parameter, mandatory in case of multiple endpoint (PKPD). Standard = "DVID"}
 
@@ -33,7 +37,7 @@ pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
 
 \item{time}{\emph{[Optional]} \code{character} specifing variable name of time (standard ggPMX nomenclautre  = "TIME")}
 
-\item{dv}{\code{character} the name of measurable variable used in the input modelling file}
+\item{dv}{\code{character} the name of measurable variable used in the input modelling file (standard ggPMX nomenclautre  = "DV")}
 
 \item{conts}{\emph{[Optional]} \code{character} vector of continuous covariates (automatically detected if "cotab" is provided)}
 
@@ -53,13 +57,9 @@ pmx_nm(runno = NULL, file = NULL, directory = ".", ext = ".lst",
 
 \item{vpc}{\code{logical} a boolean indiacting if vpc should be calculated, simulation tables are required for VPC generation (by default \code{TRUE})}
 
-\item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}}
+\item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")}
 
-\item{obs}{\emph{[Optional]} \code{logical} the name of measurable variable used in the input modelling file}
-
-\item{simfile}{Useful if the simulation is peformed post-hoc and an additional simulation model file is generated e.g. "simulation.lst"; similar to "file" see above.}
-
-\item{prefix}{Prefix to be used to generate model file name. Used in combination with \code{runno} and \code{ext}.}
+\item{obs}{\code{logical} if set to TRUE will filter dataset according to "MDV", default is FALSE}
 
 \item{quiet}{Logical, if \code{FALSE} messages are printed to the console.}
 }
@@ -95,5 +95,7 @@ Creates pmx controller from NONMEM model outputs
 #              table_names = "xptab")
 }
 \author{
-The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
+The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec) 
+To avoid conflicts with the xpose package, the necessary xpose-based functions have been renamed with a "pmx_" prefix. If the user wants to use individual functions
+e.g. "read_nm_tables" please use the xpose-package
 }

@@ -21,7 +21,8 @@ pmx_filter <-
                "finegrid",
                "shrink",
                "input",
-               "individual"
+               "individual",
+               "sim_blq"
              ), pmx_exp) {
     assert_that(is_pmxclass(ctr))
     data_set <- match.arg(data_set)
@@ -88,7 +89,6 @@ pmx_update <- function(ctr, pname, strat.color = NULL, strat.facet = NULL,
     filter <- deparse(substitute(filter))
     filter <- local_filter(filter)
   }
-
 
   ctr$update_plot(
     pname,

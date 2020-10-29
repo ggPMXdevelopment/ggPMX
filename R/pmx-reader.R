@@ -314,7 +314,7 @@ read_mlx_pred <- function(path, x, ...) {
 
   res
 }
-
+#also reads mlx19
 read_mlx18_res <- function(path, x, ...) {
   if (exists("subfolder", x)) {
     path <- file.path(dirname(path), x$subfolder)
@@ -341,13 +341,54 @@ read_mlx18_res <- function(path, x, ...) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
-
+  
   ds <- pmx_fread(file_path)
   if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
+
+  if(x$pattern == "_obsVsPred") {
+    xnames <- names(x[["names"]])
+    yname <- substring(file_path, regexpr("s/", file_path) + 2)
+    yname <- sub("_obsVsPred.txt", "", yname)
+    names(x[["names"]])[which(xnames == "y_simBlq_mode")] <- paste0(yname,"_simBlq_mode")
+    
+    #handling of mlx18 input, there is no y_simBlq_mean or y_simBlq_mode for Monolix version 2018
+    if(length(grep("simBlq_mode", names(ds))) == 0) {
+    names(x[["names"]])  <- gsub("_mode","", names(x[["names"]]))
+    name_simBlq <-  names(ds)[grep("simBlq", names(ds))]
+    
+    message(paste0("Using simulated BLOQs of Monolix 2018 can cause slight deviations from Monolix plots regarding simulated BLOQs of the DV!\n", 
+                   "Try Monolix 2019 or later for improved ggPMX simulated BLOQ function."))
+    }
+      
+  }
   ids <- match(tolower(names(x[["names"]])), tolower(names(ds)))
-  new_vars <- names(x[["names"]])
+
+  if(!is.null(x[["newnames"]])) {
+    new_vars <- names(x[["newnames"]])
+  } else {
+    new_vars <- names(x[["names"]])
+  }
+  
+  occ <- list(...)$occ
+  if (is.null(occ)) occ <- ""
+  if ("OCC" %in% names(ds)) {
+    new_vars <- c(new_vars, "OCC")
+    ids <- c(ids,grep("OCC", names(ds)))
+  }
+  
+  if (occ != "" && !"OCC" %in% names(ds)) {
+    new_vars <- c(new_vars, "OCC")
+    ids <- c(ids,grep(occ, names(ds)))
+  }
+#if it doesn't work correctly, give null datatable instead of error
+if(NA %in% ids){
+  ds <- NULL
+} else {
   setnames(ds, ids, new_vars)
   ds[, new_vars, with = FALSE]
+}
+
+
 }
 
 read_mlx18_pred <- function(path, x, ...) {
@@ -371,6 +412,7 @@ read_mlx18_pred <- function(path, x, ...) {
       return(NULL)
     }
     ds <- merge(ds, resi, by = c("ID", "TIME"))
+    
   }
   ds
 }
@@ -468,7 +510,6 @@ load_source <- function(sys, path, dconf, ...) {
     if(!is.null(list(...)$id)) x$id <- list(...)$id
     load_data_set(x, path = path, sys = sys, ...)
   }, dconf, names(dconf))
-
 
   dxs
 }

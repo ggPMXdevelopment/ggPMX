@@ -36,6 +36,7 @@
 #' }
 residual <- function(x, y, labels = NULL, point = NULL, is.hline = FALSE,
                      hline = NULL, dname = NULL, facets = NULL, bloq = NULL, ...) {
+  
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))

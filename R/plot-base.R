@@ -19,8 +19,6 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     assert_that(is_list_or_null(labels))
   })
 
-
-
   ## smoothing
   p <- with(gpar, {
     if (is.smooth) {
@@ -33,7 +31,7 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
     }
 
     ## labels:title,axis,subtitle...
-
+    
     ## limits
     if (!is.null(ranges$y)) {
       p <- p %+% scale_y_continuous(limits = ranges[["y"]])

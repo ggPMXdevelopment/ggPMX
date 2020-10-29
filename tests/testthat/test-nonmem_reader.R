@@ -7,6 +7,20 @@ test_that("can read NONMEM-Output", {
   
   ctr <- pmx_nm(directory = nonmem_dir, runno = "001")
   
+  #just to test alternative loadings
+  ctr_lst <- pmx_nm(directory = nonmem_dir, file = "custom_name.lst", simfile = "custom_sim.lst")
+  
+  #check if controllers are the same #1
+  expect_identical(
+    names(ctr$input), names(ctr_lst$input)
+  )
+  
+  #check if controllers are the same #2
+  expect_identical(
+    sort(ctr %>% plot_names()), sort(ctr_lst %>% plot_names())
+  )
+  
+  
   #Check if ctr is made
   expect_identical(
     is.null(ctr),FALSE 
@@ -43,5 +57,20 @@ test_that("can read NONMEM-Output", {
   expect_equal(
     nrow(ctr %>% get_data("sim")), nrow(sim_dat)
     )
+  
+  # check alternative import with and without runnumber
+  # Will cause many messages: No data eta provided for plot eta_qq etc.
+  ctr_man <- pmx_nm(directory = nonmem_dir, table_names = c("sdtab"), runno = "002")
+  
+  ctr_man_norunno <- pmx_nm(directory = nonmem_dir, table_names = c("sdtab002"))
+  
+  expect_identical(
+    names(ctr_man$input),c("ID","DOSE","AMT","SS","II","TIME","TAD","IPRED","CWRES","CPRED",
+                       "IWRES","EVID","A1","A2","DV","PRED","RES","WRES")
+  )
+  
+  expect_identical(
+    names(ctr_man$input),names(ctr_man_norunno$input)
+  )
   
 })

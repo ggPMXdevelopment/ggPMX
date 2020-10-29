@@ -11,8 +11,7 @@
 #' and `FALSE` otherwise.
 #' 
 #' @keywords internal
-#' @export
-is.nm.table.list <- function(x) {
+pmx_is.nm.table.list <- function(x) {
   inherits(x, 'nm_table_list')
 }
 
@@ -28,8 +27,7 @@ is.nm.table.list <- function(x) {
 #' @return A string or vector of string of the full file path.
 #' 
 #' @keywords internal
-#' @export
-file_path <- function(dir, file) {
+pmx_file_path <- function(dir, file) {
   if (is.null(dir)) return(file) 
   
   # Remove trailing forward slash
@@ -45,8 +43,7 @@ file_path <- function(dir, file) {
 #' @return the package version of tidyr
 #' 
 #' @keywords internal
-#' @export
-tidyr_new_interface <- function() {
+pmx_tidyr_new_interface <- function() {
   utils::packageVersion("tidyr") > "0.8.99"
 }
 
@@ -61,8 +58,7 @@ tidyr_new_interface <- function() {
 #' @return A string or vector of string of the file(s) extension.
 #' 
 #' @keywords internal
-#' @export
-get_extension <- function(x, dot = TRUE) {
+pmx_get_extension <- function(x, dot = TRUE) {
   x <- stringr::str_extract(x, '\\.[[:alnum:]]+$')
   x[is.na(x)] <- ''
   if (!dot) x <- stringr::str_replace_all(x, '\\.', '')
@@ -79,8 +75,7 @@ get_extension <- function(x, dot = TRUE) {
 #' @return A string or vector of strings of extension(s).
 #' 
 #' @keywords internal
-#' @export
-make_extension <- function(x) {
+pmx_make_extension <- function(x) {
   dplyr::if_else(!stringr::str_detect(x, '^\\..+'), stringr::str_c('.', x), x)
 }
 
@@ -94,8 +89,7 @@ make_extension <- function(x) {
 #' @return A string or vector of strings of file name(s).
 #' 
 #' @keywords internal
-#' @export
-update_extension <- function(x, ext) {
+pmx_update_extension <- function(x, ext) {
   stringr::str_replace(x, '\\.[[:alnum:]]+$', ext)
 }
 
@@ -109,8 +103,7 @@ update_extension <- function(x, ext) {
 #' @return Silent when quiet is `TRUE` or a message is quiet is `FALSE`.
 #' 
 #' @keywords internal
-#' @export
-msg <- function(txt, quiet = TRUE) {
+pmx_msg <- function(txt, quiet = TRUE) {
   if (!quiet) message(txt)
 }
 
