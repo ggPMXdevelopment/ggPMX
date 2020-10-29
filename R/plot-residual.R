@@ -58,7 +58,7 @@ residual <- function(x, y, labels = NULL, point = NULL, is.hline = FALSE,
   default_hline <- list(yintercept = 0)
   point <- l_left_join(default_point, point)
   hline <- l_left_join(default_hline, hline)
-  if (is.null(dname)) dname <- "notspecified"
+  if (is.null(dname)) dname <- "predictions"
 
   structure(
     list(
