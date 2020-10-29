@@ -26,6 +26,7 @@ knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggplot2)
 library(xtable)
 library(knitr)
+library(ggPMX)
 
 theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
 work_dir <- file.path(theophylline, "Monolix")
