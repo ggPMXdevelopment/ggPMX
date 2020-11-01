@@ -155,7 +155,6 @@ plot_pmx.residual <- function(x, dx, ...) {
         }
       }
     }
-    p <- plot_pmx(gp, p)
 
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
@@ -171,7 +170,8 @@ plot_pmx.residual <- function(x, dx, ...) {
     }
 
 
-
+    p <- plot_pmx(gp, p)
+    
 
     p
   })
