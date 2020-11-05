@@ -17,6 +17,8 @@ pmx_qq(
   shrink = NULL,
   is.hline = NULL,
   hline = NULL,
+  is.vline = NULL,
+  vline = NULL,
   ...
 )
 }
@@ -44,6 +46,10 @@ pmx_qq(
 \item{is.hline}{logical if TRUE add horizontal line y=0 ( TRUE by default)}
 
 \item{hline}{geom hline graphical parameters}
+
+\item{is.vline}{logical if TRUE add vertical line x=0 ( TRUE by default)}
+
+\item{vline}{geom vline graphical parameters}
 
 \item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }

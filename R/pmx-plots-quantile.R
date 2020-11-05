@@ -19,6 +19,8 @@
 #' @param shrink \code{list} shrinkage graphical parameter (geom_text)
 #' @param is.hline \code{logical} if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline \code{list} geom hline graphical parameters
+#' @param is.vline \code{logical} if TRUE add vertical line x=0 ( TRUE by default)
+#' @param vline \code{list} geom vline graphical parameters
 #'
 #' \strong{pmx_update parameters}
 
@@ -50,12 +52,11 @@
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
-#' @param sim_blq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @return ggplot2 object
 #' @example inst/examples/qq.R
 pmx_qq_plot <-
-  function(sim_blq,dname, point, is.reference_line, reference_line, is.shrink,
-             shrink, is.hline, hline, filter, strat.facet, facets,
+  function(dname, point, is.reference_line, reference_line, is.shrink,
+             shrink, is.hline, hline, is.vline, vline, filter, strat.facet, facets,
              strat.color, trans, pmxgpar, labels, axis.title, axis.text,
              ranges, is.smooth, smooth, is.band, band, is.draft, draft,
              is.identity_line, identity_line, scale_x_log10, scale_y_log10,

@@ -88,6 +88,7 @@ pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, co
                 settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL, sim_blq = NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
+
     input <- check_argument(input, "input")
     if (missing(cats)) cats <- ""
     if (missing(sim)) sim <- NULL
@@ -102,7 +103,9 @@ pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, co
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
+
     if (missing(sim_blq)) sim_blq <- FALSE
+
     if (missing(dv)) dv <- "DV"
     if (missing(dvid)) dvid <- "DVID"
 
