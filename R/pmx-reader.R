@@ -137,7 +137,8 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
     } else {
       xx[, DV := get(dv)]
     }
-    xx <- xx[DV != 0]
+    # Omitting 0-value observations for compatibility with log transformations
+    #xx <- xx[DV != 0]
   } else {
     dv.names <- paste(setdiff(names(xx), c("ID", "id", "time", "TIME")), collapse = " or ")
     dv.names <- sprintf("'%s'", dv.names)
