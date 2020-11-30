@@ -10,7 +10,7 @@ read_mlx_ind_est <- function(path, x, ...) {
   ID <- OCC <- NULL
   ds <- pmx_fread(path)
   if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
-  
+
   occ <- list(...)$occ
   if (is.null(occ)) occ <- ""
   patt_fields <- "^id|^%s|^eta_.*_(mode|mean)$"
@@ -75,11 +75,11 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
 
   if (!is.null(id) && !exists(id,xx)) {
     stop(sprintf("observation data does not contain id variable: %s",id))
-  } 
+  }
   if (!is.null(time) && !exists(time,xx)) {
     stop(sprintf("observation data does not contain time variable: %s",time))
-  } 
-  
+  }
+
   if (all(c("MDV", "EVID") %in% toupper(names(xx)))) {
     setnames(xx, grep("^mdv$", names(xx), ignore.case = TRUE, value = TRUE), "MDV")
     setnames(xx, grep("^evid$", names(xx), ignore.case = TRUE, value = TRUE), "EVID")
@@ -279,7 +279,7 @@ read_mlx_pred <- function(path, x, ...) {
   }
   xx <- pmx_fread(path)
   if(!is.null(x$id) && exists(x$id,xx)) setnames(xx,x$id,"id")
-  
+
   setnames(xx, tolower(names(xx)))
   id_col <- grep("^id", names(xx), ignore.case = TRUE, value = TRUE)
   if (length(id_col) > 0 && nzchar(id_col)) setnames(xx, id_col, "id")
@@ -370,6 +370,12 @@ read_mlx18_pred <- function(path, x, ...) {
     if (is.null(resi)) {
       return(NULL)
     }
+    if (inherits(ds$ID,"factor") & !inherits(resi$ID,"factor")) {
+      resi[, ID := factor(ID, levels = levels(ID))]
+    }
+    if (!inherits(ds$ID, "factor") & inherits(resi$ID, "factor")) {
+      ds[, ID := factor(ID, levels = levels(ID))]
+    }
     ds <- merge(ds, resi, by = c("ID", "TIME"))
   }
   ds
@@ -437,8 +443,8 @@ load_data_set <- function(x, path, sys, ...) {
   }
   ds <- pmx_fread(fpath)
   if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
-  
-  
+
+
   ds <- ds[, !grep("^V[0-9]+", names(ds)), with = FALSE]
   data.table::setnames(ds, tolower(names(ds)))
   if ("names" %in% names(x)) {
