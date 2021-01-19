@@ -342,7 +342,7 @@ read_mlx18_res <- function(path, x, ...) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
-  
+
   ds <- pmx_fread(file_path)
   if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
 
@@ -351,16 +351,16 @@ read_mlx18_res <- function(path, x, ...) {
     yname <- substring(file_path, regexpr("s/", file_path) + 2)
     yname <- sub("_obsVsPred.txt", "", yname)
     names(x[["names"]])[which(xnames == "y_simBlq_mode")] <- paste0(yname,"_simBlq_mode")
-    
+
     #handling of mlx18 input, there is no y_simBlq_mean or y_simBlq_mode for Monolix version 2018
     if(length(grep("simBlq_mode", names(ds))) == 0) {
     names(x[["names"]])  <- gsub("_mode","", names(x[["names"]]))
     name_simBlq <-  names(ds)[grep("simBlq", names(ds))]
-    
-    message(paste0("Using simulated BLOQs of Monolix 2018 can cause slight deviations from Monolix plots regarding simulated BLOQs of the DV!\n", 
+
+    message(paste0("Using simulated BLOQs of Monolix 2018 can cause slight deviations from Monolix plots regarding simulated BLOQs of the DV!\n",
                    "Try Monolix 2019 or later for improved ggPMX simulated BLOQ function."))
     }
-      
+
   }
   ids <- match(tolower(names(x[["names"]])), tolower(names(ds)))
 
@@ -369,14 +369,14 @@ read_mlx18_res <- function(path, x, ...) {
   } else {
     new_vars <- names(x[["names"]])
   }
-  
+
   occ <- list(...)$occ
   if (is.null(occ)) occ <- ""
   if ("OCC" %in% names(ds)) {
     new_vars <- c(new_vars, "OCC")
     ids <- c(ids,grep("OCC", names(ds)))
   }
-  
+
   if (occ != "" && !"OCC" %in% names(ds)) {
     new_vars <- c(new_vars, "OCC")
     ids <- c(ids,grep(occ, names(ds)))
@@ -393,6 +393,7 @@ if(NA %in% ids){
 }
 
 read_mlx18_pred <- function(path, x, ...) {
+  ID <- NULL
   if (exists("subfolder", x) && !file.exists(path)) {
     path <- file.path(dirname(path), x$subfolder)
     finegrid_file <- file.path(path, x$file)
@@ -419,7 +420,7 @@ read_mlx18_pred <- function(path, x, ...) {
       ds[, ID := factor(ID, levels = levels(ID))]
     }
     ds <- merge(ds, resi, by = c("ID", "TIME"))
-    
+
   }
   ds
 }

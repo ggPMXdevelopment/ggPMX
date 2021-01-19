@@ -4,8 +4,14 @@
 \alias{add_draft}
 \title{Add draft layer annotation}
 \usage{
-add_draft(label = "DRAFT", size = 10, colour = "grey50", x = Inf,
-  y = -Inf, ...)
+add_draft(
+  label = "DRAFT",
+  size = 10,
+  colour = "grey50",
+  x = Inf,
+  y = -Inf,
+  ...
+)
 }
 \arguments{
 \item{label}{draft layer default to DRAFT}

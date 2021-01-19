@@ -800,7 +800,7 @@ pmxClass <- R6::R6Class(
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
                            settings, endpoint, sim, bloq, id, time, sim_blq) {
-  DVID <- NULL
+  DVID <- ID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
       "Expecting source path(directory ) and a config path",
