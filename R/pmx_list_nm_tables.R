@@ -4,26 +4,25 @@
 #'
 #' @description List NONMEM output tables file names from a \code{nm_model} object.
 #'
-#' @param nm_model An nm_model object generated with \code{\link{read_nm_model}}.
+#' @param nm_model An nm_model object generated with \code{\link{pmx_read_nm_model}}.
 #'
-#' @seealso \code{\link{read_nm_model}}, \code{\link{read_nm_tables}}
+#' @seealso \code{\link{pmx_read_nm_model}}, \code{\link{pmx_read_nm_tables}}
 #' @examples
 #' \dontrun{
-#' read_nm_model(file = 'run001.lst') %>% 
-#'   list_nm_tables()
+#' pmx_read_nm_model(file = 'run001.lst') %>% 
+#'   pmx_list_nm_tables()
 #' }
 #' 
-#' @export
-list_nm_tables <- function(nm_model = NULL) {
+pmx_list_nm_tables <- function(nm_model = NULL) {
   
   . <- NULL
   
-  if (is.null(nm_model) || !is.nm.model(nm_model)) {
+  if (is.null(nm_model) || !pmx_is.nm.model(nm_model)) {
     stop('Object of class `nm_model` required.', call. = FALSE)
   }
   
   # Prepare null object to be returned if no $table is found
-  null_object <- as.nm.table.list(dplyr::tibble(problem = -1, file = '', 
+  null_object <- pmx_as.nm.table.list(dplyr::tibble(problem = -1, file = '', 
                                                 firstonly = NA, simtab = NA))
   
   # Get NM code associated with the tables
@@ -44,7 +43,7 @@ list_nm_tables <- function(nm_model = NULL) {
   
   # Find table names and firstonly option
   table_list <- table_list %>% 
-    dplyr::mutate(file = file_path(attr(nm_model, 'dir'), .$file),
+    dplyr::mutate(file = pmx_file_path(attr(nm_model, 'dir'), .$file),
                   firstonly = stringr::str_detect(.$string, 'FIRSTONLY')) %>% 
     dplyr::select(dplyr::one_of('problem', 'file', 'firstonly'))
   
@@ -60,15 +59,15 @@ list_nm_tables <- function(nm_model = NULL) {
   # Merge and output
   table_list %>% 
     dplyr::left_join(sim_flag, by = 'problem') %>% 
-    as.nm.table.list()
+    pmx_as.nm.table.list()
 }
 
-is.nm.model <- function(x) {
+pmx_is.nm.model <- function(x) {
   inherits(x, 'nm_model')
 }
 
-as.nm.table.list <- function(x) {
-  if (!is.nm.table.list(x)) {
+pmx_as.nm.table.list <- function(x) {
+  if (!pmx_is.nm.table.list(x)) {
     structure(x, class = c('nm_table_list', class(x)))
   } else {
     x

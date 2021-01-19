@@ -7,11 +7,11 @@
 \alias{pmx_plot_npde_qq}
 \title{Quantile-quantile plots}
 \usage{
-pmx_qq_plot(dname, point, is.reference_line, reference_line, is.shrink,
-  shrink, is.hline, hline, filter, strat.facet, facets, strat.color, trans,
-  pmxgpar, labels, axis.title, axis.text, ranges, is.smooth, smooth,
-  is.band, band, is.draft, draft, is.identity_line, identity_line,
-  scale_x_log10, scale_y_log10, color.scales, ...)
+pmx_qq_plot(sim_blq, dname, point, is.reference_line, reference_line,
+  is.shrink, shrink, is.hline, hline, filter, strat.facet, facets,
+  strat.color, trans, pmxgpar, labels, axis.title, axis.text, ranges,
+  is.smooth, smooth, is.band, band, is.draft, draft, is.identity_line,
+  identity_line, scale_x_log10, scale_y_log10, color.scales, ...)
 
 pmx_plot_iwres_qq(ctr, ...)
 
@@ -20,6 +20,8 @@ pmx_plot_eta_qq(ctr, ...)
 pmx_plot_npde_qq(ctr, ...)
 }
 \arguments{
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
+
 \item{dname}{name of dataset to be used}
 
 \item{point}{\code{list} geom_point parameters.}

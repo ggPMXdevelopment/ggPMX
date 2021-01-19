@@ -36,6 +36,7 @@
 #' }
 residual <- function(x, y, labels = NULL, point = NULL, is.hline = FALSE,
                      hline = NULL, dname = NULL, facets = NULL, bloq = NULL, ...) {
+  
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -154,7 +155,6 @@ plot_pmx.residual <- function(x, dx, ...) {
         }
       }
     }
-    p <- plot_pmx(gp, p)
 
     strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
@@ -170,7 +170,8 @@ plot_pmx.residual <- function(x, dx, ...) {
     }
 
 
-
+    p <- plot_pmx(gp, p)
+    
 
     p
   })

@@ -7,6 +7,7 @@
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
 #' \item \code{\link{residual}} generic object for all residual (scatter) plots .
 #' \item \code{\link{pmx_update}} function.
+#' \item aess can be used to change time variable within the plot (e.g. aess = list(x="TADQBW"))
 #' }
 #'
 #' \strong{residual parameters}
@@ -50,12 +51,12 @@
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
+#' @param sim_blq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @return ggplot2 object
 #' @example inst/examples/residual.R
 
-
 residual_scatter <-
-  function(point, is.hline, hline, dname, bloq, filter, strat.facet,
+  function(sim_blq, point, is.hline, hline, dname, bloq, filter, strat.facet,
              facets, strat.color, trans, pmxgpar, labels, axis.title,
              axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
              draft, is.identity_line, identity_line, scale_x_log10,
@@ -103,6 +104,7 @@ pmx_plot_dv_ipred <- function(
 
 pmx_plot_iwres_ipred <- function(
                                  ctr, ...) {
+  
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "iwres_ipred", params)
 }
@@ -151,6 +153,7 @@ pmx_plot_iwres_time <- function(ctr, ...) {
 
 pmx_plot_npde_time <- function(
                                ctr, ...) {
+  
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "npde_time", params)
 }

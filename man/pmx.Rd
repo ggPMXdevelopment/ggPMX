@@ -9,10 +9,10 @@
 pmx(config, sys = "mlx", directory, input, dv, dvid, cats = NULL,
   conts = NULL, occ = NULL, strats = NULL, settings = NULL,
   endpoint = NULL, sim = NULL, bloq = NULL, id = NULL,
-  time = NULL)
+  time = NULL, sim_blq = NULL)
 
 pmx_mlx(config, directory, input, dv, dvid, cats, conts, occ, strats,
-  settings, endpoint, sim, bloq, id, time)
+  settings, endpoint, sim, bloq, id, time, sim_blq)
 
 pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint,
   ...)
@@ -22,7 +22,7 @@ pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint,
 The complete path for the configuration file, the name of configuration within the built-in
 list of configurations, or a configuration object.}
 
-\item{sys}{the system name can be only "mlx"}
+\item{sys}{the system name can "mlx" (for Monolix 2016) or "mlx18" (for Monolix 2018/19 and later)}
 
 \item{directory}{\code{character} modelling output directory.}
 
@@ -47,13 +47,15 @@ shared between all plots}
 \item{endpoint}{\code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL
 of the endpoint code.   \code{\link{pmx_endpoint}}}
 
-\item{sim}{\code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}}
+\item{sim}{\code{pmxSimClass} default to NULL. \code{\link{pmx_sim}} used for VPC, e.g.: sim = pmx_sim(file=vpc_file, irun="rep",idv="TIME")}
 
-\item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}}
+\item{bloq}{\code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")}
 
 \item{id}{\emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file}
 
 \item{time}{\emph{[Optional]} \code{character} Time variable.}
+
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 
 \item{file_name}{\code{character} mlxtran file path.}
 

@@ -80,9 +80,17 @@ post_load <- function(dxs, input, sys, dplot, occ) {
   if (sys %in% c("mlx", "mlx18")) {
     keys <- c("ID", "TIME")
     if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
+    
+    if (!is.null(dxs[["predictions"]]) & !is.null(dxs[["sim_blq_npde_iwres"]]) & !is.null(dxs[["sim_blq_y"]])) {
+      dxs[["sim_blq"]] <- merge(dxs[["sim_blq_npde_iwres"]], dxs[["sim_blq_y"]], by = keys)
+      dxs[["sim_blq"]] <- merge(dxs[["sim_blq"]], input, by = keys)
+      dxs[["sim_blq"]] <- merge(dxs[["sim_blq"]], dxs[["predictions"]], by = keys)
+    }
+    
     if (!is.null(dxs[["predictions"]])) {
       dxs[["predictions"]] <- merge(dxs[["predictions"]], input, by = keys)
     }
+    
     if (!is.null(dxs[["finegrid"]])) {
       dxs[["finegrid"]] <- input_finegrid(input, dxs[["finegrid"]])
       dxs[["IND"]] <- dxs[["finegrid"]]

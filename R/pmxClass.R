@@ -61,7 +61,7 @@ check_argument <- function(value, pmxname) {
 #' @param config Can be either :
 #' The complete path for the configuration file, the name of configuration within the built-in
 #' list of configurations, or a configuration object.
-#' @param sys the system name can be only "mlx"
+#' @param sys the system name can "mlx" (for Monolix 2016) or "mlx18" (for Monolix 2018/19 and later)
 #' @param directory \code{character} modelling output directory.
 #' @param input \code{character} complete path to the modelling input file
 #' @param dv \code{character} the name of measurable variable used in the input modelling file
@@ -75,20 +75,19 @@ check_argument <- function(value, pmxname) {
 #' shared between all plots
 #' @param endpoint \code{pmxEndpointClass} or \code{integer} or \code{charcater} default to NULL
 #' of the endpoint code.   \code{\link{pmx_endpoint}}
-#' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}}
-#' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}}
+#' @param sim \code{pmxSimClass} default to NULL. \code{\link{pmx_sim}} used for VPC, e.g.: sim = pmx_sim(file=vpc_file, irun="rep",idv="TIME")
+#' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")
+#' @param sim_blq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @param id \emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file
 #' @param time \emph{[Optional]} \code{character} Time variable.
 #' @return \code{pmxClass} controller object.
 
 #' @export
 #' @example inst/examples/controller.R
-pmx <-
-  function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
-             settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL) {
+pmx <- function(config, sys = "mlx", directory, input, dv, dvid, cats = NULL, conts = NULL, occ = NULL, strats = NULL,
+                settings = NULL, endpoint = NULL, sim = NULL, bloq = NULL,id=NULL,time=NULL, sim_blq = NULL) {
     directory <- check_argument(directory, "work_dir")
     ll <- list.files(directory)
-
     input <- check_argument(input, "input")
     if (missing(cats)) cats <- ""
     if (missing(sim)) sim <- NULL
@@ -103,7 +102,7 @@ pmx <-
     assert_that(is_character_or_null(occ))
     if (missing(strats)) strats <- ""
     assert_that(is_character_or_null(strats))
-
+    if (missing(sim_blq)) sim_blq <- FALSE
     if (missing(dv)) dv <- "DV"
     if (missing(dvid)) dvid <- "DVID"
 
@@ -129,7 +128,7 @@ pmx <-
     if (missing(bloq)) bloq <- NULL
     assert_that(inherits(bloq, "pmxBLOQClass") || is.null(bloq))
 
-    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time)
+    pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time, sim_blq)
   }
 
 
@@ -138,8 +137,8 @@ pmx <-
 #' \code{pmx_mlx}  is a wrapper to mlx for the MONOLIX system ( \code{sys="mlx"})
 #' @export
 pmx_mlx <-
-  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id, time) {
-    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time)
+  function(config, directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id, time, sim_blq) {
+    pmx(config, "mlx", directory, input, dv, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq,id,time, sim_blq)
   }
 
 
@@ -514,6 +513,7 @@ get_abbrev <- function(ctr, param) {
 #' }
 #'
 get_plot <- function(ctr, nplot, npage = NULL) {
+
   if (is.numeric(npage)) {
     npage <- as.integer(npage)
   }
@@ -750,8 +750,9 @@ pmxClass <- R6::R6Class(
     bloq = NULL,
     id = NULL,
     time = NULL,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time),
+    sim_blq = FALSE,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -798,7 +799,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
-                           settings, endpoint, sim, bloq, id, time) {
+                           settings, endpoint, sim, bloq, id, time, sim_blq) {
   DVID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -815,12 +816,14 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (missing(bloq)) bloq <- NULL
   if (missing(id)) id <- NULL
   if (missing(time)) time <- NULL
+  if (missing(sim_blq)) sim_blq <- FALSE
 
   private$.data_path <- data_path
   self$save_dir <- data_path
   if (is.character(input)) {
     private$.input_path <- input
   }
+
   self$config <- config
   self$dv <- dv
   self$dvid <- dvid
@@ -832,6 +835,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   self$bloq <- bloq
   self$id <- id
   self$time <- time
+  self$sim_blq <- sim_blq
 
   if (!is.null(endpoint) && is.atomic(endpoint)) {
     endpoint <- pmx_endpoint(code = as.character(endpoint))
@@ -854,8 +858,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     occ = self$occ,
     id = self$id
   )
-  ##
-  ## check random effect
 
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
@@ -871,6 +873,33 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   }
 
   self$post_load()
+
+#replace some column names of sim_blq with ggPMX naming convention
+  if(!is.null(self$data$sim_blq)){
+
+    yname <- names(self$data$sim_blq_y)[grep("simBlq",names(self$data$sim_blq_y))]
+    yname <- gsub("mode|mean|simBlq|_", "", yname)
+
+    #some cases dv and xx_simBlq are not the same
+    if(self$dv == yname){
+      self$data$sim_blq <- self$data$sim_blq[,c("NPDE","IWRES", paste(dv)) := NULL]
+      names(self$data$sim_blq) <- gsub("mode|mean|simBlq|_","", names(self$data$sim_blq))
+      self$data$sim_blq$DV <- self$data$sim_blq[[paste(dv)]]
+    } else {
+      self$data$sim_blq <- self$data$sim_blq[,c("NPDE","IWRES") := NULL]
+      names(self$data$sim_blq) <- gsub("mode|mean|simBlq|_","", names(self$data$sim_blq))
+      self$data$sim_blq$DV <- self$data$sim_blq[[yname]]
+    }
+
+    #rename npde and iwRes to NPDE and IWRES
+    place_vec <- which(names(self$data$sim_blq) == "npde" | names(self$data$sim_blq) == "iwRes")
+    names(self$data$sim_blq)[place_vec] <- toupper(names(self$data$sim_blq)[place_vec])
+
+    #give message if new version of monolix, otherwise sim_blq cannot be loaded anyway
+  } else if(self$config$sys == "mlx18") {
+    message("`sim_blq` dataset could not be generated, `sim_blq_npde_iwres` or `sim_blq_y` is missing")
+  }
+
 
   if (!is.null(sim)) {
     dx <- sim[["sim"]]

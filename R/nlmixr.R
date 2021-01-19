@@ -15,6 +15,7 @@
 
 pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
+  
   if (missing(fit)) {
     return(NULL)
   }
@@ -143,8 +144,8 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   )
   class(config) <- "pmxConfig"
 
-
   bloq <- NULL
+  sim_blq <- FALSE
 
-  pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq)
+  pmxClass$new(directory, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, sim_blq)
 }

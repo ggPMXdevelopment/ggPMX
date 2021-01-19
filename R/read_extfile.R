@@ -12,7 +12,7 @@
 #' 
 #' @author This function is based on read_nmext from mrgsolve, Original Author: Kyle T Baron.
 #' This function has some changes to the original code:
-#'Addition of param, "quiet", (option of msg function, from xpose package) (Line: 27)
+#'Addition of param, "quiet", (option of pmx_msg function, from xpose package) (Line: 27)
 #'The code was slightly adjusted to check for multiple tables and also extract SE (ITERATION == 1000000001) (Line: 44-58, Line: 86-96, respectively)
 #'The output was also slightly adjusted to fit ggPMX output (df and df2) (Line: 105,106)
 #'as_bmat was replaced by bmat_like to create the diagonal matrix (Line 116:142)
@@ -57,7 +57,7 @@ read_extfile <- function(run=NA_real_, project = getwd(), file=paste0(run,".ext"
     colon <- regexpr(":",ext_tmp[last_table])[1]
     last_table_name <- substr(ext_tmp[last_table],1,colon-1)
     last_table <- last_table-1
-    msg(paste("Multiple Problems found in",file,"only using",last_table_name,"\n"),quiet) #multiple problems not currently supported, only using last table
+    pmx_msg(paste("Multiple Problems found in",file,"only using",last_table_name,"\n"),quiet) #multiple problems not currently supported, only using last table
   }
   
   ## Read .ext file

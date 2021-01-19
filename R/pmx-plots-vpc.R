@@ -24,7 +24,7 @@
 #' @param pi \code{pmx_vpc_pi} object percentile layer  \link{pmx_vpc_pi}
 #' @param ci \code{pmx_vpc_ci} object confidence interval layer  \link{pmx_vpc_ci}
 #' @param rug  \code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}
-#' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin}
+#' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin} specify within pmx_plot_vpc() e.g.: bin = pmx_vpc_bin(style = "kmeans", n = 10)
 #' @param is.legend \code{logical} if TRUE add legend
 #' @param is.footnote \code{logical} if TRUE add footnote
 #' @param dname added for compatibility with other ggPMX plots
@@ -63,6 +63,7 @@
 #' @param scale_x_log10 \code{logical} if TRUE use log10 scale for x axis.
 #' @param scale_y_log10 \code{logical} if TRUE use log10 scale for y axis.
 #' @param color.scales \code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}
+#' @param sim_blq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @return ggplot2 or list of ggplot2 objects
 #' @export
 #' @family vpc
@@ -72,7 +73,7 @@
 
 
 pmx_plot_vpc <-
-  function(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, dname, filter,
+  function(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, sim_blq, dname, filter,
              strat.facet, facets, strat.color, trans, pmxgpar, labels,
              axis.title, axis.text, ranges, is.smooth, smooth, is.band,
              band, is.draft, draft, is.identity_line, identity_line,

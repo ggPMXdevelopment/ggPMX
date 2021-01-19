@@ -14,7 +14,7 @@
 #' @family vpc
 
 pmx_vpc_bin <-
-  function(style, within_strat = TRUE, ...) { #within strat = TRUE, as standard in order to avoid bugs
+  function(style, within_strat = TRUE, ...) { #within strat = TRUE, as default in order to avoid bugs
     if (missing(style)) {
       return(NULL)
     }
@@ -260,8 +260,15 @@ vpc.data <-
            rug = NULL) {
     zmax <- zmin <- out_ <- value <- percentile <- NULL
     bins <- unlist(unique(dobs[, idv, with = FALSE]))
-    
     if (type == "percentile") {
+
+      #allow for input e.g. pmx_plot_vpc(strat.facet = ~SEX)
+      if(!is.character(strat)){
+        strat <- as.character(strat)
+        strat <- sub("~","",strat)
+        strat <- strat[strat != ""]
+      }
+      
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
       res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
       ci <- quantile_dt(
@@ -269,7 +276,7 @@ vpc.data <-
         probs = probs.ci, grp = c("percentile", idv, strat),
         prefix = "CL", ind = "value", wide = TRUE
       )
-      
+
       res <- list(ci_dt = ci,pi_dt = pi)
       nn <- sum(grepl("CL", names(ci)))
       if (nn==3){
@@ -294,7 +301,7 @@ vpc.data <-
 
 bin_idv <- function(idv, x) {
   brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
-  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv) #probably to limit brks to max and min time, otherwise it makes no sense 
+  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv)  
   if (min(brks) <= min(idv)) brks[which.min(brks)] <- min(idv)
   brks
 }
@@ -313,7 +320,7 @@ find_interval <- function(x, vec, labels = NULL, ...) {
 
 
 
-.vpc_x <- function(x, self) { #generating x
+.vpc_x <- function(x, self) {
   if (x$ptype == "VPC") {
     x$dv <- self$dv
     idv <- self$sim[["idv"]]
@@ -337,7 +344,8 @@ find_interval <- function(x, vec, labels = NULL, ...) {
         rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
       }
     }
-    res <- vpc.data(#check original daten
+    
+    res <- vpc.data(
       x[["type"]],
       x$input,
       x$dx,

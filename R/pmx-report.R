@@ -67,6 +67,7 @@ pmx_report <-
     old_fig_process <- knitr::opts_chunk$get("fig.process")
 
     out_ <- file.path(contr$save_dir, "ggpmx_GOF")
+
     rm_dir(out_)
 
 
@@ -222,9 +223,11 @@ create_ggpmx_gof <- function(save_dir, name) {
     rm_dir(in_)
   }
 }
+
 rm_dir <- function(to_remove) {
   if (!is.null(to_remove) && dir.exists(to_remove)) {
-    system(sprintf("rm -r %s", to_remove))
+    #system(sprintf("rm -r %s", to_remove))
+    unlink(to_remove,recursive = TRUE, force = TRUE) 
   }
 }
 
