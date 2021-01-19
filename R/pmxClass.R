@@ -79,7 +79,7 @@ check_argument <- function(value, pmxname) {
 #' @param bloq \code{pmxBLOQClass} default to NULL. \code{\link{pmx_bloq}} specify bloq, within controller: e.g. bloq=pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")
 #' @param sim_blq \code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.
 #' @param id \emph{[Optional]}  \code{character} the name of Indvidual variable used in the input modelling file
-#' @param time \emph{[Optional]} \code{character} Time variable. 
+#' @param time \emph{[Optional]} \code{character} Time variable.
 #' @return \code{pmxClass} controller object.
 
 #' @export
@@ -165,7 +165,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
   rr$file_name <- NULL
   params <- append(params, rr)
   if (!exists("config",params))  params$config <- config
-  
+
   if (!missing(endpoint)) {
     params$endpoint <- NULL
     params$endpoint <- endpoint
@@ -192,7 +192,7 @@ formula_to_text <- function(form) {
 
 #' Create controller global settings
 #' @param is.draft \code{logical} if FALSE any plot is without draft annotation
-#' @param use.abbrev \code{logical} if FALSE use full description from abbreviation mapping for axis names 
+#' @param use.abbrev \code{logical} if FALSE use full description from abbreviation mapping for axis names
 #' @param color.scales \code{list} list containing elements of scale_color_manual
 #' @param use.labels \code{logical} if TRUE replace factor named by cats.labels
 #' @param cats.labels \code{list} list of named vectors for each factor
@@ -513,7 +513,7 @@ get_abbrev <- function(ctr, param) {
 #' }
 #'
 get_plot <- function(ctr, nplot, npage = NULL) {
-  
+
   if (is.numeric(npage)) {
     npage <- as.integer(npage)
   }
@@ -800,7 +800,7 @@ pmxClass <- R6::R6Class(
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
                            settings, endpoint, sim, bloq, id, time, sim_blq) {
-  DVID <- NULL
+  DVID <- ID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
       "Expecting source path(directory ) and a config path",
@@ -823,7 +823,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   if (is.character(input)) {
     private$.input_path <- input
   }
-  
+
   self$config <- config
   self$dv <- dv
   self$dvid <- dvid
@@ -850,7 +850,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     }
     self$input <- setDT(input)
   }
-  
+
   self$data <- load_source(
     sys = config$sys, private$.data_path,
     self$config$data, dvid = self$dvid,
@@ -876,10 +876,10 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 
 #replace some column names of sim_blq with ggPMX naming convention
   if(!is.null(self$data$sim_blq)){
-    
+
     yname <- names(self$data$sim_blq_y)[grep("simBlq",names(self$data$sim_blq_y))]
     yname <- gsub("mode|mean|simBlq|_", "", yname)
-    
+
     #some cases dv and xx_simBlq are not the same
     if(self$dv == yname){
       self$data$sim_blq <- self$data$sim_blq[,c("NPDE","IWRES", paste(dv)) := NULL]
@@ -890,17 +890,17 @@ pmx_initialize <- function(self, private, data_path, input, dv,
       names(self$data$sim_blq) <- gsub("mode|mean|simBlq|_","", names(self$data$sim_blq))
       self$data$sim_blq$DV <- self$data$sim_blq[[yname]]
     }
-    
+
     #rename npde and iwRes to NPDE and IWRES
     place_vec <- which(names(self$data$sim_blq) == "npde" | names(self$data$sim_blq) == "iwRes")
     names(self$data$sim_blq)[place_vec] <- toupper(names(self$data$sim_blq)[place_vec])
-    
+
     #give message if new version of monolix, otherwise sim_blq cannot be loaded anyway
   } else if(self$config$sys == "mlx18") {
     message("`sim_blq` dataset could not be generated, `sim_blq_npde_iwres` or `sim_blq_y` is missing")
   }
 
-  
+
   if (!is.null(sim)) {
     dx <- sim[["sim"]]
     inn <- copy(self$input)[, self$dv := NULL]
@@ -914,11 +914,16 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         call. = FALSE
       )
     }
-
+    if (inherits(dx$ID,"factor") & !inherits(inn$ID,"factor")) {
+      inn[, ID := factor(ID, levels = levels(ID))]
+    }
+    if (!inherits(dx$ID, "factor") & inherits(inn$ID, "factor")) {
+      dx[, ID := factor(ID, levels = levels(ID))]
+    }
     self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
     self$sim <- sim
   }
-  
+
   if (config$sys == "nlmixr") {
     self$data$predictions <- input
     self$data$IND <- if (!is.null(config$finegrid)) config$finegrid else input
@@ -936,7 +941,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$bloq <- bloq
     self$data$estimates <- config$parameters
   }
-  
+
   ## abbrev
   keys_file <- file.path(
     system.file(package = "ggPMX"), "init", "abbrev.yaml"

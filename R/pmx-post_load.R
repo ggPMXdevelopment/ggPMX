@@ -28,6 +28,12 @@ post_load_eta <- function(ds, input, sys, occ) {
   if (missing(occ)) occ <- ""
   ID <- DVID <- VARIABLE <- NULL
   keys <- c("ID")
+  if (inherits(ds$ID,"factor") & !inherits(input$ID,"factor")) {
+    input[, ID := factor(ID, levels = levels(ID))]
+  }
+  if (!inherits(ds$ID, "factor") & inherits(input$ID, "factor")) {
+    ds[, ID := factor(ID, levels = levels(ID))]
+  }
   if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
   ds <- try(
     merge(
@@ -91,7 +97,7 @@ post_load <- function(dxs, input, sys, dplot, occ) {
     }
     if (is.null(dxs[["finegrid"]]) && !is.null(dxs[["predictions"]])) {
       warn <-
-        "NO FINEGRID FILE: 
+        "NO FINEGRID FILE:
         we will use instead predictions.txt for individual plots"
       warns$MISSING_FINEGRID <- warn
 

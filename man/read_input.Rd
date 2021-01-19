@@ -4,8 +4,18 @@
 \alias{read_input}
 \title{Read Modelling input data}
 \usage{
-read_input(ipath, dv, dvid, cats = "", conts = "", strats = "",
-  occ = "", endpoint = NULL, id = NULL, time = NULL)
+read_input(
+  ipath,
+  dv,
+  dvid,
+  cats = "",
+  conts = "",
+  strats = "",
+  occ = "",
+  endpoint = NULL,
+  id = NULL,
+  time = NULL
+)
 }
 \arguments{
 \item{ipath}{full path of the input file}

@@ -4,10 +4,13 @@
 \alias{pmx_vpc_pi}
 \title{Sets vpc percentile layer}
 \usage{
-pmx_vpc_pi(show = c("all", "median", "area"), interval = c(0.05, 0.95),
-  median = list(color = "#000000", size = 1, alpha = 0.7, linetype =
-  "solid"), extreme = list(color = "#000000", size = 1, alpha = 0.7,
-  linetype = "dashed"), area = list(fill = "blue", alpha = 0.1))
+pmx_vpc_pi(
+  show = c("all", "median", "area"),
+  interval = c(0.05, 0.95),
+  median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
+  extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed"),
+  area = list(fill = "blue", alpha = 0.1)
+)
 }
 \arguments{
 \item{show}{\code{charcater} how lines are displayed:
@@ -47,9 +50,12 @@ to \code{c(.05,.95)}}
 Sets vpc percentile layer
 }
 \seealso{
-Other vpc: \code{\link{pmx_plot_vpc}},
-  \code{\link{pmx_vpc_bin}}, \code{\link{pmx_vpc_ci}},
-  \code{\link{pmx_vpc_obs}}, \code{\link{pmx_vpc_rug}},
-  \code{\link{pmx_vpc}}
+Other vpc: 
+\code{\link{pmx_plot_vpc}()},
+\code{\link{pmx_vpc_bin}()},
+\code{\link{pmx_vpc_ci}()},
+\code{\link{pmx_vpc_obs}()},
+\code{\link{pmx_vpc_rug}()},
+\code{\link{pmx_vpc}()}
 }
 \concept{vpc}

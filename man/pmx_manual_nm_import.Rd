@@ -4,9 +4,12 @@
 \alias{pmx_manual_nm_import}
 \title{Manually define nonmem tables to be imported}
 \usage{
-pmx_manual_nm_import(tab_names = c("sdtab", "mutab", "patab", "catab",
-  "cotab", "mytab", "extra", "xptab", "cwtab"), tab_suffix = "",
-  sim_suffix = "sim")
+pmx_manual_nm_import(
+  tab_names = c("sdtab", "mutab", "patab", "catab", "cotab", "mytab", "extra", "xptab",
+    "cwtab"),
+  tab_suffix = "",
+  sim_suffix = "sim"
+)
 }
 \arguments{
 \item{tab_names}{Provide the name of the tables to import e.g. 'sdtab', 'patab', 'cotab', 

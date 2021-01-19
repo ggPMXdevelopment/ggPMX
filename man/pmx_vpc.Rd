@@ -4,11 +4,21 @@
 \alias{pmx_vpc}
 \title{Creates vpc object}
 \usage{
-pmx_vpc(type = c("percentile", "scatter"), idv = "TIME",
-  obs = pmx_vpc_obs(), pi = pmx_vpc_pi(), ci = pmx_vpc_ci(),
-  rug = pmx_vpc_rug(), bin = pmx_vpc_bin(), labels = NULL,
-  facets = NULL, is.legend = TRUE, is.footnote = TRUE,
-  dname = NULL, ...)
+pmx_vpc(
+  type = c("percentile", "scatter"),
+  idv = "TIME",
+  obs = pmx_vpc_obs(),
+  pi = pmx_vpc_pi(),
+  ci = pmx_vpc_ci(),
+  rug = pmx_vpc_rug(),
+  bin = pmx_vpc_bin(),
+  labels = NULL,
+  facets = NULL,
+  is.legend = TRUE,
+  is.footnote = TRUE,
+  dname = NULL,
+  ...
+)
 }
 \arguments{
 \item{type}{\code{charcater} can be either percentile or scatter}
@@ -41,9 +51,12 @@ pmx_vpc(type = c("percentile", "scatter"), idv = "TIME",
 Creates vpc object
 }
 \seealso{
-Other vpc: \code{\link{pmx_plot_vpc}},
-  \code{\link{pmx_vpc_bin}}, \code{\link{pmx_vpc_ci}},
-  \code{\link{pmx_vpc_obs}}, \code{\link{pmx_vpc_pi}},
-  \code{\link{pmx_vpc_rug}}
+Other vpc: 
+\code{\link{pmx_plot_vpc}()},
+\code{\link{pmx_vpc_bin}()},
+\code{\link{pmx_vpc_ci}()},
+\code{\link{pmx_vpc_obs}()},
+\code{\link{pmx_vpc_pi}()},
+\code{\link{pmx_vpc_rug}()}
 }
 \concept{vpc}

@@ -4,8 +4,16 @@
 \alias{pmx_dens}
 \title{Creates a density plot object}
 \usage{
-pmx_dens(x, labels, dname = NULL, xlim = 3, var_line = NULL,
-  snd_line = NULL, vline = NULL, ...)
+pmx_dens(
+  x,
+  labels,
+  dname = NULL,
+  xlim = 3,
+  var_line = NULL,
+  snd_line = NULL,
+  vline = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{\code{character} variable name to sample}

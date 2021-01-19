@@ -4,9 +4,17 @@
 \alias{pmx_update}
 \title{Update plot object}
 \usage{
-pmx_update(ctr, pname, strat.color = NULL, strat.facet = NULL,
-  color.scales = NULL, filter = NULL, trans = NULL, ...,
-  pmxgpar = NULL)
+pmx_update(
+  ctr,
+  pname,
+  strat.color = NULL,
+  strat.facet = NULL,
+  color.scales = NULL,
+  filter = NULL,
+  trans = NULL,
+  ...,
+  pmxgpar = NULL
+)
 }
 \arguments{
 \item{ctr}{\code{pmxClass} controller object}
@@ -47,12 +55,18 @@ For example:
 This mechanism is applied internally to scale log.
 }
 \seealso{
-Other pmxclass: \code{\link{get_cats}},
-  \code{\link{get_conts}}, \code{\link{get_covariates}},
-  \code{\link{get_data}}, \code{\link{get_occ}},
-  \code{\link{get_plot_config}}, \code{\link{get_plot}},
-  \code{\link{get_strats}}, \code{\link{plot_names}},
-  \code{\link{plots}}, \code{\link{set_data}},
-  \code{\link{set_plot}}
+Other pmxclass: 
+\code{\link{get_cats}()},
+\code{\link{get_conts}()},
+\code{\link{get_covariates}()},
+\code{\link{get_data}()},
+\code{\link{get_occ}()},
+\code{\link{get_plot_config}()},
+\code{\link{get_plot}()},
+\code{\link{get_strats}()},
+\code{\link{plot_names}()},
+\code{\link{plots}()},
+\code{\link{set_data}()},
+\code{\link{set_plot}()}
 }
 \concept{pmxclass}

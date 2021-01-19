@@ -6,16 +6,46 @@
 \alias{pmx_mlxtran}
 \title{Create a pmx object}
 \usage{
-pmx(config, sys = "mlx", directory, input, dv, dvid, cats = NULL,
-  conts = NULL, occ = NULL, strats = NULL, settings = NULL,
-  endpoint = NULL, sim = NULL, bloq = NULL, id = NULL,
-  time = NULL, sim_blq = NULL)
+pmx(
+  config,
+  sys = "mlx",
+  directory,
+  input,
+  dv,
+  dvid,
+  cats = NULL,
+  conts = NULL,
+  occ = NULL,
+  strats = NULL,
+  settings = NULL,
+  endpoint = NULL,
+  sim = NULL,
+  bloq = NULL,
+  id = NULL,
+  time = NULL,
+  sim_blq = NULL
+)
 
-pmx_mlx(config, directory, input, dv, dvid, cats, conts, occ, strats,
-  settings, endpoint, sim, bloq, id, time, sim_blq)
+pmx_mlx(
+  config,
+  directory,
+  input,
+  dv,
+  dvid,
+  cats,
+  conts,
+  occ,
+  strats,
+  settings,
+  endpoint,
+  sim,
+  bloq,
+  id,
+  time,
+  sim_blq
+)
 
-pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint,
-  ...)
+pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint, ...)
 }
 \arguments{
 \item{config}{Can be either :

@@ -4,8 +4,7 @@
 \alias{pmx_vpc_obs}
 \title{Sets vpc observation layer}
 \usage{
-pmx_vpc_obs(show = TRUE, color = "#000000", size = 1, alpha = 0.7,
-  shape = 1)
+pmx_vpc_obs(show = TRUE, color = "#000000", size = 1, alpha = 0.7, shape = 1)
 }
 \arguments{
 \item{show}{\code{logical} if TRUE show observation points}
@@ -22,9 +21,12 @@ pmx_vpc_obs(show = TRUE, color = "#000000", size = 1, alpha = 0.7,
 Sets vpc observation layer
 }
 \seealso{
-Other vpc: \code{\link{pmx_plot_vpc}},
-  \code{\link{pmx_vpc_bin}}, \code{\link{pmx_vpc_ci}},
-  \code{\link{pmx_vpc_pi}}, \code{\link{pmx_vpc_rug}},
-  \code{\link{pmx_vpc}}
+Other vpc: 
+\code{\link{pmx_plot_vpc}()},
+\code{\link{pmx_vpc_bin}()},
+\code{\link{pmx_vpc_ci}()},
+\code{\link{pmx_vpc_pi}()},
+\code{\link{pmx_vpc_rug}()},
+\code{\link{pmx_vpc}()}
 }
 \concept{vpc}

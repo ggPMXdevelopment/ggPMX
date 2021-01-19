@@ -5,9 +5,17 @@
 \title{This creates an ETA covariance matrix which can be used to define the co-relation between the parameters and
 its shrinkage..}
 \usage{
-eta_cov(labels, type = c("cats", "conts"), dname = NULL,
-  show.correl = TRUE, correl = NULL, facets = NULL, point = NULL,
-  covariates = NULL, ...)
+eta_cov(
+  labels,
+  type = c("cats", "conts"),
+  dname = NULL,
+  show.correl = TRUE,
+  correl = NULL,
+  facets = NULL,
+  point = NULL,
+  covariates = NULL,
+  ...
+)
 }
 \arguments{
 \item{labels}{list of texts/titles used within the plot}
@@ -44,15 +52,18 @@ its shrinkage..
 }
 }
 \seealso{
-Other plot_pmx: \code{\link{distrib}},
-  \code{\link{eta_pairs}}, \code{\link{individual}},
-  \code{\link{plot_pmx.distrib}},
-  \code{\link{plot_pmx.eta_cov}},
-  \code{\link{plot_pmx.eta_pairs}},
-  \code{\link{plot_pmx.individual}},
-  \code{\link{plot_pmx.pmx_dens}},
-  \code{\link{plot_pmx.pmx_gpar}},
-  \code{\link{plot_pmx.pmx_qq}},
-  \code{\link{plot_pmx.residual}}, \code{\link{plot_pmx}}
+Other plot_pmx: 
+\code{\link{distrib}()},
+\code{\link{eta_pairs}()},
+\code{\link{individual}()},
+\code{\link{plot_pmx.distrib}()},
+\code{\link{plot_pmx.eta_cov}()},
+\code{\link{plot_pmx.eta_pairs}()},
+\code{\link{plot_pmx.individual}()},
+\code{\link{plot_pmx.pmx_dens}()},
+\code{\link{plot_pmx.pmx_gpar}()},
+\code{\link{plot_pmx.pmx_qq}()},
+\code{\link{plot_pmx.residual}()},
+\code{\link{plot_pmx}()}
 }
 \concept{plot_pmx}
