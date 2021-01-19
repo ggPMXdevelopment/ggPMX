@@ -4,8 +4,15 @@
 \alias{pmx_bloq}
 \title{Creates BLOQ object attributes}
 \usage{
-pmx_bloq(cens = "CENS", limit = "LIMIT", colour = "pink", size = 2,
-  alpha = 0.9, show = TRUE, ...)
+pmx_bloq(
+  cens = "CENS",
+  limit = "LIMIT",
+  colour = "pink",
+  size = 2,
+  alpha = 0.9,
+  show = TRUE,
+  ...
+)
 }
 \arguments{
 \item{cens}{\code{character} the censoring column name}

@@ -4,9 +4,14 @@
 \alias{pmx_read_nm_files}
 \title{NONMEM output file import function}
 \usage{
-pmx_read_nm_files(runno = NULL, prefix = "run", ext = c(".ext",
-  ".cor", ".cov", ".phi", ".grd", ".shk"), file = NULL, dir = NULL,
-  quiet = FALSE)
+pmx_read_nm_files(
+  runno = NULL,
+  prefix = "run",
+  ext = c(".ext", ".cor", ".cov", ".phi", ".grd", ".shk"),
+  file = NULL,
+  dir = NULL,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{runno}{Run number to be evaluated.}

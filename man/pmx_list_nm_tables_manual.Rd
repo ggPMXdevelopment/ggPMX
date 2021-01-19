@@ -4,8 +4,7 @@
 \alias{pmx_list_nm_tables_manual}
 \title{Creates an nm_table_list from manually defined table name patterns}
 \usage{
-pmx_list_nm_tables_manual(runno = NULL, file = NULL, dir = NULL,
-  tab_list)
+pmx_list_nm_tables_manual(runno = NULL, file = NULL, dir = NULL, tab_list)
 }
 \arguments{
 \item{runno}{Run number to be used to generate model file name.}

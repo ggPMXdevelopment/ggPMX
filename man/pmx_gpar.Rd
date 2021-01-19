@@ -4,9 +4,26 @@
 \alias{pmx_gpar}
 \title{Handling pmx Graphical parameters}
 \usage{
-pmx_gpar(labels, axis.title, axis.text, ranges, is.smooth, smooth, is.band,
-  band, is.draft, draft, discrete, is.identity_line, identity_line,
-  scale_x_log10, scale_y_log10, color.scales, is.legend, legend.position)
+pmx_gpar(
+  labels,
+  axis.title,
+  axis.text,
+  ranges,
+  is.smooth,
+  smooth,
+  is.band,
+  band,
+  is.draft,
+  draft,
+  discrete,
+  is.identity_line,
+  identity_line,
+  scale_x_log10,
+  scale_y_log10,
+  color.scales,
+  is.legend,
+  legend.position
+)
 }
 \arguments{
 \item{labels}{list of labels, like title, subtitle, x , y}

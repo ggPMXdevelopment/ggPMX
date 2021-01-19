@@ -11,11 +11,36 @@
 \alias{pmx_plot_npde_pred}
 \title{Scatter residual plots}
 \usage{
-residual_scatter(sim_blq, point, is.hline, hline, dname, bloq, filter,
-  strat.facet, facets, strat.color, trans, pmxgpar, labels, axis.title,
-  axis.text, ranges, is.smooth, smooth, is.band, band, is.draft, draft,
-  is.identity_line, identity_line, scale_x_log10, scale_y_log10,
-  color.scales, ...)
+residual_scatter(
+  sim_blq,
+  point,
+  is.hline,
+  hline,
+  dname,
+  bloq,
+  filter,
+  strat.facet,
+  facets,
+  strat.color,
+  trans,
+  pmxgpar,
+  labels,
+  axis.title,
+  axis.text,
+  ranges,
+  is.smooth,
+  smooth,
+  is.band,
+  band,
+  is.draft,
+  draft,
+  is.identity_line,
+  identity_line,
+  scale_x_log10,
+  scale_y_log10,
+  color.scales,
+  ...
+)
 
 pmx_plot_dv_pred(ctr, ...)
 

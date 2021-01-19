@@ -4,8 +4,7 @@
 \alias{pmx_nlmixr}
 \title{Creates pmx controller from  an nlimxr fit object}
 \usage{
-pmx_nlmixr(fit, dvid, conts, cats, strats, endpoint, settings,
-  vpc = TRUE)
+pmx_nlmixr(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE)
 }
 \arguments{
 \item{fit}{nlmixr object}

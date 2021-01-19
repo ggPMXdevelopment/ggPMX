@@ -22,14 +22,18 @@ This function plots residual for each observed value by finding the difference b
 \seealso{
 \code{\link{residual}}
 
-Other plot_pmx: \code{\link{distrib}},
-  \code{\link{eta_cov}}, \code{\link{eta_pairs}},
-  \code{\link{individual}}, \code{\link{plot_pmx.distrib}},
-  \code{\link{plot_pmx.eta_cov}},
-  \code{\link{plot_pmx.eta_pairs}},
-  \code{\link{plot_pmx.individual}},
-  \code{\link{plot_pmx.pmx_dens}},
-  \code{\link{plot_pmx.pmx_gpar}},
-  \code{\link{plot_pmx.pmx_qq}}, \code{\link{plot_pmx}}
+Other plot_pmx: 
+\code{\link{distrib}()},
+\code{\link{eta_cov}()},
+\code{\link{eta_pairs}()},
+\code{\link{individual}()},
+\code{\link{plot_pmx.distrib}()},
+\code{\link{plot_pmx.eta_cov}()},
+\code{\link{plot_pmx.eta_pairs}()},
+\code{\link{plot_pmx.individual}()},
+\code{\link{plot_pmx.pmx_dens}()},
+\code{\link{plot_pmx.pmx_gpar}()},
+\code{\link{plot_pmx.pmx_qq}()},
+\code{\link{plot_pmx}()}
 }
 \concept{plot_pmx}

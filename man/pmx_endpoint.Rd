@@ -4,8 +4,7 @@
 \alias{pmx_endpoint}
 \title{Creates pmx endpoint object}
 \usage{
-pmx_endpoint(code, label = "", unit = "", file.code = code,
-  trans = NULL)
+pmx_endpoint(code, label = "", unit = "", file.code = code, trans = NULL)
 }
 \arguments{
 \item{code}{\code{character} endpoint code : used to filter observations DVID==code.}

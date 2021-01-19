@@ -4,13 +4,34 @@
 \alias{pmx_nm}
 \title{Creates pmx controller from NONMEM model outputs}
 \usage{
-pmx_nm(file = NULL, directory = ".", runno = NULL, ext = ".lst",
-  table_suffix = "", sim_suffix = "sim", simfile = NULL,
-  prefix = "run", table_names = c("sdtab", "mutab", "patab", "catab",
-  "cotab", "mytab", "extra", "xptab", "cwtab"), dvid = "DVID",
-  pred = "PRED", time = "TIME", dv = "DV", conts, cats, npde, iwres,
-  ipred, endpoint, strats = "", settings = pmx_settings(),
-  vpc = TRUE, bloq = NULL, obs = FALSE, quiet = FALSE)
+pmx_nm(
+  file = NULL,
+  directory = ".",
+  runno = NULL,
+  ext = ".lst",
+  table_suffix = "",
+  sim_suffix = "sim",
+  simfile = NULL,
+  prefix = "run",
+  table_names = c("sdtab", "mutab", "patab", "catab", "cotab", "mytab", "extra",
+    "xptab", "cwtab"),
+  dvid = "DVID",
+  pred = "PRED",
+  time = "TIME",
+  dv = "DV",
+  conts,
+  cats,
+  npde,
+  iwres,
+  ipred,
+  endpoint,
+  strats = "",
+  settings = pmx_settings(),
+  vpc = TRUE,
+  bloq = NULL,
+  obs = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{file}{A character vector of path to the files or a \code{nm_table_list} object created with \code{pmx_list_nm_tables}.}

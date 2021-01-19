@@ -5,8 +5,18 @@
 \title{This function create a residual for each observed value and also generates a residual
 distribution}
 \usage{
-residual(x, y, labels = NULL, point = NULL, is.hline = FALSE,
-  hline = NULL, dname = NULL, facets = NULL, bloq = NULL, ...)
+residual(
+  x,
+  y,
+  labels = NULL,
+  point = NULL,
+  is.hline = FALSE,
+  hline = NULL,
+  dname = NULL,
+  facets = NULL,
+  bloq = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{x axis aesthetics}
