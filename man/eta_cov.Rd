@@ -14,6 +14,13 @@ eta_cov(
   facets = NULL,
   point = NULL,
   covariates = NULL,
+  is.hline = FALSE,
+  hline = NULL,
+  is.jitter = FALSE,
+  jitter = NULL,
+  scale = "free",
+  is.shrink = TRUE,
+  shrink = NULL,
   ...
 )
 }
@@ -33,6 +40,20 @@ eta_cov(
 \item{point}{\code{list} geom point graphical parameter}
 
 \item{covariates}{\code{pmxCOVObject} \code{\link{pmx_cov}}}
+
+\item{is.hline}{\code{logical} if TRUE add horizontal line to plots}
+
+\item{hline}{\code{list} geom_hline graphical parameters}
+
+\item{is.jitter}{\code{logical} if TRUE add jitter operator for points}
+
+\item{jitter}{list set jitter parameter}
+
+\item{scale}{string parameter for y axis ("fix", "free", "free_y", "sym")}
+
+\item{is.shrink}{\code{logical} if TRUE add shrinkage to the plot}
+
+\item{shrink}{\code{list} shrinkage graphical parameter}
 
 \item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }

@@ -41,6 +41,13 @@ is_pmxcov <- function(x)
 #' @param point \code{list} geom point graphical parameter
 #' @param facets \code{list} facetting graphical parameter
 #' @param covariates \code{pmxCOVObject} \code{\link{pmx_cov}}
+#' @param is.hline \code{logical} if TRUE add horizontal line to plots
+#' @param hline \code{list} geom_hline graphical parameters
+#' @param is.jitter \code{logical} if TRUE add jitter operator for points
+#' @param jitter list set jitter parameter
+#' @param scale string parameter for y axis ("fix", "free", "free_y", "sym")
+#' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
+#' @param shrink \code{list} shrinkage graphical parameter
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
@@ -63,6 +70,13 @@ eta_cov <- function(
                     facets = NULL,
                     point = NULL,
                     covariates = NULL,
+                    is.hline = FALSE,
+                    hline = NULL,
+                    is.jitter = FALSE,
+                    jitter = NULL,
+                    scale = "free",
+                    is.shrink = TRUE,
+                    shrink = NULL,
                     ...) {
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
@@ -90,6 +104,13 @@ eta_cov <- function(
     facets = facets,
     point = point,
     covariates = covariates,
+    is.hline = is.hline,
+    hline = hline,
+    is.jitter = is.jitter,
+    jitter = jitter,
+    scale = scale,
+    is.shrink = is.shrink,
+    shrink = shrink,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -99,20 +120,70 @@ eta_cov <- function(
 }
 
 
+get_scale_y <- function(df){
+  max_y <- df %>%
+    dplyr::group_by(EFFECT) %>%
+    dplyr::summarise(maxValue = max(abs(VALUE), na.rm = T)) %>%
+    dplyr::arrange(EFFECT)
+  get_scales_y <- function(i, scales_y = NULL) {
+    scales_i <-
+      list(scale_y_continuous(limits = c(-max_y$maxValue[i], max_y$maxValue[i])))
+    names(scales_i) <- max_y$EFFECT[i]
+    append(scales_y, scales_i)
+  }
+  scales_y <- sapply(1:length(max_y$EFFECT), get_scales_y)
+  scales_y
+}
+
+check_shrink <- function(shrink) {
+  shrink <-
+    l_left_join(list(
+      fun = 'var',
+      x = -Inf,
+      y = Inf,
+      hjust = -0.2,
+      vjust = 1.2,
+      size = 4
+    ),
+    shrink)
+  shrink
+}
 
 
+get_shrink_val <- function(shrink.dx, shrink) {
+  df_shr <- shrink.dx
+  df_shr$SHRINK <-
+    sapply(shrink.dx$SHRINK, function (x)
+      sprintf("%s%%", round(x * 100)))
+  shr_eqn <- function(x) {
+    eq <- substitute(italic(shrink) == a, list(a = x))
+    as.character(as.expression(eq))
+  }
+  shrink <- check_shrink(shrink)
+  df_shr[, shr_exp := shr_eqn(SHRINK), "EFFECT"]
+  shrink_val <- list(
+    data = df_shr,
+    x = shrink$x,
+    y = shrink$y,
+    hjust = shrink$hjust,
+    vjust = shrink$vjust,
+    size = shrink$size,
+    mapping = aes(label = shr_exp),
+    parse = TRUE
+  )
+  shrink_val
+}
 
-
-
-
-
-
-
-
-
-
-
-
+check_jitter <- function(jitter) {
+  jitter <-
+    l_left_join(list(
+      alpha = 1,
+      shape = 20,
+      colour = "black",
+      size = 2
+    ), jitter)
+  jitter
+}
 
 #' This plots an ETA covariance matrix which can be used to define the co-relation between the parameters and
 #' its shrinkage
@@ -129,15 +200,45 @@ eta_cov <- function(
 #'
 plot_pmx.eta_cov <- function(x, dx, ...) {
   assert_that(is_pmxcov(x$covariates))
-
+  Sys.setlocale("LC_ALL", "C")
   p <- if (x$type == "cats") {
     x$gp$is.smooth <- FALSE
     cats <- x[["cats"]]
     if (all(nzchar(x[["cats"]]))) {
-      dx.cats <- dx[, c(cats, "VALUE", "EFFECT"), with = FALSE]
-      ggplot(melt(dx.cats, measure.vars = cats)) +
-        geom_boxplot(aes_string(x = "value", y = "VALUE")) +
-        facet_grid(stats::as.formula("EFFECT~variable"), scales = "free")
+      dx.cats <- unique(dx[, c(cats, "VALUE", "EFFECT"), with = FALSE])
+      df <- dx.cats
+      dx.cats <- melt(dx.cats, id = c("VALUE", "EFFECT"))
+      if (!is.null(x$covariates)) {
+        dx.cats <-
+          with(
+            x$covariates,
+            dx.cats[variable %in% values][
+              ,
+              variable := factor(variable, levels = values, labels = labels)
+              ]
+          )
+        if (all(unlist(x$covariates$values) %in% names(df)))
+          df <- df %>% dplyr::select(unlist(x$covariates$values), "VALUE", "EFFECT")
+      }
+
+      if (x$scale == "sym") scale_y <- get_scale_y(df)
+      if (x$is.shrink) shrink_val <- get_shrink_val(x$shrink.dx, x$shrink)
+      x$jitter <- check_jitter(x$jitter)
+
+      p <- ggplot(dx.cats, aes_string(x = "value", y = "VALUE")) +
+        geom_boxplot() +
+        {if(x$is.hline)geom_hline(aes(yintercept=x$hline))} +
+        facet_grid_scale(stats::as.formula("EFFECT~variable"),
+                         scales = x$scale, scale_y = scale_y) +
+        {if(x$is.jitter)geom_point(aes(group=VALUE),
+                                   color = x$jitter$colour,
+                                   size = x$jitter$size,
+                                   shape=x$jitter$shape,
+                                   alpha=x$jitter$alpha
+        )
+        }
+      if(x$is.shrink) p <- p + do.call("geom_text", shrink_val)
+      p
     }
   } else {
     value <- variable <- corr <- corr_exp <- NULL
