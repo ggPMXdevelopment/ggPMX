@@ -4,7 +4,7 @@
 \alias{pmx_vpc_bin}
 \title{Creates vpc bins}
 \usage{
-pmx_vpc_bin(style, within_strat = TRUE, ...)
+pmx_vpc_bin(style, within_strat = TRUE, seed = 42, ...)
 }
 \arguments{
 \item{style}{\code{character} style    chosen on of the:\cr
@@ -12,6 +12,10 @@ pmx_vpc_bin(style, within_strat = TRUE, ...)
 
 \item{within_strat}{\code{logical} if TRUE compute the bining for each strat level. \cr
 By default t is false and bining are equal for all stratifications levels.}
+
+\item{seed}{\code{integer} used in \code{set.seed} call to ensure \cr
+reproducibility if style is "kmeans". Set to NULL if this \cr
+is not desired.}
 
 \item{...}{other classInt::classIntervals parameters excpet \code{style} and \code{n}}
 }

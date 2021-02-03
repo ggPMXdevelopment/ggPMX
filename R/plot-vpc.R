@@ -6,6 +6,9 @@
 #'  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust" or "jenks"
 #' @param within_strat \code{logical} if TRUE compute the bining for each strat level. \cr
 #' By default t is false and bining are equal for all stratifications levels.
+#' @param seed \code{integer} used in \code{set.seed} call to ensure \cr
+#'    reproducibility if style is "kmeans". Set to NULL if this \cr
+#'    is not desired.
 #' @param ... other classInt::classIntervals parameters excpet \code{style} and \code{n}
 #'
 #' @export
@@ -14,12 +17,14 @@
 #' @family vpc
 
 pmx_vpc_bin <-
-  function(style, within_strat = TRUE, ...) { #within strat = TRUE, as default in order to avoid bugs
+  function(style, within_strat = TRUE, seed = 42, ...) { #within strat = TRUE, as default in order to avoid bugs
+    # Setting seed for random number generating, so plots are have reproducible binning.
+    set.seed(seed)
     if (missing(style)) {
       return(NULL)
     }
     rr <- as.list(match.call()[-1])
-    rr
+    rr[!names(rr) == "seed"]
   }
 
 
