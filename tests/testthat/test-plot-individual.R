@@ -36,6 +36,7 @@ test_that("plot_pmx.individual: params: point and pred_line; result: ggplot",
               "ggplot"
             ))
           })
+
 ###
 test_that("plot_pmx.individual: params: is.legend is FALSE; result: ggplot",
           {
@@ -49,7 +50,7 @@ test_that("plot_pmx.individual: params: is.legend is FALSE; result: ggplot",
           })
 
 
-test_that("plot_pmx.individual: params: point, ipred_line and pred_line; 
+test_that("plot_pmx.individual: params: point, ipred_line and pred_line;
           result: ggplot",
           {
             expect_true(inherits(
@@ -74,7 +75,7 @@ test_that("plot_pmx.individual: params: ctr is theophylline; result: ggplot",
             ))
           })
 
-test_that("plot_pmx.individual: params: ctr is theophylline, 
+test_that("plot_pmx.individual: params: ctr is theophylline,
            point, ipred_line and pred_line; result: ggplot",
           {
             ctr <- theophylline()
@@ -95,6 +96,7 @@ mlxpath <- file.path(system.file(package = "ggPMX"),
                      "1_popPK_model",
                      "project.mlxtran")
 ctr <- pmx_mlxtran(mlxpath, config = "standing")
+
 #------------------- individual start -------------------------------
 test_that("individual: params: lables, facets, dname etc.; result: individual", {
   dx <- ctr %>% get_data("IND")

@@ -85,6 +85,7 @@ plot_pmx.individual <-
     } else {
       formula("~ID")
     }
+
     get_page <- with(x, {
       p_point <- if (!is.null(point)) {
         point$data <- if (is.null(bloq)) {
@@ -99,10 +100,18 @@ plot_pmx.individual <-
         dx <- base::merge(dx, max_y, by="ID", all.x = T)
         dx$isobserv <- with(dx, TIME < maxValue)
         point$data <- base::merge(point$data, max_y, by="ID")
-        point$data$isobserv <- ifelse(point$data$TIME < point$data$maxValue, "accepted", "ignored")
+        point$data$isobserv <- with(point$data, TIME < maxValue)
         points <- copy(point) 
         points$colour <- NULL
         do.call(geom_point, points)
+      }
+      values.lty <- c()
+      p_ipred <- if (!is.null(ipred_line)) {
+        ipred_line.lty <- ipred_line$linetype
+        ipred_line$linetype <- NULL
+        ipred_line$mapping <- aes(y = IPRED, linetype = "individual predictions")
+        values.lty <- c("individual predictions" = as.integer(ipred_line.lty))
+        do.call(geom_line, ipred_line)
       }
 
       p_bloq <- if (!is.null(bloq)) {
@@ -121,7 +130,7 @@ plot_pmx.individual <-
           }
         }
       }
-      
+
       n <- ifelse(any(point$data$isobserv == "ignored"), 3, 2)
       linetype_values <- c(rep("solid", n), "dashed")
       if (any(point$data$isobserv == "ignored"))
@@ -133,7 +142,7 @@ plot_pmx.individual <-
         linetype_labels <- c("accepted",
                              "individual predictions",
                              "population predictions")
-      
+
       shape_values <- c(rep(point.shape, n + 1))
       shape_values_leg <- c(rep(point.shape, n - 1), rep(20, 2))
       size_values <- c(rep(1, n - 1), ipred_line$size, pred_line$size)
@@ -188,6 +197,19 @@ plot_pmx.individual <-
         ) +
         p_bloq
 
+      p <- ggplot(dx, aes(TIME, DV, shape = "observations", color = isobserv)) +
+        scale_color_manual("", guide = FALSE,
+                           values=setNames(c(point$colour[1],
+                                             get_invcolor(point$colour)),
+                                           c(T, F))) +
+        p_point + p_ipred + p_pred + p_bloq
+
+
+      if (is.legend) {
+        p <- p + scale_linetype_manual("", values = values.lty) +
+          guides(linetype = guide_legend(keywidth = 2)) +
+          scale_shape_manual("", values = c("observations" = point.shape))
+
         gp$is.legend <- is.legend
 
       p <- plot_pmx(gp, p)
@@ -212,6 +234,7 @@ plot_pmx.individual <-
         })
         if (length(res) == 1) res[[1]] else res
       }
+    }
     })
 
     get_page
