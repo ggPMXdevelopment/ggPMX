@@ -64,10 +64,9 @@ ctr %>% pmx_plot_individual(trans = "log10_y")
 
 ## get a list of parameter
 p <- ctr %>% pmx_plot_individual(
-  npage=NULL,
+  npage="ALL",
   point=list(shape=4,color='blue',size=10),
   facets = list(nrow = 5, ncol = 5),
   labels = list(title = "My individuals",x='my time',y='PD data')
-) 
-
+)
 }

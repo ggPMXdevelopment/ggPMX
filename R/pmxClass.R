@@ -493,7 +493,7 @@ get_abbrev <- function(ctr, param) {
 #'
 #' @param ctr  \code{pmxClass} controller object
 #' @param nplot character the plot name
-#' @param npage integer or integer vector, set page number in case of multi pages plot
+#' @param npage integer or integer vector, set page number in case of multi pages plot, or character "ALL" to plot all pages
 #'
 #' @family pmxclass
 #' @return ggplot object
@@ -512,14 +512,14 @@ get_abbrev <- function(ctr, param) {
 #' pdistri <- ctr %>% get_plot("eta_hist")
 #' }
 #'
-get_plot <- function(ctr, nplot, npage = NULL) {
+get_plot <- function(ctr, nplot, npage = "ALL") {
 
   if (is.numeric(npage)) {
     npage <- as.integer(npage)
   }
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(nplot))
-  assert_that(is_integer_or_null(npage))
+  assert_that(is.integer(npage) || npage == "ALL")
   nplot <- tolower(nplot)
   assert_that(is_valid_plot_name(nplot, plot_names(ctr)))
   xx <- ctr$get_plot(nplot)

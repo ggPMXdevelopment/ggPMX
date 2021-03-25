@@ -42,7 +42,7 @@ pmx_plot_individual(
 \arguments{
 \item{ctr}{pmx controller}
 
-\item{npage}{\code{integer} page(s) to display , set npage to NULL}
+\item{npage}{\code{integer} page(s) to display, or set npage to \code{character} "ALL" to show all pages}
 
 \item{print}{\code{logical} if TRUE the ouptut will be a print not a ggplot2. This
 is useful for rmarkdwon output to avoid verbose list index print.}
@@ -193,11 +193,10 @@ ctr \%>\% pmx_plot_individual(trans = "log10_y")
 
 ## get a list of parameter
 p <- ctr \%>\% pmx_plot_individual(
-  npage=NULL,
+  npage="ALL",
   point=list(shape=4,color='blue',size=10),
   facets = list(nrow = 5, ncol = 5),
   labels = list(title = "My individuals",x='my time',y='PD data')
-) 
-
+)
 }
 }

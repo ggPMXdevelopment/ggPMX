@@ -19,7 +19,7 @@ add_footnote <- function(pp, pname, save_dir) {
 #' Individual plot
 
 #' @param ctr pmx controller
-#' @param npage \code{integer} page(s) to display , set npage to NULL
+#' @param npage \code{integer} page(s) to display, or set npage to \code{character} "ALL" to show all pages
 #' @param ... others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
@@ -104,7 +104,7 @@ pmx_plot_individual <-
 
 
     do.call("pmx_update", params)
-    p <- if (is.null(npage)) {
+    p <- if (npage == "ALL") {
       cctr %>% get_plot("individual")
     } else {
       cctr %>% get_plot("individual", npage)

@@ -4,14 +4,14 @@
 \alias{get_plot}
 \title{Get plot object}
 \usage{
-get_plot(ctr, nplot, npage = NULL)
+get_plot(ctr, nplot, npage = "ALL")
 }
 \arguments{
 \item{ctr}{\code{pmxClass} controller object}
 
 \item{nplot}{character the plot name}
 
-\item{npage}{integer or integer vector, set page number in case of multi pages plot}
+\item{npage}{integer or integer vector, set page number in case of multi pages plot, or character "ALL" to plot all pages}
 }
 \value{
 ggplot object
