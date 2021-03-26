@@ -135,7 +135,19 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
     cats <- x[["cats"]]
     if (all(nzchar(x[["cats"]]))) {
       dx.cats <- dx[, c(cats, "VALUE", "EFFECT"), with = FALSE]
-      ggplot(melt(dx.cats, measure.vars = cats)) +
+      dx.cats <- melt(dx.cats, measure.vars = cats)
+      if (!is.null(x$covariates)) {
+        dx.cats <-
+          with(
+            x$covariates,
+            dx.cats[variable %in% values][
+             ,
+              variable := factor(variable, levels = values, labels = labels)
+            ]
+          )
+      }
+
+      ggplot(dx.cats, measure.vars = cats) +
         geom_boxplot(aes_string(x = "value", y = "VALUE")) +
         facet_grid(stats::as.formula("EFFECT~variable"), scales = "free")
     }
