@@ -12,6 +12,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+original_crayon_enabled <- getOption("crayon.enabled")
+options(crayon.enabled = FALSE)
 ```
 
 ```{r setup}
@@ -85,3 +87,7 @@ ctr %>% pmx_plot_eta_matrix(
 ```
 
 This shows the standard plots for theophylline
+
+```{r, include = FALSE}
+options(crayon.enabled = original_crayon_enabled)
+```
