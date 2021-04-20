@@ -55,6 +55,8 @@ pmx_qq_stats <- function(points) {
 #' }
 #' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline geom hline graphical parameters
+#' @param is.vline logical if TRUE add vertical line x=0 ( TRUE by default)
+#' @param vline geom vline graphical parameters
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
 #' @param shrink \code{list} shrinkage graphical parameter
 
@@ -71,10 +73,11 @@ pmx_qq <- function(
                    shrink = NULL,
                    is.hline = NULL,
                    hline = NULL,
+                   is.vline = NULL,
+                   vline = NULL,
                    ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "predictions"
-
 
   if (missing(labels)) {
     labels <- list(
@@ -108,6 +111,8 @@ pmx_qq <- function(
     shrink = shrink,
     is.hline = is.hline,
     hline = hline,
+    is.vline = is.vline,
+    vline = vline,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -181,6 +186,12 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     hline <- l_left_join(list(yintercept = 0), x$hline)
     do.call(geom_hline, hline)
   }
+
+  vline_layer <- if (!is.null(x$is.vline) && x$is.vline) {
+    vline <- l_left_join(list(xintercept = 0), x$vline)
+    do.call(geom_vline, vline)
+  }
+
   reference_layer <- if (!is.null(x$is.reference_line) && x$is.reference_line) {
     x$reference_line$mapping <- aes_string(slope = "slope", intercept = "intercept")
     if (!is.null(strat.color)) {
@@ -234,7 +245,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     geom_point(stat = "qq", aes_string(colour = strat.color))
   }
   p <- p + layer_facet + layer_shrink +
-    layer_color + reference_layer + hline_layer
+    layer_color + reference_layer + hline_layer + vline_layer
 
 
   if (!is.null(p)) p <- plot_pmx(x$gp, p)
