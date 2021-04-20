@@ -27,6 +27,7 @@ test_that("pmx_dens: params: x equals ETA_COV; result: identical structure",
                                    colour = "black",
                                    size = 1
                                  ),
+                                 is.legend = TRUE,
                                  gp = pmx_gpar(
                                    labels = list(
                                      title = sprintf("Density plot of %s", x),
@@ -103,3 +104,51 @@ test_that("pmx_dens: params: labels character; result: error", {
   expect_error(inherits(pmx_dens(labels = labels), "pmx_dens"))
 })
 #------------------- pmx_dens end --------------------------------------------
+
+#------------------- pmx_plot_iwres_dens start -------------------------------
+mlxpath <- file.path(system.file(package = "ggPMX"),
+                     "testdata",
+                     "1_popPK_model",
+                     "project.mlxtran")
+ctr <- pmx_mlxtran(mlxpath, config = "standing")
+
+test_that("pmx_dens: params: ctr; result: ggplot", {
+  expect_true(inherits(pmx_plot_iwres_dens(ctr), "ggplot"))
+})
+
+test_that("pmx_dens: params: ctr is NULL; result: ggplot", {
+  expect_error(pmx_plot_iwres_dens(ctr = NULL))
+})
+
+test_that("pmx_dens: params: ctr, is.legend is FALSE; result: ggplot", {
+  expect_true(inherits(pmx_plot_iwres_dens(ctr, is.legend = FALSE), "ggplot"))
+})
+
+test_that("pmx_dens: params: ctr, var_line; result: ggplot", {
+  expect_true(inherits(pmx_plot_iwres_dens(
+    ctr,
+    var_line = list(
+      colour = "green",
+      size = 1,
+      linetype = 1
+    )
+  ),
+  "ggplot"))
+})
+
+test_that("pmx_dens: params: ctr, var_line, snd_line; result: ggplot", {
+  expect_true(inherits(
+    pmx_plot_iwres_dens(
+      ctr,
+      var_line = list(
+        colour = "green",
+        size = 1,
+        linetype = 1
+      ),
+      snd_line = list(colour = "red", size = 1)
+    ),
+    "ggplot"
+  ))
+})
+#------------------- pmx_plot_iwres_dens end ---------------------------------
+

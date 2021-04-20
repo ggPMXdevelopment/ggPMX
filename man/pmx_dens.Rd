@@ -12,6 +12,7 @@ pmx_dens(
   var_line = NULL,
   snd_line = NULL,
   vline = NULL,
+  is.legend = TRUE,
   ...
 )
 }
@@ -29,6 +30,8 @@ pmx_dens(
 \item{snd_line}{\code{list} normal density graphics parameters}
 
 \item{vline}{\code{list} vertical line graphics parameters}
+
+\item{is.legend}{\code{logical} whether to add a legend (defaults TRUE)}
 
 \item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }

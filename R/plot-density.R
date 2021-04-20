@@ -8,6 +8,7 @@
 #' @param labels list of texts/titles used within the plot
 #' @param dname name of dataset to be used
 #' @param xlim \code{numeric} x axis limits
+#' @param is.legend \code{logical} whether to add a legend (defaults TRUE)
 #' @param var_line \code{list} variable density graphics parameters
 #' @param snd_line \code{list} normal density graphics parameters
 #' @param vline \code{list} vertical line graphics parameters
@@ -52,6 +53,7 @@ pmx_dens <- function(
                      var_line = NULL,
                      snd_line = NULL,
                      vline = NULL,
+                     is.legend = TRUE,
                      ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "predictions"
@@ -82,6 +84,7 @@ pmx_dens <- function(
     var_line = var_line,
     snd_line = snd_line,
     vline = vline,
+    is.legend = is.legend,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -126,20 +129,6 @@ plot_pmx.pmx_dens <- function(x, dx, ...) {
 
   with(x, {
     xrange <- c(-xlim, xlim)
-    dens_layer <- if (!is.null(var_line)) {
-      params <- var_line
-      do.call(geom_density, params)
-    }
-
-    snd_layer <- if (!is.null(snd_line)) {
-      params <- append(
-        list(
-          data = data.frame(x = xrange), fun = dnorm, mapping = aes(x)
-        ),
-        snd_line
-      )
-      do.call(stat_function, params)
-    }
 
     vline_layer <- if (!is.null(vline)) {
       params <- append(list(xintercept = 0), vline)
@@ -148,8 +137,23 @@ plot_pmx.pmx_dens <- function(x, dx, ...) {
     }
 
 
-    p <- ggplot(dx, aes(x = get(x))) +
-      dens_layer + snd_layer + vline_layer
+    p <- ggplot(dx, aes(x = get(x), colour = "variable density")) +
+      geom_density(aes(IWRES, linetype = "variable density"), alpha = 0.5) +
+      stat_function(data.frame(x = xrange), 
+                    fun = dnorm,
+                    mapping = aes(x, colour = "normal density", linetype = "normal density")) +
+      scale_linetype_manual(values = c(snd_line$linetype, var_line$linetype),
+                            guide = FALSE) +
+      scale_colour_manual(values = c(snd_line$colour, var_line$colour),
+                          guide = guide_legend(override.aes = list(
+                            linetype = c(snd_line$linetype, var_line$linetype),
+                            size = c(1, 1)),
+                            title = NULL))+vline_layer
+
+    if (is.legend) { 
+      gp$is.legend <- is.legend
+      gp$legend.position <- "top"
+    }
 
 
 
