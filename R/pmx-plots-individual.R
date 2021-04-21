@@ -19,7 +19,8 @@ add_footnote <- function(pp, pname, save_dir) {
 #' Individual plot
 
 #' @param ctr pmx controller
-#' @param npage \code{integer} page(s) to display , set npage to NULL
+#' @param which_pages \code{integer} page(s) to display, or \code{character}
+#' "all" to display all pages (argument previously called npage, now deprecated)
 #' @param ... others graphics parameters passed :
 #' \itemize{
 #' \item \code{\link{pmx_gpar}} internal function to customize shared graphical parameters
@@ -77,7 +78,7 @@ add_footnote <- function(pp, pname, save_dir) {
 pmx_plot_individual <-
   function(
              ctr,
-             npage = 1,
+             which_pages = 1L,
              print = FALSE,
              dname, pred_line, ipred_line, point, is.legend, use.finegrid,
              bloq, filter, strat.facet, facets, strat.color, trans,
@@ -86,6 +87,9 @@ pmx_plot_individual <-
              identity_line, scale_x_log10, scale_y_log10, color.scales,
              ...) {
     stopifnot(is_pmxclass(ctr))
+    if ("npage" %in% names(list(...))) {
+       warning("The argument npage is obsolete, please use which_pages instead")
+    }
     if (!"individual" %in% (ctr %>% plot_names())) {
       return(NULL)
     }
@@ -104,10 +108,10 @@ pmx_plot_individual <-
 
 
     do.call("pmx_update", params)
-    p <- if (is.null(npage)) {
+    p <- if ((length(which_pages) == 1L) && (which_pages == "all")) {
       cctr %>% get_plot("individual")
     } else {
-      cctr %>% get_plot("individual", npage)
+      cctr %>% get_plot("individual", which_pages)
     }
 
     cctr %>% pmx_warnings("MISSING_FINEGRID")

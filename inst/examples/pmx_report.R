@@ -67,14 +67,14 @@ ctr %>% pmx_report(
 
 ## case7 : generate individual plots report 
 
-ctr <- theophylline()
-ctr %>% pmx_report(
-  name="report2",
-  save_dir = report_dir,
-  template="individual",
-  format="both",
-  npage=1:2
-)
+## ctr <- theophylline()
+## ctr %>% pmx_report(
+##   name="report2",
+##   save_dir = report_dir,
+##   template="individual",
+##   format="both",
+##   which_pages=1:2
+## )
 
 ## case8: misc example with complicated features
 ## see github issue : #179

@@ -10,7 +10,7 @@ output:
 ---
 params:
   ctr: ""
-  npage: ~
+  which_pages: ~
   title: ggPMX standing report
 ---
 
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 
 ```{r indiv,message=FALSE,fig.align="center",fig.height=10, fig.width=10}
 
- ctr %>% pmx_plot_individual(npage=params$npage,print=TRUE)
+ ctr %>% pmx_plot_individual(which_pages=params$which_pages,print=TRUE)
 ```
 
 

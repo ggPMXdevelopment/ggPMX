@@ -73,7 +73,7 @@ test_that("%||%: params: x and y is unequal and y is NULL result: x", {
 
 test_that("n_pages: params: plot without pages result: NULL", {
   ctr <- theophylline()
-  plot <- pmx_plot_individual(ctr, npage = 1)
+  plot <- pmx_plot_individual(ctr, which_pages = 1)
   expect_true(is.null(n_pages(plot)))
 })
 
