@@ -147,7 +147,7 @@ plot_pmx.residual <- function(x, dx, ...) {
 
     if (is.null(gp$ranges) || is.null(gp$ranges$y)) {
       if (aess$y %in% c("NPDE", "IWRES") && !gp$scale_y_log10 && is.null(x$trans)) {
-        mm <- max(dx[, aess$y, with = FALSE], na.rm = TRUE)
+        mm <- max(abs(dx[, aess$y, with = FALSE]), na.rm = TRUE)
         if (is.null(gp$ranges)) {
           gp$ranges <- list(y = c(-mm, mm))
         } else  {
