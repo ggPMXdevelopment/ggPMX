@@ -270,7 +270,7 @@ parse_mlxtran <- function(file_name) {
   setnames(dat, c("sub_section.name", "section.name"), c("sub_section", "section"))
   dat <- dat[sub_section != "TASKS"]
   ## split lines
-
+  dat[grepl("file=",line),line := gsub("file=","file = ",line)]
   dat[, c("key", "value") := tstrsplit(dat$line, " = ")]
   dat[, line := NULL]
 
