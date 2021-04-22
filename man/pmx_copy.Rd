@@ -25,7 +25,7 @@ Some functions ( methods) can have a side effect on the controller and modify it
 Technically speaking we talk about chaining not piping here. However ,
 using \code{pmx_copy} user can work on a copy of the controller.
 
-By defaul the copy don't keep global parameters setted using pmx_settings.
+By default the copy does not keep global parameters set using pmx_settings.
 }
 \examples{
 ctr <- theophylline()
