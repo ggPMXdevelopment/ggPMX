@@ -45,7 +45,14 @@ pmx_mlx(
   sim_blq
 )
 
-pmx_mlxtran(file_name, config = "standing", call = FALSE, endpoint, ...)
+pmx_mlxtran(
+  file_name,
+  config = "standing",
+  call = FALSE,
+  endpoint,
+  version = -1,
+  ...
+)
 }
 \arguments{
 \item{config}{Can be either :
@@ -90,6 +97,9 @@ of the endpoint code.   \code{\link{pmx_endpoint}}}
 \item{file_name}{\code{character} mlxtran file path.}
 
 \item{call}{\code{logical} if TRUE the result is the parameters parsed}
+
+\item{version}{\code{integer} Non-negative integer. Non-obligatory option, if you don't use a wildcard in the file_name.
+Otherwise you MUST provide version and wildcard will be substituted with "version", which represents the mlxtran model version.}
 
 \item{...}{extra arguments passed to pmx_mlx.}
 }

@@ -40,7 +40,6 @@ pmx_sim <- function(
 }
 
 
-
 check_argument <- function(value, pmxname) {
   call <- match.call()
   if (any(missing(value) | is.null(value))) {
@@ -150,6 +149,8 @@ pmx_mlx <-
 #'
 #' @param file_name \code{character} mlxtran file path.
 #' @param call \code{logical} if TRUE the result is the parameters parsed
+#' @param version \code{integer} Non-negative integer. Non-obligatory option, if you don't use a wildcard in the file_name.
+#' Otherwise you MUST provide version and wildcard will be substituted with "version", which represents the mlxtran model version.
 #' @param ... extra arguments passed to pmx_mlx.
 #' @rdname pmx
 #'
@@ -162,7 +163,12 @@ pmx_mlx <-
 #' by mlxtran. This can be very helpful, in case you would like to customize parameters
 #' (adding settings vi pmx_settings, chnag eth edefault endpoint.)
 
-pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, ...) {
+pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, version = -1,  ...) {
+  # Substituting * with version in file_name
+  if (grepl("*", file_name, fixed = TRUE)) {
+    assert_that(version>=0, msg = "Using wildcard in file_name assume providing non-negative version")
+    file_name <- gsub("*", version, file_name, fixed = TRUE)
+  } 
   params <- parse_mlxtran(file_name)
   rr <- as.list(match.call()[-1])
   rr$file_name <- NULL
@@ -181,7 +187,9 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
   }
 
   params$call <- NULL
-
+  # We don't need to pass version to pmx_mlx
+  params$version <- NULL
+  
   do.call(pmx_mlx, params)
 }
 
