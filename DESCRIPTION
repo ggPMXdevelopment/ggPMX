@@ -54,6 +54,7 @@ LazyData: true
 Suggests:
     testthat,
     xtable,
+    vdiffr,
     nlmixr
 VignetteBuilder: knitr
 NeedsCompilation: no
