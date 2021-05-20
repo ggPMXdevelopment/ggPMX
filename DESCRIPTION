@@ -50,7 +50,6 @@ Imports:
     tibble,
     checkmate
 License: GPL-2
-LazyData: true
 Suggests:
     testthat,
     xtable,
