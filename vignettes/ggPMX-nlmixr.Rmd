@@ -49,20 +49,12 @@ one.compartment <- function() {
 nlmixr(one.compartment)
 ```
 
-At the time of this writing, nlmixr requires python; Since cran does
-not have python installed, we run this model locally by:
-
-```{r, eval=FALSE}
-fit <- nlmixr(one.compartment, theo_sd, est="saem", control=list(print=0))
-saveRDS(fit,"fit.rds")
-```
-
-Then we can read this into the system
+We run this model locally by:
 
 ```{r}
-fit <- readRDS("fit.rds")
-print(fit)
+fit <- nlmixr(one.compartment, theo_sd, est="saem", control=list(print=0))
 ```
+
 
 The `fit` object is a nlmixr fit; You can read it into the nlmixr
 controller by:
