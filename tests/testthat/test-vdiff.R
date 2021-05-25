@@ -32,7 +32,6 @@ test_that("vdiffr", {
   f16 <- function(x) {pmx_plot_eta_conts(x)}
   f17 <- function(x) {pmx_plot_eta_qq(x)}
   f18 <- function(x) {pmx_plot_vpc(x)}
-R.version$major >= 4 & R.version$minor >= 1.0R.version$major >= 4 & R.version$minor >= 1.0
   fun_list <- list(fun_pmx_plot_abs_iwres_ipred = f1,
                    fun_pmx_plot_iwres_ipred = f2,
                    fun_pmx_plot_iwres_time = f3,
