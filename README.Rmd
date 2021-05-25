@@ -17,10 +17,10 @@ knitr::opts_chunk$set(
 **Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Seid Hamzic, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
 
 [![R-CMD-check](https://github.com/ggPMXdevelopment/ggPMX/workflows/R-CMD-check/badge.svg)](https://github.com/ggPMXdevelopment/ggPMX/actions)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
 [![Coverage Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.svg)](https://codecov.io/gh/ggPMXdevelopment/ggPMX)
-[![](http://cranlogs.r-pkg.org/badges/last-week/ggPMX?color=green)](https://cran.r-project.org/package=ggPMX)
-[![Rdoc](http://www.rdocumentation.org/badges/version/ggPMX)](http://www.rdocumentation.org/packages/ggPMX)
+[![](https://cranlogs.r-pkg.org/badges/last-week/ggPMX?color=green)](https://cran.r-project.org/package=ggPMX)
+[![Rdoc](https://www.rdocumentation.org/badges/version/ggPMX)](https://www.rdocumentation.org/packages/ggPMX)
 
 
 # Overview
