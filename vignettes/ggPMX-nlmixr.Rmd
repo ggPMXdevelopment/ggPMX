@@ -1,4 +1,4 @@
----
+++---
 title: "ggPMX with nlmixr"
 output: rmarkdown::html_vignette
 vignette: >
@@ -18,8 +18,12 @@ options(crayon.enabled = FALSE)
 
 ```{r setup}
 library(ggPMX)
-library(nlmixr)
-```
+has_nlmixr <- FALSE
+if (R.version$major >= 4) {
+  library(nlmixr)
+  has_nlmixr <- TRUES
+}
+``
 
 It is simple to create a ggPMX controller for a nlmixr object.
 
@@ -46,13 +50,15 @@ one.compartment <- function() {
         cp ~ add(add.sd)
     })
 }
-nlmixr(one.compartment)
+if (has_nlmixr) nlmixr(one.compartment)
 ```
 
 We run this model locally by:
 
 ```{r}
-fit <- nlmixr(one.compartment, theo_sd, est="saem", control=list(print=0))
+if (has_nlmixr) {
+  fit <- nlmixr(one.compartment, theo_sd, est="saem", control=list(print=0))
+}
 ```
 
 
@@ -60,9 +66,11 @@ The `fit` object is a nlmixr fit; You can read it into the nlmixr
 controller by:
 
 ```{r}
+if (has_nlmixr) {
 fit %>%
     pmx_nlmixr(vpc = FALSE) -> ## VPC is turned on by default, can turn off.
     ctr ## Assigned to controller 
+}
 ```
 
 Once the controller is created, you can of course have the same types
@@ -70,12 +78,14 @@ of diagnostic plots as the standard ggPMX package; Using the same
 examples as the user manual:
 
 ```{r}
-ctr %>% pmx_plot_dv_pred
-ctr %>% pmx_plot_npde_time
-ctr %>% pmx_plot_vpc
-ctr %>% pmx_plot_eta_box
-ctr %>% pmx_plot_eta_matrix(
-  shrink=list(size=3,hjust=1.5))
+if (has_nlmixr) {
+  ctr %>% pmx_plot_dv_pred
+  ctr %>% pmx_plot_npde_time
+  ctr %>% pmx_plot_vpc
+  ctr %>% pmx_plot_eta_box
+  ctr %>% pmx_plot_eta_matrix(
+    shrink=list(size=3,hjust=1.5))
+}
 ```
 
 This shows the standard plots for theophylline
