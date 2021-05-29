@@ -2,7 +2,7 @@ context("Test generation of report from a pre-defined template")
 pmxClassHelpers <- test_pmxClass_helpers()
 
 test_that("can generate report", {
-  skip_on_os("solaris")
+  skip_on_cran()
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   tmp_dir <- tempdir(check=TRUE)
