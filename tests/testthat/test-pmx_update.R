@@ -93,7 +93,7 @@ test_that("plot title with start.facet", {
     ctr,
     strat.color = "AGE0",
     strat.facet = SEX ~ STUD,
-    labels=list(title="CUSTOM_A vs CUSTOM_B by CUSTOM_OVERRIDE")
+    labels = list(title = "CUSTOM_A vs CUSTOM_B by CUSTOM_OVERRIDE")
   )
 
   expect_identical(p1$labels$title, "IWRES vs IPRED by STUD")
