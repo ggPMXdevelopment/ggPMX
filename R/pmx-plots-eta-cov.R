@@ -86,6 +86,6 @@ pmx_plot_eta_cats <-
 pmx_plot_eta_conts <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- list(...)
     wrap_pmx_plot_generic(ctr, "eta_conts", params)
   }
