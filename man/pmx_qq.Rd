@@ -41,7 +41,8 @@ pmx_qq(
 
 \item{is.shrink}{\code{logical} if TRUE add shrinkage to the plot}
 
-\item{shrink}{\code{list} shrinkage graphical parameter}
+\item{shrink}{\code{pmxShrinkClass} shrinkage graphical parameter or
+\code{list} coercible into one}
 
 \item{is.hline}{logical if TRUE add horizontal line y=0 ( TRUE by default)}
 

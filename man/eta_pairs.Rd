@@ -41,7 +41,8 @@ eta_pairs(
 
 \item{point}{\code{list} geom_point graphical parameter}
 
-\item{shrink}{\code{list} shrinkage graphical parameter}
+\item{shrink}{\code{pmxShrinkClass} shrinkage graphical parameter or
+\code{list} coercible into one}
 
 \item{is.hline}{\code{logical} if TRUE add horizontal line to lower matrix plots}
 

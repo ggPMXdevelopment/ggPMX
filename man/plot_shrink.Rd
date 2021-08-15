@@ -11,7 +11,8 @@ plot_shrink(x, shrink.dx, shrink)
 
 \item{shrink.dx}{data.table of shrinkage}
 
-\item{shrink}{list graphical parameter}
+\item{shrink}{\code{pmxShrinkClass} shrinkage graphical parameter or
+\code{list} coercible into one}
 }
 \value{
 ggplot2 object

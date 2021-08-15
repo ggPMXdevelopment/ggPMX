@@ -165,3 +165,45 @@ test_that("can create a controller from mlxtran with wildcard in path", {
   ctr <- pmx_mlxtran(file_name = mlxtran_path, version = 1)
   expect_is(ctr, "pmxClass")
 })
+
+
+test_that("pmx_shrink: params NULL result: list, pmxShrinkClass", {
+  expect_true(inherits(pmx_shrink(), c("list", "pmxShrinkClass")))
+})
+
+
+test_that(
+  "pmx_shrink: params: fun, size, color, vjust, hjust
+  result: list, pmxShrinkClass", {
+  expect_true(
+    inherits(
+      pmx_shrink(fun="sd", size=1, color="red", vjust=1, hjust=1),
+      c("list", "pmxShrinkClass")
+    )
+  )}
+)
+
+
+test_that("pmx_shrink: params result: elements in the list", {
+    sh_names <- c("fun", "size", "color", "vjust", "hjust")
+    expect_true(all(sh_names %in% names(pmx_shrink())))
+})
+
+
+test_that("check_shrink: shrink_list result: logical ", {
+  expect_true(
+    inherits(
+      check_shrink(list(fun="sd", size=1, color="red", vjust=1, hjust=1)),
+      "logical"
+    )
+  )
+})
+
+
+test_that("check_shrink: shrink_list result: character ", {
+  expect_true(
+    inherits(
+      check_shrink(list(fun="sd", size=1, color="red")), "character"
+    )
+  )
+})

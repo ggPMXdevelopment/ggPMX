@@ -32,7 +32,8 @@ distrib(
 
 \item{histogram}{\code{list} histogram graphical parameters}
 
-\item{shrink}{\code{list} list of parameters to tune the shrinkage}
+\item{shrink}{\code{pmxShrinkClass} shrinkage graphical parameter or
+\code{list} coercible into one}
 
 \item{dname}{name of dataset to be used}
 

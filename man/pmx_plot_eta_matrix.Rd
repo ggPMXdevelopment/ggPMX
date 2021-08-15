@@ -54,7 +54,8 @@ pmx_plot_eta_matrix(
 
 \item{is.shrink}{\code{logical} if TRUE add shrinkage to the plot}
 
-\item{shrink}{\code{list} shrinkage graphical parameter}
+\item{shrink}{\code{pmxShrinkClass} shrinkage graphical parameter or
+\code{list} coercible into one}
 
 \item{point}{\code{list} geom_point graphical parameter}
 
@@ -153,7 +154,7 @@ ctr \%>\% pmx_plot_eta_matrix(is.draft = FALSE)
 ## change text color line
 ctr \%>\% pmx_plot_eta_matrix(
   text_color="red",
-  shrink=list(mapping=aes(color="magenta"))
+  shrink=pmx_shrink(mapping=aes(color="magenta"))
   )
 
 ## custom point aes and static parameters
