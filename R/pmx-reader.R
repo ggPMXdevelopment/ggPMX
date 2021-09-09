@@ -350,7 +350,6 @@ read_mlx18_res <- function(path, x, ...) {
   }
 
   if (!file.exists(file_path)) {
-    print("thar")
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
@@ -363,7 +362,6 @@ read_mlx18_res <- function(path, x, ...) {
     xnames <- names(x[["names"]])
     yname <- substring(file_path, regexpr("s/", file_path) + 2)
     yname <- sub("_obsVsPred.txt", "", yname)
-    yname <- "y_1"
     names(x[["names"]])[which(xnames == "y_simBlq_mode")] <- paste0(yname,"_simBlq_mode")
 
     #handling of mlx18 input, there is no y_simBlq_mean or y_simBlq_mode for Monolix version 2018
