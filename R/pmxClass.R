@@ -812,6 +812,7 @@ pmxClass <- R6::R6Class(
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
                            settings, endpoint, sim, bloq, id, time, sim_blq) {
+
   DVID <- ID <- NULL
   if (missing(data_path) || missing(data_path)) {
     stop(
@@ -863,13 +864,17 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$input <- setDT(input)
   }
 
-  self$data <- load_source(
-    sys = config$sys, private$.data_path,
-    self$config$data, dvid = self$dvid,
-    endpoint = self$endpoint,
+
+  self[["data"]] <- load_source(
+    sys = config[["sys"]],
+    private$.data_path,
+    self[["config"]][["data"]],
+    dvid = self[["dvid"]],
+    endpoint = self[["endpoint"]],
     occ = self$occ,
     id = self$id
   )
+
 
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
@@ -886,29 +891,37 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 
   self$post_load()
 
-#replace some column names of sim_blq with ggPMX naming convention
-  if(!is.null(self$data$sim_blq)){
-
-    yname <- names(self$data$sim_blq_y)[grep("simBlq",names(self$data$sim_blq_y))]
+  # Replace some column names of sim_blq with ggPMX naming convention
+  if(!is.null(self[["data"]][["sim_blq_y"]])){
+    yname <- names(self[["data"]][["sim_blq_y"]])[grep("simBlq", names(self[["data"]][["sim_blq_y"]]))]
     yname <- gsub("mode|mean|simBlq|_", "", yname)
 
-    #some cases dv and xx_simBlq are not the same
-    if(self$dv == yname){
-      self$data$sim_blq <- self$data$sim_blq[,c("NPDE","IWRES", paste(dv)) := NULL]
-      names(self$data$sim_blq) <- gsub("mode|mean|simBlq|_","", names(self$data$sim_blq))
-      self$data$sim_blq$DV <- self$data$sim_blq[[paste(dv)]]
-    } else {
-      self$data$sim_blq <- self$data$sim_blq[,c("NPDE","IWRES") := NULL]
-      names(self$data$sim_blq) <- gsub("mode|mean|simBlq|_","", names(self$data$sim_blq))
-      self$data$sim_blq$DV <- self$data$sim_blq[[yname]]
-    }
+    # Some cases dv and xx_simBlq are not the same
+    suppressWarnings(
+      if(self[["dv"]] == yname) {
+        self[["data"]][["sim_blq_y"]] <-
+          self[["data"]][["sim_blq_y"]][,c("NPDE","IWRES", paste(dv)) := NULL]
+        names(self[["data"]][["sim_blq_y"]]) <-
+          gsub("mode|mean|simBlq|_","", names(self[["data"]][["sim_blq_y"]]))
+        self[["data"]][["sim_blq_y"]][["DV"]] <-
+          self[["data"]][["sim_blq_y"]][[paste(dv)]]
+      } else {
+        self[["data"]][["sim_blq_y"]] <-
+          self[["data"]][["sim_blq_y"]][,c("NPDE","IWRES") := NULL]
+        names(self[["data"]][["sim_blq_y"]]) <-
+          gsub("mode|mean|simBlq|_","", names(self[["data"]][["sim_blq_y"]]))
+        self[["data"]][["sim_blq_y"]][["DV"]] <-
+          self[["data"]][["sim_blq_y"]][[yname]]
+      }
+    )
 
     #rename npde and iwRes to NPDE and IWRES
-    place_vec <- which(names(self$data$sim_blq) == "npde" | names(self$data$sim_blq) == "iwRes")
-    names(self$data$sim_blq)[place_vec] <- toupper(names(self$data$sim_blq)[place_vec])
+    place_vec <- which(names(self$data$sim_blq_y) == "npde" | names(self$data$sim_blq_y) == "iwRes")
+    names(self$data$sim_blq_y)[place_vec] <- toupper(names(self$data$sim_blq_y)[place_vec])
 
     #give message if new version of monolix, otherwise sim_blq cannot be loaded anyway
   } else if(self$config$sys == "mlx18") {
+
     message("`sim_blq` dataset could not be generated, `sim_blq_npde_iwres` or `sim_blq_y` is missing")
   }
 
