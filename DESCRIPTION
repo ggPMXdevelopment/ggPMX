@@ -48,7 +48,8 @@ Imports:
     readr,
     rlang,
     tibble,
-    checkmate
+    checkmate,
+    scales
 License: GPL-2
 Suggests:
     testthat,
