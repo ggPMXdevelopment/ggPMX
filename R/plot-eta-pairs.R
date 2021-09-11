@@ -154,7 +154,6 @@ gtable_remove_grobs <- function(table, names, ...) {
 }
 
 
-
 #' Plot shrink in eta matric
 #'
 #' @param x pmx_gpar object
@@ -169,10 +168,13 @@ plot_shrink <-
       EFFECT == x,
       sprintf("%s%%", round(SHRINK * 100))
     ]
-    if (length(label)>0){
-    params <- c(label = label, shrink)
-    params$fun <- NULL
-    do.call(ggally_text, params) +
+
+    if (length(label) > 0) {
+      params <- c(label = label, shrink)
+      params$fun <- NULL
+      # NOTE: Suppressing warnings since colour=FALSE is passed to ggplot,
+      # fixed in ggally dev version, will remove in future.
+      suppressWarnings(do.call(ggally_text, params)) +
       theme_bw() +
       theme(
         panel.border = element_blank(),
