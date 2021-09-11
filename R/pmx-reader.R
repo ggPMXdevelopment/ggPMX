@@ -194,6 +194,7 @@ read_input <- function(ipath, dv, dvid, cats = "", conts = "", strats = "", occ 
   xx
 }
 
+
 mlx_ipred <- function(x) {
   if ("indpred_mode" %in% x) {
     return("indpred_mode")
@@ -234,6 +235,8 @@ mlx18_finegrid_ipred <- function(x) {
   message("NO valid mapping for IPRED")
   return(NULL)
 }
+
+
 mlx_iwres <- function(x) {
   if ("indwres_mode" %in% x) {
     return("indwres_mode")
@@ -249,6 +252,7 @@ mlx_iwres <- function(x) {
   message("NO valid mapping for IWRES")
   return(NULL)
 }
+
 
 mlx18_iwres <- function(x) {
   if ("indwres_mode" %in% x) {
@@ -317,11 +321,17 @@ read_mlx_pred <- function(path, x, ...) {
 }
 #also reads mlx19
 read_mlx18_res <- function(path, x, ...) {
-  if (exists("subfolder", x)) {
-    path <- file.path(dirname(path), x$subfolder)
+
+  # Path should not have duplicated structure of subdirectory, but if not present,
+  # it should be added.
+  if(exists("subfolder", x) & !(grepl(x[["subfolder"]], dirname(path), fixed=TRUE))) {
+    path <- file.path(dirname(path), x[["subfolder"]])
   }
 
+  path <- dirname(path)
+
   res_file <- file.path(path, x$file)
+
   file_path <- if (!file.exists(res_file)) {
     ffiles <- list.files(path, pattern = x$pattern, full.names = TRUE)
     if (!is.null(x$endpoint)) {
@@ -338,12 +348,14 @@ read_mlx18_res <- function(path, x, ...) {
   } else {
     res_file
   }
+
   if (!file.exists(file_path)) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
   }
 
   ds <- pmx_fread(file_path)
+
   if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
 
   if(x$pattern == "_obsVsPred") {
@@ -354,14 +366,15 @@ read_mlx18_res <- function(path, x, ...) {
 
     #handling of mlx18 input, there is no y_simBlq_mean or y_simBlq_mode for Monolix version 2018
     if(length(grep("simBlq_mode", names(ds))) == 0) {
-    names(x[["names"]])  <- gsub("_mode","", names(x[["names"]]))
-    name_simBlq <-  names(ds)[grep("simBlq", names(ds))]
+      names(x[["names"]])  <- gsub("_mode","", names(x[["names"]]))
+      name_simBlq <-  names(ds)[grep("simBlq", names(ds))]
 
     message(paste0("Using simulated BLOQs of Monolix 2018 can cause slight deviations from Monolix plots regarding simulated BLOQs of the DV!\n",
                    "Try Monolix 2019 or later for improved ggPMX simulated BLOQ function."))
     }
 
   }
+
   ids <- match(tolower(names(x[["names"]])), tolower(names(ds)))
 
   if(!is.null(x[["newnames"]])) {
@@ -381,6 +394,7 @@ read_mlx18_res <- function(path, x, ...) {
     new_vars <- c(new_vars, "OCC")
     ids <- c(ids,grep(occ, names(ds)))
   }
+
 #if it doesn't work correctly, give null datatable instead of error
 if(NA %in% ids){
   ds <- NULL
@@ -458,6 +472,7 @@ read_mlx_par_est <- function(path, x, ...) {
 load_data_set <- function(x, path, sys, ...) {
   fpath <- file.path(path, x[["file"]])
   exists_file <- file.exists(fpath)
+
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   if (!exists_file) {
     ep <- list(...)$endpoint
@@ -478,13 +493,14 @@ load_data_set <- function(x, path, sys, ...) {
   }
 
   if (!exists_file && sys != "mlx18") {
-    cat(x[["label"]], " file do not exist. \n")
+    cat(x[["label"]], " file does not exist.\n")
     return(NULL)
   }
 
   if (exists("reader", x)) {
     return(do.call(x[["reader"]], list(fpath, x, ...)))
   }
+
   ds <- pmx_fread(fpath)
   if(!is.null(x$id) && exists(x$id,ds)) setnames(ds,x$id,"id")
 
@@ -513,11 +529,9 @@ load_data_set <- function(x, path, sys, ...) {
 #' @return list of data.table
 #' @export
 load_source <- function(sys, path, dconf, ...) {
-  dxs <- Map(function(x, nn) {
+  Map(function(x, nn) {
     x$name <- nn
     if(!is.null(list(...)$id)) x$id <- list(...)$id
     load_data_set(x, path = path, sys = sys, ...)
   }, dconf, names(dconf))
-
-  dxs
 }
