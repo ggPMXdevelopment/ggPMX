@@ -4,7 +4,7 @@
 \alias{param_table}
 \title{Creates parameter kable}
 \usage{
-param_table(ctr, fun, return_table = FALSE)
+param_table(ctr, fun, return_table = FALSE, scientific = TRUE, digits = 2)
 }
 \arguments{
 \item{ctr}{Generated controller from e.g. \code{\link{pmx_mlx}} for Monolix.}
@@ -12,6 +12,10 @@ param_table(ctr, fun, return_table = FALSE)
 \item{fun}{\code{character} can be "sd" or "var" for shrinkage computation, see \code{\link{pmx_comp_shrink}}}
 
 \item{return_table}{If TRUE, returns the same table as in get_data('estimates') otherwise it returns a kable}
+
+\item{scientific}{\code{logical} set to TRUE to get scientific notation of parameter values, or FALSE otherwise}
+
+\item{digits}{\code{integer} the number of significant digits to use when rounding parameter values}
 }
 \value{
 Returns a kable with the parameter estimates from get_data('estimates')
