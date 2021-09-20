@@ -38,7 +38,15 @@ pmx_report <-
              extension = NULL,
              title,
              ...) {
-    assert_that(is_pmxclass(contr))
+
+    assert_that(
+      is_pmxclass(contr),
+      is.character(name),
+      length(name) == 1L,
+      is.character(template),
+      length(template) == 1L
+    )
+
     format <- match.arg(format)
     if (missing(extension) || is.null(extension)) extension <- "word"
 
@@ -120,7 +128,6 @@ pmx_report <-
   }
 
 
-
 pmx_fig_process <- function(ctr, old_name, footnote, out_) {
   pname <- if (footnote) {
     suffix <- tools::file_ext(old_name)
@@ -139,20 +146,21 @@ pmx_fig_process <- function(ctr, old_name, footnote, out_) {
   return(old_name)
 }
 
-pmx_draft <- function(ctr, name, template, edit) {
-  if (length(file.path(ctr$save_dir, sprintf("%s.Rmd", name))) > 0 && 
-      file.exists(file.path(ctr$save_dir, sprintf("%s.Rmd", name)))) {
-    #file.remove(template_file)
-    name <- paste0(name, "_project")
-  }
-  template_file <- file.path(ctr$save_dir, sprintf("%s.Rmd", name))
-  style_file <- file.path(ctr$save_dir, "header.tex")
-  if (file.exists(style_file)) file.remove(style_file)
 
+pmx_draft <- function(ctr, name, template, edit) {
+  template_file <- file.path(ctr[["save_dir"]], sprintf("%s.Rmd", name))
+
+  if (length(template_file) > 0 && file.exists(template_file)) {
+    file.remove(template_file)
+  }
+
+  style_file <- file.path(ctr[["save_dir"]], "header.tex")
+  if (file.exists(style_file)) file.remove(style_file)
 
   if (grepl(".Rmd", template) && !file.exists(template)) {
     stop(sprintf("!Template %s DO NOT EXIST", template))
   }
+
   if (file.exists(template)) {
     template_path <- system.file(
       "rmarkdown", "templates",
@@ -182,6 +190,7 @@ pmx_draft <- function(ctr, name, template, edit) {
   }
   res
 }
+
 
 remove_temp_files <-
   function(save_dir) {
