@@ -44,7 +44,7 @@ pmx_report <-
       is.character(name),
       length(name) == 1L,
       is.character(template),
-      length(template) == 1L,
+      length(template) == 1L
     )
 
     format <- match.arg(format)

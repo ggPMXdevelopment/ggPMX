@@ -13,6 +13,7 @@ testGenerateReport <- function() {
   )
 }
 
+
 test_that("Can generate report", {
   skip_on_cran()
   expect_is(ctr, "pmxClass")
@@ -20,6 +21,7 @@ test_that("Can generate report", {
   list_of_rep <- list.files(path=tmp_dir,pattern = "Report_ggPMX\\..*")
   expect_equal(length(list_of_rep), 4L)
 })
+
 
 test_that("Report generation can be repeated without error", {
   skip_on_cran()
@@ -33,7 +35,7 @@ test_that("Report generation can be repeated without error", {
 
 
 test_that("Illegal arguments to pmx_report cause an error", {
-  #skip_on_cran()
+  skip_on_cran()
   expect_is(ctr, "pmxClass")
 
   expect_error(
