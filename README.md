@@ -12,7 +12,7 @@ output: github_document
 
 [![R-CMD-check](https://github.com/ggPMXdevelopment/ggPMX/workflows/R-CMD-check/badge.svg)](https://github.com/ggPMXdevelopment/ggPMX/actions)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
-[![Coverage Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.svg)](https://codecov.io/gh/ggPMXdevelopment/ggPMX)
+[![Coverage Status](https://codecov.io/gh/ggPMXdevelopment/ggPMX/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ggPMXdevelopment/ggPMX)
 [![](https://cranlogs.r-pkg.org/badges/last-week/ggPMX?color=green)](https://cran.r-project.org/package=ggPMX)
 [![Rdoc](https://www.rdocumentation.org/badges/version/ggPMX)](https://www.rdocumentation.org/packages/ggPMX)
 
@@ -67,10 +67,6 @@ ggPMX is now ready for inputs and enhancements by the pharmacometric community.
 
 \clearpage  
 
-```
-#> Error in library(ggPMX): there is no package called 'ggPMX'
-#> Error in theophylline(): could not find function "theophylline"
-```
 
 
 # Introduction 
@@ -88,15 +84,7 @@ c. empirical Bayes estimates (EBE)-based plots
 d. simulation-based plots.
 
 The following figures are examples of diagnotic plots. 
-
-```
-#> Error in theophylline(): could not find function "theophylline"
-#> Error in ctr %>% pmx_plot_dv_pred: could not find function "%>%"
-#> Error in ctr %>% pmx_plot_npde_time: could not find function "%>%"
-#> Error in ctr %>% pmx_plot_vpc: could not find function "%>%"
-#> Error in ctr %>% pmx_plot_eta_box: could not find function "%>%"
-#> Error in ctr %>% pmx_plot_eta_matrix(shrink = list(size = 3, hjust = 1.5)): could not find function "%>%"
-```
+<img src="man/figures/README-illustrate_diagnostic-1.png" title="plot of chunk illustrate_diagnostic" alt="plot of chunk illustrate_diagnostic" width=".25\linewidth" /><img src="man/figures/README-illustrate_diagnostic-2.png" title="plot of chunk illustrate_diagnostic" alt="plot of chunk illustrate_diagnostic" width=".25\linewidth" /><img src="man/figures/README-illustrate_diagnostic-3.png" title="plot of chunk illustrate_diagnostic" alt="plot of chunk illustrate_diagnostic" width=".25\linewidth" /><img src="man/figures/README-illustrate_diagnostic-4.png" title="plot of chunk illustrate_diagnostic" alt="plot of chunk illustrate_diagnostic" width=".25\linewidth" /><img src="man/figures/README-illustrate_diagnostic-5.png" title="plot of chunk illustrate_diagnostic" alt="plot of chunk illustrate_diagnostic" width=".25\linewidth" />
 
 This document introduces the ggPMX functionalities and syntax. 
 
@@ -154,8 +142,13 @@ To illustrate `ggPMX` functionalities, the single-endpoint built-in model called
 The input modeling dataset has the following columns:
 
 ```
-#> Error in file(file, "rt"): cannot open the connection
-#> Error in head(input_data_theo): object 'input_data_theo' not found
+#>   ID TIME  AMT   Y EVID WT0 AGE0 SEX STUD
+#> 1  1  0.0 2000   0    1  87   73   1    1
+#> 2  1  0.5    0 130    0  87   73   1    1
+#> 3  1  1.0    0 228    0  87   73   1    1
+#> 4  1  2.0    0 495    0  87   73   1    1
+#> 5  1  3.0    0 484    0  87   73   1    1
+#> 6  1  5.0    0 479    0  87   73   1    1
 ```
 Note that the DVID (or CMT/YTYPE) column is missing, but since this is a single-endpoint model, it is not necessary in that case.
 
@@ -183,7 +176,6 @@ The Contoller creation is wrapped in a function called "theophylline()" for quic
 
 ```r
 ctr <- theophylline()
-#> Error in theophylline(): could not find function "theophylline"
 ```
 
 ### Models fitted with Monolix (versions 2016 and later) 
@@ -323,8 +315,13 @@ To illustrate the Controller creation with multiple-endpoint models, a built-in 
 
 
 ```
-#> Error in file(file, "rt"): cannot open the connection
-#> [1] "/testdata/theophylline/data_pk.csv"
+#>    id time amt  dv dvid   wt sex age
+#> 1 100  0.0 100   .    3 66.7   1  50
+#> 2 100  0.5   .   0    3 66.7   1  50
+#> 3 100  1.0   . 1.9    3 66.7   1  50
+#> 4 100  2.0   . 3.3    3 66.7   1  50
+#> 5 100  3.0   . 6.6    3 66.7   1  50
+#> 6 100  6.0   . 9.1    3 66.7   1  50
 ```
 
 The dvid column contains values=3 for PK (first endpoint) and dose and =4 for PD (second endpoint). Monolix2016 outputs are found in folder RESULTS/ which contains predictions1.txt and finegrid1.txt for PK predictions, and predictions2.txt and finegrid2.txt for PD predictions. The Endpoint and Controller objects are created as follows:
@@ -341,7 +338,6 @@ ep <- pmx_endpoint(
   file.code = "2", # will use predictions2.txt and finegrig2.txt
   trans = "log10"
 )
-#> Error in pmx_endpoint(code = "4", label = "some_label", unit = "some_unit", : could not find function "pmx_endpoint"
 
 ctr <- pmx_mlx(
   directory = pkpd_work_dir,
@@ -350,7 +346,8 @@ ctr <- pmx_mlx(
   dvid      = "dvid",
   endpoint  = ep
 )
-#> Error in pmx_mlx(directory = pkpd_work_dir, input = pkpd_input_file, dv = "dv", : could not find function "pmx_mlx"
+#> use  predictions2.txt  as  model predictions file .
+#> use  finegrid2.txt  as  finegrid file .
 ```
 
 ### A simplified syntax for endpoints (for Monolix, NONMEM and nlmixr)
@@ -404,7 +401,6 @@ ctr <- pmx_mlx(
   conts     = c("WT0", "AGE0"),
   strats    = c("STUD", "SEX")
 )
-#> Error in pmx_mlx(directory = work_dir, input = input_data_path, dv = "Y", : could not find function "pmx_mlx"
 ```
 `Conts` are the continuous covariates. `Cats` are categorical covariates used in the model, whereas `strats` are categorical variables that can be used for plot stratification, but are not used as covariates in the model.
 
@@ -413,13 +409,13 @@ The covariates can be accessed using helper functions:
 
 ```r
 ctr %>% get_cats()
-#> Error in ctr %>% get_cats(): could not find function "%>%"
+#> [1] "SEX"
 ctr %>% get_conts()
-#> Error in ctr %>% get_conts(): could not find function "%>%"
+#> [1] "WT0"  "AGE0"
 ctr %>% get_strats()
-#> Error in ctr %>% get_strats(): could not find function "%>%"
+#> [1] "STUD" "SEX"
 ctr %>% get_covariates()
-#> Error in ctr %>% get_covariates(): could not find function "%>%"
+#> [1] "SEX"  "WT0"  "AGE0"
 ```
 
 
@@ -428,7 +424,49 @@ The content of the Controller can be seen by printing it:
 
 ```r
 ctr
-#> Error in eval(expr, envir, enclos): object 'ctr' not found
+#> 
+#> pmx object:
+#> 
+#> 
+#> |PARAM                |VALUE        |
+#> |:--------------------|:------------|
+#> |working directory    |theophylline |
+#> |Modelling input file |data_pk.csv  |
+#> |dv                   |Y            |
+#> |dvid                 |DVID         |
+#> |cats                 |SEX          |
+#> |conts                |WT0,AGE0     |
+#> |strats               |STUD,SEX     |
+#> 
+#> 
+#> |data_name   |data_file       |data_label                                |
+#> |:-----------|:---------------|:-----------------------------------------|
+#> |predictions |predictions.txt |model predictions file                    |
+#> |estimates   |estimates.txt   |parameter estimates file                  |
+#> |eta         |indiv_eta.txt   |invidual estimates of random effects file |
+#> |finegrid    |finegrid.txt    |finegrid file                             |
+#> |input       |data_pk.csv     |modelling input                           |
+#> 
+#> 
+#> |plot_name       |plot_type |
+#> |:---------------|:---------|
+#> |abs_iwres_ipred |SCATTER   |
+#> |iwres_ipred     |SCATTER   |
+#> |iwres_time      |SCATTER   |
+#> |iwres_dens      |PMX_DENS  |
+#> |iwres_qq        |PMX_QQ    |
+#> |npde_time       |SCATTER   |
+#> |npde_pred       |SCATTER   |
+#> |npde_qq         |PMX_QQ    |
+#> |dv_pred         |SCATTER   |
+#> |dv_ipred        |SCATTER   |
+#> |individual      |IND       |
+#> |eta_hist        |DIS       |
+#> |eta_box         |DIS       |
+#> |eta_matrix      |ETA_PAIRS |
+#> |eta_cats        |ETA_COV   |
+#> |eta_conts       |ETA_COV   |
+#> |eta_qq          |PMX_QQ    |
 ```
 
 It contains three tables:
@@ -446,7 +484,11 @@ The Controller is a container that stores all plots. To get the list of plots, t
 
 ```r
 ctr %>% plot_names()
-#> Error in ctr %>% plot_names(): could not find function "%>%"
+#>  [1] "abs_iwres_ipred" "iwres_ipred"     "iwres_time"      "iwres_dens"     
+#>  [5] "iwres_qq"        "npde_time"       "npde_pred"       "npde_qq"        
+#>  [9] "dv_pred"         "dv_ipred"        "individual"      "eta_hist"       
+#> [13] "eta_box"         "eta_matrix"      "eta_cats"        "eta_conts"      
+#> [17] "eta_qq"
 ```
 An alternative way to display the names of the existing plots is by printing the content of the Controller as done above.
 
@@ -467,7 +509,24 @@ The following syntax allows to see which type of plot corresponds to which plot 
 
 ```r
 ctr %>% plots()
-#> Error in ctr %>% plots(): could not find function "%>%"
+#>           plot_name plot_type            plot_function
+#>  1: abs_iwres_ipred   SCATTER pmx_plot_abs_iwres_ipred
+#>  2:     iwres_ipred   SCATTER     pmx_plot_iwres_ipred
+#>  3:      iwres_time   SCATTER      pmx_plot_iwres_time
+#>  4:      iwres_dens  PMX_DENS      pmx_plot_iwres_dens
+#>  5:        iwres_qq    PMX_QQ        pmx_plot_iwres_qq
+#>  6:       npde_time   SCATTER       pmx_plot_npde_time
+#>  7:       npde_pred   SCATTER       pmx_plot_npde_pred
+#>  8:         npde_qq    PMX_QQ         pmx_plot_npde_qq
+#>  9:         dv_pred   SCATTER         pmx_plot_dv_pred
+#> 10:        dv_ipred   SCATTER        pmx_plot_dv_ipred
+#> 11:      individual       IND      pmx_plot_individual
+#> 12:        eta_hist       DIS        pmx_plot_eta_hist
+#> 13:         eta_box       DIS         pmx_plot_eta_box
+#> 14:      eta_matrix ETA_PAIRS      pmx_plot_eta_matrix
+#> 15:        eta_cats   ETA_COV        pmx_plot_eta_cats
+#> 16:       eta_conts   ETA_COV       pmx_plot_eta_conts
+#> 17:          eta_qq    PMX_QQ          pmx_plot_eta_qq
 ```
 
 \begin{table}[ht]
@@ -489,15 +548,16 @@ ctr %>% plots()
 
 # Default diagnostic plots
 
-```
-#> Error in theophylline(): could not find function "theophylline"
-```
 
 The diagnostic plots of ggPMX are generated by calling the functions `pmx_plot_xx()` where `xx` is a placeholder for the plot name. The list of names of all available plots can be seen via:
 
 ```r
 ctr %>% plot_names()
-#> Error in ctr %>% plot_names(): could not find function "%>%"
+#>  [1] "abs_iwres_ipred" "iwres_ipred"     "iwres_time"      "iwres_dens"     
+#>  [5] "iwres_qq"        "npde_time"       "npde_pred"       "npde_qq"        
+#>  [9] "dv_pred"         "dv_ipred"        "individual"      "eta_hist"       
+#> [13] "eta_box"         "eta_matrix"      "eta_cats"        "eta_conts"      
+#> [17] "eta_qq"          "pmx_vpc"
 ```
 
 As a convention, when plots are described as ???Y vs. X???, it is meant that Y is plotted on the vertical axis and X on the horizontal axis.
@@ -506,8 +566,9 @@ As an example, a plot of individual weighted residuals (IWRES) versus time (with
 
 ```r
 ctr %>% pmx_plot_iwres_time
-#> Error in ctr %>% pmx_plot_iwres_time: could not find function "%>%"
 ```
+
+<img src="man/figures/README-unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" width="100%" />
 
 The complete list of available plots per plot type (given in parenthesis) is given below:
 
@@ -630,7 +691,7 @@ ctr <- pmx_mlx(
     idv="TIME"
   )
 )
-#> Error in pmx_mlx(directory = WORK_DIR, input = input_file, dv = "Y", cats = c("SEX"), : could not find function "pmx_mlx"
+
 ```
 
 ### Models fitted with NONMEM (versions 7.2 and later) 
@@ -670,8 +731,9 @@ The plot options are described in `?pmx_plot_vpc` function.
 
 ```r
 ctr %>% pmx_plot_vpc
-#> Error in ctr %>% pmx_plot_vpc: could not find function "%>%"
 ```
+
+<img src="man/figures/README-unnamed-chunk-26-1.png" title="plot of chunk unnamed-chunk-26" alt="plot of chunk unnamed-chunk-26" width="100%" />
 
 ### Scatter/Percentile
 
@@ -679,24 +741,27 @@ By default the vpc plot is **percentile** ; , but we can plot the **scatter** ty
 
 ```r
 ctr %>% pmx_plot_vpc(type ="scatter")
-#> Error in ctr %>% pmx_plot_vpc(type = "scatter"): could not find function "%>%"
 ```
+
+<img src="man/figures/README-unnamed-chunk-27-1.png" title="plot of chunk unnamed-chunk-27" alt="plot of chunk unnamed-chunk-27" width="100%" />
 
 ### Binning
 
 
 ```r
 ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
-#> Error in ctr %>% pmx_plot_vpc(bin = pmx_vpc_bin(style = "kmeans", n = 5)): could not find function "%>%"
 ```
+
+<img src="man/figures/README-unnamed-chunk-28-1.png" title="plot of chunk unnamed-chunk-28" alt="plot of chunk unnamed-chunk-28" width="100%" />
 
 ### Stratification 
 
 
 ```r
 ctr %>% pmx_plot_vpc(strat.facet="SEX",facets=list(nrow=2))
-#> Error in ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2)): could not find function "%>%"
 ```
+
+<img src="man/figures/README-unnamed-chunk-29-1.png" title="plot of chunk unnamed-chunk-29" alt="plot of chunk unnamed-chunk-29" width="100%" />
 
 ### Monolix-like customisation
 
@@ -716,16 +781,14 @@ ctr %>% pmx_plot_vpc(
   ci = pmx_vpc_ci(interval = c(0.1,0.9),
               median=list(fill="red"))
 )
-#> Error in ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2), : could not find function "%>%"
 ```
+
+<img src="man/figures/README-unnamed-chunk-30-1.png" title="plot of chunk unnamed-chunk-30" alt="plot of chunk unnamed-chunk-30" width="100%" />
 
 
 
 # Diagnostics report
 
-```
-#> Error in theophylline(): could not find function "theophylline"
-```
 
 A report (in pdf and docx format) containing all default diagnostic plots can be created using the *pmx_report* function. The *format* can take three different values:
 
@@ -847,7 +910,6 @@ By default in the "standing" configuration, a DRAFT label is printed on all plot
 ```r
 
 ctr <- theophylline(settings = pmx_settings(is.draft = FALSE))
-#> Error in theophylline(settings = pmx_settings(is.draft = FALSE)): could not find function "theophylline"
 ```
 
 
@@ -858,14 +920,43 @@ The standing configuration initializes all plots using abbreviations for axis la
 
 ```r
 ctr %>% get_abbrev
-#> Error in ctr %>% get_abbrev: could not find function "%>%"
+#> AIC : Akaike information criterion 
+#> BIC : Bayesian information criterion 
+#> BLQ : Below the limit of quantification 
+#> COAR : Clinical Operations Analytics and Regions 
+#> DV : Dependent variable 
+#> ETA : Inter-individual random effect 
+#> EBE : Empirical Bayes estimate 
+#> FO : First order 
+#> FOCE : First order conditional estimation 
+#> FOCEI : First order conditional estimation with interaction 
+#> IIV : Inter-individual variability 
+#> IPRED : Individual prediction 
+#> LRT : Likelihood ratio test 
+#> M&S : Modeling & Simulation 
+#> NLME : Nonlinear mixed-effects (model) 
+#> NPD : Normalized prediction discrepancy 
+#> NPDE : Normalized prediction distribution error 
+#> OCP : Oncology Clinical Pharmacology 
+#> OFV : Objective function value 
+#> PD : Pharmacodynamics 
+#> PK : Pharmacokinetics 
+#> PDF : Probability density function 
+#> SAEM : Stochastic approximation of the expectation-minimization algorithm 
+#> VPC : Visual predictive check 
+#> PRED : Population parameters predictions 
+#> EPRED : Population averaged predictions 
+#> IWRES : Individual weighted residuals 
+#> |IWRES| : |Individual weighted residuals| 
+#> NVS : Novartis internal report 
+#> HA : Report submitted to Health Authorities 
+#> TIME : Time after first dose (hours)
 ```
 You can update one abbreviation to set a custom label 
 
 
 ```r
 ctr %>% set_abbrev(TIME="TIME after the first dose")
-#> Error in ctr %>% set_abbrev(TIME = "TIME after the first dose"): could not find function "%>%"
 ```
 
 Using `use.abbrev` flag you can use abbreviation definition to set axis labels:
@@ -873,12 +964,11 @@ Using `use.abbrev` flag you can use abbreviation definition to set axis labels:
 
 ```r
 ctr <- theophylline(settings=pmx_settings(use.abbrev = TRUE))
-#> Error in theophylline(settings = pmx_settings(use.abbrev = TRUE)): could not find function "theophylline"
 ctr %>% set_abbrev(TIME="Custom TIME axis")
-#> Error in ctr %>% set_abbrev(TIME = "Custom TIME axis"): could not find function "%>%"
 ctr %>% pmx_plot_npde_time
-#> Error in ctr %>% pmx_plot_npde_time: could not find function "%>%"
 ```
+
+<img src="man/figures/README-settings_use.abbrev-1.png" title="plot of chunk settings_use.abbrev" alt="plot of chunk settings_use.abbrev" width="100%" />
 
 ### Use `finegrid.txt` file for individual plots
 
@@ -887,10 +977,11 @@ within Monolix, user can choose to not use finegrid file even if it is present.
 
 ```r
 ctr <- theophylline()
-#> Error in theophylline(): could not find function "theophylline"
 ctr %>% pmx_plot_individual(use.finegrid =FALSE, legend.position="top")
-#> Error in ctr %>% pmx_plot_individual(use.finegrid = FALSE, legend.position = "top"): could not find function "%>%"
+#> USE predictions data set
 ```
+
+<img src="man/figures/README-settings_use.finegrid-1.png" title="plot of chunk settings_use.finegrid" alt="plot of chunk settings_use.finegrid" width="100%" />
 
 ### Set stratification color legend
 
@@ -899,14 +990,14 @@ In case of color startfication user can customize the legend. For example here u
 
 ```r
 ctr <- theophylline()
-#> Error in theophylline(): could not find function "theophylline"
 ctr %>% pmx_plot_npde_time(strat.color="STUD")+ 
       ggplot2::scale_color_manual(
         "Study",
         labels=c("Study 1","Study 2"),
         values=c("1"="green","2"="blue"))
-#> Error in ctr %>% pmx_plot_npde_time(strat.color = "STUD"): could not find function "%>%"
 ```
+
+<img src="man/figures/README-settings_color_scales_local-1.png" title="plot of chunk settings_color_scales_local" alt="plot of chunk settings_color_scales_local" width="100%" />
 
 Another way to do it is to define a global `scales.color` parameter that will applied to all plots with strat.color :
 
@@ -921,17 +1012,18 @@ ctr <- theophylline(
         values=c("1"="orange","2"="magenta"))
     )
 )
-#> Error in theophylline(settings = pmx_settings(color.scales = list("Study", : could not find function "theophylline"
 
 ctr %>% pmx_plot_npde_time(strat.color="STUD")
-#> Error in ctr %>% pmx_plot_npde_time(strat.color = "STUD"): could not find function "%>%"
 ```
+
+<img src="man/figures/README-settings_solor_scales-1.png" title="plot of chunk settings_solor_scales" alt="plot of chunk settings_solor_scales" width="100%" />
 
 
 ```r
 ctr %>% pmx_plot_eta_box(strat.color="STUD")
-#> Error in ctr %>% pmx_plot_eta_box(strat.color = "STUD"): could not find function "%>%"
 ```
+
+<img src="man/figures/README-settings_solor_scales_a-1.png" title="plot of chunk settings_solor_scales_a" alt="plot of chunk settings_solor_scales_a" width="100%" />
 
 
 ### Define labels of categorical variables
@@ -952,11 +1044,11 @@ ctr <- theophylline(
       use.labels = TRUE
     )
 )
-#> Error in theophylline(settings = pmx_settings(cats.labels = list(SEX = c(`0` = "M", : could not find function "theophylline"
 
 ctr %>% pmx_plot_npde_time(strat.facet=~SEX)
-#> Error in ctr %>% pmx_plot_npde_time(strat.facet = ~SEX): could not find function "%>%"
 ```
+
+<img src="man/figures/README-settings_cat_labels-1.png" title="plot of chunk settings_cat_labels" alt="plot of chunk settings_cat_labels" width="100%" />
 
 
 ```r
@@ -972,17 +1064,18 @@ ctr <- theophylline(
       use.labels = TRUE
     )
 )
-#> Error in theophylline(settings = pmx_settings(cats.labels = list(SEX = c(`0` = "M", : could not find function "theophylline"
 
 ctr %>% pmx_plot_npde_time(strat.facet=~SEX)
-#> Error in ctr %>% pmx_plot_npde_time(strat.facet = ~SEX): could not find function "%>%"
 ```
+
+<img src="man/figures/README-settings_cat_labels2-1.png" title="plot of chunk settings_cat_labels2" alt="plot of chunk settings_cat_labels2" width="100%" />
 
 
 ```r
 ctr %>% pmx_plot_eta_box(strat.facet =~SEX)
-#> Error in ctr %>% pmx_plot_eta_box(strat.facet = ~SEX): could not find function "%>%"
 ```
+
+<img src="man/figures/README-settings_cat_labels3-1.png" title="plot of chunk settings_cat_labels3" alt="plot of chunk settings_cat_labels3" width="100%" />
 
 
 
@@ -1007,7 +1100,6 @@ ctr <- pmx(
   dv        = "Y",
   dvid      = "DVID"
 )
-#> Error in pmx(sys = "mlx", config = "standing", directory = work_dir, input = input_data_path, : could not find function "pmx"
 ```
 Note that the column "DVID" of data_pk.csv does not exist; however it is not needed here because there is only one single output of the model. As dvid is a mandatory argument, it still needs to be provided and was set arbritrarly to "DVID" in the example above. 
 
@@ -1120,7 +1212,11 @@ Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function
 
 ```r
 args(pmx_gpar)
-#> Error in args(pmx_gpar): object 'pmx_gpar' not found
+#> function (labels, axis.title, axis.text, ranges, is.smooth, smooth, 
+#>     is.band, band, is.draft, draft, discrete, is.identity_line, 
+#>     identity_line, scale_x_log10, scale_y_log10, color.scales, 
+#>     is.legend, legend.position) 
+#> NULL
 ```
 More information can be found in the help document `?pmx_gpar` and in the examples that follow.
 
@@ -1140,7 +1236,10 @@ Here the basic call:
 
 ```r
 ctr %>% pmx_comp_shrink
-#> Error in ctr %>% pmx_comp_shrink: could not find function "%>%"
+#>    EFFECT   OMEGA    SHRINK       POS FUN
+#> 1:     Cl 0.22485 0.1125175 0.2934250 var
+#> 2:      V 0.03939 0.9469996 0.0057915 var
+#> 3:     ka 0.10024 0.7423478 0.0810850 var
 ```
 
 
@@ -1151,22 +1250,25 @@ The same values can be shown on distribution plot , for example  :
 
 ```r
 ctr %>% pmx_plot_eta_box
-#> Error in ctr %>% pmx_plot_eta_box: could not find function "%>%"
 ```
+
+<img src="man/figures/README-shrink_plot_box-1.png" title="plot of chunk shrink_plot_box" alt="plot of chunk shrink_plot_box" width="100%" />
 or : 
 
 ```r
 ctr %>% pmx_plot_eta_hist
-#> Error in ctr %>% pmx_plot_eta_hist: could not find function "%>%"
 ```
+
+<img src="man/figures/README-shrink_plot_hist-1.png" title="plot of chunk shrink_plot_hist" alt="plot of chunk shrink_plot_hist" width="100%" />
 
 You can add or remove shrinkage annotation using `is.shrink` argument ( TRUE by default) : 
 
 
 ```r
 ctr %>%   pmx_plot_eta_box( is.shrink = FALSE) 
-#> Error in ctr %>% pmx_plot_eta_box(is.shrink = FALSE): could not find function "%>%"
 ```
+
+<img src="man/figures/README-shrink_plot_no-1.png" title="plot of chunk shrink_plot_no" alt="plot of chunk shrink_plot_no" width="100%" />
 
 
 
@@ -1176,14 +1278,18 @@ You can compute shrinkage by applying either standard deviation `sd` or variance
 
 ```r
 ctr %>% pmx_comp_shrink(  fun = "var")
-#> Error in ctr %>% pmx_comp_shrink(fun = "var"): could not find function "%>%"
+#>    EFFECT   OMEGA    SHRINK       POS FUN
+#> 1:     Cl 0.22485 0.1125175 0.2934250 var
+#> 2:      V 0.03939 0.9469996 0.0057915 var
+#> 3:     ka 0.10024 0.7423478 0.0810850 var
 ```
 
 
 ```r
 ctr %>% pmx_plot_eta_box( shrink=list(fun = "var"))
-#> Error in ctr %>% pmx_plot_eta_box(shrink = list(fun = "var")): could not find function "%>%"
 ```
+
+<img src="man/figures/README-shrink_plot_var-1.png" title="plot of chunk shrink_plot_var" alt="plot of chunk shrink_plot_var" width="100%" />
  
  
 ## Shrinkage and stratification
@@ -1193,14 +1299,26 @@ Shrinkage can be applied after stratification :
 
 ```r
 ctr %>% pmx_comp_shrink(strat.facet = ~SEX)
-#> Error in ctr %>% pmx_comp_shrink(strat.facet = ~SEX): could not find function "%>%"
+#>    EFFECT SEX   OMEGA      SHRINK        POS FUN
+#> 1:     Cl   1 0.22485 -0.08032359 0.29342500 var
+#> 2:     Cl   0 0.22485  0.51828810 0.12378000 var
+#> 3:      V   1 0.03939  0.94628054 0.00579150 var
+#> 4:      V   0 0.03939  0.94818243 0.00437235 var
+#> 5:     ka   1 0.10024  0.70737008 0.08108500 var
+#> 6:     ka   0 0.10024  0.80907530 0.03676950 var
 ```
 or by grouping like : 
 
 
 ```r
 ctr %>% pmx_comp_shrink(strat.color = "SEX")
-#> Error in ctr %>% pmx_comp_shrink(strat.color = "SEX"): could not find function "%>%"
+#>    EFFECT SEX   OMEGA      SHRINK        POS FUN
+#> 1:     Cl   1 0.22485 -0.08032359 0.29342500 var
+#> 2:     Cl   0 0.22485  0.51828810 0.12378000 var
+#> 3:      V   1 0.03939  0.94628054 0.00579150 var
+#> 4:      V   0 0.03939  0.94818243 0.00437235 var
+#> 5:     ka   1 0.10024  0.70737008 0.08108500 var
+#> 6:     ka   0 0.10024  0.80907530 0.03676950 var
 ```
 
 We can 
@@ -1208,14 +1326,16 @@ We can
 ```r
 ctr %>% pmx_plot_eta_hist(is.shrink = TRUE, strat.facet = ~SEX,
                           facets=list(scales="free_y"))
-#> Error in ctr %>% pmx_plot_eta_hist(is.shrink = TRUE, strat.facet = ~SEX, : could not find function "%>%"
 ```
+
+<img src="man/figures/README-shrink_plot_strat-1.png" title="plot of chunk shrink_plot_strat" alt="plot of chunk shrink_plot_strat" width="100%" />
 or 
  
 
 ```r
 ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = "SEX",
                           facets=list(scales="free_y",ncol=2))
-#> Error in ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = "SEX", : could not find function "%>%"
 ```
+
+<img src="man/figures/README-unnamed-chunk-41-1.png" title="plot of chunk unnamed-chunk-41" alt="plot of chunk unnamed-chunk-41" width="100%" />
 
