@@ -5,7 +5,7 @@ Description: At Novartis, we aimed at standardizing the set of diagnostic plots 
   activities in order to reduce the overall effort required for generating such plots. 
   For this, we developed a guidance that proposes an adequate set of diagnostics and a toolbox, 
   called 'ggPMX' to execute them. 'ggPMX' is a toolbox that can generate all diagnostic plots at a quality sufficient 
-  for publication and submissions using few lines of code. This package focuses on plots reccomended by ISoP
+  for publication and submissions using few lines of code. This package focuses on plots recommended by ISoP
   <doi:10.1002/psp4.12161>.
 Version: 1.2.5
 Authors@R: c(
