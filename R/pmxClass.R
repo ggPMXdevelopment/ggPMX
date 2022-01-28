@@ -27,9 +27,6 @@ pmx_sim <- function(
     }
     id_col <- grep("^id$", names(sim), ignore.case = TRUE, value = TRUE)
     setnames(sim, id_col, "ID")
-    if (!inherits(sim$ID, "factor")) {
-      sim[, ID := as.integer(ID)]
-    }
     obj <- list(
       sim = sim,
       idv = idv,
@@ -168,7 +165,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
   if (grepl("*", file_name, fixed = TRUE)) {
     assert_that(version>=0, msg = "Using wildcard in file_name assume providing non-negative version")
     file_name <- gsub("*", version, file_name, fixed = TRUE)
-  } 
+  }
   params <- parse_mlxtran(file_name)
   rr <- as.list(match.call()[-1])
   rr$file_name <- NULL
@@ -189,7 +186,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
   params$call <- NULL
   # We don't need to pass version to pmx_mlx
   params$version <- NULL
-  
+
   do.call(pmx_mlx, params)
 }
 
@@ -939,13 +936,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         call. = FALSE
       )
     }
-    if (inherits(dx$ID,"factor") & !inherits(inn$ID,"factor")) {
-      inn[, ID := factor(ID, levels = levels(ID))]
-    }
-    if (!inherits(dx$ID, "factor") & inherits(inn$ID, "factor")) {
-      dx[, ID := factor(ID, levels = levels(ID))]
-    }
-    self$data[["sim"]] <- merge(dx, inn, by = c("ID", "TIME"))
+    self$data[["sim"]] <- merge_dx_inn_by_id_time(dx, inn, config$sys)
     self$sim <- sim
   }
 

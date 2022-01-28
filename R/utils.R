@@ -299,11 +299,11 @@ parse_mlxtran <- function(file_name) {
   conts <- dat[grepl("use=covariate, type=continuous", value), key]
   ## occ
   occ <- dat[grepl("use=occasion", value), key]
-  ## id 
+  ## id
   id <- dat[grepl("use=identifier", value), key]
-  ## time 
+  ## time
   time <- dat[grepl("use=time", value), key]
-  
+
 
 
   res <- list(
@@ -379,3 +379,22 @@ pk_pd <- function(code = "3") {
 
 
 quantile <- function(...) do.call(stats::quantile, list(...))
+
+#' Merge dx into inn, making sure that the IDs match types
+#' @param dx input data.table
+#' @param inn merging to data.table
+#' @param sys System to consider; Currently will change integer simulations in nlmixr to factors
+#' @return merged data.table
+#' @author Matthew L. Fidler
+#' @noRd
+merge_dx_inn_by_id_time <- function(dx, inn, sys) {
+  if (sys == "nlmixr") {
+    if (inherits(inn$ID, "factor")) {
+      ID <- dx$ID
+      attr(ID, "levels") <- levels(inn$ID)
+      attr(ID, "class") <- "factor"
+      dx$ID <- ID
+    }
+  }
+  merge(dx, inn, by = c("ID", "TIME"))
+}

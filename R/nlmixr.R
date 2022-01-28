@@ -15,7 +15,7 @@
 
 pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
-  
+
   if (missing(fit)) {
     return(NULL)
   }
