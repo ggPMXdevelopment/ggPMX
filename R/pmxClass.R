@@ -956,6 +956,8 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$has_re <- TRUE
     self$bloq <- bloq
     self$data$estimates <- config$parameters
+  } else if (config$sys == "nlmixr") {
+    self$data$estimates <- config$parameters
   }
 
   ## abbrev

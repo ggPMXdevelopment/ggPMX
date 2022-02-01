@@ -12,8 +12,6 @@ test_that("test shrinkage for standing config", {
   expect_true(all(res$SHRNK < 1))
 })
 
-
-
 test_that("test shrinkage fun parameter", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")

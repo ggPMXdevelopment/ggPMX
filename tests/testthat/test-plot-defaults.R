@@ -1,6 +1,6 @@
 context("Test defaults")
 pmxClassHelpers <- test_pmxClass_helpers()
-pmx_nlmixr()
+#pmx_nlmixr()
 
 test_that("pmx_plot_xx and get plot have same defaults", {
   ctr <- pmxClassHelpers$ctr
