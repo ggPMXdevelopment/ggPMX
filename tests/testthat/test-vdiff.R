@@ -1,7 +1,7 @@
 context("vdiffr")
+skip_if(TRUE)
 test_that("vdiffr", {
   skip_if_not(R.version$major >= 4 & R.version$minor >= 1.0)
-  skip_if(TRUE)
   set.seed(42)
   ctr <- theophylline()
   args = commandArgs(trailingOnly = TRUE)

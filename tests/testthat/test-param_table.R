@@ -36,6 +36,7 @@ test_that("can make param_table()", {
   # Check class:
   expect_s3_class(p_ctr, "knitr_kable")
   expect_s3_class(p_ctr_nm, "knitr_kable")
+
   # Check output lengths:
   expect_length(p_ctr, 23L)
   expect_length(p_ctr_nm, 23L)
@@ -45,4 +46,5 @@ test_that("can make param_table()", {
   p_ctr_sci <- param_table(ctr, digits=2, scientific=TRUE)
   expect_true(any(grepl("\\de\\+\\d", p_ctr_sci)))
   expect_true(any(grepl("\\de\\-\\d", p_ctr_sci)))
+
 })

@@ -28,11 +28,6 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
     digits >= 0
   )
 
-  if(ctr[["config"]][["sys"]] == "nlmixr"){
-    message("`param_table()` is not yet implemented for nlmixr")
-    return(NULL)
-  }
-
   ## Avoid error message in cmd check
 
   SE <- EFFECT <- SHRINK <- RSE <- VALUE <- PARAM <- . <- NULL
@@ -44,11 +39,12 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
 
   config_sys_nm <- ctr[["config"]][["sys"]] == "nm"
 
+  config_sys_nlmixr <- ctr[["config"]][["sys"]] == "nlmixr"
 
   # Selecting function to use for shrinkage calculation
   fun <- ifelse(
     identical(fun, c("var", "sd")),
-    ifelse(config_sys_nm, "sd", "var"),
+    ifelse(config_sys_nlmixr, "sd", ifelse(config_sys_nm, "sd", "var")),
     fun
   )
 
@@ -60,10 +56,10 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
       # make % shrinkage
       SHRINK=paste0(round(SHRINK * 100), "%"),
       # For non-nm sys PARAM has "omega_" prefix
-      PARAM=paste0(ifelse(config_sys_nm, "", "omega_"), EFFECT),
-    )
+      PARAM=paste0(ifelse(config_sys_nm, "", ifelse(config_sys_nlmixr, "", "omega_")), EFFECT),
+      )
 
-  if(ctr[["config"]][["sys"]] == "nm") {
+  if (ctr[["config"]][["sys"]] == "nm") {
     i <- 1
     for(i in i:length(shrinkage[["PARAM"]])) {
       str <- shrinkage[["PARAM"]][i]
@@ -72,6 +68,9 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
     }
 
     pop_pars <- dplyr::mutate(pop_pars, RSE, ifelse(SE == 1E10, "fixed", round(RSE)))
+  } else if (ctr[["config"]][["sys"]] == "nlmixr") {
+    eta_trans <- ctr[["config"]][["eta_trans"]]
+    shrinkage[, PARAM := eta_trans[PARAM]]
   }
 
   blank_row <- data.frame(PARAM=".", VALUE="", RSE ="", SHRINK="")
@@ -84,7 +83,7 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
       else {as.character(.)}
     },
     # Make RSE a %, and change NaN to "fixed"
-    RSE=ifelse(is.na(RSE), "fixed", paste0(round(RSE), "%")),
+    RSE=ifelse(is.infinite(RSE), "", ifelse(is.na(RSE), "fixed", paste0(round(RSE), "%"))),
   ) %>%
   dplyr::arrange(PARAM) %>%
   dplyr::left_join(shrinkage, by="PARAM") %>%
@@ -111,6 +110,16 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
         blank_row,
         dplyr::filter(., grepl("OMEGA", PARAM)),
       )
+    } else if (ctr[["config"]][["sys"]] == "nlmixr") {
+      param_regs <- ctr[["config"]][["param_regs"]]
+      dplyr::bind_rows(
+        dplyr::filter(., grepl("OBJ", PARAM)),
+        blank_row,
+        dplyr::filter(., grepl(param_regs["theta"], PARAM)),
+        blank_row,
+        dplyr::filter(., grepl(param_regs["eta"], PARAM)),
+        blank_row,
+        dplyr::filter(., grepl(param_regs["err"], PARAM)))
     }
   })} %>%
   dplyr::bind_rows(data.frame(PARAM=".",VALUE="",RSE ="", SHRINK=paste("comp. with", fun))) %>%

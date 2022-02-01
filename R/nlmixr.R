@@ -12,9 +12,21 @@
 
 #' @return \code{pmxClass} controller object.
 #' @export
-
+#' @importFrom stats setNames
 pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
+
+  if (inherits(fit, "nlmixrFitData")) {
+    nlmixr <- "nlmixr"
+    nlmixr2 <- FALSE
+  } else if (inherits(fit, "nlmixr2FitData")) {
+    nlmixr <- "nlmixr2"
+    nlmixr2 <- TRUE
+  } else {
+    stop("unsupported 'fit' object", call.=FALSE)
+  }
+
+  nlmixr <- loadNamespace(nlmixr)
 
   if (missing(fit)) {
     return(NULL)
@@ -33,10 +45,9 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
     settings <- pmx_settings()
   }
 
+  if (!"NPDE" %in% names(fit)) try(fit <- nlmixr$addNpde(fit), silent = TRUE)
 
-  if (!"NPDE" %in% names(fit)) try(fit <- nlmixr::addNpde(fit), silent = TRUE)
-
-  finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
+  finegrid <- try(invisible(nlmixr$augPred(fit)), silent = TRUE)
   if (inherits(finegrid, "try-error")) {
     finegrid <- NULL
   } else {
@@ -49,12 +60,19 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   sim <- NULL
   if (vpc) {
-    sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
+    if (nlmixr2) {
+      sim_data <- try(nlmixr$vpcSim(fit), silent = TRUE)
+      sim_data <- setDT(sim_data)
+      setnames(sim_data, "sim", "DV")
+      sim_data[, c("rxLambda", "rxYj", "rxLow", "rxHi") := NULL]
+    } else {
+      sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
+      sim_data <- setDT(sim_data)
+      setnames(sim_data, "dv", "DV")
+    }
     if (inherits(sim_data, "try-error")) {
       sim <- NULL
     } else {
-      sim_data <- setDT(sim_data)
-      setnames(sim_data, "dv", "DV")
       sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
     }
   }
@@ -99,26 +117,30 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
       }
     }
   }
-  obs <- as.data.table(nlmixr::getData(fit))
-  ## obs <- obs[!(EVID == 1 & MDV == 1)]
-  if (any(names(obs) == "EVID")) {
-    obs <- obs[EVID == 0 | EVID == 2]
-  } else if (any(names(obs) == "MDV")) {
-    obs <- obs[MDV == 0]
-  }
-  if (any(names(obs) == "ID")) {
-    obs$ID <- paste(obs$ID)
-  }
-  ## Merge with DV too
-  no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
-  obs[, (no_cols) := NULL]
-  uID <- unique(FIT$ID)
-  obs <- subset(obs, ID %in% uID)
-  obs$ID <- factor(obs$ID, levels = levels(fit$ID))
-  FIT$ID <- factor(FIT$ID, levels = levels(fit$ID))
-  input <- merge(obs, FIT, by = c("ID", "TIME"))
-  if (length(input$ID) == 0L) {
-    stop("Cannot merge nlmixr fit with observation dataset")
+  if (nlmixr2) {
+    input <- as.data.table(fit$dataMergeInner)
+  } else {
+    obs <- as.data.table(nlmixr::getData(fit))
+    ## obs <- obs[!(EVID == 1 & MDV == 1)]
+    if (any(names(obs) == "EVID")) {
+      obs <- obs[EVID == 0 | EVID == 2]
+    } else if (any(names(obs) == "MDV")) {
+      obs <- obs[MDV == 0]
+    }
+    if (any(names(obs) == "ID")) {
+      obs$ID <- paste(obs$ID)
+    }
+    ## Merge with DV too
+    no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
+    obs[, (no_cols) := NULL]
+    uID <- unique(FIT$ID)
+    obs <- subset(obs, ID %in% uID)
+    obs$ID <- factor(obs$ID, levels = levels(fit$ID))
+    FIT$ID <- factor(FIT$ID, levels = levels(fit$ID))
+    input <- merge(obs, FIT, by = c("ID", "TIME"))
+    if (length(input$ID) == 0L) {
+      stop("Cannot merge nlmixr fit with observation dataset")
+    }
   }
   eta <- copy(input)
   ## The eta parameters do not have to be named eta
@@ -126,11 +148,30 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   if (length(measures) == 0) {
     message("NO random effect found")
   }
+  eta_trans <- setNames(measures, sub("[.]?(eta|bsv)[.]?", "", measures))
   ## Not necessary these are already numeric... Perhaps a good practice?
   eta[, (measures) := lapply(.SD, as.numeric), .SDcols = measures]
   eta <- melt(eta, measure = measures)
   setnames(eta, c("value", "variable"), c("VALUE", "EFFECT"))
   eta[, EFFECT := sub("[.]?(eta|bsv)[.]?", "", EFFECT)]
+
+  ## Now get estimates
+
+  ### PARAM    VALUE      SE    RSE    PVALUE
+  pars <- fit$parFixedDf
+  ini_eta <- as.data.frame(fit$ini)
+  ini_theta <- ini_eta[is.na(ini_eta$neta1), ]
+  ini_err <- ini_theta[!is.na(ini_theta$err), ]
+  ini_theta <- ini_theta[is.na(ini_theta$err), ]
+  ini_eta <- ini_eta[!is.na(ini_eta$neta1), ]
+  est <- rbind(data.frame(PARAM=row.names(pars), VALUE=pars$Estimate, SE=pars$SE, RSE=pars$`%RSE`),
+               data.frame(PARAM=ini_eta$name, VALUE=ini_eta$est, SE= -Inf, RSE= -Inf),
+               data.frame(PARAM="OBJ", VALUE=fit$objf, SE= -Inf, RSE= -Inf))
+  row.names(est) <- NULL
+
+  param_regs <- c(theta=paste0("(", paste(gsub("[.]", "[.]", ini_theta$name), collapse="|"), ")"),
+                  eta=paste0("(", paste(gsub("[.]", "[.]", ini_eta$name), collapse="|"), ")"),
+                  err=paste0("(", paste(gsub("[.]", "[.]", ini_err$name), collapse="|"), ")"))
 
   plot_dir <- file.path(system.file(package = "ggPMX"), "init")
   pfile <- file.path(plot_dir, sprintf("%s.ppmx", config))
@@ -140,7 +181,10 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
     plots = pconfig,
     omega = omega,
     finegrid = finegrid,
-    eta = eta
+    eta = eta,
+    parameters=est,
+    eta_trans=eta_trans,
+    param_regs=param_regs
   )
   class(config) <- "pmxConfig"
 
