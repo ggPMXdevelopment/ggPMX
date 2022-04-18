@@ -24,7 +24,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   .nlmixr2 <- FALSE
   if (inherits(fit, "nlmixr2FitData")) {
     .nlmixr2 <- TRUE
-  } else if (inherits(fit, "nlmixr2FitData")) {
+  } else if (inherits(fit, "nlmixrFitData")) {
     .nlmixr <- TRUE
   } else {
     stop("unsupported 'fit' object", call.=FALSE)
@@ -74,15 +74,19 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   if (vpc) {
     if (.nlmixr2) {
       sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
+      sim_data <- setDT(sim_data)
+      setnames(sim_data, "sim", "DV")
     } else {
       sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
+      sim_data <- setDT(sim_data)
+      setnames(sim_data, "dv", "DV")
     }
     if (inherits(sim_data, "try-error")) {
       sim <- NULL
     } else {
-      sim_data <- setDT(sim_data)
-      setnames(sim_data, "sim", "DV")
-      sim_data[, c("rxLambda", "rxYj", "rxLow", "rxHi") := NULL]
+      if (any(names(sim_data) == "rxLambda")) {
+        sim_data[, c("rxLambda", "rxYj", "rxLow", "rxHi") := NULL]
+      }
       sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
     }
   }
