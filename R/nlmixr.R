@@ -182,9 +182,16 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   ini_err <- ini_theta[!is.na(ini_theta$err), ]
   ini_theta <- ini_theta[is.na(ini_theta$err), ]
   ini_eta <- ini_eta[!is.na(ini_eta$neta1), ]
-  est <- rbind(data.frame(PARAM=row.names(pars), VALUE=pars$Estimate, SE=pars$SE, RSE=pars$`%RSE`),
-               data.frame(PARAM=ini_eta$name, VALUE=ini_eta$est, SE= -Inf, RSE= -Inf),
-               data.frame(PARAM="OBJ", VALUE=fit$objf, SE= -Inf, RSE= -Inf))
+  if (any(names(pars) == "Est.")) {
+    est <- rbind(data.frame(PARAM=row.names(pars), VALUE=pars$`Est.`, SE=NA_real_, RSE=NA_real_),
+                 data.frame(PARAM=ini_eta$name, VALUE=ini_eta$est, SE= -Inf, RSE= -Inf),
+                 data.frame(PARAM="OBJ", VALUE=fit$objf, SE= -Inf, RSE= -Inf))
+
+  } else {
+    est <- rbind(data.frame(PARAM=row.names(pars), VALUE=pars$Estimate, SE=pars$SE, RSE=pars$`%RSE`),
+                 data.frame(PARAM=ini_eta$name, VALUE=ini_eta$est, SE= -Inf, RSE= -Inf),
+                 data.frame(PARAM="OBJ", VALUE=fit$objf, SE= -Inf, RSE= -Inf))
+  }
   row.names(est) <- NULL
 
   param_regs <- c(theta=paste0("(", paste(gsub("[.]", "[.]", ini_theta$name), collapse="|"), ")"),
