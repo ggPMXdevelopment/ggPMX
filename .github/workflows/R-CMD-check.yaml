@@ -129,7 +129,7 @@ jobs:
       - name: Install development nlmixr2plot
         run: remotes::install_github("nlmixr2/nlmixr2plot")
         shell: Rscript {0}
-
+        
       - name: Install development nlmixr2
         run: remotes::install_github("nlmixr2/nlmixr2")
         shell: Rscript {0}
@@ -155,7 +155,7 @@ jobs:
         if: always()
         run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
-        
+
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@main
