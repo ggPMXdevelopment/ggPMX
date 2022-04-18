@@ -56,7 +56,8 @@ Suggests:
     testthat,
     xtable,
     vdiffr,
-    nlmixr2
+    nlmixr2,
+    nlmixr
 VignetteBuilder: knitr
 NeedsCompilation: no
 RoxygenNote: 7.1.2

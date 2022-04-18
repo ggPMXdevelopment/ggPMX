@@ -16,12 +16,18 @@
 pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
 
-  if (!inherits(fit, "nlmixr2FitData")) {
-    stop("unsupported 'fit' object", call.=FALSE)
-  }
-
   if (missing(fit)) {
     return(NULL)
+  }
+
+  .nlmixr <- FALSE
+  .nlmixr2 <- FALSE
+  if (inherits(fit, "nlmixr2FitData")) {
+    .nlmixr2 <- TRUE
+  } else if (inherits(fit, "nlmixr2FitData")) {
+    .nlmixr <- TRUE
+  } else {
+    stop("unsupported 'fit' object", call.=FALSE)
   }
   config <- "standing"
   directory <- ""
@@ -37,9 +43,23 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
     settings <- pmx_settings()
   }
 
-  if (!"NPDE" %in% names(fit)) try(fit <- nlmixr2::addNpde(fit), silent = TRUE)
+  if (!("NPDE" %in% names(fit))) {
+    if (.nlmixr2) {
+      fitN <- try(nlmixr2::addNpde(fit), silent=TRUE)
+    } else {
+      fitN <- try(nlmixr::addNpde(fit), silent=TRUE)
+    }
+    if (!inherits(fitN, "try-error")) {
+      fit <- fitN
+    }
+  }
 
-  finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
+  if (.nlmixr2) {
+    finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
+  } else {
+    finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
+  }
+
   if (inherits(finegrid, "try-error")) {
     finegrid <- NULL
   } else {
@@ -52,7 +72,11 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   sim <- NULL
   if (vpc) {
-    sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
+    if (.nlmixr2) {
+      sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
+    } else {
+      sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
+    }
     if (inherits(sim_data, "try-error")) {
       sim <- NULL
     } else {
@@ -103,7 +127,31 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
       }
     }
   }
-  input <- as.data.table(fit$dataMergeInner)
+  if (.nlmixr2) {
+    input <- as.data.table(fit$dataMergeInner)
+  } else {
+    obs <- as.data.table(nlmixr::getData(fit))
+    ## obs <- obs[!(EVID == 1 & MDV == 1)]
+    if (any(names(obs) == "EVID")) {
+      obs <- obs[EVID == 0 | EVID == 2]
+    } else if (any(names(obs) == "MDV")) {
+      obs <- obs[MDV == 0]
+    }
+    if (any(names(obs) == "ID")) {
+      obs$ID <- paste(obs$ID)
+    }
+    ## Merge with DV too
+    no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
+    obs[, (no_cols) := NULL]
+    uID <- unique(FIT$ID)
+    obs <- subset(obs, ID %in% uID)
+    obs$ID <- factor(obs$ID, levels = levels(fit$ID))
+    FIT$ID <- factor(FIT$ID, levels = levels(fit$ID))
+    input <- merge(obs, FIT, by = c("ID", "TIME"))
+    if (length(input$ID) == 0L) {
+      stop("Cannot merge nlmixr fit with observation dataset")
+    }
+  }
   eta <- copy(input)
   ## The eta parameters do not have to be named eta
   measures <- names(fit$eta)[-1]
@@ -121,7 +169,11 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   ### PARAM    VALUE      SE    RSE    PVALUE
   pars <- fit$parFixedDf
-  ini_eta <- as.data.frame(fit$ini)
+  if (.nlmixr2) {
+    ini_eta <- fit$iniDf
+  } else {
+    ini_eta <- as.data.frame(fit$ini)
+  }
   ini_theta <- ini_eta[is.na(ini_eta$neta1), ]
   ini_err <- ini_theta[!is.na(ini_theta$err), ]
   ini_theta <- ini_theta[is.na(ini_theta$err), ]
