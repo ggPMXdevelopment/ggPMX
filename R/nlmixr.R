@@ -16,20 +16,18 @@
 pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
 
-  if (inherits(fit, "nlmixrFitData")) {
-    nlmixr <- "nlmixr"
-    nlmixr2 <- FALSE
-  } else if (inherits(fit, "nlmixr2FitData")) {
-    nlmixr <- "nlmixr2"
-    nlmixr2 <- TRUE
-  } else {
-    stop("unsupported 'fit' object", call.=FALSE)
-  }
-
-  nlmixr <- loadNamespace(nlmixr)
-
   if (missing(fit)) {
     return(NULL)
+  }
+
+  .nlmixr <- FALSE
+  .nlmixr2 <- FALSE
+  if (inherits(fit, "nlmixr2FitData")) {
+    .nlmixr2 <- TRUE
+  } else if (inherits(fit, "nlmixrFitData")) {
+    .nlmixr <- TRUE
+  } else {
+    stop("unsupported 'fit' object", call.=FALSE)
   }
   config <- "standing"
   directory <- ""
@@ -45,9 +43,23 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
     settings <- pmx_settings()
   }
 
-  if (!"NPDE" %in% names(fit)) try(fit <- nlmixr$addNpde(fit), silent = TRUE)
+  if (!("NPDE" %in% names(fit))) {
+    if (.nlmixr2) {
+      fitN <- try(nlmixr2::addNpde(fit), silent=TRUE)
+    } else {
+      fitN <- try(nlmixr::addNpde(fit), silent=TRUE)
+    }
+    if (!inherits(fitN, "try-error")) {
+      fit <- fitN
+    }
+  }
 
-  finegrid <- try(invisible(nlmixr$augPred(fit)), silent = TRUE)
+  if (.nlmixr2) {
+    finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
+  } else {
+    finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
+  }
+
   if (inherits(finegrid, "try-error")) {
     finegrid <- NULL
   } else {
@@ -60,11 +72,10 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   sim <- NULL
   if (vpc) {
-    if (nlmixr2) {
-      sim_data <- try(nlmixr$vpcSim(fit), silent = TRUE)
+    if (.nlmixr2) {
+      sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
       sim_data <- setDT(sim_data)
       setnames(sim_data, "sim", "DV")
-      sim_data[, c("rxLambda", "rxYj", "rxLow", "rxHi") := NULL]
     } else {
       sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
       sim_data <- setDT(sim_data)
@@ -73,6 +84,9 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
     if (inherits(sim_data, "try-error")) {
       sim <- NULL
     } else {
+      if (any(names(sim_data) == "rxLambda")) {
+        sim_data[, c("rxLambda", "rxYj", "rxLow", "rxHi") := NULL]
+      }
       sim <- pmx_sim(data = sim_data, idv = "time", irun = "sim.id")
     }
   }
@@ -117,7 +131,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
       }
     }
   }
-  if (nlmixr2) {
+  if (.nlmixr2) {
     input <- as.data.table(fit$dataMergeInner)
   } else {
     obs <- as.data.table(nlmixr::getData(fit))
@@ -159,14 +173,25 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   ### PARAM    VALUE      SE    RSE    PVALUE
   pars <- fit$parFixedDf
-  ini_eta <- as.data.frame(fit$ini)
+  if (.nlmixr2) {
+    ini_eta <- fit$iniDf
+  } else {
+    ini_eta <- as.data.frame(fit$ini)
+  }
   ini_theta <- ini_eta[is.na(ini_eta$neta1), ]
   ini_err <- ini_theta[!is.na(ini_theta$err), ]
   ini_theta <- ini_theta[is.na(ini_theta$err), ]
   ini_eta <- ini_eta[!is.na(ini_eta$neta1), ]
-  est <- rbind(data.frame(PARAM=row.names(pars), VALUE=pars$Estimate, SE=pars$SE, RSE=pars$`%RSE`),
-               data.frame(PARAM=ini_eta$name, VALUE=ini_eta$est, SE= -Inf, RSE= -Inf),
-               data.frame(PARAM="OBJ", VALUE=fit$objf, SE= -Inf, RSE= -Inf))
+  if (any(names(pars) == "Est.")) {
+    est <- rbind(data.frame(PARAM=row.names(pars), VALUE=pars$`Est.`, SE=NA_real_, RSE=NA_real_),
+                 data.frame(PARAM=ini_eta$name, VALUE=ini_eta$est, SE= -Inf, RSE= -Inf),
+                 data.frame(PARAM="OBJ", VALUE=fit$objf, SE= -Inf, RSE= -Inf))
+
+  } else {
+    est <- rbind(data.frame(PARAM=row.names(pars), VALUE=pars$Estimate, SE=pars$SE, RSE=pars$`%RSE`),
+                 data.frame(PARAM=ini_eta$name, VALUE=ini_eta$est, SE= -Inf, RSE= -Inf),
+                 data.frame(PARAM="OBJ", VALUE=fit$objf, SE= -Inf, RSE= -Inf))
+  }
   row.names(est) <- NULL
 
   param_regs <- c(theta=paste0("(", paste(gsub("[.]", "[.]", ini_theta$name), collapse="|"), ")"),
