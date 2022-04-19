@@ -57,6 +57,7 @@ Suggests:
     xtable,
     vdiffr,
     nlmixr2,
+    rxode2,
     nlmixr,
     nlmixr2data
 VignetteBuilder: knitr
