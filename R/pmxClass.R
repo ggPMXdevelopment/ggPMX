@@ -1058,7 +1058,8 @@ pmx_transform <- function(x, dx, trans, direction) {
   )
   cols <- intersect(cols, names(dx))
   if (length(cols) > 0) {
-    dx[, (cols) := lapply(.SD, match.fun(trans)), .SDcols = (cols)]
+    fun <- match.fun(trans)
+    dx[, (cols) := lapply(.SD, fun), .SDcols = (cols)]
   }
   dx
 }
