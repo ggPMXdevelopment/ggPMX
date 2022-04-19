@@ -23,6 +23,8 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   .nlmixr <- FALSE
   .nlmixr2 <- FALSE
   if (inherits(fit, "nlmixr2FitData")) {
+    rxode2::.setWarnIdSort(FALSE)
+    on.exit(rxode2::.setWarnIdSort(TRUE))
     .nlmixr2 <- TRUE
   } else if (inherits(fit, "nlmixrFitData")) {
     .nlmixr <- TRUE
@@ -55,6 +57,8 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   }
 
   if (.nlmixr2) {
+    rxode2::.setWarnIdSort(FALSE)
+    on.exit(rxode2::.setWarnIdSort(TRUE))
     finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
   } else {
     finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
@@ -63,7 +67,11 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   if (inherits(finegrid, "try-error")) {
     finegrid <- NULL
   } else {
-    finegrid <- dcast(setDT(finegrid), id + time ~ ind, value.var = "values")
+    if (any(names(finegrid) == "Endpoint")){
+      finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=length)
+    } else {
+      finegrid <- dcast(setDT(finegrid), id + time ~ ind, value.var = "values", fun.aggregate=length)
+    }
     setnames(
       finegrid, c("id", "time", "Population", "Individual", "Observed"),
       c("ID", "TIME", "PRED", "IPRED", "DV")
@@ -73,6 +81,8 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   sim <- NULL
   if (vpc) {
     if (.nlmixr2) {
+      rxode2::.setWarnIdSort(FALSE)
+      on.exit(rxode2::.setWarnIdSort(TRUE))
       sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
       sim_data <- setDT(sim_data)
       setnames(sim_data, "sim", "DV")
@@ -133,6 +143,11 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   }
   if (.nlmixr2) {
     input <- as.data.table(fit$dataMergeInner)
+    for (v in conts) {
+      if (v != "") {
+        input[[v]] <- suppressWarnings(as.double(v))
+      }
+    }
   } else {
     obs <- as.data.table(nlmixr::getData(fit))
     ## obs <- obs[!(EVID == 1 & MDV == 1)]
