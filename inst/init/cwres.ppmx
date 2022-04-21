@@ -57,6 +57,36 @@ CWRES_CPRED:
     size: 2.0
     alpha: 0.9
 
+CWRES_PRED:
+  ptype: SCATTER
+  x: PRED
+  'y': CWRES
+  labels:
+    title: CWRES vs PRED
+    subtitle: ''
+    x: PRED 
+    'y': CWRES
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  hline:
+    colour: black
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
 CWRES_QQ:
   ptype: PMX_QQ
   x: CWRES

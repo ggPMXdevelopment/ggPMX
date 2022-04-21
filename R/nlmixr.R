@@ -233,7 +233,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   w <- which(tolower(names(input)) == "cpred")
   if (length(w) == 1) {
     names(input)[w] <- "CPRED"
-    if (doNpd) {
+    if (doCwres) {
       pfile <- file.path(plot_dir, "cwres.ppmx")
       pconfig <- c(pconfig, yaml.load_file(pfile))
     }
@@ -245,6 +245,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
     finegrid = finegrid,
     eta = eta,
     parameters=est,
+    hasNpd=doNpd,
     eta_trans=eta_trans,
     param_regs=param_regs
   )

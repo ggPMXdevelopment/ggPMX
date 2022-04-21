@@ -172,10 +172,6 @@ pmx_plot_npde_pred <- function(
   wrap_pmx_plot_generic(ctr, "npde_pred", params)
 }
 
-
-
-#########
-
 # NPD vs TIME plot --------------------------------------------------------------
 
 #' NPD vs TIME plot
@@ -203,5 +199,65 @@ pmx_plot_npd_epred <- function(
                                ...) {
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   wrap_pmx_plot_generic(ctr, "npd_epred", params)
+}
+
+
+
+#' NPD vs PRED plot
+#' @export
+#' @family residual
+#' @rdname residual_scatter
+
+
+pmx_plot_npd_pred <- function(
+                               ctr,
+                               ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, "npd_pred", params)
+}
+
+
+# CWRES vs TIME plot --------------------------------------------------------------
+
+#' CWRES vs TIME plot
+#' @export
+#' @family residual
+#' @rdname residual_scatter
+
+
+pmx_plot_cwres_time <- function(
+                               ctr, ...) {
+
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, "cwres_time", params)
+}
+# CWRES vs CPRED plot --------------------------------------------------------------
+
+#' CWRES vs CPRED plot
+#' @export
+#' @family residual
+#' @rdname residual_scatter
+
+
+pmx_plot_cwres_cpred <- function(
+                               ctr,
+                               ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, "cwres_cpred", params)
+}
+
+
+
+#' CWRES vs PRED plot
+#' @export
+#' @family residual
+#' @rdname residual_scatter
+
+
+pmx_plot_cwres_pred <- function(
+                               ctr,
+                               ...) {
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  wrap_pmx_plot_generic(ctr, "cwres_pred", params)
 }
 

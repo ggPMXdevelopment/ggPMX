@@ -16,7 +16,7 @@
 #'  - or both. \cr
 #' By default the 'standing' configuration will be used.
 pmx_config <- function(sys = "mlx", inputs, plots, ...) {
- 
+
   if (missing(inputs)) {
      inputs <-  system.file(package = "ggPMX", "init", "mlx","standing.ipmx")
   }
@@ -119,6 +119,7 @@ load_config_files <- function(ifile, pfile, sys) {
   pconfig <- yaml.load_file(pfile)
   config <- list(data = iconfig, plots = pconfig)
   config$sys <- sys
+  config$hasNpd <- TRUE
   class(config) <- "pmxConfig"
   config
 }

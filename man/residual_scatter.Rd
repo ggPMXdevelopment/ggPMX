@@ -11,6 +11,10 @@
 \alias{pmx_plot_npde_pred}
 \alias{pmx_plot_npd_time}
 \alias{pmx_plot_npd_epred}
+\alias{pmx_plot_npd_pred}
+\alias{pmx_plot_cwres_time}
+\alias{pmx_plot_cwres_cpred}
+\alias{pmx_plot_cwres_pred}
 \title{Scatter residual plots}
 \usage{
 residual_scatter(
@@ -61,6 +65,14 @@ pmx_plot_npde_pred(ctr, ...)
 pmx_plot_npd_time(ctr, ...)
 
 pmx_plot_npd_epred(ctr, ...)
+
+pmx_plot_npd_pred(ctr, ...)
+
+pmx_plot_cwres_time(ctr, ...)
+
+pmx_plot_cwres_cpred(ctr, ...)
+
+pmx_plot_cwres_pred(ctr, ...)
 }
 \arguments{
 \item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
@@ -161,6 +173,14 @@ NPDE vs PRED plot
 NPD vs TIME plot
 
 NPD vs EPRED plot
+
+NPD vs PRED plot
+
+CWRES vs TIME plot
+
+CWRES vs CPRED plot
+
+CWRES vs PRED plot
 }
 \examples{
 \donttest{
