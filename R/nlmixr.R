@@ -23,8 +23,6 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   .nlmixr <- FALSE
   .nlmixr2 <- FALSE
   if (inherits(fit, "nlmixr2FitData")) {
-    rxode2::.setWarnIdSort(FALSE)
-    on.exit(rxode2::.setWarnIdSort(TRUE))
     .nlmixr2 <- TRUE
   } else if (inherits(fit, "nlmixrFitData")) {
     .nlmixr <- TRUE
@@ -57,8 +55,6 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   }
 
   if (.nlmixr2) {
-    rxode2::.setWarnIdSort(FALSE)
-    on.exit(rxode2::.setWarnIdSort(TRUE))
     finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
   } else {
     finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
@@ -81,8 +77,6 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   sim <- NULL
   if (vpc) {
     if (.nlmixr2) {
-      rxode2::.setWarnIdSort(FALSE)
-      on.exit(rxode2::.setWarnIdSort(TRUE))
       sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
       sim_data <- setDT(sim_data)
       setnames(sim_data, "sim", "DV")
