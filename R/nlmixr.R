@@ -139,7 +139,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
     input <- as.data.table(fit$dataMergeInner)
     for (v in conts) {
       if (v != "") {
-        input[[v]] <- suppressWarnings(as.double(v))
+        class(input[[v]]) <- "double"
       }
     }
   } else {

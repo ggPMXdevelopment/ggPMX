@@ -86,5 +86,18 @@ test_that("warfarin example", {
     expect_error(pmx_nlmixr(fitOne.comp.transit_S, conts = c("wt","age"),
                             cats=c("SEX","SPARSE"), vpc=FALSE,settings=pmx_settings(is.draft=FALSE)), NA)
 
+    ctl <- pmx_nlmixr(fitOne.comp.transit_S, conts = c("wt","age"),
+                      cats=c("SEX","SPARSE"), vpc=FALSE,settings=pmx_settings(is.draft=FALSE))
+
+    expect_error(ctl %>% pmx_plot_eta_conts, NA)
+
+    expect_error(ctl %>% pmx_report(name="ggPMX_report",
+                                    save_dir=".",
+                                    format="report",
+                                    extension="word"), NA)
+
+    if (file.exists("ggPMX_report.Rmd")) unlink("ggPMX_report.Rmd")
+    if (file.exists("ggPMX_report.docx")) unlink("ggPMX_report.docx")
+
 
 })
