@@ -1,0 +1,71 @@
+## NPD plots
+
+NPD_TIME:
+  ptype: SCATTER
+  x: TIME
+  'y': NPD
+  labels:
+    title: NPD vs TIME
+    subtitle: ''
+    x: TIME
+    'y': NPD
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+NPD_EPRED:
+  ptype: SCATTER
+  x: EPRED
+  'y': NPD
+  labels:
+    title: NPD vs EPRED
+    subtitle: ''
+    x: EPRED
+    'y': NPD
+  point:
+    shape: 1.0
+    colour: black
+    size: 1.0
+  is.hline: yes
+  hline:
+    colour: black
+  is.band: yes
+  is.smooth: yes
+  smooth:
+    se: no
+    colour: red
+    linetype: 1.0
+  bloq:
+    show: yes
+    cens: CENS
+    limit: LIMIT
+    colour: pink
+    size: 2.0
+    alpha: 0.9
+
+NPD_QQ:
+  ptype: PMX_QQ
+  x: NPD
+  labels:
+    title: ''
+    subtitle: ''
+    x: Standard Normal Quantiles
+    'y': NPD Quantiles
+  is.reference_line: yes
+  reference_line:
+    color: black

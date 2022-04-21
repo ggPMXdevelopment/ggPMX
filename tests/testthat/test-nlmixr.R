@@ -99,5 +99,4 @@ test_that("warfarin example", {
     if (file.exists("ggPMX_report.Rmd")) unlink("ggPMX_report.Rmd")
     if (file.exists("ggPMX_report.docx")) unlink("ggPMX_report.docx")
 
-
 })

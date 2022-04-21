@@ -210,6 +210,34 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   plot_dir <- file.path(system.file(package = "ggPMX"), "init")
   pfile <- file.path(plot_dir, sprintf("%s.ppmx", config))
   pconfig <- yaml.load_file(pfile)
+  w <- which(tolower(names(input)) == "npd")
+  doNpd <- FALSE
+  if (length(w) == 1) {
+    names(input)[w] <- "NPD"
+    doNpd <- TRUE
+  }
+  w <- which(tolower(names(input)) == "epred")
+  if (length(w) == 1) {
+    names(input)[w] <- "EPRED"
+    if (doNpd) {
+      pfile <- file.path(plot_dir, "npd.ppmx")
+      pconfig <- c(pconfig, yaml.load_file(pfile))
+    }
+  }
+  w <- which(tolower(names(input)) == "cwres")
+  doCwres <- FALSE
+  if (length(w) == 1) {
+    names(input)[w] <- "CWRES"
+    doNpd <- TRUE
+  }
+  w <- which(tolower(names(input)) == "cpred")
+  if (length(w) == 1) {
+    names(input)[w] <- "CPRED"
+    if (doNpd) {
+      pfile <- file.path(plot_dir, "cwres.ppmx")
+      pconfig <- c(pconfig, yaml.load_file(pfile))
+    }
+  }
   config <- list(
     sys = "nlmixr",
     plots = pconfig,
