@@ -164,7 +164,7 @@ pmx_draft <- function(ctr, name, template, edit) {
   if (file.exists(template)) {
     template_path <- system.file(
       "rmarkdown", "templates",
-      "standing",
+      ifelse(ctr$config$hasNpd,"npd", "standing"),
       package = "ggPMX"
     )
     temp_dir <- tempdir()
@@ -238,7 +238,7 @@ create_ggpmx_gof <- function(save_dir, name) {
 rm_dir <- function(to_remove) {
   if (!is.null(to_remove) && dir.exists(to_remove)) {
     #system(sprintf("rm -r %s", to_remove))
-    unlink(to_remove,recursive = TRUE, force = TRUE) 
+    unlink(to_remove,recursive = TRUE, force = TRUE)
   }
 }
 

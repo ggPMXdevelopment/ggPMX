@@ -24,6 +24,7 @@ SAEM: Stochastic approximation of the expectation-minimization algorithm
 VPC: Visual predictive check
 PRED: Population parameters predictions
 EPRED: Population averaged predictions
+CPRED: Conditional Population predictions
 IWRES: Individual weighted residuals
 '|IWRES|': '|Individual weighted residuals|'
 NVS: Novartis internal report

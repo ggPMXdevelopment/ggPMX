@@ -101,3 +101,27 @@ pmx_plot_npde_qq <-
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "npde_qq", params)
   }
+
+
+#' Quantile-quantile plot of NPD
+#' @family qqq
+#' @rdname pmx_qq_plot
+#' @export
+pmx_plot_npd_qq <-
+  function(ctr,
+             ...) {
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr, "npd_qq", params)
+  }
+
+
+#' Quantile-quantile plot of CWRES
+#' @family qqq
+#' @rdname pmx_qq_plot
+#' @export
+pmx_plot_cwres_qq <-
+  function(ctr,
+             ...) {
+    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    wrap_pmx_plot_generic(ctr, "cwres_qq", params)
+  }

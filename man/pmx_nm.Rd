@@ -116,7 +116,7 @@ Creates pmx controller from NONMEM model outputs
 #              table_names = "xptab")
 }
 \author{
-The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec) 
+The ggPMX NONMEM reader (pmx_nm) is strongly based on NONMEM reading functions of the xpose package (v.0.4.11) (Thanks to Benjamin Guiastrennec)
 To avoid conflicts with the xpose package, the necessary xpose-based functions have been renamed with a "pmx_" prefix. If the user wants to use individual functions
 e.g. "read_nm_tables" please use the xpose-package
 }

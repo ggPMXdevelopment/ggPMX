@@ -228,7 +228,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   doCwres <- FALSE
   if (length(w) == 1) {
     names(input)[w] <- "CWRES"
-    doNpd <- TRUE
+    doCwres <- TRUE
   }
   w <- which(tolower(names(input)) == "cpred")
   if (length(w) == 1) {

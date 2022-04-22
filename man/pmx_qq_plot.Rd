@@ -5,6 +5,8 @@
 \alias{pmx_plot_iwres_qq}
 \alias{pmx_plot_eta_qq}
 \alias{pmx_plot_npde_qq}
+\alias{pmx_plot_npd_qq}
+\alias{pmx_plot_cwres_qq}
 \title{Quantile-quantile plots}
 \usage{
 pmx_qq_plot(
@@ -47,6 +49,10 @@ pmx_plot_iwres_qq(ctr, ...)
 pmx_plot_eta_qq(ctr, ...)
 
 pmx_plot_npde_qq(ctr, ...)
+
+pmx_plot_npd_qq(ctr, ...)
+
+pmx_plot_cwres_qq(ctr, ...)
 }
 \arguments{
 \item{dname}{name of dataset to be used}
@@ -139,6 +145,10 @@ Quantile-quantile plot of IWRES
 Quantile-quantile plot of eta variables
 
 Quantile-quantile plot of NPDE
+
+Quantile-quantile plot of NPD
+
+Quantile-quantile plot of CWRES
 }
 \examples{
 
