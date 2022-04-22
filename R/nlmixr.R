@@ -56,23 +56,29 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   if (.nlmixr2) {
     finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
+    class(finegrid$values) <- "double"
+    finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=mean)
+    setnames(finegrid,
+             c("id", "time", "Endpoint","Population", "Individual", "Observed"),
+        c("ID", "TIME", ifelse(dvid == "", "DVID", ""), "PRED", "IPRED", "DV")
+        )
   } else {
     finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
+    if (inherits(finegrid, "try-error")) {
+      finegrid <- NULL
+    } else {
+      if (any(names(finegrid) == "Endpoint")){
+        finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=length)
+      } else {
+        finegrid <- dcast(setDT(finegrid), id + time ~ ind, value.var = "values", fun.aggregate=length)
+      }
+      setnames(
+        finegrid, c("id", "time", "Population", "Individual", "Observed"),
+        c("ID", "TIME", "PRED", "IPRED", "DV")
+      )
+    }
   }
 
-  if (inherits(finegrid, "try-error")) {
-    finegrid <- NULL
-  } else {
-    if (any(names(finegrid) == "Endpoint")){
-      finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=length)
-    } else {
-      finegrid <- dcast(setDT(finegrid), id + time ~ ind, value.var = "values", fun.aggregate=length)
-    }
-    setnames(
-      finegrid, c("id", "time", "Population", "Individual", "Observed"),
-      c("ID", "TIME", "PRED", "IPRED", "DV")
-    )
-  }
 
   sim <- NULL
   if (vpc) {
