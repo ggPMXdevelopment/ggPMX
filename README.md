@@ -8,7 +8,7 @@ output: github_document
 
 # ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
 
-**Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Thomas Dumortier, Seid Hamzic, Souvik Bhattacharya, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
+**Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Souvik Bhattacharya, Thomas Dumortier, Matthew Fidler, Seid Hamzic, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
 
 [![R-CMD-check](https://github.com/ggPMXdevelopment/ggPMX/workflows/R-CMD-check/badge.svg)](https://github.com/ggPMXdevelopment/ggPMX/actions)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ggPMX)](https://cran.r-project.org/package=ggPMX)
