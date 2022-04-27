@@ -56,12 +56,17 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   if (.nlmixr2) {
     finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
-    class(finegrid$values) <- "double"
-    finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=mean)
-    setnames(finegrid,
-             c("id", "time", "Endpoint","Population", "Individual", "Observed"),
-        c("ID", "TIME", ifelse(dvid == "", "DVID", ""), "PRED", "IPRED", "DV")
-        )
+    if (inherits(finegrid, "try-error")) {
+      message(paste0("Error creating finegrid: ", attr(finegrid, "condition")$message))
+      finegrid <- NULL
+    } else {
+      class(finegrid$values) <- "double"
+      finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=mean)
+      setnames(finegrid,
+               c("id", "time", "Endpoint","Population", "Individual", "Observed"),
+               c("ID", "TIME", ifelse(dvid == "", "DVID", ""), "PRED", "IPRED", "DV")
+               )
+    }
   } else {
     finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
     if (inherits(finegrid, "try-error")) {
@@ -92,6 +97,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
       setnames(sim_data, "dv", "DV")
     }
     if (inherits(sim_data, "try-error")) {
+      message(paste0("Error creating VPC: ", attr(sim_data, "condition")$message))
       sim <- NULL
     } else {
       if (any(names(sim_data) == "rxLambda")) {
