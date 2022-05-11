@@ -345,7 +345,7 @@ find_interval <- function(x, vec, labels = NULL, ...) {
       } else {
         rugs <- x$input[, bin_idv(get(idv), x)]
         x$input[, bin := find_interval(get(idv), rugs)]
-        x$dx[, bin := find_interval(get(idv), rugs, labels = unique(x$input[, bin]))]
+        x$dx[, bin := find_interval(get(idv), rugs)]
         rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
       }
     }
