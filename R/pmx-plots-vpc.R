@@ -78,7 +78,20 @@ pmx_plot_vpc <-
              axis.title, axis.text, ranges, is.smooth, smooth, is.band,
              band, is.draft, draft, is.identity_line, identity_line,
              scale_x_log10, scale_y_log10, color.scales, is.footnote,...) {
+
+    if(!missing(bin) && !is.null(bin) && bin[["within_strat"]] &&
+      !missing (rug) && !is.null(rug)) {
+      warning(
+        paste0(
+          "Consider not using a rugs layer ",
+          "when bin argument has within_strats=TRUE, since the rugs will ",
+          "not reflect the bins.",
+          "This can be achieved by setting rugs=NULL, or omitting it, ",
+          "in the call to pmx_plot_vpc.")
+      )
+    }
+
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params$is.smooth <- FALSE
     wrap_pmx_plot_generic(ctr, "pmx_vpc", params)
-  }
+}
