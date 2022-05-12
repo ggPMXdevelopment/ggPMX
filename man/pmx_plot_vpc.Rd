@@ -54,7 +54,9 @@ pmx_plot_vpc(
 
 \item{ci}{\code{pmx_vpc_ci} object confidence interval layer  \link{pmx_vpc_ci}}
 
-\item{rug}{\code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}}
+\item{rug}{\code{pmx_vpc_rug} object rug layer  \link{pmx_vpc_rug}.
+Note: consider not using a rug layer when bin[["within_strat"]]=TRUE,
+since the rugs plotted will not reflect the bins.}
 
 \item{bin}{\code{pmx_vpc_bin} object  \link{pmx_vpc_bin} specify within pmx_plot_vpc() e.g.: bin = pmx_vpc_bin(style = "kmeans", n = 10)}
 
