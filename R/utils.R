@@ -277,7 +277,11 @@ parse_mlxtran <- function(file_name) {
   ## extract controller param
   ### directory
   export_path <- gsub("'", "", dat[key == "exportpath", value])
-  directory <- file.path(dirname(file_name), export_path)
+  if(!dir.exists(export_path)) {
+      directory <- file.path(dirname(file_name), export_path)
+  }
+  else
+      directory <- export_path
   if (!dir.exists(directory)) {
     directory <- file.path(dirname(file_name), "RESULTS")
   }
