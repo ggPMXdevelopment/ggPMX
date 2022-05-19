@@ -1,17 +1,38 @@
-
-
 add_footnote <- function(pp, pname, save_dir) {
   plot_file <- file.path(save_dir, "ggpmx_GOF", pname)
   footnote <- sprintf("Source: %s", plot_file)
-  ## message("footnote is :" , footnote)
-  if (nchar(footnote) > 45) {
-    fns <- strsplit(footnote, "/")[[1]]
-    term1 <- do.call(file.path, as.list(fns[cumsum(nchar(fns)) < 45]))
-    term2 <- do.call(file.path, as.list(fns[cumsum(nchar(fns)) >= 45]))
-    footnote <- paste(paste0(term1, "/"), term2, sep = "\n")
+
+  # Establish maximum width of footnote (num characters):
+  max_width <- ifelse(grepl("vpc", pname, fixed = TRUE), 40, 60)
+  pp + labs(caption=split_footnote(footnote, max_width))
+}
+
+
+#' Split footnote if it exceeds maximumum width
+
+#' @param s \code{character} the footnoote text
+#' @param n \code{integer} the maximum width of a footnote
+#' @examples
+#' split_footnote("Source: /tmp/mylongdirectory", 10)
+split_footnote <- function(s, n) {
+  stopifnot(
+    is.character(s),
+    length(s) == 1,
+    is.numeric(n),
+    length(n) == 1,
+    n > 1
+  )
+  # Splitting footnote into multiple lines if exceeding max width:
+  if(nchar(s) <= n) return(s)
+
+  # Case where a single segment between slashes exceeds max width:
+  if(grepl(paste0("[^/]{", n, "}"), s)){
+    # Split at fixed intervals:
+    paste(strsplit(s, paste0("(?<=.{", n, "})"), perl=TRUE)[[1]], collapse="\n")
+  } else {
+    # Split at forward slashes (greedy):
+    gsub(paste0("(.{1,", n, "})(?=/)"), "\\1\n", s, perl=TRUE)
   }
-  pp <- pp + labs(caption = footnote)
-  pp
 }
 
 
