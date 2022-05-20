@@ -924,14 +924,14 @@ ctr %>% get_abbrev
 #> BIC : Bayesian information criterion 
 #> BLQ : Below the limit of quantification 
 #> COAR : Clinical Operations Analytics and Regions 
-#> DV : Dependent variable 
+#> DV : Observations
 #> ETA : Inter-individual random effect 
 #> EBE : Empirical Bayes estimate 
 #> FO : First order 
 #> FOCE : First order conditional estimation 
 #> FOCEI : First order conditional estimation with interaction 
 #> IIV : Inter-individual variability 
-#> IPRED : Individual prediction 
+#> IPRED : Individual predictions
 #> LRT : Likelihood ratio test 
 #> M&S : Modeling & Simulation 
 #> NLME : Nonlinear mixed-effects (model) 
@@ -944,7 +944,7 @@ ctr %>% get_abbrev
 #> PDF : Probability density function 
 #> SAEM : Stochastic approximation of the expectation-minimization algorithm 
 #> VPC : Visual predictive check 
-#> PRED : Population parameters predictions 
+#> PRED : Population predictions 
 #> EPRED : Population averaged predictions 
 #> IWRES : Individual weighted residuals 
 #> |IWRES| : |Individual weighted residuals| 
