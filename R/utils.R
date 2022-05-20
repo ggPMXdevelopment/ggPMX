@@ -221,26 +221,26 @@ pk_occ <- function() {
 }
 
 
-# Grabbed from babelmixr2
-.lixoftStarted <- NA
-.lixoftNs <- NULL
+# Grabbed from babelmixr2, changed to snakecase
+lixoft_started <- NA
+lixoft_namespace <- NULL
 
-.hasLixoftConnectors <- function() {
-  if (is.na(.lixoftStarted)) {
+has_lixoft_connectors <- function() {
+  if (is.na(lixoft_started)) {
     if (!requireNamespace("lixoftConnectors", quietly = TRUE)) {
-      assignInMyNamespace(".lixoftStarted", FALSE)
+      assignInMyNamespace("lixoft_started", FALSE)
       return(invisible(FALSE))
     }
-    .l <- loadNamespace("lixoftConnectors")
-    .x <- try(.l$initializeLixoftConnectors(software = "monolix"), silent=TRUE)
-    if (inherits(.x, "try-error")) {
-      assignInMyNamespace(".lixoftStarted", FALSE)
+    l <- loadNamespace("lixoftConnectors")
+    x <- try(l$initializeLixoftConnectors(software = "monolix"), silent=TRUE)
+    if (inherits(x, "try-error")) {
+      assignInMyNamespace("lixoft_started", FALSE)
     } else {
-      assignInMyNamespace(".lixoftStarted", TRUE)
-      assignInMyNamespace(".lixoftNs", .l)
+      assignInMyNamespace("lixoft_started", TRUE)
+      assignInMyNamespace("lixoft_namespace", l)
     }
   }
-  invisible(.lixoftStarted)
+  invisible(lixoft_started)
 }
 
 
@@ -330,8 +330,8 @@ parse_mlxtran <- function(file_name) {
   charts_data <- file.path(directory, "ChartsData")
   if (!file.exists(charts_data)) {
     # try lixoftConnectors
-    if (.hasLixoftConnectors()) {
-      l <- .lixoftNs
+    if (has_lixoft_connectors()) {
+      l <- lixoft_namespace
       x <- try(l$loadProject(file_name), silent=TRUE)
       if (inherits(x, "try-error")){
         stop("ggPMX needs ChartsData exported, could not load monolix file with lixoftConnectors",
