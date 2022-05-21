@@ -63,6 +63,7 @@ eta_cov <- function(
                     facets = NULL,
                     point = NULL,
                     covariates = NULL,
+                    is.strat.color = FALSE,
                     ...) {
   type <- match.arg(type)
   assert_that(is_string_or_null(dname))
@@ -82,7 +83,7 @@ eta_cov <- function(
   labels$subtitle <- ""
   structure(list(
     ptype = "ETA_COV",
-    strat = FALSE,
+    strat = TRUE,
     dname = dname,
     type = type,
     show.correl = show.correl,
@@ -90,6 +91,7 @@ eta_cov <- function(
     facets = facets,
     point = point,
     covariates = covariates,
+    is.strat.color = is.strat.color,
     gp = pmx_gpar(
       labels = labels,
       discrete = TRUE,
@@ -146,9 +148,19 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
             ]
           )
       }
+      if (x$is.strat.color) {
+        if(length(cats) > 1) {
+          dx.cats <- dx.cats[, var_val = paste0(variable, value)]
+          boxplot_layers <- geom_boxplot(aes_string(x = "value", y = "VALUE", fill = "var_val"))
+        }
+        else boxplot_layers <- geom_boxplot(aes_string(x = "value", y = "VALUE", fill = "value"))
+      }
+      else {
+        boxplot_layers <- geom_boxplot(aes_string(x = "value", y = "VALUE"))
+      }
 
       ggplot(dx.cats, measure.vars = cats) +
-        geom_boxplot(aes_string(x = "value", y = "VALUE")) +
+        boxplot_layers +
         facet_grid(stats::as.formula("EFFECT~variable"), scales = "free")
     }
   } else {
