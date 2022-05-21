@@ -6,7 +6,11 @@ Description: At Novartis, we aimed at standardizing the set of diagnostic plots 
   For this, we developed a guidance that proposes an adequate set of diagnostics and a toolbox, 
   called 'ggPMX' to execute them. 'ggPMX' is a toolbox that can generate all diagnostic plots at a quality sufficient 
   for publication and submissions using few lines of code. This package focuses on plots recommended by ISoP
-  <doi:10.1002/psp4.12161>.
+  <doi:10.1002/psp4.12161>. While not required, you can get/install the 'R' 'lixoftConnectors'
+    package in the 'Monolix' installation, as described at the following url
+    <https://monolix.lixoft.com/monolix-api/lixoftconnectors_installation/>.
+    When 'lixoftConnectors' is available, 'R' can use 'Monolix' directly to create the required
+    Chart Data instead of exporting it from the 'Monolix' gui.
 Version: 1.2.7
 Authors@R: c(
               person("Amine", "Gassem", email="contact@ag-study.com", role=c("aut")),
@@ -56,10 +60,14 @@ Suggests:
     testthat,
     xtable,
     vdiffr,
-    nlmixr2,
     rxode2,
     nlmixr,
-    nlmixr2data
+    nlmixr2,
+    nlmixr2data,
+    lixoftConnectors,
+    xgxr,
+    withr
 VignetteBuilder: knitr
 NeedsCompilation: no
 RoxygenNote: 7.1.2
+Additional_repositories: https://monolix.lixoft.com/monolix-api/lixoftconnectors_installation/

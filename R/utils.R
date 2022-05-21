@@ -221,6 +221,26 @@ pk_occ <- function() {
 }
 
 
+# Grabbed from babelmixr2, changed to snakecase
+lixoft_started <- NA
+
+has_lixoft_connectors <- function() {
+  if (is.na(lixoft_started)) {
+    if (!requireNamespace("lixoftConnectors", quietly = TRUE)) {
+      assignInMyNamespace("lixoft_started", FALSE)
+      return(invisible(FALSE))
+    }
+    x <- try(lixoftConnectors::initializeLixoftConnectors(software = "monolix"), silent=TRUE)
+    if (inherits(x, "try-error")) {
+      assignInMyNamespace("lixoft_started", FALSE)
+    } else {
+      assignInMyNamespace("lixoft_started", TRUE)
+    }
+  }
+  invisible(lixoft_started)
+}
+
+
 is_mlxtran <- function(file_name)
   identical(tools::file_ext(file_name), "mlxtran")
 
@@ -304,8 +324,26 @@ parse_mlxtran <- function(file_name) {
   ## time
   time <- dat[grepl("use=time", value), key]
 
-
-
+  charts_data <- file.path(directory, "ChartsData")
+  if (!file.exists(charts_data)) {
+    # try lixoftConnectors
+    if (has_lixoft_connectors()) {
+      x <- try(lixoftConnectors::loadProject(file_name), silent=TRUE)
+      if (inherits(x, "try-error")){
+        warning("ggPMX needs ChartsData exported, could not load monolix file with lixoftConnectors",
+             call.=FALSE)
+      } else {
+        x <- try(lixoftConnectors::computeChartsData(), silent=TRUE)
+        if (file.exists(charts_data)) {
+          warning("ggPMX needs ChartsData exported, could not generate with lixoftConnectors (requires Monolix 2021+)",
+               call.=FALSE)
+        }
+      }
+    } else {
+      warning("ggPMX needs ChartsData exported",
+              call.=FALSE)
+    }
+  }
   res <- list(
     directory = directory,
     input = input,

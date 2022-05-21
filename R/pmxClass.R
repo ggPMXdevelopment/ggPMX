@@ -638,6 +638,7 @@ get_data <- function(ctr, data_set = c(
 #'
 #' @param ctr the controller object
 #' @param ... a named  list parameters (see example)
+#' @inheritParams base::eval
 #' @family pmxclass
 #' @details
 #' This function can be used to set an existing data set or to create a new one. The basic
@@ -657,13 +658,13 @@ get_data <- function(ctr, data_set = c(
 #' ## or create a new data set
 #' ctr %>% set_data(eta_long = dx)
 #' @export
-set_data <- function(ctr, ...) {
+set_data <- function(ctr, ..., envir=parent.frame()) {
   assert_that(is_pmxclass(ctr))
   params <- as.list(match.call(expand.dots = TRUE))[-c(1, 2)]
   if (!nzchar(names(params))) {
     stop("each data set should be well named")
   }
-  invisible(Map(function(n, v) ctr$data[[n]] <- eval(v), names(params), params))
+  invisible(Map(function(n, v) ctr$data[[n]] <- eval(v, envir=envir), names(params), params))
 }
 
 #' Get category covariates

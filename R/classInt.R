@@ -24,7 +24,7 @@ oai <- function(var, cols, area) {
 }
 
 jenks.tests <- function(clI, area) {
-  if (class(clI) != "classIntervals") stop("Class interval object required")
+  if (!inherits(clI, "classIntervals")) stop("Class interval object required")
   cols <- findCols(clI)
   res <- c(
     "# classes" = length(clI$brks) - 1,
@@ -146,11 +146,11 @@ classIntervals <- function(var, n, style = "quantile", rtimes = 3, ..., interval
     } else if (style == "kmeans") {
       # stats
       pars <- try(stats::kmeans(x = var, centers = n, ...))
-      if (class(pars) == "try-error") {
+      if (inherits(pars, "try-error")) {
         warning("jittering in kmeans")
         jvar <- jitter(rep(x = var, times = rtimes))
         pars <- try(stats::kmeans(x = jvar, centers = n, ...))
-        if (class(pars) == "try-error") {
+        if (inherits(pars, "try-error")) {
           stop("kmeans failed after jittering")
         } else {
           cols <- match(pars$cluster, order(c(pars$centers)))
@@ -262,7 +262,7 @@ classIntervals <- function(var, n, style = "quantile", rtimes = 3, ..., interval
 
 findColours <- function(clI, pal, under = "under", over = "over", between = "-",
                         digits = getOption("digits"), cutlabels = TRUE) {
-  if (class(clI) != "classIntervals") stop("Class interval object required")
+  if (!inherits(clI, "classIntervals")) stop("Class interval object required")
   if (is.null(clI$brks)) stop("Null breaks")
   if (length(pal) < 2) stop("pal must contain at least two colours")
   cols <- findCols(clI)
@@ -283,7 +283,7 @@ findColours <- function(clI, pal, under = "under", over = "over", between = "-",
 # Looks for intervalClosure attribute to allow specification of
 # whether partition intervals are closed on the left or the right
 findCols <- function(clI) {
-  if (class(clI) != "classIntervals") stop("Class interval object required")
+  if (!inherits(clI, "classIntervals")) stop("Class interval object required")
   if (is.null(clI$brks)) stop("Null breaks")
   if (is.null(attr(clI, "intervalClosure")) || (attr(clI, "intervalClosure") == "left")) {
     cols <- findInterval(clI$var, clI$brks, all.inside = TRUE)
@@ -385,7 +385,7 @@ roundEndpoint <- function(x, intervalClosure = c("left", "right"), dataPrecision
 } # FIXME output trailing zeros in decimals
 
 print.classIntervals <- function(x, digits = getOption("digits"), ..., under = "under", over = "over", between = "-", cutlabels = TRUE, unique = FALSE) {
-  if (class(x) != "classIntervals") stop("Class interval object required")
+  if (!inherits(x, "classIntervals")) stop("Class interval object required")
   cat("style: ", attr(x, "style"), "\n", sep = "")
   nP <- nPartitions(x)
   if (is.finite(nP)) {

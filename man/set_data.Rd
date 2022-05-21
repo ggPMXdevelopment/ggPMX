@@ -4,12 +4,16 @@
 \alias{set_data}
 \title{Set a controller data set}
 \usage{
-set_data(ctr, ...)
+set_data(ctr, ..., envir = parent.frame())
 }
 \arguments{
 \item{ctr}{the controller object}
 
 \item{...}{a named  list parameters (see example)}
+
+\item{envir}{the \code{\link[base]{environment}} in which \code{expr} is to
+    be evaluated.  May also be \code{NULL}, a list, a data frame,
+    a pairlist or an integer as specified to \code{\link[base]{sys.call}}.}
 }
 \description{
 Set a controller data set
