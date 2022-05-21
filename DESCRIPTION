@@ -60,12 +60,13 @@ Suggests:
     testthat,
     xtable,
     vdiffr,
-    nlmixr2,
     rxode2,
     nlmixr,
+    nlmixr2,
     nlmixr2data,
     lixoftConnectors,
-    xgxr
+    xgxr,
+    withr
 VignetteBuilder: knitr
 NeedsCompilation: no
 RoxygenNote: 7.1.2
