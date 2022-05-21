@@ -59,7 +59,8 @@ Suggests:
     nlmixr2,
     rxode2,
     nlmixr,
-    nlmixr2data
+    nlmixr2data,
+    lixoftConnectors
 VignetteBuilder: knitr
 NeedsCompilation: no
 RoxygenNote: 7.1.2

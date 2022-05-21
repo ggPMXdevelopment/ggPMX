@@ -28,7 +28,7 @@
 #' @importFrom gtable gtable_add_cols gtable_add_rows
 #' @importFrom magrittr %>%
 #' @importFrom stringr str_trim
-#' @importFrom utils read.table
+#' @importFrom utils read.table assignInMyNamespace
 #' @importFrom yaml yaml.load_file
 #' @import data.table
 #' @importFrom assertthat assert_that

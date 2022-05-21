@@ -223,7 +223,6 @@ pk_occ <- function() {
 
 # Grabbed from babelmixr2, changed to snakecase
 lixoft_started <- NA
-lixoft_namespace <- NULL
 
 has_lixoft_connectors <- function() {
   if (is.na(lixoft_started)) {
@@ -231,13 +230,11 @@ has_lixoft_connectors <- function() {
       assignInMyNamespace("lixoft_started", FALSE)
       return(invisible(FALSE))
     }
-    l <- loadNamespace("lixoftConnectors")
-    x <- try(l$initializeLixoftConnectors(software = "monolix"), silent=TRUE)
+    x <- try(lixoftConnectors::initializeLixoftConnectors(software = "monolix"), silent=TRUE)
     if (inherits(x, "try-error")) {
       assignInMyNamespace("lixoft_started", FALSE)
     } else {
       assignInMyNamespace("lixoft_started", TRUE)
-      assignInMyNamespace("lixoft_namespace", l)
     }
   }
   invisible(lixoft_started)
@@ -331,20 +328,20 @@ parse_mlxtran <- function(file_name) {
   if (!file.exists(charts_data)) {
     # try lixoftConnectors
     if (has_lixoft_connectors()) {
-      l <- lixoft_namespace
-      x <- try(l$loadProject(file_name), silent=TRUE)
+      x <- try(lixoftConnectors::loadProject(file_name), silent=TRUE)
       if (inherits(x, "try-error")){
-        stop("ggPMX needs ChartsData exported, could not load monolix file with lixoftConnectors",
+        warning("ggPMX needs ChartsData exported, could not load monolix file with lixoftConnectors",
              call.=FALSE)
-      }
-      x <- try(l$computeChartsData(), silent=TRUE)
-      if (file.exists(charts_data)) {
-        stop("ggPMX needs ChartsData exported, could not generate with lixoftConnectors (requires Monolix 2021+)",
-             call.=FALSE)
+      } else {
+        x <- try(lixoftConnectors::computeChartsData(), silent=TRUE)
+        if (file.exists(charts_data)) {
+          warning("ggPMX needs ChartsData exported, could not generate with lixoftConnectors (requires Monolix 2021+)",
+               call.=FALSE)
+        }
       }
     } else {
-      stop("ggPMX needs ChartsData exported",
-           call.=FALSE)
+      warning("ggPMX needs ChartsData exported",
+              call.=FALSE)
     }
   }
   res <- list(
