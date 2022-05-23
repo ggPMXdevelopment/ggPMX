@@ -66,6 +66,6 @@ pmx_plot_eta_matrix <-
              axis.text, ranges, is.band, band, is.draft, draft,
              is.identity_line, identity_line, scale_x_log10, scale_y_log10,
              color.scales, ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "eta_matrix", params)
   }

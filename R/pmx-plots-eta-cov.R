@@ -73,7 +73,7 @@ dummy <-
 pmx_plot_eta_cats <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "eta_cats", params)
   }
 

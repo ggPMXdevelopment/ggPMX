@@ -78,7 +78,8 @@ eta_distribution_plot <-
 pmx_plot_eta_box <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "eta_box", params)
   }
 
@@ -95,6 +96,6 @@ pmx_plot_eta_hist <-
   function(
              ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "eta_hist", params)
   }

@@ -78,7 +78,7 @@ pmx_plot_vpc <-
              axis.title, axis.text, ranges, is.smooth, smooth, is.band,
              band, is.draft, draft, is.identity_line, identity_line,
              scale_x_log10, scale_y_log10, color.scales, is.footnote,...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     params$is.smooth <- FALSE
     wrap_pmx_plot_generic(ctr, "pmx_vpc", params)
   }

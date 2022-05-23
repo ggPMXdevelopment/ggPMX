@@ -61,7 +61,7 @@ pmx_plot_iwres_dens <- function(ctr, sim_blq, dname, xlim, var_line, snd_line, v
                                 draft, is.identity_line, identity_line, scale_x_log10,
                                 scale_y_log10, color.scales,
                                 ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   params$is.smooth <- FALSE
   wrap_pmx_plot_generic(ctr, "iwres_dens", params)
 }

@@ -95,9 +95,8 @@ pmx_plot_individual <-
     }
 
     cctr <- pmx_copy(ctr, ...)
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    params <- lang_to_expr(params)
 
+    params <- get_params_from_call()
     defaults_ <- ctr$config$plots[[toupper("individual")]]
 
     if (!exists("bloq", params) && !is.null(ctr$bloq)) {

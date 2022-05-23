@@ -1166,8 +1166,8 @@ print.pmxClass <- function(x, ...) {
 pmx_copy <- function(ctr, keep_globals = FALSE, ...) {
   assert_that(is_pmxclass(ctr))
   cctr <- ctr$clone()
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
-  params <- lang_to_expr(params)
+
+  params <- get_params_from_call()
 
   ## params <- list(...)
   if (!keep_globals) {

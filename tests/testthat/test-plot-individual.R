@@ -88,6 +88,25 @@ test_that("plot_pmx.individual: params: ctr is theophylline,
               "ggplot"
             ))
           })
+
+test_that("plot_pmx.individual: params: ctr is theophylline,
+           passing arguments from parent frame; No Error",
+{
+  ctr <- theophylline()
+
+  expect_error(
+    {
+      f <-function() {
+        for (i in 1:2) {
+          print(ctr %>% pmx_plot_individual(npage=i, facets = list(nrow=1,ncol=1)))
+        }
+      }
+
+      f()
+    },
+    NA
+  )
+})
 #------------------- pmx_plot_individual end ---------------------------------
 
 mlxpath <- file.path(system.file(package = "ggPMX"),

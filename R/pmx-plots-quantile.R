@@ -73,7 +73,7 @@ pmx_qq_plot <-
 pmx_plot_iwres_qq <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "iwres_qq", params)
   }
 
@@ -86,8 +86,7 @@ pmx_plot_iwres_qq <-
 pmx_plot_eta_qq <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
-    params <- append(params, list(is.hline=FALSE))
+    params <- get_params_from_call() %>% append(list(is.hline=FALSE))
     wrap_pmx_plot_generic(ctr, "eta_qq", params)
   }
 
@@ -98,7 +97,7 @@ pmx_plot_eta_qq <-
 pmx_plot_npde_qq <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "npde_qq", params)
   }
 
@@ -110,7 +109,7 @@ pmx_plot_npde_qq <-
 pmx_plot_npd_qq <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "npd_qq", params)
   }
 
@@ -122,6 +121,6 @@ pmx_plot_npd_qq <-
 pmx_plot_cwres_qq <-
   function(ctr,
              ...) {
-    params <- as.list(match.call(expand.dots = TRUE))[-1]
+    params <- get_params_from_call()
     wrap_pmx_plot_generic(ctr, "cwres_qq", params)
   }
