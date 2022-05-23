@@ -23,6 +23,8 @@
 #' @param smooth \code{list} geom_smooth graphical parameters
 #' @param is.hline \code{logical} if TRUE add horizontal line to lower matrix plots
 #' @param hline \code{list} geom_hline graphical parameters
+#' @param is.vreference_line \code{logical} if TRUE add reference line to diag plots
+#' @param vreference_line \code{list} geom_vline graphical parameters
 
 
 
@@ -61,11 +63,11 @@
 #' @export
 pmx_plot_eta_matrix <-
   function(ctr, title, dname, type.eta, text_color, is.shrink, shrink, point,
-             is.smooth, smooth, is.hline, hline, filter, strat.facet,
+             is.smooth, smooth, is.hline, hline, is.vreference_line, vreference_line, filter, strat.facet,
              facets, strat.color, trans, pmxgpar, labels, axis.title,
              axis.text, ranges, is.band, band, is.draft, draft,
              is.identity_line, identity_line, scale_x_log10, scale_y_log10,
              color.scales, ...) {
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     wrap_pmx_plot_generic(ctr, "eta_matrix", params)
-  }
+}

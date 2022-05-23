@@ -29,6 +29,8 @@ eta_pairs <- function(
                       shrink = NULL,
                       is.hline = FALSE,
                       hline = NULL,
+                      is.vreference_line = FALSE,
+                      vreference_line = list(colour = "orange", linetype = "longdash"),
                       ...) {
   assert_that(is_string_or_null(dname))
   if (is.null(dname)) dname <- "eta"
@@ -54,6 +56,8 @@ eta_pairs <- function(
     point = point,
     is.hline = is.hline,
     hline = hline,
+    is.vreference_line = is.vreference_line,
+    vreference_line = vreference_line,
     gp = pmx_gpar(
       labels = labels,
       discrete = FALSE,
@@ -79,8 +83,20 @@ lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline
   plot_pmx(gp, p)
 }
 
-diag.plot <- function(data, x, gp) {
+diag.plot <- function(data, x, gp, is.vreference_line, vreference_line) {
   p <- ggally_densityDiag(data = data, aes_string(x = x))
+    if (is.vreference_line) {
+      vreference_line1 <- vreference_line
+      vreference_line1$xintercept <- -1.96
+      vreference_line2 <- vreference_line
+      vreference_line2$xintercept <- 1.96
+      vreference_line3 <- vreference_line
+      vreference_line3$xintercept <- 0
+      p <- p +
+        do.call(geom_vline, vreference_line1) +
+        do.call(geom_vline, vreference_line2) +
+        do.call(geom_vline, vreference_line3)
+    }
   plot_pmx(gp, p)
 }
 
@@ -93,7 +109,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 
 
 .plot_matrix <-
-  function(dx, text_color = text_color, point = point, is.smooth, smooth, gp, is.hline, hline) {
+  function(dx, text_color = text_color, point = point, is.smooth, smooth, gp, is.hline, hline, is.vreference_line, vreference_line) {
     nn <- colnames(dx)
     mat <- outer(nn, nn, paste, sep = ";")
     uppers <-
@@ -128,7 +144,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
         diag(mat),
         function(z) {
           z <- strsplit(z, ";")[[1]]
-          diag.plot(dx, x = z[1], gp = gp)
+          diag.plot(dx, x = z[1], gp = gp, is.vreference_line, vreference_line )
         }
       )
 
@@ -223,7 +239,9 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       smooth = smooth,
       gp = gp,
       is.hline = is.hline,
-      hline = hline
+      hline = hline,
+      is.vreference_line = is.vreference_line,
+      vreference_line = vreference_line
     )
 
     if (is.shrink && !is.null(x[["shrink.dx"]])) {

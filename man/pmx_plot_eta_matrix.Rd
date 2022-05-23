@@ -17,6 +17,8 @@ pmx_plot_eta_matrix(
   smooth,
   is.hline,
   hline,
+  is.vreference_line,
+  vreference_line,
   filter,
   strat.facet,
   facets,
@@ -62,7 +64,11 @@ pmx_plot_eta_matrix(
 
 \item{is.hline}{\code{logical} if TRUE add horizontal line to lower matrix plots}
 
-\item{hline}{\code{list} geom_hline graphical parameters
+\item{hline}{\code{list} geom_hline graphical parameters}
+
+\item{is.vreference_line}{\code{logical} if TRUE add reference line to diag plots}
+
+\item{vreference_line}{\code{list} geom_vline graphical parameters
 
 \strong{pmx_update parameters}}
 
