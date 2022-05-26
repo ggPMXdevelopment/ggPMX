@@ -169,10 +169,10 @@ plot_pmx.individual <-
         ) +
         scale_linetype_manual(values = setNames(linetype_values,
                                                 linetype_labels),
-                              guide = FALSE) +
+                              guide = "none") +
         scale_shape_manual(values = setNames(shape_values,
                                              linetype_labels),
-                           guide = FALSE) +
+                           guide = "none") +
         scale_colour_manual(
           values = setNames(colour_values,
                             linetype_labels),

@@ -143,7 +143,7 @@ plot_pmx.pmx_dens <- function(x, dx, ...) {
                     fun = dnorm,
                     mapping = aes(x, colour = "normal density", linetype = "normal density")) +
       scale_linetype_manual(values = c(snd_line$linetype, var_line$linetype),
-                            guide = FALSE) +
+                            guide = "none") +
       scale_colour_manual(values = c(snd_line$colour, var_line$colour),
                           guide = guide_legend(override.aes = list(
                             linetype = c(snd_line$linetype, var_line$linetype),
