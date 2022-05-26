@@ -1,4 +1,3 @@
-
 #' Scatter residual plots
 #' @name residual_scatter
 #' @param ctr pmx controller
@@ -72,7 +71,7 @@ residual_scatter <-
 #' @rdname residual_scatter
 
 pmx_plot_dv_pred <- function(ctr, ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "dv_pred", params)
 }
 
@@ -88,7 +87,7 @@ pmx_plot_dv_pred <- function(ctr, ...) {
 pmx_plot_dv_ipred <- function(
                               ctr,
                               ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "dv_ipred", params)
 }
 
@@ -104,8 +103,7 @@ pmx_plot_dv_ipred <- function(
 
 pmx_plot_iwres_ipred <- function(
                                  ctr, ...) {
-
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "iwres_ipred", params)
 }
 
@@ -118,27 +116,21 @@ pmx_plot_iwres_ipred <- function(
 #' @family residual
 #' @rdname residual_scatter
 
-
-
-pmx_plot_abs_iwres_ipred <- function(
-                                     ctr, ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+pmx_plot_abs_iwres_ipred <- function(ctr, ...) {
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "abs_iwres_ipred", params)
 }
 
 
-
 # IWRES vs TIME plot --------------------------------------------------------------
-
 
 #' IWRES vs TIME plot
 #' @export
 #' @family residual
 #' @rdname residual_scatter
 
-
 pmx_plot_iwres_time <- function(ctr, ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "iwres_time", params)
 }
 
@@ -150,11 +142,9 @@ pmx_plot_iwres_time <- function(ctr, ...) {
 #' @family residual
 #' @rdname residual_scatter
 
-
 pmx_plot_npde_time <- function(
                                ctr, ...) {
-
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "npde_time", params)
 }
 # NPDE vs PRED plot --------------------------------------------------------------
@@ -168,7 +158,7 @@ pmx_plot_npde_time <- function(
 pmx_plot_npde_pred <- function(
                                ctr,
                                ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "npde_pred", params)
 }
 
@@ -182,10 +172,10 @@ pmx_plot_npde_pred <- function(
 
 pmx_plot_npd_time <- function(
                                ctr, ...) {
-
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "npd_time", params)
 }
+
 # NPD vs EPRED plot --------------------------------------------------------------
 
 #' NPD vs EPRED plot
@@ -197,7 +187,7 @@ pmx_plot_npd_time <- function(
 pmx_plot_npd_epred <- function(
                                ctr,
                                ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "npd_epred", params)
 }
 
@@ -212,7 +202,7 @@ pmx_plot_npd_epred <- function(
 pmx_plot_npd_pred <- function(
                                ctr,
                                ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "npd_pred", params)
 }
 
@@ -227,8 +217,7 @@ pmx_plot_npd_pred <- function(
 
 pmx_plot_cwres_time <- function(
                                ctr, ...) {
-
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "cwres_time", params)
 }
 # CWRES vs CPRED plot --------------------------------------------------------------
@@ -242,7 +231,7 @@ pmx_plot_cwres_time <- function(
 pmx_plot_cwres_cpred <- function(
                                ctr,
                                ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "cwres_cpred", params)
 }
 
@@ -257,7 +246,6 @@ pmx_plot_cwres_cpred <- function(
 pmx_plot_cwres_pred <- function(
                                ctr,
                                ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, "cwres_pred", params)
 }
-

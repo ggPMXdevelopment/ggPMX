@@ -31,6 +31,34 @@ lang_to_expr <-
     params
   }
 
+
+#' Try to evaluate a symbol in the parent frame (on errorr eturn the symbol)
+#' @param x any object
+eval_sym_parent_env <- function(x) {
+  if(is.symbol(x)){
+    tryCatch(eval(x, envir = parent.frame(1L)), error=function(e) x)
+  } else {
+    x
+  }
+}
+
+
+#' Get list of parameters based on parameters used in own function call
+
+get_params_from_call <- function () {
+  match.call(
+    definition=sys.function(sys.parent()),
+    call=sys.call(sys.parent()),
+    envir=parent.frame(2L),
+    expand.dots=TRUE
+  ) %>%
+  .[-1] %>%
+  # Make sure any symbols are evaluated
+  lapply(eval_sym_parent_env) %>%
+  lang_to_expr
+}
+
+
 wrap_pmx_plot_generic <-
   function(ctr, pname, params, defaults_) {
     params$ctr <- ctr
@@ -40,7 +68,7 @@ wrap_pmx_plot_generic <-
     if (!exists("bloq", params) && !is.null(ctr$bloq)) {
       params$defaults_[["bloq"]] <- ctr$bloq
     }
-    
+
     pp <- do.call(pmx_plot_generic, params)
     if (ctr$footnote && !is.null(pp)) {
       ctr$enqueue_plot(pname)
@@ -92,7 +120,7 @@ pmx_register_plot <-
 #' @export
 #'
 pmx_plot <- function(ctr, pname, ...) {
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  params <- get_params_from_call()
   wrap_pmx_plot_generic(ctr, pname, params)
 }
 
@@ -120,7 +148,9 @@ pmx_plot_cats <- function(ctr, pname, cats, chunk = "", print = TRUE, ...) {
   if (length(cats) == 0 || cats == "") {
     invisible(return(NULL))
   }
-  params <- as.list(match.call(expand.dots = TRUE))[-1]
+
+  params <- get_params_from_call()
+
   for (i in seq_along(cats))
   {
     params$strat.facet <- cats[[i]]
