@@ -16,6 +16,8 @@ eta_pairs(
   shrink = NULL,
   is.hline = FALSE,
   hline = NULL,
+  is.vreference_line = FALSE,
+  vreference_line = list(colour = "orange", linetype = "longdash"),
   ...
 )
 }
