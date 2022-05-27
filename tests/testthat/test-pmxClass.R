@@ -7,7 +7,7 @@ test_that("can create pmx class", {
   expect_identical(
     sort(ctr %>% plot_names()),
     sort(c(
-      "abs_iwres_ipred", "iwres_ipred", "npde_time", "iwres_time",
+      "abs_iwres_ipred", "abs_iwres_time", "iwres_ipred", "npde_time", "iwres_time",
       "npde_pred", "dv_pred", "dv_ipred", "eta_hist", "eta_box", "individual",
       "eta_matrix", "eta_cats", "eta_conts",
       "iwres_qq", "npde_qq", "eta_qq", "iwres_dens"
@@ -154,7 +154,7 @@ test_that("can create a controller from mlxtran with explicit path", {
 test_that("can catch absence of version, when wildcard is used in file_name", {
   mlxtran_path <- file.path(system.file(package = "ggPMX"), "testdata", "*_popPK_model", "project.mlxtran")
   error_msg_wrong_version <- "Using wildcard in file_name assume providing non-negative version"
-  error_msg_not_exist <- "file do not exist" 
+  error_msg_not_exist <- "file do not exist"
   expect_error(pmx_mlxtran(file_name = mlxtran_path), error_msg_wrong_version, fixed=TRUE)
   expect_error(pmx_mlxtran(file_name = mlxtran_path, version = -5), error_msg_wrong_version, fixed=TRUE)
   expect_error(pmx_mlxtran(file_name = mlxtran_path, version = 2), error_msg_not_exist, fixed=TRUE)
