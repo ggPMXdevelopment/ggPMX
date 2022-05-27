@@ -6,6 +6,7 @@
 \alias{pmx_plot_dv_ipred}
 \alias{pmx_plot_iwres_ipred}
 \alias{pmx_plot_abs_iwres_ipred}
+\alias{pmx_plot_abs_iwres_time}
 \alias{pmx_plot_iwres_time}
 \alias{pmx_plot_npde_time}
 \alias{pmx_plot_npde_pred}
@@ -55,6 +56,8 @@ pmx_plot_dv_ipred(ctr, ...)
 pmx_plot_iwres_ipred(ctr, ...)
 
 pmx_plot_abs_iwres_ipred(ctr, ...)
+
+pmx_plot_abs_iwres_time(ctr, ...)
 
 pmx_plot_iwres_time(ctr, ...)
 
@@ -163,6 +166,8 @@ DV vs IPRED plot
 IWRES vs IPRED plot
 
 |IWRES| vs IPRED plot
+
+|IWRES| vs TIME plot
 
 IWRES vs TIME plot
 

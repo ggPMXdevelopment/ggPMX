@@ -121,6 +121,15 @@ pmx_plot_abs_iwres_ipred <- function(ctr, ...) {
   wrap_pmx_plot_generic(ctr, "abs_iwres_ipred", params)
 }
 
+#' |IWRES| vs TIME plot
+#' @export
+#' @family residual
+#' @rdname residual_scatter
+pmx_plot_abs_iwres_time <- function(ctr, ...) {
+  params <- get_params_from_call()
+  wrap_pmx_plot_generic(ctr, "abs_iwres_time", params)
+}
+
 
 # IWRES vs TIME plot --------------------------------------------------------------
 

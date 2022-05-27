@@ -80,6 +80,11 @@ test_that("pmx_plot_abs_iwres_ipred: params: controller result: gg", {
   expect_true(inherits(pmx_plot_abs_iwres_ipred(ctr = ctr), "gg"))
 })
 
+test_that("pmx_plot_abs_iwres_time: params: controller result: gg", {
+  ctr <- theophylline()
+  expect_true(inherits(pmx_plot_abs_iwres_time(ctr = ctr), "gg"))
+})
+
 test_that("pmx_plot_abs_iwres_ipred: params: no result: error",
           {
             expect_error(pmx_plot_abs_iwres_ipred())
