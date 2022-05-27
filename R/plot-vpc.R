@@ -107,7 +107,7 @@ pmx_vpc_pi <-
     median_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
     extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed")
     area_default <- list(fill = "blue", alpha = 0.1)
-    
+
     median <- if (!missing(median)) {
       l_left_join(median_default, median)
     } else {
@@ -123,7 +123,7 @@ pmx_vpc_pi <-
     } else {
       area_default
     }
-    
+
     structure(
       list(
         show = show,
@@ -273,7 +273,7 @@ vpc.data <-
         strat <- sub("~","",strat)
         strat <- strat[strat != ""]
       }
-      
+
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
       res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
       ci <- quantile_dt(
@@ -306,7 +306,7 @@ vpc.data <-
 
 bin_idv <- function(idv, x) {
   brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
-  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv)  
+  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv)
   if (min(brks) <= min(idv)) brks[which.min(brks)] <- min(idv)
   brks
 }
@@ -345,11 +345,11 @@ find_interval <- function(x, vec, labels = NULL, ...) {
       } else {
         rugs <- x$input[, bin_idv(get(idv), x)]
         x$input[, bin := find_interval(get(idv), rugs)]
-        x$dx[, bin := find_interval(get(idv), rugs, labels = unique(x$input[, bin]))]
+        x$dx[, bin := find_interval(get(idv), rugs)]
         rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
       }
     }
-    
+
     res <- vpc.data(
       x[["type"]],
       x$input,
@@ -382,7 +382,7 @@ vpc.pi_line <- function(dt, left, geom ) {
 }
 
 .vpc.area <- function() {
-  
+
   # out <- list(color="red")
   # out_layer <- if(!is.null(out)){
   #   params <- append(
@@ -410,22 +410,22 @@ vpc.pi_line <- function(dt, left, geom ) {
   #   params <- append(ll1,out_area)
   #   do.call(geom_ribbon,params)
   # }
-  
+
   # list( out_layer , out_layer_area_min , out_layer_area_max )
 }
 vpc.plot <- function(x) {
   with(x, {
     pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv))
-    
+
     pi_med_layer <- function() {if (!is.null(pi)) {
-      vpc.pi_line(db$pi_dt[percentile == "p50"], pi$median) 
+      vpc.pi_line(db$pi_dt[percentile == "p50"], pi$median)
     }}
     pi_ext_layer <- function() {if (!is.null(pi) && pi$show == "all") {
       vpc.pi_line(db$pi_dt[percentile != "p50"], pi$extreme)
     }}
     pi_shaded_layer <- function() {if (!is.null(pi) && pi$show %in% c("all","area") ) {
       nn <- grep("^p\\d+$", names(db$pi_area_dt), value = TRUE)
-      
+
       params <- append(
         list(
           data = db$pi_area_dt,
@@ -435,8 +435,8 @@ vpc.plot <- function(x) {
       )
       do.call(geom_ribbon, params)
     }}
-    
-    
+
+
     obs_layer <- if (!is.null(obs)) {
       params <- append(
         list(
@@ -459,7 +459,6 @@ vpc.plot <- function(x) {
       )
       do.call(geom_rug, params)
     }
-
 
     ci_med_layer <- function() {if (!is.null(ci)) {
       nn <- grep("CL", names(db$ci_dt), value = TRUE)[c(1, 3)]
@@ -489,17 +488,17 @@ vpc.plot <- function(x) {
     pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv)) +
       obs_layer + pi_med_layer() + pi_ext_layer() + rug_layer
 
-    pp <- if (type=="scatter") pp +  pi_shaded_layer() 
-    else pp + ci_med_layer() + ci_ext_layer() 
+    pp <- if (type=="scatter") pp +  pi_shaded_layer()
+    else pp + ci_med_layer() + ci_ext_layer()
     if(!is.null(x$obs_legend)){
       pp <- pp + do.call("scale_linetype_manual",obs_legend)
     }
     if(!is.null(x$sim_legend) && type=="percentile"){
       pp <- pp + do.call("scale_fill_manual",sim_legend)
     }
-    
+
     strat.facet <- x[["strat.facet"]]
-    
+
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
@@ -507,10 +506,11 @@ vpc.plot <- function(x) {
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
 
-    if (is.footnote){pp <- pp + labs(caption=x$footnote)}
+    if (is.footnote){
+      pp <- pp + labs(caption=x$footnote)
+    }
 
     pp
-
   })
 }
 
@@ -550,7 +550,7 @@ pmx_vpc <- function(
   ...) {
   type <- match.arg(type)
   ## check args here
-  
+
   structure(
     list(
       ptype = "VPC",
@@ -571,19 +571,19 @@ pmx_vpc <- function(
 
 
 vpc_footnote. <- function(x){
-  
+
   area_statement <- if(x$type=="percentile"){
     perc <- diff(x$ci$probs)*100
-    extension <- if(x$ci$show=="all") "s" else "" 
-    s <- if(x$ci$show=="all") "" else "s" 
-    
+    extension <- if(x$ci$show=="all") "s" else ""
+    s <- if(x$ci$show=="all") "" else "s"
+
     sprintf("The area%s represent%s the %s%% confidence intervals for the percentile%s. ",extension,s,perc,extension)
   } else{
     perc <- diff(x$pi$probs)*100
     if(x$pi$show%in% c("all","area")) sprintf("The area represents the %s%% prediction interval.",perc)
   }
   obs_statement <- if(!is.null(x$obs)) "The dots are the observations."
-  rug_statement <- if(!is.null(x$rug)) "The rugs represent the limits of the bins." 
+  rug_statement <- if(!is.null(x$rug)) "The rugs represent the limits of the bins."
   footnote <- paste(area_statement, paste(obs_statement,rug_statement,collapse=" "),
                     "The percentiles are plotted at the median independent variables in the bins.",sep="\n")
   x$footnote <- footnote
@@ -594,7 +594,7 @@ vpc_legend. <- function(x){
   x$obs_legend <- NULL
   x$sim_legend <- NULL
   percentile <- NULL
-  
+
   if (!is.null(x$pi)) {
     obs_legend <- list(breaks="p50",values=x$pi$median$linetype,labels="Median")
     if (x$pi$show == "all") {
@@ -609,12 +609,12 @@ vpc_legend. <- function(x){
     leg_title <- if (x$type =="scatter"){
       if(x$pi$show%in% c("all","area"))
         sprintf("Simulations\n(%s%% Prediction Interval)",diff(x$pi$probs)*100)
-      else "Simulations" 
+      else "Simulations"
     }else  "Observations"
-    
+
     x$obs_legend <- c(leg_title,obs_legend)
   }
-  
+
   if (!is.null(x$ci) && x$type=="percentile") {
     sim_legend <- list(breaks="p50",values=x$ci$median$fill,labels="Median")
     if (x$ci$show == "all") {
@@ -629,12 +629,12 @@ vpc_legend. <- function(x){
     leg_title <- sprintf("Simulations\n(%s%% CI)",diff(x$ci$probs)*100)
     x$sim_legend <- c(leg_title,sim_legend)
   }
-  
+
   x$gp$is.legend <- x$is.legend
   default_config <- yaml.load_file(system.file(package = "ggPMX", "init","standing.ppmx"))
 
   #Check if title/subtitle have default value - if not, custom labels will be set
-  if ((x$gp$labels$title == default_config$PMX_VPC$labels$title) 
+  if ((x$gp$labels$title == default_config$PMX_VPC$labels$title)
       && (x$gp$labels$subtitle == default_config$PMX_VPC$labels$subtitle)){
     if (x$type == "percentile") {
       x$gp$labels$title <- "Percentile VPC"
@@ -648,10 +648,10 @@ vpc_legend. <- function(x){
 }
 
 plot_pmx.pmx_vpc <- function(x, dx, ...) {
-  x <- x %>% 
+  x <- x %>%
     vpc_legend. %>%
     vpc_footnote.
-  
+
   if (!is.null(x$db)) p <- vpc.plot(x)
   plot_pmx(x$gp, p)
 }
