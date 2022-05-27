@@ -108,34 +108,6 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
-      - name: Install development nlmixr2data
-        run: remotes::install_github("nlmixr2/nlmixr2data")
-        shell: Rscript {0}
-
-      - name: Install development lotri
-        run: remotes::install_github("nlmixr2/lotri")
-        shell: Rscript {0}
-
-      - name: Install development rxode2
-        run: remotes::install_github("nlmixr2/rxode2")
-        shell: Rscript {0}
-
-      - name: Install development nlmixr2est
-        run: remotes::install_github("nlmixr2/nlmixr2est")
-        shell: Rscript {0}
-
-      - name: Install development nlmixr2extra
-        run: remotes::install_github("nlmixr2/nlmixr2extra")
-        shell: Rscript {0}
-
-      - name: Install development nlmixr2plot
-        run: remotes::install_github("nlmixr2/nlmixr2plot")
-        shell: Rscript {0}
-
-      - name: Install development nlmixr2
-        run: remotes::install_github("nlmixr2/nlmixr2")
-        shell: Rscript {0}
-
       - name: Install devtools
         run: remotes::install_cran("devtools")
         shell: Rscript {0}
