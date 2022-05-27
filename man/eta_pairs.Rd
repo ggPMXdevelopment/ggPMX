@@ -44,6 +44,10 @@ eta_pairs(
 
 \item{hline}{\code{list} geom_hline graphical parameters}
 
+\item{is.vreference_line}{\code{logical} if TRUE add the +- 1.96 lines}
+
+\item{vreference_line}{\code{list} geom_hline graphical parameters for the reference lines}
+
 \item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }
 \value{
