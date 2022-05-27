@@ -7,7 +7,8 @@
 #' in a loop to plot pages one by one.
 #'
 #' @inheritParams ggplot2::facet_wrap
-#' @param ncol Number of rows and columns
+#' @param ncol Number of columns
+#' @param nrow Number of rows
 #' @param page The page to draw
 #'
 #' @note If either \code{ncol} or \code{nrow} is \code{NULL} this function will

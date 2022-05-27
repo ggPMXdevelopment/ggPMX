@@ -1,4 +1,9 @@
 #' Update plot
+#' @param ctl controller
+#' @param pname parameter name
+#' @param defaults_ defaults of the parameters
+#' @param ... other arguments
+#' @noRd
 update_container_plots <- function(ctr, pname, defaults_, ...){
   stopifnot(is_pmxclass(ctr))
   if (!pname %in% (ctr %>% plot_names())) {return(NULL)}
@@ -10,6 +15,9 @@ update_container_plots <- function(ctr, pname, defaults_, ...){
 
 
 #' Create parameters for plot updating
+#' @param ctr controller
+#' @param pname parameter name
+#' @noRd
 get_plot_param <- function(ctr, pname){
   params <- as.list(match.call(expand.dots = TRUE))[-1]
   if ((pname == "iwres_dens") || (pname == "pmx_vpc")) {
