@@ -14,6 +14,7 @@ eta_cov(
   facets = NULL,
   point = NULL,
   covariates = NULL,
+  is.strat.color = FALSE,
   ...
 )
 }
@@ -33,6 +34,8 @@ eta_cov(
 \item{point}{\code{list} geom point graphical parameter}
 
 \item{covariates}{\code{pmxCOVObject} \code{\link{pmx_cov}}}
+
+\item{is.strat.color}{\code{logical} if `TRUE` use a different color for the spline stratification.}
 
 \item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }

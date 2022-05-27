@@ -41,6 +41,7 @@ is_pmxcov <- function(x)
 #' @param point \code{list} geom point graphical parameter
 #' @param facets \code{list} facetting graphical parameter
 #' @param covariates \code{pmxCOVObject} \code{\link{pmx_cov}}
+#' @param is.strat.color \code{logical} if `TRUE` use a different color for the spline stratification.
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
