@@ -1,3 +1,44 @@
+#' Update plot
+update_container_plots <- function(ctr, pname, defaults_, ...){
+  stopifnot(is_pmxclass(ctr))
+  if (!pname %in% (ctr %>% plot_names())) {return(NULL)}
+
+  pmx_update(ctr, pname, strat.color=NULL, strat.facet=NULL, color.scales=NULL,
+    filter=NULL, trans=NULL, l_left_join(defaults_, list(...)), pmxgpar=NULL
+  )
+}
+
+
+#' Create parameters for plot updating
+get_plot_param <- function(ctr, pname){
+  params <- as.list(match.call(expand.dots = TRUE))[-1]
+  if ((pname == "iwres_dens") || (pname == "pmx_vpc")) {
+    params[["is.smooth"]] <- FALSE
+  }
+  params[["ctr"]] <- ctr
+  params[["pname"]] <- pname
+  params <- lang_to_expr(params)
+  params$defaults_ <- ctr$config$plots[[toupper(pname)]]
+  if (!exists("bloq", params) && !is.null(ctr$bloq)) {
+    params$defaults_[["bloq"]] <- ctr$bloq
+  }
+
+  # Check that x or y labels for updating exist (else plot updating will not work)
+  if ((!is.null(params$defaults_$labels$x)) || (!is.null(params$defaults_$labels$y))){
+    # Check if labels$x exists in added abbreviations; if not set default labels$x
+    if ((!is.null(params$defaults_$labels$x)) &&
+      (!(params$defaults_$labels$x %in% names(params$ctr$abbrev)))){
+        params$ctr$abbrev[params$defaults_$labels$x] <- params$defaults_$labels$x
+    }
+    # check if labels$y exists in added abbreviations; if not set default labels$y
+    if ((!is.null(params$defaults_$labels$y)) &&
+      (!(params$defaults_$labels$y %in% names(params$ctr$abbrev)))){
+        params$ctr$abbrev[params$defaults_$labels$y] <- params$defaults_$labels$y
+    }
+    do.call(update_container_plots, params)
+  }
+}
+
 
 #' Create simulation object
 #'
@@ -465,6 +506,9 @@ set_abbrev <- function(ctr, ...) {
   }
   class(abbrev) <- c("abbreviation", "list")
   ctr$abbrev <- abbrev
+  for (plot_name in (ctr %>% plot_names())){
+    get_plot_param(ctr, plot_name)
+  }
 }
 
 #' S3 print abbreviation

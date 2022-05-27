@@ -91,7 +91,7 @@ IWRES_DENS:
     title: 'Density plot of IWRES'
     subtitle: ''
     x: IWRES
-    'y': ''
+    'y': ' '
 
 IWRES_QQ:
   ptype: PMX_QQ
@@ -188,6 +188,8 @@ DV_PRED:
   labels:
     title: DV vs PRED
     subtitle: ''
+    x: PRED
+    'y': DV
   x: PRED
   'y': DV
   point:
@@ -216,6 +218,8 @@ DV_IPRED:
   labels:
     title: DV vs IPRED
     subtitle: ''
+    x: IPRED
+    'y': DV
   x: IPRED
   'y': DV
   point:

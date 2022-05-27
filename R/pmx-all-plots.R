@@ -15,8 +15,9 @@ pmx_plot_generic <-
          do.call("pmx_update", params)
          p <- cctr %>% get_plot(pname)
     }
-     else
-         p <- ctr %>% get_plot(pname)
+    else {
+      p <- ctr %>% get_plot(pname)
+    }
     rm(cctr)
     p
   }
