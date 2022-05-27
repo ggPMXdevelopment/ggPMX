@@ -640,14 +640,19 @@ vpc_legend. <- function(x){
   }
   
   x$gp$is.legend <- x$is.legend
-  if (x$type == "percentile") {
-    x$gp$labels$title <- "Percentile VPC"
-    x$gp$labels$subtitle <- "(with observations)"
-  } else {
-    x$gp$labels$title <- "Scatter VPC"
-    x$gp$labels$subtitle <- ""
+  default_config <- yaml.load_file(system.file(package = "ggPMX", "init","standing.ppmx"))
+
+  #Check if title/subtitle have default value - if not, custom labels will be set
+  if ((x$gp$labels$title == default_config$PMX_VPC$labels$title) 
+      && (x$gp$labels$subtitle == default_config$PMX_VPC$labels$subtitle)){
+    if (x$type == "percentile") {
+      x$gp$labels$title <- "Percentile VPC"
+      x$gp$labels$subtitle <- "(with observations)"
+    } else {
+      x$gp$labels$title <- "Scatter VPC"
+      x$gp$labels$subtitle <- ""
+    }
   }
-  
   x
 }
 
