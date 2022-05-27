@@ -45,8 +45,9 @@ eval_sym_parent_env <- function(x) {
 
 
 #' Get list of parameters based on parameters used in own function call
-
+#' @noRd
 get_params_from_call <- function () {
+  . <- NULL # R check hack....
   match.call(
     definition=sys.function(sys.parent()),
     call=sys.call(sys.parent()),
