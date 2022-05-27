@@ -506,11 +506,11 @@ vpc.plot <- function(x) {
       }
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
-    if (is.footnote){
-      pp <- pp +labs(caption=x$footnote)
-    }
-    
-    
+
+    if (is.footnote){pp <- pp + labs(caption=x$footnote)}
+
+    pp
+
   })
 }
 
