@@ -440,3 +440,179 @@ merge_dx_inn_by_id_time <- function(dx, inn, sys) {
   }
   merge(dx, inn, by = c("ID", "TIME"))
 }
+
+
+#' FacetGridScales Creates a new ggproto object
+#' @noRd
+FacetGridScales <- ggproto(
+  "FacetGridScales",
+  FacetGrid ,
+  init_scales = function(layout,
+                         x_scale = NULL,
+                         y_scale = NULL,
+                         params) {
+    scales <- list()
+    if (!is.null(params$scales$x)) {
+      facet_x_names <- unique(as.character(layout[[names(params$cols)]]))
+      scales$x <-
+        lapply(params$scales$x[facet_x_names], function(x) {
+          new <- x$clone()
+          new$oob <- function(x, ...)
+            x
+          new
+        })
+    } else if (!is.null(x_scale)) {
+      scales$x <-
+        lapply(seq_len(max(layout$SCALE_X)), function(i)
+          x_scale$clone())
+    }
+    if (!is.null(params$scales$y)) {
+      facet_y_names <- unique(as.character(layout[[names(params$rows)]]))
+      scales$y <-
+        lapply(params$scales$y[facet_y_names], function(x) {
+          new <- x$clone()
+          new$oob <- function(x, ...)
+            x
+          new
+        })
+    } else if (!is.null(y_scale)) {
+      scales$y <-
+        lapply(seq_len(max(layout$SCALE_Y)), function(i)
+          y_scale$clone())
+    }
+    scales
+  },
+  train_scales = function(x_scales,
+                          y_scales,
+                          layout,
+                          data,
+                          params,
+                          self) {
+    # Transform data first
+    data <- lapply(data, function(layer_data) {
+      self$finish_data(layer_data, layout,
+                       x_scales, y_scales, params)
+    })
+
+    # Then use parental method for scale training
+    ggproto_parent(Facet, self)$train_scales(x_scales, y_scales,
+                                             layout, data, params)
+  },
+  finish_data = function(data, layout, x_scales, y_scales, params) {
+    # Divide data by panel
+    panels <- split(data, data$PANEL, drop = FALSE)
+    panels <- lapply(names(panels), function(i) {
+      dat  <- panels[[i]]
+
+      # Match panel to their scales
+      panel_id <- match(as.numeric(i), layout$PANEL)
+      xidx <- layout[panel_id, "SCALE_X"]
+      yidx <- layout[panel_id, "SCALE_Y"]
+
+      # Decide what variables need to be transformed
+      y_vars <- intersect(y_scales[[yidx]]$aesthetics, names(dat))
+      x_vars <- intersect(x_scales[[xidx]]$aesthetics, names(dat))
+
+      # Transform variables by appropriate scale
+      for (j in y_vars) {
+        dat[, j] <- y_scales[[yidx]]$transform(dat[, j])
+      }
+      for (j in x_vars) {
+        dat[, j] <- x_scales[[xidx]]$transform(dat[, j])
+      }
+      dat
+    })
+
+    # Recombine the data
+    data <- unsplit(panels, data$PANEL)
+    data
+  }
+)
+
+
+#' Lay out panels in a grid with free, fixed or different scales
+#' @noRd
+
+facet_grid_scale <-
+  function(rows = NULL,
+           cols = NULL,
+           scales = "free",
+           space = "fixed",
+           shrink = TRUE,
+           switch = NULL,
+           drop = TRUE,
+           margins = FALSE,
+           facets = NULL,
+           scale_y = NULL) {
+    # `facets` is soft-deprecated and renamed to `rows`
+    if (!is.null(facets)) {
+      rows <- facets
+    }
+    if (scales == "sym") {
+      free <- list(
+        x = TRUE,
+        y = TRUE
+      )
+    } else {
+      scales <- match.arg(scales, c("fixed", "free_x", "free_y", "free"))
+      free <- list(x = any(scales %in% c("free_x", "free")),
+                   y = any(scales %in% c("free_y", "free")))
+    }
+    custom_scales <- list(x = NULL, y = NULL)
+    if (scales == "sym") {
+      custom_scales$y <- scale_y
+    }
+    space_free <- list(x = FALSE, y = FALSE)
+    facets_list <- get_facets_list(rows)
+    ggproto(
+      NULL,
+      FacetGridScales,
+      shrink = shrink,
+      params = list(
+        rows = facets_list$rows,
+        cols = facets_list$cols,
+        margins = margins,
+        scales = custom_scales,
+        free = free,
+        space_free = space_free,
+        labeller = "label_value",
+        as.table = TRUE,
+        switch = NULL,
+        drop = drop
+      )
+    )
+  }
+
+get_facets_list <- function(rows) {
+    # For backward-compatibility
+    facets_list <- get_facets_of_axis(rows)
+    # Fill with empty quosures
+    facets <- list(rows = quos(), cols = quos())
+    facets[seq_along(facets_list)] <- facets_list
+    # Do not compact the legacy specs
+    facets
+}
+
+get_facets_of_axis <- function(f) {
+  rows <- as_facets(f[-3])
+  cols <- as_facets(f[-2])
+  list(rows, cols)
+}
+
+as_facets <- function(f) {
+  env <- globalenv()
+  vars <- plyr::as.quoted(f)
+  rlang::as_quosures(vars, env, named = TRUE)
+}
+
+get_scale_y <- function(dt){
+  max_y <- dt[, .(maxValue=max(abs(VALUE), na.rm=TRUE)), by=EFFECT][order(EFFECT)]
+  get_scales_y <- function(i, scales_y = NULL) {
+    scales_i <-
+      list(scale_y_continuous(limits = c(-max_y$maxValue[i], max_y$maxValue[i])))
+    names(scales_i) <- max_y$EFFECT[i]
+    append(scales_y, scales_i)
+  }
+  scales_y <- sapply(1:length(max_y$EFFECT), get_scales_y)
+  scales_y
+}
