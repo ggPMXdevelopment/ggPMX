@@ -54,7 +54,8 @@ Imports:
     rlang,
     tibble,
     checkmate,
-    scales
+    scales,
+    plyr
 License: GPL-2
 Suggests:
     testthat,

@@ -56,9 +56,9 @@ eta_cov(
 
 \item{is.shrink}{\code{logical} if TRUE add shrinkage to the plot}
 
-\item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
+\item{shrink}{\code{list} shrinkage graphical parameter}
 
-\item{shrink\code{list}}{shrinkage graphical parameter}
+\item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }
 \value{
 \code{eta_cov} object

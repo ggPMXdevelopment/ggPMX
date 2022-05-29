@@ -48,7 +48,7 @@ is_pmxcov <- function(x)
 #' @param jitter list set jitter parameter
 #' @param scale string parameter for y axis ("fix", "free", "free_y", "sym")
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
-#' @param shrink\code{list} shrinkage graphical parameter
+#' @param shrink \code{list} shrinkage graphical parameter
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
 
 #'
