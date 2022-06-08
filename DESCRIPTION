@@ -27,6 +27,7 @@ Authors@R: c(
               person("Benjamin", "Guiastrennec", email = "guiastrennec@gmail.com",role ="ctb"),
               person("Kyle T", "Baron", email = "kyleb@metrumrg.com",role ="ctb", comment = c(ORCID = "0000-0001-7252-5656")),
               person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctb"),
+              person("Hadley", "Wickham", , "hadley@rstudio.com", role = c("ctb")),
               person("Novartis Pharma AG", role = c("cph"))
             )
 Maintainer: Matthew Fidler <matthew.fidler@gmail.com>
@@ -48,14 +49,12 @@ Imports:
     knitr,
     rmarkdown,
     tidyr,
-    dplyr,
     purrr,
     readr,
     rlang,
     tibble,
     checkmate,
-    scales,
-    plyr
+    scales
 License: GPL-2
 Suggests:
     testthat,

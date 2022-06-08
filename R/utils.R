@@ -601,7 +601,7 @@ get_facets_of_axis <- function(f) {
 
 as_facets <- function(f) {
   env <- globalenv()
-  vars <- plyr::as.quoted(f)
+  vars <- ggpmx_quoted(f)
   rlang::as_quosures(vars, env, named = TRUE)
 }
 
