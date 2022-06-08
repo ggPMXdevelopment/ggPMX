@@ -13,9 +13,11 @@
 #' @return \code{pmxClass} controller object.
 #' @export
 #' @importFrom stats setNames
-pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = TRUE) {
+pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = FALSE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
-
+  if (vpc) {
+    warning("vpc is not working for nlmixr/nlmixr2 currently; disabling vpc")
+  }
   if (missing(fit)) {
     return(NULL)
   }
