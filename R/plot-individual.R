@@ -74,6 +74,7 @@ get_invcolor <- function(color){
 plot_pmx.individual <-
   function(x, dx, ...) {
     ID <- NULL
+    dx$isobserv <- TRUE
     dx$maxValue <- 0
     ## plot
     if (x$dname == "predictions") cat("USE predictions data set \n")
@@ -100,7 +101,7 @@ plot_pmx.individual <-
         dx$isobserv <- with(dx, TIME < maxValue)
         point$data <- base::merge(point$data, max_y, by="ID")
         point$data$isobserv <- ifelse(point$data$TIME < point$data$maxValue, "accepted", "ignored")
-        points <- copy(point) 
+        points <- copy(point)
         points$colour <- NULL
         do.call(geom_point, points)
       }
@@ -121,7 +122,7 @@ plot_pmx.individual <-
           }
         }
       }
-      
+
       n <- ifelse(any(point$data$isobserv == "ignored"), 3, 2)
       linetype_values <- c(rep("solid", n), "dashed")
       if (any(point$data$isobserv == "ignored"))
@@ -133,7 +134,7 @@ plot_pmx.individual <-
         linetype_labels <- c("accepted",
                              "individual predictions",
                              "population predictions")
-      
+
       shape_values <- c(rep(point.shape, n + 1))
       shape_values_leg <- c(rep(point.shape, n - 1), rep(20, 2))
       size_values <- c(rep(1, n - 1), ipred_line$size, pred_line$size)
