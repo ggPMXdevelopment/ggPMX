@@ -139,7 +139,7 @@ pmx_fig_process <- function(ctr, old_name, footnote, out_) {
   new_name <- file.path(out_, pname)
 
   if (length(new_name)) {
-    file.copy(old_name, new_name)
+    file.copy(old_name, new_name, copy.mode=FALSE)
     return(new_name)
   }
 
@@ -168,9 +168,11 @@ pmx_draft <- function(ctr, name, template, edit) {
       package = "ggPMX"
     )
     temp_dir <- tempdir()
-    invisible(file.copy(template_path, temp_dir, recursive = TRUE))
+    invisible(file.copy(template_path, temp_dir, recursive = TRUE,
+                        copy.mode=FALSE))
     dest_temp <- file.path(temp_dir, "standing", "skeleton", "skeleton.Rmd")
-    invisible(file.copy(template, dest_temp, overwrite = TRUE))
+    invisible(file.copy(template, dest_temp, overwrite = TRUE,
+                        copy.mode=FALSE))
     template_dir <- file.path(temp_dir, "standing")
     res <- draft(
       template_file,
@@ -226,10 +228,12 @@ create_ggpmx_gof <- function(save_dir, name) {
     no_indiv <- plots_[!idx]
     if (length(no_indiv) > 0) {
       no_indiv_dest <- gsub("[-]\\d+[.]", ".", basename(no_indiv))
-      file.copy(no_indiv, file.path(out_, no_indiv_dest))
+      file.copy(no_indiv, file.path(out_, no_indiv_dest),
+                copy.mode=FALSE)
     }
     if (length(indiv) > 0) {
-      file.copy(indiv, file.path(out_, basename(indiv)))
+      file.copy(indiv, file.path(out_, basename(indiv)),
+                copy.mode=FALSE)
     }
     rm_dir(in_)
   }
