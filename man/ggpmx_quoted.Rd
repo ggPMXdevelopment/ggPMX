@@ -32,3 +32,6 @@ ggpmx_quoted(a ~ b + log(d))
 \seealso{
 \code{\link[=quoted]{.}}
 }
+\author{
+Hadley Wickham
+}

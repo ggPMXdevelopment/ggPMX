@@ -15,6 +15,7 @@
 #' @param env environment in which unbound symbols in expression should be
 #'   evaluated. Defaults to the environment in which \code{ggpmx_quoted} was
 #'   executed.
+#' @author Hadley Wickham
 #' @export
 #' @examples
 #' ggpmx_quoted(c("a", "b", "log(d)"))
