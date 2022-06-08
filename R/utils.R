@@ -606,6 +606,7 @@ as_facets <- function(f) {
 }
 
 get_scale_y <- function(dt){
+  VALUE <- EFFECT <- . <- NULL
   max_y <- dt[, .(maxValue=max(abs(VALUE), na.rm=TRUE)), by=EFFECT][order(EFFECT)]
   get_scales_y <- function(i, scales_y = NULL) {
     scales_i <-

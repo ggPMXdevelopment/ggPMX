@@ -136,6 +136,7 @@ check_shrink <- function(shrink) {
 }
 
 get_shrink_val <- function(shrink.dx, shrink) {
+  shr_exp <- SHRINK <- NULL
   df_shr <- shrink.dx
   df_shr$SHRINK <-
     sapply(shrink.dx$SHRINK, function (x)
@@ -186,7 +187,7 @@ check_jitter <- function(jitter){
 #'
 plot_pmx.eta_cov <- function(x, dx, ...) {
   assert_that(is_pmxcov(x$covariates))
-
+  VALUE <- NULL
   p <- if (x$type == "cats") {
     x$gp$is.smooth <- FALSE
     cats <- x[["cats"]]
