@@ -19,3 +19,4 @@
 ^man/figures/*.png$
 ^.github/*
 ^\.github$
+^cran-comments\.md$
