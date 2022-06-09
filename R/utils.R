@@ -248,11 +248,11 @@ has_lixoft_connectors <- function() {
 #' @author Matthew L. Fidler
 #' @noRd
 ggpmx_split_first_equal <- function(x) {
-  lapply(strsplit(x, " *= *"), function(x) {
+  transpose(lapply(strsplit(x, " *= *"), function(x) {
     if (length(x) == 1) return(c(x, ""))
     if (length(x) == 2) return(x)
     c(x[1], paste(x[-1], collapse="="))
-  })
+  }))
 }
 
 
