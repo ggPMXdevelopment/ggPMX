@@ -240,6 +240,21 @@ has_lixoft_connectors <- function() {
   invisible(lixoft_started)
 }
 
+#' Splits by the first equal line
+#'
+#'
+#' @param x line information
+#' @return A list that contains the key and the value
+#' @author Matthew L. Fidler
+#' @noRd
+ggpmx_split_first_equal <- function(x) {
+  lapply(strsplit(x, " *= *"), function(x) {
+    if (length(x) == 1) return(c(x, ""))
+    if (length(x) == 2) return(x)
+    c(x[1], paste(x[-1], collapse="="))
+  })
+}
+
 
 is_mlxtran <- function(file_name)
   identical(tools::file_ext(file_name), "mlxtran")
@@ -290,8 +305,7 @@ parse_mlxtran <- function(file_name) {
   setnames(dat, c("sub_section.name", "section.name"), c("sub_section", "section"))
   dat <- dat[sub_section != "TASKS"]
   ## split lines
-  dat[grepl("file=",line),line := gsub("file=","file = ",line)]
-  dat[, c("key", "value") := tstrsplit(dat$line, " = ")]
+  dat[, c("key", "value") := ggpmx_split_first_equal(dat$line)]
   dat[, line := NULL]
 
   ## extract controller param
