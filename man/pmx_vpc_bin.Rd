@@ -23,7 +23,7 @@ is not desired.}
 Creates vpc bins
 }
 \details{
-This is a warraper to
+This is a wrapper to the bin based VPC
 }
 \seealso{
 Other vpc: 

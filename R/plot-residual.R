@@ -29,14 +29,14 @@
 #'
 #' \strong{labels} is a list that contains:
 #' \itemize{
-#' \item {\strong{title:}} {plot title default to AES_X versue AES_Y}
+#' \item {\strong{title:}} {plot title default to AES_X versus AES_Y}
 #' \item {\strong{subtitle:}} {plot subtitle default empty}
 #' \item {\strong{x:}} {x axis label default to AES_X}
 #' \item {\strong{y:}} {y axis label default to AES_Y}
 #' }
 residual <- function(x, y, labels = NULL, point = NULL, is.hline = FALSE,
                      hline = NULL, dname = NULL, facets = NULL, bloq = NULL, ...) {
-  
+
   ## default labels parameters
   ## TODO pout all defaultas option
   stopifnot(!missing(x))
@@ -171,7 +171,7 @@ plot_pmx.residual <- function(x, dx, ...) {
 
 
     p <- plot_pmx(gp, p)
-    
+
 
     p
   })

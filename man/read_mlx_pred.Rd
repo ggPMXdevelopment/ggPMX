@@ -11,7 +11,7 @@ read_mlx_pred(path, x, ...)
 
 \item{x}{dataset object}
 
-\item{...}{extra paramter not used}
+\item{...}{extra parameter not used}
 }
 \value{
 data.table object

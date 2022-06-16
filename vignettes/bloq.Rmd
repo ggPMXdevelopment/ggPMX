@@ -58,7 +58,7 @@ Explain that NPDE are based on simulated, DV vs PRED are based on observed.
 
 ## `pmx_bloq`
 
-Whithin ggPMX, to define a bloq we use `pmx_bloq` function. 
+Within ggPMX, to define a bloq we use `pmx_bloq` function. 
 
 ```{r}
 str(pmx_bloq(),1)

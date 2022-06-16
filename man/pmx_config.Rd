@@ -2,7 +2,7 @@
 % Please edit documentation in R/config.R
 \name{pmx_config}
 \alias{pmx_config}
-\title{This function can be used to define the pmx configuration used in plots. e.g. Monolox/Nonmem}
+\title{This function can be used to define the pmx configuration used in plots. e.g. Monolix/Nonmem}
 \usage{
 pmx_config(sys = "mlx", inputs, plots, ...)
 }
@@ -19,7 +19,7 @@ pmx_config(sys = "mlx", inputs, plots, ...)
 \code{pmxConfig} object
 }
 \description{
-This function can be used to define the pmx configuration used in plots. e.g. Monolox/Nonmem
+This function can be used to define the pmx configuration used in plots. e.g. Monolix/Nonmem
 }
 \details{
 To create a controller user can create a pmxConfig object using \cr

@@ -58,7 +58,7 @@ Some parameters are a list of parameters :
 
 \strong{labels} is a list that contains:
 \itemize{
-\item {\strong{title:}} {plot title default to AES_X versue AES_Y}
+\item {\strong{title:}} {plot title default to AES_X versus AES_Y}
 \item {\strong{subtitle:}} {plot subtitle default empty}
 \item {\strong{x:}} {x axis label default to AES_X}
 \item {\strong{y:}} {y axis label default to AES_Y}

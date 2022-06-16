@@ -13,7 +13,7 @@
 #'
 #' @export
 #' @details
-#' This is a warraper to
+#' This is a wrapper to the bin based VPC
 #' @family vpc
 
 pmx_vpc_bin <-

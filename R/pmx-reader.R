@@ -1,7 +1,7 @@
 #' Read MONOLIX individual parameters
 #' @param path character path to the file
 #' @param x dataset object
-#' @param ... extra paramter not used
+#' @param ... extra parameter not used
 #'
 #' @return data.table object
 #' @import data.table
@@ -271,7 +271,7 @@ mlx18_iwres <- function(x) {
 #'
 #' @param path character path to the file
 #' @param x dataset object
-#' @param ... extra paramter not used
+#' @param ... extra parameter not used
 #'
 #' @return data.table object
 #' @import data.table

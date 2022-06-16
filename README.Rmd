@@ -125,7 +125,7 @@ The high level architecture is represented in the figure below. The key componen
 knitr::include_graphics("man/figures/ggPMX_arch.png")
 ```
 
-The package is coded using object-oriented programming meaning that information is encoded in objects. The user can change or print the content of objets via functions. Such an implementation allows to have code that is modular and easily customizable. 
+The package is coded using object-oriented programming meaning that information is encoded in objects. The user can change or print the content of objects via functions. Such an implementation allows to have code that is modular and easily customizable. 
 
 ## Workflow overview
 
@@ -304,7 +304,7 @@ The following are some optional arguments to the controller function (for detail
 
 * cats: character vector of categorical covariates
 * conts: character vector of continuous covariates
-* occ: character occasinal covariate variable name (currently not available for NONMEM or nlmixr)
+* occ: character occasional covariate variable name (currently not available for NONMEM or nlmixr)
 * strats: character extra stratification variables
 * settings: global pmxSettingsClass (`pmx_settings()`) shared between all plots
 * endpoint: pmxEndpointClass (`pmx_endpoint()`) or integer or charcater of the endpoint code (depends on the fitting software)

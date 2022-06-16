@@ -1,5 +1,5 @@
 
-#' This function can be used to define the pmx configuration used in plots. e.g. Monolox/Nonmem
+#' This function can be used to define the pmx configuration used in plots. e.g. Monolix/Nonmem
 #'
 #' @param sys \code{charcarter} system used , monolix,nonmem,...
 #' @param inputs \code{charcater} path to the inputs settings file (yaml format)
