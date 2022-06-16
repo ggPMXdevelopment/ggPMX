@@ -683,8 +683,11 @@ get_data <- function(ctr, data_set = c(
     ret <- copy(ctr[["input"]])
   } else {
     ret <- copy(ctr[["data"]][[data_set]])
+  }
+  if (data_set %in% c("finegrid", "input", "individual")) {
     ret$isobserv <- "accepted"
   }
+  ret
 }
 
 #' Set a controller data set
