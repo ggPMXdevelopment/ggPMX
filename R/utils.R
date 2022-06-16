@@ -267,7 +267,6 @@ is_mlxtran <- function(file_name)
 #' @export
 parse_mlxtran <- function(file_name) {
   on.exit(setwd(wd))
-
   wd <- getwd()
   section.name <- line <- section <- NULL
   sub_section <- sub_section.name <- NULL
@@ -322,9 +321,9 @@ parse_mlxtran <- function(file_name) {
   if (!dir.exists(directory)) {
     stop("No results directory provided.")
   }
+  setwd(dirname(file_name))
   ### input
   input <- gsub("'", "", dat[key == "file" & section == "DATAFILE", value])
-  setwd(dirname(file_name))
   input <- normalizePath(input)
   ### dv
   dv <- dat[grepl("use=observation,", value), key]

@@ -1,107 +1,121 @@
-
 context("Test utility functions")
 tmp_dir <- tempfile("tmp")
 dir.create(tmp_dir)
-withr::with_dir(tmp_dir, {
-  test_that("merge vectors error works", {
-    expect_error(
-      mergeVectors.(1:4, 5:8),
-      "Vectors must be either NULL or have names for all elements"
-    )
-  })
+test_that("merge vectors error works", {
+  expect_error(
+    mergeVectors.(1:4, 5:8),
+    "Vectors must be either NULL or have names for all elements"
+  )
+})
 
-  test_that("l_left_join merge compound lists", {
-    res <-
-      l_left_join(
-        list(
-          x = 1,
-          y = 1,
-          h = list(z = 1)
-        ),
-        list(
-          y = 2,
-          h = list(h = 4)
-        )
+test_that("l_left_join merge compound lists", {
+  res <-
+    l_left_join(
+      list(
+        x = 1,
+        y = 1,
+        h = list(z = 1)
+      ),
+      list(
+        y = 2,
+        h = list(h = 4)
       )
-    expected <- list(x = 1, h = list(z = 1, h = 4), y = 2)
-    expect_identical(res, expected)
-  })
+    )
+  expected <- list(x = 1, h = list(z = 1, h = 4), y = 2)
+  expect_identical(res, expected)
+})
 
-  test_that("pk_pd is worrking", {
-    ctr <- pk_pd()
-    expect_s3_class(ctr, "pmxClass")
-  })
+test_that("pk_pd is working", {
+  ctr <- pk_pd()
+  expect_s3_class(ctr, "pmxClass")
+})
 
 
-  ## Testing parse_mlxtran below
+## Testing parse_mlxtran below
 
-  file_name <- file.path(system.file(package = "ggPMX"),
-                         "testdata",
-                         "1_popPK_model",
-                         "project.mlxtran")
+file_name <- file.path(system.file(package = "ggPMX"),
+                       "testdata",
+                       "1_popPK_model",
+                       "project.mlxtran")
 
-  wd <- file.path(system.file(package = "ggPMX"),
-                  "testdata",
-                  "1_popPK_model")
+wd <- file.path(system.file(package = "ggPMX"),
+                "testdata",
+                "1_popPK_model")
 
-  mlxpath <- file.path(wd, "project_copy.mlxtran")
+for (f in list.files(path=wd)) {
+  if (f != "RESULTS") {
+    suppressWarnings(file.copy(file.path(wd,f), file.path(tmp_dir, f), copy.mode=FALSE))
+  }
+}
+dir.create(file.path(tmp_dir, "RESULTS"))
+for (f in list.files(path=file.path(wd, "RESULTS"))) {
+  suppressWarnings(file.copy(file.path(wd,"RESULTS", f),
+                             file.path(tmp_dir,"RESULTS", f), copy.mode=FALSE))
+}
 
-  test_that("parse_mlxtran: params: folder name", {
-    a <- parse_mlxtran(file_name)
-    expect_true(inherits(
-      a,
-      "list"
-    ))
-    expect_true(a$directory == file.path(wd, "RESULTS"))
-  })
+wd <- tmp_dir
 
-  test_that("parse_mlxtran: params: full file_name", {
-    dir.create(file.path(wd, "result"))
-    section.name <- line <- section <- NULL
-    sub_section <- sub_section.name <- NULL
-    value <- NULL
-    lines <- readLines(file_name)
+mlxpath <- file.path(wd, "project_copy.mlxtran")
 
-    firsts <- min(grep("<.*>", lines)) # first section
-    lines <- lines[firsts:length(lines)]
-    lines <- lines[lines != "" & !grepl(":$", lines)]
-    lines[grepl("exportpath = ", lines) == TRUE] <- paste0("exportpath = '", wd, "/result'")
+file_name <- file.path(wd,
+                       "project.mlxtran")
 
-    writeLines(lines, mlxpath)
-    a <- parse_mlxtran(mlxpath)
-    file.remove(mlxpath)
-    unlink(file.path(wd, "result"), recursive = TRUE)
 
-    expect_true(inherits(
-      a,
-      "list"
-    ))
-    expect_true(a$directory == file.path(wd, "result"))
-  })
+test_that("parse_mlxtran: params: folder name", {
+  a <- parse_mlxtran(file_name)
+  expect_true(inherits(
+    a,
+    "list"
+  ))
+  expect_true(a$directory == file.path(wd, "RESULTS"))
+})
 
-  test_that("parse_mlxtran: params: no exist file_name", {
-    dir.create(file.path(wd, "result"))
-    section.name <- line <- section <- NULL
-    sub_section <- sub_section.name <- NULL
-    value <- NULL
-    lines <- readLines(file_name)
+test_that("parse_mlxtran: params: full file_name", {
+  dir.create(file.path(wd, "result"))
+  section.name <- line <- section <- NULL
+  sub_section <- sub_section.name <- NULL
+  value <- NULL
+  lines <- readLines(file_name)
 
-    firsts <- min(grep("<.*>", lines)) # first section
-    lines <- lines[firsts:length(lines)]
-    lines <- lines[lines != "" & !grepl(":$", lines)]
-    lines[grepl("exportpath = ", lines) == TRUE] <- paste0("exportpath = '", wd, "/result/res'")
+  firsts <- min(grep("<.*>", lines)) # first section
+  lines <- lines[firsts:length(lines)]
+  lines <- lines[lines != "" & !grepl(":$", lines)]
+  lines[grepl("exportpath = ", lines) == TRUE] <- paste0("exportpath = '", wd, "/result'")
 
-    writeLines(lines, mlxpath)
-    a <- parse_mlxtran(mlxpath)
-    file.remove(mlxpath)
-    unlink(file.path(wd, "result"), recursive = TRUE)
+  writeLines(lines, mlxpath)
+  a <- parse_mlxtran(mlxpath)
+  file.remove(mlxpath)
+  unlink(file.path(wd, "result"), recursive = TRUE)
 
-    expect_true(inherits(
-      a,
-      "list"
-    ))
-    expect_true(a$directory == file.path(wd, "RESULTS"))
-  })
+  expect_true(inherits(
+    a,
+    "list"
+  ))
+  expect_true(a$directory == file.path(wd, "result"))
+})
+
+test_that("parse_mlxtran: params: no exist file_name", {
+  dir.create(file.path(wd, "result"))
+  section.name <- line <- section <- NULL
+  sub_section <- sub_section.name <- NULL
+  value <- NULL
+  lines <- readLines(file_name)
+
+  firsts <- min(grep("<.*>", lines)) # first section
+  lines <- lines[firsts:length(lines)]
+  lines <- lines[lines != "" & !grepl(":$", lines)]
+  lines[grepl("exportpath = ", lines) == TRUE] <- paste0("exportpath = '", wd, "/result/res'")
+
+  writeLines(lines, mlxpath)
+  a <- parse_mlxtran(mlxpath)
+  file.remove(mlxpath)
+  unlink(file.path(wd, "result"), recursive = TRUE)
+
+  expect_true(inherits(
+    a,
+    "list"
+  ))
+  expect_true(a$directory == file.path(wd, "RESULTS"))
 })
 
 unlink(tmp_dir, recursive=TRUE)
