@@ -157,15 +157,7 @@ plot_pmx.individual <-
                            ipred_line$colour,
                            pred_line$colour)
       keywidth_values <- c(rep(0, n - 1), rep(2, 2))
-      if ("isobserv" %in% names(dx)) {
-        p <-
-          ggplot(dx, aes(TIME, DV, shape = isobserv, colour = isobserv))
-      } else {
-        p <-
-          ggplot(dx, aes(TIME, DV))
-      }
-
-      p <- p +
+      p <- ggplot(dx, aes(TIME, DV, shape=isobserv, colour=isobserv)) +
         p_point +
         geom_line(
           aes(

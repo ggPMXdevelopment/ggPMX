@@ -680,9 +680,10 @@ get_data <- function(ctr, data_set = c(
   ## data_set <- match.arg(data_set)
   if (data_set == "individual") data_set <- "IND"
   if (data_set == "input") {
-    copy(ctr[["input"]])
+    ret <- copy(ctr[["input"]])
   } else {
-    copy(ctr[["data"]][[data_set]])
+    ret <- copy(ctr[["data"]][[data_set]])
+    ret$isobserv <- "accepted"
   }
 }
 
