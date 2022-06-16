@@ -279,6 +279,7 @@ parse_mlxtran <- function(file_name) {
     stop("file do not exist")
   }
   lines <- readLines(file_name)
+  dir <- dirname(normalizePath(file_name))
 
   ## empty lines
   firsts <- min(grep("<.*>", lines)) # first section
@@ -311,17 +312,18 @@ parse_mlxtran <- function(file_name) {
   ### directory
   export_path <- gsub("'", "", dat[key == "exportpath", value])
   if(!dir.exists(export_path)) {
-      directory <- file.path(dirname(file_name), export_path)
+    directory <- file.path(dir, export_path)
   }
-  else
-      directory <- export_path
+  else {
+    directory <- export_path
+  }
   if (!dir.exists(directory)) {
-    directory <- file.path(dirname(file_name), "RESULTS")
+    directory <- file.path(dir, "RESULTS")
   }
   if (!dir.exists(directory)) {
     stop("No results directory provided.")
   }
-  setwd(dirname(file_name))
+  setwd(dir)
   ### input
   input <- gsub("'", "", dat[key == "file" & section == "DATAFILE", value])
   input <- normalizePath(input)

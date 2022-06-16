@@ -1,8 +1,7 @@
-This release fixes many bugs and adds support for nlmixr2.
+This release makes sure that tests copy required files and edit them
+in the temporary file space (per CRAN policy).
 
-In addition it adds the ability to generate chart data from within R
-using Monolix's lixoftConnectors package included with the Monolix
-estimation library.
-
+This has an additional bug fix for some special case of individual
+plots (issue #235)
 
 

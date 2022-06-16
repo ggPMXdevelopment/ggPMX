@@ -67,7 +67,7 @@ test_that("parse_mlxtran: params: folder name", {
     a,
     "list"
   ))
-  expect_true(a$directory == file.path(wd, "RESULTS"))
+  expect_equal(normalizePath(a$directory), normalizePath(file.path(wd, "RESULTS")))
 })
 
 test_that("parse_mlxtran: params: full file_name", {
@@ -92,7 +92,7 @@ test_that("parse_mlxtran: params: full file_name", {
     a,
     "list"
   ))
-  expect_true(a$directory == file.path(wd, "result"))
+  expect_equal(normalizePath(a$directory), normalizePath(file.path(wd, "result")))
 })
 
 test_that("parse_mlxtran: params: no exist file_name", {
@@ -114,9 +114,8 @@ test_that("parse_mlxtran: params: no exist file_name", {
 
   expect_true(inherits(
     a,
-    "list"
-  ))
-  expect_true(a$directory == file.path(wd, "RESULTS"))
+    "list"))
+  expect_equal(normalizePath(a$directory), normalizePath(file.path(wd, "RESULTS")))
 })
 
 unlink(tmp_dir, recursive=TRUE)
