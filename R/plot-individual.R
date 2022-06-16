@@ -123,17 +123,26 @@ plot_pmx.individual <-
         }
       }
 
-      n <- ifelse(any(point$data$isobserv == "ignored"), 3, 2)
-      linetype_values <- c(rep("solid", n), "dashed")
-      if (any(point$data$isobserv == "ignored"))
+      if (!is.null(point)) {
+        n <- ifelse(any(point$data$isobserv == "ignored"), 3, 2)
+        linetype_values <- c(rep("solid", n), "dashed")
+        if (any(point$data$isobserv == "ignored"))
+          linetype_labels <- c("accepted",
+                               "ignored",
+                               "individual predictions",
+                               "population predictions")
+        else
+          linetype_labels <- c("accepted",
+                               "individual predictions",
+                               "population predictions")
+
+      } else {
+        n <- 2
         linetype_labels <- c("accepted",
-                             "ignored",
                              "individual predictions",
                              "population predictions")
-      else
-        linetype_labels <- c("accepted",
-                             "individual predictions",
-                             "population predictions")
+      }
+
 
       shape_values <- c(rep(point.shape, n + 1))
       shape_values_leg <- c(rep(point.shape, n - 1), rep(20, 2))
