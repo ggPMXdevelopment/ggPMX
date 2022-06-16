@@ -74,7 +74,6 @@ get_invcolor <- function(color){
 plot_pmx.individual <-
   function(x, dx, ...) {
     ID <- NULL
-    dx$isobserv <- TRUE
     dx$maxValue <- 0
     ## plot
     if (x$dname == "predictions") cat("USE predictions data set \n")
