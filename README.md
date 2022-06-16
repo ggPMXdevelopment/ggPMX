@@ -147,7 +147,7 @@ components of the package are the following:
 
 The package is coded using object-oriented programming meaning that
 information is encoded in objects. The user can change or print the
-content of objets via functions. Such an implementation allows to have
+content of objects via functions. Such an implementation allows to have
 code that is modular and easily customizable.
 
 ## Workflow overview
@@ -368,7 +368,7 @@ The following are some optional arguments to the controller function
 
   - cats: character vector of categorical covariates
   - conts: character vector of continuous covariates
-  - occ: character occasinal covariate variable name (currently not
+  - occ: character occasional covariate variable name (currently not
     available for NONMEM or nlmixr)
   - strats: character extra stratification variables
   - settings: global pmxSettingsClass (`pmx_settings()`) shared between
@@ -563,6 +563,7 @@ ctr
 #> |plot_name       |plot_type |
 #> |:---------------|:---------|
 #> |abs_iwres_ipred |SCATTER   |
+#> |abs_iwres_time  |SCATTER   |
 #> |iwres_ipred     |SCATTER   |
 #> |iwres_time      |SCATTER   |
 #> |iwres_dens      |PMX_DENS  |
@@ -604,11 +605,11 @@ plots, the function `plot_names()` is used:
 
 ``` r
 ctr %>% plot_names()
-#>  [1] "abs_iwres_ipred" "iwres_ipred"     "iwres_time"      "iwres_dens"     
-#>  [5] "iwres_qq"        "npde_time"       "npde_pred"       "npde_qq"        
-#>  [9] "dv_pred"         "dv_ipred"        "individual"      "eta_hist"       
-#> [13] "eta_box"         "eta_matrix"      "eta_cats"        "eta_conts"      
-#> [17] "eta_qq"
+#>  [1] "abs_iwres_ipred" "abs_iwres_time"  "iwres_ipred"     "iwres_time"     
+#>  [5] "iwres_dens"      "iwres_qq"        "npde_time"       "npde_pred"      
+#>  [9] "npde_qq"         "dv_pred"         "dv_ipred"        "individual"     
+#> [13] "eta_hist"        "eta_box"         "eta_matrix"      "eta_cats"       
+#> [17] "eta_conts"       "eta_qq"
 ```
 
 An alternative way to display the names of the existing plots is by
@@ -640,22 +641,23 @@ which plot name:
 ctr %>% plots()
 #>           plot_name plot_type            plot_function
 #>  1: abs_iwres_ipred   SCATTER pmx_plot_abs_iwres_ipred
-#>  2:     iwres_ipred   SCATTER     pmx_plot_iwres_ipred
-#>  3:      iwres_time   SCATTER      pmx_plot_iwres_time
-#>  4:      iwres_dens  PMX_DENS      pmx_plot_iwres_dens
-#>  5:        iwres_qq    PMX_QQ        pmx_plot_iwres_qq
-#>  6:       npde_time   SCATTER       pmx_plot_npde_time
-#>  7:       npde_pred   SCATTER       pmx_plot_npde_pred
-#>  8:         npde_qq    PMX_QQ         pmx_plot_npde_qq
-#>  9:         dv_pred   SCATTER         pmx_plot_dv_pred
-#> 10:        dv_ipred   SCATTER        pmx_plot_dv_ipred
-#> 11:      individual       IND      pmx_plot_individual
-#> 12:        eta_hist       DIS        pmx_plot_eta_hist
-#> 13:         eta_box       DIS         pmx_plot_eta_box
-#> 14:      eta_matrix ETA_PAIRS      pmx_plot_eta_matrix
-#> 15:        eta_cats   ETA_COV        pmx_plot_eta_cats
-#> 16:       eta_conts   ETA_COV       pmx_plot_eta_conts
-#> 17:          eta_qq    PMX_QQ          pmx_plot_eta_qq
+#>  2:  abs_iwres_time   SCATTER  pmx_plot_abs_iwres_time
+#>  3:     iwres_ipred   SCATTER     pmx_plot_iwres_ipred
+#>  4:      iwres_time   SCATTER      pmx_plot_iwres_time
+#>  5:      iwres_dens  PMX_DENS      pmx_plot_iwres_dens
+#>  6:        iwres_qq    PMX_QQ        pmx_plot_iwres_qq
+#>  7:       npde_time   SCATTER       pmx_plot_npde_time
+#>  8:       npde_pred   SCATTER       pmx_plot_npde_pred
+#>  9:         npde_qq    PMX_QQ         pmx_plot_npde_qq
+#> 10:         dv_pred   SCATTER         pmx_plot_dv_pred
+#> 11:        dv_ipred   SCATTER        pmx_plot_dv_ipred
+#> 12:      individual       IND      pmx_plot_individual
+#> 13:        eta_hist       DIS        pmx_plot_eta_hist
+#> 14:         eta_box       DIS         pmx_plot_eta_box
+#> 15:      eta_matrix ETA_PAIRS      pmx_plot_eta_matrix
+#> 16:        eta_cats   ETA_COV        pmx_plot_eta_cats
+#> 17:       eta_conts   ETA_COV       pmx_plot_eta_conts
+#> 18:          eta_qq    PMX_QQ          pmx_plot_eta_qq
 ```
 
 # Default diagnostic plots
@@ -666,11 +668,11 @@ of names of all available plots can be seen via:
 
 ``` r
 ctr %>% plot_names()
-#>  [1] "abs_iwres_ipred" "iwres_ipred"     "iwres_time"      "iwres_dens"     
-#>  [5] "iwres_qq"        "npde_time"       "npde_pred"       "npde_qq"        
-#>  [9] "dv_pred"         "dv_ipred"        "individual"      "eta_hist"       
-#> [13] "eta_box"         "eta_matrix"      "eta_cats"        "eta_conts"      
-#> [17] "eta_qq"          "pmx_vpc"
+#>  [1] "abs_iwres_ipred" "abs_iwres_time"  "iwres_ipred"     "iwres_time"     
+#>  [5] "iwres_dens"      "iwres_qq"        "npde_time"       "npde_pred"      
+#>  [9] "npde_qq"         "dv_pred"         "dv_ipred"        "individual"     
+#> [13] "eta_hist"        "eta_box"         "eta_matrix"      "eta_cats"       
+#> [17] "eta_conts"       "eta_qq"          "pmx_vpc"
 ```
 
 As a convention, when plots are described as ???Y vs. X???, it is meant
@@ -1084,38 +1086,7 @@ the list of abbreviation :
 
 ``` r
 ctr %>% get_abbrev
-#> AIC : Akaike information criterion 
-#> BIC : Bayesian information criterion 
-#> BLQ : Below the limit of quantification 
-#> COAR : Clinical Operations Analytics and Regions 
-#> DV : Dependent variable 
-#> ETA : Inter-individual random effect 
-#> EBE : Empirical Bayes estimate 
-#> FO : First order 
-#> FOCE : First order conditional estimation 
-#> FOCEI : First order conditional estimation with interaction 
-#> IIV : Inter-individual variability 
-#> IPRED : Individual prediction 
-#> LRT : Likelihood ratio test 
-#> M&S : Modeling & Simulation 
-#> NLME : Nonlinear mixed-effects (model) 
-#> NPD : Normalized prediction discrepancy 
-#> NPDE : Normalized prediction distribution error 
-#> OCP : Oncology Clinical Pharmacology 
-#> OFV : Objective function value 
-#> PD : Pharmacodynamics 
-#> PK : Pharmacokinetics 
-#> PDF : Probability density function 
-#> SAEM : Stochastic approximation of the expectation-minimization algorithm 
-#> VPC : Visual predictive check 
-#> PRED : Population parameters predictions 
-#> EPRED : Population averaged predictions 
-#> CPRED : Conditional Population predictions 
-#> IWRES : Individual weighted residuals 
-#> |IWRES| : |Individual weighted residuals| 
-#> NVS : Novartis internal report 
-#> HA : Report submitted to Health Authorities 
-#> TIME : Time after first dose (hours)
+#> NULL
 ```
 
 You can update one abbreviation to set a custom label

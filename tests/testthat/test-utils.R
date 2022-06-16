@@ -71,6 +71,7 @@ test_that("parse_mlxtran: params: folder name", {
 })
 
 test_that("parse_mlxtran: params: full file_name", {
+  skip_on_cran()
   dir.create(file.path(wd, "result"))
   section.name <- line <- section <- NULL
   sub_section <- sub_section.name <- NULL
