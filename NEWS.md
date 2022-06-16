@@ -1,3 +1,6 @@
+# ggPMX 1.2.8
+* Always ensure the `isoberv` is "accepted" for input dataset (fixes #235)
+* Copy the testing information in inst to a temporary directory for utils testing
 # ggPMX 1.2.7
 * Added ability to generate ChartData if lixoftConnectors is present
 * Added `nlmixr2` support
