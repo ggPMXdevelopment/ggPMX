@@ -684,7 +684,7 @@ get_data <- function(ctr, data_set = c(
   } else {
     ret <- copy(ctr[["data"]][[data_set]])
   }
-  if (data_set %in% c("finegrid", "input", "individual")) {
+  if (data_set %in% c("finegrid", "IND")) {
     ret$isobserv <- "accepted"
   }
   ret
