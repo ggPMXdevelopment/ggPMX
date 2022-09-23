@@ -1,4 +1,5 @@
 test_that("nlmixr test", {
+  skip_on_cran()
 
   # Data' purpose illustrates the error and my data set
   df <- tibble::tibble(
