@@ -90,7 +90,7 @@ test_that("plot title with start.facet", {
   p2 <- ctr %>% pmx_plot_iwres_ipred(strat.color = "AGE0", strat.facet = SEX ~ STUD)
   # Custom label still takes priority
   p3 <- pmx_plot_iwres_ipred(
-    crt,
+    ctr,
     strat.color = "AGE0",
     strat.facet = SEX ~ STUD,
     labels=list(title="CUSTOM_A vs CUSTOM_B by CUSTOM_OVERRIDE")
