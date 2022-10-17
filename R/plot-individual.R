@@ -99,7 +99,7 @@ plot_pmx.individual <-
         dx <- base::merge(dx, max_y, by="ID", all.x = T)
         dx$isobserv <- with(dx, TIME < maxValue)
         point$data <- base::merge(point$data, max_y, by="ID")
-        point$data$isobserv <- ifelse(point$data$TIME < point$data$maxValue, "accepted", "ignored")
+        point$data$isobserv <- ifelse(point$data$TIME <= point$data$maxValue, "accepted", "ignored")
         points <- copy(point)
         points$colour <- NULL
         do.call(geom_point, points)
