@@ -33,6 +33,22 @@ test_that("Report generation can be repeated without error", {
   )
 })
 
+test_that("Can generate report using a custom template", {
+  skip_on_cran()
+  custom_template_file <- system.file(
+    "inst", "examples", "templates", "custom_report.Rmd",
+    package="ggPMX"
+  )
+
+  expect_null(
+    pmx_report(
+      contr=ctr,
+      name="NN",
+      save_dir=tmp_dir,
+      template=custom_template_file
+    )
+  )
+})
 
 test_that("Illegal arguments to pmx_report cause an error", {
   skip_on_cran()
