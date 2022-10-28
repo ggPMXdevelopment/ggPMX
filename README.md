@@ -1074,8 +1074,25 @@ all plots. In order to switch this label off, the user sets the
 `is.draft` option of `pmx_settings()` to `FALSE`.
 
 ``` r
-
 ctr <- theophylline(settings = pmx_settings(is.draft = FALSE))
+```
+
+### Reordering facet panels
+
+The order of factors in a facet plot is determined by the data contained
+in the predictions data frame. Ordering of facet panels can be performed
+by changing the factor specification for facet columns in the
+*predictions* data frame.
+
+The example below defines a Controller with changed SEX facet panels
+order: 1 will be plotted before 0 rather than the other way round.
+
+``` r
+ctr <- theophylline()
+ctr[["data"]][["predictions"]][["SEX"]] <-
+  factor(ctr[["data"]][[a]][["SEX"]], levels=c("1","0"), labels=c("M", "F"))
+
+pmx_plot_iwres_ipred(ctr, strat.facet=~SEX)
 ```
 
 ### Use abbreviation definitions
