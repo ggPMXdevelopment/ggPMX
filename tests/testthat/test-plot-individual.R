@@ -49,7 +49,7 @@ test_that("plot_pmx.individual: params: is.legend is FALSE; result: ggplot",
           })
 
 
-test_that("plot_pmx.individual: params: point, ipred_line and pred_line; 
+test_that("plot_pmx.individual: params: point, ipred_line and pred_line;
           result: ggplot",
           {
             expect_true(inherits(
@@ -74,7 +74,7 @@ test_that("plot_pmx.individual: params: ctr is theophylline; result: ggplot",
             ))
           })
 
-test_that("plot_pmx.individual: params: ctr is theophylline, 
+test_that("plot_pmx.individual: params: ctr is theophylline,
            point, ipred_line and pred_line; result: ggplot",
           {
             ctr <- theophylline()
@@ -98,7 +98,7 @@ test_that("plot_pmx.individual: params: ctr is theophylline,
     {
       f <-function() {
         for (i in 1:2) {
-          print(ctr %>% pmx_plot_individual(npage=i, facets = list(nrow=1,ncol=1)))
+          print(ctr %>% pmx_plot_individual(which_pages=i, facets = list(nrow=1,ncol=1)))
         }
       }
 
