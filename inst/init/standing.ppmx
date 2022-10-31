@@ -3,6 +3,7 @@ ABS_IWRES_IPRED:
   ptype: SCATTER
   x: IPRED
   'y': IWRES
+  is.title: TRUE
   labels:
     title: '|IWRES| vs IPRED'
     subtitle: ''
@@ -31,6 +32,7 @@ ABS_IWRES_TIME:
   ptype: SCATTER
   x: TIME
   'y': IWRES
+  is.title: TRUE
   labels:
     title: '|IWRES| vs TIME'
     subtitle: ''
@@ -59,6 +61,7 @@ IWRES_IPRED:
   ptype: SCATTER
   x: IPRED
   'y': IWRES
+  is.title: TRUE
   labels:
     title: IWRES vs IPRED
     subtitle: ''
@@ -87,6 +90,7 @@ IWRES_TIME:
   ptype: SCATTER
   x: TIME
   'y': IWRES
+  is.title: TRUE
   labels:
     title: IWRES vs TIME
     subtitle: ''
@@ -114,6 +118,7 @@ IWRES_TIME:
 IWRES_DENS:
   ptype: PMX_DENS
   x: IWRES
+  is.title: FALSE
   dname: predictions
   labels:
     title: 'Density plot of IWRES'
@@ -124,6 +129,7 @@ IWRES_DENS:
 IWRES_QQ:
   ptype: PMX_QQ
   x: IWRES
+  is.title: FALSE
   labels:
     title: ''
     subtitle: ''
@@ -143,6 +149,7 @@ NPDE_TIME:
   ptype: SCATTER
   x: TIME
   'y': NPDE
+  is.title: TRUE
   labels:
     title: NPDE vs TIME
     subtitle: ''
@@ -171,6 +178,7 @@ NPDE_PRED:
   ptype: SCATTER
   x: PRED
   'y': NPDE
+  is.title: TRUE
   labels:
     title: NPDE vs PRED
     subtitle: ''
@@ -200,6 +208,7 @@ NPDE_PRED:
 NPDE_QQ:
   ptype: PMX_QQ
   x: NPDE
+  is.title: TRUE
   labels:
     title: ''
     subtitle: ''
@@ -220,6 +229,7 @@ DV_PRED:
     'y': DV
   x: PRED
   'y': DV
+  is.title: TRUE
   point:
     shape: 1.0
     colour: black
@@ -250,6 +260,7 @@ DV_IPRED:
     'y': DV
   x: IPRED
   'y': DV
+  is.title: TRUE
   point:
     shape: 1.0
     colour: black
@@ -278,6 +289,7 @@ INDIVIDUAL:
   dname: IND
   ranges: ~
   is.smooth: no
+  is.title: TRUE
   ipred_line:
     colour: black
     size: 1
@@ -316,6 +328,7 @@ ETA_HIST:
   ptype: DIS
   type: hist
   dname: eta
+  is.title: TRUE
   facets:
     scales: free_x
     nrow: 3.0
@@ -343,6 +356,7 @@ ETA_BOX:
   ptype: DIS
   dname: eta
   type: box
+  is.title: TRUE
   is.jitter: yes
   jitter:
     shape: 1.0
@@ -383,6 +397,7 @@ ETA_MATRIX:
   text_color: black
   is.smooth: yes
   is.hline: yes
+  is.title: TRUE
   hline: 
     linetype: 2.0
   point:
@@ -402,11 +417,13 @@ ETA_MATRIX:
   
 ETA_CATS:
   ptype: ETA_COV
+  is.title: TRUE
   type: cats
   
 ETA_CONTS:
   ptype: ETA_COV
   type: conts
+  is.title: TRUE
   facets:
     scales: free
   point:
@@ -434,6 +451,7 @@ ETA_QQ:
   ptype: PMX_QQ
   x: VALUE
   dname: eta
+  is.title: TRUE
   labels:
     title: ''
     subtitle: ''
@@ -463,6 +481,7 @@ PMX_VPC:
   ptype: VPC
   type: percentile
   dname: sim
+  is.title: TRUE
   labels:
     title: 'Percentile VPC'
     subtitle: '(with observations)'

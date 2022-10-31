@@ -5,6 +5,7 @@
 \title{This creates an eta correlation which defines the relationship between parameters}
 \usage{
 eta_pairs(
+  is.title,
   title,
   dname = NULL,
   type.eta = c("mode", "mean"),

@@ -1,7 +1,8 @@
 
 #' Handling pmx Graphical parameters
+#' @param is.title \code{logical} if TRUE then a title is used for the plot
 #' @param labels list of labels, like title, subtitle, x , y
-#' @param  axis.title list or element_text (same as ggplot2 axis.title theme)
+#' @param axis.title list or element_text (same as ggplot2 axis.title theme)
 #' @param axis.text list or element_text (same as ggplot2 axis.text theme)
 #' @param ranges limits of x/y ranges
 #' @param is.smooth logical if set to TRUE add smooth layer
@@ -30,6 +31,7 @@
 
 pmx_gpar <-
   function(
+             is.title,
              labels,
              axis.title,
              axis.text,

@@ -86,6 +86,11 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
       p <- p + do.call("scale_fill_manual", color.scales)
     }
 
+    if(!is.title) {
+      labels$title <- ""
+      labels$subtitle <- ""
+    }
+
     p <- p + with(labels, ggplot2::labs(
       x = x,
       y = y,
