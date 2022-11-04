@@ -66,7 +66,10 @@ ctr %>% pmx_plot_eta_box
 
 ## VPC
 ```{r vpc,fig.align="center",fig.height=6, fig.width=7}
-ctr %>% pmx_plot_vpc
+ctr %>%
+pmx_plot_vpc(
+  bin=pmx_vpc_bin(within_strat=TRUE, style="quantile")
+)
 ```
 
 \newpage
@@ -156,5 +159,9 @@ ctr %>% pmx_plot_cats("iwres_time")
 
 ## VPC by categorical covariates
 ```{r vpc_strats,fig.align="center"}
-ctr %>% pmx_plot_cats("pmx_vpc")
+ctr %>%
+pmx_plot_cats(
+  "pmx_vpc",
+  bin=pmx_vpc_bin(within_strat=TRUE, style="quantile")
+)
 ```
