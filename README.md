@@ -1212,6 +1212,26 @@ ctr %>% pmx_plot_eta_box(strat.facet =~SEX)
 
 <img src="man/figures/README-settings_cat_labels3-1.png" width="100%" />
 
+### Define binning used for VPC plots
+
+The type of binning used for VPC plots can be applied as an update to
+the controller object, causing the binning to be applied to subsequent
+VPC plots.
+
+Updating the controller is achieved using `pmx_update` in a command
+like:
+
+``` r
+pmx_update(ctr, "pmx_vpc", bin=pmx_vpc_bin(within_strat=TRUE, style="jenks"))
+```
+
+Subsequent VPC plotting calls will then use “jenks” style binning. For
+example:
+
+``` r
+ctr %>% pmx_plot_vpc
+```
+
 # Appendix
 
 ## Generic Controller creation with `pmx()`
