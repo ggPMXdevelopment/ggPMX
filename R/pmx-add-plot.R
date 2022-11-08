@@ -81,15 +81,16 @@ before_add_check <- function(self, private, x, pname) {
     gp[["labels"]][["legend"]] <- x[["strat.color"]]
     x[["gp"]] <- gp
   }
-  if (!is.null(x[["strat.facet"]])) {
-    tit <- x$gp[["labels"]][["title"]]
-    tit <- gsub(" by .*", "", tit)
-    x$gp[["labels"]][["title"]] <-
-      sprintf(
-        "%s by %s", tit, formula_to_text(x[["strat.facet"]])
-      )
-  } else {
-    x$gp[["labels"]][["title"]] <- gsub(" by.*", "", x$gp[["labels"]][["title"]])
+
+  if (isFALSE(x[["gp"]][["custom_title"]])) {
+    x[["gp"]][["labels"]][["title"]] <- gsub(" by .*", "", x[["gp"]][["labels"]][["title"]])
+    if (!is.null(x[["strat.facet"]])) {
+      x[["gp"]][["labels"]][["title"]] <- sprintf(
+          "%s by %s",
+          x[["gp"]][["labels"]][["title"]],
+          formula_to_text(x[["strat.facet"]])
+        )
+    }
   }
   invisible(x)
 }
