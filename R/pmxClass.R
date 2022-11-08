@@ -968,8 +968,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     names(self$data$sim_blq_y)[place_vec] <- toupper(names(self$data$sim_blq_y)[place_vec])
 
     #give message if new version of monolix, otherwise sim_blq cannot be loaded anyway
-  } else if(self$config$sys == "mlx18") {
-
+  } else if((self$config$sys == "mlx18") && (self$sim_blq == TRUE)) {
     message("`sim_blq` dataset could not be generated, `sim_blq_npde_iwres` or `sim_blq_y` is missing")
   }
 
