@@ -97,9 +97,12 @@ plot_pmx.individual <-
         max_y <- aggregate(TIME ~ ID, data=dx, max)
         colnames(max_y) <- c("ID", "maxValue")
         dx <- base::merge(dx, max_y, by="ID", all.x = T)
-        dx$isobserv <- with(dx, TIME < maxValue)
+        # Rounding because "predictions" data are rounded:
+        dx$isobserv <- with(dx, round(TIME) <= maxValue)
         point$data <- base::merge(point$data, max_y, by="ID")
-        point$data$isobserv <- ifelse(point$data$TIME < point$data$maxValue, "accepted", "ignored")
+        # Rounding because "predictions" data are rounded:
+        point$data$isobserv <-
+          ifelse(round(point$data$TIME) <= point$data$maxValue, "accepted", "ignored")
         points <- copy(point)
         points$colour <- NULL
         do.call(geom_point, points)
