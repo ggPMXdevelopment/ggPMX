@@ -247,7 +247,7 @@ ctr <- theophylline()
 
 ### Models fitted with Monolix (versions 2016 and later)
 
-\#\#\#\#`pmx_mlx()`
+#### `pmx_mlx()`
 
 The controller initialization using the Monolix controller `pmx_mlx()`,
 which is a wrapper function for `pmx()` with `sys="mlx"` (See Appendix
@@ -285,7 +285,7 @@ assigned by printing it.
 
 ### Models fitted with NONMEM (versions 7.2 and later)
 
-\#\#\#\#`pmx_nm()`
+#### `pmx_nm()`
 
 The controller initialization using the NONMEM controller `pmx_nm()` is
 based on reading functions of the xpose package. It is highly
@@ -319,7 +319,7 @@ ctr <- pmx_nm(
 
 ### Models fitted with nlmixr
 
-\#\#\#\#`pmx_nlmixr()`
+#### `pmx_nlmixr()`
 
 It is simple to create a ggPMX controller for a nlmixr object using
 `pmx_nlmixr()`. Using the theophylline example with a nlmixr model we
@@ -490,6 +490,13 @@ pmx_mlx(
 
 Internally, a pmxEndpoint object will be created, and observations
 having YTYPE=x will be filtered.
+
+### Note: dependent variable renaming for Monolix
+
+When fitting a multiple-endpoint model, Monolix is known to rename
+endpoint variables to y1, y2. For controller creation to work it may
+necessary to reverse this renaming in the simulation file (e.g. y1 -\>
+LIDV).
 
 ## Controller with covariates
 
