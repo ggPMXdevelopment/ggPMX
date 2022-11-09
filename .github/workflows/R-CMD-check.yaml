@@ -83,6 +83,15 @@ jobs:
         run: |
           install.packages('remotes')
           install.packages('sessioninfo')
+          remotes::install_github("nlmixr2/rxode2ll")
+          remotes::install_github("nlmixr2/rxode2parse")
+          remotes::install_github("nlmixr2/rxode2random")
+          remotes::install_github("nlmixr2/rxode2et")
+          remotes::install_github("nlmixr2/rxode2")
+          remotes::install_github("nlmixr2/nlmixr2est")
+          remotes::install_github("nlmixr2/nlmixr2extra")
+          remotes::install_github("nlmixr2/nlmixr2plot")
+          remotes::install_github("nlmixr2/nlmixr2")
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}

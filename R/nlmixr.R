@@ -16,18 +16,13 @@
 pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc = FALSE) {
   EFFECT <- EVID <- ID <- MDV <- NULL
   if (vpc) {
-    warning("vpc is not working for nlmixr/nlmixr2 currently; disabling vpc")
+    warning("vpc is not working for nlmixr2 currently; disabling vpc")
   }
   if (missing(fit)) {
     return(NULL)
   }
 
-  .nlmixr <- FALSE
-  .nlmixr2 <- FALSE
   if (inherits(fit, "nlmixr2FitData")) {
-    .nlmixr2 <- TRUE
-  } else if (inherits(fit, "nlmixrFitData")) {
-    .nlmixr <- TRUE
   } else {
     stop("unsupported 'fit' object", call.=FALSE)
   }
@@ -46,58 +41,31 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   }
 
   if (!("NPDE" %in% names(fit))) {
-    if (.nlmixr2) {
-      fitN <- try(nlmixr2::addNpde(fit), silent=TRUE)
-    } else {
-      fitN <- try(nlmixr::addNpde(fit), silent=TRUE)
-    }
+    fitN <- try(nlmixr2::addNpde(fit), silent=TRUE)
     if (!inherits(fitN, "try-error")) {
       fit <- fitN
     }
   }
 
-  if (.nlmixr2) {
-    finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
-    if (inherits(finegrid, "try-error")) {
-      message(paste0("Error creating finegrid: ", attr(finegrid, "condition")$message))
-      finegrid <- NULL
-    } else {
-      class(finegrid$values) <- "double"
-      finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=mean)
-      setnames(finegrid,
-               c("id", "time", "Endpoint","Population", "Individual", "Observed"),
-               c("ID", "TIME", ifelse(dvid == "", "DVID", ""), "PRED", "IPRED", "DV")
-               )
-    }
+  finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
+  if (inherits(finegrid, "try-error")) {
+    message(paste0("Error creating finegrid: ", attr(finegrid, "condition")$message))
+    finegrid <- NULL
   } else {
-    finegrid <- try(invisible(nlmixr::augPred(fit)), silent = TRUE)
-    if (inherits(finegrid, "try-error")) {
-      finegrid <- NULL
-    } else {
-      if (any(names(finegrid) == "Endpoint")){
-        finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=length)
-      } else {
-        finegrid <- dcast(setDT(finegrid), id + time ~ ind, value.var = "values", fun.aggregate=length)
-      }
-      setnames(
-        finegrid, c("id", "time", "Population", "Individual", "Observed"),
-        c("ID", "TIME", "PRED", "IPRED", "DV")
-      )
-    }
+    class(finegrid$values) <- "double"
+    finegrid <- dcast(setDT(finegrid), id + time + Endpoint ~ ind, value.var = "values", fun.aggregate=mean)
+    setnames(finegrid,
+             c("id", "time", "Endpoint","Population", "Individual", "Observed"),
+             c("ID", "TIME", ifelse(dvid == "", "DVID", ""), "PRED", "IPRED", "DV")
+             )
   }
 
 
   sim <- NULL
   if (vpc) {
-    if (.nlmixr2) {
-      sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
-      sim_data <- setDT(sim_data)
-      setnames(sim_data, "sim", "DV")
-    } else {
-      sim_data <- try(invisible(nlmixr::vpc(fit)$rxsim), silent = TRUE)
-      sim_data <- setDT(sim_data)
-      setnames(sim_data, "dv", "DV")
-    }
+    sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
+    sim_data <- setDT(sim_data)
+    setnames(sim_data, "sim", "DV")
     if (inherits(sim_data, "try-error")) {
       message(paste0("Error creating VPC: ", attr(sim_data, "condition")$message))
       sim <- NULL
@@ -149,34 +117,10 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
       }
     }
   }
-  if (.nlmixr2) {
-    input <- as.data.table(fit$dataMergeInner)
-    for (v in conts) {
-      if (v != "") {
-        class(input[[v]]) <- "double"
-      }
-    }
-  } else {
-    obs <- as.data.table(nlmixr::getData(fit))
-    ## obs <- obs[!(EVID == 1 & MDV == 1)]
-    if (any(names(obs) == "EVID")) {
-      obs <- obs[EVID == 0 | EVID == 2]
-    } else if (any(names(obs) == "MDV")) {
-      obs <- obs[MDV == 0]
-    }
-    if (any(names(obs) == "ID")) {
-      obs$ID <- paste(obs$ID)
-    }
-    ## Merge with DV too
-    no_cols <- setdiff(intersect(names(FIT), names(obs)), c("ID", "TIME"))
-    obs[, (no_cols) := NULL]
-    uID <- unique(FIT$ID)
-    obs <- subset(obs, ID %in% uID)
-    obs$ID <- factor(obs$ID, levels = levels(fit$ID))
-    FIT$ID <- factor(FIT$ID, levels = levels(fit$ID))
-    input <- merge(obs, FIT, by = c("ID", "TIME"))
-    if (length(input$ID) == 0L) {
-      stop("Cannot merge nlmixr fit with observation dataset")
+  input <- as.data.table(fit$dataMergeInner)
+  for (v in conts) {
+    if (v != "") {
+      class(input[[v]]) <- "double"
     }
   }
   eta <- copy(input)
@@ -196,11 +140,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   ### PARAM    VALUE      SE    RSE    PVALUE
   pars <- fit$parFixedDf
-  if (.nlmixr2) {
-    ini_eta <- fit$iniDf
-  } else {
-    ini_eta <- as.data.frame(fit$ini)
-  }
+  ini_eta <- fit$iniDf
   ini_theta <- ini_eta[is.na(ini_eta$neta1), ]
   ini_err <- ini_theta[!is.na(ini_theta$err), ]
   ini_theta <- ini_theta[is.na(ini_theta$err), ]
