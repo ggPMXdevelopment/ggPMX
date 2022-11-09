@@ -140,47 +140,9 @@ plot_pmx.residual <- function(x, dx, ...) {
         gp$ranges$x <- xrange
         gp$ranges$y <- xrange
       }
-      p <- p + theme(aspect.ratio = 1)
-      fs <- facets[["scales"]]
-      if (((!is.null(fs)) && !(fs == "free")) || is.null(fs)) {
-        p <- p + coord_cartesian(xlim = xrange, ylim = xrange)
-      }
-      else {
-        # Adding functions to ensure equal x and y scales for each facet
-        FacetWrapEq <- ggproto(
-          "FacetWrapEq",
-          FacetWrap,
-          train_scales=function(self, x_scales, y_scales, layout, data, params) {
-            if (is.null(x_scales) || is.null(x_scales)) {stop("X scale and Y scale required")}
-            ggproto_parent(FacetWrap, self)$train_scales(x_scales, y_scales, layout, data, params)
-
-            for (d in data) {
-              match_id <- match(d[["PANEL"]], layout[["PANEL"]])
-
-              ggplot2:::scale_apply(
-                d,
-                intersect(y_scales[[1]][["aesthetics"]], names(d)),
-                "train",
-                layout[["SCALE_X"]][match_id],
-                x_scales
-              )
-
-              ggplot2:::scale_apply(
-                d,
-                intersect(x_scales[[1]][["aesthetics"]], names(d)),
-                "train",
-                layout[["SCALE_Y"]][match_id],
-                y_scales
-              )
-            }
-          }
-        )
-
-        facet_wrap_eq <- function(...) {
-          fw <- facet_wrap(...)
-          ggproto(NULL, FacetWrapEq, shrink=fw[["shrink"]], params=fw[["params"]])
-        }
-      }
+      p <- p +
+        coord_cartesian(xlim = xrange, ylim = xrange) +
+        theme(aspect.ratio = 1)
     }
 
     if (is.null(gp$ranges) || is.null(gp$ranges$y)) {
@@ -204,14 +166,7 @@ plot_pmx.residual <- function(x, dx, ...) {
       if (is.character(strat.facet)) {
         strat.facet <- formula(paste0("~", strat.facet))
       }
-      fs <- facets[["scales"]]
-
-      facet_wrap_function <- ifelse(yes="facet_wrap_eq", no="facet_wrap",
-        {aess$y == "DV" && !(gp$scale_x_log10 || gp$scale_y_log10)} &&
-          {((!is.null(fs)) && (fs == "free"))}
-      )
-
-      p <- p + do.call(facet_wrap_function, c(strat.facet, facets))
+      p <- p + do.call("facet_wrap", c(strat.facet, facets))
     }
 
 
