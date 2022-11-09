@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-density.R
 \name{plot_pmx.pmx_dens}
 \alias{plot_pmx.pmx_dens}
-\title{This function plot EBE versus covariates using qq plots}
+\title{This function plots EBE versus covariates using qq plots}
 \usage{
 \method{plot_pmx}{pmx_dens}(x, dx, ...)
 }
@@ -17,7 +17,7 @@
 ggplot2 plot
 }
 \description{
-This function plot EBE versus covariates using qq plots
+This function plots EBE versus covariates using qq plots
 }
 \seealso{
 \code{\link{eta_cov}}
