@@ -94,25 +94,7 @@ pmx_dens <- function(
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#' This function plot EBE versus covariates using qq plots
+#' This function plots EBE versus covariates using qq plots
 #'
 #' @param x eta_cov object
 #' @param dx data set
@@ -126,7 +108,6 @@ pmx_dens <- function(
 plot_pmx.pmx_dens <- function(x, dx, ...) {
   dx <- dx[!is.infinite(get(x$x))]
 
-
   with(x, {
     xrange <- c(-xlim, xlim)
 
@@ -136,32 +117,41 @@ plot_pmx.pmx_dens <- function(x, dx, ...) {
       do.call(geom_vline, params)
     }
 
+    p <- ggplot(dx,
+      aes(x=get(x))) +
+      geom_density(
+        aes(IWRES, colour="variable density", linetype="variable density"),
+        alpha=0.5,
+        show.legend=FALSE
+      ) +
+      stat_function(
+        data.frame(x = xrange),
+        fun=dnorm,
+        mapping=aes(x, linetype="normal density", colour="normal density")
+      ) +
+      scale_linetype_manual(
+        values=c(snd_line[["linetype"]], var_line[["linetype"]]),
+        guide="none"
+      ) +
+      scale_colour_manual(
+        values=c(snd_line[["colour"]], var_line[["colour"]]),
+        guide="none"
+      ) +
+      guides(
+        linetype=guide_legend(title=NULL, override.aes=list(size=c(1,1))),
+        colour=guide_legend(title=NULL)
+      ) +
+      vline_layer
 
-    p <- ggplot(dx, aes(x = get(x), colour = "variable density")) +
-      geom_density(aes(IWRES, linetype = "variable density"), alpha = 0.5) +
-      stat_function(data.frame(x = xrange), 
-                    fun = dnorm,
-                    mapping = aes(x, colour = "normal density", linetype = "normal density")) +
-      scale_linetype_manual(values = c(snd_line$linetype, var_line$linetype),
-                            guide = "none") +
-      scale_colour_manual(values = c(snd_line$colour, var_line$colour),
-                          guide = guide_legend(override.aes = list(
-                            linetype = c(snd_line$linetype, var_line$linetype),
-                            size = c(1, 1)),
-                            title = NULL))+vline_layer
-
-    if (is.legend) { 
-      gp$is.legend <- is.legend
-      gp$legend.position <- "top"
+    if (is.legend) {
+      gp[["is.legend"]] <- is.legend
+      gp[["legend.position"]] <- "top"
     }
-
-
 
     if (!is.null(p)) p <- plot_pmx(gp, p)
 
-    p <- p +
-      coord_cartesian(xlim = xrange) +
-      theme(aspect.ratio = 1)
-    p
+    p +
+    coord_cartesian(xlim = xrange) +
+    theme(aspect.ratio = 1)
   })
 }
