@@ -19,6 +19,7 @@
 #' @return ecorrel object
 #' @family plot_pmx
 #' @importFrom  GGally ggally_cor ggally_densityDiag
+#' @inheritParams pmx_gpar
 eta_pairs <- function(
                       is.title,
                       title,

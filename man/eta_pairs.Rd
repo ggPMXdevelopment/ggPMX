@@ -23,6 +23,8 @@ eta_pairs(
 )
 }
 \arguments{
+\item{is.title}{\code{logical} if TRUE then a title is used for the plot}
+
 \item{title}{character the plot title}
 
 \item{dname}{name of dataset to be used}

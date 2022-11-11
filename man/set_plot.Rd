@@ -6,8 +6,7 @@
 \usage{
 set_plot(
   ctr,
-  ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ", "VPC",
-    "PMX_DENS"),
+  ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS"),
   pname,
   use.defaults = TRUE,
   filter = NULL,
