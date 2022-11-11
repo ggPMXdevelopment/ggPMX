@@ -19,7 +19,9 @@
 #' @return ecorrel object
 #' @family plot_pmx
 #' @importFrom  GGally ggally_cor ggally_densityDiag
+#' @inheritParams pmx_gpar
 eta_pairs <- function(
+                      is.title,
                       title,
                       dname = NULL,
                       type.eta = c("mode", "mean"),
@@ -219,6 +221,10 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
   ## avoid RCMDCHECK warning
   ID <- EFFECT <- VALUE <- FUN <- NULL
 
+  if(!x$gp$is.title) {
+    x$gp$labels$title <- ""
+    x$gp$labels$subtitle <- ""
+  }
 
   ## filter by type of eta
   if (exists("FUN", dx)) dx <- dx[FUN == x$type.eta]
@@ -267,6 +273,7 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       yProportions = if (is.shrink) c(1, rep(5, length(nn)))
     )
   })
+  p <- p + labs(title = x$gp$labels$title, subtitle = x$gp$labels$subtitle)
   p$is.shrink <- x$is.shrink
   attributes(p)$class <- c("pmx_eta_matrix", "gg", "ggmatrix")
   p +

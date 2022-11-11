@@ -5,6 +5,7 @@
 \title{This creates an eta correlation which defines the relationship between parameters}
 \usage{
 eta_pairs(
+  is.title,
   title,
   dname = NULL,
   type.eta = c("mode", "mean"),
@@ -22,6 +23,8 @@ eta_pairs(
 )
 }
 \arguments{
+\item{is.title}{\code{logical} if TRUE then a title is used for the plot}
+
 \item{title}{character the plot title}
 
 \item{dname}{name of dataset to be used}

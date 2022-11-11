@@ -644,6 +644,10 @@ vpc_legend. <- function(x){
       x$gp$labels$subtitle <- ""
     }
   }
+  if(x$gp$is.title == FALSE) {
+    x$gp$labels$title <- ""
+    x$gp$labels$subtitle <- ""
+  }
   x
 }
 
