@@ -5,6 +5,7 @@
 \title{Handling pmx Graphical parameters}
 \usage{
 pmx_gpar(
+  is.title,
   labels,
   axis.title,
   axis.text,
@@ -26,6 +27,8 @@ pmx_gpar(
 )
 }
 \arguments{
+\item{is.title}{\code{logical} if TRUE then a title is used for the plot}
+
 \item{labels}{list of labels, like title, subtitle, x , y}
 
 \item{axis.title}{list or element_text (same as ggplot2 axis.title theme)}
