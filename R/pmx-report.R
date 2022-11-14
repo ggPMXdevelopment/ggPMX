@@ -6,16 +6,17 @@
 #' a standalone directory of plots or a report document as defined in the template \cr
 #' (pdf, docx,..) ,or both
 #' @param template \code{character} ggPMX predefined template or the
-#' path to a custom rmarkdwon template. \cr
+#' path to a custom rmarkdown template. \cr
 #' Use \code{\link{pmx_report_template}} to get the list
 #' of available templates
 
-#' @param save_dir Output directory.  A directory to write the results files to
+#' @param save_dir Output directory. A directory to write the results files to
+#' @param plots_subdir Output folder name, ggpmx_GOF by default
 #' @param footnote \code{logical}  TRUE to add a footnote to the generated plots. The default footnote is to add \cr
 #' the path where the plot is saved.
 #' @param edit \code{logical}  TRUE to edit the template immediately
 #' @param extension \code{character} The output document format. By default, a word report is generated. \cr
-#'  User can specify one or more formats from c("word","pdf","html","all"). extnestion "all" to generate all formats.
+#'  User can specify one or more formats from c("word","pdf","html","all"). extension "all" to generate all formats.
 #' @param title \code{character} report title (optional)
 #' @param ... extra parameters depending in the template used
 #' @export
@@ -31,6 +32,7 @@ pmx_report <-
   function(contr,
              name,
              save_dir,
+             plots_subdir = "ggpmx_GOF",
              format = c("both", "plots", "report"),
              template = "standing",
              footnote = format == "both",
@@ -74,7 +76,7 @@ pmx_report <-
     clean <- !standalone
     old_fig_process <- knitr::opts_chunk$get("fig.process")
 
-    out_ <- file.path(contr$save_dir, "ggpmx_GOF")
+    out_ <- file.path(contr$save_dir, plots_subdir)
 
     rm_dir(out_)
 
@@ -121,7 +123,7 @@ pmx_report <-
     rm_dir(in_)
 
     if (!clean) {
-      ## create_ggpmx_gof(ctr$save_dir, name)
+      ## create_ggpmx_gof(ctr$save_dir, name, plots_subdir)
       remove_reports(format, contr$save_dir)
     }
     if (format == "report") rm_dir(out_)
@@ -214,10 +216,10 @@ remove_reports <- function(format, save_dir) {
   }
 }
 
-create_ggpmx_gof <- function(save_dir, name) {
+create_ggpmx_gof <- function(save_dir, name, plots_subdir = "ggpmx_GOF") {
   plot_dir <- sprintf("%s_files", name)
   if (dir.exists(file.path(save_dir, plot_dir))) {
-    out_ <- file.path(save_dir, "ggpmx_GOF")
+    out_ <- file.path(save_dir, plots_subdir)
     rm_dir(out_)
     dir.create(out_)
     in_ <- file.path(save_dir, plot_dir)

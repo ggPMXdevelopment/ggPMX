@@ -8,6 +8,7 @@ pmx_report(
   contr,
   name,
   save_dir,
+  plots_subdir = "ggpmx_GOF",
   format = c("both", "plots", "report"),
   template = "standing",
   footnote = format == "both",
@@ -22,14 +23,16 @@ pmx_report(
 
 \item{name}{\code{character} The report name}
 
-\item{save_dir}{Output directory.  A directory to write the results files to}
+\item{save_dir}{Output directory. A directory to write the results files to}
+
+\item{plots_subdir}{Output folder name, ggpmx_GOF by default}
 
 \item{format}{\code{character} the result type, can be \cr
 a standalone directory of plots or a report document as defined in the template \cr
 (pdf, docx,..) ,or both}
 
 \item{template}{\code{character} ggPMX predefined template or the
-path to a custom rmarkdwon template. \cr
+path to a custom rmarkdown template. \cr
 Use \code{\link{pmx_report_template}} to get the list
 of available templates}
 
@@ -39,7 +42,7 @@ the path where the plot is saved.}
 \item{edit}{\code{logical}  TRUE to edit the template immediately}
 
 \item{extension}{\code{character} The output document format. By default, a word report is generated. \cr
-User can specify one or more formats from c("word","pdf","html","all"). extnestion "all" to generate all formats.}
+User can specify one or more formats from c("word","pdf","html","all"). extension "all" to generate all formats.}
 
 \item{title}{\code{character} report title (optional)}
 
