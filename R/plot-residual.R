@@ -109,6 +109,15 @@ plot_pmx.residual <- function(x, dx, ...) {
 
     p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
 
+    # applying strat.color as color aesthetic mapping for point
+    if (!is.null(x[["strat.color"]])) {
+      if(is.null(point[["mapping"]])) point[["mapping"]] <- aes()
+      with(point, {
+        mapping <- modifyList(mapping, aes(color=x[["strat.color"]]))
+        mapping[["colour"]] <- NULL
+      })
+    }
+
     p <- p + do.call(geom_point, point)
 
     if (!is.null(bloq)) {
@@ -156,11 +165,7 @@ plot_pmx.residual <- function(x, dx, ...) {
       }
     }
 
-    strat.color <- x[["strat.color"]]
     strat.facet <- x[["strat.facet"]]
-    if (!is.null(strat.color)) {
-      p <- p %+% geom_point(aes_string(colour = strat.color))
-    }
 
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
