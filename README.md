@@ -1090,7 +1090,7 @@ order: 1 will be plotted before 0 rather than the other way round.
 ``` r
 ctr <- theophylline()
 ctr[["data"]][["predictions"]][["SEX"]] <-
-  factor(ctr[["data"]][[a]][["SEX"]], levels=c("1","0"), labels=c("M", "F"))
+  factor(ctr[["data"]][["predictions"]][["SEX"]], levels=c("1","0"))
 
 pmx_plot_iwres_ipred(ctr, strat.facet=~SEX)
 ```

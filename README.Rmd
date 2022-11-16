@@ -823,7 +823,7 @@ The example below defines a Controller with changed SEX facet panels order: 1 wi
 ```{r, eval=FALSE}
 ctr <- theophylline()
 ctr[["data"]][["predictions"]][["SEX"]] <-
-  factor(ctr[["data"]][[a]][["SEX"]], levels=c("1","0"), labels=c("M", "F"))
+  factor(ctr[["data"]][["predictions"]][["SEX"]], levels=c("1","0"))
 
 pmx_plot_iwres_ipred(ctr, strat.facet=~SEX)
 ```
