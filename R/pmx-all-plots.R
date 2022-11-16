@@ -6,7 +6,7 @@ pmx_plot_generic <-
     }
     cctr <- pmx_copy(ctr, ...)
 
-    if (length(list(...)) != 0){
+    if ((length(list(...)) != 0) || (!is.null(ctr[["bloq"]]))) {
          params <- c(
                      ctr = cctr,
                      pname = pname,
