@@ -34,7 +34,7 @@ jobs:
             nlmixr2/rxode2random
             nlmixr2/rxode2et
             nlmixr2/rxode2
-            lixoftConnectors=?ignore-before-r=5.0.0
+            lixoftConnectors=?ignore
           needs: coverage
 
       - name: Test coverage
