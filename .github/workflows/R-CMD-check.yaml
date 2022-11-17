@@ -28,6 +28,7 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       _R_CHECK_FORCE_SUGGESTS_: false
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
 
     steps:
       - name: Install deps on MacOS
