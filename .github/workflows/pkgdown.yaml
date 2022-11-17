@@ -45,6 +45,7 @@ jobs:
             nlmixr2/nlmixr2extra
             nlmixr2/nlmixr2plot
             nlmixr2/nlmixr2
+            lixoftConnectors=?ignore-before-r=5.0.0
             local::.
           needs: website
 
