@@ -61,7 +61,6 @@ Suggests:
     xtable,
     vdiffr,
     rxode2,
-    nlmixr,
     nlmixr2,
     nlmixr2data,
     lixoftConnectors,

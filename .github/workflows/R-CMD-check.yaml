@@ -39,7 +39,7 @@ jobs:
         shell: bash
 
       - uses: actions/checkout@v3
-
+      - uses: r-lib/actions/setup-tinytex@v2
       - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: r-lib/actions/setup-r@v2
@@ -63,8 +63,12 @@ jobs:
             nlmixr2/nlmixr2extra
             nlmixr2/nlmixr2plot
             nlmixr2/nlmixr2
+            lixoftConnectors=?ignore
           needs: check
-
+          
+      - run: tlmgr --version
+        
       - uses: r-lib/actions/check-r-package@v2
         with:
+          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
           upload-snapshots: true
