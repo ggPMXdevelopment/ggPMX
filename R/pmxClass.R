@@ -964,11 +964,39 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     )
 
     #rename npde and iwRes to NPDE and IWRES
-    place_vec <- which(names(self$data$sim_blq_y) == "npde" | names(self$data$sim_blq_y) == "iwRes")
-    names(self$data$sim_blq_y)[place_vec] <- toupper(names(self$data$sim_blq_y)[place_vec])
+    place_vec <- which(
+      names(self$data$sim_blq_y) == "npde" |
+      names(self$data$sim_blq_y) == "iwRes"
+    )
+    names(self$data$sim_blq_y)[place_vec] <-
+      toupper(names(self$data$sim_blq_y)[place_vec])
 
-    #give message if new version of monolix, otherwise sim_blq cannot be loaded anyway
-  } else if((self$config$sys == "mlx18") && (self$sim_blq == TRUE)) {
+    # Needed same treatment for "sim_blq" as for "sim_blq_y"
+    if(!is.null(self[["data"]][["sim_blq"]])){
+      # In some cases xx and xx_simBlq are not the same
+      suppressWarnings({
+        for(cn in c("iwRes", "pwRes", "npde")) {
+          if(paste0(cn, "_mode_simBlq") %in% colnames(self[["data"]][["sim_blq"]])) {
+            self[["data"]][["sim_blq"]][[toupper(cn)]] <-
+              self[["data"]][["sim_blq"]][[paste0(cn, "_mode_simBlq")]]
+          }
+        }
+      })
+    }
+
+    # Needed same treatment for "sim_blq_npde_iwres" as for "sim_blq_y"
+    if(!is.null(self[["data"]][["sim_blq_npde_iwres"]])){
+      #rename npde and iwRes to NPDE and IWRES
+      place_vec <- which(
+        names(self$data$sim_blq_npde_iwres) == "npde" |
+        names(self$data$sim_blq_npde_iwres) == "iwRes"
+      )
+  
+      names(self$data$sim_blq_npde_iwres)[place_vec] <-
+        toupper(names(self$data$sim_blq_npde_iwres)[place_vec])
+    }
+  } else if ((self$config$sys == "mlx18") && (self$sim_blq == TRUE)) {
+    # give message if new version of monolix, otherwise sim_blq cannot be loaded anyway
     message("`sim_blq` dataset could not be generated, `sim_blq_npde_iwres` or `sim_blq_y` is missing")
   }
 
