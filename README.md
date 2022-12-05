@@ -934,7 +934,7 @@ take three different values:
   - “report”: produces a pdf and a docx file (named `name.pdf` and
     `name.png` specified in argument *name*, located in *save\_dir*)
     with default diagnostic plots
-  - “plots”: produces a folder named `ggpmx_GOF` located in *save\_dir*
+  - “plots”: produces a folder named after *plots_subdir* parameter `ggpmx_GOF` located in *save\_dir*
     that contains all default diagnotic plots, each in a pdf and png
     file. The different plots are numerated in order to have an unique
     identifier for each plot (ex: ebe\_box-1.pdf). This is necessary for
@@ -947,6 +947,7 @@ Example:
 ``` r
 ctr %>% pmx_report(name='Diagnostic_plots2',
                    save_dir = work_dir,
+                   plots_subdir = "ggpmx_report",
                    format='both')
 ```
 
@@ -965,6 +966,7 @@ the following command:
 ``` r
 ctr %>% pmx_report(name='Diagnostic_plots1',
                    save_dir = work_dir,
+                   plots_subdir = "ggpmx_report",
                    format='report')
 ```
 
@@ -976,6 +978,7 @@ command:
 ``` r
 ctr %>% pmx_report(name='Diagnostic_plots3',
                    save_dir = work_dir,
+                   plots_subdir = "ggpmx_report",
                    format='report',
                    template=file.path(work_dir,'Diagnostic_plots1.Rmd'))
 ```
