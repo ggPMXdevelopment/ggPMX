@@ -164,18 +164,50 @@ pmx_draft <- function(ctr, name, template, edit) {
   }
 
   if (file.exists(template)) {
-    template_path <- system.file(
-      "rmarkdown", "templates",
-      ifelse(ctr$config$hasNpd,"npd", "standing"),
-      package = "ggPMX"
-    )
-    temp_dir <- tempdir()
-    invisible(file.copy(template_path, temp_dir, recursive = TRUE,
-                        copy.mode=FALSE))
-    dest_temp <- file.path(temp_dir, "standing", "skeleton", "skeleton.Rmd")
-    invisible(file.copy(template, dest_temp, overwrite = TRUE,
-                        copy.mode=FALSE))
+    ggPMX_dir <- system.file(package = "ggPMX")
+
+    standing_file <- system.file(
+      "rmarkdown",
+      "templates",
+      ifelse(
+        ctr$config$hasNpd &
+          dir.exists(file.path(ggPMX_dir, "rmarkdown", "templates", "npd")),
+        "npd",
+        "standing"
+      ),
+      package="ggPMX")
+
+    # Defining template and skeleton temporary subdirs, creating if missing
+    # tempdir includes random subdir, so it is new for each run
+    temp_dir <- file.path(tempdir(), paste0(sample(letters, 9), collapse=""))
+
     template_dir <- file.path(temp_dir, "standing")
+    if (!dir.exists(template_dir)) {
+      invisible(dir.create(template_dir, recursive=TRUE))
+    }
+
+    skeleton_dir <- file.path(template_dir, "skeleton")
+    if (!dir.exists(skeleton_dir)) {
+      invisible(dir.create(skeleton_dir, recursive=TRUE))
+    }
+
+    # Copying template and skeleton files to subdirectories
+    invisible({
+      file.copy(
+        from=file.path(standing_file, "template.yaml"),
+        to=template_dir,
+        overwrite=TRUE,
+        recursive=TRUE
+      )
+      file.copy(
+        from=file.path(standing_file, "skeleton", "skeleton.Rmd"),
+        to=skeleton_dir,
+        overwrite=TRUE,
+        recursive=TRUE
+      )
+    })
+
+
     res <- draft(
       template_file,
       template = template_dir,
