@@ -36,7 +36,7 @@ test_that("Report generation can be repeated without error", {
 test_that("Can generate report using a custom template", {
   skip_on_cran()
   custom_template_file <- system.file(
-    "inst", "examples", "templates", "custom_report.Rmd",
+     file.path("examples", "templates", "custom_report.Rmd"),
     package="ggPMX"
   )
 
