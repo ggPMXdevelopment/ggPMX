@@ -12,6 +12,7 @@
 #' @param is.draft logical if TRUE add draft layer
 #' @param draft draft layer parameters
 #' @param is.identity_line \code{logical} if TRUE add y=x line
+#' @param smooth_with_bloq \code{logical} if TRUE perform spline in plots with BLOQ data
 #' @param identity_line \code{list} y=x aes properties
 #' @param discrete logical if TRUE x axis is discrete(FALSE by default)
 #' @param scale_x_log10 logical if TRUE add scale_x_log10 layer
@@ -45,12 +46,12 @@ pmx_gpar <-
              discrete,
              is.identity_line,
              identity_line,
+             smooth_with_bloq,
              scale_x_log10,
              scale_y_log10,
              color.scales,
              is.legend,
              legend.position) {
-
 
     ## join with default values
     default_yaml <-

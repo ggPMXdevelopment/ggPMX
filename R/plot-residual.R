@@ -111,8 +111,9 @@ plot_pmx.residual <- function(x, dx, ...) {
 
     p <- p + do.call(geom_point, point)
 
+    bloq_cens <- bloq[["cens"]]
     if (!is.null(bloq)) {
-      bloq$data <- dx[get(bloq$cens) != 0]
+      bloq$data <- dx[get(bloq_cens) != 0]
       bloq$cens <- bloq$limit <- NULL
       p <- p + do.call(geom_point, bloq)
     }
@@ -170,7 +171,7 @@ plot_pmx.residual <- function(x, dx, ...) {
     }
 
 
-    p <- plot_pmx(gp, p)
+    p <- plot_pmx(gp, p, bloq_cens)
 
 
     p

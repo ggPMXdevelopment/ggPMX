@@ -17,6 +17,19 @@ test_that("individual plot: get single page", {
 })
 
 
+test_that("smooth_with_bloq result: smoothing with/wo BLOQ data", {
+  ctr <- theophylline(bloq=pmx_bloq(cens="AGE0", limit="WT0"))
+  p1 <- pmx_plot_abs_iwres_ipred(ctr, smooth_with_bloq=FALSE)
+  p2 <- pmx_plot_abs_iwres_ipred(ctr, smooth_with_bloq=TRUE)
+  p3 <- pmx_plot_abs_iwres_ipred(ctr)
+  p1_obj <- ggplot2::ggplot_build(p1)
+  p2_obj <- ggplot2::ggplot_build(p2)
+  p3_obj <- ggplot2::ggplot_build(p3)
+
+  expect_false(identical(p1_obj[["data"]][[4]], p2_obj[["data"]][[4]]))
+  expect_identical(p1_obj[["data"]][[4]], p3_obj[["data"]][[4]])
+})
+
 
 test_that("individual plot: get some pages", {
   ctr <- pmxClassHelpers$ctr
