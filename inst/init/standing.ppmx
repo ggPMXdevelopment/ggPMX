@@ -334,7 +334,7 @@ ETA_HIST:
     nrow: 3.0
   is.shrink: yes
   shrink:
-    fun: sd
+    fun: var
     size: 4.0
     colour: black
     hjust: -1
@@ -366,7 +366,7 @@ ETA_BOX:
     alpha: 0.6
   is.shrink: yes
   shrink:
-    fun: sd
+    fun: var
     size: 4.0
     colour: black
     hjust: 0.5
@@ -412,7 +412,7 @@ ETA_MATRIX:
     colour: red
   is.shrink: TRUE
   shrink:
-    fun : sd
+    fun : var
     size: 5
   
 ETA_CATS:
@@ -466,7 +466,7 @@ ETA_QQ:
   xmax: no
   is.shrink: yes
   shrink:
-    fun: sd
+    fun: var
     size: 4.0
     colour: black
     hjust: -1
