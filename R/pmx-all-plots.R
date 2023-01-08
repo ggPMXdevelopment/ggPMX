@@ -17,6 +17,10 @@ pmx_plot_generic <-
       #if params were set through pmxgpar, then modify default params with pmxgpar
       if ("pmxgpar" %in% names(list(...)))
         plot_params <- utils::modifyList(defaults_, list(...)[["pmxgpar"]])
+    if (length(list(...)) != 0) {
+      #if params were set through pmxgpar, then modify default params with pmxgpar
+      if ("pmxgpar" %in% names(list(...)))
+        plot_params <- modifyList(defaults_, list(...)[["pmxgpar"]])
       else
         plot_params <- l_left_join(defaults_, list(...))
       params <- c(
