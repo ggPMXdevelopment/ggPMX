@@ -24,3 +24,22 @@ test_that("can print pmx_gpar object", {
   gpars <- ggPMX::pmx_gpar(labels = list(title = "hello"))
   expect_output(print(gpars), "\"hello\"")
 })
+
+
+test_that("pmx_gpar ranges are applied to the plot", {
+  ctr <- theophylline()
+
+  p <- pmx_plot_npde_pred(
+    ctr=ctr,
+    pmxgpar=pmx_gpar(
+      ranges=list(x=c(0, 200), y=c(-2, 2))
+    )
+  )
+
+  l <- ggplot2::ggplot_build(p)[["layout"]]
+  f <- function(l) l[[1]][["range"]][["range"]]
+  expect_gte(f(l[["panel_scales_x"]])[[1]], 0)
+  expect_lte(f(l[["panel_scales_x"]])[[2]], 200)
+  expect_gte(f(l[["panel_scales_y"]])[[1]], -2)
+  expect_lte(f(l[["panel_scales_y"]])[[2]], 2)
+})
