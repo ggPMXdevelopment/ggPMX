@@ -17,7 +17,6 @@ test_that("individual plot: get single page", {
 })
 
 
-
 test_that("individual plot: get some pages", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
@@ -25,12 +24,27 @@ test_that("individual plot: get some pages", {
   expect_equal(length(p), 2)
 })
 
+
 test_that("individual plot : don't exceed the effective number of pages", {
   ctr <- pmxClassHelpers$ctr
   expect_is(ctr, "pmxClass")
   p <- ctr %>% get_plot("individual", 1:100)
   expect_equal(length(p), 5)
 })
+
+
+test_that("bloq data has separate colour", {
+  ctr <- theophylline(bloq=pmx_bloq(cens="AGE0", limit="WT0"))
+
+  plots_with_bloq <- c("individual", "abs_iwres_ipred", "abs_iwres_time",
+    "iwres_ipred", "iwres_time", "npde_time", "npde_pred", "dv_pred", "dv_ipred")
+
+  lapply(
+    paste0("pmx_plot_", plots_with_bloq),
+    function(x) {expect_equal("pink", get(x)(ctr)[["plot_env"]][["bloq"]][["colour"]])}
+  )
+})
+
 
 test_that("can create a plot using setting dname", {
   ctr <- pmxClassHelpers$ctr
