@@ -16,6 +16,27 @@ test_that("pmx_plot_individual: params: point; result: ggplot", {
   )), "ggplot"))
 })
 
+
+test_that("pmx_plot_individual : doesn't have NA panels after stratifying", {
+  ctr <- theophylline()
+  # creating some NA data for testing purposes
+  ctr[["data"]][["IND"]][["SEX"]][which(ctr[["data"]][["IND"]][["SEX"]] == 1)] <- NA
+  # testing both formula and character class strat.facet arguments
+  lapply(
+    list(
+      pmx_plot_individual(ctr, strat.facet=~SEX),
+      pmx_plot_individual(ctr, strat.facet="SEX")
+    ),
+    function(p) {
+      built_plot <- ggplot2::ggplot_build(p)
+      expect_equal(0,
+        sum(is.na(ggplot2::ggplot_build(p)[["layout"]][["layout"]][["SEX"]]))
+      )
+    }
+  )
+})
+
+
 test_that("pmx_plot_individual: params: point (colour and shape); result: ggplot",
           {
             expect_true(inherits(pmx_plot_individual(ctr, point = list(
