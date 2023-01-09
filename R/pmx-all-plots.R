@@ -6,6 +6,12 @@ pmx_plot_generic <-
     }
     cctr <- pmx_copy(ctr, ...)
 
+    if("shrink" %in% names(list(...))) {
+      if(!"fun" %in% names(list(...)[["shrink"]])) {
+        stop("Shrink argument (list) does not contain an element named 'fun'")
+      }
+    }
+
     if (length(list(...)) != 0){
          params <- c(
                      ctr = cctr,
