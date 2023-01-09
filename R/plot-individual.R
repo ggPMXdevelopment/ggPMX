@@ -77,7 +77,22 @@ plot_pmx.individual <-
     dx$maxValue <- 0
     ## plot
     if (x$dname == "predictions") cat("USE predictions data set \n")
+
     strat.facet <- x[["strat.facet"]]
+
+    # dropping any rows with NA in the faceting column
+    if (!is.null(strat.facet)) {
+      faceting_column <- {
+        if (inherits(strat.facet, "formula")) {
+          # converting to character required by tidyr::drop_na
+          faceting_column <- sub("...", "", toString(strat.facet))
+        } else {strat.facet}
+      }
+
+      dx <- tidyr::drop_na(dx, faceting_column)
+      x[["dx"]] <- tidyr::drop_na(x[["dx"]], faceting_column)
+    }
+
     strat.color <- x[["strat.color"]]
 
     wrap.formula <- if (!is.null(strat.facet)) {
