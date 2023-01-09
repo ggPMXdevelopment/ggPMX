@@ -17,6 +17,19 @@ test_that("pmx_plot_dv_pred: params: not controller result: error",
             ctr <- theophylline() %>% get_data("eta")
             expect_error(pmx_plot_dv_pred(ctr = ctr))
           })
+
+
+test_that("pmx_plot_dv_pred: params: ctrl result: x and y axes equal by default",
+  {
+    ctr <- theophylline()
+    p <- pmx_plot_dv_pred(ctr)
+    expect_equal(
+      p[["coordinates"]][["limits"]][["x"]],
+      p[["coordinates"]][["limits"]][["y"]]
+    )
+  }
+)
+
 #------------------- pmx_plot_dv_pred end -------------------------------------
 
 #------------------- pmx_plot_iwres_time start --------------------------------
