@@ -671,6 +671,12 @@ ctr %>% pmx_plot_vpc(type ="scatter")
 ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
 ```
 
+### Set custom x- and/or y-axis labels
+
+```{r}
+ctr %>% pmx_plot_vpc(labels = c(x = "DV axis", y = "TIME axis"))
+```
+
 ### Stratification 
 
 ```{r}
