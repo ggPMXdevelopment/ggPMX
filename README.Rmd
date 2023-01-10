@@ -713,21 +713,21 @@ input_data <- file.path(theophylline, "data_pk.csv")
 ctr <- theophylline()
 ```
 
-A report (in pdf and docx format) containing all default diagnostic plots can be created using the *pmx_report* function. The *format* can take three different values:
+A report (in pdf and docx format) containing all default diagnostic plots can be created using the *pmx_report* function. The *output* can take three different values:
 
 - "report": produces a pdf and a docx file (named `name.pdf` and `name.png` specified in argument *name*, located in *save_dir*) with default diagnostic plots
 - "plots": produces a folder named after *plots_subdir* parameter (`ggpmx_GOF` by default, if parameter is not specified) located in *save_dir* that contains all default diagnostic plots, each in a pdf and png file. The different plots are numerated in order to have an unique identifier for each plot (ex: ebe_box-1.pdf). This is necessary for having correct footnotes that indicated the path to the source file (for submission reports).
-- "both": is a combination of both options above.
+- "all": is a combination of both options above.
 
 Example:
 ```{r eval=FALSE}
 ctr %>% pmx_report(name='Diagnostic_plots2',
                    save_dir = work_dir,
                    plots_subdir = "ggpmx_report",
-                   format='both')
+                   output='all')
 ```
 
-Note that running the same command first with the option "format='plots'" and then with the option "format='report'" will remove the *plots_subdir* folder. 
+Note that running the same command first with the option "output='plots'" and then with the option "output='report'" will remove the *ggpmx_GOF* folder. 
 
 Note also that by default, the report will have the DRAFT label on all plots. The label can be removed by using the settings argument in the Controller creation.
 
@@ -736,14 +736,14 @@ The user can customize the default report by creating a "template". To create a 
 ctr %>% pmx_report(name='Diagnostic_plots1',
                    save_dir = work_dir,
                    plots_subdir = "ggpmx_report",
-                   format='report')
+                   output='report')
 ```
 The Rmarkdown (.Rmd) file is the "template". The user can modify the Rmarkdown file as desired (ex: changing the size of some figures) and save the modified file. The new template can be used with the following command:
 ```{r eval=FALSE}
 ctr %>% pmx_report(name='Diagnostic_plots3',
                    save_dir = work_dir,
                    plots_subdir = "ggpmx_report",
-                   format='report',
+                   output='report',
                    template=file.path(work_dir,'Diagnostic_plots1.Rmd'))
 ```
 

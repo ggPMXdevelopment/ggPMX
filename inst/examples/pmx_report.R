@@ -6,13 +6,14 @@ library(ggPMX)
 
 ## case1: generate a single report
 withr::with_tempdir({
-
   ctr <- theophylline()
   ctr %>% pmx_report(
     name = "my_report",
     save_dir = getwd(),
-    format="report")
+    output="report"
+  )
 })
+
 
 ## case2: generate standalone plots
 withr::with_tempdir({
@@ -20,40 +21,34 @@ withr::with_tempdir({
   ctr %>% pmx_report(
     name = "my_report",
     save_dir = getwd(),
-    format="plots")
+    output="plots"
+  )
 })
+
 
 ## case3: generate both : reports + plots
 ## by default add footnote
 ## Note, you can force footnote to FALSE using footnote parameter
 withr::with_tempdir({
-
   ctr <- theophylline()
   ctr %>% pmx_report(
-    name = "my_report",
-    save_dir = getwd(),
-    format="both")
-
+    name="my_report",
+    save_dir=getwd(),
+    output="all"
+  )
 })
-
-
-
 
 
 ## case4 : generate standalone plots with footnotes
 withr::with_tempdir({
-
   ctr <- theophylline()
   ctr %>% pmx_report(
-    name = "my_report",
-    save_dir = getwd(),
+    name="my_report",
+    save_dir=getwd(),
     footnote=TRUE,
-    format="plots")
-
+    output="plots"
+  )
 })
-
-
-
 
 
 ##  case6: dynamic edit
@@ -61,8 +56,8 @@ withr::with_tempdir({
 # ctr <- theophylline()
 # ctr %>% pmx_report(
 #   save_dir = file.path(getwd(),"case6"),
-#   name = "my_report",
-#   format="report",
+#   name="my_report",
+#   output="report",
 #   edit = TRUE)
 
 
@@ -72,9 +67,7 @@ withr::with_tempdir({
 ##   name="report2",
 ##   save_dir = getwd(),
 ##   template="individual",
-##   format="both",
+##   format="all",
 ##   which_pages=1:2
 ## )
-
 }
-
