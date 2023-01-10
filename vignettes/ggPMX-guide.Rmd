@@ -648,7 +648,7 @@ Example:
 ```{r eval=FALSE}
 ctr %>% pmx_report(name='Diagnostic_plots2',
                    save_dir = work_dir,
-                   format='both')
+                   format='all')
 ```
 
 Note that running the same command first with the option "format='plots'" and then with the option "format='report'" will remove the *ggpmx_GOF* folder. 
@@ -659,13 +659,13 @@ The user can customize the default report by creating a "template". To create a 
 ```{r eval=FALSE}
 ctr %>% pmx_report(name='Diagnostic_plots1',
                    save_dir = work_dir,
-                   format='report')
+                   output='report')
 ```
 The Rmarkdown (.Rmd) file is the "template". The user can modify the Rmarkdown file as desired (ex: changing the size of some figures) and save the modified file. The new template can be used with the following command:
 ```{r eval=FALSE}
 ctr %>% pmx_report(name='Diagnostic_plots3',
                    save_dir = work_dir,
-                   format='report',
+                   output'='report',
                    template=file.path(work_dir,'Diagnostic_plots1.Rmd'))
 ```
 
