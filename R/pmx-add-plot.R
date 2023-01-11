@@ -167,6 +167,8 @@ before_add_check <- function(self, private, x, pname) {
       }
       if (exists("EFFECT", x$dx)) {
         x$dx[, EFFECT := factor(EFFECT, levels = effs$levels, labels = effs$labels)]
+        if ((x$ptype == "ETA_COV") && (x$type == "cats"))
+          x$dx <- x$dx[!(is.na(x$dx[["EFFECT"]])), ]
       }
     }
   }

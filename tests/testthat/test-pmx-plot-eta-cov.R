@@ -8,6 +8,19 @@ test_that(
     expect_equal(p$plot_env$x$is.strat.color, TRUE)
   }
 )
+
+test_that("levels filtering is working", {
+  p <- pmx_plot_eta_cats(
+    ctr,
+    effects=list(
+      levels=c("ka", "V"),
+      labels=c("Absorption_rate", "V")
+    )
+  )
+
+  expect_identical(levels(p[["data"]][["EFFECT"]]), c("Absorption_rate", "V"))
+})
+
 #------------------- pmx_plot_eta_cats end --------------------------------------------
 
 context("Test pmx Eta Covariates plots")
