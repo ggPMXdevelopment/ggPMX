@@ -430,8 +430,8 @@ ETA_CONTS:
     shape: 21
     color: black
   correl:
-    colour: black
-    size: 5
+    colour: red
+    size: 4
   is.smooth: yes
   smooth:
     se: no
