@@ -82,9 +82,11 @@ IND:
     shape : 21
     size: 1
   is.legend: no
+  which_pages: all
+  print: TRUE
   facets:
     ncol: 3
-    nrow: 4
+    nrow: 7
     scales: free
   labels:
     title: Individual fits

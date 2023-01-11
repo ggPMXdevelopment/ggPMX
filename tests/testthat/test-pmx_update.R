@@ -16,10 +16,11 @@ test_that("can remove DIS plot", {
   expect_false("distr1" %in% ctr$plots())
 })
 
+
 test_that("can update IND plot", {
   ctr <- helpers$ctr
   ctr %>% set_plot("IND", pname = "indiv1")
-  expect_is(ctr %>% get_plot("indiv1", c(2, 4)), "list")
+  expect_is(ctr %>% get_plot("indiv1", c(1, 2)), "list")
   expect_true("indiv1" %in% ctr$plots())
   oldconf <- ctr$get_config("indiv1")
   expect_false(oldconf$gp$is.band)
@@ -28,6 +29,7 @@ test_that("can update IND plot", {
   newconf <- ctr$get_config("indiv1")
   expect_true(newconf$gp$is.band)
 })
+
 
 test_that("can remove IND plot", {
   ctr <- helpers$ctr
