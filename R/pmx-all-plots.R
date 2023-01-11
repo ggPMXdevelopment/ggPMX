@@ -1,12 +1,14 @@
 pmx_plot_generic <-
   function(ctr, pname, defaults_, ...) {
     stopifnot(is_pmxclass(ctr))
+
     if (!pname %in% (ctr %>% plot_names())) {
       return(NULL)
     }
+    
     cctr <- pmx_copy(ctr, ...)
 
-    if (length(list(...)) != 0){
+    if ((length(list(...)) != 0) || (!is.null(ctr[["settings"]]))) {
          params <- c(
                      ctr = cctr,
                      pname = pname,
@@ -18,9 +20,11 @@ pmx_plot_generic <-
     else {
       p <- ctr %>% get_plot(pname)
     }
+
     rm(cctr)
     p
   }
+
 
 lang_to_expr <-
   function(params) {
