@@ -30,6 +30,7 @@ test_that("residual: params: x equals IWRES, y equals IPRED;
           hline = list(yintercept = 0),
           facets = NULL,
           bloq = NULL,
+          square_plot = TRUE,
           gp = pmx_gpar(labels = labels)
         ),
         class = c("residual", "pmx_gpar")
@@ -165,3 +166,29 @@ test_that(
 
 #------------------- pmx_plot_cats end --------------------------------------
 
+
+#------------------- pmx_plot_dv_pred start -------------------------------------
+
+test_that(
+  "pmx_plot_dv_pred: params: ctr, range; result: squared by default, with
+   applied ranges with square_plot = FALSE",
+  {
+    ctr <- theophylline()
+    p1 <- ctr %>% pmx_plot_dv_pred(ranges = list(x = c(200, 500), y = c(100, 200)))
+
+    p2 <- ctr %>% pmx_plot_dv_pred(
+                    ranges = list(x = c(200, 500), y = c(100, 200)),
+                    square_plot = FALSE
+                  )
+
+    expect_equal(
+      p1[["plot_env"]][["gp"]][["ranges"]][["y"]][[2]],
+      p1[["plot_env"]][["gp"]][["ranges"]][["x"]][[2]]
+    )
+
+    expect_equal(p2[["plot_env"]][["gp"]][["ranges"]][["x"]], c(200, 500))
+    expect_equal(p2[["plot_env"]][["gp"]][["ranges"]][["y"]], c(100, 200))
+  }
+)
+
+#------------------- pmx_plot_dv_pred end --------------------------------------
