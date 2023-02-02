@@ -31,6 +31,8 @@ Using simple syntax, the toolbox produces various goodness-of-fit diagnostics su
 - distribution plots, 
 - prediction- and simulation-based diagnostics (visual predictive checks). 
 
+ggPMX creates plot objects which can be further customized and extended using the extensive [ggplot2 syntax](https://ggplot2.tidyverse.org/reference/gg-add.html).
+
 In addition, shrinkage and summary parameters tables can be also produced. By default, the PDF- or Word-format diagnostic report contains essential goodness-of-fit plots. However, these can be adapted to produce different sets of diagnostics as desired by the user, and any of the plots may be customized individually. The types of supported customizations include modifications of the graphical parameters, labels, and various stratifications by covariates.
 
 # Installation
