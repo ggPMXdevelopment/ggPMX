@@ -674,7 +674,7 @@ ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
 ### Stratification 
 
 ```{r}
-ctr %>% pmx_plot_vpc(strat.facet="SEX",facets=list(nrow=2))
+ctr %>% pmx_plot_vpc(strat.facet=~SEX,facets=list(nrow=2))
 ```
 
 ### Monolix-like customisation
@@ -683,7 +683,7 @@ User can customize the options to get a Monolix-like display.
 
 ```{r}
 ctr %>% pmx_plot_vpc(
-  strat.facet="SEX",
+  strat.facet=~SEX,
   facets=list(nrow=2),
   type="percentile",
   is.draft = FALSE,

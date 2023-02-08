@@ -40,9 +40,9 @@ ctr %>% pmx_plot_dv_pred(
 # stratification  ----------------------------------
 
 ## continuous stratification
-ctr %>% pmx_plot_dv_pred(strat.color = "WT0")
+ctr %>% pmx_plot_dv_pred(strat.color = ~WT0)
 ## categorical stratification
-ctr %>% pmx_plot_dv_pred(strat.facet = "SEX")
+ctr %>% pmx_plot_dv_pred(strat.facet = ~SEX)
 ## using formula notation
 ctr %>% pmx_plot_dv_pred(strat.facet = STUD~SEX)
 
