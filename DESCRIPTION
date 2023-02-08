@@ -40,6 +40,7 @@ Imports:
     R6,
     gtable,
     ggplot2 (>= 2.2.0),
+    ggforce,
     magrittr,
     stringr,
     assertthat,
@@ -68,5 +69,5 @@ Suggests:
     withr
 VignetteBuilder: knitr
 NeedsCompilation: no
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Encoding: UTF-8

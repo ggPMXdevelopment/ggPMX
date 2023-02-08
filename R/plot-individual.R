@@ -218,7 +218,7 @@ plot_pmx.individual <-
           if (is.null(facets$labeller)) {
             facets$labeller <- labeller(ID = function(x) sprintf("ID: %s", x))
           }
-          p + do.call(facet_wrap_paginate, facets)
+          p + do.call(ggforce::facet_wrap_paginate, facets)
         })
         if (length(res) == 1) res[[1]] else res
       }
