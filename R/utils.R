@@ -230,7 +230,7 @@ has_lixoft_connectors <- function() {
       assignInMyNamespace("lixoft_started", FALSE)
       return(invisible(FALSE))
     }
-    x <- try(lixoftConnectors::initializeLixoftConnectors(software = "monolix"), silent=TRUE)
+    x <- try(lixoftConnectors::initializeLixoftConnectors(software = "monolix", force=TRUE), silent=TRUE)
     if (inherits(x, "try-error")) {
       assignInMyNamespace("lixoft_started", FALSE)
     } else {
