@@ -12,10 +12,24 @@ test_that("pmx_comp_shrink: params: ctr is controller
                              c("Cl", "V", "ka"))
           })
 
+
+test_that("pmx_comp_shrink: params: ctr result: sd and var are calculated correctly", {
+  expect_identical(
+    c(0.1125175, 0.9469996, 0.7423478, 0.0579371, 0.7697818, 0.4924055),
+
+    round(digits=7, as.vector(
+      sapply(c("var", "sd"), function(n) pmx_comp_shrink(ctr, fun=n)[["SHRINK"]]))
+    )
+
+  )
+})
+
+
 test_that("pmx_comp_shrink: params: ctr is controller result:data.table",
           {
             expect_true(inherits(pmx_comp_shrink(ctr = ctr), "data.table"))
           })
+
 
 test_that(
   "pmx_comp_shrink: params:  ctr is controller and function in (var,sd)
