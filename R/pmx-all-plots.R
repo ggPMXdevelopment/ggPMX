@@ -13,13 +13,6 @@ pmx_plot_generic <-
       }
     }
 
-<<<<<<< HEAD
-    if (length(list(...)) != 0 || ) {
-      #if params were set through pmxgpar, then modify default params with pmxgpar
-      if ("pmxgpar" %in% names(list(...)))
-        plot_params <- utils::modifyList(defaults_, list(...)[["pmxgpar"]])
-=======
->>>>>>> b54fc45 (fix Making fun argument required part of shrink)
     if (length(list(...)) != 0 || (!is.null(ctr[["settings"]]))) {
       #if params were set through pmxgpar, then modify default params with pmxgpar
       if ("pmxgpar" %in% names(list(...)))
