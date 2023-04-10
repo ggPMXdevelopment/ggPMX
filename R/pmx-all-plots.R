@@ -7,20 +7,22 @@ pmx_plot_generic <-
     }
     
     cctr <- pmx_copy(ctr, ...)
-
-    if ((length(list(...)) != 0) || (!is.null(ctr[["settings"]]))) {
-         params <- c(
-                     ctr = cctr,
-                     pname = pname,
-                     l_left_join(defaults_, list(...))
-                  )
-         do.call("pmx_update", params)
-         p <- cctr %>% get_plot(pname)
+    if (length(list(...)) != 0 || (!is.null(ctr[["settings"]]))) {
+      #if params were set through pmxgpar, then modify default params with pmxgpar
+      if ("pmxgpar" %in% names(list(...)))
+        plot_params <- modifyList(defaults_, list(...)[["pmxgpar"]])
+      else
+        plot_params <- l_left_join(defaults_, list(...))
+      params <- c(
+        ctr = cctr,
+        pname = pname,
+        plot_params
+      )
+      do.call("pmx_update", params)
+      p <- cctr %>% get_plot(pname)
     }
-    else {
+    else
       p <- ctr %>% get_plot(pname)
-    }
-
     rm(cctr)
     p
   }
