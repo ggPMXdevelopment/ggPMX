@@ -23,7 +23,7 @@ plot_pmx.pmx_gpar <- function(gpar, p, bloq_cens) {
   ## smoothing
   p <- with(gpar, {
     if (is.smooth) {
-      if (smooth_with_bloq) {
+      if (exists("smooth_with_bloq") && smooth_with_bloq) {
         smooth$data <- p$data[p[["data"]][[bloq_cens]] == 0, ]
       }
       smooth$na.rm <- TRUE
