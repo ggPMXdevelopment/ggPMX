@@ -163,5 +163,18 @@ test_that(
     expect_identical(p[[1]]$facet$params$ncol, 1)
   })
 
-#------------------- pmx_plot_cats end --------------------------------------
 
+test_that(
+  "pmx_plot_dv_ipred: params: ctr, strat.color, point(...);
+  result: aesthetic params applied along with strat.color",
+  {
+    params <- list(alpha=0.1, size=2, stroke=2, shape=23, fill="red")
+    p <- do.call(pmx_plot_dv_ipred, list(ctr=ctr, strat.color="WT0", point=params))
+    lapply(names(params), function(a) {
+      value <- p[["plot_env"]][["point"]][[a]]
+      if(inherits(value, "quosure")) {value <- as_label(value)}
+      expect_identical(value, params[[a]])
+    })
+  }
+)
+#------------------- pmx_plot_cats end --------------------------------------
