@@ -113,7 +113,14 @@ pmx_update_plot <- function(self, private, pname, strat.facet,
 
   ## update graphical parameters
   if (!is.null(pmxgpar)) x <- l_left_join(x, pmxgpar)
+  
+  if ((!is.null(self[["settings"]])) 
+      && (length(attributes(self[["settings"]])) > 2)) {
+        x <- l_left_join(x, attributes(self[["settings"]]))
+  }
+  
   newopts <- list(...)
+
   if (length(newopts) > 0) {
     hl <- newopts[names(newopts) %in% unique(c(names(x), "shrink"))]
     gpl <- newopts[!names(newopts) %in% unique(c(names(x), "shrink"))]

@@ -110,6 +110,44 @@ test_that("can disable draft for all plots", {
 })
 
 
+test_that("pmx_settings are applied to the plot", {
+  my_settings <- pmx_settings(
+    effects=list(
+      levels=c("Cl","ka","V"),
+      labels=c("Clearance", "Absorption_rate", "Volume")
+    ),
+    covariates=pmx_cov(values=list("SEX"), labels=list("Sex"))
+  )
+
+  theophylline <- file.path(
+    system.file(package="ggPMX"),
+    "testdata",
+    "theophylline"
+  )
+
+  WORK_DIR <- file.path(theophylline, "Monolix")
+  input_file <- file.path(theophylline, "data_pk.csv")
+
+  ctr <- pmx_mlx(
+    directory=WORK_DIR,
+    input=input_file,
+    dv="Y",
+    dvid="DVID",
+    conts=c("WT0", "AGE0"),
+    settings=my_settings,
+    cats=c("SEX"),
+    config="standing", strats=c("STUD")
+  )
+
+  p <- ctr %>% pmx_plot_eta_cats()
+  expect_identical(levels(p[["data"]][["variable"]]), c("Sex"))
+  expect_identical(
+    levels(p[["data"]][["EFFECT"]]),
+    c("Clearance", "Absorption_rate", "Volume")
+  )
+})
+
+
 test_that("can set draft to false for a single plot", {
   ctr <- pmxClassHelpers$ctr
   p <- ctr %>% pmx_plot_dv_pred(is.draft = FALSE)
