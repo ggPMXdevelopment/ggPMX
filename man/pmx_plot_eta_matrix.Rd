@@ -153,7 +153,7 @@ ctr \%>\% pmx_plot_eta_matrix(is.draft = FALSE)
 ## change text color line
 ctr \%>\% pmx_plot_eta_matrix(
   text_color="red",
-  shrink=list(mapping=aes(color="magenta"))
+  shrink=list(mapping=aes(color="magenta"), fun="var")
   )
 
 ## custom point aes and static parameters
