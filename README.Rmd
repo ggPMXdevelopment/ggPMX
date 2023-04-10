@@ -1147,9 +1147,11 @@ ctr %>% pmx_comp_shrink(  fun = "var")
 ```
 
 ```{r, shrink_plot_var}
-ctr %>% pmx_plot_eta_box( shrink=list(fun = "var"))
+ctr %>% pmx_plot_eta_box( shrink=pmx_shrink(fun = "var"))
 ```
- 
+
+Note that for plotting functions which take a shrink parameter, this can be created using the `pmx_shrink` function to create a `pmxShrinkClass` object (or it can be a list which can be converted into such an object using `pmx_shrink`).
+
  
 ## Shrinkage and stratification
 

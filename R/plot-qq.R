@@ -58,7 +58,8 @@ pmx_qq_stats <- function(points) {
 #' @param is.vline logical if TRUE add vertical line x=0 ( TRUE by default)
 #' @param vline geom vline graphical parameters
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
-#' @param shrink \code{list} shrinkage graphical parameter
+#' @param shrink \code{pmxShrinkClass} shrinkage graphical parameter or
+#'   \code{list} coercible into one
 
 pmx_qq <- function(
                    x,

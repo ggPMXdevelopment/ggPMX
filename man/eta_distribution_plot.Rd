@@ -167,7 +167,7 @@ ctr \%>\% pmx_plot_eta_hist(is.jitter=TRUE,strat.facet=~STUD,strat.color="SEX")
 ctr \%>\% pmx_plot_eta_hist(strat.facet = "SEX")
 ## using formula categorical stratification facetting
 ctr \%>\% pmx_plot_eta_hist(strat.facet = STUD~SEX,
-                         shrink=list(hjust=0.5, fun="var"))
+                         shrink=pmx_shrink(hjust=0.5))
 
 # subsetting  --------------------------------------
 

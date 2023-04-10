@@ -65,7 +65,8 @@ pmx_plot_cwres_qq(ctr, ...)
 
 \item{is.shrink}{\code{logical} if TRUE add shrinkage to the plot}
 
-\item{shrink}{\code{list} shrinkage graphical parameter (geom_text)}
+\item{shrink}{\code{pmxShrinkClass} shrinkage graphical parameter or
+\code{list} coercible into one}
 
 \item{is.hline}{\code{logical} if TRUE add horizontal line y=0 ( TRUE by default)}
 

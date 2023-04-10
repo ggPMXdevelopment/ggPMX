@@ -16,7 +16,8 @@
 #' @param is.reference_line \code{logical} if TRUE add reference line to the plot
 #' @param reference_line \code{list} geom_abline parameters.
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
-#' @param shrink \code{list} shrinkage graphical parameter (geom_text)
+#' @param shrink \code{pmxShrinkClass} shrinkage graphical parameter or
+#'   \code{list} coercible into one
 #' @param is.hline \code{logical} if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline \code{list} geom hline graphical parameters
 #' @param is.vline \code{logical} if TRUE add vertical line x=0 ( TRUE by default)

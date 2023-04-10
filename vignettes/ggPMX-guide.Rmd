@@ -1064,7 +1064,7 @@ ctr %>% pmx_comp_shrink(fun="var")
 ```
 
 ```{r, shrink_plot_var}
-ctr %>% pmx_plot_eta_box( shrink=list(fun="var"))
+ctr %>% pmx_plot_eta_box(shrink=pmx_shrink(fun = "var"))
 ```
  
  

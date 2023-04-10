@@ -397,6 +397,52 @@ pmx_bloq <-
   }
 
 
+#' Create shrinkage parameter object
+#' @param fun \code{list} shrinkage function can be \code{sd} or \code{var}
+#' @param size \code{numeric} shrinkage text size
+#' @param color \code{character} shrinkage text color
+#' @param vjust \code{numeric} shrinkage position vertical adjustment
+#' @param hjust \code{numeric} shrinkage position horizontal adjustment
+#' @param ... any other parameter
+#' @return \code{pmxShrinkClass} object (\code{list})
+#' @export
+
+pmx_shrink <- function(fun = c("var", "sd"),
+                       size = 1,
+                       color = "green",
+                       vjust = 1.5,
+                       hjust = 0.5,
+                       ...) {
+  checkmate::assert_character(x = fun, any.missing=FALSE)
+  checkmate::assert_numeric(x = size, len = 1, any.missing=FALSE)
+  checkmate::assert_character(x = color, len = 1, any.missing=FALSE)
+  checkmate::assert_numeric(x = vjust, len = 1, any.missing=FALSE)
+  checkmate::assert_numeric(x = hjust, len = 1, any.missing=FALSE)
+
+  if(length(fun) > 1) {fun <- "var"}
+
+  res <- list(
+    fun = fun,
+    size = size,
+    color = color,
+    vjust = vjust,
+    hjust = hjust,
+    ...
+  )
+
+  structure(res, class = c("list", "pmxShrinkClass"))
+}
+
+
+#' Performs checks of names in shrink list
+#'
+#' @param shrink_list \code{list} list of shrink arguments
+#' @export
+
+check_shrink <- function(shrink_list) {
+  arg_names <- c("fun", "size", "color", "vjust", "hjust")
+  checkmate::checkNames(names(shrink_list), must.include = arg_names)
+}
 
 
 #' Create a new plot  of the desired type

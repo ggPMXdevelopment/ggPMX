@@ -15,15 +15,8 @@
 #' @param type box for boxplot or histogram
 #' @param dname name of dataset to be used
 #' @param is.shrink \code{logical} if TRUE add shrinkage layer
-#' @param shrink \code{list} list of parameters to tune the shrinkage
-#' \strong{shrink} is a list that contains:
-#' \itemize{
-#' \item {\strong{fun:}} {shrinkage function can be \code{sd} or \code{var}}
-#  Shrink list must contain the fun parameter (character)
-#' \item {\strong{size:}} {shrinkage text size}
-#' \item {\strong{color:}} {shrinkage text color}
-#' \item {\strong{vjust:}} {shrinkage position vertical adjustment}
-#' }
+#' @param shrink \code{pmxShrinkClass} shrinkage graphical parameter or
+#'   \code{list} coercible into one
 #' @param is.jitter \code{logical} if TRUE add jitter operator for points
 #' @param histogram \code{list} histogram graphical parameters
 

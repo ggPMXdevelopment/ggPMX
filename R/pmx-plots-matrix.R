@@ -17,7 +17,8 @@
 #' @param type.eta \code{character} type of eat can be 'mode' or 'mean'.'mode' by default
 #' @param text_color color of the correlation text in the upper matrix
 #' @param is.shrink \code{logical} if TRUE add shrinkage to the plot
-#' @param shrink \code{list} shrinkage graphical parameter
+#' @param shrink \code{pmxShrinkClass} shrinkage graphical parameter or
+#'   \code{list} coercible into one
 #' @param point \code{list} geom_point graphical parameter
 #' @param is.smooth \code{logical} if TRUE add smoothing to lower matrix plots
 #' @param smooth \code{list} geom_smooth graphical parameters
