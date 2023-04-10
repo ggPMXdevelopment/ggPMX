@@ -314,7 +314,7 @@ test_that("shrinkage_layer: params: hist type result: LayerInstance", {
   expect_true(inherits(
     shrinkage_layer(
       dx,
-      shrink = list(hjust = 0.5) ,
+      shrink=list(hjust=0.5, fun="var"),
       type = "hist",
       strat.color = dx$SEX
     ),
@@ -328,7 +328,7 @@ test_that("shrinkage_layer: params: dx contain eta data result: warning",
             dx <- ctr %>% get_data("eta")
             expect_warning(shrinkage_layer(
               dx,
-              shrink = list(hjust = 0.5) ,
+              shrink=list(hjust=0.5, fun="var"),
               type = "hist",
               strat.color = dx$SEX
             ))
@@ -340,7 +340,7 @@ test_that("shrinkage_layer: params: box type result: LayerInstance", {
   expect_true(inherits(
     shrinkage_layer(
       dx,
-      shrink = list(hjust = 0.5) ,
+      shrink=list(hjust=0.5, fun="var"),
       type = "box",
       strat.color = dx$SEX
     ),

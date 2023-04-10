@@ -51,7 +51,7 @@ pmx_plot_eta_hist(ctr, ...)
 
 \item{is.shrink}{\code{logical} if TRUE add shrinkage layer}
 
-\item{shrink}{\code{list} list of parameters to tune the shrinkage}
+\item{shrink}{\code{list} parameters to control shrinkage, must contain "fun"}
 
 \item{is.jitter}{\code{logical} if TRUE add jitter operator for points}
 
@@ -167,7 +167,7 @@ ctr \%>\% pmx_plot_eta_hist(is.jitter=TRUE,strat.facet=~STUD,strat.color="SEX")
 ctr \%>\% pmx_plot_eta_hist(strat.facet = "SEX")
 ## using formula categorical stratification facetting
 ctr \%>\% pmx_plot_eta_hist(strat.facet = STUD~SEX,
-                         shrink=list(hjust=0.5))
+                         shrink=list(hjust=0.5, fun="var"))
 
 # subsetting  --------------------------------------
 

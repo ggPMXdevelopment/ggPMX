@@ -7,6 +7,13 @@ pmx_plot_generic <-
     }
     
     cctr <- pmx_copy(ctr, ...)
+
+    if("shrink" %in% names(list(...))) {
+      if(!"fun" %in% names(list(...)[["shrink"]])) {
+        stop("Shrink argument (list) does not contain an element named 'fun'")
+      }
+    }
+
     if (length(list(...)) != 0 || (!is.null(ctr[["settings"]]))) {
       #if params were set through pmxgpar, then modify default params with pmxgpar
       if ("pmxgpar" %in% names(list(...)))
