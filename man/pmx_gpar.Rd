@@ -8,6 +8,8 @@ pmx_gpar(
   is.title,
   labels,
   axis.title,
+  which_pages,
+  print,
   axis.text,
   ranges,
   is.smooth,
@@ -32,6 +34,12 @@ pmx_gpar(
 \item{labels}{list of labels, like title, subtitle, x , y}
 
 \item{axis.title}{list or element_text (same as ggplot2 axis.title theme)}
+
+\item{which_pages}{page(s) to display; if "all" display all pages,
+if 1 display first page, if c(1,2) display first and second pages}
+
+\item{print}{if TRUE the ouptut will be a print not a ggplot2. This
+is useful for rmarkdwon output to avoid verbose list index print.}
 
 \item{axis.text}{list or element_text (same as ggplot2 axis.text theme)}
 

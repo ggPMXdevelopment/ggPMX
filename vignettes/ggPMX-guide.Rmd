@@ -458,8 +458,15 @@ ctr %>% pmx_plot_eta_box
 ```
 
 - Individual plots (**IND**)
+
+For individual plot which_pages parameter is used. which_pages parameter can either be:
+
+- "all" for all pages;
+- page number (for example 1) for single page;
+- set of page numbers (for example c(1, 2)) for multiple pages (where numbers are representing corresponding pages).
+
 ```{r basics_indiv, eval=F, fig.height=6, fig.width=6, fig.show='hold', fig.align='center'}
-ctr %>% pmx_plot_individual(which_pages = 1)
+ctr %>% pmx_plot_individual(which_pages=1)
 ```
 
 - QQ-plots (**PMX_QQ**)
@@ -780,7 +787,7 @@ within Monolix, user can choose to not use finegrid file even if it is present.
 
 ```{r settings_use.finegrid,fig.height=9, fig.width=7}
 ctr <- theophylline()
-ctr %>% pmx_plot_individual(use.finegrid =FALSE)
+ctr %>% pmx_plot_individual(which_pages="all", use.finegrid =FALSE)
 ```
 
 ### Set stratification color legend
