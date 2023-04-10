@@ -12,15 +12,19 @@ pmx_plot_generic <-
         stop("Shrink argument (list) does not contain an element named 'fun'")
       }
     }
-
-    if (length(list(...)) != 0 ||
+    len_list <- length(list(...))
+    if (len_list != 0 ||
           (!is.null(ctr[["bloq"]])) ||
           (!is.null(ctr[["settings"]]))) {
       #if params were set through pmxgpar, then modify default params with pmxgpar
-      if ("pmxgpar" %in% names(list(...)))
+      if ("pmxgpar" %in% names(list(...))) 
         plot_params <- utils::modifyList(defaults_, list(...)[["pmxgpar"]])
-      else
+      else if (len_list != 0) {
         plot_params <- l_left_join(defaults_, list(...))
+      } else {
+        plot_params <- NULL
+      }
+        
       params <- c(
         ctr = cctr,
         pname = pname,
