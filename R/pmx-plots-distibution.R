@@ -16,6 +16,14 @@
 #' @param dname name of dataset to be used
 #' @param is.shrink \code{logical} if TRUE add shrinkage layer
 #' @param shrink \code{list} list of parameters to tune the shrinkage
+#' \strong{shrink} is a list that contains:
+#' \itemize{
+#' \item {\strong{fun:}} {shrinkage function can be \code{sd} or \code{var}}
+#  Shrink list must contain the fun parameter (character)
+#' \item {\strong{size:}} {shrinkage text size}
+#' \item {\strong{color:}} {shrinkage text color}
+#' \item {\strong{vjust:}} {shrinkage position vertical adjustment}
+#' }
 #' @param is.jitter \code{logical} if TRUE add jitter operator for points
 #' @param histogram \code{list} histogram graphical parameters
 
@@ -70,6 +78,7 @@ eta_distribution_plot <-
 # Distribution boxplot --------------------------------------------------------------
 
 #' Eta Distribution boxplot
+#' @param shrink \code{list} parameters to control shrinkage, must contain "fun"
 #' @family eta_distribution_plot
 #' @rdname eta_distribution_plot
 #' @export
@@ -88,6 +97,7 @@ pmx_plot_eta_box <-
 
 #' Eta Distribution histogram plot
 #' @export
+#' @param shrink \code{list} parameters to control shrinkage, must contain "fun"
 #' @family eta_distribution_plot
 #' @rdname eta_distribution_plot
 #' @export
