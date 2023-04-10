@@ -82,34 +82,6 @@ test_that("distrib: params: integer facets; result: error", {
 })
 #------------------- distrib end ---------------------------------------------
 
-#------------------- is.formula start ----------------------------------------
-
-test_that("is.formula: params: formula result: formula", {
-  x <- ~ a + y + z
-  expect_true(is.formula(x))
-}) 
-
-test_that("is.formula: params: formula (2) result: formula", {
-  x <- y ~ z
-  expect_true(is.formula(x))
-})
-
-test_that("is.formula: params: expression result: not formula", {
-  x <- expression(x ^ 2 - 2 * x + 1)
-  expect_false(is.formula(x))
-})
-
-test_that("is.formula: params: integer result: not formula", {
-  x <- 10L
-  expect_false(is.formula(x))
-})
-
-test_that("is.formula: params: NULL result: not formula", {
-  x <- NULL
-  expect_false(is.formula(x))
-})
-#------------------- is.formula end ------------------------------------------
-
 #------------------- wrap_formula start --------------------------------------
 
 test_that("wrap_formula: params: x is a formula result: formula", {
@@ -263,23 +235,22 @@ test_that("distrib.box: params: x equals NULL result: error", {
   ))
 })
 
-test_that("distrib.box: params: dx equals NULL result: gg",
-          {
-            dx <- NULL
-            labels <- list("EVID", "SEX")
-            x <-
-              distrib(
-                labels,
-                is.shrink = FALSE,
-                type = "hist",
-                facets = NULL,
-                dname = "predictions"
-              )
-            expect_true(inherits(
-              distrib.box(dx, strat.color = dx$SEX, strat.facet = NULL, x),
-              "gg"
-            ))
-          })
+test_that("distrib.box: params: dx equals NULL result: gg", {
+  dx <- NULL
+  labels <- list("EVID", "SEX")
+  x <-
+    distrib(
+      labels,
+      is.shrink = FALSE,
+      type = "hist",
+      facets = NULL,
+      dname = "predictions"
+    )
+  expect_true(inherits(
+    distrib.box(dx, strat.color = dx$SEX, strat.facet = NULL, x),
+    "gg"
+  ))
+})
 
 test_that("distrib.box: params: strat.facet is not NULL result: gg", {
   ctr <- theophylline()
@@ -297,7 +268,7 @@ test_that("distrib.box: params: strat.facet is not NULL result: gg", {
     distrib.box(
       dx,
       strat.color = dx$SEX,
-      strat.facet = ~ SEX,
+      strat.facet = ~SEX,
       x
     ),
     "gg"
@@ -322,17 +293,16 @@ test_that("shrinkage_layer: params: hist type result: LayerInstance", {
   ))
 })
 
-test_that("shrinkage_layer: params: dx contain eta data result: warning",
-          {
-            ctr <- theophylline()
-            dx <- ctr %>% get_data("eta")
-            expect_warning(shrinkage_layer(
-              dx,
-              shrink=list(hjust=0.5, fun="var"),
-              type = "hist",
-              strat.color = dx$SEX
-            ))
-          })
+test_that("shrinkage_layer: params: dx contain eta data result: warning", {
+  ctr <- theophylline()
+  dx <- ctr %>% get_data("eta")
+  expect_warning(shrinkage_layer(
+    dx,
+    shrink = list(hjust = 0.5),
+    type = "hist",
+    strat.color = dx$SEX
+  ))
+})
 
 test_that("shrinkage_layer: params: box type result: LayerInstance", {
   ctr <- theophylline()
@@ -341,6 +311,7 @@ test_that("shrinkage_layer: params: box type result: LayerInstance", {
     shrinkage_layer(
       dx,
       shrink=list(hjust=0.5, fun="var"),
+      shrink = list(hjust = 0.5),
       type = "box",
       strat.color = dx$SEX
     ),

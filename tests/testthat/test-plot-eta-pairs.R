@@ -30,7 +30,7 @@ test_that("pmx_plot_eta_matrix: params: is.vreference_line, vreference_line resu
   expect_identical(p$plots$`V;V`$layers[[2]]$aes_params$linetype, "longdash")
   expect_identical(p$plots$`ka;ka`$layers[[2]]$aes_params$colour, "blue")
   expect_identical(p$plots$`ka;ka`$layers[[2]]$aes_params$linetype, "longdash")
-  })
+})
 
 test_that("pmx_plot_eta_matrix: params: is.vreference_line, vreference_line etc. result:
     lack of parameters of vreference_line", {
