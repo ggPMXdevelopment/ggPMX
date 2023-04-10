@@ -10,6 +10,7 @@ RES:
     size: 1.0
   is.hline: no
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -71,6 +72,7 @@ IND:
   dname: IND
   ranges: ~
   is.smooth: no
+  smooth_with_bloq: no
   ipred_line:
     colour: black
     size: 1

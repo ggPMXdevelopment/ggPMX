@@ -15,6 +15,7 @@ ABS_IWRES_IPRED:
     size: 1.0
   is.hline: yes
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -44,6 +45,7 @@ ABS_IWRES_TIME:
     size: 1.0
   is.hline: yes
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -74,6 +76,7 @@ IWRES_IPRED:
   is.hline: yes
   is.band: yes
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -102,6 +105,7 @@ IWRES_TIME:
     size: 1.0
   is.hline: yes
   is.smooth: yes
+  smooth_with_bloq: no
   is.band: yes
   smooth:
     se: no
@@ -162,6 +166,7 @@ NPDE_TIME:
   is.hline: yes
   is.band: yes
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -193,6 +198,7 @@ NPDE_PRED:
     colour: black
   is.band: yes
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -235,6 +241,7 @@ DV_PRED:
     colour: black
     size: 1.0
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -266,6 +273,7 @@ DV_IPRED:
     colour: black
     size: 1.0
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     colour: red
@@ -289,6 +297,7 @@ INDIVIDUAL:
   dname: IND
   ranges: ~
   is.smooth: no
+  smooth_with_bloq: no
   is.title: TRUE
   ipred_line:
     colour: black
@@ -396,6 +405,7 @@ ETA_MATRIX:
   type.eta: mode
   text_color: black
   is.smooth: yes
+  smooth_with_bloq: no
   is.hline: yes
   is.title: TRUE
   hline: 
@@ -433,6 +443,7 @@ ETA_CONTS:
     colour: red
     size: 4
   is.smooth: yes
+  smooth_with_bloq: no
   smooth:
     se: no
     size: 1
@@ -488,3 +499,4 @@ PMX_VPC:
     x: TIME
     'y': DV
   is.smooth: no
+  smooth_with_bloq: no

@@ -7,10 +7,11 @@
 #' general settings like , smoothing, add band, labelling, theming,...
 #' @param gpar object of pmx_gpar type
 #' @param p plot
+#' @param bloq_cens bloq censored column name
 #' @import ggplot2
 #' @family plot_pmx
 #' @return ggplot2 object
-plot_pmx.pmx_gpar <- function(gpar, p) {
+plot_pmx.pmx_gpar <- function(gpar, p, bloq_cens) {
   assert_that(is_pmx_gpar(gpar))
   assert_that(is_ggplot(p))
   with(gpar, {
@@ -22,6 +23,9 @@ plot_pmx.pmx_gpar <- function(gpar, p) {
   ## smoothing
   p <- with(gpar, {
     if (is.smooth) {
+      if (smooth_with_bloq) {
+        smooth$data <- p$data[p[["data"]][[bloq_cens]] == 0, ]
+      }
       smooth$na.rm <- TRUE
       p <- p + do.call(geom_smooth, smooth)
     }

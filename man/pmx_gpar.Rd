@@ -21,6 +21,7 @@ pmx_gpar(
   discrete,
   is.identity_line,
   identity_line,
+  smooth_with_bloq,
   scale_x_log10,
   scale_y_log10,
   color.scales,
@@ -62,6 +63,8 @@ is useful for rmarkdwon output to avoid verbose list index print.}
 \item{is.identity_line}{\code{logical} if TRUE add y=x line}
 
 \item{identity_line}{\code{list} y=x aes properties}
+
+\item{smooth_with_bloq}{\code{logical} if TRUE perform spline in plots with BLOQ data}
 
 \item{scale_x_log10}{logical if TRUE add scale_x_log10 layer}
 
