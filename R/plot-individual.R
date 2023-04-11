@@ -130,9 +130,9 @@ plot_pmx.individual <-
           if (bloq$limit %in% names(bloq$data)) {
             bloq$data[!is.na(get(bloq$limit)), "y_end" := as.numeric(get(bloq$limit))]
             bloq$mapping <-
-            aes_string(
-              xend = "TIME",
-              yend = "y_end"
+            aes(
+              xend = .data$TIME,
+              yend = .data$y_end
             )
           bloq$cens <- bloq$limit <- NULL
           do.call(geom_segment, bloq)

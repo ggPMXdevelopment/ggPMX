@@ -375,7 +375,7 @@ find_interval <- function(x, vec, labels = NULL, ...) {
 
 
 vpc.pi_line <- function(dt, left, geom ) {
-  mapping <- aes_string(group = "percentile", y = "value", linetype="percentile")
+  mapping <- aes(group = .data$percentile, y = .data$value, linetype=.data$percentile)
   right <- list(data = dt, mapping = mapping)
   left$linetype <- NULL
   do.call("geom_line", append(right, left))
@@ -415,7 +415,7 @@ vpc.pi_line <- function(dt, left, geom ) {
 }
 vpc.plot <- function(x) {
   with(x, {
-    pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv))
+    pp <- ggplot(data = db$pi_dt, aes(x = .data[[if (!is.null(bin)) "bin" else idv]]))
 
     pi_med_layer <- function() {if (!is.null(pi)) {
       vpc.pi_line(db$pi_dt[percentile == "p50"], pi$median)
@@ -429,7 +429,7 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$pi_area_dt,
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]])
+          mapping = aes(ymin = .data[[nn[[1]]]], ymax = .data[[nn[[2]]]])
         ),
         pi$area
       )
@@ -440,7 +440,7 @@ vpc.plot <- function(x) {
     obs_layer <- if (!is.null(obs)) {
       params <- append(
         list(
-          mapping = aes_string(y = dv, x = idv),
+          mapping = aes(y = .data[[dv]], x = .data[[idv]]),
           data = input
         ),
         obs
@@ -465,7 +465,8 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$ci_dt[percentile == "p50"],
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile",fill="percentile")
+          mapping = aes(ymin = .data[[nn[[1]]]], ymax = .data[[nn[[2]]]],
+                        group = .data$percentile,fill=.data$percentile)
         ),
         ci$median
       )
@@ -477,7 +478,8 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$ci_dt[percentile != "p50"],
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile",fill="percentile")
+          mapping = aes(ymin = .data[[nn[[1]]]], ymax = .data[[nn[[2]]]],
+                        group = .data$percentile,fill=.data$percentile)
         ),
         ci$extreme
       )
@@ -485,7 +487,7 @@ vpc.plot <- function(x) {
       do.call(geom_ribbon, params)
     }}
 
-    pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv)) +
+    pp <- ggplot(data = db$pi_dt, aes(x = .data[[if (!is.null(bin)) "bin" else idv]])) +
       obs_layer + pi_med_layer() + pi_ext_layer() + rug_layer
 
     pp <- if (type=="scatter") pp +  pi_shaded_layer()

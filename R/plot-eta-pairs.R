@@ -75,7 +75,7 @@ eta_pairs <- function(
 
 lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline, ymax) {
   p <-
-    ggplot(data = data, aes_string(x = x, y = y)) + do.call(geom_point, point)
+    ggplot(data = data, aes(x = .data[[x]], y = .data[[y]])) + do.call(geom_point, point)
   if (is.smooth) {
     p <- p + do.call(geom_smooth, smooth)
   }
@@ -89,7 +89,7 @@ lower.plot <- function(data, x, y, point, is.smooth, smooth, gp, is.hline, hline
 }
 
 diag.plot <- function(data, x, gp, is.vreference_line, vreference_line) {
-  p <- ggally_densityDiag(data = data, aes_string(x = x))
+  p <- ggally_densityDiag(data = data, aes(x = .data[[x]]))
     if (is.vreference_line) {
       vreference_line1 <- vreference_line
       vreference_line1$xintercept <- -1.96
@@ -107,7 +107,7 @@ diag.plot <- function(data, x, gp, is.vreference_line, vreference_line) {
 
 
 upper.plot <- function(data, x, y, text_color, gp) {
-  p <- ggally_cor(data = data, aes_string(x = x, y = y), colour = text_color)
+  p <- ggally_cor(data = data, aes(x = .data[[x]], y = .data[[y]]), colour = text_color)
   plot_pmx(gp, p)
 }
 

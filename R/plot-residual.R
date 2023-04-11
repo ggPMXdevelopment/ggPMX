@@ -105,7 +105,7 @@ plot_pmx.residual <- function(x, dx, ...) {
     }
     dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
 
-    p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
+    p <- ggplot(dx, with(aess, ggplot2::aes(.data[[x]], .data[[y]])))
 
     # applying strat.color as color aesthetic mapping for point
     if (!is.null(x[["strat.color"]])) {
