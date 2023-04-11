@@ -174,33 +174,55 @@ plot_pmx.individual <-
                            ipred_line$colour,
                            pred_line$colour)
       keywidth_values <- c(rep(0, n - 1), rep(2, 2))
-      p <- ggplot(dx, aes(TIME, DV, shape=isobserv, colour=isobserv)) +
+
+      # boolean to see if ggplot2 is >= v 3.4.0 (some impact on syntax)
+      ggp2_gte_340 <- compareVersion(
+        as.character(packageVersion("ggplot2")), "3.3.6.9000"
+      ) > 0
+
+      # setting size_lw param depending on ggplot2 version
+      size_or_linewidth <- ifelse(ggp2_gte_340, "linewidth", "size")
+
+      p <- ggplot(dx, aes(TIME, DV, shape = isobserv, colour = isobserv)) +
         p_point +
-        geom_line(
-          aes(
-            y = IPRED,
-            linetype = "individual predictions",
-            colour = "individual predictions"
+        do.call(geom_line, setNames(
+          list(
+            aes(
+              y = IPRED, linetype = "individual predictions",
+              colour = "individual predictions"
+            ),
+            ipred_line[["size"]]
           ),
-          size = ipred_line$size
-        ) +
-        geom_line(
-          aes(
-            y = PRED,
-            linetype = "population predictions",
-            colour = "population predictions"
+          c("mapping", size_or_linewidth)
+        )) + do.call(geom_line, setNames(
+          list(
+            aes(
+              y = PRED, linetype = "population predictions",
+              colour = "population predictions"
+            ),
+            pred_line[["size"]]
           ),
-          size = pred_line$size
+          c("mapping", size_or_linewidth)
+        )) +
+        scale_linetype_manual(
+          values = setNames(
+            linetype_values,
+            linetype_labels
+          ),
+          guide = "none"
         ) +
-        scale_linetype_manual(values = setNames(linetype_values,
-                                                linetype_labels),
-                              guide = "none") +
-        scale_shape_manual(values = setNames(shape_values,
-                                             linetype_labels),
-                           guide = "none") +
+        scale_shape_manual(
+          values = setNames(
+            shape_values,
+            linetype_labels
+          ),
+          guide = "none"
+        ) +
         scale_colour_manual(
-          values = setNames(colour_values,
-                            linetype_labels),
+          values = setNames(
+            colour_values,
+            linetype_labels
+          ),
           guide = guide_legend(
             override.aes = list(
               linetype = linetype_values,
@@ -213,7 +235,7 @@ plot_pmx.individual <-
         ) +
         p_bloq
 
-        gp$is.legend <- is.legend
+      gp$is.legend <- is.legend
 
       p <- plot_pmx(gp, p)
 
