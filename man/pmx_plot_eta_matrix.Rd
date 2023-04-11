@@ -170,7 +170,7 @@ ctr \%>\% pmx_plot_eta_matrix(
 ## IGNORE continuous stratification
 ctr \%>\% pmx_plot_eta_matrix(strat.color = "WT0")
 ## IGNORE  categorical stratification
-ctr \%>\% pmx_plot_eta_matrix(strat.facet = "SEX")
+ctr \%>\% pmx_plot_eta_matrix(strat.facet = ~SEX)
 
 # subsetting  --------------------------------------
 

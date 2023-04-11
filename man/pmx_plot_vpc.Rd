@@ -173,7 +173,7 @@ ctr <- pmx_mlx(
 
 
 ctr \%>\% pmx_plot_vpc(
-  strat.facet="SEX",
+  strat.facet=~SEX,
   facets=list(nrow=2),
   type="percentile",
   is.draft = FALSE,

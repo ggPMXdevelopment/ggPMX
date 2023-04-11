@@ -134,40 +134,43 @@ Eta Distribution histogram plot
 
 ctr <- theophylline()
 ## boxplot variation
-p <- ctr \%>\% pmx_plot_eta_box
+p <- ctr \%>\% pmx_plot_eta_box()
 ## histogram variation
 p <- ctr \%>\% pmx_plot_eta_hist()
 
 # update graphical parameter  ----------------------
 
 ## add jitter
-ctr \%>\% 
+ctr \%>\%
   pmx_plot_eta_hist(is.jitter = TRUE, jitter = list(alpha = 0.4, color = "red"))
 
 ## remove shrinkage
-ctr \%>\% 
+ctr \%>\%
   pmx_plot_eta_hist(is.shrink = FALSE)
 
-## updat histogram graphical parameters
-ctr \%>\% 
+## update histogram graphical parameters
+ctr \%>\%
   pmx_plot_eta_hist(
     histogram = list(
-      color = NA, 
-      position = "fill", 
-      binwidth = 1 / 100)
+      color = NA,
+      position = "fill",
+      binwidth = 1 / 100
     )
+  )
 
 
 
 # stratification  ----------------------------------
 
 ## categorical stratification color parameter
-ctr \%>\% pmx_plot_eta_hist(is.jitter=TRUE,strat.facet=~STUD,strat.color="SEX")
+ctr \%>\% pmx_plot_eta_hist(is.jitter = TRUE, strat.facet = ~STUD, strat.color = ~SEX)
 ## categorical stratification facetting
-ctr \%>\% pmx_plot_eta_hist(strat.facet = "SEX")
+ctr \%>\% pmx_plot_eta_hist(strat.facet ~ "SEX")
 ## using formula categorical stratification facetting
-ctr \%>\% pmx_plot_eta_hist(strat.facet = STUD~SEX,
-                         shrink=pmx_shrink(hjust=0.5))
+ctr \%>\% pmx_plot_eta_hist(
+  strat.facet = STUD ~ SEX,
+  shrink = pmx_shrink(hjust = 0.5)
+)
 
 # subsetting  --------------------------------------
 
@@ -175,12 +178,11 @@ ctr \%>\% pmx_plot_eta_hist(strat.facet = STUD~SEX,
 ctr \%>\% pmx_plot_eta_hist(filter = EFFECT \%in\% c("ka", "Cl"))
 ## filter and stratify by facets
 ctr \%>\% pmx_plot_eta_hist(
-  filter = EFFECT \%in\% c("ka", "Cl"), strat.facet = "SEX"
+  filter = EFFECT \%in\% c("ka", "Cl"), strat.facet = ~SEX
 )
 ctr \%>\% pmx_plot_eta_hist(
-  filter = EFFECT \%in\% c("ka", "Cl"), strat.facet = "SEX"
+  filter = EFFECT \%in\% c("ka", "Cl"), strat.facet = ~SEX
 )
-
 }
 }
 \concept{eta_distribution_plot}

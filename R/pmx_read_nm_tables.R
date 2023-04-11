@@ -357,7 +357,7 @@ pmx_combine_tables <- function(x) {
   #       with the tidyverse.
   tmp_df <- do.call("cbind", unname(x$data))
   tmp_df <- tmp_df[, which(!duplicated(names(tmp_df))) ] %>% 
-    tibble::as_tibble() %>% 
+    dplyr::as_tibble() %>% 
     tidyr::drop_na(dplyr::one_of('ID')) %>%
     list()
   
