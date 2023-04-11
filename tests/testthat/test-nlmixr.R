@@ -19,114 +19,121 @@ test_that("nlmixr test", {
 
       eta.Vc ~ 0.62
       prop.sd <- 0.051529
-
     })
     model({
       Cl <- tvCl
-      Vc <- tvVc*(WT/70)*exp(eta.Vc)
+      Vc <- tvVc * (WT / 70) * exp(eta.Vc)
 
       # dynamical system
       linCmt() ~ prop(prop.sd)
     })
   }
 
-  fit <- nlmixr2::nlmixr2(fun, df, list(print=0), est="posthoc")
+  fit <- nlmixr2::nlmixr2(fun, df, list(print = 0), est = "posthoc")
 
   expect_error(pmx_nlmixr(fit), NA)
 
-  #fit <- nlmixr::nlmixr(fun, df, list(print=0), est="posthoc")
-
+  # fit <- nlmixr::nlmixr(fun, df, list(print=0), est="posthoc")
 })
 
 
 test_that("warfarin example", {
-
   skip_on_cran()
 
   PKdata <- nlmixr2data::warfarin %>%
     dplyr::filter(dvid == "cp") %>%
     dplyr::select(-dvid) %>%
-    dplyr::mutate(SEX = ifelse(sex == "male", 1, 0),
-                  SPARSE=ifelse(id %in% c(2, 10, 17:33), 1, 0))
+    dplyr::mutate(
+      SEX = ifelse(sex == "male", 1, 0),
+      SPARSE = ifelse(id %in% c(2, 10, 17:33), 1, 0)
+    )
 
 
-    One.comp.transit <- function() {
-      ini({
-        # Where initial conditions/variables are specified
-        lktr <- log(1.15)  #log k transit (/h)
-        lcl  <- log(0.135) #log Cl (L/hr)
-        lv   <- log(8)     #log V (L)
-        prop.err <- 0.15   #proportional error (SD/mean)
-        add.err <- 0.6     #additive error (mg/L)
-        eta.ktr ~ 0.5   #IIV ktr
-        eta.cl ~ 0.1   #IIV Cl
-        eta.v ~ 0.1   #IIV V
-      })
-      model({
-        cl <- exp(lcl + eta.cl)
-        v  <- exp(lv + eta.v)
-        ktr <- exp(lktr + eta.ktr)
-        # RxODE-style differential equations are supported
-        d/dt(depot)   = -ktr * depot
-        d/dt(central) =  ktr * trans - (cl/v) * central
-        d/dt(trans)   =  ktr * depot - ktr * trans
-        ## Concentration is calculated
-        cp = central/v
-        # And is assumed to follow proportional and additive error
-        cp ~ prop(prop.err) + add(add.err)
-      })
-    }
+  One.comp.transit <- function() {
+    ini({
+      # Where initial conditions/variables are specified
+      lktr <- log(1.15) # log k transit (/h)
+      lcl <- log(0.135) # log Cl (L/hr)
+      lv <- log(8) # log V (L)
+      prop.err <- 0.15 # proportional error (SD/mean)
+      add.err <- 0.6 # additive error (mg/L)
+      eta.ktr ~ 0.5 # IIV ktr
+      eta.cl ~ 0.1 # IIV Cl
+      eta.v ~ 0.1 # IIV V
+    })
+    model({
+      cl <- exp(lcl + eta.cl)
+      v <- exp(lv + eta.v)
+      ktr <- exp(lktr + eta.ktr)
+      # RxODE-style differential equations are supported
+      d / dt(depot) <- -ktr * depot
+      d / dt(central) <- ktr * trans - (cl / v) * central
+      d / dt(trans) <- ktr * depot - ktr * trans
+      ## Concentration is calculated
+      cp <- central / v
+      # And is assumed to follow proportional and additive error
+      cp ~ prop(prop.err) + add(add.err)
+    })
+  }
 
-    fitOne.comp.transit_S <-
-      nlmixr2::nlmixr(One.comp.transit,
-                      PKdata,
-                      est = "saem",
-                      nlmixr2::saemControl(print = 100),
-                      nlmixr2::tableControl(cwres = TRUE,npde=TRUE))
+  fitOne.comp.transit_S <-
+    nlmixr2::nlmixr(One.comp.transit,
+      PKdata,
+      est = "saem",
+      nlmixr2::saemControl(print = 100),
+      nlmixr2::tableControl(cwres = TRUE, npde = TRUE)
+    )
 
-    expect_error(pmx_nlmixr(fitOne.comp.transit_S, conts = c("wt","age"),
-                            cats=c("SEX","SPARSE"), vpc=FALSE,settings=pmx_settings(is.draft=FALSE)), NA)
+  expect_error(pmx_nlmixr(fitOne.comp.transit_S,
+    conts = c("wt", "age"),
+    cats = c("SEX", "SPARSE"), vpc = FALSE, settings = pmx_settings(is.draft = FALSE)
+  ), NA)
 
-    ctl <- pmx_nlmixr(fitOne.comp.transit_S, conts = c("wt","age"),
-                      cats=c("SEX","SPARSE"), vpc=FALSE,settings=pmx_settings(is.draft=FALSE))
+  ctl <- pmx_nlmixr(fitOne.comp.transit_S,
+    conts = c("wt", "age"),
+    cats = c("SEX", "SPARSE"), vpc = FALSE, settings = pmx_settings(is.draft = FALSE)
+  )
 
-    expect_error(ctl %>% pmx_plot_eta_conts, NA)
+  expect_error(ctl %>% pmx_plot_eta_conts(), NA)
 
-    ## expect_error(ctl %>% pmx_report(name="ggPMX_report",
-    ##                                 save_dir=".",
-    ##                                 output="report",
-    ##                                 format="word"), NA)
+  ## expect_error(ctl %>% pmx_report(name="ggPMX_report",
+  ##                                 save_dir=".",
+  ##                                 output="report",
+  ##                                 format="word"), NA)
 
-    ## if (file.exists("ggPMX_report.Rmd")) unlink("ggPMX_report.Rmd")
-    ## if (file.exists("ggPMX_report.docx")) unlink("ggPMX_report.docx")
+  ## if (file.exists("ggPMX_report.Rmd")) unlink("ggPMX_report.Rmd")
+  ## if (file.exists("ggPMX_report.docx")) unlink("ggPMX_report.docx")
 
+  ## if (file.exists("ggPMX_report.Rmd")) unlink("ggPMX_report.Rmd")
+  ## if (file.exists("ggPMX_report.docx")) unlink("ggPMX_report.docx")
 })
 
 
 
 test_that("integrated demo", {
-
   skip_on_cran()
 
   dat <- xgxr::case1_pkpd %>%
-    dplyr::rename(DV=LIDV) %>%
+    dplyr::rename(DV = LIDV) %>%
     dplyr::filter(CMT %in% 1:2) %>%
     dplyr::filter(TRTACT != "Placebo")
 
   doses <- unique(dat$DOSE)
   nid <- 3 # 7 ids per dose group
-  dat2 <- do.call("rbind",
-                  lapply(doses, function(x) {
-                    ids <- dat %>%
-                      dplyr::filter(DOSE == x) %>%
-                      dplyr::summarize(ids=unique(ID)) %>%
-                      dplyr::pull()
-                    ids <- ids[seq(1, nid)]
-                    dat %>%
-                      dplyr::filter(ID %in% ids)
-                  }))
+  dat2 <- do.call(
+    "rbind",
+    lapply(doses, function(x) {
+      ids <- dat %>%
+        dplyr::filter(DOSE == x) %>%
+        dplyr::summarize(ids = unique(ID)) %>%
+        dplyr::pull()
+      ids <- ids[seq(1, nid)]
+      dat %>%
+        dplyr::filter(ID %in% ids)
+    })
+  )
 
-  cmt2 <- function(){
+  cmt2 <- function() {
     ini({
       lka <- log(0.1) # log Ka
       lv <- log(10) # Log Vc
@@ -137,7 +144,7 @@ test_that("integrated demo", {
       eta.ka ~ 0.01
       eta.v ~ 0.1
       eta.cl ~ 0.1
-      logn.sd = 10
+      logn.sd <- 10
     })
     model({
       ka <- exp(lka + eta.ka)
@@ -150,9 +157,9 @@ test_that("integrated demo", {
   }
 
   cmt2fit.logn <- nlmixr2::nlmixr(cmt2, dat2, "saem",
-                                  control=list(print=0),
-                                  table=nlmixr2::tableControl(cwres=TRUE, npde=TRUE))
+    control = list(print = 0),
+    table = nlmixr2::tableControl(cwres = TRUE, npde = TRUE)
+  )
 
-  ctr <- pmx_nlmixr(cmt2fit.logn, conts = c("WEIGHTB"), cats="TRTACT", vpc=TRUE)
-
+  ctr <- pmx_nlmixr(cmt2fit.logn, conts = c("WEIGHTB"), cats = "TRTACT", vpc = TRUE)
 })

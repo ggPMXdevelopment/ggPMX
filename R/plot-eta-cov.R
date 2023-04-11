@@ -1,5 +1,4 @@
 
-
 #' Select/Map covariates using human labels
 #' @param values \code{list} of covariates to use to  create the plot
 #' @param labels \code{list} of covariates facets labels
@@ -100,22 +99,6 @@ eta_cov <- function(
     )
   ), class = c("eta_cov", "pmx_gpar"))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #' This plots an ETA covariance matrix which can be used to define the co-relation between the parameters and
 #' its shrinkage

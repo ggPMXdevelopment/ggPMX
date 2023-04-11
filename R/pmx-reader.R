@@ -324,8 +324,9 @@ read_mlx18_res <- function(path, x, ...) {
 
   # Path should not have duplicated structure of subdirectory, but if not present,
   # it should be added.
-  if(exists("subfolder", x) & !(grepl(x[["subfolder"]], dirname(path), fixed=TRUE))) {
+  if(exists("subfolder", x) && !(grepl(x[["subfolder"]], dirname(path), fixed=TRUE))) {
     path <- file.path(dirname(path), x[["subfolder"]], "/")
+    path <- gsub("//", "/", path)
   }
 
   path <- dirname(path)

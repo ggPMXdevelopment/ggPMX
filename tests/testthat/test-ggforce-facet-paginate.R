@@ -3,16 +3,15 @@ context("Test spliting facet_wrap over multiple plots")
 #------------------- facet_wrap_paginate start --------------------------------
 
 test_that("facet_wrap_paginate: params: nrow and ncol is not NULL
-          result: FacetWrapPaginate",
-          {
-            dx <- pmx_qq("AGE0")
-            strat.facet <- dx[["strat.facet"]]
-            facets <- wrap_formula(strat.facet, "EFFECT")
-            expect_true(inherits(
-              facet_wrap_paginate(facets, nrow = 2, ncol = 3),
-              "FacetWrapPaginate"
-            ))
-          })
+          result: FacetWrapPaginate", {
+  dx <- pmx_qq("AGE0")
+  strat.facet <- dx[["strat.facet"]]
+  facets <- wrap_formula(strat.facet, "EFFECT")
+  expect_true(inherits(
+    facet_wrap_paginate(facets, nrow = 2, ncol = 3),
+    "FacetWrapPaginate"
+  ))
+})
 
 test_that("facet_wrap_paginate: params: ncol is not NULL and nrow is NULL
           result: FacetWrap", {
