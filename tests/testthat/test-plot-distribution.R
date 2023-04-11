@@ -311,7 +311,6 @@ test_that("shrinkage_layer: params: box type result: LayerInstance", {
     shrinkage_layer(
       dx,
       shrink=list(hjust=0.5, fun="var"),
-      shrink = list(hjust = 0.5),
       type = "box",
       strat.color = dx$SEX
     ),
