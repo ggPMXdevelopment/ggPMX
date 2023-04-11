@@ -2,7 +2,7 @@ test_that("nlmixr test", {
   skip_on_cran()
 
   # Data' purpose illustrates the error and my data set
-  df <- tibble::tibble(
+  df <- dplyr::tibble(
     ID = c(rep(1, 6), rep(2, 6)),
     TIME = c(0.00, 12.11, 18.41, 23.89, 36.00, 43.51, 0.00, 12.00, 20.00, 24.00, 36.80, 45.00),
     AMT = c(1000, 1000, NA, 1000, 1000, NA, 1000, 2000, NA, 1000, 1000, NA),
