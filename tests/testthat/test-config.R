@@ -183,8 +183,9 @@ test_that("pmx_mlx params: my_settings with cats.labels, effects and covariates;
 
   expect_true(all(unique(p$data$EFFECT) %in% c("Absorption_rate", "Volume", "Clearance")))
 
+  # this label came from the my_settings object
   p_effect <- ctr %>% pmx_plot_eta_conts()
-  expect_true(all(unique(p_effect$data$variable) %in% c("WT0", "AGE0")))
+  expect_true(all(unique(p_effect$data$variable) %in% c("Weight", "Age")))
 
   p_cov <- ctr %>% pmx_plot_eta_conts(
     covariates = pmx_cov(
