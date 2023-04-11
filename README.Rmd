@@ -547,7 +547,7 @@ ctr %>% pmx_plot_eta_matrix
 
 ## Initialization
 
-In order to generate VPCs a simulation dataset is requried. Creation of VPC is slightly different dependening on the fitting software used (Monolix, NONMEM or nlmixr).
+In order to generate VPCs a simulation dataset is requried. Creation of VPC is slightly different dependening on the fitting software used (Monolix, NONMEM or nlmixr). Make sure to use the same name for the dv column in the simulation file as the one used in the input (modeling dataset).
 
 ### Models fitted with Monolix (versions 2016 and later) 
 
