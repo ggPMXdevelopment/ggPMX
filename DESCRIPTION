@@ -62,6 +62,7 @@ Suggests:
     xtable,
     vdiffr,
     rxode2,
+    captioner,
     nlmixr2,
     nlmixr2data,
     lixoftConnectors,
