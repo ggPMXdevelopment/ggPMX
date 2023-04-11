@@ -287,6 +287,11 @@ read_mlx_pred <- function(path, x, ...) {
 
   setnames(xx, tolower(names(xx)))
   id_col <- grep("^id", names(xx), ignore.case = TRUE, value = TRUE)
+  if (length(id_col) > 1) {
+    nc <- vapply(id_col, nchar, integer(1), USE.NAMES=FALSE)
+    id_col <- id_col[which(nc == min(nc))]
+    warning("multiple id columns possible, selected smallest:", id_col)
+  }
   if (length(id_col) > 0 && nzchar(id_col)) setnames(xx, id_col, "id")
   if (grepl("#", xx[1, "id", with = FALSE], fixed = TRUE)) {
     xx[, c("id", "OCC") := tstrsplit(id, "#")][, c("id", "OCC") := list(as.integer(id), as.integer(OCC))]
