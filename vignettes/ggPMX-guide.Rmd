@@ -613,7 +613,7 @@ ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
 ### Stratification 
 
 ```{r fig.height=7, fig.width=6}
-ctr %>% pmx_plot_vpc(strat.facet="SEX",facets=list(nrow=2))
+ctr %>% pmx_plot_vpc(strat.facet=~SEX,facets=list(nrow=2))
 ```
 
 ### Monolix-like customisation
@@ -622,7 +622,7 @@ User can customize the options to get a Monolix-like display.
 
 ```{r fig.height=7, fig.width=6}
 ctr %>% pmx_plot_vpc(
-  strat.facet="SEX",
+  strat.facet=~SEX,
   facets=list(nrow=2),
   type="percentile",
   is.draft = FALSE,
@@ -1089,6 +1089,6 @@ ctr %>% pmx_plot_eta_hist(is.shrink = TRUE, strat.facet = ~SEX,
 or 
  
 ```{r fig.width=12, fig.height=6}
-ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = "SEX",
+ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = ~SEX,
                           facets=list(scales="free_y",ncol=2))
 ```

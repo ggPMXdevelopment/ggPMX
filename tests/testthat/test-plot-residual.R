@@ -246,6 +246,16 @@ test_that(
   }
 )
 
+test_that("pmx_plot_iwres_ipred: params: strat.facet as formula/character
+          result: plot panels", {
+  ctr <- theophylline()
+  p_formula <- pmx_plot_iwres_ipred(ctr, strat.facet = "SEX")
+  expect_equal(levels(ggplot_build(p_formula)[[1]][[1]][["PANEL"]]), c("1", "2"))
+  p_char <- pmx_plot_iwres_ipred(ctr, strat.facet = ~SEX)
+  expect_equal(levels(ggplot_build(p_char)[[1]][[1]][["PANEL"]]), c("1", "2"))
+  p_non_ex <- pmx_plot_iwres_ipred(ctr, strat.facet = ~4)
+  expect_equal(levels(ggplot_build(p_non_ex)[[1]][[1]][["PANEL"]]), c("1"))
+})
 
 test_that(
   "pmx_plot_iwres_ipred: params: ctr, ylim; result: identical structure",
@@ -291,7 +301,7 @@ test_that(
   "pmx_plot_cats: params: ctr; result: identical numbers of columns and rows",
   {
     p <- ctr %>% pmx_plot_cats("dv_pred",
-      strat.facet = "STUD",
+      strat.facet = ~STUD,
       facets = list(nrow = 2, ncol = 1)
     )
 
@@ -303,7 +313,7 @@ test_that(
 test_that(
   "pmx_plot_cats: params: ctr; result: identical numbers of columns and rows",
   {
-    p <- ctr %>% pmx_plot_cats("dv_pred", strat.facet = "STUD")
+    p <- ctr %>% pmx_plot_cats("dv_pred", strat.facet = ~STUD)
 
     expect_identical(p[[1]]$facet$params$nrow, NULL)
     expect_identical(p[[1]]$facet$params$ncol, NULL)
@@ -314,10 +324,8 @@ test_that(
 test_that(
   "pmx_plot_cats: params: ctr; result: identical numbers of columns and rows",
   {
-    p <- ctr %>% pmx_plot_cats("pmx_vpc",
-      strat.facet = "STUD",
-      facets = list(nrow = 2, ncol = 1)
-    )
+    p <- ctr %>% pmx_plot_cats("pmx_vpc", strat.facet = ~STUD,
+      facets = list(nrow = 2, ncol = 1))
 
     expect_identical(p[[1]]$facet$params$nrow, 2)
     expect_identical(p[[1]]$facet$params$ncol, 1)
@@ -327,10 +335,8 @@ test_that(
 test_that(
   "pmx_plot_cats: params: ctr; result: identical numbers of columns and rows",
   {
-    p <- ctr %>% pmx_plot_cats("npde_time",
-      strat.facet = "STUD",
-      facets = list(nrow = 2, ncol = 1)
-    )
+    p <- ctr %>% pmx_plot_cats("npde_time", strat.facet = ~STUD,
+      facets = list(nrow = 2, ncol = 1))
 
     expect_identical(p[[1]]$facet$params$nrow, 2)
     expect_identical(p[[1]]$facet$params$ncol, 1)
@@ -340,10 +346,8 @@ test_that(
 test_that(
   "pmx_plot_cats: params: ctr; result: identical numbers of columns and rows",
   {
-    p <- ctr %>% pmx_plot_cats("iwres_time",
-      strat.facet = "STUD",
-      facets = list(nrow = 2, ncol = 1)
-    )
+    p <- ctr %>% pmx_plot_cats("iwres_time", strat.facet = ~STUD,
+      facets = list(nrow = 2, ncol = 1))
 
     expect_identical(p[[1]]$facet$params$nrow, 2)
     expect_identical(p[[1]]$facet$params$ncol, 1)
