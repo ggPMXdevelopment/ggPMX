@@ -15,6 +15,7 @@ RES:
     se: no
     colour: red
     linetype: 1.0
+  square_plot: yes
 
 DIS_hist:
   type: hist

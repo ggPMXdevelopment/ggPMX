@@ -1,40 +1,41 @@
 context("Test residual function")
+
 ctr <- theophylline()
 
-test_that("residual: params: x equals NPDE, y equals IPRED;
-          result: identical structure", {
-  x <- "IWRES"
-  y <- "IPRED"
-  aess <- list(x = x, y = y)
-  labels <- list(
-    title = paste(rev(aess), collapse = " versus "),
-    subtitle = "",
-    x = aess[["x"]],
-    y = aess[["y"]]
-  )
-
-  expect_identical(
-    residual(x, y),
-    structure(
-      list(
-        ptype = "SCATTER",
-        strat = TRUE,
-        dname = "predictions",
-        aess = aess,
-        point = list(
-          shape = 1,
-          colour = "black",
-          size = 1
-        ),
-        is.hline = FALSE,
-        hline = list(yintercept = 0),
-        facets = NULL,
-        bloq = NULL,
-        gp = pmx_gpar(labels = labels)
+#------------------- pmx_plot_iwres_ipred start ------------------------------
+test_that("residual: params: x equals IWRES, y equals IPRED;
+          result: identical structure",
+  {
+    x <- "IWRES"
+    y <- "IPRED"
+    aess <- list(x = x, y = y)
+    labels <- list(
+      title = paste(rev(aess), collapse = " versus "),
+      subtitle = "",
+      x = aess[["x"]],
+      y = aess[["y"]]
+    )
+    expect_identical(residual(x, y),
+      structure(
+        list(
+          ptype = "SCATTER",
+          strat = TRUE,
+          dname = "predictions",
+          aess = aess,
+          point = list(
+            shape = 1,
+            colour = "black",
+            size = 1
+          ),
+          is.hline = FALSE,
+          hline = list(yintercept = 0),
+          facets = NULL,
+          bloq = NULL,
+          square_plot = TRUE,
+          gp = pmx_gpar(labels = labels)
       ),
       class = c("residual", "pmx_gpar")
-    )
-  )
+    ))
 })
 
 #------------------- residual start ------------------------------------------
@@ -82,7 +83,7 @@ test_that("residual: params: x, y; result: identical names", {
   res <- residual(x, y)
   resNames <- c(
     "ptype", "strat", "dname", "aess", "point", "is.hline",
-    "hline", "facets", "bloq", "gp"
+    "hline", "facets", "bloq", "square_plot", "gp"
   )
   expect_identical(names(res), resNames)
 })
@@ -363,3 +364,30 @@ test_that(
   }
 )
 #------------------- pmx_plot_cats end --------------------------------------
+
+
+#------------------- pmx_plot_dv_pred start -------------------------------------
+
+test_that(
+  "pmx_plot_dv_pred: params: ctr, range; result: squared by default, with
+   applied ranges with square_plot = FALSE",
+  {
+    ctr <- theophylline()
+    p1 <- ctr %>% pmx_plot_dv_pred(ranges = list(x = c(200, 500), y = c(100, 200)))
+
+    p2 <- ctr %>% pmx_plot_dv_pred(
+                    ranges = list(x = c(200, 500), y = c(100, 200)),
+                    square_plot = FALSE
+                  )
+
+    expect_equal(
+      p1[["plot_env"]][["gp"]][["ranges"]][["y"]][[2]],
+      p1[["plot_env"]][["gp"]][["ranges"]][["x"]][[2]]
+    )
+
+    expect_equal(p2[["plot_env"]][["gp"]][["ranges"]][["x"]], c(200, 500))
+    expect_equal(p2[["plot_env"]][["gp"]][["ranges"]][["y"]], c(100, 200))
+  }
+)
+
+#------------------- pmx_plot_dv_pred end --------------------------------------

@@ -257,6 +257,7 @@ DV_PRED:
     colour: pink
     size: 2.0
     alpha: 0.9
+  square_plot: yes
     
 DV_IPRED:
   ptype: SCATTER

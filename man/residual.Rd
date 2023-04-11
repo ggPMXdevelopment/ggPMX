@@ -15,6 +15,7 @@ residual(
   dname = NULL,
   facets = NULL,
   bloq = NULL,
+  square_plot = TRUE,
   ...
 )
 }
@@ -36,6 +37,8 @@ residual(
 \item{facets}{\code{list} wrap facetting in case of strat.facet}
 
 \item{bloq}{\code{pmxBLOQ} object created by \code{\link{pmx_bloq}}}
+
+\item{square_plot}{square dv_pred plot  (TRUE by default)}
 
 \item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }
