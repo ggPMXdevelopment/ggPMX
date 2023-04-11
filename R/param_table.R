@@ -51,13 +51,14 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
   message("`", fun, "`",  " was used for shrinkage calculation")
 
   # For nonmem data is used of get_data("omega"), which is the SD
-  shrinkage <- ctr %>% pmx_comp_shrink(fun=fun) %>%
-    dplyr::transmute(
-      # make % shrinkage
-      SHRINK=paste0(round(SHRINK * 100), "%"),
-      # For non-nm sys PARAM has "omega_" prefix
-      PARAM=paste0(ifelse(config_sys_nm, "", ifelse(config_sys_nlmixr, "", "omega_")), EFFECT),
-      )
+  shrinkage <- ctr %>%
+    pmx_comp_shrink(fun = fun) %>%
+    dplyr::mutate(SHRINK = paste0(round(SHRINK *
+      100), "%")) %>%
+    dplyr::mutate(PARAM = paste0(ifelse(config_sys_nm,
+      "", ifelse(config_sys_nlmixr, "", "omega_")
+    ), EFFECT), ) %>%
+    dplyr::select(PARAM, SHRINK)
 
   if (ctr[["config"]][["sys"]] == "nm") {
     i <- 1
@@ -74,60 +75,123 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2)
   }
 
   blank_row <- data.frame(PARAM=".", VALUE="", RSE ="", SHRINK="")
-
-  pop_pars %>%
-  dplyr::transmute(
-    PARAM=trimws(PARAM),
-    VALUE=signif(VALUE, digits) %>% {
-      if(scientific) {scales::label_scientific(digits=Inf)(.)}
-      else {as.character(.)}
-    },
-    # Make RSE a %, and change NaN to "fixed"
-    RSE=ifelse(is.infinite(RSE), "", ifelse(is.na(RSE), "fixed", paste0(round(RSE), "%"))),
-  ) %>%
-  dplyr::arrange(PARAM) %>%
-  dplyr::left_join(shrinkage, by="PARAM") %>%
-  tidyr::replace_na(list(SHRINK="")) %>%
-  {suppressWarnings({
-    if(ctr[["config"]][["sys"]] %in% c("mlx", "mlx18" )) {
-      dplyr::bind_rows(
-        blank_row,
-        dplyr::filter(., grepl("_pop", PARAM)),
-        blank_row,
-        dplyr::filter(., grepl("omega_", PARAM)),
-        blank_row,
-        dplyr::filter(., grepl("beta_", PARAM)),
-        blank_row,
-        dplyr::filter(., PARAM %in% c("a", "b")),
-     )
-    } else if(ctr[["config"]][["sys"]] == "nm") {
-      dplyr::bind_rows(
-        dplyr::filter(., grepl("OBJ", PARAM)),
-        blank_row,
-        dplyr::filter(., grepl("THETA", PARAM)),
-        blank_row,
-        dplyr::filter(., grepl("SIGMA", PARAM)),
-        blank_row,
-        dplyr::filter(., grepl("OMEGA", PARAM)),
-      )
-    } else if (ctr[["config"]][["sys"]] == "nlmixr") {
-      param_regs <- ctr[["config"]][["param_regs"]]
-      dplyr::bind_rows(
-        dplyr::filter(., grepl("OBJ", PARAM)),
-        blank_row,
-        dplyr::filter(., grepl(param_regs["theta"], PARAM)),
-        blank_row,
-        dplyr::filter(., grepl(param_regs["eta"], PARAM)),
-        blank_row,
-        dplyr::filter(., grepl(param_regs["err"], PARAM)))
+  
+  pop_pars2 <- pop_pars %>%
+    dplyr::transmute(
+      PARAM = trimws(PARAM),
+      VALUE = signif(VALUE, digits) %>%
+        {
+          if (scientific) {
+            (scales::label_scientific(digits = Inf))(.)
+          } else {
+            as.character(.)
+          }
+        }, RSE = ifelse(is.infinite(RSE), "", ifelse(is.na(RSE),
+        "fixed", paste0(round(RSE), "%")
+      )),
+    ) %>%
+    dplyr::arrange(PARAM) %>%
+    dplyr::select(PARAM, VALUE, RSE) %>%
+    dplyr::arrange(PARAM) %>%
+    dplyr::left_join(shrinkage) %>%
+    dplyr::mutate(SHRINK = ifelse(is.na(SHRINK),
+      "", SHRINK
+    )) %>%
+    tidyr::replace_na(list(SHRINK = "")) %>%
+    {
+      suppressWarnings({
+        if (ctr[["config"]][["sys"]] %in% c("mlx", "mlx18")) {
+          dplyr::bind_rows(blank_row, dplyr::filter(
+            .,
+            grepl("_pop", PARAM)
+          ), blank_row, dplyr::filter(
+            .,
+            grepl("omega_", PARAM)
+          ), blank_row, dplyr::filter(
+            .,
+            grepl("beta_", PARAM)
+          ), blank_row, dplyr::filter(
+            .,
+            PARAM %in% c("a", "b")
+          ), )
+        } else if (ctr[["config"]][["sys"]] == "nm") {
+          dplyr::bind_rows(dplyr::filter(., grepl(
+            "OBJ",
+            PARAM
+          )), blank_row, dplyr::filter(., grepl(
+            "THETA",
+            PARAM
+          )), blank_row, dplyr::filter(., grepl(
+            "SIGMA",
+            PARAM
+          )), blank_row, dplyr::filter(., grepl(
+            "OMEGA",
+            PARAM
+          )), )
+        } else if (ctr[["config"]][["sys"]] == "nlmixr") {
+          param_regs <- ctr[["config"]][["param_regs"]]
+          dplyr::bind_rows(dplyr::filter(., grepl(
+            "OBJ",
+            PARAM
+          )), blank_row, dplyr::filter(., grepl(
+            param_regs["theta"],
+            PARAM
+          )), blank_row, dplyr::filter(., grepl(
+            param_regs["eta"],
+            PARAM
+          )), blank_row, dplyr::filter(., grepl(
+            param_regs["err"],
+            PARAM
+          )))
+        }
+      })
     }
-  })} %>%
-  dplyr::bind_rows(data.frame(PARAM=".",VALUE="",RSE ="", SHRINK=paste("comp. with", fun))) %>%
-  dplyr::rename(Parameter=PARAM, Estimate=VALUE, Relative_SE=RSE, Shrinkage=SHRINK) %>%
-  knitr::kable(
-    x=.,
-    col.names=c("Parameter", "Value", "Relative Standard Error", "Shrinkage"),
-    caption=paste0("Parameter estimates (", nrow(pop_pars) + 1, " lines)"),
-    align="lrrr"
+  if (ctr[["config"]][["sys"]] == "mlx") {
+    pop_pars3 <- data.frame(
+      PARAM = "Structural parameters",
+      VALUE = "", RSE = "", SHRINK = ""
+    ) %>%
+      dplyr::bind_rows(pop_pars2 %>%
+        dplyr::filter(grepl("pop", PARAM))) %>%
+      dplyr::bind_rows(data.frame(
+        PARAM = "Between-subject variability, standard deviations",
+        VALUE = "", RSE = "", SHRINK = ""
+      )) %>%
+      dplyr::bind_rows(pop_pars2 %>%
+        dplyr::filter(grepl("omega", PARAM))) %>%
+      dplyr::bind_rows(data.frame(
+        PARAM = "Covariate effects",
+        VALUE = "", RSE = "", SHRINK = ""
+      )) %>%
+      dplyr::bind_rows(pop_pars2 %>%
+        dplyr::filter(grepl("beta_", PARAM))) %>%
+      dplyr::bind_rows(data.frame(
+        PARAM = "Correlations",
+        VALUE = "", RSE = "", SHRINK = ""
+      )) %>%
+      dplyr::bind_rows(pop_pars2 %>%
+        dplyr::filter(grepl("corr_", PARAM))) %>%
+      dplyr::bind_rows(data.frame(
+        PARAM = "Residual variability",
+        VALUE = "", RSE = "", SHRINK = ""
+      )) %>%
+      dplyr::bind_rows(pop_pars2 %>%
+        dplyr::filter(PARAM %in% c("a", "b")))
+  } else {
+    pop_pars3 <- pop_pars2 %>%
+      dplyr::bind_rows(data.frame(
+        PARAM = ".",
+        VALUE = "", RSE = "", SHRINK = paste(
+          "comp. with",
+          fun
+        )
+      ))
+  }
+
+  pop_pars3 %>%
+  dplyr::mutate(PARAM = sub("_pop$", "", PARAM)) %>%
+  kable(
+    col.names = c("Parameter", "Value", "RSE", "Shrinkage"),
+    caption = paste0("Parameter estimates (", nrow(pop_pars3) + 1, " lines)")
   )
 }
