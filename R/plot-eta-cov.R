@@ -163,7 +163,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
             ]
           )
       }
-      x$facets$facets <- stats::as.formula("EFFECT~variable")
+      x$facets$rows <- stats::as.formula("EFFECT~variable")
       p <- ggplot(dx.conts, aes_string(x = "value", y = "VALUE")) +
         do.call(geom_point, x$point) +
         ## do.call(geom_smooth, x$smooth) +
