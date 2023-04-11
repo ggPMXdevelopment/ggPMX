@@ -113,7 +113,7 @@ test_that("remove_reports params result: remove plot files", {
   )
   files_word_report <- list.files(path = work_dir, pattern = "docx")
   expect_false(is_empty(files_word_report))
-  remove_reports(format = "plots", work_dir)
+  remove_reports(output = "plots", work_dir)
   files_word_report <- list.files(path = work_dir, pattern = "docx")
   expect_true(is_empty(files_word_report))
 })
@@ -142,7 +142,7 @@ test_that("Can generate report", {
   expect_is(ctr, "pmxClass")
   testGenerateReport()
   list_of_rep <- list.files(path = tmp_dir, pattern = "Report_ggPMX\\..*")
-  expect_equal(length(list_of_rep), 3L)
+  expect_equal(length(list_of_rep), 4L)
 })
 
 
