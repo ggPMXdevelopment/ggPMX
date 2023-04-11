@@ -111,7 +111,11 @@ plot_pmx.residual <- function(x, dx, ...) {
     if (!is.null(x[["strat.color"]])) {
       if(is.null(point[["mapping"]])) point[["mapping"]] <- aes()
       with(point, {
-        mapping <- modifyList(mapping, aes(color=x[["strat.color"]]))
+        strat.color <- x[["strat.color"]]
+        if (is.formula(strat.color)) {
+          strat.color <- setdiff(as.character(strat.color), "~")
+        }
+        mapping <- modifyList(mapping, aes(color=strat.color))
         mapping[["colour"]] <- NULL
       })
     }

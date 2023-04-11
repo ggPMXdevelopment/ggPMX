@@ -77,8 +77,12 @@ before_add_check <- function(self, private, x, pname) {
 
 .strat_x <- function(x) {
   if (!is.null(x[["strat.color"]])) {
+    strat.color <- x[["strat.color"]]
+    if (is.formula(strat.color)) {
+      strat.color <- setdiff(as.character(strat.color), "~")
+    }
     gp <- x[["gp"]]
-    gp[["labels"]][["legend"]] <- x[["strat.color"]]
+    gp[["labels"]][["legend"]] <- strat.color
     x[["gp"]] <- gp
   }
 
@@ -111,7 +115,7 @@ before_add_check <- function(self, private, x, pname) {
 
   dx <- x$dx
   grp <- as.character(unlist(lapply(x[["strat.facet"]], as.list)))
-  grp <- unique(intersect(c(grp, x[["strat.color"]]), names(dx)))
+  grp <- unique(intersect(c(grp, as.character(x[["strat.color"]])), names(dx)))
   if (x$ptype == "DIS") {
     VAR <- FUN <- NULL
     if (exists("FUN", dx)) dx <- dx[grepl("mode", FUN)]

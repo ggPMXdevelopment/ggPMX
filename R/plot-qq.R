@@ -196,6 +196,9 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   reference_layer <- if (!is.null(x$is.reference_line) && x$is.reference_line) {
     x$reference_line$mapping <- aes_string(slope = "slope", intercept = "intercept")
     if (!is.null(strat.color)) {
+      if (is.formula(strat.color)) {
+        strat.color <- setdiff(as.character(strat.color), "~")
+      }
       x$reference_line$colour <- NULL
       x$reference_line$mapping <- aes_string(
         slope = "slope", intercept = "intercept",
@@ -243,6 +246,9 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   }
 
   layer_color <- if (!is.null(strat.color)) {
+    if (is.formula(strat.color)) {
+      strat.color <- setdiff(as.character(strat.color), "~")
+    }
     geom_point(stat = "qq", aes_string(colour = strat.color))
   }
   p <- p + layer_facet + layer_shrink +

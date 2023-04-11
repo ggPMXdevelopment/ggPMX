@@ -134,6 +134,9 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
   with(x, {
     p <- ggplot(data = dx, aes_string(x = "VALUE"))
     if (!is.null(strat.color)) {
+      if (is.formula(strat.color)) {
+        strat.color <- setdiff(as.character(strat.color), "~")
+      }
       histogram$fill <- NULL
       histogram$mapping <- aes_string(fill = strat.color)
     }
@@ -157,6 +160,9 @@ distrib.box <- function(dx, strat.color, strat.facet, x) {
   p <- ggplot(data = dx, aes_string(x = "EFFECT", y = "VALUE"))
 
   if (!is.null(strat.color)) {
+    if (is.formula(strat.color)) {
+      strat.color <- setdiff(as.character(strat.color), "~")
+    }
     p <- ggplot(data = dx, aes_string(fill = strat.color, x = "EFFECT", y = "VALUE"))
   }
 
