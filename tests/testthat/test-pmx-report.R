@@ -318,8 +318,8 @@ test_that("pmx_report: params: ctr, name, save_dir, output, format;
       "standing",
       package = "ggPMX"
     ),
-    format = "report",
-    extension = c("word", "html")
+    output = "report",
+    format = c("word", "html")
   )
 
   files_word_report <- list.files(path = work_dir, pattern = "docx")
@@ -443,7 +443,7 @@ ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
 
 context("Test pmx_report function with all output")
 test_that("pmx_report: params: ctr, name, save_dir, output, format;
-         result: error", {
+         result: ok (with proper args)", {
   skip_on_cran()
   path <- file.path(tempdir(check = TRUE))
   newfolder <- "pmx_report_test"
@@ -459,7 +459,7 @@ test_that("pmx_report: params: ctr, name, save_dir, output, format;
     ),
     output = "all",
     format = "all"
-  ))
+  ), NA)
   unlink(work_dir, recursive = TRUE)
 })
 
