@@ -138,6 +138,15 @@ test_that("pmx_dens: params: ctr, var_line; result: ggplot", {
   ))
 })
 
+
+test_that("pmx_dens: params: ctr; result: plot is not blank", {
+  ctr <- theophylline()
+  p <- pmx_plot_iwres_dens(ctr)
+  p_obj <- ggplot2::ggplot_build(p)[["data"]][1:2]
+  expect_false((length(p_obj[[1]]) == 0) || (length(p_obj[[2]]) == 0))
+})
+
+
 test_that("pmx_dens: params: ctr, var_line, snd_line; result: ggplot", {
   expect_true(inherits(
     pmx_plot_iwres_dens(
