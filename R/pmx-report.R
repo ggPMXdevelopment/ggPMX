@@ -51,6 +51,9 @@ pmx_report <-
     
     output <- match.arg(output)
     if (missing(format) || is.null(format)) format <- "word"
+    if (sum(format %in% c("word","pdf","html","all")) == 0) {
+      stop("format must be one or more of the following formats:\nc(\"word\",\"pdf\",\"html\",\"all\")", call.=FALSE)
+    }
 
     if (!"all" %in% format) {
       format <- sprintf("%s_document", format)

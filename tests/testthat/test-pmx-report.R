@@ -109,7 +109,7 @@ test_that("remove_reports params result: remove plot files", {
       package = "ggPMX"
     ),
     output = "all",
-    format = c("both")
+    format = "all"
   )
   files_word_report <- list.files(path = work_dir, pattern = "docx")
   expect_false(is_empty(files_word_report))
@@ -405,7 +405,7 @@ test_that("pmx_report: params: ctr, name, save_dir, output, format;
       package = "ggPMX"
     ),
     output = c("all", "plots", "report"),
-    format = "both"
+    format = "all"
     ))
 })
 
@@ -457,8 +457,8 @@ test_that("pmx_report: params: ctr, name, save_dir, output, format;
       "standing",
       package = "ggPMX"
     ),
-    extension = "both",
-    format = "both"
+    output = "all",
+    format = "all"
   ))
   unlink(work_dir, recursive = TRUE)
 })
