@@ -202,7 +202,7 @@ pmx_read_nm_tables <- function(file          = NULL,
       dplyr::mutate(out = purrr::map(.$tmp, ~dplyr::select(.$data[[1]], 
                                                            dplyr::one_of(unique(unlist(.$index[[1]]$col)))))) %>% 
       tidyr::unnest(dplyr::one_of('tmp')) %>% 
-      dplyr::select(dplyr::one_of('problem', 'simtab', 'firstonly', 'index', 'out')) %>% 
+      dplyr::select(dplyr::one_of(c('problem', 'simtab', 'firstonly', 'index', 'out'))) %>% 
       dplyr::rename(!!rlang::sym('data') := dplyr::one_of('out'))
   }
   
@@ -224,7 +224,7 @@ pmx_read_nm_tables <- function(file          = NULL,
       dplyr::ungroup() %>%
       dplyr::mutate(out = purrr::map(.$tmp, pmx_merge_firstonly, quiet)) %>% 
       tidyr::unnest(dplyr::one_of('out')) %>% 
-      dplyr::select(dplyr::one_of('problem', 'simtab', 'data', 'index'))
+      dplyr::select(dplyr::one_of(c('problem', 'simtab', 'data', 'index')))
   }
   
   if (nrow(tables) == 0) stop('No table imported.', call. = FALSE)

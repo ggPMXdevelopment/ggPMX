@@ -89,8 +89,8 @@ plot_pmx.individual <-
         } else {strat.facet}
       }
 
-      dx <- tidyr::drop_na(dx, faceting_column)
-      x[["dx"]] <- tidyr::drop_na(x[["dx"]], faceting_column)
+      dx <- tidyr::drop_na(dx, tidyr::all_of(faceting_column))
+      x[["dx"]] <- tidyr::drop_na(x[["dx"]], tidyr::all_of(faceting_column))
     }
 
     strat.color <- x[["strat.color"]]
