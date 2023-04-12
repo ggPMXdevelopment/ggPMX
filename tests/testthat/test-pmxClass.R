@@ -570,7 +570,7 @@ test_that("pmx_bloq: params NULL result: identical inherits", {
 
 test_that("pmx_bloq: params: cens, limit; result: identical names ", {
   bloq <- pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")
-  blNames <- c("cens", "limit", "show", "colour", "size", "alpha")
+  blNames <- c("cens", "limit", "show", "colour", "size", "linewidth", "alpha")
   expect_identical(names(bloq), blNames)
 })
 
