@@ -207,6 +207,7 @@ pmx_vpc_ci <-
 #' @param color \code{character} Color of the rug. Default: "#000000".
 #' @param linewidth  \code{numeric} Thickness of the rug. Default: 1.
 #' @param alpha  \code{numeric} Transparency of the rug. Default: 0.7.
+#' @param size \code{numeric} Depreciated thickness of the rug. Default: 1.
 #'
 #' @details
 #'
@@ -220,7 +221,10 @@ pmx_vpc_rug <-
   function(show = TRUE,
            color = "#000000",
            linewidth = 1,
-           alpha = 0.7) {
+           alpha = 0.7,
+           size) {
+    lifecycle::deprecate_soft("1.2.9", "pmx_vpc_rug(size)", I("use `linewidth=` instead of `size=`"))
+    if (!missing(size)) linewidth <- size
     if (show) {
       structure(
         list(
