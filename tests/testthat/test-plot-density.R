@@ -15,17 +15,17 @@ test_that("pmx_dens: params: x equals ETA_COV; result: identical structure", {
         var_line = list(
           linetype = 1,
           colour = "black",
-          size = 1
+          linewidth = 1
         ),
         snd_line = list(
           linetype = 2,
           colour = "black",
-          size = 1
+          linewidth = 1
         ),
         vline = list(
           linetype = 2,
           colour = "black",
-          size = 1
+          linewidth = 1
         ),
         is.legend = TRUE,
         gp = pmx_gpar(

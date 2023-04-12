@@ -125,7 +125,7 @@ plot_pmx.residual <- function(x, dx, ...) {
     bloq_cens <- bloq[["cens"]]
     if (!is.null(bloq)) {
       bloq$data <- dx[get(bloq_cens) != 0]
-      bloq$cens <- bloq$limit <- NULL
+      bloq$cens <- bloq$limit <- bloq$linewidth <- NULL
       p <- p + do.call(geom_point, bloq)
     }
 

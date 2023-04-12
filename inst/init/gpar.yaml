@@ -9,7 +9,7 @@ is.smooth: yes
 smooth:
   se: no
   linetype: 1.0
-  size: 1.5
+  linewidth: 1.5
   method: loess
   colour: red
 is.band: no
@@ -18,7 +18,7 @@ band:
   - -1.96
   - 1.96
   linetype: 2.0
-  size: 0.5
+  linewidth: 0.5
 is.draft: yes
 draft:
   size: 5.0

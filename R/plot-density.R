@@ -28,21 +28,21 @@
 #' \itemize{
 #' \item {\strong{linetype:}} {default to 1}
 #' \item {\strong{color:}} {default to black}
-#' \item {\strong{size:}} {default to 1}
+#' \item {\strong{linewidth:}} {default to 1}
 #' }
 #'
 #' \strong{snd_line} is a list that contains:
 #' \itemize{
 #' \item {\strong{linetype:}} {default to 2}
 #' \item {\strong{color:}} {default to black}
-#' \item {\strong{size:}} {default to 1}
+#' \item {\strong{linewidth:}} {default to 1}
 #' }
 #'
 #' \strong{vline} is a list that contains:
 #' \itemize{
 #' \item {\strong{linetype:}} {default to 3}
 #' \item {\strong{color:}} {default to black}
-#' \item {\strong{size:}} {default to 1}
+#' \item {\strong{linewidth:}} {default to 1}
 #' }
 #'
 pmx_dens <- function(
@@ -68,11 +68,11 @@ pmx_dens <- function(
     )
   }
   assert_that(is_list(labels))
-  default_var_line <- list(linetype = 1, colour = "black", size = 1)
+  default_var_line <- list(linetype = 1, colour = "black", linewidth = 1)
   var_line <- l_left_join(default_var_line, var_line)
-  default_snd_line <- list(linetype = 2, colour = "black", size = 1)
+  default_snd_line <- list(linetype = 2, colour = "black", linewidth = 1)
   snd_line <- l_left_join(default_snd_line, snd_line)
-  default_vline <- list(linetype = 3, colour = "black", size = 1)
+  default_vline <- list(linetype = 3, colour = "black", linewidth = 1)
   vline <- l_left_join(default_vline, snd_line)
   labels$subtitle <- ""
   structure(list(
@@ -138,7 +138,7 @@ plot_pmx.pmx_dens <- function(x, dx, ...) {
         guide="none"
       ) +
       guides(
-        linetype=guide_legend(title=NULL, override.aes=list(size=c(1,1))),
+        linetype=guide_legend(title=NULL, override.aes=list(linewidth=c(1,1))),
         colour=guide_legend(title=NULL)
       ) +
       vline_layer

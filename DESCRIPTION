@@ -39,7 +39,7 @@ Imports:
     yaml,
     R6,
     gtable,
-    ggplot2 (>= 2.2.0),
+    ggplot2 (>= 3.4.0),
     ggforce,
     magrittr,
     stringr,

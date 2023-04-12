@@ -50,20 +50,20 @@ Creates a density plot object
 \itemize{
 \item {\strong{linetype:}} {default to 1}
 \item {\strong{color:}} {default to black}
-\item {\strong{size:}} {default to 1}
+\item {\strong{linewidth:}} {default to 1}
 }
 
 \strong{snd_line} is a list that contains:
 \itemize{
 \item {\strong{linetype:}} {default to 2}
 \item {\strong{color:}} {default to black}
-\item {\strong{size:}} {default to 1}
+\item {\strong{linewidth:}} {default to 1}
 }
 
 \strong{vline} is a list that contains:
 \itemize{
 \item {\strong{linetype:}} {default to 3}
 \item {\strong{color:}} {default to black}
-\item {\strong{size:}} {default to 1}
+\item {\strong{linewidth:}} {default to 1}
 }
 }

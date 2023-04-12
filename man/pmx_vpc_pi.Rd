@@ -7,8 +7,8 @@
 pmx_vpc_pi(
   show = c("all", "median", "area"),
   interval = c(0.05, 0.95),
-  median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
-  extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed"),
+  median = list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "solid"),
+  extreme = list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "dashed"),
   area = list(fill = "blue", alpha = 0.1)
 )
 }
@@ -27,7 +27,7 @@ to \code{c(.05,.95)}}
 \item{median}{\code{list} containing: \cr
 \itemize{
 \item {\strong{color}} {\code{charcater}  Color of the median percentile line. Default: "#000000". }
-\item {\strong{size}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
+\item {\strong{linewidth}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
 \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
 \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid".}
 }}
@@ -35,7 +35,7 @@ to \code{c(.05,.95)}}
 \item{extreme}{\code{list} containing: \cr
 \itemize{
 \item {\strong{color}} {\code{charcater} Color of the median percentile line. Default: "#000000". }
-\item {\strong{size}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
+\item {\strong{linewidth}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
 \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
 \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid"}
 }}

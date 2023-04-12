@@ -134,7 +134,7 @@ plot_pmx.individual <-
               xend = .data$TIME,
               yend = .data$y_end
             )
-          bloq$cens <- bloq$limit <- NULL
+            bloq$cens <- bloq$limit <- bloq$size <- NULL
           do.call(geom_segment, bloq)
           }
         }
@@ -163,7 +163,7 @@ plot_pmx.individual <-
 
       shape_values <- c(rep(point.shape, n + 1))
       shape_values_leg <- c(rep(point.shape, n - 1), rep(20, 2))
-      size_values <- c(rep(1, n - 1), ipred_line$size, pred_line$size)
+      linewidth_values <- c(rep(1, n - 1), ipred_line$linewidth, pred_line$linewidth)
       if (any(point$data$isobserv == "ignored"))
         colour_values <- c(point$colour[1],
                            get_invcolor(point$colour),
@@ -175,35 +175,14 @@ plot_pmx.individual <-
                            pred_line$colour)
       keywidth_values <- c(rep(0, n - 1), rep(2, 2))
 
-      # boolean to see if ggplot2 is >= v 3.4.0 (some impact on syntax)
-      ggp2_gte_340 <- compareVersion(
-        as.character(packageVersion("ggplot2")), "3.3.6.9000"
-      ) > 0
-
-      # setting size_lw param depending on ggplot2 version
-      size_or_linewidth <- ifelse(ggp2_gte_340, "linewidth", "size")
-
       p <- ggplot(dx, aes(TIME, DV, shape = isobserv, colour = isobserv)) +
         p_point +
-        do.call(geom_line, setNames(
-          list(
-            aes(
-              y = IPRED, linetype = "individual predictions",
-              colour = "individual predictions"
-            ),
-            ipred_line[["size"]]
-          ),
-          c("mapping", size_or_linewidth)
-        )) + do.call(geom_line, setNames(
-          list(
-            aes(
-              y = PRED, linetype = "population predictions",
-              colour = "population predictions"
-            ),
-            pred_line[["size"]]
-          ),
-          c("mapping", size_or_linewidth)
-        )) +
+        geom_line(aes(y=.data$IPRED, linetype = "individual predictions",
+                      colour = "individual predictions"),
+                  linewidth=ipred_line[["linewidth"]]) +
+        geom_line(aes(y = .data$PRED, linetype = "population predictions",
+                    colour = "population predictions"),
+                linewidth=pred_line[["linewidth"]]) +
         scale_linetype_manual(
           values = setNames(
             linetype_values,
@@ -227,7 +206,7 @@ plot_pmx.individual <-
             override.aes = list(
               linetype = linetype_values,
               shape = shape_values_leg,
-              size = size_values
+              linewidth = linewidth_values
             ),
             title = NULL,
             keywidth = keywidth_values

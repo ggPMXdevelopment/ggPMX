@@ -179,7 +179,7 @@ test_that("pmx_vpc_ci: params result: error", {
 context("Test pmx_vpc_rug function")
 
 test_that("pmx_vpc_rug: params result: 'pmx_vpc_rug', 'list'", {
-  obs <- pmx_vpc_rug(show = TRUE, color = "#000000", size = 1, alpha = 0.7)
+  obs <- pmx_vpc_rug(show = TRUE, color = "#000000", linewidth = 1, alpha = 0.7)
   expect_true(inherits(obs, c("pmx_vpc_rug", "list")))
 })
 
@@ -191,7 +191,7 @@ test_that("pmx_vpc_rug: params NULL result: 'pmx_vpc_rug', 'list'", {
 
 
 test_that("pmx_vpc_rug: params result: elements in the list", {
-  obsNames <- c("color", "size", "alpha")
+  obsNames <- c("color", "linewidth", "alpha")
   expect_true(all(obsNames %in% names(pmx_vpc_rug())))
 })
 

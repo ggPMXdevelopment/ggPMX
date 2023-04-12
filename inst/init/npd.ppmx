@@ -26,6 +26,7 @@ NPD_TIME:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
 
 NPD_EPRED:
@@ -56,6 +57,7 @@ NPD_EPRED:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
 
 NPD_PRED:
@@ -86,6 +88,7 @@ NPD_PRED:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
   
 NPD_QQ:

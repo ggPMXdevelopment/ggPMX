@@ -8,7 +8,7 @@ pmx_bloq(
   cens = "CENS",
   limit = "LIMIT",
   colour = "pink",
-  size = 2,
+  linewidth = 2,
   alpha = 0.9,
   show = TRUE,
   ...
@@ -21,7 +21,7 @@ pmx_bloq(
 
 \item{colour}{\code{character}  the color of the geom}
 
-\item{size}{\code{numeric}  the size of the geom}
+\item{linewidth}{\code{numeric}  the size of the geom line}
 
 \item{alpha}{\code{numeric}  the alpha of the geom}
 

@@ -77,7 +77,7 @@ pmx_vpc_obs <-
 #' @param median \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{color}} {\code{charcater}  Color of the median percentile line. Default: "#000000". }
-#' \item {\strong{size}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
+#' \item {\strong{linewidth}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
 #' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
 #' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid".}
 #' }
@@ -85,7 +85,7 @@ pmx_vpc_obs <-
 #' @param extreme \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{color}} {\code{charcater} Color of the median percentile line. Default: "#000000". }
-#' \item {\strong{size}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
+#' \item {\strong{linewidth}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
 #' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
 #' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid"}
 #' }
@@ -100,12 +100,12 @@ pmx_vpc_obs <-
 pmx_vpc_pi <-
   function(show = c("all", "median","area"),
            interval = c(.05, .95),
-           median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
-           extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed"),
+           median = list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "solid"),
+           extreme = list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "dashed"),
            area = list(fill = "blue", alpha = 0.1)) {
     show <- match.arg(show)
-    median_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
-    extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed")
+    median_default <- list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "solid")
+    extreme_default <- list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "dashed")
     area_default <- list(fill = "blue", alpha = 0.1)
 
     median <- if (!missing(median)) {
@@ -205,7 +205,7 @@ pmx_vpc_ci <-
 #'
 #' @param show  \code{logical} If TRUE show bin separators
 #' @param color \code{character} Color of the rug. Default: "#000000".
-#' @param size  \code{numeric} Thickness of the rug. Default: 1.
+#' @param linewidth  \code{numeric} Thickness of the rug. Default: 1.
 #' @param alpha  \code{numeric} Transparency of the rug. Default: 0.7.
 #'
 #' @details
@@ -219,13 +219,13 @@ pmx_vpc_ci <-
 pmx_vpc_rug <-
   function(show = TRUE,
            color = "#000000",
-           size = 1,
+           linewidth = 1,
            alpha = 0.7) {
     if (show) {
       structure(
         list(
           color = color,
-          size = size,
+          linewidth = linewidth,
           alpha = alpha
         ),
         class = c("pmx_vpc_rug", "list")
