@@ -36,7 +36,7 @@ Default \code{NULL} reads all tables.}
 \item{user_mode}{Adjustment to the original code: usermode is set to "usermode = TRUE" in order to improve this function for purposes of pmx_nm() 
 (nonmem_reader.R), In order to use this function seperatly, the use of the original function in the xpose package is advised.}
 
-\item{...}{Additional arguments to be passed to the \code{\link[readr]{read_table2}} or \code{\link[readr]{read_csv}} functions.}
+\item{...}{Additional arguments to be passed to the \code{\link[readr]{read_table}} or \code{\link[readr]{read_csv}} functions.}
 }
 \description{
 Quickly import NONMEM output tables into R. This function automatically 

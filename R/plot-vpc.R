@@ -77,7 +77,7 @@ pmx_vpc_obs <-
 #' @param median \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{color}} {\code{charcater}  Color of the median percentile line. Default: "#000000". }
-#' \item {\strong{size}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
+#' \item {\strong{linewidth}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
 #' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
 #' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid".}
 #' }
@@ -85,7 +85,7 @@ pmx_vpc_obs <-
 #' @param extreme \code{list} containing: \cr
 #' \itemize{
 #' \item {\strong{color}} {\code{charcater} Color of the median percentile line. Default: "#000000". }
-#' \item {\strong{size}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
+#' \item {\strong{linewidth}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
 #' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
 #' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid"}
 #' }
@@ -100,12 +100,12 @@ pmx_vpc_obs <-
 pmx_vpc_pi <-
   function(show = c("all", "median","area"),
            interval = c(.05, .95),
-           median = list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid"),
-           extreme = list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed"),
+           median = list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "solid"),
+           extreme = list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "dashed"),
            area = list(fill = "blue", alpha = 0.1)) {
     show <- match.arg(show)
-    median_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "solid")
-    extreme_default <- list(color = "#000000", size = 1, alpha = 0.7, linetype = "dashed")
+    median_default <- list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "solid")
+    extreme_default <- list(color = "#000000", linewidth = 1, alpha = 0.7, linetype = "dashed")
     area_default <- list(fill = "blue", alpha = 0.1)
 
     median <- if (!missing(median)) {
@@ -205,8 +205,9 @@ pmx_vpc_ci <-
 #'
 #' @param show  \code{logical} If TRUE show bin separators
 #' @param color \code{character} Color of the rug. Default: "#000000".
-#' @param size  \code{numeric} Thickness of the rug. Default: 1.
+#' @param linewidth  \code{numeric} Thickness of the rug. Default: 1.
 #' @param alpha  \code{numeric} Transparency of the rug. Default: 0.7.
+#' @param size \code{numeric} Depreciated thickness of the rug. Default: 1.
 #'
 #' @details
 #'
@@ -219,13 +220,16 @@ pmx_vpc_ci <-
 pmx_vpc_rug <-
   function(show = TRUE,
            color = "#000000",
-           size = 1,
-           alpha = 0.7) {
+           linewidth = 1,
+           alpha = 0.7,
+           size) {
+    lifecycle::deprecate_soft("1.2.9", "pmx_vpc_rug(size)", I("use `linewidth=` instead of `size=`"))
+    if (!missing(size)) linewidth <- size
     if (show) {
       structure(
         list(
           color = color,
-          size = size,
+          linewidth = linewidth,
           alpha = alpha
         ),
         class = c("pmx_vpc_rug", "list")
@@ -375,7 +379,7 @@ find_interval <- function(x, vec, labels = NULL, ...) {
 
 
 vpc.pi_line <- function(dt, left, geom ) {
-  mapping <- aes_string(group = "percentile", y = "value", linetype="percentile")
+  mapping <- aes(group = .data$percentile, y = .data$value, linetype=.data$percentile)
   right <- list(data = dt, mapping = mapping)
   left$linetype <- NULL
   do.call("geom_line", append(right, left))
@@ -415,7 +419,7 @@ vpc.pi_line <- function(dt, left, geom ) {
 }
 vpc.plot <- function(x) {
   with(x, {
-    pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv))
+    pp <- ggplot(data = db$pi_dt, aes(x = .data[[if (!is.null(bin)) "bin" else idv]]))
 
     pi_med_layer <- function() {if (!is.null(pi)) {
       vpc.pi_line(db$pi_dt[percentile == "p50"], pi$median)
@@ -429,7 +433,7 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$pi_area_dt,
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]])
+          mapping = aes(ymin = .data[[nn[[1]]]], ymax = .data[[nn[[2]]]])
         ),
         pi$area
       )
@@ -440,7 +444,7 @@ vpc.plot <- function(x) {
     obs_layer <- if (!is.null(obs)) {
       params <- append(
         list(
-          mapping = aes_string(y = dv, x = idv),
+          mapping = aes(y = .data[[dv]], x = .data[[idv]]),
           data = input
         ),
         obs
@@ -465,7 +469,8 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$ci_dt[percentile == "p50"],
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile",fill="percentile")
+          mapping = aes(ymin = .data[[nn[[1]]]], ymax = .data[[nn[[2]]]],
+                        group = .data$percentile,fill=.data$percentile)
         ),
         ci$median
       )
@@ -477,7 +482,8 @@ vpc.plot <- function(x) {
       params <- append(
         list(
           data = db$ci_dt[percentile != "p50"],
-          mapping = aes_string(ymin = nn[[1]], ymax = nn[[2]], group = "percentile",fill="percentile")
+          mapping = aes(ymin = .data[[nn[[1]]]], ymax = .data[[nn[[2]]]],
+                        group = .data$percentile,fill=.data$percentile)
         ),
         ci$extreme
       )
@@ -485,7 +491,7 @@ vpc.plot <- function(x) {
       do.call(geom_ribbon, params)
     }}
 
-    pp <- ggplot(data = db$pi_dt, aes_string(x = if (!is.null(bin)) "bin" else idv)) +
+    pp <- ggplot(data = db$pi_dt, aes(x = .data[[if (!is.null(bin)) "bin" else idv]])) +
       obs_layer + pi_med_layer() + pi_ext_layer() + rug_layer
 
     pp <- if (type=="scatter") pp +  pi_shaded_layer()

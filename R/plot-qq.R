@@ -174,7 +174,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   }
 
 
-  p <- ggplot(dx, aes_string(sample = x$x)) +
+  p <- ggplot(dx, aes(sample = .data[[x$x]])) +
     with(
       x$point,
       geom_point(
@@ -194,12 +194,15 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   }
 
   reference_layer <- if (!is.null(x$is.reference_line) && x$is.reference_line) {
-    x$reference_line$mapping <- aes_string(slope = "slope", intercept = "intercept")
+    x$reference_line$mapping <- aes(slope = .data$slope, intercept = .data$intercept)
     if (!is.null(strat.color)) {
+      if (is.formula(strat.color)) {
+        strat.color <- setdiff(as.character(strat.color), "~")
+      }
       x$reference_line$colour <- NULL
-      x$reference_line$mapping <- aes_string(
-        slope = "slope", intercept = "intercept",
-        colour = strat.color
+      x$reference_line$mapping <- aes(
+        slope = .data$slope, intercept = .data$intercept,
+        colour = .data[[strat.color]]
       )
     }
     x$reference_line$data <- dx.ref
@@ -243,7 +246,10 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
   }
 
   layer_color <- if (!is.null(strat.color)) {
-    geom_point(stat = "qq", aes_string(colour = strat.color))
+    if (is.formula(strat.color)) {
+      strat.color <- setdiff(as.character(strat.color), "~")
+    }
+    geom_point(stat = "qq", aes(colour = .data[[strat.color]]))
   }
   p <- p + layer_facet + layer_shrink +
     layer_color + reference_layer + hline_layer + vline_layer

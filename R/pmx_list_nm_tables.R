@@ -45,7 +45,7 @@ pmx_list_nm_tables <- function(nm_model = NULL) {
   table_list <- table_list %>% 
     dplyr::mutate(file = pmx_file_path(attr(nm_model, 'dir'), .$file),
                   firstonly = stringr::str_detect(.$string, 'FIRSTONLY')) %>% 
-    dplyr::select(dplyr::one_of('problem', 'file', 'firstonly'))
+    dplyr::select(dplyr::one_of(c('problem', 'file', 'firstonly')))
   
   # Prep simtab flag
   sim_flag <- nm_model %>% 

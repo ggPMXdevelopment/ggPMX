@@ -360,7 +360,8 @@ pmx_endpoint <-
 #' @param cens \code{character} the censoring column name
 #' @param limit \code{character}  the limit column name (optional)
 #' @param colour \code{character}  the color of the geom
-#' @param size \code{numeric}  the size of the geom
+#' @param size \code{numeric}  the size of the geom when using \code{geom_point()}
+#' @param linewidth \code{numeric} the line width of the segment when using \code{geom_segment()}
 #' @param alpha  \code{numeric}  the alpha of the geom
 #' @param show \code{logical} if FALSE remove all censory observations
 #' @param ... any other graphical parameter
@@ -377,6 +378,7 @@ pmx_bloq <-
              limit = "LIMIT",
              colour = "pink",
              size = 2,
+             linewidth=1,
              alpha = 0.9,
              show = TRUE,
              ...) {
@@ -386,6 +388,7 @@ pmx_bloq <-
       show = show,
       colour = colour,
       size = size,
+      linewidth = linewidth,
       alpha = alpha,
       ...
     )

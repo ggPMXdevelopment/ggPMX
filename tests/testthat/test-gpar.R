@@ -10,7 +10,7 @@ test_that("pmx_gpar defaults are well setted", {
   expect_identical(
     gpars$smooth,
     list(
-      se = FALSE, linetype = 1, size = 1.5, method = "loess",
+      se = FALSE, linetype = 1, linewidth = 1.5, method = "loess",
       colour = "red"
     )
   )

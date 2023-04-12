@@ -32,4 +32,5 @@
 #' @importFrom yaml yaml.load_file
 #' @import data.table
 #' @importFrom assertthat assert_that
+#' @importFrom rlang .data
 NULL

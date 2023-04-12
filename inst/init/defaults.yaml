@@ -76,10 +76,10 @@ IND:
   smooth_with_bloq: no
   ipred_line:
     colour: black
-    size: 1
+    linewidth: 1
   pred_line:
     colour: black
-    size: 1
+    linewidth: 1
   point:
     colour: black
     shape : 21

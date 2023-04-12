@@ -74,8 +74,8 @@ pmx_read_nm_files <- function(runno  = NULL,
     tidyr::unnest(dplyr::one_of('tmp')) %>% 
     dplyr::mutate(extension = pmx_get_extension(.$name, dot = FALSE),
                   modified = FALSE) %>% 
-    dplyr::select(dplyr::one_of('name', 'extension', 'problem', 'subprob', 
-                                'method', 'data', 'modified'))
+    dplyr::select(dplyr::one_of(c('name', 'extension', 'problem', 'subprob', 
+                                'method', 'data', 'modified')))
 }
 
 
@@ -172,6 +172,6 @@ pmx_raw_to_tibble <- function(x, sep, file) {
   
   x[!x$header, ] %>%   
     tidyr::separate(col = 'raw', sep = sep, into = header) %>% 
-    dplyr::select(-ncol(.)) %>% 
+    dplyr::select(-dplyr::any_of(ncol(.))) %>% 
     dplyr::mutate_if(colnames(.) != 'NAME', as.numeric)
 }

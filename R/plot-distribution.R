@@ -132,10 +132,13 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
     formula("~EFFECT")
   }
   with(x, {
-    p <- ggplot(data = dx, aes_string(x = "VALUE"))
+    p <- ggplot(data = dx, aes(x = .data$VALUE))
     if (!is.null(strat.color)) {
+      if (is.formula(strat.color)) {
+        strat.color <- setdiff(as.character(strat.color), "~")
+      }
       histogram$fill <- NULL
-      histogram$mapping <- aes_string(fill = strat.color)
+      histogram$mapping <- aes(fill = .data[[strat.color]])
     }
     p <- p + do.call(geom_histogram, histogram)
     if (is.shrink && !is.null(x[["shrink.dx"]])) {
@@ -153,11 +156,13 @@ distrib.hist <- function(dx, strat.facet, strat.color, x) {
 }
 
 distrib.box <- function(dx, strat.color, strat.facet, x) {
-  EFFECT <- VALUE <- NULL
-  p <- ggplot(data = dx, aes_string(x = "EFFECT", y = "VALUE"))
+  p <- ggplot(data = dx, aes(x = .data$EFFECT, y = .data$VALUE))
 
   if (!is.null(strat.color)) {
-    p <- ggplot(data = dx, aes_string(fill = strat.color, x = "EFFECT", y = "VALUE"))
+    if (is.formula(strat.color)) {
+      strat.color <- setdiff(as.character(strat.color), "~")
+    }
+    p <- ggplot(data = dx, aes(fill = .data[[strat.color]], x = .data$EFFECT, y = .data$VALUE))
   }
 
   if (x$is.jitter) p <- p + jitter_layer(x$jitter, strat.color)

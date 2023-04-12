@@ -4,16 +4,18 @@
 \alias{pmx_vpc_rug}
 \title{Sets vpc rug layer}
 \usage{
-pmx_vpc_rug(show = TRUE, color = "#000000", size = 1, alpha = 0.7)
+pmx_vpc_rug(show = TRUE, color = "#000000", linewidth = 1, alpha = 0.7, size)
 }
 \arguments{
 \item{show}{\code{logical} If TRUE show bin separators}
 
 \item{color}{\code{character} Color of the rug. Default: "#000000".}
 
-\item{size}{\code{numeric} Thickness of the rug. Default: 1.}
+\item{linewidth}{\code{numeric} Thickness of the rug. Default: 1.}
 
 \item{alpha}{\code{numeric} Transparency of the rug. Default: 0.7.}
+
+\item{size}{\code{numeric} Depreciated thickness of the rug. Default: 1.}
 }
 \description{
 Sets vpc rug layer

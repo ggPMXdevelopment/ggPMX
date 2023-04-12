@@ -39,10 +39,12 @@ pmx_comp_shrink <-
         if (!is.null(filter)) eta <- filter(eta)
       }
     }
-
+    if (is.formula(strat.color)) {
+      strat.color <- setdiff(as.character(strat.color), "~")
+    }
     ## stratification
     grp <- as.character(unlist(lapply(strat.facet, as.list)))
-    grp <- unique(intersect(c(grp, strat.color), names(eta)))
+    grp <- unique(intersect(c(grp, as.character(strat.color)), names(eta)))
     if (exists("FUN", eta)) eta <- eta[grepl("mode", FUN)]
     cols <- c("ID", "EFFECT", "VALUE", grp)
     eta <- unique(eta[, cols, with = FALSE])

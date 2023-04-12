@@ -27,6 +27,7 @@ ABS_IWRES_IPRED:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
 
 ABS_IWRES_TIME:
@@ -57,6 +58,7 @@ ABS_IWRES_TIME:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
 
 IWRES_IPRED:
@@ -87,6 +89,7 @@ IWRES_IPRED:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
 
 IWRES_TIME:
@@ -117,6 +120,7 @@ IWRES_TIME:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
 
 IWRES_DENS:
@@ -177,6 +181,7 @@ NPDE_TIME:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
 
 NPDE_PRED:
@@ -208,6 +213,7 @@ NPDE_PRED:
     cens: CENS
     limit: LIMIT
     colour: pink
+    linewidth: 2.0
     size: 2.0
     alpha: 0.9
 
@@ -256,6 +262,7 @@ DV_PRED:
     limit: LIMIT
     colour: pink
     size: 2.0
+    linewidth: 2.0
     alpha: 0.9
   square_plot: yes
     
@@ -288,6 +295,7 @@ DV_IPRED:
     cens: CENS
     limit: LIMIT
     colour: pink
+    linewidth: 2.0
     size: 2.0
     alpha: 0.9
 
@@ -302,11 +310,11 @@ INDIVIDUAL:
   is.title: TRUE
   ipred_line:
     colour: black
-    size: 1
+    linewidth: 1
     linetype: 2
   pred_line:
     colour: black
-    size: 1
+    linewidth: 1
     linetype: 1
   point:
     colour: black
@@ -327,6 +335,7 @@ INDIVIDUAL:
     cens: CENS
     limit: LIMIT
     colour: pink
+    linewidth: 2.0
     size: 2.0
     alpha: 0.9
   is.legend: yes
@@ -418,7 +427,7 @@ ETA_MATRIX:
   smooth:
     se: FALSE
     linetype: 1
-    size: 1.5
+    linewidth: 1.5
     method: loess
     colour: red
   is.shrink: TRUE
@@ -447,7 +456,7 @@ ETA_CONTS:
   smooth_with_bloq: no
   smooth:
     se: no
-    size: 1
+    linewidth: 1
     color: black
     linetype: 1.0
     method: lm

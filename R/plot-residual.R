@@ -105,13 +105,17 @@ plot_pmx.residual <- function(x, dx, ...) {
     }
     dx <- dx[!is.infinite(get(aess$x)) & !is.infinite(get(aess$y))]
 
-    p <- ggplot(dx, with(aess, ggplot2::aes_string(x, y)))
+    p <- ggplot(dx, with(aess, ggplot2::aes(.data[[x]], .data[[y]])))
 
     # applying strat.color as color aesthetic mapping for point
     if (!is.null(x[["strat.color"]])) {
       if(is.null(point[["mapping"]])) point[["mapping"]] <- aes()
       with(point, {
-        mapping <- modifyList(mapping, aes(color=x[["strat.color"]]))
+        strat.color <- x[["strat.color"]]
+        if (is.formula(strat.color)) {
+          strat.color <- setdiff(as.character(strat.color), "~")
+        }
+        mapping <- modifyList(mapping, aes(color=strat.color))
         mapping[["colour"]] <- NULL
       })
     }
@@ -121,7 +125,7 @@ plot_pmx.residual <- function(x, dx, ...) {
     bloq_cens <- bloq[["cens"]]
     if (!is.null(bloq)) {
       bloq$data <- dx[get(bloq_cens) != 0]
-      bloq$cens <- bloq$limit <- NULL
+      bloq$cens <- bloq$limit <- bloq$linewidth <- NULL
       p <- p + do.call(geom_point, bloq)
     }
 

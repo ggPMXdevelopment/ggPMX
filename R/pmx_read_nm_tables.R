@@ -19,7 +19,7 @@
 #' @param ziptab If \code{TRUE} search for the tables that have been compressed and renamed ??<file>.zip'.
 #' @param user_mode Adjustment to the original code: usermode is set to "usermode = TRUE" in order to improve this function for purposes of pmx_nm() 
 #' (nonmem_reader.R), In order to use this function seperatly, the use of the original function in the xpose package is advised.
-#' @param ... Additional arguments to be passed to the \code{\link[readr]{read_table2}} or \code{\link[readr]{read_csv}} functions.
+#' @param ... Additional arguments to be passed to the \code{\link[readr]{read_table}} or \code{\link[readr]{read_csv}} functions.
 #' 
 #' @section Table format requirement:
 #' When using \code{pmx_read_nm_tables} with the \code{combined} argument set to \code{FALSE} an \code{ID} column 
@@ -134,7 +134,8 @@ pmx_read_nm_tables <- function(file          = NULL,
   tables <- tables %>% 
     dplyr::bind_cols(tables %>% 
                        dplyr::select(dplyr::one_of(c('fun', 'params'))) %>% 
-                       {purrr::invoke_map(.f = .$fun, .x = .$params)} %>%
+                       #{purrr::invoke_map(.f = .$fun, .x = .$params)} %>%
+                       {setNames(lapply(seq_along(.$params), function(i) {do.call(.$fun[[i]], .$params[[i]])}), names(.$fun))} %>%
                        dplyr::tibble(data = .))
   
   if (!combined) {
@@ -202,7 +203,7 @@ pmx_read_nm_tables <- function(file          = NULL,
       dplyr::mutate(out = purrr::map(.$tmp, ~dplyr::select(.$data[[1]], 
                                                            dplyr::one_of(unique(unlist(.$index[[1]]$col)))))) %>% 
       tidyr::unnest(dplyr::one_of('tmp')) %>% 
-      dplyr::select(dplyr::one_of('problem', 'simtab', 'firstonly', 'index', 'out')) %>% 
+      dplyr::select(dplyr::one_of(c('problem', 'simtab', 'firstonly', 'index', 'out'))) %>% 
       dplyr::rename(!!rlang::sym('data') := dplyr::one_of('out'))
   }
   
@@ -224,7 +225,7 @@ pmx_read_nm_tables <- function(file          = NULL,
       dplyr::ungroup() %>%
       dplyr::mutate(out = purrr::map(.$tmp, pmx_merge_firstonly, quiet)) %>% 
       tidyr::unnest(dplyr::one_of('out')) %>% 
-      dplyr::select(dplyr::one_of('problem', 'simtab', 'data', 'index'))
+      dplyr::select(dplyr::one_of(c('problem', 'simtab', 'data', 'index')))
   }
   
   if (nrow(tables) == 0) stop('No table imported.', call. = FALSE)
@@ -270,7 +271,7 @@ pmx_read_nm_tables <- function(file          = NULL,
 pmx_read_funs <- function(fun) {
   c(csv   = readr::read_csv,
     csv2  = readr::read_csv2,
-    table = readr::read_table2)[fun]
+    table = readr::read_table)[fun]
 }
 
 
@@ -357,7 +358,7 @@ pmx_combine_tables <- function(x) {
   #       with the tidyverse.
   tmp_df <- do.call("cbind", unname(x$data))
   tmp_df <- tmp_df[, which(!duplicated(names(tmp_df))) ] %>% 
-    tibble::as_tibble() %>% 
+    dplyr::as_tibble() %>% 
     tidyr::drop_na(dplyr::one_of('ID')) %>%
     list()
   

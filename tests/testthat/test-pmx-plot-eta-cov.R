@@ -53,7 +53,7 @@ test_that(
     expect_error(ctr <- theophylline(settings = pmx_settings(effects = list(
       levels = c("ka", "V"),
       labels = c("Concentration", "Volume")
-    ))))
+    ))), NA)
   }
 )
 
