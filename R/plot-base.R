@@ -79,12 +79,20 @@ plot_pmx.pmx_gpar <- function(gpar, p, bloq_cens) {
     }
 
     if (scale_x_log10) {
-      p <- p %+% scale_x_log10(limits = ranges[["x"]])
+      if (rlang::is_installed("xgxr")) {
+        p <- p %+% xgxr::xgx_scale_x_log10(limits = ranges[["x"]])
+      } else {
+        p <- p %+% scale_x_log10(limits = ranges[["x"]])
+      }
       warning("Applying log to x variable will cause nonpositive values to be dropped.")
     }
 
     if (scale_y_log10) {
-      p <- p %+% scale_y_log10(limits = ranges[["y"]])
+      if (rlang::is_installed("xgxr")) {
+        p <- p %+% xgxr::xgx_scale_y_log10(limits = ranges[["y"]])
+      } else {
+        p <- p %+% scale_y_log10(limits = ranges[["y"]])
+      }
       warning("Applying log to y-variable will cause nonpositive values to be dropped.")
     }
 
