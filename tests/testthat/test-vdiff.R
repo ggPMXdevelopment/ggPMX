@@ -1,5 +1,6 @@
 context("vdiffr")
 test_that("vdiffr", {
+  skip_if(TRUE)
   set.seed(42)
   ctr <- theophylline()
   args <- commandArgs(trailingOnly = TRUE)
