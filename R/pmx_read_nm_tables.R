@@ -19,7 +19,7 @@
 #' @param ziptab If \code{TRUE} search for the tables that have been compressed and renamed ??<file>.zip'.
 #' @param user_mode Adjustment to the original code: usermode is set to "usermode = TRUE" in order to improve this function for purposes of pmx_nm() 
 #' (nonmem_reader.R), In order to use this function seperatly, the use of the original function in the xpose package is advised.
-#' @param ... Additional arguments to be passed to the \code{\link[readr]{read_table2}} or \code{\link[readr]{read_csv}} functions.
+#' @param ... Additional arguments to be passed to the \code{\link[readr]{read_table}} or \code{\link[readr]{read_csv}} functions.
 #' 
 #' @section Table format requirement:
 #' When using \code{pmx_read_nm_tables} with the \code{combined} argument set to \code{FALSE} an \code{ID} column 
@@ -270,7 +270,7 @@ pmx_read_nm_tables <- function(file          = NULL,
 pmx_read_funs <- function(fun) {
   c(csv   = readr::read_csv,
     csv2  = readr::read_csv2,
-    table = readr::read_table2)[fun]
+    table = readr::read_table)[fun]
 }
 
 
