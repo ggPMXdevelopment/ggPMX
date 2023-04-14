@@ -111,7 +111,7 @@ plot_pmx.individual <-
         point$shape <- NULL
         max_y <- aggregate(TIME ~ ID, data=dx, max)
         colnames(max_y) <- c("ID", "maxValue")
-        dx <- base::merge(dx, max_y, by="ID", all.x = T)
+        dx <- base::merge(dx, max_y, by="ID", all.x = TRUE)
         # Rounding because "predictions" data are rounded:
         dx$isobserv <- with(dx, round(TIME) <= maxValue)
         point$data <- base::merge(point$data, max_y, by="ID")
@@ -139,20 +139,23 @@ plot_pmx.individual <-
           }
         }
       }
-
       if (!is.null(point)) {
-        n <- ifelse(any(point$data$isobserv == "ignored"), 3, 2)
+        n <- ifelse(any(point$data$isobserv == "ignored"), 3,
+                    ifelse(length(point$data$isobserv) == 0L, 1, 2))
         linetype_values <- c(rep("solid", n), "dashed")
-        if (any(point$data$isobserv == "ignored"))
+        if (any(point$data$isobserv == "ignored")) {
           linetype_labels <- c("accepted",
                                "ignored",
                                "individual predictions",
                                "population predictions")
-        else
+        } else if (length(point$data$isobserv) == 0L) {
+          linetype_labels <- c("individual predictions",
+                               "population predictions")
+        } else {
           linetype_labels <- c("accepted",
                                "individual predictions",
                                "population predictions")
-
+        }
       } else {
         n <- 2
         linetype_labels <- c("accepted",

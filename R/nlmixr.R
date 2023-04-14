@@ -1,3 +1,5 @@
+
+
 #' Creates pmx controller from  an nlimxr fit object
 #'
 #' @param fit nlmixr object
@@ -117,7 +119,12 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
       }
     }
   }
-  input <- as.data.table(fit$dataMergeInner)
+  # use the fit DV because it simulates censoring
+  # $fitMergeInner prefers the DV from the fit, so preserve it here
+  input <- fit$fitMergeInner
+  # if it hasn't been implemented use dataMergeInner instead
+  if (is.null(input)) input <- fit$dataMergeInner
+  input <- as.data.table(input)
   for (v in conts) {
     if (v != "") {
       class(input[[v]]) <- "double"

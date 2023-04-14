@@ -33,6 +33,10 @@ diagnostics such as: - residual- and empirical Bayes estimate
 (EBE)-based plots, - distribution plots, - prediction- and
 simulation-based diagnostics (visual predictive checks).
 
+ggPMX creates plot objects which can be further customized and extended
+using the extensive [ggplot2
+syntax](https://ggplot2.tidyverse.org/reference/gg-add.html).
+
 In addition, shrinkage and summary parameters tables can be also
 produced. By default, the PDF- or Word-format diagnostic report contains
 essential goodness-of-fit plots. However, these can be adapted to
@@ -756,7 +760,9 @@ ctr %>% pmx_plot_eta_matrix
 
 In order to generate VPCs a simulation dataset is requried. Creation of
 VPC is slightly different dependening on the fitting software used
-(Monolix, NONMEM or nlmixr).
+(Monolix, NONMEM or nlmixr). Make sure to use the same name for the dv
+column in the simulation file as the one used in the input (modeling
+dataset).
 
 ### Models fitted with Monolix (versions 2016 and later)
 
@@ -896,13 +902,21 @@ ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
 
 <img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
 
-### Stratification
+### Set custom x- and/or y-axis labels
 
 ``` r
-ctr %>% pmx_plot_vpc(strat.facet="SEX",facets=list(nrow=2))
+ctr %>% pmx_plot_vpc(labels = c(x = "DV axis", y = "TIME axis"))
 ```
 
 <img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+
+### Stratification
+
+``` r
+ctr %>% pmx_plot_vpc(strat.facet=~SEX,facets=list(nrow=2))
+```
+
+<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" />
 
 ### Monolix-like customisation
 
@@ -910,7 +924,7 @@ User can customize the options to get a Monolix-like display.
 
 ``` r
 ctr %>% pmx_plot_vpc(
-  strat.facet="SEX",
+  strat.facet=~SEX,
   facets=list(nrow=2),
   type="percentile",
   is.draft = FALSE,
@@ -923,24 +937,25 @@ ctr %>% pmx_plot_vpc(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-31-1.png" width="100%" />
 
 # Diagnostics report
 
 A report (in pdf and docx format) containing all default diagnostic
-plots can be created using the *pmx\_report* function. The *format* can
+plots can be created using the *pmx\_report* function. The *output* can
 take three different values:
 
   - “report”: produces a pdf and a docx file (named `name.pdf` and
     `name.png` specified in argument *name*, located in *save\_dir*)
     with default diagnostic plots
-  - “plots”: produces a folder named after *plots_subdir* parameter `ggpmx_GOF` located in *save\_dir*
-    that contains all default diagnotic plots, each in a pdf and png
-    file. The different plots are numerated in order to have an unique
-    identifier for each plot (ex: ebe\_box-1.pdf). This is necessary for
-    having correct footnotes that indicated the path to the source file
-    (for submission reports).
-  - “both”: is a combination of both options above.
+  - “plots”: produces a folder named after *plots\_subdir* parameter
+    (`ggpmx_GOF` by default, if parameter is not specified) located in
+    *save\_dir* that contains all default diagnostic plots, each in a
+    pdf and png file. The different plots are numerated in order to have
+    an unique identifier for each plot (ex: ebe\_box-1.pdf). This is
+    necessary for having correct footnotes that indicated the path to
+    the source file (for submission reports).
+  - “all”: is a combination of both options above.
 
 Example:
 
@@ -948,11 +963,11 @@ Example:
 ctr %>% pmx_report(name='Diagnostic_plots2',
                    save_dir = work_dir,
                    plots_subdir = "ggpmx_report",
-                   format='both')
+                   output='all')
 ```
 
 Note that running the same command first with the option
-“format=‘plots’” and then with the option “format=‘report’” will
+“output=‘plots’” and then with the option “output=‘report’” will
 remove the *ggpmx\_GOF* folder.
 
 Note also that by default, the report will have the DRAFT label on all
@@ -967,7 +982,7 @@ the following command:
 ctr %>% pmx_report(name='Diagnostic_plots1',
                    save_dir = work_dir,
                    plots_subdir = "ggpmx_report",
-                   format='report')
+                   output='report')
 ```
 
 The Rmarkdown (.Rmd) file is the “template”. The user can modify the
@@ -979,7 +994,7 @@ command:
 ctr %>% pmx_report(name='Diagnostic_plots3',
                    save_dir = work_dir,
                    plots_subdir = "ggpmx_report",
-                   format='report',
+                   output='report',
                    template=file.path(work_dir,'Diagnostic_plots1.Rmd'))
 ```
 
@@ -1084,6 +1099,7 @@ all plots. In order to switch this label off, the user sets the
 `is.draft` option of `pmx_settings()` to `FALSE`.
 
 ``` r
+
 ctr <- theophylline(settings = pmx_settings(is.draft = FALSE))
 ```
 
@@ -1371,10 +1387,10 @@ plot types.
 
 ``` r
 args(pmx_gpar)
-#> function (labels, axis.title, axis.text, ranges, is.smooth, smooth, 
-#>     is.band, band, is.draft, draft, discrete, is.identity_line, 
-#>     identity_line, scale_x_log10, scale_y_log10, color.scales, 
-#>     is.legend, legend.position) 
+#> function (is.title, labels, axis.title, which_pages, print, axis.text, 
+#>     ranges, is.smooth, smooth, is.band, band, is.draft, draft, 
+#>     discrete, is.identity_line, identity_line, smooth_with_bloq, 
+#>     scale_x_log10, scale_y_log10, color.scales, is.legend, legend.position) 
 #> NULL
 ```
 
@@ -1447,10 +1463,15 @@ ctr %>% pmx_comp_shrink(  fun = "var")
 ```
 
 ``` r
-ctr %>% pmx_plot_eta_box( shrink=list(fun = "var"))
+ctr %>% pmx_plot_eta_box( shrink=pmx_shrink(fun = "var"))
 ```
 
 <img src="man/figures/README-shrink_plot_var-1.png" width="100%" />
+
+Note that for plotting functions which take a shrink parameter, this can
+be created using the `pmx_shrink` function to create a `pmxShrinkClass`
+object (or it can be a list which can be converted into such an object
+using `pmx_shrink`).
 
 ## Shrinkage and stratification
 
@@ -1494,4 +1515,4 @@ ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = "SEX",
                           facets=list(scales="free_y",ncol=2))
 ```
 
-<img src="man/figures/README-unnamed-chunk-41-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-45-1.png" width="100%" />
