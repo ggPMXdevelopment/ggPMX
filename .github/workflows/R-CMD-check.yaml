@@ -65,9 +65,9 @@ jobs:
             nlmixr2/nlmixr2
             lixoftConnectors=?ignore
           needs: check
-          
+
       - run: tlmgr --version
-        
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
