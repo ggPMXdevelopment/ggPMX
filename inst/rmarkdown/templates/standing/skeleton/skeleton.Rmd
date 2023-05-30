@@ -21,8 +21,6 @@ title: `r params$title `
 
 ```{r setup, include=FALSE}
 library(ggplot2)
-table_nums <- captioner::captioner(prefix = "Table")
-fig_nums <- captioner::captioner()
 knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 cats <- ctr %>% get_cats
 
