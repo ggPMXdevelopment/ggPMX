@@ -1,3 +1,10 @@
+
+# ggPMX 1.2.9
+
+* Fix custom template so it works again
+
+* Fix `nlmixr2`controller to correctly handle blq data
+
 # ggPMX 1.2.8
 
 * Always ensure the `isoberv` is "accepted" for input dataset (fixes #235)
