@@ -407,7 +407,8 @@ head_table <- function(out, label, caption, head=TRUE) {
     hout <- out
   }
   if (requireNamespace("xtable", quietly = TRUE)) {
-    xt <- xtable::xtable(hout, label = "tab:ggPMX_datasets", caption = "ggPMX datasets")
+    xt <- xtable::xtable(hout, label = label,
+                         caption = caption)
     print(xt, comment = F)
   } else {
     print(hout)
