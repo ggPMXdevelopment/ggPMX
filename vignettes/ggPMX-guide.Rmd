@@ -24,7 +24,6 @@ vignette: >
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggplot2)
-library(xtable)
 library(knitr)
 library(ggPMX)
 
@@ -397,6 +396,26 @@ The following syntax allows to see which type of plot corresponds to which plot 
 ctr %>% plots()
 ```
 
+We create a helper function that outputs the xtable output.
+
+```{r head_table}
+# head table
+head_table <- function(out, label, caption, head=TRUE) {
+  if (head) {
+    hout <- head(out)
+  } else {
+    hout <- out
+  }
+  if (requireNamespace("xtable", quietly = TRUE)) {
+    xt <- xtable::xtable(hout, label = "tab:ggPMX_datasets", caption = "ggPMX datasets")
+    print(xt, comment = F)
+  } else {
+    print(hout)
+  }
+}
+```
+
+
 ```{r datasets_list,echo=FALSE,results='asis'}
 
 out <- rbind(
@@ -408,10 +427,7 @@ out <- rbind(
 )
 
 colnames(out) <- c("ggPMX dataset", "Description")
-# knitr::kable(out)
-# latex(head(out), file='', label='tab:ggPMX_datasets', caption='ggPMX datasets',where = "!htbp")
-xt <- xtable(head(out), label = "tab:ggPMX_datasets", caption = "ggPMX datasets")
-print(xt, comment = F)
+head_table(out, label = "tab:ggPMX_datasets", caption = "ggPMX datasets")
 ```
 
 # Default diagnostic plots
@@ -889,12 +905,11 @@ out <- rbind(
 )
 
 colnames(out) <- c("Argument", "Description", "Values")
-
-xt <- xtable(head(out), label = "tab:pmx_mandatory", caption = "Mandatory arguments of pmx() function")
-print(xt, comment = F)
+head_table(out, label = "tab:pmx_mandatory", caption = "Mandatory arguments of pmx() function")
 ```
 
 The example below defines a Controller with the *standing* (standard) configuration. 
+
 ```{r init_ctr}
 theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
 work_dir          <- file.path(theophylline_path, "Monolix")
@@ -907,7 +922,9 @@ ctr <- pmx(
   dv        = "Y",
 )
 ```
-Note that the column "DVID" of data_pk.csv does not exist; however it is not needed here because there is only one single output of the model. As dvid is a mandatory argument, which is automatically set to "DVID" if dvid is missng.
+
+
+Note that the column "DVID" of data_pk.csv does not exist; however it is not needed here because there is only one single output of the model. As dvid is a mandatory argument, which is automatically set to "DVID" if dvid is missing.
 
 The input dataset can be provided to ggPMX via its location (as in the example above) or as a data frame (maybe give an example). The modeling output datasets have to be in the location that is indicated as working directory (`work_dir` in the example above).
 
@@ -963,8 +980,7 @@ out <- rbind(
 )
 
 colnames(out) <- c("Plot Name", "ggPMX type", "ggPMX name")
-xt <- xtable(out, label = "tab:plots_list", caption = "List of all diagnostic plots")
-print(xt, comment = F)
+head_table(out, label = "tab:plots_list", caption = "List of all diagnostic plots")
 ```
 Abbreviations:
 
@@ -994,8 +1010,7 @@ out <- rbind(
 
 colnames(out) <- c(" ", "Function name", "Description")
 
-xt <- xtable(out, label = "tab:func_list", caption = "List of all `ggPMX` functions")
-print(xt, comment = F)
+head_table(out, label = "tab:func_list", caption = "List of all `ggPMX` functions", head=FALSE)
 ```
 
 (Apparently, it's not the full list. Add all functions.)
