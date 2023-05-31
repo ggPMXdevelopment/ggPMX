@@ -3,6 +3,7 @@ reader_help <- reader_helpers()
 
 #------------------- read_mlx18_res start --------------------------------------
 test_that("read_mlx18_res: params: path, x; result: data.table", {
+  skip_on_os("windows")
   ipath <- file.path(reader_help$wd, "predictions.txt")
   names. <- names(reader_help$conf$data)
   x <- reader_help$conf$data[names.]
@@ -11,6 +12,7 @@ test_that("read_mlx18_res: params: path, x; result: data.table", {
 
 test_that("read_mlx18_res: params: path is wrong, subfolder is not empty,
           file exists, endpoint; result: identical structure", {
+  skip_on_os("windows")
   ipath <- file.path(reader_help$wd, "predictions.txt")
   names. <- names(reader_help$conf$data)
   x <- reader_help$conf$data[names.]
@@ -20,6 +22,7 @@ test_that("read_mlx18_res: params: path is wrong, subfolder is not empty,
 
 test_that("read_mlx18_res: params: path is wrong, subfolder is not empty,
           file exists; result: identical structure", {
+  skip_on_os("windows")
   ipath <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline", "predictions.txt")
 
   names. <- names(reader_help$conf$data)
@@ -31,6 +34,7 @@ test_that("read_mlx18_res: params: path is wrong, subfolder is not empty,
 
 test_that("read_mlx18_res: params: newnames, path is wrong, subfolder is not empty,
           file exists; result: identical structure", {
+  skip_on_os("windows")
   ipath <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline", "predictions.txt")
 
   names. <- names(reader_help$conf$data)
@@ -48,6 +52,7 @@ test_that("read_mlx18_res: params: newnames, path is wrong, subfolder is not emp
 
 test_that("read_mlx18_res: params: pattern, path is wrong, subfolder is not empty,
           file exists; result: identical structure", {
+  skip_on_os("windows")
   ipath <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline", "finegrid.txt")
 
   names. <- names(reader_help$conf$data)
@@ -67,6 +72,7 @@ test_that("read_mlx18_res: params: pattern, path is wrong, subfolder is not empt
 
 test_that("read_mlx18_res: 11params: path is wrong, subfolder is not empty,
           file exists; result: identical structure", {
+  skip_on_os("windows")
   ipath <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline", "finegrid.txt")
 
   names. <- names(reader_help$conf$data)
@@ -83,6 +89,7 @@ test_that("read_mlx18_res: 11params: path is wrong, subfolder is not empty,
 })
 
 test_that("read_mlx18_res: params: path, occ = OCC and its in file; result: error", {
+  skip_on_os("windows")
   my.file <- tempfile()
   fwrite(
     data.frame(
@@ -104,6 +111,7 @@ test_that("read_mlx18_res: params: path, occ = OCC and its in file; result: erro
 
 test_that("read_mlx18_res: params: path is NULL, x;
           result: error", {
+  skip_on_os("windows")
   ipath <- NULL
   names. <- names(reader_help$conf$data)
   x <- reader_help$conf$data[names.]
@@ -112,6 +120,7 @@ test_that("read_mlx18_res: params: path is NULL, x;
 
 test_that("read_mlx18_res: params: path, x is NULL;
           result: error", {
+  skip_on_os("windows")
   ipath <- file.path(reader_help$wd, "predictions.txt")
   x <- NULL
   expect_error(read_mlx18_res(ipath, x))
