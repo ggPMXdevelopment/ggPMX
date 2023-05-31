@@ -657,6 +657,8 @@ vpc_legend. <- function(x){
   x
 }
 
+#' @rdname plot_pmx
+#' @export
 plot_pmx.pmx_vpc <- function(x, dx, ...) {
   x <- x %>%
     vpc_legend. %>%

@@ -15,7 +15,9 @@ set_abbrev(ctr, ...)
 update or add a new abbreviation
 }
 \examples{
+\donttest{
 ctr <- theophylline()
 ctr \%>\% set_abbrev("new_param" = "new value")
 ctr \%>\% get_abbrev("new_param")
+}
 }

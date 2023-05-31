@@ -25,6 +25,7 @@ values or apply any other data set operation) and use the new data set using the
 parameter of pmx_plot family functions.
 }
 \examples{
+\donttest{
 ctr <- theophylline()
 dx <- ctr \%>\% get_data("eta")
 dx <- dx[, EFFECT := factor(
@@ -36,6 +37,7 @@ dx <- dx[, EFFECT := factor(
 ctr \%>\% set_data(eta = dx)
 ## or create a new data set
 ctr \%>\% set_data(eta_long = dx)
+}
 }
 \seealso{
 Other pmxclass: 

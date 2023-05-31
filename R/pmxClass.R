@@ -551,9 +551,11 @@ set_plot <- function(
 #' @param ... Options to set or add, with the form \code{name = value}.
 #' @export
 #' @examples
+#' \donttest{
 #' ctr <- theophylline()
 #' ctr %>% set_abbrev("new_param" = "new value")
 #' ctr %>% get_abbrev("new_param")
+#' }
 set_abbrev <- function(ctr, ...) {
   assert_that(is_pmxclass(ctr))
   abbrev <- if (length(ctr$abbrev) > 0) {
@@ -747,6 +749,7 @@ get_data <- function(ctr, data_set = c(
 #' values or apply any other data set operation) and use the new data set using the dname
 #' parameter of pmx_plot family functions.
 #' @examples
+#' \donttest{
 #' ctr <- theophylline()
 #' dx <- ctr %>% get_data("eta")
 #' dx <- dx[, EFFECT := factor(
@@ -758,6 +761,7 @@ get_data <- function(ctr, data_set = c(
 #' ctr %>% set_data(eta = dx)
 #' ## or create a new data set
 #' ctr %>% set_data(eta_long = dx)
+#' }
 #' @export
 set_data <- function(ctr, ..., envir=parent.frame()) {
   assert_that(is_pmxclass(ctr))
@@ -1286,9 +1290,11 @@ print.pmxClass <- function(x, ...) {
 
 #'
 #' @examples
+#' \donttest{
 #' ctr <- theophylline()
 #' cctr <- ctr %>% pmx_copy()
 #' ## Any change in the ctr has no side effect in the ctr and vice versa
+#' }
 pmx_copy <- function(ctr, keep_globals = FALSE, ...) {
   assert_that(is_pmxclass(ctr))
   cctr <- ctr$clone()
