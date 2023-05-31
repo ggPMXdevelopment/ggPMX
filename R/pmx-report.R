@@ -197,19 +197,25 @@ pmx_draft <- function(ctr, name, template, edit) {
     # Copying template and skeleton files to subdirectories
     invisible({
       file.copy(
-        from=file.path(standing_file, "template.yaml"),
-        to=template_dir,
-        overwrite=TRUE,
-        recursive=TRUE
+        from = file.path(standing_file, "template.yaml"),
+        to = template_dir,
+        overwrite = TRUE,
+        recursive = TRUE
       )
+      # Determine source of template file (variable may be a directory or a file)
+      template_source <-
+        if(grepl("\\.[A-z]{2,}$", template)) {
+          template
+        } else {
+          file.path(template, "skeleton", "skeleton.Rmd")
+        }
+
       file.copy(
-        from=file.path(standing_file, "skeleton", "skeleton.Rmd"),
-        to=skeleton_dir,
-        overwrite=TRUE,
-        recursive=TRUE
+        from = template_source,
+        to = file.path(skeleton_dir, "skeleton.Rmd"),
+        overwrite = TRUE
       )
     })
-
 
     res <- draft(
       template_file,
