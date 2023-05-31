@@ -21,8 +21,6 @@ title: `r params$title `
 
 ```{r setup, include=FALSE}
 library(ggplot2)
-table_nums <- captioner::captioner(prefix = "Table")
-fig_nums <- captioner::captioner()
 knitr::opts_chunk$set(echo = FALSE,message=FALSE)
 cats <- ctr %>% get_cats
 
@@ -35,42 +33,36 @@ cats <- ctr %>% get_cats
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 ctr %>% param_table(return_table = FALSE)
 ```
-`r table_nums("parameter-table", display = "cite")`
 \newpage
 
 ## NPDE vs PRED
 ```{r npde_pred,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_npde_pred
 ```
-`r fig_nums("npde_pred", display = "cite")`
 \newpage
 
 ## NPDE vs TIME
 ```{r npde_time,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_npde_time
 ```
-`r fig_nums("npde_time", display = "cite")`
 \newpage
 
 ## IWRES vs IPRED
 ```{r iwres_ipred,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_iwres_ipred
 ```
-`r fig_nums("iwres_ipred", display = "cite")`
 \newpage
 
 ## IWRES vs TIME
 ```{r iwres_time,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_iwres_time
 ```
-`r fig_nums("iwres_time", display = "cite")`
 \newpage
 
 ## Distribution of random effects 
 ```{r eta_box,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
 ctr %>% pmx_plot_eta_box
 ```
-`r fig_nums("eta_box", display = "cite")`
 \newpage
 
 ## VPC
@@ -80,7 +72,6 @@ pmx_plot_vpc(
   bin=pmx_vpc_bin(within_strat=TRUE, style="quantile")
 )
 ```
-`r fig_nums("vpc", display = "cite")`
 
 \newpage
 
@@ -92,16 +83,12 @@ pmx_plot_vpc(
 ```{r iwres_qq, fig.height=7, fig.width=7}
 ctr %>% pmx_plot_iwres_qq
 ```
-`r fig_nums("iwres_qq", display = "cite")`
-
 \newpage
 
 ### Distribution of IWRES
 ```{r iwres_dens, fig.height=7, fig.width=7}
 ctr %>% pmx_plot_iwres_dens
 ```
-`r fig_nums("iwres_dens", display = "cite")`
-
 \newpage
 
 ## EBE-based diagnostics
@@ -111,23 +98,17 @@ ctr %>% pmx_plot_iwres_dens
 ```{r eta_matrix,message=FALSE,fig.align="center",fig.height=7, fig.width=7}
 ctr %>% pmx_plot_eta_matrix
 ```
-`r fig_nums("eta_matrix", display = "cite")`
-
 \newpage
 ### EBE vs discrete covariates
 ```{r eta_cats,message=FALSE,fig.align="center",fig.height=6, fig.width=7}
 ctr %>% pmx_plot_eta_cats
 ```
-`r fig_nums("eta_cats", display = "cite")`
-
 \newpage
 
 ### EBE vs continuous covariates
 ```{r eta_conts,message=FALSE,fig.align="center",fig.height=6, fig.width=7}
 ctr %>%  pmx_plot_eta_conts
 ```
-`r fig_nums("eta_conts", display = "cite")`
-
 \newpage
 
 ## Observations vs predictions
@@ -136,16 +117,12 @@ ctr %>%  pmx_plot_eta_conts
 ```{r dv_pred, fig.height=7, fig.width=7}
 ctr %>% pmx_plot_dv_pred
 ```
-`r fig_nums("dv_pred", display = "cite")`
-
 \newpage
 
 ### DV vs IPRED
 ```{r dv_ipred, fig.height=7, fig.width=7}
 ctr %>% pmx_plot_dv_ipred
 ```
-`r fig_nums("dv_ipred", display = "cite")`
-
 \newpage
 
 ## Residual plots
@@ -154,8 +131,6 @@ ctr %>% pmx_plot_dv_ipred
 ```{r dv_abs_iwres_ipred,fig.align="center",fig.height=5, fig.width=6}
 ctr %>% pmx_plot_abs_iwres_ipred
 ```
-`r fig_nums("dv_abs_iwres_ipred", display = "cite")`
-
 \newpage
 
 # Individual plots (selection)
@@ -163,8 +138,6 @@ ctr %>% pmx_plot_abs_iwres_ipred
 ```{r indiv,message=FALSE,fig.align="center",fig.height=8, fig.width=8}
  ctr %>% pmx_plot_individual
 ```
-`r fig_nums("indiv", display = "cite")`
-
 \newpage
 
 # Stratified key diagnostics 
@@ -173,16 +146,12 @@ ctr %>% pmx_plot_abs_iwres_ipred
 ```{r npde_time_strats,fig.align="center"}
 ctr %>% pmx_plot_cats("npde_time")
 ```
-`r fig_nums("npde_time_strats", display = "cite")`
-
 \newpage
 
 ## IWRES vs TIME by categorical covariates
 ```{r iwres_time_strats,fig.align="center"}
 ctr %>% pmx_plot_cats("iwres_time")
 ```
-`r fig_nums("iwres_time_strats", display = "cite")`
-
 \newpage
 
 ## VPC by categorical covariates
@@ -193,4 +162,3 @@ pmx_plot_cats(
   bin=pmx_vpc_bin(within_strat=TRUE, style="quantile")
 )
 ```
-`r fig_nums("vpc_strats", display = "cite")`
