@@ -1,8 +1,12 @@
 #' @export
 plot_pmx.pmx_gpar <- function(x, dx, ...) {
   extra <- list(...)
-  if (length(extra != 1)) stop("plot_pmx for pmx_gpar needs exactly 3 arguments", call.=FALSE)
-  plot_pmx_gpar_real(gpar=x, dx=p, bloq_cens=extra[[1]])
+  #if (length(extra != 1)) stop("plot_pmx for pmx_gpar needs exactly 3 arguments", call.=FALSE)
+  if (length(extra) > 1L) {
+    plot_pmx_gpar_real(gpar=x, p=dx, bloq_cens=extra[[1]])
+  } else {
+     plot_pmx_gpar_real(gpar=x, p=dx)
+  }
 }
 
 #' The ggPMX base plot function
