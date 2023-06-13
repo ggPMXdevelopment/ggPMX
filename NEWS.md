@@ -1,3 +1,7 @@
+# ggPMX 1.2.10
+
+* Skip draft parameter template creation test on CRAN, on some systems
+  it doesn't seem to work correctly.
 
 # ggPMX 1.2.9
 
