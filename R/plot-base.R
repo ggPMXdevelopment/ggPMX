@@ -5,7 +5,7 @@ plot_pmx.pmx_gpar <- function(x, dx, ...) {
   if (length(extra) > 1L) {
     plot_pmx_gpar_real(gpar=x, p=dx, bloq_cens=extra[[1]])
   } else {
-     plot_pmx_gpar_real(gpar=x, p=dx)
+     plot_pmx_gpar_real(gpar=x, p=dx, bloq_cens="CENS")
   }
 }
 
