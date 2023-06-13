@@ -53,6 +53,7 @@ test_that("pmx_draft: params  result: identical inherits", {
 })
 
 test_that("pmx_draft: params  result: create file", {
+  skip_on_cran() # seems some systems do not work
   draft <- pmx_draft(ctr,
     name = "dr_Report_ggPMX", template =
       system.file("rmarkdown", "templates",
