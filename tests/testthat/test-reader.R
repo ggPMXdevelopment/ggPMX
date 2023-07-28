@@ -268,40 +268,9 @@ test_that("read_mlx_par_est: params: path, x; result: identical class and struct
   ipath <- file.path(reader_help$wd, "estimates.txt")
   x <- NULL
   x$sep <- ";"
-  x$names <- c("params", "parameter", "s.e._lin", "r.s.e._lin", "pvalues_lin")
   r <- read_mlx_par_est(ipath, x)
-
-  expect_identical(
-    names(r),
-    c("params", "parameter", "s.e._lin", "r.s.e._lin", "pvalues_lin")
-  )
+  expect_identical(c("PARAM", "VALUE", "SE", "RSE"), names(r))
   expect_true(inherits(r, "data.frame"))
-})
-
-test_that("read_mlx_par_est: params: path, x$name is vector; result: identical structure", {
-  ipath <- file.path(reader_help$wd, "estimates.txt")
-  x <- NULL
-  x$sep <- ";"
-  x$names <- c("parameter name", "parameter", "SE._lin", "RSE_lin", "pValues_lin")
-  r <- read_mlx_par_est(ipath, x)
-
-  expect_identical(
-    names(r),
-    c("parameter name", "parameter", "SE._lin", "RSE_lin", "pValues_lin")
-  )
-})
-
-test_that("read_mlx_par_est: params: path, x$name is NULL; result: identical structure", {
-  ipath <- file.path(reader_help$wd, "estimates.txt")
-  x <- NULL
-  x$sep <- ";"
-  x$names <- NULL
-  r <- read_mlx_par_est(ipath, x)
-
-  expect_identical(
-    names(r),
-    c("X", "parameter", "s.e._lin", "r.s.e._lin", "pvalues_lin")
-  )
 })
 
 test_that("read_mlx_par_est: params: path is NULL, x;
@@ -309,7 +278,6 @@ test_that("read_mlx_par_est: params: path is NULL, x;
   ipath <- NULL
   x <- NULL
   x$sep <- ";"
-  x$names <- c("params", "parameter", "s.e._lin", "r.s.e._lin", "pvalues_lin")
 
   expect_error(
     read_mlx_par_est(ipath, x)
@@ -320,7 +288,6 @@ test_that("read_mlx_par_est: params: path, x is '' ; result: error", {
   ipath <- file.path(reader_help$wd, "estimates.txt")
   x <- NULL
   x$sep <- ""
-  x$names <- c("params", "parameter", "s.e._lin", "r.s.e._lin", "pvalues_lin")
 
   expect_error(read_mlx_par_est(ipath, x))
 })
