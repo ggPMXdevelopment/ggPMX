@@ -456,24 +456,21 @@ read_mlx18_pred <- function(path, x, ...) {
 #' @return data.table object
 #' @importFrom utils read.table
 #' @import data.table
-
 read_mlx_par_est <- function(path, x, ...) {
   sep <- ifelse(exists("sep", x), x$sep, ";")
-  xx <- setDT(read.table(path, sep = sep, header = TRUE))
-  if ("names" %in% names(x)) {
-    # This handles the case where the
-    nam <- x[["names"]]
-    do_more <- FALSE
-    if (length(nam) > ncol(xx)) {
-      nam <- nam[seq(1, ncol(xx))]
-    }
-    setnames(xx, seq_along(nam), nam)
-    if (do_more) {
-      nam <- x[["names"]]
-      nam <- nam[-seq(1, ncol(xx))]
-      xx <- xx[, (nam) := NA]
-    }
-  }
+  xx <- as.data.frame(read.table(path, sep = sep, header = TRUE))
+  val <- names(xx)[1]
+  names <- vapply(names(xx), function(v) {
+    if (val == v) return("PARAM")
+    if (grepl("par", v)) return("VALUE")
+    if (grepl("r[.]?s[.]?e[.]?", v)) return("RSE")
+    if (grepl("s[.]?e[.]?", v)) return("SE")
+    if (grepl("pval", v)) return("PVALUE")
+    v
+  }, character(1), USE.NAMES=TRUE)
+  names(xx) <- names
+  xx <- xx[,c("PARAM", "VALUE", "SE", "RSE")]
+  xx <- setDT(xx)
   xx
 }
 
