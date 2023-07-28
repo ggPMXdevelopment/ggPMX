@@ -31,9 +31,9 @@ Other plot_pmx:
 \code{\link{plot_pmx.eta_cov}()},
 \code{\link{plot_pmx.eta_pairs}()},
 \code{\link{plot_pmx.individual}()},
+\code{\link{plot_pmx.pmx_gpar}()},
 \code{\link{plot_pmx.pmx_qq}()},
 \code{\link{plot_pmx.residual}()},
-\code{\link{plot_pmx_gpar_real}()},
 \code{\link{plot_pmx}()}
 }
 \concept{plot_pmx}
