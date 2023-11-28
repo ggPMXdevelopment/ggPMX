@@ -1,3 +1,14 @@
+#' The ggPMX base plot function
+#'
+#'
+#' This function should be called internally by other plots to set
+#' general settings like , smoothing, add band, labelling, theming,...
+#' @param x object of pmx_gpar type
+#' @param dx plot
+#' @param ... ignored parameters
+#' @import ggplot2
+#' @family plot_pmx
+#' @return ggplot2 object
 #' @export
 plot_pmx.pmx_gpar <- function(x, dx, ...) {
   extra <- list(...)
@@ -8,21 +19,10 @@ plot_pmx.pmx_gpar <- function(x, dx, ...) {
   }
 }
 
-#' The ggPMX base plot function
-#'
-#'
-#' This function should be called internally by other plots to set
-#' general settings like , smoothing, add band, labelling, theming,...
-#' @param gpar object of pmx_gpar type
-#' @param p plot
-#' @param bloq_cens bloq censored column name
-#' @import ggplot2
-#' @family plot_pmx
-#' @return ggplot2 object
-#' @export
-plot_pmx_gpar_real <- function(gpar, p, bloq_cens) {
+plot_pmx_gpar_real <- function(gpar, p, bloq_cens, ...) {
   assert_that(is_pmx_gpar(gpar))
   assert_that(is_ggplot(p))
+  if (length(list(...)) != 0) stop("plot_pmx.pmx_gpar requires 3 arguments", call.=FALSE)
   with(gpar, {
     assert_that(is_list_or_null(smooth))
     assert_that(is_list_or_null(band))
