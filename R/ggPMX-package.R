@@ -33,4 +33,6 @@
 #' @import data.table
 #' @importFrom assertthat assert_that
 #' @importFrom rlang .data
+#' @keywords internal
+"_PACKAGE"
 NULL

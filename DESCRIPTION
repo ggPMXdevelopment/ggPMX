@@ -1,10 +1,10 @@
 Package: ggPMX
 Title: 'ggplot2' Based Tool to Facilitate Diagnostic Plots for NLME
         Models
-Description: At Novartis, we aimed at standardizing the set of diagnostic plots used for modeling 
-  activities in order to reduce the overall effort required for generating such plots. 
-  For this, we developed a guidance that proposes an adequate set of diagnostics and a toolbox, 
-  called 'ggPMX' to execute them. 'ggPMX' is a toolbox that can generate all diagnostic plots at a quality sufficient 
+Description: At Novartis, we aimed at standardizing the set of diagnostic plots used for modeling
+  activities in order to reduce the overall effort required for generating such plots.
+  For this, we developed a guidance that proposes an adequate set of diagnostics and a toolbox,
+  called 'ggPMX' to execute them. 'ggPMX' is a toolbox that can generate all diagnostic plots at a quality sufficient
   for publication and submissions using few lines of code. This package focuses on plots recommended by ISoP
   <doi:10.1002/psp4.12161>. While not required, you can get/install the 'R' 'lixoftConnectors'
     package in the 'Monolix' installation, as described at the following url
@@ -60,7 +60,6 @@ Suggests:
     xtable,
     vdiffr,
     rxode2,
-    captioner,
     nlmixr2,
     nlmixr2data,
     lixoftConnectors,
