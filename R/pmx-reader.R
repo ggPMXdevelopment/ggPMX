@@ -463,6 +463,7 @@ read_mlx_par_est <- function(path, x, ...) {
   names <- vapply(names(xx), function(v) {
     if (val == v) return("PARAM")
     if (grepl("par", v, ignore.case=TRUE)) return("VALUE")
+    if (grepl("(value|val)", v, ignore.case=TRUE)) return("VALUE")
     if (grepl("r[.]?s[.]?e[.]?", v, ignore.case=TRUE)) return("RSE")
     if (grepl("s[.]?e[.]?", v, ignore.case=TRUE)) return("SE")
     if (grepl("pval", v, ignore.case=TRUE)) return("PVALUE")
