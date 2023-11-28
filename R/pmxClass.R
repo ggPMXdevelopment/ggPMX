@@ -261,7 +261,7 @@ formula_to_text <- function(form) {
 #' @export
 pmx_settings <-
   function(is.draft = TRUE, use.abbrev = TRUE, color.scales = NULL,
-             cats.labels = NULL, use.labels = FALSE, use.titles = TRUE,
+             cats.labels = NULL, use.labels = FALSE, use.titles = FALSE,
              effects = NULL,
              ...) {
     checkmate::assert_logical(x=is.draft, len=1, any.missing=FALSE)
