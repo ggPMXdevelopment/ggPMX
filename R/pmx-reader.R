@@ -469,7 +469,15 @@ read_mlx_par_est <- function(path, x, ...) {
     v
   }, character(1), USE.NAMES=TRUE)
   names(xx) <- names
-  xx <- xx[,c("PARAM", "VALUE", "SE", "RSE")]
+
+  vals <- intersect(c("PARAM", "VALUE", "SE", "RSE", "PVALUE"), names(xx))
+  ensure <- setdiff(c("PARAM", "VALUE"), vals)
+  if (length(ensure) > 0) {
+    stop("cannot determine the following column name types: '",
+         paste(ensure, collapse="', '"), "'",
+         call.=FALSE)
+  }
+  xx <- xx[,vals]
   xx <- setDT(xx)
   xx
 }
