@@ -269,7 +269,7 @@ test_that("read_mlx_par_est: params: path, x; result: identical class and struct
   x <- NULL
   x$sep <- ";"
   r <- read_mlx_par_est(ipath, x)
-  expect_identical(c("PARAM", "VALUE", "SE", "RSE"), names(r))
+  expect_identical(c("PARAM", "VALUE", "SE", "RSE", "PVALUE"), names(r))
   expect_true(inherits(r, "data.frame"))
 })
 
