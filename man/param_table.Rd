@@ -4,7 +4,7 @@
 \alias{param_table}
 \title{Creates parameter kable}
 \usage{
-param_table(ctr, fun, return_table = FALSE, scientific = TRUE, digits = 2)
+param_table(ctr, fun, return_table = FALSE, scientific = FALSE, digits = 2)
 }
 \arguments{
 \item{ctr}{Generated controller from e.g. \code{\link{pmx_mlx}} for Monolix.}

@@ -12,7 +12,7 @@
 #' #ctr <- theophylline()
 #' #my_params <- ctr %>% param_table(fun = "var")
 
-param_table <- function(ctr, fun, return_table=FALSE, scientific=TRUE, digits=2) {
+param_table <- function(ctr, fun, return_table=FALSE, scientific=FALSE, digits=2) {
 
   # Argument Checks
   if(missing(fun)) fun <- c("var","sd")
