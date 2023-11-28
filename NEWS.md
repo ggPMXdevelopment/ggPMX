@@ -1,3 +1,9 @@
+# ggPMX 1.2.10
+
+- Fix bug so that reading monolix works on R devel (as requested by CRAN)
+
+- Change defaults so that scientific notation is not enabled by default
+  and title is also not added by default
 
 # ggPMX 1.2.9
 

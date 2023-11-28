@@ -12,7 +12,8 @@ helper_updateplots <- function() {
     conts = c("WT0", "AGE0"),
     cats = c("SEX"),
     occ = "",
-    strats = c("STUD")
+    strats = c("STUD"),
+    settings=pmx_settings(use.titles = TRUE)
   )
   list(ctr = ctr, wd = WORK_DIR, input = input_file)
 }

@@ -10,7 +10,7 @@ pmx_settings(
   color.scales = NULL,
   cats.labels = NULL,
   use.labels = FALSE,
-  use.titles = TRUE,
+  use.titles = FALSE,
   effects = NULL,
   ...
 )

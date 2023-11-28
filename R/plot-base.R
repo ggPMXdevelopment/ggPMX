@@ -3,15 +3,23 @@
 #'
 #' This function should be called internally by other plots to set
 #' general settings like , smoothing, add band, labelling, theming,...
-#' @param gpar object of pmx_gpar type
-#' @param p plot
-#' @param bloq_cens bloq censored column name
+#' @param x object of pmx_gpar type
+#' @param dx plot
 #' @param ... ignored parameters
 #' @import ggplot2
 #' @family plot_pmx
 #' @return ggplot2 object
 #' @export
-plot_pmx.pmx_gpar <- function(gpar, p, bloq_cens, ...) {
+plot_pmx.pmx_gpar <- function(x, dx, ...) {
+  extra <- list(...)
+  if (length(extra) == 1) {
+    plot_pmx_gpar_real(gpar=x, p=dx, bloq_cens=extra[[1]])
+  } else {
+    plot_pmx_gpar_real(gpar=x, p=dx, bloq_cens="CENS")
+  }
+}
+
+plot_pmx_gpar_real <- function(gpar, p, bloq_cens, ...) {
   assert_that(is_pmx_gpar(gpar))
   assert_that(is_ggplot(p))
   if (length(list(...)) != 0) stop("plot_pmx.pmx_gpar requires 3 arguments", call.=FALSE)

@@ -4,14 +4,14 @@
 \alias{plot_pmx.pmx_gpar}
 \title{The ggPMX base plot function}
 \usage{
-\method{plot_pmx}{pmx_gpar}(gpar, p, bloq_cens)
+\method{plot_pmx}{pmx_gpar}(x, dx, ...)
 }
 \arguments{
-\item{gpar}{object of pmx_gpar type}
+\item{x}{object of pmx_gpar type}
 
-\item{p}{plot}
+\item{dx}{plot}
 
-\item{bloq_cens}{bloq censored column name}
+\item{...}{ignored parameters}
 }
 \value{
 ggplot2 object

@@ -23,7 +23,7 @@ test_that("We can call all pmx_plot_xx with success", {
 })
 
 test_that("We can call all pmx_plot_xx with title with success", {
-  ctr <- theophylline()
+  ctr <- theophylline(settings=pmx_settings(use.titles = TRUE))
   pmx_plots <- c(
     "abs_iwres_ipred", "iwres_ipred", "iwres_time", "iwres_dens", "vpc",
     "npde_time", "npde_pred", "dv_pred", "dv_ipred", "individual", "eta_hist",
@@ -124,7 +124,7 @@ if (requireNamespace("nlmixr2", quietly = TRUE)) {
     expect_true(inherits(p, c("gg", "ggplot")))
     expect_identical(names(p), iprNames)
   })
-  
+
 }
 
 #---------------------- pmx_plot_generic with nlmixr controller end ---------------------------------

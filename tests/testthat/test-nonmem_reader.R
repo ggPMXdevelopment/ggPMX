@@ -7,86 +7,109 @@ test_that("read_extfile: params: npde, iwres, ipred;
     file = "run001.ext",
     path = file.path(system.file(package = "ggPMX"), "testdata", "extdata", "run001.ext"),
     read_fun = "data.table",
-    quiet = F
+    quiet = FALSE
   )
+
   expect_true(inherits(r, "list"))
+
 })
 
 test_that("read_extfile: params: project, path is NULL, file doesn't exist;
           result: error", {
+
   expect_error(read_extfile(
     run = "run001",
     project = file.path(system.file(package = "ggPMX"), "testdata", "extdata"),
     path = NULL,
     read_fun = "data.table",
-    quiet = F
+    quiet = FALSE
   ))
+
 })
 
 test_that("read_extfile: params: project is NULL, read_fun  is read.table;
           result: error", {
+
   expect_error(read_extfile(
     project = NULL,
     file = "run001.ext",
     path = file.path(system.file(package = "ggPMX"), "testdata", "extdata", "run001.grd"),
     read_fun = "read.table",
-    quiet = F
+    quiet = FALSES
   ))
+
 })
 
 test_that("pmx_nm: params: npde, iwres, ipred;
           result: can read NONMEM-Output", {
+
   ctr <- pmx_nm(
     directory = file.path(system.file(package = "ggPMX"), "testdata", "extdata"),
     npde = "TAD", iwres = "IWRES", ipred = "IPRED", runno = "001"
   )
   expect_true(inherits(ctr, "pmxClass"))
+
 })
 
 test_that("pmx_nm: params: runno is NULL, file is run001.coi;
           result: error", {
+
   nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
   expect_error(pmx_nm(directory = nonmem_dir, runno = NULL, file = "run001.coi"))
+
 })
 
 test_that("pmx_nm: params: simfile;
           result: can read NONMEM-Output", {
+
   nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
   ctr <- pmx_nm(directory = nonmem_dir, runno = "001", simfile = "custom_sim.lst")
   expect_true(inherits(ctr, "pmxClass"))
+
 })
 
 test_that("pmx_nm: params: obs is T;
           result: warning", {
+
   nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
-  expect_warning(pmx_nm(directory = nonmem_dir, runno = "001", obs = T))
+  expect_warning(pmx_nm(directory = nonmem_dir, runno = "001", obs = TRUE))
+
 })
 
 test_that("pmx_nm: params: Endpoint value does not correspond to dvid values;
           result: warning", {
+
   nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
   expect_warning(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 12))
+
 })
 
 test_that("pmx_nm: params: Endpoint value corresponds to dvid values;
           result: error", {
+
   nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
   expect_error(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 2.75, dvid = "TAD"))
+
 })
 
 test_that("pmx_nm: params: settings is not pmxSettingsClass object;
           result: can read NONMEM-Output", {
+
   nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
   ctr <- pmx_nm(directory = nonmem_dir, runno = "001", settings = list(use.titles = TRUE))
+
 })
 
 test_that("pmx_nm: params: file is NULL, runno is NULL;
           result: error", {
-  expect_error(pmx_nm(file = NULL, runno = NULL))
+
+            expect_error(pmx_nm(file = NULL, runno = NULL))
+
 })
 
 test_that("pmx_nm: params: directory, file, simfile;
           result: can read NONMEM-Output", {
+
   nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
   ctr <- pmx_nm(directory = nonmem_dir, runno = "001")
   # just to test alternative loadings
@@ -164,7 +187,7 @@ test_that("pmx_nm: params: directory, file, simfile;
     structure(
       list(
         is.draft = TRUE, use.abbrev = TRUE, color.scales = NULL, use.labels = FALSE,
-        cats.labels = NULL, use.titles = TRUE, effects = NULL
+        cats.labels = NULL, use.titles = FALSE, effects = NULL
       ),
       class = c("pmxSettingsClass")
     )
@@ -188,4 +211,5 @@ test_that("pmx_nm: params: directory, file, simfile;
   expect_identical(
     names(ctr_man$input), names(ctr_man_norunno$input)
   )
+
 })
