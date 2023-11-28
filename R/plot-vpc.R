@@ -223,8 +223,10 @@ pmx_vpc_rug <-
            linewidth = 1,
            alpha = 0.7,
            size) {
-    lifecycle::deprecate_soft("1.2.9", "pmx_vpc_rug(size)", I("use `linewidth=` instead of `size=`"))
-    if (!missing(size)) linewidth <- size
+    if (!missing(size)){
+      lifecycle::deprecate_soft("1.2.9", "pmx_vpc_rug(size)", I("use `linewidth=` instead of `size=`"))
+      linewidth <- size
+    }
     if (show) {
       structure(
         list(
@@ -541,19 +543,19 @@ vpc.plot <- function(x) {
 #'
 
 pmx_vpc <- function(
-  type = c("percentile", "scatter"),
-  idv = "TIME",
-  obs = pmx_vpc_obs(),
-  pi = pmx_vpc_pi(),
-  ci = pmx_vpc_ci(),
-  rug = pmx_vpc_rug(),
-  bin = pmx_vpc_bin(),
-  labels = NULL,
-  facets = NULL,
-  is.legend = TRUE,
-  is.footnote= TRUE,
-  dname = NULL,
-  ...) {
+                    type = c("percentile", "scatter"),
+                    idv = "TIME",
+                    obs = pmx_vpc_obs(),
+                    pi = pmx_vpc_pi(),
+                    ci = pmx_vpc_ci(),
+                    rug = pmx_vpc_rug(),
+                    bin = pmx_vpc_bin(),
+                    labels = NULL,
+                    facets = NULL,
+                    is.legend = TRUE,
+                    is.footnote= TRUE,
+                    dname = NULL,
+                    ...) {
   type <- match.arg(type)
   ## check args here
 
