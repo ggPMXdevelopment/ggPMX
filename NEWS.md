@@ -1,3 +1,6 @@
+# ggPMX 1.2.10
+
+- Fix bug so that reading monolix works on R devel (as requested by CRAN)
 
 # ggPMX 1.2.9
 
