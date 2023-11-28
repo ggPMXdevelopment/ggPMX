@@ -5,6 +5,8 @@
 - Change defaults so that scientific notation is not enabled by default
   and title is also not added by default
 
+- Monolix 2023 can now be read by ggPMX
+
 # ggPMX 1.2.9
 
 * Fix custom template so it works again
