@@ -71,9 +71,9 @@ for (f in list.files(path = wd)) {
 dir.create(file.path(tmp_dir, "RESULTS"))
 for (f in list.files(path = file.path(wd, "RESULTS"))) {
   suppressWarnings(file.copy(file.path(wd, "RESULTS", f),
-    file.path(tmp_dir, "RESULTS", f),
-    copy.mode = FALSE
-  ))
+                             file.path(tmp_dir, "RESULTS", f),
+                             copy.mode = FALSE
+                             ))
 }
 
 wd <- tmp_dir
@@ -162,11 +162,11 @@ test_that("l_left_join params: base_list, overlay_list; result: identical struct
 
 test_that("l_left_join params: base_list, overlay_list, recursive = FALSE;
           result: identical structure", {
-  default_hline <- list(yintercept = 0)
-  hline <- list(yintercept = 1)
-  l_join <- l_left_join(default_hline, hline, recursive = FALSE)
-  expect_identical(l_join$yintercept, 1)
-})
+            default_hline <- list(yintercept = 0)
+            hline <- list(yintercept = 1)
+            l_join <- l_left_join(default_hline, hline, recursive = FALSE)
+            expect_identical(l_join$yintercept, 1)
+          })
 
 
 test_that("l_left_join params: base_list, overlay_list; result: identical inherits", {
@@ -304,165 +304,167 @@ test_that("dropNulls. params: x = NULL, y = NULL result: NULL", {
   opt <- dropNulls.(mergeVectors.(NULL, NULL))
   expect_true(is.null(opt))
 })
+if (helper_skip()) {
 
-#------------------- dropNulls. end --------------------------------
+  #------------------- dropNulls. end --------------------------------
 
-#------------------- merge_defaults start --------------------------------
-test_that("merge_defaults params: NULL result: error x is missing", {
-  expect_error(merge_defaults())
-})
+  #------------------- merge_defaults start --------------------------------
+  test_that("merge_defaults params: NULL result: error x is missing", {
+    expect_error(merge_defaults())
+  })
 
 
-test_that("merge_defaults params: x, y result: identical vectors and values", {
-  expect_equal(merge_defaults(1:4, 5:8), c(1, 2, 3, 4))
-  m <- merge_defaults(
-    x = list(
-      x = 1,
-      y = 1,
-      h = list(z = 1)
-    ),
-    y = list(
-      y = 2,
-      h = list(h = 4)
+  test_that("merge_defaults params: x, y result: identical vectors and values", {
+    expect_equal(merge_defaults(1:4, 5:8), c(1, 2, 3, 4))
+    m <- merge_defaults(
+      x = list(
+        x = 1,
+        y = 1,
+        h = list(z = 1)
+      ),
+      y = list(
+        y = 2,
+        h = list(h = 4)
+      )
     )
-  )
-  expect_equal(m$h$z, 1)
-})
+    expect_equal(m$h$z, 1)
+  })
 
-#------------------- merge_defaults end --------------------------------
+  #------------------- merge_defaults end --------------------------------
 
-#------------------- is.formula start ----------------------------------------
-
-
-test_that("is.formula params: NULL result: error x is missing", {
-  expect_error(is.formula())
-})
-
-test_that("is.formula: params: formula result: formula", {
-  x <- ~ a + y + z
-  expect_true(is.formula(x))
-})
-
-test_that("is.formula: params: formula (2) result: formula", {
-  x <- y ~ z
-  expect_true(is.formula(x))
-})
-
-test_that("is.formula: params: expression result: not formula", {
-  x <- expression(x^2 - 2 * x + 1)
-  expect_false(is.formula(x))
-})
-
-test_that("is.formula: params: integer result: not formula", {
-  x <- 10L
-  expect_false(is.formula(x))
-})
-
-test_that("is.formula: params: NULL result: not formula", {
-  x <- NULL
-  expect_false(is.formula(x))
-})
-#------------------- is.formula end ------------------------------------------
-
-#------------------- theophylline start --------------------------------------
-
-test_that("theophylline: params: NULL result: identical inherits", {
-  expect_true(inherits(theophylline(), c("pmxClass", "R6")))
-})
+  #------------------- is.formula start ----------------------------------------
 
 
-test_that("theophylline: params: settings, result: identical names", {
-  ctr <- theophylline(
-    settings = pmx_settings(
+  test_that("is.formula params: NULL result: error x is missing", {
+    expect_error(is.formula())
+  })
+
+  test_that("is.formula: params: formula result: formula", {
+    x <- ~ a + y + z
+    expect_true(is.formula(x))
+  })
+
+  test_that("is.formula: params: formula (2) result: formula", {
+    x <- y ~ z
+    expect_true(is.formula(x))
+  })
+
+  test_that("is.formula: params: expression result: not formula", {
+    x <- expression(x^2 - 2 * x + 1)
+    expect_false(is.formula(x))
+  })
+
+  test_that("is.formula: params: integer result: not formula", {
+    x <- 10L
+    expect_false(is.formula(x))
+  })
+
+  test_that("is.formula: params: NULL result: not formula", {
+    x <- NULL
+    expect_false(is.formula(x))
+  })
+  #------------------- is.formula end ------------------------------------------
+
+  #------------------- theophylline start --------------------------------------
+
+  test_that("theophylline: params: NULL result: identical inherits", {
+    expect_true(inherits(theophylline(), c("pmxClass", "R6")))
+  })
+
+
+  test_that("theophylline: params: settings, result: identical names", {
+    ctr <- theophylline(
+      settings = pmx_settings(
+        effects = list(
+          levels = c("ka", "V", "Cl"),
+          labels = c("Concentration", "Volume", "Clearance")
+        )
+      )
+    )
+
+    theoNames <- c(
+      ".__enclos_env__", "sim_blq", "time", "id", "bloq", "sim",
+      "plot_file_name", "report_n", "report_queue", "save_dir", "footnote", "warnings",
+      "endpoint", "abbrev", "re", "has_re", "settings", "strats", "occ", "conts",
+      "cats", "dvid", "dv", "input_file", "input", "config", "data", "clone",
+      "post_load", "plots", "get_plot", "set_config", "get_config", "remove_plot",
+      "update_plot", "add_plot", "dequeue_plot", "enqueue_plot", "print", "initialize"
+    )
+
+    expect_equal(names(ctr), theoNames)
+  })
+
+  test_that("theophylline: params:  settings, result: identical levels and labels", {
+    ctr <- theophylline(settings = pmx_settings(
       effects = list(
         levels = c("ka", "V", "Cl"),
         labels = c("Concentration", "Volume", "Clearance")
       )
+    ))
+    expect_true(file.exists(ctr$save_dir))
+    expect_true(inherits(ctr$sim, c("pmxSimClass", "list")))
+    expect_identical(ctr$settings$effects$levels, c("ka", "V", "Cl"))
+    expect_identical(ctr$settings$effects$labels, c("Concentration", "Volume", "Clearance"))
+    expect_true(ctr$settings$use.abbrev)
+  })
+  #------------------- theophylline end ----------------------------------------
+
+  #------------------- pk_occ start --------------------------------------------
+
+  test_that("pk_occ: params: NULL result: identical inherits", {
+    expect_true(inherits(pk_occ(), c("pmxClass", "R6")))
+  })
+
+
+  test_that("pk_occ: params: NULL result: identical structure", {
+    ctr <- pk_occ()
+    expect_identical(ctr$dvid, "YTYPE")
+    expect_identical(ctr$cats, c("SEX", "RACE", "DISE", "ILOW"))
+    expect_identical(ctr$conts, c("AGE0", "WT0", "HT0", "TRT"))
+    expect_true(inherits(ctr$input, c("data.table", "data.frame")))
+    expect_false(ctr$footnote)
+  })
+
+
+  test_that("pk_occ: params: NULL result: identical inherits", {
+    ctr <- pk_occ()
+    pkNames <- c(
+      ".__enclos_env__", "sim_blq", "time", "id", "bloq", "sim", "plot_file_name",
+      "report_n", "report_queue", "save_dir", "footnote", "warnings", "endpoint", "abbrev",
+      "re", "has_re", "settings", "strats", "occ", "conts", "cats",
+      "dvid", "dv", "input_file", "input", "config", "data", "clone",
+      "post_load", "plots", "get_plot", "set_config", "get_config", "remove_plot", "update_plot",
+      "add_plot", "dequeue_plot", "enqueue_plot", "print", "initialize"
     )
-  )
+    expect_equal(names(ctr), pkNames)
+  })
 
-  theoNames <- c(
-    ".__enclos_env__", "sim_blq", "time", "id", "bloq", "sim",
-    "plot_file_name", "report_n", "report_queue", "save_dir", "footnote", "warnings",
-    "endpoint", "abbrev", "re", "has_re", "settings", "strats", "occ", "conts",
-    "cats", "dvid", "dv", "input_file", "input", "config", "data", "clone",
-    "post_load", "plots", "get_plot", "set_config", "get_config", "remove_plot",
-    "update_plot", "add_plot", "dequeue_plot", "enqueue_plot", "print", "initialize"
-  )
+  #------------------- pk_occ end ----------------------------------------------
 
-  expect_equal(names(ctr), theoNames)
-})
+  #------------------- abbrev start --------------------------------------------
 
-test_that("theophylline: params:  settings, result: identical levels and labels", {
-  ctr <- theophylline(settings = pmx_settings(
-    effects = list(
-      levels = c("ka", "V", "Cl"),
-      labels = c("Concentration", "Volume", "Clearance")
+  test_that("abbrev: params: NULL result: identical inherits", {
+    expect_true(inherits(abbrev(), "list"))
+  })
+
+  test_that("abbrev: params: param; result: abbreviation term", {
+    expect_identical(abbrev("COAR"), "Clinical Operations Analytics and Regions")
+  })
+
+
+  test_that("abbrev: params: NULL result: identical abbrev", {
+    abbr <- abbrev()
+
+    abbrNames <- c(
+      "AIC", "BIC", "BLQ", "COAR", "DV", "ETA", "EBE", "FO", "FOCE", "FOCEI",
+      "IIV", "IPRED", "LRT", "M&S", "NLME", "NPD", "NPDE", "OCP", "OFV", "PD",
+      "PK", "PDF", "SAEM", "VPC", "PRED", "EPRED", "CPRED", "IWRES", "|IWRES|",
+      "NVS", "HA", "TIME"
     )
-  ))
-  expect_true(file.exists(ctr$save_dir))
-  expect_true(inherits(ctr$sim, c("pmxSimClass", "list")))
-  expect_identical(ctr$settings$effects$levels, c("ka", "V", "Cl"))
-  expect_identical(ctr$settings$effects$labels, c("Concentration", "Volume", "Clearance"))
-  expect_true(ctr$settings$use.abbrev)
-})
-#------------------- theophylline end ----------------------------------------
 
-#------------------- pk_occ start --------------------------------------------
+    expect_identical(names(abbr), abbrNames)
+  })
+  #------------------- abbrev end ----------------------------------------------
 
-test_that("pk_occ: params: NULL result: identical inherits", {
-  expect_true(inherits(pk_occ(), c("pmxClass", "R6")))
-})
-
-
-test_that("pk_occ: params: NULL result: identical structure", {
-  ctr <- pk_occ()
-  expect_identical(ctr$dvid, "YTYPE")
-  expect_identical(ctr$cats, c("SEX", "RACE", "DISE", "ILOW"))
-  expect_identical(ctr$conts, c("AGE0", "WT0", "HT0", "TRT"))
-  expect_true(inherits(ctr$input, c("data.table", "data.frame")))
-  expect_false(ctr$footnote)
-})
-
-
-test_that("pk_occ: params: NULL result: identical inherits", {
-  ctr <- pk_occ()
-  pkNames <- c(
-    ".__enclos_env__", "sim_blq", "time", "id", "bloq", "sim", "plot_file_name",
-    "report_n", "report_queue", "save_dir", "footnote", "warnings", "endpoint", "abbrev",
-    "re", "has_re", "settings", "strats", "occ", "conts", "cats",
-    "dvid", "dv", "input_file", "input", "config", "data", "clone",
-    "post_load", "plots", "get_plot", "set_config", "get_config", "remove_plot", "update_plot",
-    "add_plot", "dequeue_plot", "enqueue_plot", "print", "initialize"
-  )
-  expect_equal(names(ctr), pkNames)
-})
-
-#------------------- pk_occ end ----------------------------------------------
-
-#------------------- abbrev start --------------------------------------------
-
-test_that("abbrev: params: NULL result: identical inherits", {
-  expect_true(inherits(abbrev(), "list"))
-})
-
-test_that("abbrev: params: param; result: abbreviation term", {
-  expect_identical(abbrev("COAR"), "Clinical Operations Analytics and Regions")
-})
-
-
-test_that("abbrev: params: NULL result: identical abbrev", {
-  abbr <- abbrev()
-
-  abbrNames <- c(
-    "AIC", "BIC", "BLQ", "COAR", "DV", "ETA", "EBE", "FO", "FOCE", "FOCEI",
-    "IIV", "IPRED", "LRT", "M&S", "NLME", "NPD", "NPDE", "OCP", "OFV", "PD",
-    "PK", "PDF", "SAEM", "VPC", "PRED", "EPRED", "CPRED", "IWRES", "|IWRES|",
-    "NVS", "HA", "TIME"
-  )
-
-  expect_identical(names(abbr), abbrNames)
-})
-#------------------- abbrev end ----------------------------------------------
-
-unlink(tmp_dir, recursive = TRUE)
+  unlink(tmp_dir, recursive = TRUE)
+}

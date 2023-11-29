@@ -21,7 +21,7 @@ library(ggPMX)
 has_nlmixr <- FALSE
 if (R.version$major >= 4) {
   library(nlmixr)
-  has_nlmixr <- TRUES
+  has_nlmixr <- TRUE
 }
 ``
 
@@ -69,7 +69,7 @@ controller by:
 if (has_nlmixr) {
 fit %>%
     pmx_nlmixr(vpc = FALSE) -> ## VPC is turned on by default, can turn off.
-    ctr ## Assigned to controller 
+    ctr ## Assigned to controller
 }
 ```
 

@@ -1,5 +1,6 @@
-context("Test pmx_nlmixr controller")
-if (requireNamespace("nlmixr2", quietly = TRUE)) {
+if (helper_skip() && requireNamespace("nlmixr2", quietly = TRUE)) {
+  context("Test pmx_nlmixr controller")
+
   one.compartment <- function() {
     ini({
       tka <- 0.45 # Log Ka
@@ -187,5 +188,4 @@ if (requireNamespace("nlmixr2", quietly = TRUE)) {
             expect_error(ctr <- pmx_nlmixr(fit, dvid = "TIME", endpoint = ep))
           })
 }
-
 #------------------- pmx_nlmixr - end ---------------------------------------

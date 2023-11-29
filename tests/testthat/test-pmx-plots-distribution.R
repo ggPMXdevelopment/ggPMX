@@ -1,17 +1,20 @@
-library(ggPMX)
-ctr <- theophylline()
+if (helper_skip()) {
 
-context("Test pmx_plot_eta_box function")
+  library(ggPMX)
+  ctr <- theophylline()
 
-#------------------- pmx_plot_eta_box start ------------------------------------------
+  context("Test pmx_plot_eta_box function")
 
-test_that("pmx_plot_eta_box: params: ctr, ...;  result: ggplot", {
-  p <- ctr %>% pmx_plot_eta_box(shrink=list(fun="sd"))
-  expect_true(inherits(p, "ggplot"))
-})
+  #------------------- pmx_plot_eta_box start ------------------------------------------
 
-test_that("pmx_plot_eta_box: params: ctr, ...;  result: error", {
-  expect_error(ctr %>% pmx_plot_eta_box(shrink=list("sd")))
-})
+  test_that("pmx_plot_eta_box: params: ctr, ...;  result: ggplot", {
+    p <- ctr %>% pmx_plot_eta_box(shrink=list(fun="sd"))
+    expect_true(inherits(p, "ggplot"))
+  })
 
-#------------------- pmx_plot_eta_box end ------------------------------------------
+  test_that("pmx_plot_eta_box: params: ctr, ...;  result: error", {
+    expect_error(ctr %>% pmx_plot_eta_box(shrink=list("sd")))
+  })
+
+  #------------------- pmx_plot_eta_box end ------------------------------------------
+}

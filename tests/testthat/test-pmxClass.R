@@ -645,9 +645,9 @@ test_that("get_plot: params: ctr, nplot, which_pages  result: error nplot is not
 
 test_that("get_plot: params: ctr, nplot, which_pages  result: error which_pages
           is not an integer or 'all' or 1L", {
-  ctr <- pmxClassHelpers$ctr
-  expect_error(get_plot(ctr, nplot = "individual", which_pages = "one"))
-})
+            ctr <- pmxClassHelpers$ctr
+            expect_error(get_plot(ctr, nplot = "individual", which_pages = "one"))
+          })
 
 test_that("get_plot: params: ctr, nplot, which_pages  result: error nplot is not valid plot name", {
   ctr <- pmxClassHelpers$ctr
@@ -935,18 +935,18 @@ test_that("pmx_shrink: params NULL result: list, pmxShrinkClass", {
 test_that(
   "pmx_shrink: params: fun, size, color, vjust, hjust
   result: list, pmxShrinkClass", {
-  expect_true(
-    inherits(
-      pmx_shrink(fun="sd", size=1, color="red", vjust=1, hjust=1),
-      c("list", "pmxShrinkClass")
-    )
-  )}
+    expect_true(
+      inherits(
+        pmx_shrink(fun="sd", size=1, color="red", vjust=1, hjust=1),
+        c("list", "pmxShrinkClass")
+      )
+    )}
 )
 
 
 test_that("pmx_shrink: params result: elements in the list", {
-    sh_names <- c("fun", "size", "color", "vjust", "hjust")
-    expect_true(all(sh_names %in% names(pmx_shrink())))
+  sh_names <- c("fun", "size", "color", "vjust", "hjust")
+  expect_true(all(sh_names %in% names(pmx_shrink())))
 })
 
 

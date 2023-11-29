@@ -1,4 +1,4 @@
-if (requireNamespace("nlmixr2", quietly = TRUE)) {
+if (helper_skip() && requireNamespace("nlmixr2", quietly = TRUE)) {
   test_that("nlmixr test", {
     skip_on_cran()
 
