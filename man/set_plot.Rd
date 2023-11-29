@@ -39,7 +39,7 @@ set_plot(
 
 \item{color.scales}{\code{list} can be used with strat.color to set scale_color_manual}
 
-\item{trans}{\code{list}{transformation operator}}
+\item{trans}{\code{list} transformation operator}
 
 \item{...}{other plot parameters to configure \code{\link{pmx_gpar}}.}
 }
