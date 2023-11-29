@@ -19,18 +19,18 @@
 #'
 #' \strong{labels} is a list that contains:
 #' \itemize{
-#' \item {\strong{title:}} {plot title default "EBE distribution"}
-#' \item {\strong{subtitle:}} {plot subtitle default empty}
-#' \item {\strong{x:}} {x axis label default to "Etas"}
-#' \item {\strong{y:}} {y axis label default to empty}
-#' \item {\strong{legend:}} {legend title default to "random Effect"}
+#' \item \strong{title:} plot title default "EBE distribution"
+#' \item \strong{subtitle:} plot subtitle default empty
+#' \item \strong{x:} x axis label default to "Etas"
+#' \item \strong{y:} y axis label default to empty
+#' \item \strong{legend:} legend title default to "random Effect"
 #' }
 #' \strong{shrink} is a list that contains:
 #' \itemize{
-#' \item {\strong{fun:}} {shrinkage function can be \code{sd} or \code{var}}
-#' \item {\strong{size:}} {shrinkage text size}
-#' \item {\strong{color:}} {shrinkage text color}
-#' \item {\strong{vjust:}} {shrinkage position vertical adjustment}
+#' \item \strong{fun:} shrinkage function can be \code{sd} or \code{var}
+#' \item \strong{size:} shrinkage text size
+#' \item \strong{color:} shrinkage text color
+#' \item \strong{vjust:} shrinkage position vertical adjustment
 #' }
 distrib <- function(
                     labels,
@@ -109,11 +109,11 @@ wrap_formula <- function(x, origin = "lfacet") {
 }
 
 jitter_layer <- function(jitter, strat.color) {
-  
+
   if (is.null(jitter)){
     stop("jitter cannot be null")
   }
-  
+
   if (is.null(strat.color)) {
     jitter$height <- 0 #no jitter in height (y-axis required)
     do.call(geom_jitter, jitter)

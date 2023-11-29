@@ -19,30 +19,30 @@
 #'
 #' \strong{labels} is a list that contains:
 #' \itemize{
-#' \item {\strong{title:}} {plot title default  "IWRES density plot"}
-#' \item {\strong{x:}} {x axis label default to "Etas"}
-#' \item {\strong{y:}} {y axis label default to empty}
+#' \item \strong{title:} plot title default  "IWRES density plot"
+#' \item \strong{x:} x axis label default to "Etas"
+#' \item \strong{y:} y axis label default to empty
 #' }
 #'
 #' \strong{var_line} is a list that contains:
 #' \itemize{
-#' \item {\strong{linetype:}} {default to 1}
-#' \item {\strong{color:}} {default to black}
-#' \item {\strong{linewidth:}} {default to 1}
+#' \item \strong{linetype:} default to 1
+#' \item \strong{color:} default to black
+#' \item \strong{linewidth:} default to 1
 #' }
 #'
 #' \strong{snd_line} is a list that contains:
 #' \itemize{
-#' \item {\strong{linetype:}} {default to 2}
-#' \item {\strong{color:}} {default to black}
-#' \item {\strong{linewidth:}} {default to 1}
+#' \item \strong{linetype:} default to 2
+#' \item \strong{color:} default to black
+#' \item \strong{linewidth:} default to 1
 #' }
 #'
 #' \strong{vline} is a list that contains:
 #' \itemize{
-#' \item {\strong{linetype:}} {default to 3}
-#' \item {\strong{color:}} {default to black}
-#' \item {\strong{linewidth:}} {default to 1}
+#' \item \strong{linetype:} default to 3
+#' \item \strong{color:} default to black
+#' \item \strong{linewidth:} default to 1
 #' }
 #'
 pmx_dens <- function(

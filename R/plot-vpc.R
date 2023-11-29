@@ -65,10 +65,10 @@ pmx_vpc_obs <-
 #'
 #' @param show  \code{charcater} how lines are displayed:
 #' \itemize{
-#' \item {\strong{show=all}} {lines will be displayed for each of
-#' the 3 percentiles. with a shaded area.}
-#' \item {\strong{show=median}} {Show only median line.}
-#' \item {\strong{show=area}} {Show only median line and the shaded area}
+#' \item \strong{show=all} lines will be displayed for each of
+#' the 3 percentiles. with a shaded area.
+#' \item \strong{show=median} Show only median line.
+#' \item \strong{show=area} Show only median line and the shaded area
 
 #' }
 
@@ -76,23 +76,23 @@ pmx_vpc_obs <-
 #' to \code{c(.05,.95)}
 #' @param median \code{list} containing: \cr
 #' \itemize{
-#' \item {\strong{color}} {\code{charcater}  Color of the median percentile line. Default: "#000000". }
-#' \item {\strong{linewidth}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
-#' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
-#' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid".}
+#' \item \strong{color} \code{charcater}  Color of the median percentile line. Default: "#000000".
+#' \item \strong{linewidth} \code{numeric}  Thickness of the median percentile line. Default: 1.
+#' \item \strong{alpha} \code{numeric} Transparency of the median percentile line. Default: 0.7.
+#' \item \strong{linetype} \code{charcater} Linetype of the median percentile line. Default: "solid".
 #' }
 
 #' @param extreme \code{list} containing: \cr
 #' \itemize{
-#' \item {\strong{color}} {\code{charcater} Color of the median percentile line. Default: "#000000". }
-#' \item {\strong{linewidth}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
-#' \item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
-#' \item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid"}
+#' \item \strong{color} \code{charcater} Color of the median percentile line. Default: "#000000".
+#' \item \strong{linewidth} \code{numeric} Thickness of the median percentile line. Default: 1.
+#' \item \strong{alpha} \code{numeric} Transparency of the median percentile line. Default: 0.7.
+#' \item \strong{linetype} \code{charcater} Linetype of the median percentile line. Default: "solid"
 #' }
 #' @param area \code{list} containing: \cr
 #' \itemize{
-#' \item {\strong{fill}} {\code{charcater}  Color of the shaded area. Default: "blue". }
-#' \item {\strong{alpha}} {\code{numeric} Transparency of the sahded area. Default: 0.1.}
+#' \item \strong{fill} \code{charcater}  Color of the shaded area. Default: "blue".
+#' \item \strong{alpha} \code{numeric} Transparency of the sahded area. Default: 0.1.
 #' }
 #'
 #' @family vpc
@@ -142,27 +142,27 @@ pmx_vpc_pi <-
 
 #' @param show  \code{charcater} how areas are displayed:
 #' \itemize{
-#' \item {\strong{show="all"}} {areas will be displayed for each of the 3 percentiles. }
-#' \item {\strong{show="median"}} {Show only median area.}
+#' \item \strong{show="all"} areas will be displayed for each of the 3 percentiles.
+#' \item \strong{show="median"} Show only median area.
 #' }
 
 #' @param interval \code{numeric} quantiles values default to \code{c(.05,.95)}
 #' @param method \code{charcater} which areas are displayed:
 #' \itemize{
-#' \item {\strong{method="ribbon"}} {areas are ribbons.}
-#' \item {\strong{method="rectangle"}} {ares are horizontal rectangles.}
+#' \item \strong{method="ribbon"} areas are ribbons.
+#' \item \strong{method="rectangle"} areas are horizontal rectangles.
 #' }
 
 #' @param median \code{list} containing: \cr
 #' \itemize{
-#' \item {\strong{fill}} { \code{character} Color of the area representing the CI for the median. Default: "#3388cc".}
-#' \item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the median. Default=0.3.}
+#' \item \strong{fill}  \code{character} Color of the area representing the CI for the median. Default: "#3388cc".
+#' \item \strong{alpha} \code{numeric} Transparency of the area representing the PI for the median. Default=0.3.
 #' }
 
 #' @param extreme \code{list} containing: \cr
 #' \itemize{
-#' \item {\strong{fill}} {\code{character} Color of the area representing the CI for the extreme percentiles. Default: "#3388cc".}
-#' \item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the extreme percentiles. Default=0.3.}
+#' \item \strong{fill} \code{character} Color of the area representing the CI for the extreme percentiles. Default: "#3388cc".
+#' \item \strong{alpha} \code{numeric} Transparency of the area representing the PI for the extreme percentiles. Default=0.3.
 #' }
 #'
 #' @export

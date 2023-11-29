@@ -56,7 +56,7 @@ getPmxOption <- function(name, default = NULL) {
 #' @section Options used in ggPMX:
 #'
 #' \itemize{
-#' \item {\strong{template_dir:}} {path to template directory}
+#' \item \strong{template_dir:} path to template directory
 #' }
 #'
 #' @examples

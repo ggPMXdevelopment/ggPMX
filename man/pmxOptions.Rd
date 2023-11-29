@@ -21,7 +21,7 @@ There is a global option set, which is available by default.
 
 
 \itemize{
-\item {\strong{template_dir:}} {path to template directory}
+\item \strong{template_dir:} path to template directory
 }
 }
 

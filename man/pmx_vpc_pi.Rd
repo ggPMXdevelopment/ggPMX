@@ -15,10 +15,10 @@ pmx_vpc_pi(
 \arguments{
 \item{show}{\code{charcater} how lines are displayed:
 \itemize{
-\item {\strong{show=all}} {lines will be displayed for each of
-the 3 percentiles. with a shaded area.}
-\item {\strong{show=median}} {Show only median line.}
-\item {\strong{show=area}} {Show only median line and the shaded area}
+\item \strong{show=all} lines will be displayed for each of
+the 3 percentiles. with a shaded area.
+\item \strong{show=median} Show only median line.
+\item \strong{show=area} Show only median line and the shaded area
 }}
 
 \item{interval}{\code{numeric} quantiles values default
@@ -26,24 +26,24 @@ to \code{c(.05,.95)}}
 
 \item{median}{\code{list} containing: \cr
 \itemize{
-\item {\strong{color}} {\code{charcater}  Color of the median percentile line. Default: "#000000". }
-\item {\strong{linewidth}} {\code{numeric}  Thickness of the median percentile line. Default: 1.}
-\item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
-\item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid".}
+\item \strong{color} \code{charcater}  Color of the median percentile line. Default: "#000000".
+\item \strong{linewidth} \code{numeric}  Thickness of the median percentile line. Default: 1.
+\item \strong{alpha} \code{numeric} Transparency of the median percentile line. Default: 0.7.
+\item \strong{linetype} \code{charcater} Linetype of the median percentile line. Default: "solid".
 }}
 
 \item{extreme}{\code{list} containing: \cr
 \itemize{
-\item {\strong{color}} {\code{charcater} Color of the median percentile line. Default: "#000000". }
-\item {\strong{linewidth}} {\code{numeric} Thickness of the median percentile line. Default: 1.}
-\item {\strong{alpha}} {\code{numeric} Transparency of the median percentile line. Default: 0.7.}
-\item {\strong{linetype}} {\code{charcater} Linetype of the median percentile line. Default: "solid"}
+\item \strong{color} \code{charcater} Color of the median percentile line. Default: "#000000".
+\item \strong{linewidth} \code{numeric} Thickness of the median percentile line. Default: 1.
+\item \strong{alpha} \code{numeric} Transparency of the median percentile line. Default: 0.7.
+\item \strong{linetype} \code{charcater} Linetype of the median percentile line. Default: "solid"
 }}
 
 \item{area}{\code{list} containing: \cr
 \itemize{
-\item {\strong{fill}} {\code{charcater}  Color of the shaded area. Default: "blue". }
-\item {\strong{alpha}} {\code{numeric} Transparency of the sahded area. Default: 0.1.}
+\item \strong{fill} \code{charcater}  Color of the shaded area. Default: "blue".
+\item \strong{alpha} \code{numeric} Transparency of the sahded area. Default: 0.1.
 }}
 }
 \description{

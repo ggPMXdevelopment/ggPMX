@@ -15,28 +15,28 @@ pmx_vpc_ci(
 \arguments{
 \item{show}{\code{charcater} how areas are displayed:
 \itemize{
-\item {\strong{show="all"}} {areas will be displayed for each of the 3 percentiles. }
-\item {\strong{show="median"}} {Show only median area.}
+\item \strong{show="all"} areas will be displayed for each of the 3 percentiles.
+\item \strong{show="median"} Show only median area.
 }}
 
 \item{interval}{\code{numeric} quantiles values default to \code{c(.05,.95)}}
 
 \item{method}{\code{charcater} which areas are displayed:
 \itemize{
-\item {\strong{method="ribbon"}} {areas are ribbons.}
-\item {\strong{method="rectangle"}} {ares are horizontal rectangles.}
+\item \strong{method="ribbon"} areas are ribbons.
+\item \strong{method="rectangle"} areas are horizontal rectangles.
 }}
 
 \item{median}{\code{list} containing: \cr
 \itemize{
-\item {\strong{fill}} { \code{character} Color of the area representing the CI for the median. Default: "#3388cc".}
-\item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the median. Default=0.3.}
+\item \strong{fill}  \code{character} Color of the area representing the CI for the median. Default: "#3388cc".
+\item \strong{alpha} \code{numeric} Transparency of the area representing the PI for the median. Default=0.3.
 }}
 
 \item{extreme}{\code{list} containing: \cr
 \itemize{
-\item {\strong{fill}} {\code{character} Color of the area representing the CI for the extreme percentiles. Default: "#3388cc".}
-\item {\strong{alpha}} {\code{numeric} Transparency of the area representing the PI for the extreme percentiles. Default=0.3.}
+\item \strong{fill} \code{character} Color of the area representing the CI for the extreme percentiles. Default: "#3388cc".
+\item \strong{alpha} \code{numeric} Transparency of the area representing the PI for the extreme percentiles. Default=0.3.
 }}
 }
 \description{

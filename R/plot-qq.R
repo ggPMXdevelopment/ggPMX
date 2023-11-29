@@ -42,16 +42,16 @@ pmx_qq_stats <- function(points) {
 #'
 #' \strong{labels} is a list that contains:
 #' \itemize{
-#' \item {\strong{title:}} {plot title default  "EBE vs. covariates"}
-#' \item {\strong{x:}} {x axis label default to "Etas"}
-#' \item {\strong{y:}} {y axis label default to empty}
+#' \item \strong{title:} plot title default  "EBE vs. covariates"
+#' \item \strong{x:} x axis label default to "Etas"
+#' \item \strong{y:} y axis label default to empty
 #' }
 #'
 #' \strong{point} is a list that contains:
 #' \itemize{
-#' \item {\strong{shape:}} {default to 1}
-#' \item {\strong{color:}} {default to black}
-#' \item {\strong{size:}} {default to 1}
+#' \item \strong{shape:} default to 1
+#' \item \strong{color:} default to black
+#' \item \strong{size:} default to 1
 #' }
 #' @param is.hline logical if TRUE add horizontal line y=0 ( TRUE by default)
 #' @param hline geom hline graphical parameters
