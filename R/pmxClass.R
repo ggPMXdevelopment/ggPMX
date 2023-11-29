@@ -453,9 +453,9 @@ check_shrink <- function(shrink_list) {
 #' @param ctr \code{pmxClass} controller object
 #' @param ptype plot type can be:
 ##' \itemize{
-##'  \item{"IND"}{ Individual plot type: \code{\link{individual}} }
-##'  \item{"DIS"}{ Distribution plot type : \code{\link{distrib}}}
-##'  \item{"SCATTER"}{ Residual plot type :\code{\link{residual}}}
+##'  \item "IND" Individual plot type: \code{\link{individual}}
+##'  \item "DIS" Distribution plot type : \code{\link{distrib}}
+##'  \item "SCATTER" Residual plot type :\code{\link{residual}}
 ##' }
 ##' @param pname plot name, if missing it will be created using function aestetics
 ##' @param filter optional filter which will be applied to plotting data
@@ -1044,7 +1044,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         names(self$data$sim_blq_npde_iwres) == "npde" |
         names(self$data$sim_blq_npde_iwres) == "iwRes"
       )
-  
+
       names(self$data$sim_blq_npde_iwres)[place_vec] <-
         toupper(names(self$data$sim_blq_npde_iwres)[place_vec])
     }

@@ -22,9 +22,9 @@ set_plot(
 
 \item{ptype}{plot type can be:
 \itemize{
- \item{"IND"}{ Individual plot type: \code{\link{individual}} }
- \item{"DIS"}{ Distribution plot type : \code{\link{distrib}}}
- \item{"SCATTER"}{ Residual plot type :\code{\link{residual}}}
+ \item "IND" Individual plot type: \code{\link{individual}}
+ \item "DIS" Distribution plot type : \code{\link{distrib}}
+ \item "SCATTER" Residual plot type :\code{\link{residual}}
 }}
 
 \item{pname}{plot name, if missing it will be created using function aestetics}
