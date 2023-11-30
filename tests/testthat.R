@@ -1,5 +1,5 @@
 library(testthat)
 library(ggPMX)
 library(data.table)
-setDTthreads(2)
+setDTthreads(1)
 test_check("ggPMX")
