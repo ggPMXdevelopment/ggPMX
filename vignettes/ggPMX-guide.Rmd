@@ -16,16 +16,18 @@ output:
     toc_depth: '3'
 date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteEncoding{UTF-8} 
-  %\VignetteIndexEntry{ggPMX: User guide} 
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{ggPMX: User guide}
   %\VignetteEngine{knitr::rmarkdown}
 ---
-\clearpage  
+\clearpage
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}
 knitr::opts_chunk$set(out.width = "100%", warning = FALSE, message = FALSE)
 library(ggplot2)
 library(knitr)
 library(ggPMX)
+library(data.table)
+setDTthreads(2)
 
 theophylline <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
 work_dir <- file.path(theophylline, "Monolix")
@@ -35,10 +37,10 @@ ctr <- theophylline()
 ```
 
 
-# Introduction 
+# Introduction
 The `ggPMX` package generates standard diagnostic plots and tables for mixed effect models used in Pharmacometric (PMX) activities. The tool is built upon the ggplot2 package and supports models developped either with Monolix, NONMEM or nlmixr software. The current release (1.2) supports models fitted with Monolix versions 2016 and later, NONMEM version 7.2 and later and nlmixr.
 
-The package aims to provide a workflow that is consistent, efficient and which results in high quality graphics ready to use in official documents and reports. The package allows a high degree of flexibility and customization, yet providing an acceptable default setting. The package also allows to fully automate plots and report generation. 
+The package aims to provide a workflow that is consistent, efficient and which results in high quality graphics ready to use in official documents and reports. The package allows a high degree of flexibility and customization, yet providing an acceptable default setting. The package also allows to fully automate plots and report generation.
 
 The general context is the analysis of mixed effect models fitted to data. ggPMX was developed in the framework of Pharmacometric activities, in which case the model is a population pharmacokinetic (PK) and/or pharmacodynamic (PD) model and the data is clinical or pre-clinical PK and/or PD data.
 
@@ -61,22 +63,22 @@ ctr %>% pmx_plot_eta_matrix(
 )
 ```
 
-This document introduces the ggPMX functionalities and syntax. 
+This document introduces the ggPMX functionalities and syntax.
 
-## Architecture 
+## Architecture
 
 The high level architecture is represented in the figure below. The key components of the package are the following:
 
 * **Reader** - reads model outputs from different sources (i.e. text files containing population parameters, model predictions, individual random effects, simulations and data-related inputs like covariates) and restructures these outputs into standard formats for internal processing.
-* **Generator** ??? processes outputs from Reader. It contains R language code to produce the plots and is factorized into a small set of flexible key functions.  A set of default plots is defined in a configuration file. The configuration file can be adapted, e.g., to have different configurations for different types of modeling activities. 
-* **Controller** - serves as user interface. The user will call Generator functions via wrapper functions in the Controller to produce either all the default plots or selected plots of interest. In addition to editing the configuration, the user has different options to adapt aspects of the plots to specific requirements. Plots may be adapted by setting parameters of the wrapper functions that generate the plots; there exist additional wrapper functions to change aspects of the existing default plots. The plots are, in general, returned as ggplot objects that can be further customized using ggplot functionalities. 
+* **Generator** ??? processes outputs from Reader. It contains R language code to produce the plots and is factorized into a small set of flexible key functions.  A set of default plots is defined in a configuration file. The configuration file can be adapted, e.g., to have different configurations for different types of modeling activities.
+* **Controller** - serves as user interface. The user will call Generator functions via wrapper functions in the Controller to produce either all the default plots or selected plots of interest. In addition to editing the configuration, the user has different options to adapt aspects of the plots to specific requirements. Plots may be adapted by setting parameters of the wrapper functions that generate the plots; there exist additional wrapper functions to change aspects of the existing default plots. The plots are, in general, returned as ggplot objects that can be further customized using ggplot functionalities.
 * **Reporter** - generates sets of graphs and tables and integrates them into an output file (Word or PDF) with annotations.
 
 ```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics("./ggPMX_arch.png")
 ```
 
-The package is coded using object-oriented programming meaning that information is encoded in objects. The user can change or print the content of objets via functions. Such an implementation allows to have code that is modular and easily customizable. 
+The package is coded using object-oriented programming meaning that information is encoded in objects. The user can change or print the content of objets via functions. Such an implementation allows to have code that is modular and easily customizable.
 
 ## Workflow overview
 
@@ -91,7 +93,7 @@ The most important task for the user is the Controller creation. This step requi
 
 Once the Controller is created, it implicitly calls the Reader and creates the diagnostic plots. The user can then generate the graphs by calling pre-defined functions. The same syntax is used independent of the model structure (PK or PKPD model) and of the fitting software (Monolix, NONMEM or nlmixr).
 
-The Reporter creates one report per endpoint, i.e., one report for PK and one for each PD endpoint. 
+The Reporter creates one report per endpoint, i.e., one report for PK and one for each PD endpoint.
 
 ## Modeling datasets
 
@@ -107,14 +109,14 @@ A diagnostic session starts with the creation of a Controller. The Controller is
 
 ## Single-endpoint models
 
-In general, models with only one endpoint (or output) are mostly PK models, but these could also be k-PD models. 
+In general, models with only one endpoint (or output) are mostly PK models, but these could also be k-PD models.
 
 To illustrate `ggPMX` functionalities, the single-endpoint built-in model called **theophylline** is used hereafter. The **theophylline** population PK example has the following characteristics:
 
-- The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline. 
-- The model is a simple one-compartmental PK model with first-order absorption. 
-- The following covariates are used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance. 
-- Random effects on all three parameters (ka, Cl, V) are included. 
+- The input modeling data contains PK samples of 2 studies, each with 25 individuals who recieved a unique dose of 2000 mg theophylline.
+- The model is a simple one-compartmental PK model with first-order absorption.
+- The following covariates are used: weight (WT0) on volume (V) and clearance (Cl), age (AGE0), sex (SEX) and study (STUD) on clearance.
+- Random effects on all three parameters (ka, Cl, V) are included.
 - The residual error is proportional.
 
 The input modeling dataset has the following columns:
@@ -135,7 +137,7 @@ An example of Contoller creation is wrapped in a function called "theophylline()
 ctr <- theophylline()
 ```
 
-### Models fitted with Monolix (versions 2016 and later) 
+### Models fitted with Monolix (versions 2016 and later)
 
 ####`pmx_mlx()`
 
@@ -156,21 +158,21 @@ ctr <- pmx_mlx(
 
 The controller initialization can be simplified by using the Monolix controller `pmx_mlxtran()`. This function parses the mlxtran file of a Monolix project and assigns automatically the different fields necessary to the Controller creation. The only mandatory argument is file_name, the path to the mlxtran file.
 ```{r, eval = FALSE}
-mlxtran_path <- file.path(system.file(package = "ggPMX"), 
+mlxtran_path <- file.path(system.file(package = "ggPMX"),
                           "testdata", "1_popPK_model", "project.mlxtran")
 
 ctr <- pmx_mlxtran(file_name = mlxtran_path)
 ```
-The user can verify the content of the Controller and how parameters are assigned by printing it. 
+The user can verify the content of the Controller and how parameters are assigned by printing it.
 
 
-### Models fitted with NONMEM (versions 7.2 and later) 
+### Models fitted with NONMEM (versions 7.2 and later)
 
 ####`pmx_nm()`
 
 The controller initialization using the NONMEM controller `pmx_nm()` is based on reading functions of the xpose package.
 It is highly recommended (but not required) to use the "sdtab, patab, cotab, catab" table naming convention followed by a run number (e.g. sdtab001,cotab001)
-This will enable automatic recognition of covariates. It is also recommended to name the model files accordingly (e.g. run001.lst). 
+This will enable automatic recognition of covariates. It is also recommended to name the model files accordingly (e.g. run001.lst).
 In order to generate a VPC a simulation dataset is required (see section about VPC)
 
 For controller generation it is recommended to use the model file:
@@ -178,7 +180,7 @@ For controller generation it is recommended to use the model file:
 nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata","extdata")
 ctr <- pmx_nm(
   directory = nonmem_dir,
-  file     = "run001.lst" 
+  file     = "run001.lst"
 )
 ```
 
@@ -228,7 +230,7 @@ fit <- nlmixr(one.cmt, theo_sd, est="saem", control=list(print=0))
 The `fit` object is a nlmixr fit; You can read it into the nlmixr controller by:
 
 ```{r, eval = FALSE}
-ctr <- pmx_nlmixr(fit, 
+ctr <- pmx_nlmixr(fit,
                   vpc = FALSE ## VPC is turned on by default, can turn off
 )
 ```
@@ -258,7 +260,7 @@ To handle this, the user creates an "endpoint" object using the function `pmx_en
 - **code** (charcater): how the endpoint is coded in the input (modeling) dataset
 - **label**: can be used in the title of some plots or for the report file name
 - **unit**: used in the axis label for some plots
-- **files** (list): `list(predictions="predictions1",finegrid ="finegrid1")` 
+- **files** (list): `list(predictions="predictions1",finegrid ="finegrid1")`
 - **trans**: whether the value must be transformed before being displayed and which transformation to use.
 
 To illustrate the Controller creation with multiple-endpoint models, a built-in PKPD example is used. The input dataset is called pk_pd.csv and has the following columns.
@@ -303,27 +305,27 @@ NONMEM
 ctr <- pmx_nm(
   directory = nonmem_dir,
   file     = "run001.lst",
-  endpoint = 1 ## select the first endpoint 
-  dvid = "DVID" ## use this column as observation id 
+  endpoint = 1 ## select the first endpoint
+  dvid = "DVID" ## use this column as observation id
 )
 ```
 
 nlmixr
 ```{r, eval = FALSE}
-ctr <- pmx_nlmixr(fit, 
-                  endpoint = 1 ## select the first endpoint 
-                  dvid = "DVID" ## use this column as observation id 
+ctr <- pmx_nlmixr(fit,
+                  endpoint = 1 ## select the first endpoint
+                  dvid = "DVID" ## use this column as observation id
 )
 ```
 
 Also for Monolix users, a simplified syntax for the Endpoint creation exists in the case where the endpoint code matches the files post-fixes (code=1 corresponds to predictions1.txt, code=2 corresponds to predictions2.txt). Instead of passing a pmxEndpoint object as argument of the Controller, the user can specify the numerical value corresponding to the YTYPE/CMT/DVID column.
 ```{r, echo=T, eval = FALSE}
 pmx_mlx(
-  dvid = "YTYPE", ## use this column as observation id 
-  endpoint = 1,   ## select the first endpoint 
+  dvid = "YTYPE", ## use this column as observation id
+  endpoint = 1,   ## select the first endpoint
   ...)            ## other pmx parameters , config, input,etc..
 ```
-Internally, a pmxEndpoint object will be created, and observations having YTYPE=x will be filtered. 
+Internally, a pmxEndpoint object will be created, and observations having YTYPE=x will be filtered.
 
 ## Controller with covariates
 
@@ -505,7 +507,7 @@ ctr %>% pmx_plot_eta_matrix
 
 In order to generate VPCs a simulation dataset is requried. Creation of VPC is slightly different dependening on the fitting software used (Monolix, NONMEM or nlmixr).
 
-### Models fitted with Monolix (versions 2016 and later) 
+### Models fitted with Monolix (versions 2016 and later)
 
 Monolix users, need to run a simulation with simulx. Here's an example code
 
@@ -522,7 +524,7 @@ For use with ggPMX, it is required that the IDs are reverted to the original IDs
 ## Need to revert the original IDs as in modeling dataset for ggPMX
 ## Rename IDs column to same name as in modeling dataset, e.g.
 ## ???id??? in the example below
-simdata <- simdata %>% 
+simdata <- simdata %>%
   mutate(newId = as.numeric(as.character(id))) %>%
   left_join(., mysim$originalId) %>%
   mutate(id = as.numeric(as.character(oriId))) %>%
@@ -543,7 +545,7 @@ Argumentss
 4. **dv**	character name of the observation variable
 
 
-Within pmx vpc controller, it is called like : 
+Within pmx vpc controller, it is called like :
 
 ```{r }
 
@@ -578,7 +580,7 @@ ctr <- pmx_mlx(
 
 ```
 
-### Models fitted with NONMEM (versions 7.2 and later) 
+### Models fitted with NONMEM (versions 7.2 and later)
 
 It is required to provide simulation tables to generate VPCs. Furthermore, it is highly recommended that simulation tables have a "sim"-suffix and are kept with the same naming convetion as for the prediction tables (e.g sdtab001sim, catab001sim)). In this case they're automatically recognized by the runnumber (runno) or by the model file if specified there. For post-hoc simulation it is possible to include an additional simfile:
 
@@ -599,14 +601,14 @@ For nlmixr users, the VPC is generated automatically with the controller creatio
 ```{r, eval = FALSE}
 ctr <- pmx_nlmixr(fit) ## VPC will be generated automatically, vpc = TRUE
 
-ctr <- pmx_nlmixr(fit, 
+ctr <- pmx_nlmixr(fit,
                   vpc = FALSE ## But can be turned off
 )
 ```
 
 ## VPC plot
 
-The plot options are described in `?pmx_plot_vpc` function. 
+The plot options are described in `?pmx_plot_vpc` function.
 
 ### Default
 
@@ -627,7 +629,7 @@ ctr %>% pmx_plot_vpc(type ="scatter")
 ctr %>% pmx_plot_vpc(bin=pmx_vpc_bin(style = "kmeans",n=5))
 ```
 
-### Stratification 
+### Stratification
 
 ```{r fig.height=7, fig.width=6}
 ctr %>% pmx_plot_vpc(strat.facet=~SEX,facets=list(nrow=2))
@@ -676,7 +678,7 @@ ctr %>% pmx_report(name='Diagnostic_plots2',
                    format='all')
 ```
 
-Note that running the same command first with the option "format='plots'" and then with the option "format='report'" will remove the *ggpmx_GOF* folder. 
+Note that running the same command first with the option "format='plots'" and then with the option "format='report'" will remove the *ggpmx_GOF* folder.
 
 Note also that by default, the report will have the DRAFT label on all plots. The label can be removed by using the settings argument in the Controller creation.
 
@@ -698,7 +700,7 @@ ctr %>% pmx_report(name='Diagnostic_plots3',
 # Customizing plots
 Any particular plot can be customized in two ways:
 
--	Specifying options in each call of a plot (on the fly, recommended): 
+-	Specifying options in each call of a plot (on the fly, recommended):
 ```{r eval=F}
 ctr %>% pmx_plot_xx(list of options)
 ```
@@ -708,9 +710,9 @@ ctr %>% pmx_plot_xx(list of options)
 ctr %>% pmx_update(???xx???, list of options)
 ```
 
-Help(pmx_gpar) lists some options. 
+Help(pmx_gpar) lists some options.
 
-Help(pmx_plot_xx) lists some possible parameters to update a particular plot. 
+Help(pmx_plot_xx) lists some possible parameters to update a particular plot.
 
 To obtain an exhaustive list of possible options for a particular plot, use the following:
 ```{r eval=F}
@@ -746,7 +748,7 @@ ctr %>% pmx_plot_iwres_ipred()
 
 ## Customizing global settings - `pmx_settings()`
 
-The user can define a Controller with global settings that will be applied to all plots. For example remove draft annoataion, use abbreviation defintions to define axis labels, etc. 
+The user can define a Controller with global settings that will be applied to all plots. For example remove draft annoataion, use abbreviation defintions to define axis labels, etc.
 
 A settings object is defined by using the function `pmx_settings()`. The created object is passed as the parameter "settings" to `pmx()`. By doing so, the settings are defined globally and apply to all plots. For a complete list of global settings with their corresponding default values, please consult the ggPMX Help (`?pmx_settings`).
 
@@ -756,16 +758,16 @@ A settings object is defined by using the function `pmx_settings()`. The created
 my_settings <- pmx_settings(
   is.draft   = FALSE,
   use.abbrev = TRUE,
-  ...) ### set other settings parameters here 
+  ...) ### set other settings parameters here
 ctr <-
   pmx_mlx(
-    ..., ## put here other pmx parametes 
+    ..., ## put here other pmx parametes
     settings = my_settings
-  ) 
+  )
 ```
 
 
-### Remove DRAFT label globally 
+### Remove DRAFT label globally
 
 By default in the "standing" configuration, a DRAFT label is printed on all plots. In order to switch this label off, the user sets the `is.draft` option of `pmx_settings()` to `FALSE`.
 
@@ -776,14 +778,14 @@ ctr <- theophylline(settings = pmx_settings(is.draft = FALSE))
 ```
 
 
-### Use abbreviation definitions 
+### Use abbreviation definitions
 
-The standing configuration initializes all plots using abbreviations for axis labels. Each abbreviation has its corresponding definition. To get the list of abbreviation : 
+The standing configuration initializes all plots using abbreviations for axis labels. Each abbreviation has its corresponding definition. To get the list of abbreviation :
 
 ```{r settings_get_abbrev}
 ctr %>% get_abbrev
 ```
-You can update one abbreviation to set a custom label 
+You can update one abbreviation to set a custom label
 
 ```{r settings_set_abbrev}
 ctr %>% set_abbrev(TIME="TIME after the first dose")
@@ -800,7 +802,7 @@ ctr %>% pmx_plot_npde_time
 
 ### Use `finegrid.txt` file for individual plots
 
-within Monolix, user can choose to not use finegrid file even if it is present. 
+within Monolix, user can choose to not use finegrid file even if it is present.
 
 ```{r settings_use.finegrid,fig.height=9, fig.width=7}
 ctr <- theophylline()
@@ -813,12 +815,12 @@ In case of color startfication user can customize the legend. For example here u
 
 ```{r settings_color_scales_local}
 ctr <- theophylline()
-ctr %>% pmx_plot_npde_time(strat.color="STUD")+ 
+ctr %>% pmx_plot_npde_time(strat.color="STUD")+
       ggplot2::scale_color_manual(
         "Study",
         labels=c("Study 1","Study 2"),
         values=c("1"="green","2"="blue"))
-    
+
 
 ```
 
@@ -909,7 +911,7 @@ colnames(out) <- c("Argument", "Description", "Values")
 head_table(out, label = "tab:pmx_mandatory", caption = "Mandatory arguments of pmx() function")
 ```
 
-The example below defines a Controller with the *standing* (standard) configuration. 
+The example below defines a Controller with the *standing* (standard) configuration.
 
 ```{r init_ctr}
 theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
@@ -958,7 +960,7 @@ Standard errors are required (a successful covariance plot) for full diagnostic 
 
 ## Plots table
 
-The main target of ggPMX is to create a report containing the following plots (see abbreviation list below): 
+The main target of ggPMX is to create a report containing the following plots (see abbreviation list below):
 
 ```{r plots_list,echo=FALSE,results='asis'}
 
@@ -993,7 +995,7 @@ Abbreviations:
 
 ## ggPMX main functions
 
-`ggPMX` implements few functions to generate and manipulate diagnostic plots. 
+`ggPMX` implements few functions to generate and manipulate diagnostic plots.
 (Should we list pmx and pmx_mlx separately and say the differences? Or it's maybe clear from the previous sections.)
 
 ```{r functions_list,echo=FALSE,results='asis'}
@@ -1015,16 +1017,16 @@ head_table(out, label = "tab:func_list", caption = "List of all `ggPMX` function
 ```
 
 (Apparently, it's not the full list. Add all functions.)
-The design of the package is around the central object: the controller. It can introspected or piped using the `%>%` operand. 
+The design of the package is around the central object: the controller. It can introspected or piped using the `%>%` operand.
 
 **Note that**:
 
 The controller is an `R6` object, it behaves like a reference object.  Some functions (methods) can have a side effect on the controller and modify it internally. Technically speaking we talk about chaining not piping here. However, using `pmx_copy` user can work on a copy of the controller.
 
 
-## ggPMX graphical parameters 
+## ggPMX graphical parameters
 
-Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function. A number of graphical parameters can be set for the different plot types. 
+Graphical parameters in `ggPMX` are set internally using the `pmx_gpar` function. A number of graphical parameters can be set for the different plot types.
 
 ```{r pmx_gpar_args}
 args(pmx_gpar)
@@ -1051,22 +1053,22 @@ ctr %>% pmx_comp_shrink
 
 We get the shrinkage for each effect (**SHRINK** column).
 
-The same values can be shown on distribution plot , for example  : 
+The same values can be shown on distribution plot , for example  :
 
 ```{r shrink_plot_box}
 ctr %>% pmx_plot_eta_box
 
 ```
-or : 
+or :
 ```{r shrink_plot_hist,fig.height=8, fig.width=5}
 ctr %>% pmx_plot_eta_hist
 
 ```
 
-You can add or remove shrinkage annotation using `is.shrink` argument ( TRUE by default) : 
+You can add or remove shrinkage annotation using `is.shrink` argument ( TRUE by default) :
 
 ```{r shrink_plot_no}
-ctr %>%   pmx_plot_eta_box( is.shrink = FALSE) 
+ctr %>%   pmx_plot_eta_box( is.shrink = FALSE)
 
 ```
 
@@ -1074,7 +1076,7 @@ ctr %>%   pmx_plot_eta_box( is.shrink = FALSE)
 
 ## Var function
 
-You can compute shrinkage by applying either standard deviation `sd` or variance `var` : 
+You can compute shrinkage by applying either standard deviation `sd` or variance `var` :
 ```{r, compute_var }
 ctr %>% pmx_comp_shrink(fun="var")
 ```
@@ -1082,8 +1084,8 @@ ctr %>% pmx_comp_shrink(fun="var")
 ```{r, shrink_plot_var}
 ctr %>% pmx_plot_eta_box(shrink=pmx_shrink(fun = "var"))
 ```
- 
- 
+
+
 ## Shrinkage and stratification
 
 Shrinkage can be applied after stratification :
@@ -1091,19 +1093,19 @@ Shrinkage can be applied after stratification :
 ```{r shrink_comp_strat}
 ctr %>% pmx_comp_shrink(strat.facet = ~SEX)
 ```
-or by grouping like : 
+or by grouping like :
 
 ```{r shrink_comp_strat_color}
 ctr %>% pmx_comp_shrink(strat.color = "SEX")
 ```
 
-We can 
+We can
 ```{r shrink_plot_strat, fig.width=9, fig.height=8}
 ctr %>% pmx_plot_eta_hist(is.shrink = TRUE, strat.facet = ~SEX,
                           facets=list(scales="free_y"))
 ```
-or 
- 
+or
+
 ```{r fig.width=12, fig.height=6}
 ctr %>% pmx_plot_eta_box(is.shrink = TRUE, strat.facet = ~SEX,
                           facets=list(scales="free_y",ncol=2))
