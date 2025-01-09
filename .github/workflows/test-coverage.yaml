@@ -28,12 +28,6 @@ jobs:
           pak-version: devel
           extra-packages: |
             any::covr
-            nlmixr2/lotri
-            nlmixr2/rxode2ll
-            nlmixr2/rxode2parse
-            nlmixr2/rxode2random
-            nlmixr2/rxode2et
-            nlmixr2/rxode2
             lixoftConnectors=?ignore
           needs: coverage
 
