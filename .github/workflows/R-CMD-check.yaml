@@ -53,21 +53,11 @@ jobs:
           pak-version: devel
           extra-packages: |
             any::rcmdcheck
-            nlmixr2/lotri
-            nlmixr2/rxode2ll
-            nlmixr2/rxode2parse
-            nlmixr2/rxode2random
-            nlmixr2/rxode2et
-            nlmixr2/rxode2
-            nlmixr2/nlmixr2est
-            nlmixr2/nlmixr2extra
-            nlmixr2/nlmixr2plot
-            nlmixr2/nlmixr2
             lixoftConnectors=?ignore
           needs: check
-          
+
       - run: tlmgr --version
-        
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
