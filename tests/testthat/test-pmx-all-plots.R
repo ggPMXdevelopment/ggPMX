@@ -119,12 +119,11 @@ if (helper_skip()) {
                              control = list(print = 0)
                              )
       ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
-      iprNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
       p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
 
       expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
       expect_true(inherits(p, c("gg", "ggplot")))
-      expect_identical(names(p), iprNames)
+      expect_identical(names(p), names(ggplot()))
     })
 
   }
@@ -173,8 +172,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_generic: params: ctr, pname result: identical names", {
     p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
-    iprNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_identical(names(p), iprNames)
+    expect_identical(names(p), names(ggplot()))
   })
 
 
@@ -213,8 +211,7 @@ if (helper_skip()) {
   test_that("pmx_register_plot: params: ctr, pname, pp  result: identical names", {
     pp <- ctr %>% get_plot("individual")
     p <- pmx_register_plot(ctr, pp[[1]], pname = "indiv1")
-    pregNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_identical(names(p), pregNames)
+    expect_identical(names(p), names(ggplot()))
   })
 
   test_that("pmx_register_plot: params: ctr, pp  result: identical line color", {
@@ -251,11 +248,7 @@ if (helper_skip()) {
 
   test_that("pmx_register_plot: params: ctr, pname  result: identical names", {
     p <- ctr %>% pmx_plot_cats("npde_time")
-    catNames <- c(
-      "data", "layers", "scales", "mapping", "theme", "coordinates",
-      "facet", "plot_env", "labels"
-    )
-    expect_identical(names(p[[1]]), catNames)
+    expect_identical(names(p[[1]]), names(ggplot()))
   })
 
 
