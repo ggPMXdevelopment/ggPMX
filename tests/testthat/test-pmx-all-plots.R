@@ -3,11 +3,6 @@ if (helper_skip()) {
   context("Test all plots")
   pmxClassHelpers <- test_pmxClass_helpers()
 
-  # ggplot object names
-  ggplot_names <- names(
-    ggplot(data.frame(x = 1:3, y = 1:3), aes(x, y)) + geom_point()
-  )
-  
   test_that("We can call all pmx_plot_xx with success", {
     ctr <- pmxClassHelpers$ctr
     pmx_plots <- ctr %>% plot_names()
@@ -128,7 +123,7 @@ if (helper_skip()) {
 
       expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
       expect_true(inherits(p, c("gg", "ggplot")))
-      expect_identical(names(p), ggplot_names)
+      expect_identical(names(p), names(ggplot()))
     })
 
   }
@@ -177,7 +172,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_generic: params: ctr, pname result: identical names", {
     p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
-    expect_identical(names(p), ggplot_names)
+    expect_identical(names(p), names(ggplot()))
   })
 
 
@@ -216,7 +211,7 @@ if (helper_skip()) {
   test_that("pmx_register_plot: params: ctr, pname, pp  result: identical names", {
     pp <- ctr %>% get_plot("individual")
     p <- pmx_register_plot(ctr, pp[[1]], pname = "indiv1")
-    expect_identical(names(p), ggplot_names)
+    expect_identical(names(p), names(ggplot()))
   })
 
   test_that("pmx_register_plot: params: ctr, pp  result: identical line color", {
@@ -253,7 +248,7 @@ if (helper_skip()) {
 
   test_that("pmx_register_plot: params: ctr, pname  result: identical names", {
     p <- ctr %>% pmx_plot_cats("npde_time")
-    expect_identical(names(p[[1]]), ggplot_names)
+    expect_identical(names(p[[1]]), names(ggplot()))
   })
 
 
