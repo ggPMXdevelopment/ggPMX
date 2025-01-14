@@ -43,11 +43,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_vpc: params ctr result: identical names", {
     p <- pmx_plot_vpc(ctr)
-    vpcNames <- c(
-      "data", "layers", "scales", "mapping", "theme", "coordinates",
-      "facet", "plot_env", "labels"
-    )
-    expect_identical(names(p), vpcNames)
+    expect_identical(names(p), names(ggplot()))
   })
 
 

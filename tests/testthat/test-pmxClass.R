@@ -665,11 +665,7 @@ if (helper_skip()) {
   test_that("get_plot: params: ctr, nplot, which_pages  result: identical names", {
     ctr <- pmxClassHelpers$ctr
     get_p <- get_plot(ctr, nplot = "individual", which_pages = 1L)
-    gplNames <- c(
-      "data", "layers", "scales", "mapping", "theme", "coordinates",
-      "facet", "plot_env", "labels"
-    )
-    expect_identical(gplNames, names(get_p))
+    expect_identical(names(get_p), names(ggplot()))
   })
 
   #------------------- get_plot - end --------------------------------------------
