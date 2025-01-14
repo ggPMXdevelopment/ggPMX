@@ -81,8 +81,8 @@ pmx_update <- function(ctr, pname, strat.color = NULL, strat.facet = NULL,
                        filter = NULL, trans = NULL, ..., pmxgpar = NULL) {
   assert_that(is_pmxclass(ctr))
   assert_that(is_string(pname))
-  ## assert_that(is_string_or_null(strat.color))
-  #assert_that(is_string_or_formula_or_null(strat.facet)) #TODO: later change to is_character_or_formula_or_null and add it to assertions.R
+  ## assert_that(is_string_or_null(strat.color)) 
+  assert_that(is_character_or_formula_or_null(strat.facet))
 
   ## filtering
   if (!is.null(substitute(filter))) {
