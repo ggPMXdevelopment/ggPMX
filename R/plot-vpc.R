@@ -509,7 +509,7 @@ vpc.plot <- function(x) {
 
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
-        strat.facet <- formula(paste0("~", strat.facet))
+        strat.facet <- as.formula(paste0('~', paste0(strat.facet, collapse = " + ")))
       }
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
@@ -665,7 +665,6 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   x <- x %>%
     vpc_legend. %>%
     vpc_footnote.
-
   if (!is.null(x$db)) p <- vpc.plot(x)
   plot_pmx(x$gp, p)
 }
