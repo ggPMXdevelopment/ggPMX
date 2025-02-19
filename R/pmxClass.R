@@ -485,8 +485,8 @@ set_plot <- function(
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
-  assert_that(is_string_or_null(strat.color))
-  assert_that(is_string_or_formula_or_null(strat.facet))
+  #assert_that(is_string_or_null(strat.color)) 
+  #assert_that(is_string_or_formula_or_null(strat.facet)) #TODO: later change to is_character_or_formula_or_null and add it to assertions.R
 
 
 
