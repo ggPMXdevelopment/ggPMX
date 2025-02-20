@@ -330,53 +330,99 @@ find_interval <- function(x, vec, labels = NULL, ...) {
 }
 
 
+calculate_vpc_stats <- function(x){
+  observed_data <- x$input%>%
+    filter(TIME!=0)%>%
+    arrange(ID, TIME)
+  
+  simulated_data <- x$dx%>%
+    arrange(rep, ID, TIME)
+  
+  observed_data$PRED <-
+    simulated_data%>%group_by(ID, TIME)%>%summarise(PRED = mean(Y))%>%ungroup()%>%select(PRED)
+  
+  nbins <- ifelse(is.null(x$bin$n), 3, x$bin$n) #What should be a default values for nbins? 
+  style <- ifelse(is.null(x$bin$style), 'kmeans', x$bin$style)
+  pi_level <- x$pi$probs 
+  ci_level <- x$ci$probs 
+  facets <- x$strat.facet
+  if (is.character(facets)) {
+    facets <- as.formula(paste0("~", paste0(facets, collapse = " + ")))
+  }
+  #Calculate vpc. Parameters are hardcoded for now.
+  vpc <- observed(observed_data, x = TIME, y = Y) %>%
+    simulated(simulated_data, ysim = Y)%>%
+    {if(!is.null(facets)) stratify(., formula = facets) else .}%>%
+    binning(bin = style, nbins =nbins, xbin = 'xmedian')%>%
+    vpcstats(qpred = c(pi_level[1], 0.5, pi_level[2]), vpc.type = "continuous",
+             conf.level = abs(diff(ci_level)))
+  return(vpc)
+}
 
-.vpc_x <- function(x, self) {
-  if (x$ptype == "VPC") {
+.vpc_x <- function(x, self){
+  if (x$ptype == "VPC"){
+
     x$dv <- self$dv
     idv <- self$sim[["idv"]]
-    rug <- bin <- brks <- NULL
-    if (!is.null(x$bin)) {
-      if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
-        x$bin$within_strat <- NULL
-        bins <- x$input[, list(brks = bin_idv(get(idv), x)), c(x$strat.facet)] #bins is a dt, with brks and strat.facet value bin_idv at line 300
-        x$input[, bin := {
-          grp <- get(x$strat.facet)
-          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
-        }, c(x$strat.facet)]
-        x$dx[, bin := {
-          grp <- get(x$strat.facet)
-          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
-        }, c(x$strat.facet)]
-      } else {
-        rugs <- x$input[, bin_idv(get(idv), x)]
-        x$input[, bin := find_interval(get(idv), rugs)]
-        x$dx[, bin := find_interval(get(idv), rugs)]
-        rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
-      }
-    }
-
-    res <- vpc.data(
-      x[["type"]],
-      x$input,
-      x$dx,
-      x$pi$probs,
-      x$ci$probs,
-      idv = if (!is.null(x$bin)) "bin" else self$sim[["idv"]],
-      irun = self$sim[["irun"]],
-      dv = self$dv,
-      strat = x$strat.facet,
-      rug = rug
+    
+    
+    #Calculate vpcstats using tidyvpc
+    vpc <- calculate_vpc_stats(x)
+    
+    #Put vpc parameters into ggPMX list format (ci_dt, pi_dt, out, rug_dt)
+    ci_dt <- data.table(
+      vpc$stats
+    )%>%
+      rename(percentile = 'qname',
+             TIME = 'xbin',
+             CLLOW = 'lo',
+             CLMID = 'md',
+             CLHIGH = 'hi'
+      )%>%
+      mutate(
+        bin = TIME
+      )
+    
+    #This is not real prediction interval, just a placeholder
+    pi_dt <- data.table(
+      vpc$stats
+    )%>%
+      rename(percentile = 'qname',
+             TIME = 'xbin',
+             value = 'y'
+      )%>%
+      mutate(
+        bin = TIME
+      )
+    
+    #This was previosly in the list, but it's not used anyhow if I'm correct
+    # out <- data.table(merge(ci_dt, pi_dt, by = c("TIME", "percentile")))
+    # nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
+    # #nn <- c('LOW', 'MID', 'HIGH')[c(1, 3)]
+    # out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
+    # out[, zmax := pmax(get(nn[[2]]), value)]
+    # out[, zmin := pmin(get(nn[[1]]), value)]
+    
+    rug_dt <- data.frame(x = as.numeric(vpc$stats$xbin), y = 1)
+    
+    res <- list(
+      ci_dt = ci_dt,
+      pi_dt = pi_dt,
+      # out = out, 
+      rug_dt = rug_dt
     )
+    
+    #Alex: I don't think this class reassignment makes sense
     old_class <- class(x)
     x$db <- res
     class(x) <- old_class
+    #x$bin <- as.numeric(x$bin)
     x
-  } else {
+  }
+  else {
     x
   }
 }
-
 
 
 
@@ -509,7 +555,7 @@ vpc.plot <- function(x) {
 
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
-        strat.facet <- as.formula(paste0('~', paste0(strat.facet, collapse = " + ")))
+        strat.facet <- as.formula(paste0("~", paste0(strat.facet, collapse = " + ")))
       }
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }

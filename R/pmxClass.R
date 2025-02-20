@@ -863,8 +863,9 @@ pmxClass <- R6::R6Class(
     id = NULL,
     time = NULL,
     sim_blq = FALSE,
-    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq)
-      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq),
+    vpc = NULL,
+    initialize = function(data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq, vpc)
+      pmx_initialize(self, private, data_path, input, dv, config, dvid, cats, conts, occ, strats, settings, endpoint, sim, bloq, id, time,sim_blq, vpc),
 
     print = function(data_path, config, ...)
       pmx_print(self, private, ...),
@@ -911,7 +912,7 @@ pmxClass <- R6::R6Class(
 
 pmx_initialize <- function(self, private, data_path, input, dv,
                            config, dvid, cats, conts, occ, strats,
-                           settings, endpoint, sim, bloq, id, time, sim_blq) {
+                           settings, endpoint, sim, bloq, id, time, sim_blq, vpc) {
 
   DVID <- ID <- NULL
   if (missing(data_path) || missing(data_path)) {
