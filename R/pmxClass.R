@@ -473,7 +473,8 @@ set_plot <- function(
                      ctr,
                      ptype = c(
                        "IND", "DIS", "SCATTER", "ETA_PAIRS",
-                       "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS"
+                       "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS",
+                       "SAEM"
                      ),
                      pname,
                      use.defaults = TRUE,
@@ -526,7 +527,8 @@ set_plot <- function(
       ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
       PMX_QQ = do.call(pmx_qq, params),
       PMX_DENS = do.call(pmx_dens, params),
-      VPC = do.call(pmx_vpc, params)
+      VPC = do.call(pmx_vpc, params),
+      SAEM = do.call(pmx_saem, params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
@@ -976,6 +978,12 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     id = self$id
   )
 
+  # add Monolix SAEM convergence data for #387. 
+  # TODO: integrate with rest of the reader, this is ad hoc and is invisible 
+  # to the print method for the controller
+  if (grepl("^mlx", self$config$sys)) {
+    self$data$saem <- read_mlx_saem_conv(path = private$.data_path) 
+  }
 
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)

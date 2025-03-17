@@ -510,3 +510,15 @@ PMX_VPC:
     'y': DV
   is.smooth: no
   smooth_with_bloq: no
+
+## SAEM plots
+    
+SAEM_CONVERGENCE:
+  ptype: SAEM
+  dname: saem
+  is.title: TRUE
+  labels:
+    title: 'SAEM Convergence Plot by Parameter'
+    subtitle: ''
+    x: 'Iteration'
+    'y': ''
