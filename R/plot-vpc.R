@@ -329,19 +329,20 @@ find_interval <- function(x, vec, labels = NULL, ...) {
   }
 }
 
-
+#Function that uses tidyvpc to calulate VPC stats
 calculate_vpc_stats <- function(x){
+  
   observed_data <- x$input%>%
-    filter(TIME!=0)%>%
-    arrange(ID, TIME)
+    filter(!!sym(x$idv)!=0)%>%
+    arrange(ID, !!sym(x$idv))
   
   simulated_data <- x$dx%>%
-    arrange(rep, ID, TIME)
+    arrange(rep, ID, !!sym(x$idv))
   
   observed_data$PRED <-
-    simulated_data%>%group_by(ID, TIME)%>%summarise(PRED = mean(Y))%>%ungroup()%>%select(PRED)
+    simulated_data%>%group_by(ID, !!sym(x$idv))%>%summarise(PRED = mean(!!sym(x$dv)))%>%ungroup()%>%select(PRED)
   
-  nbins <- ifelse(is.null(x$bin$n), 3, x$bin$n) #What should be a default values for nbins? 
+  nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) #What should be a default values for nbins? 
   style <- ifelse(is.null(x$bin$style), 'kmeans', x$bin$style)
   pi_level <- x$pi$probs 
   ci_level <- x$ci$probs 
@@ -350,8 +351,8 @@ calculate_vpc_stats <- function(x){
     facets <- as.formula(paste0("~", paste0(facets, collapse = " + ")))
   }
   #Calculate vpc. Parameters are hardcoded for now.
-  vpc <- observed(observed_data, x = TIME, y = Y) %>%
-    simulated(simulated_data, ysim = Y)%>%
+  vpc <- observed(observed_data, x = !!sym(x$idv), y = !!sym(x$dv)) %>%
+    simulated(simulated_data, ysim = !!sym(x$dv))%>%
     {if(!is.null(facets)) stratify(., formula = facets) else .}%>%
     binning(bin = style, nbins =nbins, xbin = 'xmedian')%>%
     vpcstats(qpred = c(pi_level[1], 0.5, pi_level[2]), vpc.type = "continuous",
