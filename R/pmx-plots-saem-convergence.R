@@ -1,3 +1,4 @@
+
 #' Read MONOLIX SAEM convergence file
 #'
 #' @param path string specifying data path folder
@@ -42,7 +43,10 @@ pmx_plot_saem_convergence <- function(ctr, ...) {
 # set_plot(), and later becomes the classed "x" object passed to
 # plot_pmx.pmx_saem()
 
-pmx_saem <- function(...) {
+pmx_saem <- function(labels,
+                     dname = NULL,
+                     is.smooth = FALSE,
+                     ...) {
   
   # TODO: at present the SAEM convergence plot is treated as its own class, so
   # this is a minimal dummy structure, used only to trigger method dispatch:
@@ -51,7 +55,8 @@ pmx_saem <- function(...) {
     list(
       ptype = "SAEM", # plot type
       strat = FALSE,
-      dname = "saem"  # data set
+      dname = dname,
+      gp = pmx_gpar(labels, is.smooth, ...)
     ),
     class = c("pmx_saem", "pmx_gpar")  # class
   )
@@ -70,6 +75,7 @@ pmx_saem <- function(...) {
 plot_pmx.pmx_saem <- function(x, dx, ...) {
 
   saem_data <- dx
+  gpar <- x$gp
   
   # set column order dynamically
   cols <- names(saem_data)
@@ -78,7 +84,7 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
     ordered_columns <- c(ordered_columns, "convergenceIndicator")
   }
   
-  # pivot to long format for easier visualization
+  # pivot to long format
   data_long <- saem_data %>%
     tidyr::pivot_longer(
       cols = -c(iteration, phase), 
@@ -95,8 +101,8 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
     dplyr::slice(1) %>%
     dplyr::pull(iteration)
   
-  # line plot with vertical line denoting phase 2 start, faceted by parameter
-  plot <- ggplot(
+  # base plot
+  p <- ggplot(
     data = data_long, 
     mapping = aes(x = iteration, y = Value, group = Parameter)
   ) +
@@ -111,20 +117,10 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
       color = "red", 
       linetype = "solid"
     ) + 
-    facet_wrap(~Parameter, scales = "free_y") +
-    labs(
-      title = "SAEM Convergence Plot by Parameter", 
-      x = "Iteration", 
-      y = ""
-    ) +
-    theme_bw() +
-    theme(
-      strip.text = element_text(size = 10),
-      plot.title = element_text(size = 12),
-      axis.text = element_text(size = 10),
-      legend.position = "none"
-    ) 
+    facet_wrap(~Parameter, scales = "free_y") 
   
-  return(plot)
+  # apply styling
+  p <- plot_pmx(gpar, p) 
   
+  return(p)
 }

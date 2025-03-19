@@ -517,6 +517,8 @@ SAEM_CONVERGENCE:
   ptype: SAEM
   dname: saem
   is.title: TRUE
+  is.smooth: no
+  smooth_with_bloq: no
   labels:
     title: 'SAEM Convergence Plot by Parameter'
     subtitle: ''
