@@ -982,7 +982,9 @@ pmx_initialize <- function(self, private, data_path, input, dv,
   # TODO: integrate with rest of the reader, this is ad hoc and is invisible 
   # to the print method for the controller
   if (grepl("^mlx", self$config$sys)) {
-    self$data$saem <- read_mlx_saem_conv(path = private$.data_path) 
+    if (file.exists(file.path(private$.data_path, "ChartsData", "Saem", "CvParam.txt"))) {
+      self$data$saem <- read_mlx_saem_conv(path = private$.data_path) 
+    }
   }
 
   if (!is.null(self$data[["eta"]])) {

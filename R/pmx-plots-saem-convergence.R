@@ -8,12 +8,6 @@
 
 read_mlx_saem_conv <- function(path, x, ...) {
   saem_file_path <- file.path(path, "ChartsData", "Saem", "CvParam.txt")
-  if (!file.exists(saem_file_path)) {
-    stop(
-      sprintf("The SAEM convergence file can't be found : %s", saem_file_path), 
-      call. = FALSE
-    )
-  }
   dt <- read.table(saem_file_path, header = TRUE, sep = ",")
   dt <- as.data.table(dt) # TODO: this is silly, just read with data table
   return(dt)
