@@ -38,3 +38,9 @@ finegrid :
       TIME: time
       PRED: poppred
       IPRED: mlx_ipred
+
+saem :
+    label : convergence of SAEM parameter estimates
+    file  : /ChartsData/Saem/CvParam.txt
+    reader  : read_mlx_saem_conv
+

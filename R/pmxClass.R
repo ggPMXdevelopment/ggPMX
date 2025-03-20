@@ -978,15 +978,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     id = self$id
   )
 
-  # add Monolix SAEM convergence data for #387. 
-  # TODO: integrate with rest of the reader, this is ad hoc and is invisible 
-  # to the print method for the controller
-  if (grepl("^mlx", self$config$sys)) {
-    if (file.exists(file.path(private$.data_path, "ChartsData", "Saem", "CvParam.txt"))) {
-      self$data$saem <- read_mlx_saem_conv(path = private$.data_path) 
-    }
-  }
-
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
     if (length(re) > 0) {

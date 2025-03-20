@@ -7,8 +7,7 @@
 #' @return data.table object
 
 read_mlx_saem_conv <- function(path, x, ...) {
-  saem_file_path <- file.path(path, "ChartsData", "Saem", "CvParam.txt")
-  dt <- read.table(saem_file_path, header = TRUE, sep = ",")
+  dt <- read.table(path, header = TRUE, sep = ",")
   dt <- as.data.table(dt) # TODO: this is silly, just read with data table
   return(dt)
 }

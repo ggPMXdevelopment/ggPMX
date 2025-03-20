@@ -304,7 +304,7 @@ if (helper_skip()) {
       "ETA_BOX", "ETA_MATRIX", "ETA_CATS", "ETA_CONTS", "ABS_IWRES_TIME",
       "ETA_QQ", "PMX_VPC", "SAEM_CONVERGENCE"
     )
-    dataNames <- c("predictions", "estimates", "eta", "finegrid")
+    dataNames <- c("predictions", "estimates", "eta", "finegrid", "saem")
     expect_setequal(plotNames, names(pr$plots))
     expect_setequal(dataNames, names(pr$data))
   })
