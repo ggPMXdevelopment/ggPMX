@@ -36,6 +36,7 @@ Other plot_pmx:
 \code{\link{plot_pmx.pmx_dens}()},
 \code{\link{plot_pmx.pmx_gpar}()},
 \code{\link{plot_pmx.pmx_qq}()},
+\code{\link{plot_pmx.pmx_saem}()},
 \code{\link{plot_pmx.residual}()}
 }
 \concept{plot_pmx}

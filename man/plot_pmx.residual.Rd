@@ -27,6 +27,7 @@ Other plot_pmx:
 \code{\link{eta_cov}()},
 \code{\link{eta_pairs}()},
 \code{\link{individual}()},
+\code{\link{plot_pmx}()},
 \code{\link{plot_pmx.distrib}()},
 \code{\link{plot_pmx.eta_cov}()},
 \code{\link{plot_pmx.eta_pairs}()},
@@ -34,6 +35,6 @@ Other plot_pmx:
 \code{\link{plot_pmx.pmx_dens}()},
 \code{\link{plot_pmx.pmx_gpar}()},
 \code{\link{plot_pmx.pmx_qq}()},
-\code{\link{plot_pmx}()}
+\code{\link{plot_pmx.pmx_saem}()}
 }
 \concept{plot_pmx}

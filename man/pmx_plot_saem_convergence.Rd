@@ -4,7 +4,7 @@
 \alias{pmx_plot_saem_convergence}
 \title{SAEM Convergence Plot}
 \usage{
-pmx_plot_saem_convergence(ctr, pname, defaults_, ...)
+pmx_plot_saem_convergence(ctr, ...)
 }
 \arguments{
 \item{ctr}{\code{pmxClass} controller.}
@@ -15,6 +15,8 @@ pmx_plot_saem_convergence(ctr, pname, defaults_, ...)
 A \code{ggplot} object showing SAEM convergence plot.
 }
 \description{
-This plot displays the sequence of estimates for population parameters computed after each iteration of the SAEM algorithm. 
-The purpose is to check the convergence of the algorithm. In addition, a convergence indicator gives the estimation for -2 x log-likelihood along the iterations.
+This plot displays the sequence of estimates for population parameters
+computed after each iteration of the SAEM algorithm. The purpose is to check
+the convergence of the algorithm. In addition, a convergence indicator gives
+the estimation for -2 x log-likelihood along the iterations.
 }
