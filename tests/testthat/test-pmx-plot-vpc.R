@@ -5,6 +5,11 @@ if (helper_skip()) {
   library(purrr)
   ctr <- theophylline()
 
+  # ggplot object names
+  ggplot_names <- names(
+    ggplot(data.frame(x = 1:3, y = 1:3), aes(x, y)) + geom_point()
+  )
+  
   context("Test pmx_plot_vpc function")
 
   #------------------- pmx_plot_vpc - start -------------------------------------
@@ -43,11 +48,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_vpc: params ctr result: identical names", {
     p <- pmx_plot_vpc(ctr)
-    vpcNames <- c(
-      "data", "layers", "scales", "mapping", "theme", "coordinates",
-      "facet", "plot_env", "labels"
-    )
-    expect_identical(names(p), vpcNames)
+    expect_identical(names(p), ggplot_names)
   })
 
 

@@ -3,6 +3,11 @@ if (helper_skip()) {
   context("Test pmxClass")
   pmxClassHelpers <- test_pmxClass_helpers()
 
+  # ggplot object names
+  ggplot_names <- names(
+    ggplot(data.frame(x = 1:3, y = 1:3), aes(x, y)) + geom_point()
+  )
+  
   #test_that("can create pmx class", {
   #  ctr <- pmxClassHelpers$ctr
   #  expect_is(ctr, "pmxClass")
@@ -665,11 +670,7 @@ if (helper_skip()) {
   test_that("get_plot: params: ctr, nplot, which_pages  result: identical names", {
     ctr <- pmxClassHelpers$ctr
     get_p <- get_plot(ctr, nplot = "individual", which_pages = 1L)
-    gplNames <- c(
-      "data", "layers", "scales", "mapping", "theme", "coordinates",
-      "facet", "plot_env", "labels"
-    )
-    expect_identical(gplNames, names(get_p))
+    expect_identical(names(get_p), ggplot_names)
   })
 
   #------------------- get_plot - end --------------------------------------------
