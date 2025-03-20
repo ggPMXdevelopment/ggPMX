@@ -1,4 +1,7 @@
 
+# prevent R CMD check warning for non-standard evaluations
+utils::globalVariables(c("iteration", "phase", "Parameter", "Value"))
+
 #' Read MONOLIX SAEM convergence file
 #'
 #' @param path string specifying data path folder
@@ -6,7 +9,7 @@
 #'
 #' @return data.table object
 
-read_mlx_saem_conv <- function(path, x, ...) {
+read_mlx_saem_conv <- function(path, ...) {
   dt <- read.table(path, header = TRUE, sep = ",")
   dt <- as.data.table(dt) # TODO: this is silly, just read with data table
   return(dt)
