@@ -3,7 +3,6 @@ if (helper_skip()) {
   tmp_dir <- tempfile("tmp")
   dir.create(tmp_dir)
 
-
   test_that("merge vectors error works", {
     expect_error(
       mergeVectors.(1:4, 5:8),
@@ -13,13 +12,13 @@ if (helper_skip()) {
 
 
   test_that("pk_pd is working", {
-    ctr <- pk_pd()
+    tmp <- capture.output(ctr <- pk_pd()) # assign ctr silently
     expect_s3_class(ctr, "pmxClass")
   })
 
 
   test_that("pk_pd params: code; result: identical structure", {
-    ctr <- pk_pd(code = "4")
+    tmp <- capture.output(ctr <- pk_pd(code = "4")) # assign ctr silently
     pk_pd_path <- file.path(
       system.file(package = "ggPMX"), "testdata",
       "pk_pd"
@@ -126,7 +125,12 @@ if (helper_skip()) {
       a,
       "list"
     ))
-    expect_equal(normalizePath(a$directory), normalizePath(file.path(wd, "result")))
+    
+    # for test purposes doesn't matter if files don't exist
+    path_1 <- suppressWarnings(normalizePath(a$directory))
+    path_2 <- suppressWarnings(normalizePath(file.path(wd, "result")))
+    
+    expect_equal(path_1, path_2)
   })
 
 
