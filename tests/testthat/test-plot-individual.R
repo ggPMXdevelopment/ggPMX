@@ -15,7 +15,7 @@ if (helper_skip()) {
     "1_popPK_model",
     "project.mlxtran"
   )
-  ctr <- pmx_mlxtran(mlxpath, config = "standing")
+  ctr <- suppressWarnings(pmx_mlxtran(mlxpath, config = "standing"))
 
   #------------------- pmx_plot_individual start -------------------------------
   test_that("pmx_plot_individual: params: no; result: error ctr is missing", {

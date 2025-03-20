@@ -239,7 +239,7 @@ if (helper_skip()) {
         "1_popPK_model",
         "project.mlxtran"
       )
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+      ctr_mlx <- suppressWarnings(pmx_mlxtran(mlxpath, config = "standing"))
       p <- pmx_plot_iwres_ipred(ctr_mlx)
       expect_identical(
         p$scales$scales[[1]]$limits,

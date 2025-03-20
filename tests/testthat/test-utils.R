@@ -85,10 +85,17 @@ if (helper_skip()) {
     wd,
     "project.mlxtran"
   )
-
+  
+  test_that("parse_mlxtran: params: no warning", {
+    skip("skipping ChartsData export warning test")
+    expect_no_warning(
+      parse_mlxtran(file_name), 
+      message = "ggPMX needs ChartsData exported"
+    )
+  })
 
   test_that("parse_mlxtran: params: folder name", {
-    a <- parse_mlxtran(file_name)
+    a <- suppressWarnings(parse_mlxtran(file_name))
     expect_true(inherits(
       a,
       "list"
@@ -111,7 +118,7 @@ if (helper_skip()) {
     lines[grepl("exportpath = ", lines) == TRUE] <- paste0("exportpath = '", wd, "/result'")
 
     writeLines(lines, mlxpath)
-    a <- parse_mlxtran(mlxpath)
+    a <- suppressWarnings(parse_mlxtran(mlxpath))
     file.remove(mlxpath)
     unlink(file.path(wd, "result"), recursive = TRUE)
 
@@ -136,7 +143,7 @@ if (helper_skip()) {
     lines[grepl("exportpath = ", lines) == TRUE] <- paste0("exportpath = '", wd, "/result/res'")
 
     writeLines(lines, mlxpath)
-    a <- parse_mlxtran(mlxpath)
+    a <- suppressWarnings(parse_mlxtran(mlxpath))
     file.remove(mlxpath)
     unlink(file.path(wd, "result"), recursive = TRUE)
 
@@ -199,7 +206,7 @@ if (helper_skip()) {
 
   test_that("parse_mlxtran params: file_name result: identical names", {
     mlxtran_path <- file.path(system.file(package = "ggPMX"), "testdata", "1_popPK_model", "project.mlxtran")
-    par <- parse_mlxtran(file_name = mlxtran_path)
+    par <- suppressWarnings(parse_mlxtran(file_name = mlxtran_path))
     parseNames <- c("directory", "input", "dv", "id", "time", "cats", "conts", "occ", "dvid", "endpoint")
     expect_identical(names(par), parseNames)
   })
@@ -207,14 +214,14 @@ if (helper_skip()) {
 
   test_that("parse_mlxtran params: file_name result: identical inherits", {
     mlxtran_path <- file.path(system.file(package = "ggPMX"), "testdata", "1_popPK_model", "project.mlxtran")
-    par <- parse_mlxtran(file_name = mlxtran_path)
+    par <- suppressWarnings(parse_mlxtran(file_name = mlxtran_path))
     expect_true(inherits(par, "list"))
   })
 
 
   test_that("parse_mlxtran params: file_name result: identical structure", {
     mlxtran_path <- file.path(system.file(package = "ggPMX"), "testdata", "1_popPK_model", "project.mlxtran")
-    par <- parse_mlxtran(file_name = mlxtran_path)
+    par <- suppressWarnings(parse_mlxtran(file_name = mlxtran_path))
     expect_identical(par$cats, c("SEX", "RACE", "DISE", "ILOW"))
     expect_identical(par$endpoint$code, "1")
     expect_identical(par$time, "TIME")
