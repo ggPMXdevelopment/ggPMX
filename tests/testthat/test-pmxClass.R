@@ -666,7 +666,7 @@ if (helper_skip()) {
     ctr <- pmxClassHelpers$ctr
     get_p <- get_plot(ctr, nplot = "individual", which_pages = 1L)
     expect_identical(names(get_p), names(ggplot()))
- })
+  })
 
   #------------------- get_plot - end --------------------------------------------
 

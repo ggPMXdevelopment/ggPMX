@@ -3,6 +3,11 @@ if (helper_skip()) {
   library(ggPMX)
   library(ggplot2)
 
+  # ggplot object names
+  ggplot_names <- names(
+    ggplot(data.frame(x = 1:3, y = 1:3), aes(x, y)) + geom_point()
+  )
+  
   context("Test plot_pmx.individual function")
   mlxpath <- file.path(
     system.file(package = "ggPMX"),
@@ -21,9 +26,8 @@ if (helper_skip()) {
     indiv_plot <- pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
     ))
-    expect_identical(names(indiv_plot), names(ggplot()))
+    expect_identical(names(indiv_plot), ggplot_names)
   })
-
 
   test_that("pmx_plot_individual: params: no; result: ggplot", {
     expect_true(inherits(pmx_plot_individual(ctr), "ggplot"))
@@ -168,7 +172,7 @@ if (helper_skip()) {
     indiv_plot <- pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
     ))
-    expect_identical(names(indiv_plot), names(ggplot()))
+    expect_identical(names(indiv_plot), ggplot_names)
   })
 
   test_that("pmx_plot_individual: params: ctr is theophylline; result: ggplot", {
@@ -337,7 +341,7 @@ if (helper_skip()) {
   test_that("add_footnote: params: pp, pname, save_dir; result: identical names", {
     pp <- ctr %>% get_plot("individual")
     add_f <- add_footnote(pp[[1]], pname = "indiv1", save_dir = ctr$save_dir)
-    expect_equal(names(add_f), names(ggplot()))
+    expect_equal(names(add_f), ggplot_names)
   })
 
   test_that("add_footnote: params: pp, pname, save_dir; result: identical structure", {
