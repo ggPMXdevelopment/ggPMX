@@ -12,7 +12,7 @@ if (helper_skip()) {
   test_that("pmx_config params: inputs result: error", {
     input_dir <-
       file.path(system.file(package = "ggPMX"), "templates", "mlx")
-    expect_error(pmx_config(inputs = input_dir))
+    expect_error(suppressWarnings(pmx_config(inputs = input_dir)))
   })
 
   test_that("pmx_config params: plots, inputs result: identical inherits", {
