@@ -97,7 +97,8 @@ if (helper_skip()) {
 
   test_that("extend_range: params: x; result: identical range", {
     dx <- ctr %>% get_data("omega")
-    expect_identical(extend_range(x = dx), c(Inf, -Inf))
+    r <- suppressWarnings(extend_range(x = dx))  
+    expect_identical(r, c(Inf, -Inf))
   })
 
   test_that("extend_range: params: x; result: error 'r' must be a 'range', hence of length 2", {
