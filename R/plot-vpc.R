@@ -275,9 +275,7 @@ vpc.data <-
 
       #allow for input e.g. pmx_plot_vpc(strat.facet = ~SEX)
       if(!is.character(strat)){
-        strat <- as.character(strat)
-        strat <- sub("~","",strat)
-        strat <- strat[strat != ""]
+        strat <- all.vars(strat)
       }
 
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
@@ -291,12 +289,16 @@ vpc.data <-
       res <- list(ci_dt = ci,pi_dt = pi)
       nn <- sum(grepl("CL", names(ci)))
       if (nn==3){
-        out <- merge(ci, pi, by = c(idv, "percentile"))
-        nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
-        out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
-        out[, zmax := pmax(get(nn[[2]]), value)]
-        out[, zmin := pmin(get(nn[[1]]), value)]
-        res$out <- out
+        #ALEX: this part of the code was causing errors in VPC when stratyfying by multiple variables.
+        # `out` is not used anywhere in the code as far as I can see, so I commented it out
+        #I keep it like this since we probably upgrade the vpc functionality anyway later
+        #out <- merge(ci, pi, by = c(idv, "percentile"))
+        nn <- grep("CL", names(ci), value = TRUE)[c(1, 3)]
+        #out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
+        #out[, zmax := pmax(get(nn[[2]]), value)]
+        #out[, zmin := pmin(get(nn[[1]]), value)]
+        #res$out <- out
+        res$out <- "DUMMY"
       }
     } else {
       pi <- quantile_dt(dsim, probs = probs.pi, grp = c(idv, strat), ind = dv)
@@ -339,15 +341,18 @@ find_interval <- function(x, vec, labels = NULL, ...) {
     if (!is.null(x$bin)) {
       if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
         x$bin$within_strat <- NULL
-        bins <- x$input[, list(brks = bin_idv(get(idv), x)), c(x$strat.facet)] #bins is a dt, with brks and strat.facet value bin_idv at line 300
+        bins <- x$input[, list(brks = bin_idv(get(idv), x)), by = c(x$strat.facet)]
+        
         x$input[, bin := {
-          grp <- get(x$strat.facet)
-          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
-        }, c(x$strat.facet)]
+          grp <- mget(x$strat.facet)
+          find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
+        }, by = c(x$strat.facet)]
+        
         x$dx[, bin := {
-          grp <- get(x$strat.facet)
-          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
-        }, c(x$strat.facet)]
+          grp <- mget(x$strat.facet)
+          find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
+        }, by = c(x$strat.facet)]
+        
       } else {
         rugs <- x$input[, bin_idv(get(idv), x)]
         x$input[, bin := find_interval(get(idv), rugs)]

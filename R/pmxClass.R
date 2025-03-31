@@ -241,7 +241,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
 
 formula_to_text <- function(form) {
   if (is.formula(form)) {
-    paste(as.character(as.list(form)[-1]), collapse = " and ")
+    paste(all.vars(form), collapse = " and ")
   } else {
     form
   }
