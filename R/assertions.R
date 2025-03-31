@@ -32,6 +32,10 @@ is_string_or_formula_or_null <- function(x) {
   is_string(x) || is.formula(x) || is.null(x)
 }
 
+is_character_or_formula_or_null <- function(x) {
+  is.character(x) || is.formula(x) || is.null(x)
+}
+
 is_null_or_named_vector <- function(v) {
   is.null(v) || is.vector(v) & !is.null(names(v)) & all(!is.na(names(v)))
 }
