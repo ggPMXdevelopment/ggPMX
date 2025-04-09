@@ -52,7 +52,7 @@ pmx_saem <- function(labels,
       ptype = "SAEM", # plot type
       strat = FALSE,
       dname = dname,
-      gp = pmx_gpar(labels, is.smooth, ...)
+      gp = pmx_gpar(labels = labels, is.smooth = is.smooth, ...)
     ),
     class = c("pmx_saem", "pmx_gpar")  # class
   )
