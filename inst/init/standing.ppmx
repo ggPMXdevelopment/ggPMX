@@ -533,7 +533,7 @@ SAEM_CONVERGENCE:
     title: 'SAEM Convergence Plot by Parameter'
     subtitle: ''
     x: 'Iteration'
-    'y': ''
+    'y': 'Parameter Value'
   facets:
     ncol: 3
     scales: free_y
