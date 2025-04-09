@@ -534,3 +534,6 @@ SAEM_CONVERGENCE:
     subtitle: ''
     x: 'Iteration'
     'y': ''
+  facets:
+    ncol: 3
+    scales: free_y

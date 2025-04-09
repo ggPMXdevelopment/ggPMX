@@ -40,6 +40,7 @@ pmx_plot_saem_convergence <- function(ctr, ...) {
 # plot_pmx.pmx_saem()
 
 pmx_saem <- function(labels,
+                     facets = NULL,
                      dname = NULL,
                      is.smooth = FALSE,
                      ...) {
@@ -52,6 +53,7 @@ pmx_saem <- function(labels,
       ptype = "SAEM", # plot type
       strat = FALSE,
       dname = dname,
+      facets = facets,
       gp = pmx_gpar(labels = labels, is.smooth = is.smooth, ...)
     ),
     class = c("pmx_saem", "pmx_gpar")  # class
@@ -72,7 +74,8 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
 
   saem_data <- dx
   gpar <- x$gp
-  
+  facets <- x$facets
+    
   # set column order dynamically
   cols <- names(saem_data)
   ordered_columns <- setdiff(cols, c("iteration", "phase", "convergenceIndicator"))
@@ -113,7 +116,7 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
       color = "red", 
       linetype = "solid"
     ) + 
-    facet_wrap(~Parameter, scales = "free_y") 
+    facet_wrap(~Parameter, scales = facets$scales, ncol = facets$ncol) 
   
   # apply styling
   p <- plot_pmx(gpar, p) 
