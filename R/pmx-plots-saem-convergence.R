@@ -10,9 +10,7 @@ utils::globalVariables(c("iteration", "phase", "Parameter", "Value"))
 #' @return data.table object
 
 read_mlx_saem_conv <- function(path, ...) {
-  dt <- read.table(path, header = TRUE, sep = ",")
-  dt <- as.data.table(dt) # TODO: this is silly, just read with data table
-  return(dt)
+  pmx_fread(path) 
 }
 
 #' SAEM Convergence Plot
