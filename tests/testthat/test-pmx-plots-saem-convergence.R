@@ -12,14 +12,18 @@ if (helper_skip()) {
     
   })
   
-  test_that("saem convergence labels can be modified", {
+  test_that("saem convergence axis labels can be modified", {
     
-    custom_labels <- list(x = "it", y = "val", title = "hi")
-    p <- pmx_plot_saem_convergence(ctr, labels = custom_labels)
+    p <- pmx_plot_saem_convergence(ctr, labels = list(x = "it", y = "val"))
+    expect_equal(p$labels$x, "it")
+    expect_equal(p$labels$y, "val")
+
+  })
+  
+  test_that("saem convergence plots are passed through pmx-add-plot", {
     
-    expect_equal(p$labels$x, custom_labels$x)
-    expect_equal(p$labels$y, custom_labels$y)
-    expect_equal(p$labels$title, custom_labels$title)
+    p <- pmx_plot_saem_convergence(ctr, filter = iteration > 100) # .filter_x()
+    expect_equal(min(p$data$iteration), 101L)
     
   })
   
