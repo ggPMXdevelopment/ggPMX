@@ -58,5 +58,4 @@ if (helper_skip()) {
     
   })
   
-  
 }
