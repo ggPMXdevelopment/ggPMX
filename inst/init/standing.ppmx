@@ -529,8 +529,14 @@ SAEM_CONVERGENCE:
   is.title: TRUE
   is.smooth: no
   is.reference_line: yes
+  parameter_line:
+    colour: blue
+    linetype: solid
+  convergence_line:
+    colour: violet
+    linetype: solid
   reference_line:
-    colour: black
+    colour: red
     linetype: solid
   smooth_with_bloq: no
   labels:

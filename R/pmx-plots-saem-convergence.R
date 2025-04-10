@@ -36,6 +36,8 @@ pmx_saem <- function(labels,
                      is.smooth = FALSE,
                      is.reference_line = TRUE,
                      reference_line = NULL,
+                     parameter_line = NULL,
+                     convergence_line = NULL,
                      ...) {
   structure(
     list(
@@ -45,6 +47,8 @@ pmx_saem <- function(labels,
       facets = facets,
       is.reference_line = is.reference_line,
       reference_line = reference_line,
+      parameter_line = parameter_line,
+      convergence_line = convergence_line,
       gp = pmx_gpar(labels = labels, is.smooth = is.smooth, ...)
     ),
     class = c("pmx_saem", "pmx_gpar")
@@ -72,27 +76,31 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
   
   # pivot to long format
   data_long <- dx %>%
-    tidyr::pivot_longer(
-      cols = -c(iteration, phase), 
-      names_to = "Parameter", 
-      values_to = "Value"
-    ) %>%
-    dplyr::mutate(
-      Parameter = factor(Parameter, levels = ordered_columns)
-    ) 
+    tidyr::pivot_longer(cols = -c(iteration, phase), names_to = "parameter", values_to = "value") %>%
+    dplyr::mutate(parameter = factor(parameter, levels = ordered_columns)) 
   
   # base plot
   p <- ggplot(
     data = data_long, 
-    mapping = aes(x = iteration, y = Value, group = Parameter)
+    mapping = aes(x = iteration, y = value, group = parameter)
   ) +
     geom_line(
       mapping = aes(
-        color = ifelse(Parameter == "convergenceIndicator", "violet", "blue")
+        color = ifelse(
+          test = parameter == "convergenceIndicator", 
+          yes = x$convergence_line$colour, 
+          no = x$parameter_line$colour
+        ),
+        linetype = ifelse(
+          test = parameter == "convergenceIndicator", 
+          yes = x$convergence_line$linetype, 
+          no = x$parameter_line$linetype
+        )
       )
     ) +
-    scale_color_identity() + # Use raw colors directly
-    facet_wrap(~Parameter, scales = x$facets$scales, ncol = x$facets$ncol)
+    scale_color_identity() +
+    scale_linetype_identity() +
+    facet_wrap(~parameter, scales = x$facets$scales, ncol = x$facets$ncol)
   
   # add phase 2 reference line if requested
   if (x$is.reference_line) {
@@ -110,6 +118,7 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
     
   }
   
+  # add other styling
   p <- plot_pmx(x$gp, p) 
   
   return(p)
