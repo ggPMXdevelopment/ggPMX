@@ -2,8 +2,8 @@
 % Please edit documentation in R/ggPMX-package.R
 \docType{package}
 \name{ggPMX}
-\alias{ggPMX}
 \alias{ggPMX-package}
+\alias{ggPMX}
 \title{ggPMX: A ggplot2 toolbox for Nonlinear Mixed-Effect Model graphical}
 \description{
 This package aims to generate diagnostic plots in a standard way. The tool reads data
@@ -46,7 +46,7 @@ Authors:
   \item Amine Gassem \email{contact@ag-study.com}
   \item Bruno Bieth \email{biethb@hotmail.com}
   \item Irina Baltcheva \email{irina.baltcheva@gmail.com}
-  \item Thomas Dumortier \email{ thomas.dumortier@novartis.com}
+  \item Thomas Dumortier \email{thomas.dumortier@novartis.com}
   \item Christian Bartels \email{christian.bartels@novartis.com}
   \item Souvik Bhattacharya \email{souvik.bhattacharya@novartis.com}
   \item Inga Ludwig \email{inga.ludwig@novartis.com}
