@@ -28,35 +28,24 @@ read_mlx_saem_conv <- function(path, ...) {
 #' @export
 
 pmx_plot_saem_convergence <- function(ctr, ...) {
-  wrap_pmx_plot_generic(
-    ctr = ctr, 
-    pname = "saem_convergence", 
-    params = get_params_from_call()
-  )
+  params <- get_params_from_call()
+  wrap_pmx_plot_generic(ctr = ctr, pname = "saem_convergence", params = params)
 }
-
-# NOTE: this is called in set_plot(), and returns the "conf" object in
-# set_plot(), and later becomes the classed "x" object passed to
-# plot_pmx.pmx_saem()
 
 pmx_saem <- function(labels,
                      facets = NULL,
                      dname = NULL,
                      is.smooth = FALSE,
                      ...) {
-  
-  # TODO: at present the SAEM convergence plot is treated as its own class, so
-  # this is a minimal dummy structure, used only to trigger method dispatch:
-  # this could be cleaner
   structure(
     list(
-      ptype = "SAEM", # plot type
+      ptype = "SAEM",
       strat = FALSE,
       dname = dname,
       facets = facets,
       gp = pmx_gpar(labels = labels, is.smooth = is.smooth, ...)
     ),
-    class = c("pmx_saem", "pmx_gpar")  # class
+    class = c("pmx_saem", "pmx_gpar")
   )
 }
 
@@ -75,7 +64,7 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
   saem_data <- dx
   gpar <- x$gp
   facets <- x$facets
-    
+  
   # set column order dynamically
   cols <- names(saem_data)
   ordered_columns <- setdiff(cols, c("iteration", "phase", "convergenceIndicator"))
