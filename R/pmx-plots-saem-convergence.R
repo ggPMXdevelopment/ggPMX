@@ -1,6 +1,6 @@
 
 # prevent R CMD check warning for non-standard evaluations
-utils::globalVariables(c("iteration", "phase", "Parameter", "Value"))
+utils::globalVariables(c("iteration", "phase", "parameter", "value"))
 
 #' Read MONOLIX SAEM convergence file
 #'
