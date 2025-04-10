@@ -34,6 +34,8 @@ pmx_saem <- function(labels,
                      facets = NULL,
                      dname = NULL,
                      is.smooth = FALSE,
+                     is.reference_line = TRUE,
+                     reference_line = NULL,
                      ...) {
   structure(
     list(
@@ -41,6 +43,8 @@ pmx_saem <- function(labels,
       strat = FALSE,
       dname = dname,
       facets = facets,
+      is.reference_line = is.reference_line,
+      reference_line = reference_line,
       gp = pmx_gpar(labels = labels, is.smooth = is.smooth, ...)
     ),
     class = c("pmx_saem", "pmx_gpar")
@@ -59,19 +63,15 @@ pmx_saem <- function(labels,
 
 plot_pmx.pmx_saem <- function(x, dx, ...) {
 
-  saem_data <- dx
-  gpar <- x$gp
-  facets <- x$facets
-  
   # set column order dynamically
-  cols <- names(saem_data)
+  cols <- names(dx)
   ordered_columns <- setdiff(cols, c("iteration", "phase", "convergenceIndicator"))
   if ("convergenceIndicator" %in% cols) {
     ordered_columns <- c(ordered_columns, "convergenceIndicator")
   }
   
   # pivot to long format
-  data_long <- saem_data %>%
+  data_long <- dx %>%
     tidyr::pivot_longer(
       cols = -c(iteration, phase), 
       names_to = "Parameter", 
@@ -80,12 +80,6 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
     dplyr::mutate(
       Parameter = factor(Parameter, levels = ordered_columns)
     ) 
-  
-  # identify the first iteration of phase 2
-  first_iteration_phase_2 <- data_long %>%
-    dplyr::filter(phase == 2) %>%
-    dplyr::slice(1) %>%
-    dplyr::pull(iteration)
   
   # base plot
   p <- ggplot(
@@ -98,15 +92,25 @@ plot_pmx.pmx_saem <- function(x, dx, ...) {
       )
     ) +
     scale_color_identity() + # Use raw colors directly
-    geom_vline( # phase 2 indicator
-      xintercept = first_iteration_phase_2, 
-      color = "red", 
-      linetype = "solid"
-    ) + 
-    facet_wrap(~Parameter, scales = facets$scales, ncol = facets$ncol) 
+    facet_wrap(~Parameter, scales = x$facets$scales, ncol = x$facets$ncol)
   
-  # apply styling
-  p <- plot_pmx(gpar, p) 
+  # add phase 2 reference line if requested
+  if (x$is.reference_line) {
+    
+    first_iteration_phase_2 <- data_long %>%
+      dplyr::filter(phase == 2) %>%
+      dplyr::slice(1) %>%
+      dplyr::pull(iteration)
+
+    p <- p + geom_vline(
+      xintercept = first_iteration_phase_2, 
+      color = x$reference_line$colour, 
+      linetype = x$reference_line$linetype
+    ) 
+    
+  }
+  
+  p <- plot_pmx(x$gp, p) 
   
   return(p)
 }

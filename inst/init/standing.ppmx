@@ -528,6 +528,10 @@ SAEM_CONVERGENCE:
   dname: saem
   is.title: TRUE
   is.smooth: no
+  is.reference_line: yes
+  reference_line:
+    colour: black
+    linetype: solid
   smooth_with_bloq: no
   labels:
     title: 'SAEM Convergence Plot by Parameter'
