@@ -1,15 +1,11 @@
-skip_if_not(file.exists(test_path("hiv_project.zip")))
-.path <- normalizePath(test_path("hiv_project.zip"))
-
+skip_if_not(file.exists(test_path("censoring1_project.zip")))
+.path <- normalizePath(test_path("censoring1_project.zip"))
 withr::with_tempdir({
   
   unzip(.path)
   
-  ctr <- suppressWarnings(pmx_mlxtran("hiv_project.mlxtran", endpoint  = c(1, 2)))
-  
-  
-  
-  
+  ctr <- suppressWarnings(pmx_mlxtran("censoring1_project.mlxtran"))
+
   test_that("BLQ column class is correct", {
     # Check if the sim_blq dataset exists
     expect_true("sim_blq_npde_iwres" %in% names(ctr$data), info = "sim_blq dataset is missing in ctr$data.")
@@ -40,7 +36,7 @@ withr::with_tempdir({
   
   test_that("Exact values of npde_simBlq match the residuals file", {
     # Load the reference data 
-    residuals_path <- normalizePath("hiv_project/ChartsData/ScatterPlotOfTheResiduals/y1_residuals.txt")  # Remplacez par le chemin exact après extraction
+    residuals_path <- normalizePath("censoring1_project/ChartsData/ScatterPlotOfTheResiduals/Y_residuals.txt") 
     residuals_file <- fread(residuals_path)
     
     expected_values <- residuals_file[["npde_simBlq"]]
