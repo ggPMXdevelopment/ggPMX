@@ -1026,21 +1026,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 
     # Needed same treatment for "sim_blq" as for "sim_blq_y"
     if(!is.null(self[["data"]][["sim_blq"]])){
-  #     suppressWarnings({
-  #       for(cn in c("iwRes", "pwRes", "npde")) {
-  #         col_name_mode <- paste0(cn, "_mode_simBlq")  # e.g., npde_mode_simBlq
-  #         col_name_simple <- paste0(cn, "_simBlq")     # e.g., npde_simBlq
-  #         
-  #         # If the "_mode_simBlq" column exists
-  #     if (col_name_mode %in% colnames(self[["data"]][["sim_blq"]])) {
-  #       self[["data"]][["sim_blq"]][[toupper(cn)]] <- self[["data"]][["sim_blq"]][[col_name_mode]]
-  #     } 
-  #     # Otherwise, use the simple "_simBlq" column
-  #     else if (col_name_simple %in% colnames(self[["data"]][["sim_blq"]])) {
-  #       self[["data"]][["sim_blq"]][[toupper(cn)]] <- self[["data"]][["sim_blq"]][[col_name_simple]]
-  #     }
-  #   }
-  # })
+
       suppressWarnings({
 
         # Get the column names of sim_blq data
