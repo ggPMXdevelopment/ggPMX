@@ -9,6 +9,12 @@ ctr %>% pmx_plot_eta_conts
 
 # update graphical parameter  ----------------------
 
+## plot selected covariates
+ctr %>% pmx_plot_eta_cats(
+  covariates = pmx_cov(values = list("SEX"))
+  )
+
+
 ## update labels
 ctr %>% pmx_plot_eta_cats(
   labels = list(title = "New eta cats title")
