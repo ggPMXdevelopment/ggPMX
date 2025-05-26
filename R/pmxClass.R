@@ -486,7 +486,7 @@ set_plot <- function(
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
   #assert_that(is_string_or_null(strat.color)) 
-  assert_that(is_character_or_formula_or_null(strat.facet)) 
+  assert_that(is_character_or_formula_or_null_or_na(strat.facet)) 
 
 
 
