@@ -241,7 +241,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
 
 formula_to_text <- function(form) {
   if (is.formula(form)) {
-    paste(as.character(as.list(form)[-1]), collapse = " and ")
+    paste(all.vars(form), collapse = " and ")
   } else {
     form
   }
@@ -485,8 +485,8 @@ set_plot <- function(
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
-  assert_that(is_string_or_null(strat.color))
-  assert_that(is_string_or_formula_or_null(strat.facet))
+  #assert_that(is_string_or_null(strat.color)) 
+  assert_that(is_character_or_formula_or_null_or_na(strat.facet)) 
 
 
 
