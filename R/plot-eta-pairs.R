@@ -281,7 +281,8 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
   attributes(p)$class <- c("pmx_eta_matrix", "gg", "ggmatrix")
   p +
     theme(
-      strip.background = element_rect(fill = "white"),
+      strip.background = element_blank(), #Otherwise it sometimes hides shrinkage values lables in the plot
+      strip.clip = "off", 
       strip.placement = "outside",
       strip.text = element_text(face = "bold", size = 12)
     )
