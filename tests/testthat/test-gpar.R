@@ -1,5 +1,11 @@
 if (helper_skip()) {
 
+  # check return value of print(x) without writing output to console
+  print_return_value <- function(x) {
+    tmp <- capture.output(y <- print(x))
+    y
+  }
+  
   context("Test graphical parameters object")
 
   #------------------- pmx_gpar start--------------------------------------------
@@ -13,7 +19,7 @@ if (helper_skip()) {
       gpars$smooth,
       list(
         se = FALSE, linetype = 1, linewidth = 1.5, method = "loess",
-        colour = "red"
+        colour = "red", formula = "y ~ x"
       )
     )
   })
@@ -116,13 +122,13 @@ if (helper_skip()) {
       "scale_x_log10", "scale_y_log10", "color.scales", "is.legend",
       "legend.position", "labels"
     )
-    expect_setequal(names(print.pmx_gpar(gpars)), prNames)
+    expect_setequal(names(print_return_value(gpars)), prNames)
   })
 
 
   test_that("print.pmx_gpar params: x result: identical inherits", {
     gpars <- ggPMX::pmx_gpar(labels = list(title = "hello"))
-    expect_true(inherits(print.pmx_gpar(gpars), c("pmx_gpar", "list")))
+    expect_true(inherits(print_return_value(gpars), c("pmx_gpar", "list")))
   })
 
   #------------------- print.pmx_gpar end-----------------------------------------

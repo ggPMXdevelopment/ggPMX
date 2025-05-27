@@ -32,7 +32,7 @@ before_add_check <- function(self, private, x, pname) {
   ## if(is.null(dx))return(NULL)
   if (is.null(dx) || nrow(dx) == 0) {
     private$.plots[[pname]] <- NULL
-    if (dname != "sim") {
+    if (!(dname %in% c("sim", "saem"))) {
       cat(sprintf(
         "No data %s provided for plot %s",
         sprintf("%s", dname), sprintf("%s", pname)

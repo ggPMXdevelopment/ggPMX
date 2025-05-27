@@ -97,7 +97,8 @@ if (helper_skip()) {
 
   test_that("extend_range: params: x; result: identical range", {
     dx <- ctr %>% get_data("omega")
-    expect_identical(extend_range(x = dx), c(Inf, -Inf))
+    r <- suppressWarnings(extend_range(x = dx))  
+    expect_identical(r, c(Inf, -Inf))
   })
 
   test_that("extend_range: params: x; result: error 'r' must be a 'range', hence of length 2", {
@@ -239,7 +240,7 @@ if (helper_skip()) {
         "1_popPK_model",
         "project.mlxtran"
       )
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+      ctr_mlx <- suppressWarnings(pmx_mlxtran(mlxpath, config = "standing"))
       p <- pmx_plot_iwres_ipred(ctr_mlx)
       expect_identical(
         p$scales$scales[[1]]$limits,
