@@ -204,11 +204,11 @@ ctr \%>\% pmx_plot_vpc(
 }
 \seealso{
 Other vpc: 
+\code{\link{pmx_vpc}()},
 \code{\link{pmx_vpc_bin}()},
 \code{\link{pmx_vpc_ci}()},
 \code{\link{pmx_vpc_obs}()},
 \code{\link{pmx_vpc_pi}()},
-\code{\link{pmx_vpc_rug}()},
-\code{\link{pmx_vpc}()}
+\code{\link{pmx_vpc_rug}()}
 }
 \concept{vpc}

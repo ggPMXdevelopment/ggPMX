@@ -16,6 +16,7 @@
 #' @param correl \code{list} correl geom text graphical parameter
 #' @param point \code{list} geom point graphical parameter
 #' @param facets \code{list} facetting graphical parameter
+#' @param covariates list of selected covariates and custom labels, e.g. \code{pmx_cov(values = list("SEX"), labels = list("Sex"))} \code{list} \code{pmxCOVObject} \code{\link{pmx_cov}}
 
 
 #'
@@ -52,7 +53,7 @@
 #' @return ggplot2 object
 #' @example inst/examples/eta_cov.R
 dummy <-
-  function(dname, show.correl, correl, point, facets, filter,
+  function(dname, show.correl, correl, point, facets, covariates, filter,
              strat.facet, strat.color, trans, pmxgpar, labels, axis.title,
              axis.text, ranges, is.smooth, smooth, is.band, band, is.draft,
              draft, is.identity_line, identity_line, scale_x_log10,

@@ -11,6 +11,7 @@
 #' facet_grid_paginate it returns the total number of pages. Otherwise it
 #' returns NULL
 #' @import ggplot2
+#' @importFrom ggforce facet_wrap_paginate
 #'
 n_pages <- function(plot) {
   page <- ggplot_build(plot)$layout$panel_layout$page
