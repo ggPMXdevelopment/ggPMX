@@ -7,7 +7,7 @@
 set_plot(
   ctr,
   ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS",
-    "SAEM"),
+    "PARAM_HISTORY"),
   pname,
   use.defaults = TRUE,
   filter = NULL,
