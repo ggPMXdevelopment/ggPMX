@@ -30,18 +30,18 @@ pmx_plot_saem_convergence <- function(ctr, ...) {
   wrap_pmx_plot_generic(ctr = ctr, pname = "saem_convergence", params = params)
 }
 
-pmx_saem <- function(labels,
-                     facets = NULL,
-                     dname = NULL,
-                     is.smooth = FALSE,
-                     is.reference_line = TRUE,
-                     reference_line = NULL,
-                     parameter_line = NULL,
-                     convergence_line = NULL,
-                     ...) {
+pmx_param_history <- function(labels,
+                              facets = NULL,
+                              dname = NULL,
+                              is.smooth = FALSE,
+                              is.reference_line = TRUE,
+                              reference_line = NULL,
+                              parameter_line = NULL,
+                              convergence_line = NULL,
+                              ...) {
   structure(
     list(
-      ptype = "SAEM",
+      ptype = "PARAM_HISTORY",
       strat = FALSE,
       dname = dname,
       facets = facets,
@@ -51,13 +51,13 @@ pmx_saem <- function(labels,
       convergence_line = convergence_line,
       gp = pmx_gpar(labels = labels, is.smooth = is.smooth, ...)
     ),
-    class = c("pmx_saem", "pmx_gpar")
+    class = c("pmx_param_history", "pmx_gpar")
   )
 }
 
-#' S3 method for plots of class pmx_saem
+#' S3 method for plots of class pmx_param_history
 #'  
-#' @param x pmx_saem object
+#' @param x pmx_param_history object
 #' @param dx data set
 #' @param ... not used
 #' @return ggplot2 plot
@@ -65,7 +65,7 @@ pmx_saem <- function(labels,
 #' @export
 #'
 
-plot_pmx.pmx_saem <- function(x, dx, ...) {
+plot_pmx.pmx_param_history <- function(x, dx, ...) {
 
   # set column order dynamically
   cols <- names(dx)

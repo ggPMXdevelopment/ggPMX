@@ -524,7 +524,7 @@ PMX_VPC:
 ## SAEM plots
     
 SAEM_CONVERGENCE:
-  ptype: SAEM
+  ptype: PARAM_HISTORY
   dname: saem
   is.title: TRUE
   is.smooth: no
