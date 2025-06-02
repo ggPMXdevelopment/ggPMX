@@ -6,7 +6,8 @@
 \usage{
 set_plot(
   ctr,
-  ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS"),
+  ptype = c("IND", "DIS", "SCATTER", "ETA_PAIRS", "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS",
+    "PARAM_HISTORY"),
   pname,
   use.defaults = TRUE,
   filter = NULL,
@@ -56,8 +57,8 @@ Other pmxclass:
 \code{\link{get_covariates}()},
 \code{\link{get_data}()},
 \code{\link{get_occ}()},
-\code{\link{get_plot_config}()},
 \code{\link{get_plot}()},
+\code{\link{get_plot_config}()},
 \code{\link{get_strats}()},
 \code{\link{plot_names}()},
 \code{\link{plots}()},

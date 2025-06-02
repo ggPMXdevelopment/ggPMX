@@ -99,7 +99,10 @@ print.pmx_gpar <- function(x, ...) {
   invisible(x)
 }
 
-
+rep_or_null <- function(x, length.out) {
+  if (is.null(x)) return(x) 
+  rep(x, length.out = length.out)
+}
 
 #' Method for subsetting "pmx_gpar" objects
 #'
@@ -114,7 +117,7 @@ print.pmx_gpar <- function(x, ...) {
     return(pmx_gpar())
   }
   maxn <- do.call("max", lapply(x, length))
-  newgp <- lapply(x, rep, length.out = maxn)
+  newgp <- lapply(x, rep_or_null, length.out = maxn)
   newgp <- lapply(X = newgp, FUN = "[", index, ...)
   class(newgp) <- "pmx_gpar"
   newgp

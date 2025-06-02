@@ -35,6 +35,7 @@ Other plot_pmx:
 \code{\link{plot_pmx.individual}()},
 \code{\link{plot_pmx.pmx_dens}()},
 \code{\link{plot_pmx.pmx_gpar}()},
+\code{\link{plot_pmx.pmx_param_history}()},
 \code{\link{plot_pmx.pmx_qq}()},
 \code{\link{plot_pmx.residual}()}
 }
