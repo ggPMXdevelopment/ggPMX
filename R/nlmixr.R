@@ -43,13 +43,12 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
   }
 
   if (!("NPDE" %in% names(fit))) {
-    fitN <- try(nlmixr2::addNpde(fit), silent=TRUE)
+    fitN <- try(nlmixr2est::addNpde(fit), silent=TRUE)
     if (!inherits(fitN, "try-error")) {
       fit <- fitN
     }
   }
-
-  finegrid <- try(invisible(nlmixr2::augPred(fit)), silent = TRUE)
+  finegrid <- try(invisible(nlme::augPred(fit)), silent = TRUE)
   if (inherits(finegrid, "try-error")) {
     message(paste0("Error creating finegrid: ", attr(finegrid, "condition")$message))
     finegrid <- NULL
@@ -65,7 +64,7 @@ pmx_nlmixr <- function(fit, dvid, conts, cats, strats, endpoint, settings, vpc =
 
   sim <- NULL
   if (vpc) {
-    sim_data <- try(nlmixr2::vpcSim(fit), silent = TRUE)
+    sim_data <- try(nlmixr2est::vpcSim(fit), silent = TRUE)
     sim_data <- setDT(sim_data)
     setnames(sim_data, "sim", "DV")
     if (inherits(sim_data, "try-error")) {
