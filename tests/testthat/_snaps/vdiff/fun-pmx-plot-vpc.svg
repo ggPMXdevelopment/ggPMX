@@ -711,11 +711,11 @@
 <text x='628.55' y='288.09' style='font-size: 11.00px; font-family: sans;' textLength='56.87px' lengthAdjust='spacingAndGlyphs'>Simulations</text>
 <text x='628.55' y='299.97' style='font-size: 11.00px; font-family: sans;' textLength='43.40px' lengthAdjust='spacingAndGlyphs'>(95% CI)</text>
 <rect x='628.55' y='306.59' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='629.26' y='307.30' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3388CC; fill-opacity: 0.30;' />
+<rect x='629.26' y='307.30' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #3388CC; fill-opacity: 0.30;' />
 <rect x='628.55' y='323.87' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='629.26' y='324.58' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF0000; fill-opacity: 0.30;' />
+<rect x='629.26' y='324.58' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #FF0000; fill-opacity: 0.30;' />
 <rect x='628.55' y='341.15' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='629.26' y='341.86' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3388CC; fill-opacity: 0.30;' />
+<rect x='629.26' y='341.86' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #3388CC; fill-opacity: 0.30;' />
 <text x='651.31' y='318.25' style='font-size: 8.80px; font-family: sans;' textLength='57.73px' lengthAdjust='spacingAndGlyphs'>95th percentile</text>
 <text x='651.31' y='335.53' style='font-size: 8.80px; font-family: sans;' textLength='28.87px' lengthAdjust='spacingAndGlyphs'>Median</text>
 <text x='651.31' y='352.81' style='font-size: 8.80px; font-family: sans;' textLength='52.84px' lengthAdjust='spacingAndGlyphs'>5th percentile</text>
