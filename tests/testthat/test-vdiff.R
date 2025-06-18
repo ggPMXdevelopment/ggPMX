@@ -2,6 +2,10 @@ if (helper_skip()) {
   
   context("vdiffr")
   test_that("vdiffr", {
+
+    skip_on_cran()
+    skip_on_ci() # temporary measure until ggplot2 4.0.0 is released
+
     set.seed(42)
     ctr <- theophylline()
     args <- commandArgs(trailingOnly = TRUE)
