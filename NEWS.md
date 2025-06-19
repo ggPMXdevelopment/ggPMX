@@ -1,6 +1,6 @@
 # ggPMX (development version)
 
-# ggPMX 1.2.12
+# ggPMX 1.3.0
 
 * Fixed faceting by multiple variables
 
@@ -10,7 +10,7 @@
 
 * Added convergence plot (SAEM from Monolix)
 
-* Fixed Shrinkage label hiding behid labels
+* Fixed Shrinkage label hiding behind labels
 
 
 # ggPMX 1.2.11
