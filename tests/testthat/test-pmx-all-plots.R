@@ -69,7 +69,7 @@ if (helper_skip()) {
       "abs_iwres_ipred", "iwres_ipred", "iwres_time", "iwres_dens",
       "iwres_qq", "npde_time", "npde_pred", "vpc", "npde_qq", "dv_pred",
       "dv_ipred", "individual", "eta_hist", "eta_box", "eta_cats", "eta_conts",
-      "eta_qq"
+      "eta_qq", "saem_convergence"
     )
 
     pmx_function_plots <- sprintf("pmx_plot_%s", pmx_plots)
@@ -250,7 +250,6 @@ if (helper_skip()) {
     p <- ctr %>% pmx_plot_cats("npde_time")
     expect_identical(names(p[[1]]), names(ggplot()))
   })
-
 
   test_that("pmx_register_plot: params: ctr, pname, cats  result: NULL", {
     p1 <- ctr %>% pmx_plot_cats("npde_time", cats = "")

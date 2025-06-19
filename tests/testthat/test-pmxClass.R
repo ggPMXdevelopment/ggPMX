@@ -921,7 +921,8 @@ if (helper_skip()) {
   })
 
   test_that("pmx_print  params: self, private; result: identical inherits", {
-    expect_true(inherits(pmx_print(self, private), "pmxConfig"))
+    tmp <- capture.output(print_value <- pmx_print(self, private)) # assign without printing
+    expect_true(inherits(print_value, "pmxConfig"))
   })
 
 
@@ -967,7 +968,7 @@ if (helper_skip()) {
   })
 
   test_that("pmx_print params: self, private; result: identical structure", {
-    pmx_pr <- pmx_print(self, private)
+    tmp <- capture.output(pmx_pr <- pmx_print(self, private)) # assign quietly
     expect_identical(pmx_pr$sys, "mlx")
     expect_identical(pmx_pr$plots$ABS_IWRES_IPRED$ptype, "SCATTER")
   })
@@ -1027,7 +1028,8 @@ if (helper_skip()) {
 
   test_that("print.pmxClass: params ctr is a pmxClass obj; result: identical inherits", {
     ctr <- theophylline()
-    expect_true(inherits(print.pmxClass(ctr), "pmxConfig"))
+    tmp <- capture.output(ctr_print <- print.pmxClass(ctr)) # assign quietly
+    expect_true(inherits(ctr_print, "pmxConfig"))
   })
   #------------------- print.pmxClass - end --------------------------------------
 

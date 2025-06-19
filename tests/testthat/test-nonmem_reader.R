@@ -179,10 +179,21 @@ if (helper_skip()) {
             )
 
             # check alternative import with and without runnumber
-            # Will cause many messages: No data eta provided for plot eta_qq etc.
-            ctr_man <- pmx_nm(directory = nonmem_dir, table_names = c("sdtab"), runno = "002")
-
-            ctr_man_norunno <- pmx_nm(directory = nonmem_dir, table_names = c("sdtab002"))
+            # would normally cause many messages: No data eta provided for plot eta_qq etc.
+            # suppressed for test via capture.output()
+            tmp <- capture.output(
+              ctr_man <- pmx_nm(
+                directory = nonmem_dir, 
+                table_names = c("sdtab"), 
+                runno = "002"
+              )
+            )
+            tmp <- capture.output(
+              ctr_man_norunno <- pmx_nm(
+                directory = nonmem_dir, 
+                table_names = c("sdtab002")
+              )              
+            )
 
             expect_identical(
               ctr_man_norunno$settings,

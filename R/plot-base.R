@@ -47,16 +47,16 @@ plot_pmx_gpar_real <- function(gpar, p, bloq_cens, ...) {
 
     ## limits
     if (!is.null(ranges[["y"]])) {
-      p <- p %+% scale_y_continuous(limits = ranges[["y"]])
+      p <- p + scale_y_continuous(limits = ranges[["y"]])
     }
 
     if (!is.null(ranges[["x"]]) && !discrete) {
-      p <- p %+% scale_x_continuous(limits = ranges[["x"]])
+      p <- p + scale_x_continuous(limits = ranges[["x"]])
     }
 
     if(is.null(ranges[["x"]])) {
       # Ensure that origin 0 is included on the X axis
-      p <- p %+% expand_limits(x=0)
+      p <- p + expand_limits(x=0)
     }
 
     ## theming
@@ -89,18 +89,18 @@ plot_pmx_gpar_real <- function(gpar, p, bloq_cens, ...) {
 
     if (scale_x_log10) {
       if (rlang::is_installed("xgxr")) {
-        p <- p %+% xgxr::xgx_scale_x_log10(limits = ranges[["x"]])
+        p <- p + xgxr::xgx_scale_x_log10(limits = ranges[["x"]])
       } else {
-        p <- p %+% scale_x_log10(limits = ranges[["x"]])
+        p <- p + scale_x_log10(limits = ranges[["x"]])
       }
       warning("Applying log to x variable will cause nonpositive values to be dropped.")
     }
 
     if (scale_y_log10) {
       if (rlang::is_installed("xgxr")) {
-        p <- p %+% xgxr::xgx_scale_y_log10(limits = ranges[["y"]])
+        p <- p + xgxr::xgx_scale_y_log10(limits = ranges[["y"]])
       } else {
-        p <- p %+% scale_y_log10(limits = ranges[["y"]])
+        p <- p + scale_y_log10(limits = ranges[["y"]])
       }
       warning("Applying log to y-variable will cause nonpositive values to be dropped.")
     }
