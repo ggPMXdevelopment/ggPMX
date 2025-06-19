@@ -11,7 +11,7 @@ Description: At Novartis, we aimed at standardizing the set of diagnostic plots 
     <https://monolix.lixoft.com/monolix-api/lixoftconnectors_installation/>.
     When 'lixoftConnectors' is available, 'R' can use 'Monolix' directly to create the required
     Chart Data instead of exporting it from the 'Monolix' gui.
-Version: 1.2.11.9000
+Version: 1.3.0
 Authors@R: c(
               person("Amine", "Gassem", email="contact@ag-study.com", role=c("aut")),
               person("Bruno", "Bieth", email="biethb@hotmail.com", role="aut"),
@@ -28,7 +28,7 @@ Authors@R: c(
               person("Kyle T", "Baron", email = "kyleb@metrumrg.com",role ="ctb", comment = c(ORCID = "0000-0001-7252-5656")),
               person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctb"),
               person("Aleksandr","Pogodaev", role = c("aut", "cre"), email = "alex.pogodaev@novartis.com", comment=c(ORCID="0000-0002-1371-207X")),
-              person("Danielle", "Navarro", role = c("aut"), email = "danielle.navarro@certara.com"),
+              person("Danielle", "Navarro", role = c("aut"), email = "djnavarro@protonmail.com"),
               person("Ibtissem", "Rebai", email="ibtissem.rebai@certara.com", role="ctb"),
               person("Mahmoud", "Ali", email="mahmoud.ali@certara.com", role="ctb"),
               person("Novartis Pharma AG", role = c("cph"))
@@ -72,5 +72,5 @@ Suggests:
     lifecycle
 VignetteBuilder: knitr
 NeedsCompilation: no
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Encoding: UTF-8
