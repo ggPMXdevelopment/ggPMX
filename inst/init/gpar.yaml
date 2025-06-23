@@ -12,6 +12,7 @@ smooth:
   linewidth: 1.5
   method: loess
   colour: red
+  formula: y ~ x
 is.band: no
 band:
   'yintercept':

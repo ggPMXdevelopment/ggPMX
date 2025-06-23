@@ -241,7 +241,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
 
 formula_to_text <- function(form) {
   if (is.formula(form)) {
-    paste(as.character(as.list(form)[-1]), collapse = " and ")
+    paste(all.vars(form), collapse = " and ")
   } else {
     form
   }
@@ -473,7 +473,8 @@ set_plot <- function(
                      ctr,
                      ptype = c(
                        "IND", "DIS", "SCATTER", "ETA_PAIRS",
-                       "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS"
+                       "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS",
+                       "PARAM_HISTORY"
                      ),
                      pname,
                      use.defaults = TRUE,
@@ -485,8 +486,8 @@ set_plot <- function(
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
-  assert_that(is_string_or_null(strat.color))
-  assert_that(is_string_or_formula_or_null(strat.facet))
+  #assert_that(is_string_or_null(strat.color)) 
+  assert_that(is_character_or_formula_or_null_or_na(strat.facet)) 
 
 
 
@@ -526,7 +527,8 @@ set_plot <- function(
       ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
       PMX_QQ = do.call(pmx_qq, params),
       PMX_DENS = do.call(pmx_dens, params),
-      VPC = do.call(pmx_vpc, params)
+      VPC = do.call(pmx_vpc, params),
+      PARAM_HISTORY = do.call(pmx_param_history, params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
@@ -975,7 +977,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     occ = self$occ,
     id = self$id
   )
-
 
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
