@@ -168,6 +168,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 #' @param names A character vector of the grob names (as listed in \code{table$layout})
 #'   that should be removed
 #' @param ... Other parameters passed through to \code{gtable_filter}.
+#' @returns table The table with removed grobs
 
 gtable_remove_grobs <- function(table, names, ...) {
   kept_names <- table$layout$name[!(table$layout$name %in% names)]

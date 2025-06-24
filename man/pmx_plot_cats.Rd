@@ -24,6 +24,9 @@ pmx_plot_cats(ctr, pname, cats, chunk = "", print = TRUE, ...)
 \item \code{\link{pmx_update}} function.
 }}
 }
+\value{
+ggplot2 object(s)
+}
 \description{
 Generic pmx stratified plot
 }

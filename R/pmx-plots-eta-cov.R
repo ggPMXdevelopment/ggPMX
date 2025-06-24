@@ -68,6 +68,7 @@ dummy <-
 
 #' Relationships between (ETA) and categorical covariates
 #' @family eta_cov_plot
+#' @return ggplot2 object
 #' @rdname eta_cov_plot
 #' @export
 
@@ -82,6 +83,7 @@ pmx_plot_eta_cats <-
 
 #' Relationships between (ETA) and continuous covariates
 #' @family eta_cov_plot
+#' @return ggplot2 object
 #' @rdname eta_cov_plot
 #' @export
 pmx_plot_eta_conts <-

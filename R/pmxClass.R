@@ -3,6 +3,7 @@
 #' @param pname parameter name
 #' @param defaults_ defaults of the parameters
 #' @param ... other arguments
+#' @returns Updated ggplot2 object
 #' @noRd
 update_container_plots <- function(ctr, pname, defaults_, ...){
   stopifnot(is_pmxclass(ctr))
@@ -17,6 +18,7 @@ update_container_plots <- function(ctr, pname, defaults_, ...){
 #' Create parameters for plot updating
 #' @param ctr controller
 #' @param pname parameter name
+#' @returns plot parameters
 #' @noRd
 get_plot_param <- function(ctr, pname){
   params <- as.list(match.call(expand.dots = TRUE))[-1]

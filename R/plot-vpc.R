@@ -15,6 +15,7 @@
 #' @details
 #' This is a wrapper to the bin based VPC
 #' @family vpc
+#' @returns list with options for `pmx_vpc_bin` object
 
 pmx_vpc_bin <-
   function(style, within_strat = TRUE, seed = 42, ...) { #within strat = TRUE, as default in order to avoid bugs
@@ -38,6 +39,7 @@ pmx_vpc_bin <-
 #' @param size \code{numeric} Size of the observed endpoint values. Default: 1.
 #' @param alpha \code{numeric} Transparency of the observed endpoint values. Default: 0.7.
 #' @param shape \code{numeric} Shape of the observed endpoint values. Default: 1.
+#' @return list with options for ggplot2 layer with observations
 #'
 #' @export
 #' @family vpc
@@ -92,10 +94,11 @@ pmx_vpc_obs <-
 #' @param area \code{list} containing: \cr
 #' \itemize{
 #' \item \strong{fill} \code{charcater}  Color of the shaded area. Default: "blue".
-#' \item \strong{alpha} \code{numeric} Transparency of the sahded area. Default: 0.1.
+#' \item \strong{alpha} \code{numeric} Transparency of the shaded area. Default: 0.1.
 #' }
 #'
 #' @family vpc
+#' @returns list with options for Prediction Interval layer
 #' @export
 pmx_vpc_pi <-
   function(show = c("all", "median","area"),
@@ -166,7 +169,7 @@ pmx_vpc_pi <-
 #' }
 #'
 #' @export
-
+#' @returns list with options for Confidence Interval layer
 #' @family vpc
 pmx_vpc_ci <-
   function(show = c("all", "median"),
@@ -215,7 +218,7 @@ pmx_vpc_ci <-
 
 #'
 #' @export
-#'
+#' @returns list with options for the rug layer
 #' @family vpc
 pmx_vpc_rug <-
   function(show = TRUE,
@@ -545,7 +548,7 @@ vpc.plot <- function(x) {
 #'
 #' @family vpc
 #' @export
-#'
+#' @returns list with parameters of the vpc object
 
 pmx_vpc <- function(
                     type = c("percentile", "scatter"),

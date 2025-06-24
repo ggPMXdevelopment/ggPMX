@@ -114,6 +114,10 @@ the axis text (similar to ggplot2 axis.text theme)}
 }
 \value{
 ggplot2 object
+
+ggplot2 object
+
+ggplot2 object
 }
 \description{
 Eta Covariates plots

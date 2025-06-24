@@ -17,6 +17,9 @@ pmx_vpc_obs(show = TRUE, color = "#000000", size = 1, alpha = 0.7, shape = 1)
 
 \item{shape}{\code{numeric} Shape of the observed endpoint values. Default: 1.}
 }
+\value{
+list with options for ggplot2 layer with observations
+}
 \description{
 Sets vpc observation layer
 }

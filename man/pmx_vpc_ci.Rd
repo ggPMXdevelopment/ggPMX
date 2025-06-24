@@ -39,6 +39,9 @@ pmx_vpc_ci(
 \item \strong{alpha} \code{numeric} Transparency of the area representing the PI for the extreme percentiles. Default=0.3.
 }}
 }
+\value{
+list with options for Confidence Interval layer
+}
 \description{
 Sets vpc confidence interval layer
 }

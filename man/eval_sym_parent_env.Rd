@@ -2,13 +2,16 @@
 % Please edit documentation in R/pmx-all-plots.R
 \name{eval_sym_parent_env}
 \alias{eval_sym_parent_env}
-\title{Try to evaluate a symbol in the parent frame (on errorr eturn the symbol)}
+\title{Try to evaluate a symbol in the parent frame (on error return the symbol)}
 \usage{
 eval_sym_parent_env(x)
 }
 \arguments{
 \item{x}{any object}
 }
+\value{
+evaluated symbol or the symbol in case of evaluation error
+}
 \description{
-Try to evaluate a symbol in the parent frame (on errorr eturn the symbol)
+Try to evaluate a symbol in the parent frame (on error return the symbol)
 }

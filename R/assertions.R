@@ -32,8 +32,8 @@ is_string_or_formula_or_null <- function(x) {
   is_string(x) || is.formula(x) || is.null(x)
 }
 
-#' In contrast to is_string_or_formula_or_null returns TRUE for c('A', 'B')
-#' Also c('A', NA) ~ TRUE, NA ~ TRUE
+#In contrast to is_string_or_formula_or_null returns TRUE for c('A', 'B')
+#Also c('A', NA) ~ TRUE, NA ~ TRUE
 is_character_or_formula_or_null_or_na <- function(x) {
   is.character(x) || is.formula(x) || is.null(x) || is.na(x)
 }

@@ -23,7 +23,7 @@
 #'
 #' @param name Name of an option to get.
 #' @param default Value to be returned if the option is not currently set.
-#'
+#' @returns value of the option or NULL
 #' @examples
 #' \dontrun{
 #' pmxOptions(myOption = 10)
@@ -59,6 +59,7 @@ getPmxOption <- function(name, default = NULL) {
 #' \item \strong{template_dir:} path to template directory
 #' }
 #'
+#' @returns list with options that were set by the user
 #' @examples
 #' \dontrun{
 #' pmxOptions(template_dir = PATH_TO_CUSTOM_CONFIGURATION)
