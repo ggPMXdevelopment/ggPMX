@@ -46,7 +46,7 @@ Authors:
   \item Amine Gassem \email{contact@ag-study.com}
   \item Bruno Bieth \email{biethb@hotmail.com}
   \item Irina Baltcheva \email{irina.baltcheva@gmail.com}
-  \item Thomas Dumortier \email{thomas.dumortier@novartis.com}
+  \item Thomas Dumortier \email{ thomas.dumortier@novartis.com}
   \item Christian Bartels \email{christian.bartels@novartis.com}
   \item Souvik Bhattacharya \email{souvik.bhattacharya@novartis.com}
   \item Inga Ludwig \email{inga.ludwig@novartis.com}
@@ -54,7 +54,7 @@ Authors:
   \item Didier Renard \email{didier.renard@novartis.com}
   \item Matthew Fidler \email{matt.fidler@novartis.com} (\href{https://orcid.org/0000-0001-8538-6691}{ORCID})
   \item Seid Hamzic \email{se.hamzic@gmail.com}
-  \item Danielle Navarro \email{danielle.navarro@certara.com}
+  \item Danielle Navarro \email{djnavarro@protonmail.com}
 }
 
 Other contributors:
