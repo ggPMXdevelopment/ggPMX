@@ -1,5 +1,18 @@
 # ggPMX (development version)
 
+# ggPMX 1.3.0
+
+* Fixed faceting by multiple variables
+
+* Fixed incorrect plotting of blq for some plots
+
+* Multiple fixes of tests
+
+* Added convergence plot (SAEM from Monolix)
+
+* Fixed Shrinkage label hiding behind labels
+
+
 # ggPMX 1.2.11
 
 * Fix bug so that reading monolix works on R devel (as requested by CRAN)

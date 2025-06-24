@@ -13,6 +13,7 @@ dummy(
   correl,
   point,
   facets,
+  covariates,
   filter,
   strat.facet,
   strat.color,
@@ -48,7 +49,9 @@ pmx_plot_eta_conts(ctr, ...)
 
 \item{point}{\code{list} geom point graphical parameter}
 
-\item{facets}{\code{list} facetting graphical parameter
+\item{facets}{\code{list} facetting graphical parameter}
+
+\item{covariates}{list of selected covariates and custom labels, e.g. pmx_cov(values = list("SEX"), labels = list("Sex")) \code{list} \code{pmxCOVObject} \code{\link{pmx_cov}}
 
 \strong{pmx_update parameters}}
 

@@ -21,7 +21,7 @@ if (helper_skip()) {
         }
       }
     )
-    expect_true(all(vapply(res, function(x) inherits(x, "gg") || is.null(x), TRUE)))
+    expect_true(all(vapply(res, function(x) inherits(x, c("ggplot", "ggplot2::ggplot", "ggmatrix")) || is.null(x), TRUE)))
   })
 
   test_that("We can call all pmx_plot_xx with title with success", {
@@ -122,7 +122,8 @@ if (helper_skip()) {
       p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
 
       expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
-      expect_true(inherits(p, c("gg", "ggplot")))
+      expect_true(inherits(p, c("ggplot", "ggplot2::ggplot")))
+      
       expect_identical(names(p), names(ggplot()))
     })
 
@@ -148,17 +149,17 @@ if (helper_skip()) {
     p12 <- pmx_plot_generic(ctr, pname = "eta_hist")
 
     expect_true(inherits(p1, "list"))
-    expect_true(inherits(p2, c("gg", "ggplot")))
-    expect_true(inherits(p3, c("gg", "ggplot")))
-    expect_true(inherits(p4, c("gg", "ggplot")))
-    expect_true(inherits(p5, c("gg", "ggplot")))
-    expect_true(inherits(p6, c("gg", "ggplot")))
-    expect_true(inherits(p7, c("gg", "ggplot")))
-    expect_true(inherits(p8, c("gg", "ggplot")))
-    expect_true(inherits(p9, c("gg", "ggplot")))
-    expect_true(inherits(p10, c("gg", "ggplot")))
-    expect_true(inherits(p11, c("gg", "ggplot")))
-    expect_true(inherits(p12, c("gg", "ggplot")))
+    expect_true(inherits(p2, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p3, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p4, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p5, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p6, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p7, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p8, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p9, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p10, c("ggplot", "ggplot2::ggplot", "ggmatrix")))
+    expect_true(inherits(p11, c("ggplot", "ggplot2::ggplot")))
+    expect_true(inherits(p12, c("ggplot", "ggplot2::ggplot")))
   })
 
   test_that("pmx_plot_generic: params: NULL result: error missing arguments", {
@@ -205,7 +206,7 @@ if (helper_skip()) {
 
   test_that("pmx_register_plot: params: ctr, pp, pname  result: identical inherits", {
     pp <- ctr %>% get_plot("individual")
-    expect_true(inherits(pmx_register_plot(ctr, pp[[1]], pname = "indiv1"), c("gg", "ggplot")))
+    expect_true(inherits(pmx_register_plot(ctr, pp[[1]], pname = "indiv1"), c("ggplot2::ggplot", "ggplot")))
   })
 
   test_that("pmx_register_plot: params: ctr, pname, pp  result: identical names", {
@@ -236,7 +237,7 @@ if (helper_skip()) {
 
   test_that("pmx_register_plot: params: ctr, pname  result: identical inherits of the first ggplot", {
     p <- ctr %>% pmx_plot_cats("npde_time")
-    expect_true(inherits(p[[1]], c("gg", "ggplot")))
+    expect_true(inherits(p[[1]], c("ggplot2::ggplot", "ggplot")))
   })
 
 
