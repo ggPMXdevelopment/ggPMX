@@ -1,4 +1,4 @@
-if (helper_skip() && requireNamespace("nlmixr2", quietly = TRUE)) {
+if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
   context("Test pmx_nlmixr controller")
 
   one.compartment <- function() {
