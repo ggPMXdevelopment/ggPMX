@@ -130,7 +130,6 @@ pmx_report <-
       remove_reports(output, contr$save_dir)
     }
     if (output == "report") rm_dir(out_)
-    return(invisible(res))
   }
 
 
