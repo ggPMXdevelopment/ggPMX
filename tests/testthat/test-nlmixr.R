@@ -159,7 +159,7 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
 
     cmt2fit.logn <- nlmixr2est::nlmixr(cmt2, dat2, "saem",
                                     control = list(print = 0),
-                                    table = nlmixr2::tableControl(cwres = TRUE, npde = TRUE)
+                                    table = nlmixr2est::tableControl(cwres = TRUE, npde = TRUE)
                                     )
 
     ctr <- pmx_nlmixr(cmt2fit.logn, conts = c("WEIGHTB"), cats = "TRTACT", vpc = TRUE)

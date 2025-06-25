@@ -1,7 +1,7 @@
 #' Determine the number of pages in a paginated facet plot
 #'
 #' This is a simple helper that returns the number of pages it takes to plot all
-#' panels when using \code{\link{facet_wrap_paginate}} . It partially builds the plot so depending
+#' panels when using \code{\link[ggforce]{facet_wrap_paginate}} . It partially builds the plot so depending
 #' on the complexity of your plot it might take some time to calculate...
 #'
 #' @param plot A ggplot object using either facet_wrap_paginate or
