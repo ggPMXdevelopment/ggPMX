@@ -22,7 +22,7 @@ if (helper_skip() && requireNamespace("nlmixr2", quietly = TRUE)) {
     })
   }
 
-  fit <- nlmixr2::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
+  fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
                          control = list(print = 0)
                          )
 

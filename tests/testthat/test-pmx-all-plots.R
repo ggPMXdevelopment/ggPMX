@@ -93,7 +93,7 @@ if (helper_skip()) {
   context(" Test pmx_plot_generic function")
 
   #---------------------- pmx_plot_generic with nlmixr controller start ---------------------------------
-  if (requireNamespace("nlmixr2", quietly = TRUE)) {
+  if (requireNamespace("nlmixr2est", quietly = TRUE)) {
     test_that("pmx_plot_generic with nlmixr controller: params: ctr, pname   result: identical inherits, names", {
       one.compartment <- function() {
         ini({
@@ -115,7 +115,7 @@ if (helper_skip()) {
           cp ~ add(add.sd)
         })
       }
-      fit <- nlmixr2::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
+      fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
                              control = list(print = 0)
                              )
       ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
@@ -123,7 +123,7 @@ if (helper_skip()) {
 
       expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
       expect_true(inherits(p, c("ggplot", "ggplot2::ggplot")))
-      
+
       expect_identical(names(p), names(ggplot()))
     })
 

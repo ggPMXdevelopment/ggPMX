@@ -415,7 +415,7 @@ if (helper_skip()) {
   #------------------- pmx_report with nlmixr controller - start -----------------
 
   context("Test pmx_nlmixr controller")
-  if (requireNamespace("nlmixr2", quietly=TRUE)) {
+  if (requireNamespace("nlmixr2est", quietly=TRUE)) {
     one.compartment <- function() {
       ini({
         tka <- 0.45 # Log Ka
@@ -437,7 +437,7 @@ if (helper_skip()) {
       })
     }
 
-    fit <- nlmixr2::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem", control = list(print = 0))
+    fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem", control = list(print = 0))
     ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
 
   }
