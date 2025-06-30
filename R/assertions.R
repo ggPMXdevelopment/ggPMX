@@ -90,7 +90,11 @@ assertthat::on_failure(is_pmxclass) <- function(call, env) {
 }
 
 is_ggplot <- function(x) {
-  ggplot2::is.ggplot(x)
+  if (packageVersion("ggplot2") < "3.5.2") {
+    ggplot2::is.ggplot(x)
+  } else {
+    ggplot2::is_ggplot(x)
+  }
 }
 
 assertthat::on_failure(is_ggplot) <- function(call, env) {
