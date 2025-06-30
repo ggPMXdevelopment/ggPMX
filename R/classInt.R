@@ -384,6 +384,7 @@ roundEndpoint <- function(x, intervalClosure = c("left", "right"), dataPrecision
   format(retval, digits = digits, trim = TRUE)
 } # FIXME output trailing zeros in decimals
 
+#' @export
 print.classIntervals <- function(x, digits = getOption("digits"), ..., under = "under", over = "over", between = "-", cutlabels = TRUE, unique = FALSE) {
   if (!inherits(x, "classIntervals")) stop("Class interval object required")
   cat("style: ", attr(x, "style"), "\n", sep = "")
