@@ -10,7 +10,9 @@ if (helper_skip()) {
     "1_popPK_model",
     "project.mlxtran"
   )
-  ctr <- pmx_mlxtran(mlxpath, config = "standing")
+  suppressWarnings({
+    ctr <- pmx_mlxtran(mlxpath, config = "standing")
+  })
 
   #------------------- pmx_plot_individual start -------------------------------
   test_that("pmx_plot_individual: params: no; result: error ctr is missing", {
@@ -21,13 +23,12 @@ if (helper_skip()) {
     indiv_plot <- pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
     ))
-    indNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_identical(names(indiv_plot), indNames)
+    expect_true(is_ggplot(indiv_plot))
   })
 
 
   test_that("pmx_plot_individual: params: no; result: ggplot", {
-    expect_true(inherits(pmx_plot_individual(ctr), "ggplot"))
+    expect_true(is_ggplot(pmx_plot_individual(ctr)))
   })
 
 
@@ -42,7 +43,11 @@ if (helper_skip()) {
 
   test_that("pmx_plot_individual: params: ctr, which_pages, dname; result: error
           individual is not a valid plot name", {
-            expect_error(pmx_plot_individual(ctr, which_pages = "all", dname = "IND1"))
+            expect_error(
+              ignore <- cpature.output({
+                pmx_plot_individual(ctr, which_pages = "all", dname = "IND")
+              })
+            )
           })
 
   test_that("pmx_plot_individual: params: ctr, which_pages, dname; result: warning
@@ -52,9 +57,9 @@ if (helper_skip()) {
 
 
   test_that("pmx_plot_individual: params: point; result: ggplot", {
-    expect_true(inherits(pmx_plot_individual(ctr, point = list(
+    expect_true(is_ggplot(pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
-    )), "ggplot"))
+    ))))
   })
 
 
@@ -79,55 +84,51 @@ if (helper_skip()) {
 
 
   test_that("pmx_plot_individual: params: point (colour and shape); result: ggplot", {
-    expect_true(inherits(pmx_plot_individual(ctr, point = list(
+    expect_true(is_ggplot(pmx_plot_individual(ctr, point = list(
       colour = "blue", shape = 24
-    )), "ggplot"))
+    ))))
   })
 
   test_that("plot_pmx.individual: params: point and pred_line; result: ggplot", {
-    expect_true(inherits(
+    expect_true(is_ggplot(
       pmx_plot_individual(
         ctr,
         bloq = pmx_bloq(cens = "BLOQ"),
         point = list(colour = c("blue", "red")),
         pred_line = list(color = "red", alpha = 0.5),
         which_pages = 1
-      ),
-      "ggplot"
+      )
     ))
   })
   ###
   test_that("plot_pmx.individual: params: is.legend is FALSE; result: ggplot", {
-    expect_true(inherits(
+    expect_true(is_ggplot(
       pmx_plot_individual(
         ctr,
         is.legend = FALSE
-      ),
-      "ggplot"
+      )
     ))
   })
 
 
   test_that("plot_pmx.individual: params: point, ipred_line and pred_line;
           result: ggplot", {
-            expect_true(inherits(
+            expect_true(is_ggplot(
               pmx_plot_individual(
                 ctr,
                 point = list(colour = "blue", shape = 24),
                 ipred_line = list(colour = "red"),
                 pred_line = list(colour = "green")
-              ),
-              "ggplot"
+              )
             ))
           })
 
   test_that("plot_pmx.individual: params: ctr is theophylline; result: ggplot", {
     ctr <- theophylline()
-    expect_true(inherits(
+    expect_true(is_ggplot(
       pmx_plot_individual(
         ctr
-      ),
-      "ggplot"
+      )
     ))
   })
 
@@ -135,14 +136,13 @@ if (helper_skip()) {
   test_that("plot_pmx.individual: params: ctr is theophylline,
            point, ipred_line and pred_line; result: ggplot", {
              ctr <- theophylline()
-             expect_true(inherits(
+             expect_true(is_ggplot(
                pmx_plot_individual(
                  ctr,
                  point = list(colour = "blue", shape = 24),
                  ipred_line = list(colour = "red"),
                  pred_line = list(colour = "green")
-               ),
-               "ggplot"
+               )
              ))
            })
 
@@ -169,27 +169,26 @@ if (helper_skip()) {
     indiv_plot <- pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
     ))
-    indNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_identical(names(indiv_plot), indNames)
+    expect_true(is_ggplot(indiv_plot))
   })
 
   test_that("pmx_plot_individual: params: ctr is theophylline; result: ggplot", {
     ctr <- theophylline()
-    expect_true(inherits(pmx_plot_individual(ctr), "ggplot"))
+    expect_true(is_ggplot(pmx_plot_individual(ctr)))
   })
 
   test_that("pmx_plot_individual: params: ctr is theophylline,  point; result: ggplot", {
     ctr <- theophylline()
-    expect_true(inherits(pmx_plot_individual(ctr, point = list(
+    expect_true(is_ggplot(pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
-    )), "ggplot"))
+    ))))
   })
 
   test_that("pmx_plot_individual: params: ctr is theophylline, point (colour and shape); result: ggplot", {
     ctr <- theophylline()
-    expect_true(inherits(pmx_plot_individual(ctr, point = list(
+    expect_true(is_ggplot(pmx_plot_individual(ctr, point = list(
       colour = "blue", shape = 24
-    )), "ggplot"))
+    ))))
   })
 
   test_that("pmx_plot_individual: params: ctr, point (colour and shape), footnote; result: identical structure ", {
@@ -333,14 +332,13 @@ if (helper_skip()) {
   #------------------- add_footnote start --------------------------------------
   test_that("add_footnote: params: pp, pname, save_dir; result: identical inherits", {
     pp <- ctr %>% get_plot("individual")
-    expect_true(inherits(add_footnote(pp[[1]], pname = "indiv1", save_dir = ctr$save_dir), c("gg", "ggplot")))
+    expect_true(is_ggplot(add_footnote(pp[[1]], pname = "indiv1", save_dir = ctr$save_dir)))
   })
 
   test_that("add_footnote: params: pp, pname, save_dir; result: identical names", {
     pp <- ctr %>% get_plot("individual")
     add_f <- add_footnote(pp[[1]], pname = "indiv1", save_dir = ctr$save_dir)
-    fNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_equal(names(add_f), fNames)
+    expect_true(is_ggplot(add_f))
   })
 
   test_that("add_footnote: params: pp, pname, save_dir; result: identical structure", {

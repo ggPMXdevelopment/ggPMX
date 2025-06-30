@@ -116,13 +116,19 @@ if (helper_skip()) {
       "scale_x_log10", "scale_y_log10", "color.scales", "is.legend",
       "legend.position", "labels"
     )
-    expect_setequal(names(print.pmx_gpar(gpars)), prNames)
+    ignore <- capture.output({
+      pr <- print.pmx_gpar(gpars)
+    })
+    expect_setequal(names(pr), prNames)
   })
 
 
   test_that("print.pmx_gpar params: x result: identical inherits", {
     gpars <- ggPMX::pmx_gpar(labels = list(title = "hello"))
-    expect_true(inherits(print.pmx_gpar(gpars), c("pmx_gpar", "list")))
+    ignore <- capture.output({
+      pr <- print.pmx_gpar(gpars)
+    })
+    expect_true(inherits(pr, c("pmx_gpar", "list")))
   })
 
   #------------------- print.pmx_gpar end-----------------------------------------
@@ -136,7 +142,9 @@ if (helper_skip()) {
 
   test_that("`[.pmx_gpar`: params: x, index result: identical names", {
     gpars <- ggPMX::pmx_gpar(labels = list(title = "hello"))
-    sub_meth_gpar <- `[.pmx_gpar`(gpars, index = 1)
+    suppressWarnings({
+      sub_meth_gpar <- `[.pmx_gpar`(gpars, index = 1)
+    })
     subNames <- c(
       "axis.title", "axis.text", "ranges", "is.smooth",
       "smooth", "is.band", "band", "is.draft", "is.title",

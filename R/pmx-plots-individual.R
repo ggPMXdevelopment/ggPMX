@@ -141,7 +141,7 @@ pmx_plot_individual <-
 
 
     if (cctr$footnote) {
-      if (!inherits(p, "ggplot")) {
+      if (!is_ggplot(p)) {
         p <- Map(
           function(p, id) {
             ctr$enqueue_plot("indiv")
@@ -158,7 +158,7 @@ pmx_plot_individual <-
     rm(cctr)
 
     if (print) {
-      if (is.list(p) & (!inherits(p, "ggplot"))) {
+      if (is.list(p) & (!is_ggplot(p))) {
         invisible(lapply(p, print))
       } else {
         invisible(print(p))

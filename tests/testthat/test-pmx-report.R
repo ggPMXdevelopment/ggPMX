@@ -99,7 +99,7 @@ if (helper_skip()) {
     path <- file.path(tempdir(check = TRUE))
     newfolder <- "report_plot"
     work_dir <- file.path(path, newfolder)
-    dir.create(work_dir)
+    dir.create(work_dir, showWarnings = FALSE)
 
     ctr %>% pmx_report(
       name = "Report_ggPMX",
@@ -310,7 +310,7 @@ if (helper_skip()) {
            path <- file.path(tempdir(check = TRUE))
            newfolder <- "pmx_report_test"
            work_dir <- file.path(path, newfolder)
-           dir.create(work_dir)
+           dir.create(work_dir, showWarnings = FALSE)
            ctr %>% pmx_report(
              name = "Report_ggPMX",
              save_dir = work_dir,

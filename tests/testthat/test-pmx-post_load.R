@@ -34,7 +34,7 @@ if (helper_skip()) {
             input <- ctr$input
             finegrid <- ctr$data$finegrid
             r <- input_finegrid(input, finegrid)
-            print(r)
+            # print(r)
             expect_true(inherits(r, "data.frame"))
           })
 

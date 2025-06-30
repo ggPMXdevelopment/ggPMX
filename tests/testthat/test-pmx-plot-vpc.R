@@ -43,17 +43,13 @@ if (helper_skip()) {
 
   test_that("pmx_plot_vpc: params ctr result: identical names", {
     p <- pmx_plot_vpc(ctr)
-    vpcNames <- c(
-      "data", "layers", "scales", "mapping", "theme", "coordinates",
-      "facet", "plot_env", "labels"
-    )
-    expect_identical(names(p), vpcNames)
+    expect_true(is_ggplot(p))
   })
 
 
   test_that("pmx_plot_vpc: params NULL result: identical type", {
     p <- ctr %>% pmx_plot_vpc()
-    expect_true(inherits(p, "ggplot"))
+    expect_true(is_ggplot(p))
     expect_identical(p$plot_env$type, "percentile")
     expect_identical(p$plot_env$idv, "TIME")
   })
@@ -61,7 +57,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_vpc: params result: ggplot", {
     p <- ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2), type = "scatter")
-    expect_true(inherits(p, "ggplot"))
+    expect_true(is_ggplot(p))
   })
 
 
@@ -77,7 +73,7 @@ if (helper_skip()) {
       pi = pmx_vpc_pi(interval = c(0.02, 0.98), median = list(linetype = "dotted")),
       ci = pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
     )
-    expect_true(inherits(vpc, "ggplot"))
+    expect_true(is_ggplot(vpc))
     expect_true(identical(vpc$plot_env$pi$median$linetype, "dotted"))
     expect_true(identical(vpc$plot_env$ci$median$fill, "red"))
   })

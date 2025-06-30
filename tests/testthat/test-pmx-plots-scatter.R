@@ -5,7 +5,7 @@ if (helper_skip()) {
 
   #------------------- pmx_plot_dv_pred start -----------------------------------
   test_that("pmx_plot_dv_pred: params: controller result: gg, ggplot", {
-    expect_true(inherits(pmx_plot_dv_pred(ctr = ctr), c("gg", "ggplot")))
+    expect_true(is_ggplot(pmx_plot_dv_pred(ctr = ctr)))
   })
 
   test_that("pmx_plot_dv_pred: params: no result: error", {
@@ -35,7 +35,9 @@ if (helper_skip()) {
       "1_popPK_model",
       "project.mlxtran"
     )
-    ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    suppressWarnings({
+      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    })
     p <- pmx_plot_dv_pred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })
@@ -71,7 +73,7 @@ if (helper_skip()) {
 
   #------------------- pmx_plot_iwres_time start --------------------------------
   test_that("pmx_plot_iwres_time: params: controller result: gg, ggplot", {
-    expect_true(inherits(pmx_plot_iwres_time(ctr = ctr), c("gg", "ggplot")))
+    expect_true(is_ggplot(pmx_plot_iwres_time(ctr = ctr)))
   })
 
   test_that("pmx_plot_iwres_time: params: no result: error", {
@@ -101,7 +103,9 @@ if (helper_skip()) {
       "1_popPK_model",
       "project.mlxtran"
     )
-    ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    suppressWarnings({
+      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    })
     p <- pmx_plot_iwres_time(ctr_mlx)
     expect_identical(p$scales$scales[[1]]$limits, c(-3.7749, 3.7749))
   })
@@ -135,7 +139,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_npde_time: params: ctr, explicit filter; result: identical type", {
     p <- ctr %>% pmx_plot_npde_time(filter = "STUD == 1")
-    expect_true(inherits(p, "ggplot"))
+    expect_true(is_ggplot(p))
   })
 
 
@@ -143,14 +147,14 @@ if (helper_skip()) {
     filter_string <- "STUD == 1"
     p <- ctr %>% pmx_plot_npde_time(filter = filter_string)
 
-    expect_true(inherits(p, "ggplot"))
+    expect_true(is_ggplot(p))
   })
 
   #------------------- pmx_plot_npde_time end -----------------------------------
 
   #------------------- pmx_plot_npde_pred start ---------------------------------
   test_that("pmx_plot_npde_pred: params: controller result: gg, ggplot", {
-    expect_true(inherits(pmx_plot_npde_pred(ctr = ctr), c("gg", "ggplot")))
+    expect_true(is_ggplot(pmx_plot_npde_pred(ctr = ctr)))
   })
 
   test_that("pmx_plot_npde_pred: params: no result: error", {
@@ -179,7 +183,9 @@ if (helper_skip()) {
       "1_popPK_model",
       "project.mlxtran"
     )
-    ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    suppressWarnings({
+      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    })
     p <- pmx_plot_npde_pred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })
@@ -198,7 +204,7 @@ if (helper_skip()) {
   #------------------- pmx_plot_abs_iwres_ipred start ---------------------------
 
   test_that("pmx_plot_abs_iwres_ipred: params: controller result: gg, ggplot", {
-    expect_true(inherits(pmx_plot_abs_iwres_ipred(ctr = ctr), c("gg", "ggplot")))
+    expect_true(is_ggplot(pmx_plot_abs_iwres_ipred(ctr = ctr)))
   })
 
   test_that("pmx_plot_abs_iwres_time: params: controller result: gg", {
@@ -236,7 +242,9 @@ if (helper_skip()) {
       "1_popPK_model",
       "project.mlxtran"
     )
-    ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    suppressWarnings({
+      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    })
     p <- pmx_plot_abs_iwres_ipred(ctr_mlx)
     expect_identical(p$scales$scales, list())
   })
@@ -255,7 +263,7 @@ if (helper_skip()) {
 
   #------------------- pmx_plot_iwres_ipred start -------------------------------
   test_that("pmx_plot_iwres_ipred: params: controller result: gg, ggplot", {
-    expect_true(inherits(pmx_plot_iwres_ipred(ctr = ctr), c("gg", "ggplot")))
+    expect_true(is_ggplot(pmx_plot_iwres_ipred(ctr = ctr)))
   })
 
   test_that("pmx_plot_iwres_ipred: params: no result: error", {
@@ -290,7 +298,9 @@ if (helper_skip()) {
       "1_popPK_model",
       "project.mlxtran"
     )
-    ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    suppressWarnings({
+      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    })
     p <- pmx_plot_iwres_ipred(ctr_mlx)
     expect_identical(
       p$scales$scales[[1]]$limits,
@@ -313,7 +323,7 @@ if (helper_skip()) {
   #------------------- pmx_plot_dv_ipred start ---------------------------------
 
   test_that("pmx_plot_dv_ipred: params: ctr; result: ggplot", {
-    expect_true(inherits(pmx_plot_dv_ipred(ctr), "ggplot"))
+    expect_true(is_ggplot(pmx_plot_dv_ipred(ctr)))
   })
 
   test_that("pmx_plot_dv_ipred: params: ctr; result: list", {
@@ -333,7 +343,9 @@ if (helper_skip()) {
       "1_popPK_model",
       "project.mlxtran"
     )
-    ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    suppressWarnings({
+      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+    })
     p <- pmx_plot_dv_ipred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })

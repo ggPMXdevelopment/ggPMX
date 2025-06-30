@@ -483,7 +483,9 @@ test_that("print.classIntervals: params: x; result: character value", {
   style <- "equal"
   n <- 2
   x <- classIntervals(var = var, style = style, n = n)
-  res <- print.classIntervals(x = x, dataPrecision = 1)
+  ignore <- capture.output({
+    res <- print.classIntervals(x = x, dataPrecision = 1)
+  })
 
   expect_true(inherits(res, "table"))
   expect_identical(names(res), c("[0,6)", "[6,12]"))

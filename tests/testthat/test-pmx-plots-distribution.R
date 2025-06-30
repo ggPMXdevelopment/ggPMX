@@ -9,7 +9,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_eta_box: params: ctr, ...;  result: ggplot", {
     p <- ctr %>% pmx_plot_eta_box(shrink=list(fun="sd"))
-    expect_true(inherits(p, "ggplot"))
+    expect_true(is_ggplot(p))
   })
 
   test_that("pmx_plot_eta_box: params: ctr, ...;  result: error", {
