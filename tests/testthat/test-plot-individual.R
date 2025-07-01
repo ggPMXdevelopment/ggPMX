@@ -10,7 +10,7 @@ if (helper_skip()) {
     "1_popPK_model",
     "project.mlxtran"
   )
-  ctr <- pmx_mlxtran(mlxpath, config = "standing")
+  ctr <- suppressWarnings(pmx_mlxtran(mlxpath, config = "standing"))
 
   #------------------- pmx_plot_individual start -------------------------------
   test_that("pmx_plot_individual: params: no; result: error ctr is missing", {
@@ -21,10 +21,8 @@ if (helper_skip()) {
     indiv_plot <- pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
     ))
-    indNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_identical(names(indiv_plot), indNames)
+    expect_identical(names(indiv_plot), names(ggplot()))
   })
-
 
   test_that("pmx_plot_individual: params: no; result: ggplot", {
     expect_true(inherits(pmx_plot_individual(ctr), "ggplot"))
@@ -169,8 +167,7 @@ if (helper_skip()) {
     indiv_plot <- pmx_plot_individual(ctr, point = list(
       colour = c("black", "green")
     ))
-    indNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_identical(names(indiv_plot), indNames)
+    expect_identical(names(indiv_plot), names(ggplot()))
   })
 
   test_that("pmx_plot_individual: params: ctr is theophylline; result: ggplot", {
@@ -339,8 +336,7 @@ if (helper_skip()) {
   test_that("add_footnote: params: pp, pname, save_dir; result: identical names", {
     pp <- ctr %>% get_plot("individual")
     add_f <- add_footnote(pp[[1]], pname = "indiv1", save_dir = ctr$save_dir)
-    fNames <- c("data", "layers", "scales", "mapping", "theme", "coordinates", "facet", "plot_env", "labels")
-    expect_equal(names(add_f), fNames)
+    expect_equal(names(add_f), names(ggplot()))
   })
 
   test_that("add_footnote: params: pp, pname, save_dir; result: identical structure", {

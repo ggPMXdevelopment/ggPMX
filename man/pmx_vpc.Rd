@@ -47,6 +47,9 @@ pmx_vpc(
 
 \item{...}{extra parameters passed to base graphical parameters}
 }
+\value{
+list with parameters of the vpc object
+}
 \description{
 Creates vpc object
 }

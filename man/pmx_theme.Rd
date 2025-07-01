@@ -10,6 +10,9 @@ pmx_theme(...)
 \item{...}{can contain any valid argument of \code{ggplot2} \code{\link[ggplot2]{theme}}
 object.}
 }
+\value{
+ggplot2 theme object
+}
 \description{
 This theme is a simple wrapper gdoc theme
 from ggthems package.

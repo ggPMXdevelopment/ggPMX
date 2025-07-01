@@ -9,6 +9,9 @@ pmxOptions(...)
 \arguments{
 \item{...}{Options to set, with the form \code{name = value}.}
 }
+\value{
+list with options that were set by the user
+}
 \description{
 \code{getPmxOption} retrieves the value of a ggPMX option.
 \code{ggPMXOptions} sets the value of ggPMX options; it can also be used to

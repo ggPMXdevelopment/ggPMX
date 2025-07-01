@@ -51,8 +51,9 @@ lang_to_expr <-
   }
 
 
-#' Try to evaluate a symbol in the parent frame (on errorr eturn the symbol)
+#' Try to evaluate a symbol in the parent frame (on error return the symbol)
 #' @param x any object
+#' @returns evaluated symbol or the symbol in case of evaluation error
 eval_sym_parent_env <- function(x) {
   if(is.symbol(x)){
     tryCatch(eval(x, envir = parent.frame(1L)), error=function(e) x)
@@ -63,6 +64,7 @@ eval_sym_parent_env <- function(x) {
 
 
 #' Get list of parameters based on parameters used in own function call
+#' @return list of parameters based on parameters used in own function call
 #' @noRd
 get_params_from_call <- function () {
   . <- NULL # R check hack....
@@ -108,12 +110,12 @@ wrap_pmx_plot_generic <-
 
 
 
-#' Register plot
+#' Register plot  (Jun2025, Alex: I believe it doesn't work at all)
 #'
 #' @param ctr \code{pmxClass} controller
 #' @param pp \code{ggplot2} plot
 #' @param pname \code{character} plot nme
-#'
+#' @return NULL
 #' @export
 pmx_register_plot <-
   function(ctr, pp, pname = NULL) {
@@ -138,7 +140,9 @@ pmx_register_plot <-
 #' \item \code{\link{pmx_qq}} quantile-quantile plot object
 #' \item \code{\link{pmx_update}} function.
 #' }
+#' @returns ggplot2 object
 #' @export
+#' 
 #'
 pmx_plot <- function(ctr, pname, ...) {
   params <- get_params_from_call()
@@ -160,6 +164,7 @@ pmx_plot <- function(ctr, pname, ...) {
 #' \item \code{\link{pmx_qq}} quantile-quantile plot object
 #' \item \code{\link{pmx_update}} function.
 #' }
+#' @returns ggplot2 object(s)
 #' @export
 #'
 

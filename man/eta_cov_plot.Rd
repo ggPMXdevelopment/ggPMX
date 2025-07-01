@@ -13,6 +13,7 @@ dummy(
   correl,
   point,
   facets,
+  covariates,
   filter,
   strat.facet,
   strat.color,
@@ -48,7 +49,9 @@ pmx_plot_eta_conts(ctr, ...)
 
 \item{point}{\code{list} geom point graphical parameter}
 
-\item{facets}{\code{list} facetting graphical parameter
+\item{facets}{\code{list} facetting graphical parameter}
+
+\item{covariates}{list of selected covariates and custom labels, e.g. \code{pmx_cov(values = list("SEX"), labels = list("Sex"))} \code{list} \code{pmxCOVObject} \code{\link{pmx_cov}}
 
 \strong{pmx_update parameters}}
 
@@ -111,6 +114,10 @@ the axis text (similar to ggplot2 axis.text theme)}
 }
 \value{
 ggplot2 object
+
+ggplot2 object
+
+ggplot2 object
 }
 \description{
 Eta Covariates plots
@@ -130,6 +137,12 @@ ctr \%>\% pmx_plot_eta_cats
 ctr \%>\% pmx_plot_eta_conts
 
 # update graphical parameter  ----------------------
+
+## plot selected covariates
+ctr \%>\% pmx_plot_eta_cats(
+  covariates = pmx_cov(values = list("SEX"))
+  )
+
 
 ## update labels
 ctr \%>\% pmx_plot_eta_cats(

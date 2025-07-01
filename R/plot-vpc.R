@@ -15,6 +15,7 @@
 #' @details
 #' This is a wrapper to the bin based VPC
 #' @family vpc
+#' @returns list with options for `pmx_vpc_bin` object
 
 pmx_vpc_bin <-
   function(style, within_strat = TRUE, seed = 42, ...) { #within strat = TRUE, as default in order to avoid bugs
@@ -38,6 +39,7 @@ pmx_vpc_bin <-
 #' @param size \code{numeric} Size of the observed endpoint values. Default: 1.
 #' @param alpha \code{numeric} Transparency of the observed endpoint values. Default: 0.7.
 #' @param shape \code{numeric} Shape of the observed endpoint values. Default: 1.
+#' @return list with options for ggplot2 layer with observations
 #'
 #' @export
 #' @family vpc
@@ -92,10 +94,11 @@ pmx_vpc_obs <-
 #' @param area \code{list} containing: \cr
 #' \itemize{
 #' \item \strong{fill} \code{charcater}  Color of the shaded area. Default: "blue".
-#' \item \strong{alpha} \code{numeric} Transparency of the sahded area. Default: 0.1.
+#' \item \strong{alpha} \code{numeric} Transparency of the shaded area. Default: 0.1.
 #' }
 #'
 #' @family vpc
+#' @returns list with options for Prediction Interval layer
 #' @export
 pmx_vpc_pi <-
   function(show = c("all", "median","area"),
@@ -166,7 +169,7 @@ pmx_vpc_pi <-
 #' }
 #'
 #' @export
-
+#' @returns list with options for Confidence Interval layer
 #' @family vpc
 pmx_vpc_ci <-
   function(show = c("all", "median"),
@@ -215,7 +218,7 @@ pmx_vpc_ci <-
 
 #'
 #' @export
-#'
+#' @returns list with options for the rug layer
 #' @family vpc
 pmx_vpc_rug <-
   function(show = TRUE,
@@ -275,9 +278,7 @@ vpc.data <-
 
       #allow for input e.g. pmx_plot_vpc(strat.facet = ~SEX)
       if(!is.character(strat)){
-        strat <- as.character(strat)
-        strat <- sub("~","",strat)
-        strat <- strat[strat != ""]
+        strat <- all.vars(strat)
       }
 
       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
@@ -291,12 +292,16 @@ vpc.data <-
       res <- list(ci_dt = ci,pi_dt = pi)
       nn <- sum(grepl("CL", names(ci)))
       if (nn==3){
-        out <- merge(ci, pi, by = c(idv, "percentile"))
-        nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
-        out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
-        out[, zmax := pmax(get(nn[[2]]), value)]
-        out[, zmin := pmin(get(nn[[1]]), value)]
-        res$out <- out
+        #ALEX: this part of the code was causing errors in VPC when stratyfying by multiple variables.
+        # `out` is not used anywhere in the code as far as I can see, so I commented it out
+        #I keep it like this since we probably upgrade the vpc functionality anyway later
+        #out <- merge(ci, pi, by = c(idv, "percentile"))
+        nn <- grep("CL", names(ci), value = TRUE)[c(1, 3)]
+        #out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
+        #out[, zmax := pmax(get(nn[[2]]), value)]
+        #out[, zmin := pmin(get(nn[[1]]), value)]
+        #res$out <- out
+        res$out <- "DUMMY"
       }
     } else {
       pi <- quantile_dt(dsim, probs = probs.pi, grp = c(idv, strat), ind = dv)
@@ -339,15 +344,18 @@ find_interval <- function(x, vec, labels = NULL, ...) {
     if (!is.null(x$bin)) {
       if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
         x$bin$within_strat <- NULL
-        bins <- x$input[, list(brks = bin_idv(get(idv), x)), c(x$strat.facet)] #bins is a dt, with brks and strat.facet value bin_idv at line 300
+        bins <- x$input[, list(brks = bin_idv(get(idv), x)), by = c(x$strat.facet)]
+        
         x$input[, bin := {
-          grp <- get(x$strat.facet)
-          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
-        }, c(x$strat.facet)]
+          grp <- mget(x$strat.facet)
+          find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
+        }, by = c(x$strat.facet)]
+        
         x$dx[, bin := {
-          grp <- get(x$strat.facet)
-          find_interval(get(idv), bins[get(x$strat.facet) == grp, brks])
-        }, c(x$strat.facet)]
+          grp <- mget(x$strat.facet)
+          find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
+        }, by = c(x$strat.facet)]
+        
       } else {
         rugs <- x$input[, bin_idv(get(idv), x)]
         x$input[, bin := find_interval(get(idv), rugs)]
@@ -509,7 +517,7 @@ vpc.plot <- function(x) {
 
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
-        strat.facet <- formula(paste0("~", strat.facet))
+        strat.facet <- as.formula(paste0('~', paste0(strat.facet, collapse = " + ")))
       }
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
@@ -540,7 +548,7 @@ vpc.plot <- function(x) {
 #'
 #' @family vpc
 #' @export
-#'
+#' @returns list with parameters of the vpc object
 
 pmx_vpc <- function(
                     type = c("percentile", "scatter"),
@@ -665,7 +673,6 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   x <- x %>%
     vpc_legend. %>%
     vpc_footnote.
-
   if (!is.null(x$db)) p <- vpc.plot(x)
   plot_pmx(x$gp, p)
 }

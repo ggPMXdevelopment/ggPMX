@@ -17,6 +17,9 @@ pmx_vpc_rug(show = TRUE, color = "#000000", linewidth = 1, alpha = 0.7, size)
 
 \item{size}{\code{numeric} Depreciated thickness of the rug. Default: 1.}
 }
+\value{
+list with options for the rug layer
+}
 \description{
 Sets vpc rug layer
 }
@@ -26,10 +29,10 @@ When the vpc confidence interval layer method  is rectangles we don't show rug s
 \seealso{
 Other vpc: 
 \code{\link{pmx_plot_vpc}()},
+\code{\link{pmx_vpc}()},
 \code{\link{pmx_vpc_bin}()},
 \code{\link{pmx_vpc_ci}()},
 \code{\link{pmx_vpc_obs}()},
-\code{\link{pmx_vpc_pi}()},
-\code{\link{pmx_vpc}()}
+\code{\link{pmx_vpc_pi}()}
 }
 \concept{vpc}

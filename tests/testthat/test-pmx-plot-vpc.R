@@ -43,11 +43,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_vpc: params ctr result: identical names", {
     p <- pmx_plot_vpc(ctr)
-    vpcNames <- c(
-      "data", "layers", "scales", "mapping", "theme", "coordinates",
-      "facet", "plot_env", "labels"
-    )
-    expect_identical(names(p), vpcNames)
+    expect_identical(names(p), names(ggplot()))
   })
 
 
@@ -80,6 +76,14 @@ if (helper_skip()) {
     expect_true(inherits(vpc, "ggplot"))
     expect_true(identical(vpc$plot_env$pi$median$linetype, "dotted"))
     expect_true(identical(vpc$plot_env$ci$median$fill, "red"))
+  })
+  
+  test_that("Test different ways to facet vpc pmx_plot_vpc", {
+    p1 <- ctr %>% pmx_plot_vpc(strat.facet = c("SEX", "STUD"))
+    p2 <- ctr %>% pmx_plot_vpc(strat.facet = SEX~STUD)
+    p3 <- ctr %>% pmx_plot_vpc(strat.facet = ~SEX+STUD)
+    expect_identical(sort(as.character(p1$facet$params$facets)), sort(as.character(p2$facet$params$facets)))
+    expect_identical(sort(as.character(p2$facet$params$facets)), sort(as.character(p3$facet$params$facets)))
   })
 
   #------------------- pmx_plot_vpc - end ---------------------------------------

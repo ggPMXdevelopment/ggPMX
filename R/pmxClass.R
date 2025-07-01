@@ -3,6 +3,7 @@
 #' @param pname parameter name
 #' @param defaults_ defaults of the parameters
 #' @param ... other arguments
+#' @returns Updated ggplot2 object
 #' @noRd
 update_container_plots <- function(ctr, pname, defaults_, ...){
   stopifnot(is_pmxclass(ctr))
@@ -17,6 +18,7 @@ update_container_plots <- function(ctr, pname, defaults_, ...){
 #' Create parameters for plot updating
 #' @param ctr controller
 #' @param pname parameter name
+#' @returns plot parameters
 #' @noRd
 get_plot_param <- function(ctr, pname){
   params <- as.list(match.call(expand.dots = TRUE))[-1]
@@ -241,7 +243,7 @@ pmx_mlxtran <- function(file_name, config = "standing", call = FALSE, endpoint, 
 
 formula_to_text <- function(form) {
   if (is.formula(form)) {
-    paste(as.character(as.list(form)[-1]), collapse = " and ")
+    paste(all.vars(form), collapse = " and ")
   } else {
     form
   }
@@ -473,7 +475,8 @@ set_plot <- function(
                      ctr,
                      ptype = c(
                        "IND", "DIS", "SCATTER", "ETA_PAIRS",
-                       "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS"
+                       "ETA_COV", "PMX_QQ", "VPC", "PMX_DENS",
+                       "PARAM_HISTORY"
                      ),
                      pname,
                      use.defaults = TRUE,
@@ -485,8 +488,8 @@ set_plot <- function(
   assert_that(is_pmxclass(ctr))
   ptype <- match.arg(ptype)
   assert_that(is_string_or_null(pname))
-  assert_that(is_string_or_null(strat.color))
-  assert_that(is_string_or_formula_or_null(strat.facet))
+  #assert_that(is_string_or_null(strat.color)) 
+  assert_that(is_character_or_formula_or_null_or_na(strat.facet)) 
 
 
 
@@ -526,7 +529,8 @@ set_plot <- function(
       ETA_COV = if (ctr$has_re) do.call(eta_cov, params),
       PMX_QQ = do.call(pmx_qq, params),
       PMX_DENS = do.call(pmx_dens, params),
-      VPC = do.call(pmx_vpc, params)
+      VPC = do.call(pmx_vpc, params),
+      PARAM_HISTORY = do.call(pmx_param_history, params)
     )
   if (!is.null(substitute(filter))) {
     filter <- deparse(substitute(filter))
@@ -976,7 +980,6 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     id = self$id
   )
 
-
   if (!is.null(self$data[["eta"]])) {
     re <- grep("^eta_(.*)_(mode|mean)", names(self$data[["eta"]]), value = TRUE)
     if (length(re) > 0) {
@@ -1026,12 +1029,42 @@ pmx_initialize <- function(self, private, data_path, input, dv,
 
     # Needed same treatment for "sim_blq" as for "sim_blq_y"
     if(!is.null(self[["data"]][["sim_blq"]])){
-      # In some cases xx and xx_simBlq are not the same
+
       suppressWarnings({
-        for(cn in c("iwRes", "pwRes", "npde")) {
-          if(paste0(cn, "_mode_simBlq") %in% colnames(self[["data"]][["sim_blq"]])) {
-            self[["data"]][["sim_blq"]][[toupper(cn)]] <-
-              self[["data"]][["sim_blq"]][[paste0(cn, "_mode_simBlq")]]
+
+        # Get the column names of sim_blq data
+        column_names_sim <- colnames(self[["data"]][["sim_blq"]])
+
+        # Define the array of residual names
+        residual_names <- c("iwRes", "pwRes", "npde")
+
+        # Get the names from the sim_blq_npde_iwres section of the config data
+        blq_names <- names(config[['data']][['sim_blq_npde_iwres']][['names']])
+
+        # Loop over each residual name
+        for (residual in residual_names) {
+          # Search for the residual name in the config names
+          idx <- grep(residual, blq_names)
+          # Get the corresponding column name from the config
+          config_col_name <- blq_names[idx]
+
+          # If there is one match and the column name exists in our data,
+          # then replace the data column with the config column
+          if (length(config_col_name) == 1 && config_col_name %in% column_names_sim) {
+            self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[config_col_name]]
+          } else {
+            # Construct the column names for mode and simple scenarios
+            mode_simBlq <- paste0(residual, "_mode_simBlq")
+            simple_simBlq <- paste0(residual, "_simBlq")
+
+            # If "_mode_simBlq" column exists, use this column
+            if (mode_simBlq %in% column_names_sim) {
+              self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[mode_simBlq]]
+
+              # Otherwise if "_simBlq" column exists, use this column
+            } else if (simple_simBlq %in% column_names_sim) {
+              self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[simple_simBlq]]
+            }
           }
         }
       })

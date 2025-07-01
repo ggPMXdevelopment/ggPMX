@@ -112,7 +112,7 @@ if (helper_skip()) {
     "1_popPK_model",
     "project.mlxtran"
   )
-  ctr <- pmx_mlxtran(mlxpath, config = "standing")
+  ctr <- suppressWarnings(pmx_mlxtran(mlxpath, config = "standing"))
 
   test_that("pmx_dens: params: ctr; result: ggplot", {
     expect_true(inherits(pmx_plot_iwres_dens(ctr), "ggplot"))

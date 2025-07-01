@@ -19,6 +19,9 @@ is not desired.}
 
 \item{...}{other classInt::classIntervals parameters excpet \code{style} and \code{n}}
 }
+\value{
+list with options for `pmx_vpc_bin` object
+}
 \description{
 Creates vpc bins
 }
@@ -28,10 +31,10 @@ This is a wrapper to the bin based VPC
 \seealso{
 Other vpc: 
 \code{\link{pmx_plot_vpc}()},
+\code{\link{pmx_vpc}()},
 \code{\link{pmx_vpc_ci}()},
 \code{\link{pmx_vpc_obs}()},
 \code{\link{pmx_vpc_pi}()},
-\code{\link{pmx_vpc_rug}()},
-\code{\link{pmx_vpc}()}
+\code{\link{pmx_vpc_rug}()}
 }
 \concept{vpc}

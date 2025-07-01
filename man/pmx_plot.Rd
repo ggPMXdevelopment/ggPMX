@@ -18,6 +18,9 @@ pmx_plot(ctr, pname, ...)
 \item \code{\link{pmx_update}} function.
 }}
 }
+\value{
+ggplot2 object
+}
 \description{
 Generic pmx plot
 }

@@ -1,11 +1,15 @@
 if (helper_skip()) {
-
+  
   context("vdiffr")
   test_that("vdiffr", {
+
+    skip_on_cran()
+    skip_on_ci() # temporary measure until ggplot2 4.0.0 is released
+
     set.seed(42)
     ctr <- theophylline()
     args <- commandArgs(trailingOnly = TRUE)
-
+    
     if (length(args) == 0) {
       wd <- getwd()
     } else if (length(args) == 1) {
@@ -14,7 +18,7 @@ if (helper_skip()) {
     } else {
       stop("More than one argument was supplied! Need only 1 - root output directory", call. = FALSE)
     }
-
+    
     f1 <- function(x) {
       pmx_plot_abs_iwres_ipred(x)
     }
@@ -89,11 +93,17 @@ if (helper_skip()) {
       fun_pmx_plot_vpc = f18,
       fun_pmx_plot_eta_conts = f16
     )
-
+    
     lapply(
       c(names(fun_list)),
       function(n) {
-        vdiffr::expect_doppelganger(n, fun_list[[n]](ctr))
+        # hide warnings from stat_smooth & geom_point
+        suppressWarnings(
+          vdiffr::expect_doppelganger(
+            title = n, 
+            fig = fun_list[[n]](ctr)
+          )
+        )
       }
     )
   })

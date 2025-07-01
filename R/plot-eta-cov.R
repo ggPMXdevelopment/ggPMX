@@ -143,7 +143,7 @@ plot_pmx.eta_cov <- function(x, dx, ...) {
         boxplot_layers <- geom_boxplot(aes(x = .data$value, y = .data$VALUE))
       }
 
-      ggplot(dx.cats, measure.vars = cats) +
+      ggplot(dx.cats) +
         boxplot_layers +
         facet_grid(stats::as.formula("EFFECT~variable"), scales = "free")
     }
