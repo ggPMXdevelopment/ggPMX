@@ -90,7 +90,7 @@ if (helper_skip()) {
           result: error", {
 
             nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
-            expect_warning(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 2.75, dvid = "TAD"))
+            expect_error(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 2.75, dvid = "TAD"))
 
           })
 
