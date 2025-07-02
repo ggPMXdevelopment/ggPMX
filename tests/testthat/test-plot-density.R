@@ -116,6 +116,7 @@ if (helper_skip()) {
     ctr <- pmx_mlxtran(mlxpath, config = "standing")
   })
 
+
   test_that("pmx_dens: params: ctr; result: ggplot", {
     expect_true(is_ggplot(pmx_plot_iwres_dens(ctr)))
   })

@@ -25,7 +25,7 @@
 #' @details
 #' \code{pmx_report} uses pre-defined template .Rmd to generate the report.
 #' The idea is to pass the controller as a report argument using knitr \code{params} artifact.
-
+#' @return NULL
 #' @example inst/examples/pmx_report.R
 
 pmx_report <-

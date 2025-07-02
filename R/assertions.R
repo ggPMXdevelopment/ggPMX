@@ -32,6 +32,12 @@ is_string_or_formula_or_null <- function(x) {
   is_string(x) || is.formula(x) || is.null(x)
 }
 
+#In contrast to is_string_or_formula_or_null returns TRUE for c('A', 'B')
+#Also c('A', NA) ~ TRUE, NA ~ TRUE
+is_character_or_formula_or_null_or_na <- function(x) {
+  is.character(x) || is.formula(x) || is.null(x) || is.na(x)
+}
+
 is_null_or_named_vector <- function(v) {
   is.null(v) || is.vector(v) & !is.null(names(v)) & all(!is.na(names(v)))
 }
@@ -90,11 +96,10 @@ assertthat::on_failure(is_pmxclass) <- function(call, env) {
 }
 
 is_ggplot <- function(x) {
-  if (packageVersion("ggplot2") < "3.5.2") {
-    ggplot2::is.ggplot(x)
-  } else {
+  if ("is_ggplot" %in% getNamespaceExports("ggplot2")) {
     ggplot2::is_ggplot(x)
-  }
+  } else {
+    ggplot2::is.ggplot(x)
 }
 
 assertthat::on_failure(is_ggplot) <- function(call, env) {

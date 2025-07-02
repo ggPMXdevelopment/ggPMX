@@ -101,6 +101,7 @@ if (helper_skip()) {
       dx_range <- extend_range(x = dx)
     })
     expect_identical(dx_range, c(Inf, -Inf))
+
   })
 
   test_that("extend_range: params: x; result: error 'r' must be a 'range', hence of length 2", {
@@ -246,6 +247,7 @@ if (helper_skip()) {
       suppressWarnings({
         ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
       })
+
       p <- pmx_plot_iwres_ipred(ctr_mlx)
       expect_identical(
         p$scales$scales[[1]]$limits,

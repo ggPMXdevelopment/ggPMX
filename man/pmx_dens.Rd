@@ -35,6 +35,9 @@ pmx_dens(
 
 \item{...}{others graphics arguments passed to \code{\link{pmx_gpar}} internal object.}
 }
+\value{
+list with options for density plot object
+}
 \description{
 Creates a density plot object
 }

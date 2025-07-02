@@ -38,6 +38,7 @@ if (helper_skip()) {
     suppressWarnings({
       ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
     })
+
     p <- pmx_plot_dv_pred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })
@@ -106,6 +107,7 @@ if (helper_skip()) {
     suppressWarnings({
       ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
     })
+
     p <- pmx_plot_iwres_time(ctr_mlx)
     expect_identical(p$scales$scales[[1]]$limits, c(-3.7749, 3.7749))
   })
@@ -186,6 +188,7 @@ if (helper_skip()) {
     suppressWarnings({
       ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
     })
+
     p <- pmx_plot_npde_pred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })
@@ -245,6 +248,7 @@ if (helper_skip()) {
     suppressWarnings({
       ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
     })
+
     p <- pmx_plot_abs_iwres_ipred(ctr_mlx)
     expect_identical(p$scales$scales, list())
   })
@@ -301,6 +305,7 @@ if (helper_skip()) {
     suppressWarnings({
       ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
     })
+
     p <- pmx_plot_iwres_ipred(ctr_mlx)
     expect_identical(
       p$scales$scales[[1]]$limits,
@@ -346,6 +351,7 @@ if (helper_skip()) {
     suppressWarnings({
       ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
     })
+
     p <- pmx_plot_dv_ipred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })

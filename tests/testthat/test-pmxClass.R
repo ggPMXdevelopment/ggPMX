@@ -925,6 +925,7 @@ if (helper_skip()) {
   })
 
   test_that("pmx_print  params: self, private; result: identical inherits", {
+    # assign without printing
     capture.output({
       pmx_pr <- pmx_print(self, private)
     })
@@ -974,6 +975,7 @@ if (helper_skip()) {
   })
 
   test_that("pmx_print params: self, private; result: identical structure", {
+    # assign quietly
     capture.output({
       pmx_pr <- pmx_print(self, private)
     })
@@ -1036,7 +1038,8 @@ if (helper_skip()) {
 
   test_that("print.pmxClass: params ctr is a pmxClass obj; result: identical inherits", {
     ctr <- theophylline()
-    expect_true(inherits(print.pmxClass(ctr), "pmxConfig"))
+    tmp <- capture.output(ctr_print <- print.pmxClass(ctr)) # assign quietly
+    expect_true(inherits(ctr_print, "pmxConfig"))
   })
   #------------------- print.pmxClass - end --------------------------------------
 

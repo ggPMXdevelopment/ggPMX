@@ -43,8 +43,11 @@ to \code{c(.05,.95)}}
 \item{area}{\code{list} containing: \cr
 \itemize{
 \item \strong{fill} \code{charcater}  Color of the shaded area. Default: "blue".
-\item \strong{alpha} \code{numeric} Transparency of the sahded area. Default: 0.1.
+\item \strong{alpha} \code{numeric} Transparency of the shaded area. Default: 0.1.
 }}
+}
+\value{
+list with options for Prediction Interval layer
 }
 \description{
 Sets vpc percentile layer

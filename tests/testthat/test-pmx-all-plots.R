@@ -82,7 +82,7 @@ if (helper_skip()) {
       "abs_iwres_ipred", "iwres_ipred", "iwres_time", "iwres_dens",
       "iwres_qq", "npde_time", "npde_pred", "vpc", "npde_qq", "dv_pred",
       "dv_ipred", "individual", "eta_hist", "eta_box", "eta_cats", "eta_conts",
-      "eta_qq"
+      "eta_qq", "saem_convergence"
     )
 
     pmx_function_plots <- sprintf("pmx_plot_%s", pmx_plots)
@@ -106,7 +106,7 @@ if (helper_skip()) {
   context(" Test pmx_plot_generic function")
 
   #---------------------- pmx_plot_generic with nlmixr controller start ---------------------------------
-  if (requireNamespace("nlmixr2", quietly = TRUE)) {
+  if (requireNamespace("nlmixr2est", quietly = TRUE)) {
     test_that("pmx_plot_generic with nlmixr controller: params: ctr, pname   result: identical inherits, names", {
       one.compartment <- function() {
         ini({
@@ -128,7 +128,7 @@ if (helper_skip()) {
           cp ~ add(add.sd)
         })
       }
-      fit <- nlmixr2::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
+      fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
                              control = list(print = 0)
                              )
       ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
@@ -136,6 +136,7 @@ if (helper_skip()) {
 
       expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
       expect_true(is_ggplot(p))
+
     })
 
   }
@@ -171,6 +172,7 @@ if (helper_skip()) {
     expect_true(inherits(p10, "ggmatrix"))
     expect_true(is_ggplot(p11))
     expect_true(is_ggplot(p12))
+
   })
 
   test_that("pmx_plot_generic: params: NULL result: error missing arguments", {
@@ -185,6 +187,7 @@ if (helper_skip()) {
   test_that("pmx_plot_generic: params: ctr, pname result: identical names", {
     p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
     expect_true(is_ggplot(p))
+
   })
 
 
@@ -262,7 +265,6 @@ if (helper_skip()) {
     p <- ctr %>% pmx_plot_cats("npde_time")
     expect_true(is_ggplot(p[[1]]))
   })
-
 
   test_that("pmx_register_plot: params: ctr, pname, cats  result: NULL", {
     p1 <- ctr %>% pmx_plot_cats("npde_time", cats = "")

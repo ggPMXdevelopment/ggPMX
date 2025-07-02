@@ -99,7 +99,10 @@ print.pmx_gpar <- function(x, ...) {
   invisible(x)
 }
 
-
+rep_or_null <- function(x, length.out) {
+  if (is.null(x)) return(x) 
+  rep(x, length.out = length.out)
+}
 
 #' Method for subsetting "pmx_gpar" objects
 #'

@@ -14,6 +14,9 @@ that should be removed}
 
 \item{...}{Other parameters passed through to \code{gtable_filter}.}
 }
+\value{
+table The table with removed grobs
+}
 \description{
 Remove named elements from gtable
 }

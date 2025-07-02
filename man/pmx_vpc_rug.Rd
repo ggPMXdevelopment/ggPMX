@@ -17,6 +17,9 @@ pmx_vpc_rug(show = TRUE, color = "#000000", linewidth = 1, alpha = 0.7, size)
 
 \item{size}{\code{numeric} Depreciated thickness of the rug. Default: 1.}
 }
+\value{
+list with options for the rug layer
+}
 \description{
 Sets vpc rug layer
 }

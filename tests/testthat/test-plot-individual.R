@@ -14,6 +14,7 @@ if (helper_skip()) {
     ctr <- pmx_mlxtran(mlxpath, config = "standing")
   })
 
+
   #------------------- pmx_plot_individual start -------------------------------
   test_that("pmx_plot_individual: params: no; result: error ctr is missing", {
     expect_error(pmx_plot_individual())
@@ -24,8 +25,9 @@ if (helper_skip()) {
       colour = c("black", "green")
     ))
     expect_true(is_ggplot(indiv_plot))
-  })
+=======
 
+  })
 
   test_that("pmx_plot_individual: params: no; result: ggplot", {
     expect_true(is_ggplot(pmx_plot_individual(ctr)))
@@ -339,6 +341,7 @@ if (helper_skip()) {
     pp <- ctr %>% get_plot("individual")
     add_f <- add_footnote(pp[[1]], pname = "indiv1", save_dir = ctr$save_dir)
     expect_true(is_ggplot(add_f))
+
   })
 
   test_that("add_footnote: params: pp, pname, save_dir; result: identical structure", {

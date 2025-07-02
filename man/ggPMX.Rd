@@ -39,7 +39,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Matthew Fidler \email{matt.fidler@novartis.com} (\href{https://orcid.org/0000-0001-8538-6691}{ORCID})
+\strong{Maintainer}: Aleksandr Pogodaev \email{alex.pogodaev@novartis.com} (\href{https://orcid.org/0000-0002-1371-207X}{ORCID})
 
 Authors:
 \itemize{
@@ -52,7 +52,9 @@ Authors:
   \item Inga Ludwig \email{inga.ludwig@novartis.com}
   \item Ines Paule \email{ines.paule@novartis.com}
   \item Didier Renard \email{didier.renard@novartis.com}
+  \item Matthew Fidler \email{matt.fidler@novartis.com} (\href{https://orcid.org/0000-0001-8538-6691}{ORCID})
   \item Seid Hamzic \email{se.hamzic@gmail.com}
+  \item Danielle Navarro \email{djnavarro@protonmail.com}
 }
 
 Other contributors:
@@ -60,6 +62,8 @@ Other contributors:
   \item Benjamin Guiastrennec \email{guiastrennec@gmail.com} [contributor]
   \item Kyle T Baron \email{kyleb@metrumrg.com} (\href{https://orcid.org/0000-0001-7252-5656}{ORCID}) [contributor]
   \item Qing Xi Ooi \email{ooi.qingxi@gmail.com} [contributor]
+  \item Ibtissem Rebai \email{ibtissem.rebai@certara.com} [contributor]
+  \item Mahmoud Ali \email{mahmoud.ali@certara.com} [contributor]
   \item Novartis Pharma AG [copyright holder]
 }
 

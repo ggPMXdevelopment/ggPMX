@@ -11,3 +11,4 @@ NAMESPACE
 cont.sh
 .Rbuildignore
 inst/doc
+tests/testthat/_snaps/*

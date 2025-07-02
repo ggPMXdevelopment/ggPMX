@@ -1,4 +1,4 @@
-if (helper_skip() && requireNamespace("nlmixr2", quietly = TRUE)) {
+if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
   context("Test pmx_nlmixr controller")
 
   one.compartment <- function() {
@@ -22,7 +22,7 @@ if (helper_skip() && requireNamespace("nlmixr2", quietly = TRUE)) {
     })
   }
 
-  fit <- nlmixr2::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
+  fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
                          control = list(print = 0)
                          )
 
@@ -60,7 +60,7 @@ if (helper_skip() && requireNamespace("nlmixr2", quietly = TRUE)) {
     expect_true(inherits(p12, "NULL"))
     expect_true(is_ggplot(p13))
     expect_true(is_ggplot(p14))
-    expect_true(is_ggplot(p15))
+    expect_true(inherits(p15, c("ggplot", "ggplot2::ggplot", "ggmatrix")))
   })
 
 

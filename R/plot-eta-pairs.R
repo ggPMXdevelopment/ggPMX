@@ -168,6 +168,7 @@ upper.plot <- function(data, x, y, text_color, gp) {
 #' @param names A character vector of the grob names (as listed in \code{table$layout})
 #'   that should be removed
 #' @param ... Other parameters passed through to \code{gtable_filter}.
+#' @returns table The table with removed grobs
 
 gtable_remove_grobs <- function(table, names, ...) {
   kept_names <- table$layout$name[!(table$layout$name %in% names)]
@@ -281,7 +282,8 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
   class(p) <- c("pmx_eta_matrix", class(p))
   p +
     theme(
-      strip.background = element_rect(fill = "white"),
+      strip.background = element_blank(), #Otherwise it sometimes hides shrinkage values lables in the plot
+      strip.clip = "off", 
       strip.placement = "outside",
       strip.text = element_text(face = "bold", size = 12)
     )

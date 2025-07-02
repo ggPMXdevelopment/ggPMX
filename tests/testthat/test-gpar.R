@@ -1,5 +1,11 @@
 if (helper_skip()) {
 
+  # check return value of print(x) without writing output to console
+  print_return_value <- function(x) {
+    tmp <- capture.output(y <- print(x))
+    y
+  }
+  
   context("Test graphical parameters object")
 
   #------------------- pmx_gpar start--------------------------------------------
@@ -13,7 +19,7 @@ if (helper_skip()) {
       gpars$smooth,
       list(
         se = FALSE, linetype = 1, linewidth = 1.5, method = "loess",
-        colour = "red"
+        colour = "red", formula = "y ~ x"
       )
     )
   })

@@ -20,6 +20,7 @@ ABS_IWRES_IPRED:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   trans: abs_y
   bloq:
     show: yes
@@ -51,6 +52,7 @@ ABS_IWRES_TIME:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   trans: abs_y
   bloq:
     show: yes
@@ -83,6 +85,7 @@ IWRES_IPRED:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   bloq:
     show: yes
     cens: CENS
@@ -114,6 +117,7 @@ IWRES_TIME:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   bloq:
     show: yes
     cens: CENS
@@ -175,6 +179,7 @@ NPDE_TIME:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   bloq:
     show: yes
     cens: CENS
@@ -208,6 +213,7 @@ NPDE_PRED:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   bloq:
     show: yes
     cens: CENS
@@ -252,6 +258,7 @@ DV_PRED:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   is.identity_line: yes
   identity_line:
     intercept: 0
@@ -286,6 +293,7 @@ DV_IPRED:
     se: no
     colour: red
     linetype: 1.0
+    formula: y ~ x
   is.identity_line: yes
   identity_line:
     intercept: 0
@@ -430,6 +438,7 @@ ETA_MATRIX:
     linewidth: 1.5
     method: loess
     colour: red
+    formula: y ~ x
   is.shrink: TRUE
   shrink:
     fun : var
@@ -460,6 +469,7 @@ ETA_CONTS:
     color: black
     linetype: 1.0
     method: lm
+    formula: y ~ x
   is.band: yes
   band:
     'yintercept':
@@ -510,3 +520,30 @@ PMX_VPC:
     'y': DV
   is.smooth: no
   smooth_with_bloq: no
+
+## SAEM plots
+    
+SAEM_CONVERGENCE:
+  ptype: PARAM_HISTORY
+  dname: saem
+  is.title: TRUE
+  is.smooth: no
+  is.reference_line: yes
+  parameter_line:
+    colour: blue
+    linetype: solid
+  convergence_line:
+    colour: violet
+    linetype: solid
+  reference_line:
+    colour: red
+    linetype: solid
+  smooth_with_bloq: no
+  labels:
+    title: 'SAEM Convergence Plot by Parameter'
+    subtitle: ''
+    x: 'Iteration'
+    'y': 'Parameter Value'
+  facets:
+    ncol: 3
+    scales: free_y

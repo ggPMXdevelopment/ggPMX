@@ -11,6 +11,9 @@ getPmxOption(name, default = NULL)
 
 \item{default}{Value to be returned if the option is not currently set.}
 }
+\value{
+value of the option or NULL
+}
 \description{
 Get ggPMX Option
 }

@@ -19,6 +19,9 @@ is not desired.}
 
 \item{...}{other classInt::classIntervals parameters excpet \code{style} and \code{n}}
 }
+\value{
+list with options for `pmx_vpc_bin` object
+}
 \description{
 Creates vpc bins
 }

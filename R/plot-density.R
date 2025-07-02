@@ -13,6 +13,7 @@
 #' @param snd_line \code{list} normal density graphics parameters
 #' @param vline \code{list} vertical line graphics parameters
 #' @param ... others graphics arguments passed to \code{\link{pmx_gpar}} internal object.
+#' @returns list with options for density plot object
 
 #'
 #' @details

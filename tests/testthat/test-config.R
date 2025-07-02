@@ -2,6 +2,12 @@ if (helper_skip()) {
 
   context("Test config")
 
+  # check return value of print(x) without writing output to console
+  print_return_value <- function(x) {
+    tmp <- capture.output(y <- print(x))
+    y
+  }
+  
   #-------------pmx_config START --------------------------------------------
   test_that("pmx_config params: inputs result: error", {
     input_dir <-
@@ -287,6 +293,7 @@ if (helper_skip()) {
     ignore <- capture.output({
       pr <- print.pmxConfig(config)
     })
+    pr <- print_return_value(config)
     expect_identical("mlx", pr$sys)
     expect_true(exists("plots", pr))
     expect_true(exists("data", pr))
@@ -304,10 +311,10 @@ if (helper_skip()) {
       "IWRES_QQ", "NPDE_TIME", "NPDE_PRED", "NPDE_QQ",
       "DV_PRED", "DV_IPRED", "INDIVIDUAL", "ETA_HIST",
       "ETA_BOX", "ETA_MATRIX", "ETA_CATS", "ETA_CONTS", "ABS_IWRES_TIME",
-      "ETA_QQ", "PMX_VPC"
+      "ETA_QQ", "PMX_VPC", "SAEM_CONVERGENCE"
     )
-    # print(setdiff(names(pr$plots), plotNames))
-    dataNames <- c("predictions", "estimates", "eta", "finegrid")
+
+    dataNames <- c("predictions", "estimates", "eta", "finegrid", "saem")
     expect_setequal(plotNames, names(pr$plots))
     expect_setequal(dataNames, names(pr$data))
   })

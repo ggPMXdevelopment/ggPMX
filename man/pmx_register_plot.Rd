@@ -2,7 +2,7 @@
 % Please edit documentation in R/pmx-all-plots.R
 \name{pmx_register_plot}
 \alias{pmx_register_plot}
-\title{Register plot}
+\title{Register plot  (Jun2025, Alex: I believe it doesn't work at all)}
 \usage{
 pmx_register_plot(ctr, pp, pname = NULL)
 }
@@ -14,5 +14,5 @@ pmx_register_plot(ctr, pp, pname = NULL)
 \item{pname}{\code{character} plot nme}
 }
 \description{
-Register plot
+Register plot  (Jun2025, Alex: I believe it doesn't work at all)
 }
