@@ -77,7 +77,7 @@ if (helper_skip()) {
 
   #------------------- param_table with nlmixr start -----------------------------
   context("Test param_table() with nlmixr controller")
-  if (requireNamespace("nlmixr2", quietly=TRUE)) {
+  if (requireNamespace("nlmixr2est", quietly=TRUE)) {
     test_that("param_table: params return: kable", {
       one.compartment <- function() {
         ini({
