@@ -100,6 +100,7 @@ is_ggplot <- function(x) {
     ggplot2::is_ggplot(x)
   } else {
     ggplot2::is.ggplot(x)
+  }
 }
 
 assertthat::on_failure(is_ggplot) <- function(call, env) {
