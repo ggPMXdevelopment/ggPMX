@@ -90,7 +90,8 @@ if (helper_skip()) {
           result: error", {
 
             nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
-            expect_error(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 2.75, dvid = "TAD"))
+            expect_fn <- if (packageVersion("GGally") <= "2.2.1") expect_error else expect_warning
+            expect_fn(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 2.75, dvid = "TAD"))
 
           })
 
