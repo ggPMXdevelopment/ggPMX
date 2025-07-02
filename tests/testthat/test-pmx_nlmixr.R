@@ -60,7 +60,7 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     expect_true(inherits(p12, "NULL"))
     expect_true(is_ggplot(p13))
     expect_true(is_ggplot(p14))
-    expect_true(inherits(p15, c("ggplot", "ggplot2::ggplot", "ggmatrix")))
+    expect_true(inherits(p15, "ggmatrix"))
   })
 
 

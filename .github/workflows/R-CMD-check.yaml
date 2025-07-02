@@ -26,6 +26,7 @@ jobs:
               os: ubuntu-latest,
               r: "release",
               extra-pkgs: 'ggobi/GGally\ntidyverse/ggplot2',
+              cache-version: 'dev'
             }
 
     env:
@@ -61,6 +62,7 @@ jobs:
             lixoftConnectors=?ignore
             ${{ matrix.config.extra-pkgs || '' }}
           needs: check
+          cache-version: ${{ matrix.config.cache-version || 'cran' }}
 
       - run: tlmgr --version
 
