@@ -25,8 +25,6 @@ if (helper_skip()) {
       colour = c("black", "green")
     ))
     expect_true(is_ggplot(indiv_plot))
-=======
-
   })
 
   test_that("pmx_plot_individual: params: no; result: ggplot", {
