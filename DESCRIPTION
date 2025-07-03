@@ -64,7 +64,6 @@ Suggests:
     xtable,
     vdiffr,
     rxode2,
-    nlmixr2,
     nlmixr2est,
     nlmixr2data,
     nlme,
