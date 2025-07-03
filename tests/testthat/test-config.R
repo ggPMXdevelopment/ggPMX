@@ -12,7 +12,11 @@ if (helper_skip()) {
   test_that("pmx_config params: inputs result: error", {
     input_dir <-
       file.path(system.file(package = "ggPMX"), "templates", "mlx")
-    expect_error(suppressWarnings(pmx_config(inputs = input_dir)))
+    expect_error(
+      suppressWarnings(
+        pmx_config(inputs = input_dir)
+      )
+    )
   })
 
   test_that("pmx_config params: plots, inputs result: identical inherits", {
@@ -286,6 +290,9 @@ if (helper_skip()) {
 
 
   test_that("print.pmxConfig : x; result: identical structure", {
+    ignore <- capture.output({
+      pr <- print.pmxConfig(config)
+    })
     pr <- print_return_value(config)
     expect_identical("mlx", pr$sys)
     expect_true(exists("plots", pr))
@@ -293,7 +300,9 @@ if (helper_skip()) {
   })
 
   test_that("print.pmxConfig : x; result: identical names", {
-    pr <- print_return_value(config)
+    ignore <- capture.output({
+      pr <- print.pmxConfig(config)
+    })
     prNames <- c("data", "plots", "sys", "hasNpd")
     expect_identical(prNames, names(pr))
 
@@ -304,6 +313,7 @@ if (helper_skip()) {
       "ETA_BOX", "ETA_MATRIX", "ETA_CATS", "ETA_CONTS", "ABS_IWRES_TIME",
       "ETA_QQ", "PMX_VPC", "SAEM_CONVERGENCE"
     )
+
     dataNames <- c("predictions", "estimates", "eta", "finegrid", "saem")
     expect_setequal(plotNames, names(pr$plots))
     expect_setequal(dataNames, names(pr$data))
@@ -311,12 +321,13 @@ if (helper_skip()) {
 
 
   test_that("print.pmxConfig : x; result: identical inherits", {
-    pr <- print_return_value(config)
+    ignore <- capture.output({
+      pr <- print.pmxConfig(config)
+    })
     expect_true(inherits(pr, "pmxConfig"))
   })
 
   #-------------print.pmxConfig END ----------------------------------------------
-
   #-------------load_config_files START ------------------------------------------
 
   test_that("load_config_files : ifile, pfile, sys; result: identical inherits", {

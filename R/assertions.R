@@ -97,9 +97,10 @@ assertthat::on_failure(is_pmxclass) <- function(call, env) {
 
 is_ggplot <- function(x) {
   if ("is_ggplot" %in% getNamespaceExports("ggplot2")) {
-   return(ggplot2::is_ggplot(x))
+    ggplot2::is_ggplot(x)
+  } else {
+    ggplot2::is.ggplot(x)
   }
-  ggplot2::is.ggplot(x)
 }
 
 assertthat::on_failure(is_ggplot) <- function(call, env) {

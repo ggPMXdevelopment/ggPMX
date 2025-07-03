@@ -15,7 +15,7 @@ if (helper_skip()) {
     ctr <- pmxClassHelpers$ctr
     expect_is(ctr, "pmxClass")
     p <- ctr %>% get_plot("individual", 2)
-    expect_true(inherits(p, "ggplot"))
+    expect_true(is_ggplot(p))
   })
 
 

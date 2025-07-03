@@ -97,8 +97,11 @@ if (helper_skip()) {
 
   test_that("extend_range: params: x; result: identical range", {
     dx <- ctr %>% get_data("omega")
-    r <- suppressWarnings(extend_range(x = dx))  
-    expect_identical(r, c(Inf, -Inf))
+    suppressWarnings({
+      dx_range <- extend_range(x = dx)
+    })
+    expect_identical(dx_range, c(Inf, -Inf))
+
   })
 
   test_that("extend_range: params: x; result: error 'r' must be a 'range', hence of length 2", {
@@ -175,7 +178,7 @@ if (helper_skip()) {
             res$gp$ranges$x <- NULL
             res$gp$ranges$y <- NULL
             pl_resid <- plot_pmx.residual(x = res, dx)
-            expect_true(inherits(pl_resid, "ggplot"))
+            expect_true(is_ggplot(pl_resid))
           })
 
   test_that("plot_pmx.residual: params: x, dx, res$ranges$x is not NULL; result: identical inherits", {
@@ -189,7 +192,7 @@ if (helper_skip()) {
     res$gp$scale_x_log10 <- F
     res$gp$scale_y_log10 <- F
     pl_resid <- plot_pmx.residual(x = res, dx)
-    expect_true(inherits(pl_resid, "ggplot"))
+    expect_true(is_ggplot(pl_resid))
   })
 
   test_that("plot_pmx.residual: params: x, dx, res$strat.facet, res$strat.color;
@@ -206,13 +209,14 @@ if (helper_skip()) {
             res$strat.color <- "SEX"
             res$strat.facet <- "STUD"
             pl_resid <- plot_pmx.residual(x = res, dx)
-            expect_true(inherits(pl_resid, "ggplot"))
+            expect_true(is_ggplot(pl_resid))
+
           })
 
   #------------------- plot_pmx.residual end ---------------------------------
 
   test_that("pmx_plot_iwres_ipred: params: ctr; result: ggplot", {
-    expect_true(inherits(pmx_plot_iwres_ipred(ctr), "ggplot"))
+    expect_true(is_ggplot(pmx_plot_iwres_ipred(ctr)))
   })
 
   test_that("pmx_plot_iwres_ipred: params: ctr; result: list", {
@@ -240,7 +244,10 @@ if (helper_skip()) {
         "1_popPK_model",
         "project.mlxtran"
       )
-      ctr_mlx <- suppressWarnings(pmx_mlxtran(mlxpath, config = "standing"))
+      suppressWarnings({
+        ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+      })
+
       p <- pmx_plot_iwres_ipred(ctr_mlx)
       expect_identical(
         p$scales$scales[[1]]$limits,
@@ -281,7 +288,7 @@ if (helper_skip()) {
     {
       p <- ctr %>% pmx_plot_npde_time(filter = "STUD == 1")
 
-      expect_true(inherits(p, "ggplot"))
+      expect_true(is_ggplot(p))
     }
   )
 
@@ -292,7 +299,8 @@ if (helper_skip()) {
       filter_string <- "STUD == 1"
       p <- ctr %>% pmx_plot_npde_time(filter = filter_string)
 
-      expect_true(inherits(p, "ggplot"))
+      expect_true(is_ggplot(p))
+
     }
   )
 

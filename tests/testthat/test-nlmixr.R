@@ -162,6 +162,8 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
                                     table = nlmixr2est::tableControl(cwres = TRUE, npde = TRUE)
                                     )
 
-    ctr <- pmx_nlmixr(cmt2fit.logn, conts = c("WEIGHTB"), cats = "TRTACT", vpc = TRUE)
+    expect_warning({
+      ctr <- pmx_nlmixr(cmt2fit.logn, conts = c("WEIGHTB"), cats = "TRTACT", vpc = TRUE)
+    }, "disabling vpc")
   })
 }

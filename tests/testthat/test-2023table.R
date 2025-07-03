@@ -7,7 +7,9 @@ if (helper_skip()) {
 
       unzip(.path)
 
-      ctr <- pmx_mlxtran("warfarin_PD_project.mlxtran")
+      ignore <- capture.output({
+        ctr <- pmx_mlxtran("warfarin_PD_project.mlxtran")
+      })
 
       p_ctr <- ctr %>% param_table(return_table = TRUE)
 

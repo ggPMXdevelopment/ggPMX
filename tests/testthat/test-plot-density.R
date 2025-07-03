@@ -112,10 +112,13 @@ if (helper_skip()) {
     "1_popPK_model",
     "project.mlxtran"
   )
-  ctr <- suppressWarnings(pmx_mlxtran(mlxpath, config = "standing"))
+  suppressWarnings({
+    ctr <- pmx_mlxtran(mlxpath, config = "standing")
+  })
+
 
   test_that("pmx_dens: params: ctr; result: ggplot", {
-    expect_true(inherits(pmx_plot_iwres_dens(ctr), "ggplot"))
+    expect_true(is_ggplot(pmx_plot_iwres_dens(ctr)))
   })
 
   test_that("pmx_dens: params: ctr is NULL; result: ggplot", {
@@ -123,11 +126,11 @@ if (helper_skip()) {
   })
 
   test_that("pmx_dens: params: ctr, is.legend is FALSE; result: ggplot", {
-    expect_true(inherits(pmx_plot_iwres_dens(ctr, is.legend = FALSE), "ggplot"))
+    expect_true(is_ggplot(pmx_plot_iwres_dens(ctr, is.legend = FALSE)))
   })
 
   test_that("pmx_dens: params: ctr, var_line; result: ggplot", {
-    expect_true(inherits(
+    expect_true(is_ggplot(
       pmx_plot_iwres_dens(
         ctr,
         var_line = list(
@@ -135,8 +138,7 @@ if (helper_skip()) {
           size = 1,
           linetype = 1
         )
-      ),
-      "ggplot"
+      )
     ))
   })
 
@@ -150,7 +152,7 @@ if (helper_skip()) {
 
 
   test_that("pmx_dens: params: ctr, var_line, snd_line; result: ggplot", {
-    expect_true(inherits(
+    expect_true(is_ggplot(
       pmx_plot_iwres_dens(
         ctr,
         var_line = list(
@@ -159,8 +161,7 @@ if (helper_skip()) {
           linetype = 1
         ),
         snd_line = list(colour = "red", size = 1)
-      ),
-      "ggplot"
+      )
     ))
   })
   #------------------- pmx_plot_iwres_dens end ---------------------------------
