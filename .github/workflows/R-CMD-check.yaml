@@ -18,10 +18,16 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,  r: 'release'}
+          - { os: macos-latest, r: "release" }
+          - { os: windows-latest, r: "release" }
+          - { os: ubuntu-latest, r: "devel", http-user-agent: "release" }
+          - { os: ubuntu-latest, r: "release" }
+          - {
+              os: ubuntu-latest,
+              r: "release",
+              extra-pkgs: 'ggobi/GGally\ntidyverse/ggplot2',
+              cache-version: 'dev'
+            }
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -54,7 +60,9 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
+            ${{ matrix.config.extra-pkgs || '' }}
           needs: check
+          cache-version: ${{ matrix.config.cache-version || 'cran' }}
 
       - run: tlmgr --version
 
