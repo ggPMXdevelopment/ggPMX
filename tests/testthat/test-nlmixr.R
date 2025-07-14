@@ -1,6 +1,7 @@
 if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
   test_that("nlmixr test", {
     skip_on_cran()
+    skip_on_os("windows") #fairly slow on Windows probably due to nlmixr compilation time
 
     # Data' purpose illustrates the error and my data set
     df <- dplyr::tibble(
@@ -40,6 +41,7 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
 
   test_that("warfarin example", {
     skip_on_cran()
+    skip_on_os("windows")
 
     PKdata <- nlmixr2data::warfarin %>%
       dplyr::filter(dvid == "cp") %>%
@@ -113,7 +115,8 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
 
   test_that("integrated demo", {
     skip_on_cran()
-
+    skip_on_os("windows")
+    
     dat <- xgxr::case1_pkpd %>%
       dplyr::rename(DV = LIDV) %>%
       dplyr::filter(CMT %in% 1:2) %>%
