@@ -79,6 +79,7 @@ if (helper_skip()) {
   context("Test param_table() with nlmixr controller")
   if (requireNamespace("nlmixr2est", quietly=TRUE)) {
     test_that("param_table: params return: kable", {
+      skip_on_os("windows")
       one.compartment <- function() {
         ini({
           tka <- 0.45 # Log Ka

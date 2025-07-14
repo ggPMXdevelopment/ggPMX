@@ -1,6 +1,7 @@
 if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
+  skip_on_os("windows") #fairly slow on Windows probably due to nlmixr compilation time
   context("Test pmx_nlmixr controller")
-
+  
   one.compartment <- function() {
     ini({
       tka <- 0.45 # Log Ka

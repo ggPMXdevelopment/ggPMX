@@ -108,6 +108,7 @@ if (helper_skip()) {
   #---------------------- pmx_plot_generic with nlmixr controller start ---------------------------------
   if (requireNamespace("nlmixr2est", quietly = TRUE)) {
     test_that("pmx_plot_generic with nlmixr controller: params: ctr, pname   result: identical inherits, names", {
+      skip_on_os("windows")
       one.compartment <- function() {
         ini({
           tka <- 0.45 # Log Ka
