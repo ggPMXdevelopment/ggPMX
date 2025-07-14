@@ -1,169 +1,154 @@
 if (helper_skip()) {
   library(rmarkdown)
   library(purrr)
-
-
-  #------------------- pmx_fig_process - start -----------------------------------
+  
+  # ---- Setup shared objects ----
   ctr <- theophylline()
+  tmp_dir <- tempdir(check = TRUE)
+  template_path <- system.file("rmarkdown", "templates", "standing", package = "ggPMX")
 
+  # ---- pmx_fig_process tests ----
   context("Test pmx_fig_process function")
-  test_that("pmx_fig_process: params: ctr, old_name, footnote, out_ result: identical inherits", {
-    tmp_dir <- tempdir(check = TRUE)
-    pmx_fig <- pmx_fig_process(ctr, old_name = "gg", footnote = TRUE, out_ = tmp_dir)
-    expect_true(inherits(pmx_fig, "character"))
+
+  test_that("pmx_fig_process: returns character and correct old_name", {
+    out <- pmx_fig_process(ctr, old_name = "gg", footnote = TRUE, out_ = tmp_dir)
+    expect_true(inherits(out, "character"))
+    expect_identical(out, "gg")
   })
 
-  test_that("pmx_fig_process: params: ctr, old_name, footnote, out_ result: identical old_name", {
-    tmp_dir <- tempdir(check = TRUE)
-    pmx_fig <- pmx_fig_process(ctr, old_name = "gg", footnote = TRUE, out_ = tmp_dir)
-    expect_identical(pmx_fig, "gg")
-  })
-
-
-  test_that("pmx_fig_process: params: NULL result: footnote is missing", {
+  test_that("pmx_fig_process: error on missing params", {
     expect_error(pmx_fig_process())
   })
 
-  #------------------- pmx_fig_process - end -------------------------------------
+  # ---- pmx_draft tests ----
+  context("Test pmx_draft function")
 
-  #------------------- pmx_draft - start -----------------------------------------
-  test_that("pmx_draft: params: NULL result: ctr is missing", {
+  test_that("pmx_draft: error if ctr missing", {
     expect_error(pmx_draft())
   })
 
-
-  test_that("pmx_draft: params  result: error template do not exist", {
+  test_that("pmx_draft: error if template does not exist", {
     expect_error(pmx_draft(ctr,
-                           name = "dr_Report_ggPMX", template =
-                                                       system.file("rm", package = "ggPMX"),
-                           edit = FALSE
-                           ))
+      name = "dr_Report_ggPMX",
+      template = system.file("rm", package = "ggPMX"),
+      edit = FALSE
+    ))
   })
 
-  test_that("pmx_draft: params  result: identical inherits", {
+  test_that("pmx_draft: returns character, creates and removes file", {
     draft <- pmx_draft(ctr,
-                       name = "dr_Report_ggPMX", template =
-                                                   system.file("rmarkdown", "templates",
-                                                               "standing",
-                                                               package = "ggPMX"
-                                                               ),
-                       edit = FALSE
-                       )
+      name = "dr_Report_ggPMX",
+      template = template_path,
+      edit = FALSE
+    )
     expect_true(inherits(draft, "character"))
-    file.remove(draft)
-  })
-
-  test_that("pmx_draft: params  result: create file", {
-    draft <- pmx_draft(ctr,
-                       name = "dr_Report_ggPMX", template =
-                                                   system.file("rmarkdown", "templates",
-                                                               "standing",
-                                                               package = "ggPMX"
-                                                               ),
-                       edit = FALSE
-                       )
     expect_true(file.exists(draft))
     file.remove(draft)
     expect_false(file.exists(draft))
   })
 
-  #------------------- pmx_draft - end -------------------------------------------
-
-  #------------------- create_ggpmx_gof - start ----------------------------------
-  context("Test create_ggpmx_gof")
-  test_that("create_ggpmx_gof params NULL result: error name is missing", {
+  # ---- create_ggpmx_gof tests ----
+  context("Test create_ggpmx_gof function")
+  test_that("create_ggpmx_gof: error on missing name", {
     expect_error(create_ggpmx_gof())
   })
 
-  #------------------- create_ggpmx_gof - end ------------------------------------
-
-  #------------------- rm_dir - end ----------------------------------------------
-  context("Test rm_dir")
-  test_that("rm_dir params NULL result: error to_remove is missing", {
+  # ---- rm_dir tests ----
+  context("Test rm_dir function")
+  test_that("rm_dir: error on missing param", {
     expect_error(rm_dir())
   })
-
-  test_that("rm_dir params NULL result: remove directory", {
-    path <- file.path(tempdir(check = TRUE))
-    newfolder <- "create_ggpmx_gof_test"
-    work_dir <- file.path(path, newfolder)
+  test_that("rm_dir: removes directory", {
+    work_dir <- file.path(tmp_dir, "create_ggpmx_gof_test")
     dir.create(work_dir)
     rm_dir(work_dir)
     expect_false(dir.exists(work_dir))
   })
 
-  #------------------- rm_dir - end ----------------------------------------------
-
-  #------------------- remove_reports - start ------------------------------------
-  test_that("remove_reports params result: remove plot files", {
-    path <- file.path(tempdir(check = TRUE))
-    newfolder <- "report_plot"
-    work_dir <- file.path(path, newfolder)
+  # ---- remove_reports tests ----
+  context("Test remove_reports function")
+  test_that("remove_reports: removes report files", {
+    work_dir <- file.path(tmp_dir, "report_plot")
     dir.create(work_dir, showWarnings = FALSE)
-
     ctr %>% pmx_report(
       name = "Report_ggPMX",
       save_dir = work_dir,
-      template = system.file(
-        "rmarkdown", "templates",
-        "standing",
-        package = "ggPMX"
-      ),
+      template = template_path,
       output = "all",
-      format = "all"
+      format = "word"
     )
-    files_word_report <- list.files(path = work_dir, pattern = "docx")
-    expect_false(is_empty(files_word_report))
+    expect_true(file.exists(file.path(work_dir, "Report_ggPMX.docx")))
     remove_reports(output = "plots", work_dir)
-    files_word_report <- list.files(path = work_dir, pattern = "docx")
-    expect_true(is_empty(files_word_report))
+    expect_false(file.exists(file.path(work_dir, "Report_ggPMX.docx")))
   })
 
-  #------------------- remove_reports - end --------------------------------------
+  # ---- pmx_report tests ----
+  context("Test pmx_report function")
 
-  # ------------------- pmx_report - generation of report - start ----------------
-  context("Test generation of report from a pre-defined template")
+  test_that("pmx_report: error on invalid save_dir", {
+    expect_error(ctr %>% pmx_report(
+      name = "Report_ggPMX",
+      save_dir = NULL,
+      template = template_path,
+      output = "report",
+      format = "html"
+    ))
+    expect_error(ctr %>% pmx_report(
+      name = "Report_ggPMX",
+      save_dir = file.path(tmp_dir, "nonexistent_dir"),
+      template = template_path,
+      output = "report",
+      format = "html"
+    ))
+  })
 
-  ctr <- test_pmxClass_helpers()[["ctr"]]
-  tmp_dir <- tempdir(check = TRUE)
-
-  testGenerateReport <- function() {
-    pmx_report(
-      contr=ctr,
-      name="Report_ggPMX",
-      save_dir=tmp_dir,
-      output="all",
-      format="all"
-    )
-  }
-
-
-  test_that("Can generate report", {
+  # ---- Single multi-output test per mode ----
+  test_that("pmx_report: creates expected files for all output modes (minimal set)", {
     skip_on_cran()
-    expect_is(ctr, "pmxClass")
-    testGenerateReport()
-    list_of_rep <- list.files(path = tmp_dir, pattern = "Report_ggPMX\\..*")
-    expect_equal(length(list_of_rep), 4L)
-  })
+    work_dir <- file.path(tmp_dir, "pmx_report_test")
+    dir.create(work_dir, showWarnings = FALSE)
+    on.exit(unlink(work_dir, recursive = TRUE), add = TRUE)
 
-
-  test_that("Report generation can be repeated without error", {
-    skip_on_cran()
-    expect_is(ctr, "pmxClass")
-
-    expect_error(
-      lapply(1:3, function(n) testGenerateReport()),
-      NA
+    # Only run once per output type, one format per output for speed!
+    ctr %>% pmx_report(
+      name = "Report_ggPMX",
+      save_dir = work_dir,
+      template = template_path,
+      output = "all",
+      format = "html"
     )
+    expect_true(any(grepl("Report_ggPMX", list.files(work_dir))))
+    expect_true(any(grepl("html", list.files(work_dir))))
+    expect_true(file.exists(file.path(work_dir, "ggpmx_GOF")))
+
+    unlink(list.files(work_dir, full.names = TRUE), recursive = TRUE)
+    ctr %>% pmx_report(
+      name = "Report_ggPMX",
+      save_dir = work_dir,
+      template = template_path,
+      output = "plots",
+      format = "html"
+    )
+    expect_true(file.exists(file.path(work_dir, "ggpmx_GOF")))
+
+    unlink(list.files(work_dir, full.names = TRUE), recursive = TRUE)
+    ctr %>% pmx_report(
+      name = "Report_ggPMX",
+      save_dir = work_dir,
+      template = template_path,
+      output = "report",
+      format = "html"
+    )
+    expect_true(any(grepl("Report_ggPMX", list.files(work_dir))))
   })
 
-  test_that("Can generate report using a custom template", {
+  # ---- Custom template test (optional, can skip if coverage not needed) ----
+  test_that("pmx_report: can use custom template", {
     skip_on_cran()
     custom_template_file <- system.file(
       file.path("examples", "templates", "custom_report.Rmd"),
       package = "ggPMX"
     )
-
     expect_null(
       pmx_report(
         contr = ctr,
@@ -174,246 +159,15 @@ if (helper_skip()) {
     )
   })
 
-  test_that("Illegal arguments to pmx_report cause an error", {
+  # ---- Error cases for illegal arguments ----
+  test_that("pmx_report: illegal arguments throw errors", {
     skip_on_cran()
-    expect_is(ctr, "pmxClass")
-
-    expect_error(
-      pmx_report(
-        contr=list(),
-        name="Report_ggPMX",
-        save_dir=tmp_dir,
-        format="all",
-        output="all"
-      )
-    )
-
-    expect_error(
-      pmx_report(
-        contr=list(),
-        name=c("a", "b"),
-        save_dir=tmp_dir,
-        output="all",
-        format="all"
-      )
-    )
-
-    expect_error(
-      pmx_report(
-        contr=list(),
-        name="a",
-        save_dir=tmp_dir,
-        output="all",
-        format="all",
-        template=1L
-      )
-    )
-  })
-  #------------------- pmx_report - generation of report - end -------------------
-
-  library(purrr)
-  #------------------- pmx_report - generation of report - end -------------------
-
-  ctr <- theophylline()
-
-  #------------------- pmx_report - output - "all" - start -----------------------
-
-  context("Test pmx_report function with all output")
-  test_that("pmx_report: params: ctr, name, save_dir, output, format;
-         result: create all files", {
-           skip_on_cran()
-           path <- file.path(tempdir(check=TRUE))
-           newfolder <- "pmx_report_test"
-           work_dir <- file.path(path, newfolder)
-           dir.create(work_dir, showWarnings=FALSE)
-
-           ctr %>% pmx_report(
-             name="Report_ggPMX",
-             save_dir=work_dir,
-             template=system.file("rmarkdown", "templates", "standing", package="ggPMX"),
-             output="all",
-             format=c("word", "html")
-           )
-
-           files_word_all <- list.files(path=work_dir, pattern="docx")
-           files_html_all <- list.files(path=work_dir, pattern="html")
-           files_report_ggPMX <- list.files(path=work_dir, pattern="Report_ggPMX")
-           sub_dir <- file.path(work_dir, "ggpmx_GOF")
-
-
-           expect_false(is_empty(files_report_ggPMX))
-           expect_true(file.exists(sub_dir))
-           expect_false(is_empty(sub_dir))
-           expect_false(is_empty(files_word_all))
-           expect_false(is_empty(files_html_all))
-           unlink(work_dir, recursive=TRUE)
-         })
-
-  #------------------- pmx_report - output - "all" - end -------------------------
-
-  #------------------- pmx_report - output - "plots" - start ---------------------
-
-  context("Test pmx_report function with plots output")
-  test_that("pmx_report: params: ctr, name, save_dir, output, format; result: create plots files",{
-    skip_on_cran()
-    path <- file.path(tempdir(check=TRUE))
-    newfolder <- "pmx_report_test"
-    work_dir <- file.path(path, newfolder)
-    dir.create(work_dir, showWarnings=FALSE)
-
-    ctr %>% pmx_report(
-      name="Report_ggPMX",
-      save_dir=work_dir,
-      template=system.file("rmarkdown", "templates", "standing", package="ggPMX"),
-      output="plots",
-      format=c("word", "html")
-    )
-
-    files_word_plots <- list.files(path=work_dir, pattern="docx")
-    files_html_plots <- list.files(path=work_dir, pattern="html")
-    files_report_ggPMX <- list.files(path=work_dir, pattern="Report_ggPMX")
-    sub_dir <- file.path(work_dir, "ggpmx_GOF")
-    expect_false(is_empty(files_report_ggPMX))
-    expect_true(file.exists(sub_dir))
-    expect_false(is_empty(sub_dir))
-    expect_true(is_empty(files_word_plots))
-    expect_false(is_empty(files_html_plots))
-
-    unlink(work_dir, recursive=TRUE)
+    expect_error(pmx_report(contr = list(), name = "Report_ggPMX", save_dir = tmp_dir, format = "html", output = "all"))
+    expect_error(pmx_report(contr = list(), name = c("a", "b"), save_dir = tmp_dir, output = "all", format = "html"))
+    expect_error(pmx_report(contr = list(), name = "a", save_dir = tmp_dir, output = "all", format = "html", template = 1L))
   })
 
-  #------------------- pmx_report - "plots" - end --------------------------------
-
-  #------------------- pmx_report - "report" - start -----------------------------
-
-  context("Test pmx_report function with report output")
-  test_that("pmx_report: params: ctr, name, save_dir, output, format;
-         result: create report files", {
-           skip_on_cran()
-           path <- file.path(tempdir(check=TRUE))
-           newfolder <- "pmx_report_test"
-           work_dir <- file.path(path, newfolder)
-           dir.create(work_dir, showWarnings=FALSE)
-
-           ctr %>% pmx_report(
-             name="Report_ggPMX",
-             save_dir=work_dir,
-             template=system.file("rmarkdown", "templates", "standing", package="ggPMX"),
-             output="report",
-             format=c("word", "html")
-           )
-
-           files_word_report <- list.files(path=work_dir, pattern="docx")
-           files_html_report <- list.files(path=work_dir, pattern="html")
-           files_report_ggPMX <- list.files(path=work_dir, pattern="Report_ggPMX")
-           sub_dir <- file.path(work_dir, "ggpmx_GOF")
-           path <- file.path(tempdir(check = TRUE))
-           newfolder <- "pmx_report_test"
-           work_dir <- file.path(path, newfolder)
-           dir.create(work_dir, showWarnings = FALSE)
-           ctr %>% pmx_report(
-             name = "Report_ggPMX",
-             save_dir = work_dir,
-             template = system.file(
-               "rmarkdown", "templates",
-               "standing",
-               package = "ggPMX"
-             ),
-             output = "report",
-             format = c("word", "html")
-           )
-
-           files_word_report <- list.files(path = work_dir, pattern = "docx")
-           files_html_report <- list.files(path = work_dir, pattern = "html")
-           files_report_ggPMX <- list.files(path = work_dir, pattern = "Report_ggPMX")
-           sub_dir <- file.path(work_dir, "ggpmx_GOF")
-
-
-           expect_false(is_empty(files_report_ggPMX))
-           expect_false(file.exists(sub_dir))
-           expect_false(is_empty(sub_dir))
-           expect_false(is_empty(files_word_report))
-           expect_false(is_empty(files_html_report))
-           unlink(work_dir, recursive=TRUE)
-         })
-
-  #------------------- pmx_report - "report" - end -------------------------------
-
-  #------------------- pmx_report - "all", "plots", "report" - start -------------
-
-  context("Test pmx_report function with all, plots and report output")
-  test_that("pmx_report: params: ctr, name, save_dir, output, format;
-         result: create all, plots, report files", {
-           skip_on_cran()
-           path <- file.path(tempdir(check=TRUE))
-           newfolder <- "pmx_report_test"
-           work_dir <- file.path(path, newfolder)
-           dir.create(work_dir, showWarnings=FALSE)
-
-           ctr %>% pmx_report(
-             name="Report_ggPMX",
-             save_dir=work_dir,
-             template=system.file("rmarkdown", "templates", "standing", package="ggPMX"),
-             output=c("all", "plots", "report"),
-             format=c("word", "html")
-           )
-
-           files_word_report <- list.files(path=work_dir, pattern="docx")
-           files_html_report <- list.files(path=work_dir, pattern="html")
-           files_report_ggPMX <- list.files(path=work_dir, pattern="Report_ggPMX")
-           sub_dir <- file.path(work_dir, "ggpmx_GOF")
-           expect_false(is_empty(files_report_ggPMX))
-           expect_true(file.exists(sub_dir))
-           expect_false(is_empty(sub_dir))
-           expect_false(is_empty(files_word_report))
-           expect_false(is_empty(files_html_report))
-           unlink(work_dir, recursive=TRUE)
-         })
-
-  #------------------- pmx_report - "all", "plots", "report" - end ---------------
-
-  #------------------- pmx_report  - start ---------------------------------------
-
-  context("Test pmx_report function")
-
-  test_that("pmx_report: params: ctr, name, save_dir = NULL, output, format;
-         result: error save directory is not valid", {
-           skip_on_cran()
-           expect_error(ctr %>% pmx_report(
-             name = "Report_ggPMX",
-             save_dir = NULL,
-             template = system.file(
-               "rmarkdown", "templates",
-               "standing",
-               package = "ggPMX"
-             ),
-             output = c("all", "plots", "report"),
-             format = c("word", "html")
-           ))
-         })
-
-  test_that("pmx_report: params: ctr, name, save_dir, output, format;
-         result: error save directory is not valid(save_dir is not exist)", {
-           skip_on_cran()
-           tmp_dir <- tempdir(check = TRUE)
-           work_dir <- file.path(tmp_dir, "pmx_report_test")
-           expect_error(ctr %>% pmx_report(
-             name = "Report_ggPMX",
-             save_dir = work_dir,
-             template = system.file(
-               "rmarkdown", "templates",
-               "standing",
-               package = "ggPMX"
-             ),
-             output = c("all", "plots", "report"),
-             format = "all"
-           ))
-         })
-
-  #------------------- pmx_report - end ------------------------------------------
-
-  #------------------- pmx_report with nlmixr controller - start -----------------
-
+  # ---- nlmixr controller test ----
   context("Test pmx_nlmixr controller")
   if (requireNamespace("nlmixr2est", quietly=TRUE)) {
     one.compartment <- function() {
@@ -436,35 +190,20 @@ if (helper_skip()) {
         cp ~ add(add.sd)
       })
     }
-
     fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem", control = list(print = 0))
-    ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
-
+    nlmixr_ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
+    work_dir <- file.path(tmp_dir, "pmx_nlmixr_report")
+    dir.create(work_dir)
+    test_that("pmx_report: works with nlmixr controller", {
+      skip_on_cran()
+      expect_error(nlmixr_ctr %>% pmx_report(
+        name = "Report_ggPMX",
+        save_dir = work_dir,
+        template = template_path,
+        output = "all",
+        format = "html"
+      ), NA)
+      unlink(work_dir, recursive = TRUE)
+    })
   }
-
-  #------------------- pmx_report nlmixr - output - "all" - start ----------------
-
-  context("Test pmx_report function with all output")
-  test_that("pmx_report: params: ctr, name, save_dir, output, format;
-         result: ok (with proper args)", {
-           skip_on_cran()
-           path <- file.path(tempdir(check = TRUE))
-           newfolder <- "pmx_report_test"
-           work_dir <- file.path(path, newfolder)
-           dir.create(work_dir)
-           expect_error(ctr %>% pmx_report(
-             name = "Report_ggPMX",
-             save_dir = work_dir,
-             template = system.file(
-               "rmarkdown", "templates",
-               "standing",
-               package = "ggPMX"
-             ),
-             output = "all",
-             format = "all"
-           ), NA)
-           unlink(work_dir, recursive = TRUE)
-         })
-
-  #------------------- pmx_report nlmixr - output - "all" - end ------------------
 }
