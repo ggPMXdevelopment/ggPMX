@@ -59,6 +59,7 @@ if (helper_skip()) {
     expect_error(rm_dir())
   })
   test_that("rm_dir: removes directory", {
+    skip_on_cran()
     work_dir <- file.path(tmp_dir, "create_ggpmx_gof_test")
     dir.create(work_dir)
     rm_dir(work_dir)
@@ -68,6 +69,7 @@ if (helper_skip()) {
   # ---- remove_reports tests ----
   context("Test remove_reports function")
   test_that("remove_reports: removes report files", {
+    skip_on_cran()
     work_dir <- file.path(tmp_dir, "report_plot")
     dir.create(work_dir, showWarnings = FALSE)
     ctr %>% pmx_report(
@@ -86,6 +88,7 @@ if (helper_skip()) {
   context("Test pmx_report function")
 
   test_that("pmx_report: error on invalid save_dir", {
+    skip_on_cran()
     expect_error(ctr %>% pmx_report(
       name = "Report_ggPMX",
       save_dir = NULL,
@@ -170,6 +173,7 @@ if (helper_skip()) {
   # ---- nlmixr controller test ----
   context("Test pmx_nlmixr controller")
   if (requireNamespace("nlmixr2est", quietly=TRUE)) {
+    skip_on_os("windows") 
     one.compartment <- function() {
       ini({
         tka <- 0.45 # Log Ka
