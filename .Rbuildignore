@@ -21,3 +21,6 @@
 ^\.github$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^inst/testdata/extdata/for_testing$
+^tests/testthat/_snaps$
+^tests/testthat/censoring1_project.zip$

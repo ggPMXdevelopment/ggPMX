@@ -112,7 +112,10 @@ if (helper_skip()) {
 
   test_that("pmx_nm: params: directory, file, simfile;
           result: can read NONMEM-Output", {
-
+            skip_on_cran()
+            file_to_check <- file.path(system.file(package = "ggPMX"), "testdata", "extdata", "for_testing", "predictions.csv")
+            skip_if_not(file.exists(file_to_check))
+            
             nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
             ctr <- pmx_nm(directory = nonmem_dir, runno = "001")
             # just to test alternative loadings
