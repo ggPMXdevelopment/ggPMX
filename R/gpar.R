@@ -117,8 +117,14 @@ rep_or_null <- function(x, length.out) {
     return(pmx_gpar())
   }
   maxn <- do.call("max", lapply(x, length))
-  newgp <- lapply(x, rep_or_null, length.out = maxn)
-  newgp <- lapply(X = newgp, FUN = "[", index, ...)
+  newgp <- lapply(x, function(val) {
+    if (is.null(val)) {
+      return(NULL)
+    }
+
+    rep(val, length.out = maxn)[index]
+  })
+
   class(newgp) <- "pmx_gpar"
   newgp
 }

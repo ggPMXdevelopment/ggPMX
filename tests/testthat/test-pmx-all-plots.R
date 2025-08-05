@@ -21,7 +21,20 @@ if (helper_skip()) {
         }
       }
     )
-    expect_true(all(vapply(res, function(x) inherits(x, c("ggplot", "ggplot2::ggplot", "ggmatrix")) || is.null(x), TRUE)))
+    names(res) <- pmx_function_plots
+
+    # Check ggmatrix
+    expect_true(inherits(res[["pmx_plot_eta_matrix"]], "ggmatrix"))
+    res$pmx_plot_eta_matrix <- NULL
+
+    # Check that all plots are ggplot objects
+    Map(
+      names(res),
+      res,
+      f = function(name, plot) {
+        expect_true(is_ggplot(plot))
+      }
+    )
   })
 
   test_that("We can call all pmx_plot_xx with title with success", {
@@ -95,6 +108,7 @@ if (helper_skip()) {
   #---------------------- pmx_plot_generic with nlmixr controller start ---------------------------------
   if (requireNamespace("nlmixr2est", quietly = TRUE)) {
     test_that("pmx_plot_generic with nlmixr controller: params: ctr, pname   result: identical inherits, names", {
+      skip_on_os("windows")
       one.compartment <- function() {
         ini({
           tka <- 0.45 # Log Ka
@@ -122,9 +136,8 @@ if (helper_skip()) {
       p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
 
       expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
-      expect_true(inherits(p, c("ggplot", "ggplot2::ggplot")))
+      expect_true(is_ggplot(p))
 
-      expect_identical(names(p), names(ggplot()))
     })
 
   }
@@ -149,17 +162,18 @@ if (helper_skip()) {
     p12 <- pmx_plot_generic(ctr, pname = "eta_hist")
 
     expect_true(inherits(p1, "list"))
-    expect_true(inherits(p2, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p3, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p4, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p5, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p6, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p7, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p8, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p9, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p10, c("ggplot", "ggplot2::ggplot", "ggmatrix")))
-    expect_true(inherits(p11, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p12, c("ggplot", "ggplot2::ggplot")))
+    expect_true(is_ggplot(p2))
+    expect_true(is_ggplot(p3))
+    expect_true(is_ggplot(p4))
+    expect_true(is_ggplot(p5))
+    expect_true(is_ggplot(p6))
+    expect_true(is_ggplot(p7))
+    expect_true(is_ggplot(p8))
+    expect_true(is_ggplot(p9))
+    expect_true(inherits(p10, "ggmatrix"))
+    expect_true(is_ggplot(p11))
+    expect_true(is_ggplot(p12))
+
   })
 
   test_that("pmx_plot_generic: params: NULL result: error missing arguments", {
@@ -173,7 +187,8 @@ if (helper_skip()) {
 
   test_that("pmx_plot_generic: params: ctr, pname result: identical names", {
     p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
-    expect_identical(names(p), names(ggplot()))
+    expect_true(is_ggplot(p))
+
   })
 
 
@@ -206,13 +221,13 @@ if (helper_skip()) {
 
   test_that("pmx_register_plot: params: ctr, pp, pname  result: identical inherits", {
     pp <- ctr %>% get_plot("individual")
-    expect_true(inherits(pmx_register_plot(ctr, pp[[1]], pname = "indiv1"), c("ggplot2::ggplot", "ggplot")))
+    expect_true(is_ggplot(pmx_register_plot(ctr, pp[[1]], pname = "indiv1")))
   })
 
   test_that("pmx_register_plot: params: ctr, pname, pp  result: identical names", {
     pp <- ctr %>% get_plot("individual")
     p <- pmx_register_plot(ctr, pp[[1]], pname = "indiv1")
-    expect_identical(names(p), names(ggplot()))
+    expect_true(is_ggplot(p))
   })
 
   test_that("pmx_register_plot: params: ctr, pp  result: identical line color", {
@@ -237,7 +252,7 @@ if (helper_skip()) {
 
   test_that("pmx_register_plot: params: ctr, pname  result: identical inherits of the first ggplot", {
     p <- ctr %>% pmx_plot_cats("npde_time")
-    expect_true(inherits(p[[1]], c("ggplot2::ggplot", "ggplot")))
+    expect_true(is_ggplot(p[[1]]))
   })
 
 
@@ -249,7 +264,7 @@ if (helper_skip()) {
 
   test_that("pmx_register_plot: params: ctr, pname  result: identical names", {
     p <- ctr %>% pmx_plot_cats("npde_time")
-    expect_identical(names(p[[1]]), names(ggplot()))
+    expect_true(is_ggplot(p[[1]]))
   })
 
   test_that("pmx_register_plot: params: ctr, pname, cats  result: NULL", {

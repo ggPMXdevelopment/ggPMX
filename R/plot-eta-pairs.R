@@ -279,7 +279,7 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
   })
   p <- p + labs(title = x$gp$labels$title, subtitle = x$gp$labels$subtitle)
   p$is.shrink <- x$is.shrink
-  attributes(p)$class <- c("pmx_eta_matrix", "gg", "ggmatrix")
+  class(p) <- c("pmx_eta_matrix", class(p))
   p +
     theme(
       strip.background = element_blank(), #Otherwise it sometimes hides shrinkage values lables in the plot

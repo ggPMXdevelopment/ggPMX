@@ -632,7 +632,7 @@ if (helper_skip()) {
   test_that("get_plot: params: ctr, nplot, which_pages  result: identical inherits", {
     ctr <- pmxClassHelpers$ctr
     get_p <- get_plot(ctr, nplot = "individual", which_pages = 1)
-    expect_true(inherits(get_p, c("gg", "ggplot")))
+    expect_true(is_ggplot(get_p))
   })
 
   test_that("get_plot: params: ctr, nplot, which_pages  result: error ctr is not a pmxClass", {
@@ -665,7 +665,7 @@ if (helper_skip()) {
   test_that("get_plot: params: ctr, nplot, which_pages  result: identical names", {
     ctr <- pmxClassHelpers$ctr
     get_p <- get_plot(ctr, nplot = "individual", which_pages = 1L)
-    expect_identical(names(get_p), names(ggplot()))
+    expect_true(is_ggplot(get_p))
   })
 
   #------------------- get_plot - end --------------------------------------------
@@ -913,7 +913,11 @@ if (helper_skip()) {
   )
 
   test_that("pmx_print: params NULL result: error missing arguments", {
-    expect_error(pmx_print())
+    expect_error(
+      ignore <- capture.output({
+        pmx_print()
+      })
+    )
   })
 
   test_that("pmx_print can print pmx class", {
@@ -921,8 +925,11 @@ if (helper_skip()) {
   })
 
   test_that("pmx_print  params: self, private; result: identical inherits", {
-    tmp <- capture.output(print_value <- pmx_print(self, private)) # assign without printing
-    expect_true(inherits(print_value, "pmxConfig"))
+    # assign without printing
+    capture.output({
+      pmx_pr <- pmx_print(self, private)
+    })
+    expect_true(inherits(pmx_pr, "pmxConfig"))
   })
 
 
@@ -968,7 +975,10 @@ if (helper_skip()) {
   })
 
   test_that("pmx_print params: self, private; result: identical structure", {
-    tmp <- capture.output(pmx_pr <- pmx_print(self, private)) # assign quietly
+    # assign quietly
+    capture.output({
+      pmx_pr <- pmx_print(self, private)
+    })
     expect_identical(pmx_pr$sys, "mlx")
     expect_identical(pmx_pr$plots$ABS_IWRES_IPRED$ptype, "SCATTER")
   })

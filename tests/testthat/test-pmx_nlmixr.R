@@ -1,6 +1,7 @@
 if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
+  skip_on_os("windows") #fairly slow on Windows probably due to nlmixr compilation time
   context("Test pmx_nlmixr controller")
-
+  
   one.compartment <- function() {
     ini({
       tka <- 0.45 # Log Ka
@@ -46,21 +47,21 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     p14 <- ctr %>% pmx_plot_eta_hist()
     p15 <- ctr %>% pmx_plot_eta_matrix()
 
-    expect_true(inherits(p1, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p2, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p3, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p4, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p5, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p6, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p7, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p8, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p9, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p10, c("ggplot", "ggplot2::ggplot")))
+    expect_true(is_ggplot(p1))
+    expect_true(is_ggplot(p2))
+    expect_true(is_ggplot(p3))
+    expect_true(is_ggplot(p4))
+    expect_true(is_ggplot(p5))
+    expect_true(is_ggplot(p6))
+    expect_true(is_ggplot(p7))
+    expect_true(is_ggplot(p8))
+    expect_true(is_ggplot(p9))
+    expect_true(is_ggplot(p10))
     expect_true(inherits(p11, "NULL"))
     expect_true(inherits(p12, "NULL"))
-    expect_true(inherits(p13, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p14, c("ggplot", "ggplot2::ggplot")))
-    expect_true(inherits(p15, c("ggplot", "ggplot2::ggplot", "ggmatrix")))
+    expect_true(is_ggplot(p13))
+    expect_true(is_ggplot(p14))
+    expect_true(inherits(p15, "ggmatrix"))
   })
 
 

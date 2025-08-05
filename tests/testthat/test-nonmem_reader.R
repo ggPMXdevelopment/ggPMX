@@ -90,7 +90,8 @@ if (helper_skip()) {
           result: error", {
 
             nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
-            expect_error(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 2.75, dvid = "TAD"))
+            expect_fn <- if (packageVersion("GGally") <= "2.2.1") expect_error else expect_warning
+            expect_fn(pmx_nm(directory = nonmem_dir, runno = "001", endpoint = 2.75, dvid = "TAD"))
 
           })
 
@@ -111,7 +112,10 @@ if (helper_skip()) {
 
   test_that("pmx_nm: params: directory, file, simfile;
           result: can read NONMEM-Output", {
-
+            skip_on_cran()
+            file_to_check <- file.path(system.file(package = "ggPMX"), "testdata", "extdata", "for_testing", "predictions.csv")
+            skip_if_not(file.exists(file_to_check))
+            
             nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
             ctr <- pmx_nm(directory = nonmem_dir, runno = "001")
             # just to test alternative loadings
@@ -181,19 +185,11 @@ if (helper_skip()) {
             # check alternative import with and without runnumber
             # would normally cause many messages: No data eta provided for plot eta_qq etc.
             # suppressed for test via capture.output()
-            tmp <- capture.output(
-              ctr_man <- pmx_nm(
-                directory = nonmem_dir, 
-                table_names = c("sdtab"), 
-                runno = "002"
-              )
-            )
-            tmp <- capture.output(
-              ctr_man_norunno <- pmx_nm(
-                directory = nonmem_dir, 
-                table_names = c("sdtab002")
-              )              
-            )
+            ignore <- capture.output({
+              ctr_norunno <- pmx_nm(directory = nonmem_dir, file = "run001.lst")
+              ctr_man <- pmx_nm(directory = nonmem_dir, table_names = c("sdtab"), runno = "002")
+              ctr_man_norunno <- pmx_nm(directory = nonmem_dir, table_names = c("sdtab002"))
+            })
 
             expect_identical(
               ctr_man_norunno$settings,
