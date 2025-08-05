@@ -74,6 +74,8 @@ jobs:
         with:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
+          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
+          
 
   other-platforms:
     needs: setup
@@ -114,3 +116,4 @@ jobs:
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
+          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
