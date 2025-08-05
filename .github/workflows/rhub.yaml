@@ -68,6 +68,8 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
+      - uses: r-lib/actions/setup-tinytex@v2
+      - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-hub/actions/run-check@v1
         with:
           token: ${{ secrets.RHUB_TOKEN }}
@@ -105,7 +107,9 @@ jobs:
           token: ${{ secrets.RHUB_TOKEN }}
           extra-packages: |
             any::rcmdcheck
-            lixoftConnectors=?ignore
+            lixoftConnectors=?ignore     
+      - uses: r-lib/actions/setup-tinytex@v2
+      - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
