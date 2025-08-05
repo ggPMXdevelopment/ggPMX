@@ -37,6 +37,8 @@ jobs:
       with:
         config: ${{ github.event.inputs.config }}
       id: rhub-setup
+    - uses: r-lib/actions/setup-tinytex@v2
+    - uses: r-lib/actions/setup-pandoc@v2
 
   linux-containers:
     needs: setup
@@ -70,9 +72,6 @@ jobs:
         with:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
-          extra-packages: |
-            any::rcmdcheck
-            lixoftConnectors=?ignore
 
   other-platforms:
     needs: setup
@@ -111,6 +110,3 @@ jobs:
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
-          extra-packages: |
-            any::rcmdcheck
-            lixoftConnectors=?ignore
