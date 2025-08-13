@@ -72,7 +72,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-hub/actions/run-check@v1
         env:
-          CHECK_ARGS:: 'c("--compact-vignettes=gs+qpdf", "--no-manual")'
+          CHECK_ARGS: --compact-vignettes=gs+qpdf
         with:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
@@ -115,7 +115,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-hub/actions/run-check@v1
         env:
-          CHECK_ARGS:: 'c("--compact-vignettes=gs+qpdf", "--no-manual")'
+          CHECK_ARGS: --compact-vignettes=gs+qpdf
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
