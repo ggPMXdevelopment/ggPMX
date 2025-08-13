@@ -5,7 +5,7 @@ if (helper_skip()) {
   # ---- Setup shared objects ----
   ctr <- theophylline()
   tmp_dir <- tempdir(check = TRUE)
-  template_path <- system.file("rmarkdown", "templates", "standing", package = "ggPMX")
+  template_path <- system.file("testdata", "rmarkdown", "templates", "standing", package = "ggPMX")
 
   # ---- pmx_fig_process tests ----
   context("Test pmx_fig_process function")
