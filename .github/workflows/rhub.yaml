@@ -70,11 +70,11 @@ jobs:
             lixoftConnectors=?ignore
       - uses: r-lib/actions/setup-tinytex@v2
       - uses: r-lib/actions/setup-pandoc@v2
-      - uses: r-hub/actions/check-r-package@v2
+      - uses: r-hub/actions/run-check@v1
         with:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
-          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
+          CHECK_ARGS:: 'c("--compact-vignettes=gs+qpdf", "--no-manual")'
           
 
   other-platforms:
@@ -112,8 +112,8 @@ jobs:
             lixoftConnectors=?ignore     
       - uses: r-lib/actions/setup-tinytex@v2
       - uses: r-lib/actions/setup-pandoc@v2
-      - uses: r-hub/actions/check-r-package@v2
+      - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
-          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
+          CHECK_ARGS: 'c("--compact-vignettes=gs+qpdf", "--no-manual")'
