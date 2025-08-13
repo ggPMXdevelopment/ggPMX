@@ -5,7 +5,8 @@ if (helper_skip()) {
   # ---- Setup shared objects ----
   ctr <- theophylline()
   tmp_dir <- tempdir(check = TRUE)
-  template_path <- system.file("testdata", "rmarkdown", "templates", "standing", package = "ggPMX")
+  ctr[['save_dir']] <- tmp_dir
+  template_path <- system.file("rmarkdown", "templates", "standing", package = "ggPMX")
 
   # ---- pmx_fig_process tests ----
   context("Test pmx_fig_process function")
@@ -196,6 +197,7 @@ if (helper_skip()) {
     }
     fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem", control = list(print = 0))
     nlmixr_ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
+    nlmixr_ctr[['save_dir']] <- tmp_dir
     work_dir <- file.path(tmp_dir, "pmx_nlmixr_report")
     dir.create(work_dir)
     test_that("pmx_report: works with nlmixr controller", {
