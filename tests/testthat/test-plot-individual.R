@@ -348,12 +348,8 @@ if (helper_skip()) {
     expect_identical(add_f$plot_env$dname, "IND")
     expect_true(add_f$plot_env$gp$is.draft)
     expect_identical(add_f$plot_env$aess$x, "TIME")
-
-    if (packageVersion("ggplot2") > "3.5.2") {
-      expect_identical(ggplot2::build_ggplot(add_f)$plot$labels$colour, "isobserv")
-    } else {
-      expect_identical(add_f$labels$colour, "isobserv")
-    }
+    expect_identical(add_f$labels$colour, "isobserv")
+    
   })
 
   test_that("add_footnote: params result: error missing arguments", {
