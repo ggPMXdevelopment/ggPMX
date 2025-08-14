@@ -1,6 +1,6 @@
 {
     "name": "R (rocker/r-ver base)",
-    "image": "ghcr.io/rocker-org/devcontainer/r-ver:4.2",
+    "image": "ghcr.io/rocker-org/devcontainer/r-ver:4.5",
     "features": {
         "ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {
             "version": "prerelease"
