@@ -19,6 +19,8 @@
 ^man/figures/*.png$
 ^.github/*
 ^\.github$
+^.devcontainer/*
+^\.devcontainer$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^inst/testdata/extdata/for_testing$
