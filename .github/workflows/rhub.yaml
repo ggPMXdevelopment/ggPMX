@@ -37,7 +37,7 @@ jobs:
       with:
         config: ${{ github.event.inputs.config }}
       id: rhub-setup
-    - uses: r-lib/actions/setup-tinytex@v2
+  #  - uses: r-lib/actions/setup-tinytex@v2
     - uses: r-lib/actions/setup-pandoc@v2
 
   linux-containers:
