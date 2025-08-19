@@ -1,7 +1,3 @@
-# Unified R-hub GitHub Actions workflow that runs the same job steps
-# across all selected platforms (Linux, Windows, macOS, containers).
-# It uses r-hub to determine the matrix and applies identical steps.
-
 name: R-hub
 run-name: "${{ github.event.inputs.id }}: ${{ github.event.inputs.name || format('Manually run by {0}', github.triggering_actor) }}"
 
@@ -27,7 +23,6 @@ jobs:
       containers: ${{ steps.rhub-setup.outputs.containers }}
       platforms: ${{ steps.rhub-setup.outputs.platforms }}
     steps:
-      # No checkout needed here
       - uses: r-hub/actions/setup@v1
         with:
           config: ${{ github.event.inputs.config }}
@@ -35,49 +30,26 @@ jobs:
       - uses: r-lib/actions/setup-tinytex@v2
       - uses: r-lib/actions/setup-pandoc@v2
 
-  all-platforms:
+  native-platforms:
     needs: setup
-    # Proceed if either native platforms or container platforms are present
-    if: ${{ needs.setup.outputs.containers != '[]' || needs.setup.outputs.platforms != '[]' }}
+    if: ${{ needs.setup.outputs.platforms != '[]' }}
+    runs-on: ${{ matrix.config.os }}
     name: ${{ matrix.config.label }}
-    runs-on: ${{ matrix.config.os || 'ubuntu-latest' }}
-    # For container-based platforms, set the container image. For native platforms, this is undefined.
-    container: ${{ fromJson('{"image": ""}') }}
     strategy:
       fail-fast: false
       matrix:
-        # Merge the two matrices (native platforms and containers) into one.
-        # Each element must have at least: label, job-config, and for native: os; for containers: container.
-        config: ${{ fromJson(
-          format(
-            '{0}',
-            toJson(
-              fromJson(needs.setup.outputs.platforms)
-            )
-          )
-        ) }}
+        config: ${{ fromJson(needs.setup.outputs.platforms) }}
     env:
-      # Common env vars (if needed)
       BUILD_ARGS: --compact-vignettes=both
-
     steps:
       - uses: r-hub/actions/checkout@v1
-
-      # For native (non-container) platforms, set up R
-      - name: Setup R (native platforms only)
-        if: ${{ matrix.config.os != '' && (matrix.config.container == '' || matrix.config.container == null) }}
-        uses: r-hub/actions/setup-r@v1
+      - uses: r-hub/actions/setup-r@v1
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-
-      # For container platforms, we need to run inside the container and do not set up R separately.
-      # GitHub Actions requires `container:` at the job level; we emulate conditional container selection
-      # by re-defining the job via a matrix include below.
-
       - uses: r-hub/actions/platform-info@v1
         with:
           token: ${{ secrets.RHUB_TOKEN }}
@@ -85,7 +57,6 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-
       - uses: r-hub/actions/setup-deps@v1
         with:
           job-config: ${{ matrix.config.job-config }}
@@ -93,22 +64,18 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-
       - uses: r-lib/actions/setup-tinytex@v2
       - uses: r-lib/actions/setup-pandoc@v2
-
       - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
 
-  # Re-run the same unified job but for container platforms by creating a second matrix
-  # that only includes containers and sets the container image at the job level.
-  all-platforms-containers:
+  container-platforms:
     needs: setup
     if: ${{ needs.setup.outputs.containers != '[]' }}
-    name: ${{ matrix.config.label }}
     runs-on: ubuntu-latest
+    name: ${{ matrix.config.label }}
     container:
       image: ${{ matrix.config.container }}
     strategy:
@@ -117,11 +84,9 @@ jobs:
         config: ${{ fromJson(needs.setup.outputs.containers) }}
     env:
       BUILD_ARGS: --compact-vignettes=both
-
     steps:
       - uses: r-hub/actions/checkout@v1
-
-      # Inside containers we typically do not need to setup R separately
+      # In containers, R is pre-provisioned by the image, so no setup-r step
       - uses: r-hub/actions/platform-info@v1
         with:
           token: ${{ secrets.RHUB_TOKEN }}
@@ -129,7 +94,6 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-
       - uses: r-hub/actions/setup-deps@v1
         with:
           job-config: ${{ matrix.config.job-config }}
@@ -137,10 +101,8 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-
       - uses: r-lib/actions/setup-tinytex@v2
       - uses: r-lib/actions/setup-pandoc@v2
-
       - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
