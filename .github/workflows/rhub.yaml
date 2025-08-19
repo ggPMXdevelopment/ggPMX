@@ -1,3 +1,11 @@
+# R-hub's generic GitHub Actions workflow file. It's canonical location is at
+# https://github.com/r-hub/actions/blob/v1/workflows/rhub.yaml
+# You can update this file to a newer version using the rhub2 package:
+#
+# rhub::rhub_setup()
+#
+# It is unlikely that you need to modify this file manually.
+
 name: R-hub
 run-name: "${{ github.event.inputs.id }}: ${{ github.event.inputs.name || format('Manually run by {0}', github.triggering_actor) }}"
 
@@ -22,54 +30,57 @@ jobs:
     outputs:
       containers: ${{ steps.rhub-setup.outputs.containers }}
       platforms: ${{ steps.rhub-setup.outputs.platforms }}
-    steps:
-      # NO NEED TO CHECKOUT HERE
-      - uses: r-hub/actions/setup@v1
-        with:
-          config: ${{ github.event.inputs.config }}
-        id: rhub-setup
-      - uses: r-lib/actions/setup-tinytex@v2
-      - uses: r-lib/actions/setup-pandoc@v2
+      all-configs: ${{ steps.combine.outputs.all }}
 
-  all-platforms:
+    steps:
+    # NO NEED TO CHECKOUT HERE
+    - uses: r-hub/actions/setup@v1
+      with:
+        config: ${{ github.event.inputs.config }}
+      id: rhub-setup
+
+    - uses: r-lib/actions/setup-tinytex@v2
+    - uses: r-lib/actions/setup-pandoc@v2
+
+    # Combine the two JSON arrays produced by r-hub/actions/setup into one array
+    # and expose it as outputs for the matrix job below.
+    - name: Combine platform and container configs
+      id: combine
+      env:
+        CONTAINERS: ${{ steps.rhub-setup.outputs.containers }}
+        PLATFORMS: ${{ steps.rhub-setup.outputs.platforms }}
+      run: |
+        node -e "const a = JSON.parse(process.env.CONTAINERS || '[]'); const b = JSON.parse(process.env.PLATFORMS || '[]'); const out = JSON.stringify((a||[]).concat(b||[])); require('fs').writeFileSync(process.env.GITHUB_OUTPUT, `all=${out}`)"
+        
+
+  rhub:
     needs: setup
-    # Merge containers and platforms output for a unified matrix
-    if: ${{ needs.setup.outputs.containers != '[]' || needs.setup.outputs.platforms != '[]' }}
-    # Use ubuntu as default, override with matrix when available
-    runs-on: ${{ matrix.config.os || 'ubuntu-latest' }}
-    name: ${{ matrix.config.label }}
+    # only run if there is at least one config combined
+    if: ${{ needs.setup.outputs.all-configs != '[]' }}
+    # the matrix entries are produced by the setup job (combined containers + platforms)
     strategy:
       fail-fast: false
-      # Merge both containers and platforms to a single matrix
       matrix:
-        config: ${{ fromJson(
-          (
-            needs.setup.outputs.containers != '[]'
-              && needs.setup.outputs.platforms != '[]'
-          )
-          && join(',', needs.setup.outputs.containers, needs.setup.outputs.platforms)
-          || (needs.setup.outputs.containers != '[]'
-              && needs.setup.outputs.containers
-            )
-          || needs.setup.outputs.platforms
-        ) }}
+        config: ${{ fromJson(needs.setup.outputs.all-configs) }}
 
-    # If container is set in matrix, use it, otherwise run natively
-    container: ${{ matrix.config.container && fromJson('{"image":"' + matrix.config.container + '"}') || null }}
+    # The matrix entries are expected to provide either an `os` (runs-on) value
+    # and possibly a `container` (docker image) value. If `container` is present,
+    # GitHub will run the job inside that container (on a compatible runner).
+    runs-on: ${{ matrix.config.os }}
+    container: ${{ matrix.config.container }}
+    name: ${{ matrix.config.label }}
 
     steps:
       - uses: r-hub/actions/checkout@v1
-      # Setup R (for non-container jobs)
-      - name: Setup R
-        if: ${{ !matrix.config.container }}
-        uses: r-hub/actions/setup-r@v1
+
+      - uses: r-hub/actions/setup-r@v1
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-      # Platform info step (always)
+
       - uses: r-hub/actions/platform-info@v1
         with:
           token: ${{ secrets.RHUB_TOKEN }}
@@ -77,7 +88,7 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-      # Setup dependencies (always)
+
       - uses: r-hub/actions/setup-deps@v1
         with:
           job-config: ${{ matrix.config.job-config }}
@@ -85,10 +96,10 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
-      # TinyTeX and Pandoc (always, safe in container too)
+
       - uses: r-lib/actions/setup-tinytex@v2
       - uses: r-lib/actions/setup-pandoc@v2
-      # Run R CMD check
+
       - uses: r-hub/actions/run-check@v1
         env:
           BUILD_ARGS: --compact-vignettes=both
