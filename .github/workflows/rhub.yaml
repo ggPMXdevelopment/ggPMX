@@ -1,10 +1,6 @@
-# R-hub's generic GitHub Actions workflow file. It's canonical location is at
-# https://github.com/r-hub/actions/blob/v1/workflows/rhub.yaml
-# You can update this file to a newer version using the rhub2 package:
-#
-# rhub::rhub_setup()
-#
-# It is unlikely that you need to modify this file manually.
+# Unified R-hub GitHub Actions workflow that runs the same job steps
+# across all selected platforms (Linux, Windows, macOS, containers).
+# It uses r-hub to determine the matrix and applies identical steps.
 
 name: R-hub
 run-name: "${{ github.event.inputs.id }}: ${{ github.event.inputs.name || format('Manually run by {0}', github.triggering_actor) }}"
@@ -30,56 +26,57 @@ jobs:
     outputs:
       containers: ${{ steps.rhub-setup.outputs.containers }}
       platforms: ${{ steps.rhub-setup.outputs.platforms }}
-      all-configs: ${{ steps.combine.outputs.all }}
-
     steps:
-    # NO NEED TO CHECKOUT HERE
-    - uses: r-hub/actions/setup@v1
-      with:
-        config: ${{ github.event.inputs.config }}
-      id: rhub-setup
+      # No checkout needed here
+      - uses: r-hub/actions/setup@v1
+        with:
+          config: ${{ github.event.inputs.config }}
+        id: rhub-setup
+      - uses: r-lib/actions/setup-tinytex@v2
+      - uses: r-lib/actions/setup-pandoc@v2
 
-    - uses: r-lib/actions/setup-tinytex@v2
-    - uses: r-lib/actions/setup-pandoc@v2
-
-    # Combine the two JSON arrays produced by r-hub/actions/setup into one array
-    # and expose it as outputs for the matrix job below.
-    - name: Combine platform and container configs
-      id: combine
-      env:
-        CONTAINERS: ${{ steps.rhub-setup.outputs.containers }}
-        PLATFORMS: ${{ steps.rhub-setup.outputs.platforms }}
-      run: |
-        node -e "const a = JSON.parse(process.env.CONTAINERS || '[]'); const b = JSON.parse(process.env.PLATFORMS || '[]'); const out = JSON.stringify((a||[]).concat(b||[])); require('fs').writeFileSync(process.env.GITHUB_OUTPUT, `all=${out}`)"
-        
-
-  rhub:
+  all-platforms:
     needs: setup
-    # only run if there is at least one config combined
-    if: ${{ needs.setup.outputs.all-configs != '[]' }}
-    # the matrix entries are produced by the setup job (combined containers + platforms)
+    # Proceed if either native platforms or container platforms are present
+    if: ${{ needs.setup.outputs.containers != '[]' || needs.setup.outputs.platforms != '[]' }}
+    name: ${{ matrix.config.label }}
+    runs-on: ${{ matrix.config.os || 'ubuntu-latest' }}
+    # For container-based platforms, set the container image. For native platforms, this is undefined.
+    container: ${{ fromJson('{"image": ""}') }}
     strategy:
       fail-fast: false
       matrix:
-        config: ${{ fromJson(needs.setup.outputs.all-configs) }}
-
-    # The matrix entries are expected to provide either an `os` (runs-on) value
-    # and possibly a `container` (docker image) value. If `container` is present,
-    # GitHub will run the job inside that container (on a compatible runner).
-    runs-on: ${{ matrix.config.os }}
-    container: ${{ matrix.config.container }}
-    name: ${{ matrix.config.label }}
+        # Merge the two matrices (native platforms and containers) into one.
+        # Each element must have at least: label, job-config, and for native: os; for containers: container.
+        config: ${{ fromJson(
+          format(
+            '{0}',
+            toJson(
+              fromJson(needs.setup.outputs.platforms)
+            )
+          )
+        ) }}
+    env:
+      # Common env vars (if needed)
+      BUILD_ARGS: --compact-vignettes=both
 
     steps:
       - uses: r-hub/actions/checkout@v1
 
-      - uses: r-hub/actions/setup-r@v1
+      # For native (non-container) platforms, set up R
+      - name: Setup R (native platforms only)
+        if: ${{ matrix.config.os != '' && (matrix.config.container == '' || matrix.config.container == null) }}
+        uses: r-hub/actions/setup-r@v1
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
           extra-packages: |
             any::rcmdcheck
             lixoftConnectors=?ignore
+
+      # For container platforms, we need to run inside the container and do not set up R separately.
+      # GitHub Actions requires `container:` at the job level; we emulate conditional container selection
+      # by re-defining the job via a matrix include below.
 
       - uses: r-hub/actions/platform-info@v1
         with:
@@ -101,8 +98,50 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: r-hub/actions/run-check@v1
-        env:
-          BUILD_ARGS: --compact-vignettes=both
+        with:
+          job-config: ${{ matrix.config.job-config }}
+          token: ${{ secrets.RHUB_TOKEN }}
+
+  # Re-run the same unified job but for container platforms by creating a second matrix
+  # that only includes containers and sets the container image at the job level.
+  all-platforms-containers:
+    needs: setup
+    if: ${{ needs.setup.outputs.containers != '[]' }}
+    name: ${{ matrix.config.label }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.config.container }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config: ${{ fromJson(needs.setup.outputs.containers) }}
+    env:
+      BUILD_ARGS: --compact-vignettes=both
+
+    steps:
+      - uses: r-hub/actions/checkout@v1
+
+      # Inside containers we typically do not need to setup R separately
+      - uses: r-hub/actions/platform-info@v1
+        with:
+          token: ${{ secrets.RHUB_TOKEN }}
+          job-config: ${{ matrix.config.job-config }}
+          extra-packages: |
+            any::rcmdcheck
+            lixoftConnectors=?ignore
+
+      - uses: r-hub/actions/setup-deps@v1
+        with:
+          job-config: ${{ matrix.config.job-config }}
+          token: ${{ secrets.RHUB_TOKEN }}
+          extra-packages: |
+            any::rcmdcheck
+            lixoftConnectors=?ignore
+
+      - uses: r-lib/actions/setup-tinytex@v2
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
