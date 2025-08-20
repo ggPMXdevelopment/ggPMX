@@ -49,6 +49,8 @@ jobs:
         config: ${{ fromJson(needs.setup.outputs.containers) }}
     container:
       image: ${{ matrix.config.container }}
+    env:
+      BUILD_ARGS: --no-vignettes
 
     steps:
       - uses: r-hub/actions/checkout@v1
@@ -76,6 +78,8 @@ jobs:
       fail-fast: false
       matrix:
         config: ${{ fromJson(needs.setup.outputs.platforms) }}
+    env:
+      BUILD_ARGS: --no-vignettes
 
     steps:
       - uses: r-hub/actions/checkout@v1
