@@ -15,6 +15,8 @@
 ^ggPMX_cheat_sheet_0_9_4.png$
 ^ggPMX_cheat_sheet_0_9_4.pptx$
 ^vignettes/ggPMX-nlmixr.Rmd$
+#^vignettes/ggPMX-guide.Rmd$
+^.*ggPMX-guide\.pdf$
 ^vignettes/bloq.Rmd$
 ^man/figures/*.png$
 ^.github/*
