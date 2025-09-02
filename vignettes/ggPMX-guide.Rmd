@@ -1,25 +1,15 @@
 ---
 title: "ggPMX - User Guide"
 output:
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    number_sections: yes
-    toc: yes
-    toc_depth: '3'
-    extra_dependencies: ["graphicx", "grffile"]
-  word_document:
-    toc: yes
-    toc_depth: '3'
-  html_document:
+  rmarkdown::html_vignette:
     df_print: paged
     toc: yes
-    toc_depth: '3'
+    toc_depth: '3'  
 date: "`r Sys.Date()`"
 vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{ggPMX: User guide}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::rmarkdown}}
 ---
 \clearpage
 ```{r load_package, echo=FALSE,warning=FALSE,message=FALSE}

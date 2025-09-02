@@ -1,4 +1,6 @@
-# ggPMX (development version)
+# ggPMX 1.3.1
+
+* Fixed tests that were writing files in a non-temporary directory
 
 # ggPMX 1.3.0
 
