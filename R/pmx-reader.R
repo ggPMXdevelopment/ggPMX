@@ -318,8 +318,20 @@ read_mlx_pred <- function(path, x, ...) {
   }
   res <- setnames(xx[, nn, with = FALSE], names.nn)
 
-  ## select columns
+  ## Normalize TIME and ID column names and round TIME to match read_input()
+  tcol <- grep("^time$", names(res), ignore.case = TRUE, value = TRUE)
+  if (length(tcol) > 0) {
+    if (tcol != "TIME") setnames(res, tcol, "TIME")
+    # coerce numeric then round same precision as read_input()
+    res[, TIME := round(as.numeric(TIME), 4)]
+  }
 
+  # Ensure ID column is uppercase to match read_input() expectations
+  idcol <- grep("^id$", names(res), ignore.case = TRUE, value = TRUE)
+  if (length(idcol) > 0) {
+    if (idcol != "ID") setnames(res, idcol, "ID")
+  }
+  ## select columns
 
 
   res
@@ -439,7 +451,8 @@ read_mlx18_pred <- function(path, x, ...) {
     if (!inherits(ds$ID, "factor") & inherits(resi$ID, "factor")) {
       ds[, ID := factor(ID, levels = levels(ID))]
     }
-    ds <- merge(ds, resi, by = c("ID", "TIME"))
+    #Workaround for mlx18 prec
+    ds <- merge(ds %>% mutate(TIME = round(TIME, 4)), resi %>% mutate(TIME = round(TIME, 4)), by = c("ID", "TIME"))
 
   }
   ds
