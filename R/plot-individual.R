@@ -117,7 +117,7 @@ plot_pmx.individual <-
         point$data <- base::merge(point$data, max_y, by="ID")
         # Rounding because "predictions" data are rounded:
         point$data$isobserv <-
-          ifelse(round(point$data$TIME) <= point$data$maxValue, "observed", "censored")
+          ifelse(round(point$data$TIME) <= point$data$maxValue, " observed", "censored")
         points <- copy(point)
         points$colour <- NULL
         do.call(geom_point, points)
@@ -144,7 +144,7 @@ plot_pmx.individual <-
                     ifelse(length(point$data$isobserv) == 0L, 1, 2))
         linetype_values <- c(rep("solid", n), "dashed")
         if (any(point$data$isobserv == "censored")) {
-          linetype_labels <- c("observed",
+          linetype_labels <- c(" observed",
                                "censored",
                                "individual predictions",
                                "population predictions")
@@ -152,13 +152,13 @@ plot_pmx.individual <-
           linetype_labels <- c("individual predictions",
                                "population predictions")
         } else {
-          linetype_labels <- c("observed",
+          linetype_labels <- c(" observed",
                                "individual predictions",
                                "population predictions")
         }
       } else {
         n <- 2
-        linetype_labels <- c("observed",
+        linetype_labels <- c(" observed",
                              "individual predictions",
                              "population predictions")
       }
