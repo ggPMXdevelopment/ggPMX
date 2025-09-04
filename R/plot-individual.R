@@ -117,7 +117,7 @@ plot_pmx.individual <-
         point$data <- base::merge(point$data, max_y, by="ID")
         # Rounding because "predictions" data are rounded:
         point$data$isobserv <-
-          ifelse(round(point$data$TIME) <= point$data$maxValue, " observed", "censored")
+          ifelse(round(point$data$TIME, 4) <= round(point$data$maxValue, 4), " observed", "censored")
         points <- copy(point)
         points$colour <- NULL
         do.call(geom_point, points)
