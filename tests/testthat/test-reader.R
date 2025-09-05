@@ -294,4 +294,44 @@ if (helper_skip()) {
     expect_error(read_mlx_par_est(ipath, x))
   })
   #------------------- read_mlx_par_est end---------------------------------------
+
+
+   #------------------- read_mlx_par_est start ------------------------------------
+  test_that("Same number of rows in predictions and input dataset after creating monolix controller", {
+    withr::with_tempdir({
+      # Define path to the theophylline dataset included with ggPMX
+      theophylline_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+      
+      # Copy the dataset to temporary directory
+      file.copy(from = list.files(theophylline_path, full.names = TRUE),
+                to = ".",
+                recursive = TRUE)
+      
+      # Load predictions and input data
+      theo_pred <- read.csv(file.path("Monolix", "predictions.txt"), sep = "\t")
+      theo_data <- read.csv("data_pk.csv")
+      
+      # Introduce a small shift in TIME for IDs < 25 to simulate rounding mismatch
+      theo_pred <- theo_pred %>% mutate(time = ifelse(ID < 25, time + 1/3, time))
+      theo_data <- theo_data %>% mutate(TIME = ifelse(ID < 25, TIME + 1/3, TIME))
+      
+      # Overwrite predictions and input data with modified versions
+      write.table(theo_pred, file.path("Monolix", "predictions.txt"), 
+                  sep = "\t", row.names = FALSE, quote = FALSE)
+      write.csv(theo_data, "data_pk.csv", row.names = FALSE)
+      
+      # Create controller with modified data
+      ctr2 <- pmx_mlx(
+        directory = "Monolix",
+        input = "data_pk.csv",
+        dv = "Y",
+        cats = c("SEX"),
+        conts = c("WT0", "AGE0"),
+        strats = c("STUD", "SEX")
+      )
+      
+      expect_equal(ctr2 %>% get_data('input') %>% nrow(), 
+                   ctr2 %>% get_data('predictions') %>% nrow())
+    })
+  })
 }

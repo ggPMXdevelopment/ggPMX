@@ -968,7 +968,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$input <- setDT(input)
   }
   # Always add isobserv to address issue #235
-  self$input$isobserv <- "accepted"
+  self$input$isobserv <- " observed"
 
   self[["data"]] <- load_source(
     sys = config[["sys"]],
