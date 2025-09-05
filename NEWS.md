@@ -1,3 +1,7 @@
+# ggPMX 1.3.2
+* Fixed bug resulting in missing points upon mergin observations and predictions
+
+* Changed labels in individual plots form accepted/ignored to observed/censored (Should be removed in the future)
 # ggPMX 1.3.1
 
 * Fixed tests that were writing files in a non-temporary directory
