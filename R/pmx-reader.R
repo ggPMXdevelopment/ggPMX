@@ -277,7 +277,7 @@ mlx18_iwres <- function(x) {
 #' @import data.table
 
 read_mlx_pred <- function(path, x, ...) {
-  ID <- OCC <- id <- NULL
+  ID <- OCC <- id <- TIME <- NULL
   if (!file.exists(path)) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
@@ -425,7 +425,7 @@ if(NA %in% ids){
 }
 
 read_mlx18_pred <- function(path, x, ...) {
-  ID <- NULL
+  ID <- TIME <- NULL
   if (exists("subfolder", x) && !file.exists(path)) {
     path <- file.path(dirname(path), x$subfolder)
     finegrid_file <- file.path(path, x$file)
@@ -452,7 +452,12 @@ read_mlx18_pred <- function(path, x, ...) {
       ds[, ID := factor(ID, levels = levels(ID))]
     }
     #Workaround for mlx18 prec
-    ds <- merge(ds %>% mutate(TIME = round(TIME, 4)), resi %>% mutate(TIME = round(TIME, 4)), by = c("ID", "TIME"))
+    # Round TIME in both data frames (in place)
+    ds$TIME   <- round(ds$TIME, 4)
+    resi$TIME <- round(resi$TIME, 4)
+
+    # Merge by ID and TIME
+    ds <- merge(ds, resi, by = c("ID", "TIME"))
 
   }
   ds
