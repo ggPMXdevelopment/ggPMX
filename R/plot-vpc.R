@@ -334,7 +334,102 @@ find_interval <- function(x, vec, labels = NULL, ...) {
   }
 }
 
+# [from previous] function that uses tidyvpc to calulate VPC stats
+calculate_vpc_stats <- function(x){
+  
+  observed_data <- x$input%>%
+    filter(!!sym(x$idv)!=0)%>%
+    arrange(ID, !!sym(x$idv))
+  
+  simulated_data <- x$dx%>%
+    arrange(rep, ID, !!sym(x$idv))
+  
+  observed_data$PRED <-
+    simulated_data%>%group_by(ID, !!sym(x$idv))%>%summarise(PRED = mean(!!sym(x$dv)))%>%ungroup()%>%select(PRED)
+  
+  nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) #What should be a default values for nbins? 
+  style <- ifelse(is.null(x$bin$style), 'kmeans', x$bin$style)
+  pi_level <- x$pi$probs 
+  ci_level <- x$ci$probs 
+  facets <- x$strat.facet
+  if (is.character(facets)) {
+    facets <- as.formula(paste0("~", paste0(facets, collapse = " + ")))
+  }
+  #Calculate vpc. Parameters are hardcoded for now.
+  vpc <- observed(observed_data, x = !!sym(x$idv), y = !!sym(x$dv)) %>%
+    simulated(simulated_data, ysim = !!sym(x$dv))%>%
+    {if(!is.null(facets)) stratify(., formula = facets) else .}%>%
+    binning(bin = style, nbins =nbins, xbin = 'xmedian')%>%
+    vpcstats(qpred = c(pi_level[1], 0.5, pi_level[2]), vpc.type = "continuous",
+             conf.level = abs(diff(ci_level)))
+  return(vpc)
+}
 
+# [from previous]
+.vpc_x_new <- function(x, self){
+  if (x$ptype == "VPC"){
+
+    x$dv <- self$dv
+    idv <- self$sim[["idv"]]
+    
+    
+    #Calculate vpcstats using tidyvpc
+    vpc <- calculate_vpc_stats(x)
+    
+    #Put vpc parameters into ggPMX list format (ci_dt, pi_dt, out, rug_dt)
+    ci_dt <- data.table(
+      vpc$stats
+    )%>%
+      rename(percentile = 'qname',
+             TIME = 'xbin',
+             CLLOW = 'lo',
+             CLMID = 'md',
+             CLHIGH = 'hi'
+      )%>%
+      mutate(
+        bin = TIME
+      )
+    
+    #This is not real prediction interval, just a placeholder
+    pi_dt <- data.table(
+      vpc$stats
+    )%>%
+      rename(percentile = 'qname',
+             TIME = 'xbin',
+             value = 'y'
+      )%>%
+      mutate(
+        bin = TIME
+      )
+    
+    #This was previosly in the list, but it's not used anyhow if I'm correct
+    # out <- data.table(merge(ci_dt, pi_dt, by = c("TIME", "percentile")))
+    # nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
+    # #nn <- c('LOW', 'MID', 'HIGH')[c(1, 3)]
+    # out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
+    # out[, zmax := pmax(get(nn[[2]]), value)]
+    # out[, zmin := pmin(get(nn[[1]]), value)]
+    
+    rug_dt <- data.frame(x = as.numeric(vpc$stats$xbin), y = 1)
+    
+    res <- list(
+      ci_dt = ci_dt,
+      pi_dt = pi_dt,
+      # out = out, 
+      rug_dt = rug_dt
+    )
+    
+    #Alex: I don't think this class reassignment makes sense
+    old_class <- class(x)
+    x$db <- res
+    class(x) <- old_class
+    #x$bin <- as.numeric(x$bin)
+    x
+  }
+  else {
+    x
+  }
+}
 
 .vpc_x <- function(x, self) {
   if (x$ptype == "VPC") {
