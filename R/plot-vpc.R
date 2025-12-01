@@ -334,18 +334,24 @@ find_interval <- function(x, vec, labels = NULL, ...) {
   }
 }
 
+# [temp fix for global bindings]
+utils::globalVariables(c("ID", "PRED", "TIME"))
+
 # [from previous] function that uses tidyvpc to calulate VPC stats
 calculate_vpc_stats <- function(x){
   
-  observed_data <- x$input%>%
-    filter(!!sym(x$idv)!=0)%>%
-    arrange(ID, !!sym(x$idv))
+  observed_data <- x$input %>%
+    dplyr::filter(!!sym(x$idv)!=0) %>%
+    dplyr::arrange(ID, !!sym(x$idv))
   
-  simulated_data <- x$dx%>%
-    arrange(rep, ID, !!sym(x$idv))
+  simulated_data <- x$dx %>%
+    dplyr::arrange(rep, ID, !!sym(x$idv))
   
-  observed_data$PRED <-
-    simulated_data%>%group_by(ID, !!sym(x$idv))%>%summarise(PRED = mean(!!sym(x$dv)))%>%ungroup()%>%select(PRED)
+  observed_data$PRED <- simulated_data %>% 
+    dplyr::group_by(ID, !!sym(x$idv)) %>%
+    dplyr::summarise(PRED = mean(!!sym(x$dv))) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::select(PRED)
   
   nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) #What should be a default values for nbins? 
   style <- ifelse(is.null(x$bin$style), 'kmeans', x$bin$style)
@@ -353,15 +359,25 @@ calculate_vpc_stats <- function(x){
   ci_level <- x$ci$probs 
   facets <- x$strat.facet
   if (is.character(facets)) {
-    facets <- as.formula(paste0("~", paste0(facets, collapse = " + ")))
+    facets <- stats::as.formula(paste0("~", paste0(facets, collapse = " + ")))
   }
+  
+  stratify_if <- function(object, facets) {
+    if (is.null(facets)) return(object)
+    tidyvpc::stratify(object, formula = facets)
+  }
+
   #Calculate vpc. Parameters are hardcoded for now.
-  vpc <- observed(observed_data, x = !!sym(x$idv), y = !!sym(x$dv)) %>%
-    simulated(simulated_data, ysim = !!sym(x$dv))%>%
-    {if(!is.null(facets)) stratify(., formula = facets) else .}%>%
-    binning(bin = style, nbins =nbins, xbin = 'xmedian')%>%
-    vpcstats(qpred = c(pi_level[1], 0.5, pi_level[2]), vpc.type = "continuous",
-             conf.level = abs(diff(ci_level)))
+  vpc <- tidyvpc::observed(observed_data, x = !!sym(x$idv), y = !!sym(x$dv)) %>%
+    tidyvpc::simulated(simulated_data, ysim = !!sym(x$dv)) %>%
+    stratify_if(facets) %>%
+    tidyvpc::binning(bin = style, nbins = nbins, xbin = 'xmedian') %>%
+    tidyvpc::vpcstats(
+      qpred = c(pi_level[1], 0.5, pi_level[2]),
+      vpc.type = "continuous",
+      conf.level = abs(diff(ci_level))
+    )
+  
   return(vpc)
 }
 
@@ -377,30 +393,24 @@ calculate_vpc_stats <- function(x){
     vpc <- calculate_vpc_stats(x)
     
     #Put vpc parameters into ggPMX list format (ci_dt, pi_dt, out, rug_dt)
-    ci_dt <- data.table(
-      vpc$stats
-    )%>%
-      rename(percentile = 'qname',
-             TIME = 'xbin',
-             CLLOW = 'lo',
-             CLMID = 'md',
-             CLHIGH = 'hi'
-      )%>%
-      mutate(
-        bin = TIME
-      )
+    ci_dt <- data.table(vpc$stats) %>%
+      dplyr::rename(
+        percentile = 'qname',
+        TIME = 'xbin',
+        CLLOW = 'lo',
+        CLMID = 'md',
+        CLHIGH = 'hi'
+      ) %>%
+      dplyr::mutate(bin = TIME)
     
     #This is not real prediction interval, just a placeholder
-    pi_dt <- data.table(
-      vpc$stats
-    )%>%
-      rename(percentile = 'qname',
-             TIME = 'xbin',
-             value = 'y'
-      )%>%
-      mutate(
-        bin = TIME
-      )
+    pi_dt <- data.table(vpc$stats) %>%
+      dplyr::rename(
+        percentile = 'qname',
+        TIME = 'xbin',
+        value = 'y'
+      ) %>%
+      dplyr::mutate(bin = TIME)
     
     #This was previosly in the list, but it's not used anyhow if I'm correct
     # out <- data.table(merge(ci_dt, pi_dt, by = c("TIME", "percentile")))
@@ -612,7 +622,7 @@ vpc.plot <- function(x) {
 
     if (!is.null(strat.facet)) {
       if (is.character(strat.facet)) {
-        strat.facet <- as.formula(paste0('~', paste0(strat.facet, collapse = " + ")))
+        strat.facet <- stats::as.formula(paste0('~', paste0(strat.facet, collapse = " + ")))
       }
       pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
     }
