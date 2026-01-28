@@ -333,7 +333,6 @@ find_interval <- function(x, vec, labels = NULL, ...) {
     stats::ave(x, vals, FUN = stats::median)
   }
 }
-
 # [temp fix for global bindings]
 utils::globalVariables(c("ID", "PRED", "TIME"))
 
