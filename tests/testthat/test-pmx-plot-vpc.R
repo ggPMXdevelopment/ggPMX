@@ -242,7 +242,7 @@ if (helper_skip()) {
 
   test_that("vpc_footnote.: params: x; result: identical inherits", {
     vpc <- pmx_vpc()
-    vpc_f <- vpc_footnote.(vpc)
+    vpc_f <- .vpc_footnote(vpc)
     expect_true(inherits(vpc_f, c("pmx_vpc", "pmx_gpar")))
     expect_true(inherits(vpc_f$ci, c("pmx_vpc_ci", "list")))
     expect_true(inherits(vpc_f$footnote, "character"))
@@ -250,7 +250,7 @@ if (helper_skip()) {
 
   test_that("vpc_footnote.: params: x; result: identical structure", {
     vpc <- pmx_vpc()
-    vpc_f <- vpc_footnote.(vpc)
+    vpc_f <- .vpc_footnote(vpc)
     expect_identical(vpc_f$gp$smooth$linetype, 1)
     expect_identical(vpc_f$gp$legend.position, "right")
   })
@@ -266,20 +266,20 @@ if (helper_skip()) {
   #
   test_that("vpc_legend.: params: x; result: identical structure", {
     vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- vpc_legend.(vpc)
+    vpc_l <- .vpc_legend(vpc)
     expect_identical(vpc_l$ptype, "VPC")
     expect_identical(vpc_l$rug$alpha, 0.7)
   })
 
   test_that("vpc_legend.: params: x; result: identical inherits", {
     vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- vpc_legend.(vpc)
+    vpc_l <- .vpc_legend(vpc)
     expect_true(inherits(vpc_l, c("pmx_vpc", "pmx_gpar")))
   })
 
   test_that("vpc_legend.: params: x; result: identical names", {
     vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- vpc_legend.(vpc)
+    vpc_l <- .vpc_legend(vpc)
     vpslNames <- c(
       "ptype", "strat", "idv", "dname", "labels", "is.legend", "is.footnote",
       "type", "facets", "obs", "pi", "ci", "rug", "bin",
