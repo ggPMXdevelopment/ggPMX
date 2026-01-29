@@ -564,7 +564,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
 # internal functions called during pmx_add_plot() pipeline --------------------
 
-.vpc_x_new <- function(x, self) {
+.vpc_x <- function(x, self) {
   if (x$ptype != "VPC") return(x) # skip on non VPC plots
 
   x$dv <- self$dv
@@ -780,7 +780,7 @@ pmx_plot_vpc <-
 
 # OLD internal functions called during pmx_add_plot() pipeline --------------------
 
-.vpc_x <- function(x, self) {
+.vpc_x_old <- function(x, self) {
   if (x$ptype == "VPC") {
     message("calling .vpc_x")
     x$dv <- self$dv
