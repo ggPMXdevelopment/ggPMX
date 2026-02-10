@@ -318,7 +318,6 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 }
 
 .vpc_plot <- function(x) {
-  message("calling .vpc_plot")
   with(x, {
 
     # layer functions
@@ -616,9 +615,10 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
 }
 
+#' @param x configuration object of class "pmx_vpc"
+#' @noRd
 .calculate_vpc_stats <- function(x) {
-  message("calling calculate_vpc_stats")
-   
+  
   observed_data <- x$input %>%
     dplyr::filter(!!sym(x$idv)!=0) %>%
     dplyr::arrange(ID, !!sym(x$idv))
@@ -649,23 +649,33 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   }
 
   # calculate vpc. parameters are hardcoded for now.
-  vpc_stats <- tidyvpc::observed(
+  vpc_stats <- tidyvpc::observed( 
+    # not yet implemented: blq, lloq, alq, uloq
     observed_data, 
     x = !!sym(x$idv), 
-    y = !!sym(x$dv)
+    yobs = !!sym(x$dv),
+    pred = PRED
   ) %>%
     tidyvpc::simulated(
-      simulated_data, 
+      simulated_data,
+      xsim = !!sym(x$idv), 
       ysim = !!sym(x$dv)
     ) %>%
     stratify_if(facets) %>%
     tidyvpc::binning(
+      # not yet implemented: 
+      # - "breaks" for manual binning
+      # - "centers" for manual binning
+      # - "altx" but not sure if we want to? 
       bin = style, 
-      nbins = nbins, 
-      xbin = "xmedian") %>%
+      nbins = nbins,   # this should come from the user
+      xbin = "xmedian" # tidyvpc default
+    ) %>%
     tidyvpc::vpcstats(
+      # not yet implemented: 
+      # - "quantile.type"
       qpred = c(pi_level[1], 0.5, pi_level[2]),
-      vpc.type = "continuous",
+      vpc.type = "continuous", # do we support categorical?
       conf.level = abs(diff(ci_level))
     )
   
