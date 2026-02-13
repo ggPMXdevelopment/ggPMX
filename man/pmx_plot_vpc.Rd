@@ -44,9 +44,9 @@ pmx_plot_vpc(
 \arguments{
 \item{ctr}{pmx controller}
 
-\item{type}{\code{charcater} can be either percentile or scatter}
+\item{type}{\code{character} can be either percentile or scatter}
 
-\item{idv}{\code{chracater} individual variable}
+\item{idv}{\code{character} individual variable}
 
 \item{obs}{\code{pmx_vpc_obs} object observation layer \link{pmx_vpc_obs}}
 
