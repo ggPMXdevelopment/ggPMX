@@ -752,11 +752,48 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 #' @example inst/examples/vpc.R
 #'
 pmx_plot_vpc <-
-  function(ctr, type, idv, obs, pi, ci, rug, bin, is.legend, sim_blq, dname, filter,
-           strat.facet, facets, strat.color, trans, pmxgpar, labels,
-           axis.title, axis.text, ranges, is.smooth, smooth, is.band,
-           band, is.draft, draft, is.identity_line, identity_line,
-           scale_x_log10, scale_y_log10, color.scales, is.footnote, ...) {
+  function(
+    ctr,  # controller object
+    type, # plot type
+    idv,  # name of the id variable
+    obs,  # layer parameters via pmx_vpc_obs()
+    pi,   # layer parameters via pmx_vpc_pi()
+    ci,   # layer parameters via pmx_vpc_ci()
+    rug,  # layer parameters via pmx_vpc_ci()
+    bin,  # layer parameters via pmx_vpc_bin()
+
+    # minor pmx_vpc parameters
+    is.legend,   # add legend?
+    is.footnote, # add footnote?
+    dname,       # for compatibility, not used
+
+    # pmx_update parameters
+    filter,
+    strat.facet, 
+    facets, 
+    strat.color, 
+    trans, 
+    pmxgpar, 
+
+    # shared parameters handled by pmx_gpar
+    labels,
+    axis.title, 
+    axis.text, 
+    ranges, 
+    is.smooth, 
+    smooth, 
+    is.band,
+    band, 
+    is.draft, 
+    draft, 
+    is.identity_line, 
+    identity_line,
+    scale_x_log10, 
+    scale_y_log10, 
+    color.scales, 
+    sim_blq, # Danielle: is this really pmx_gpar?
+    ...
+  ) {
     
     has_rug <- !missing (rug) && !is.null(rug)
     has_bin <- !missing(bin) && !is.null(bin)
