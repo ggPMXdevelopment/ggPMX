@@ -311,7 +311,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 # internal functions called during the plot_pmx.pmx_vpc() pipeline ------------
 
 .vpc_pi_line <- function(dt, left, geom) {
-  mapping <- aes(group = .data$percentile, y = .data$value, linetype =.data$percentile)
+  mapping <- aes(group = .data$percentile, y = .data$value, linetype = .data$percentile)
   right <- list(data = dt, mapping = mapping)
   left$linetype <- NULL
   do.call("geom_line", append(right, left))
@@ -580,7 +580,13 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       CLMID = 'md',
       CLHIGH = 'hi'
     ) %>%
-    dplyr::mutate(bin = TIME)
+    dplyr::mutate(
+      bin = TIME,
+      percentile = as.character(percentile),
+      percentile = gsub("^q", "", percentile),
+      percentile = as.numeric(percentile) * 100,
+      percentile = paste0("p", percentile)
+    ) 
     
   # this is not real prediction interval, just a placeholder
   pi_dt <- data.table(vpc_stats$stats) %>%
@@ -588,8 +594,14 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       percentile = 'qname',
       TIME = 'xbin',
       value = 'y'
-    ) %>%
-    dplyr::mutate(bin = TIME)
+    )  %>%
+    dplyr::mutate(
+      bin = TIME,
+      percentile = as.character(percentile),
+      percentile = gsub("^q", "", percentile),
+      percentile = as.numeric(percentile) * 100,
+      percentile = paste0("p", percentile)
+    ) 
     
   #This was previosly in the list, but it's not used anyhow if I'm correct
   # out <- data.table(merge(ci_dt, pi_dt, by = c("TIME", "percentile")))
@@ -639,6 +651,8 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   ci_level <- x$ci$probs 
   facets   <- x$strat.facet
 
+  is_predcorr <- ifelse(is.null(x$predcorr), FALSE, x$predcorr)
+
   if (is.character(facets)) {
     facets <- stats::as.formula(paste0("~", paste0(facets, collapse = " + ")))
   }
@@ -646,6 +660,10 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   stratify_if <- function(object, facets) {
     if (is.null(facets)) return(object)
     tidyvpc::stratify(object, formula = facets)
+  }
+  predcorrect_if <- function(object, is_predcorr) {
+    if (!is_predcorr) return(object)
+    tidyvpc::predcorrect(object, pred = PRED)
   }
 
   # calculate vpc. parameters are hardcoded for now.
@@ -671,6 +689,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       nbins = nbins,   # this should come from the user
       xbin = "xmedian" # tidyvpc default
     ) %>%
+    predcorrect_if(is_predcorr) %>% # does not handle binless predcorr
     tidyvpc::vpcstats(
       # not yet implemented: 
       # - "quantile.type"
@@ -710,6 +729,8 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 #' Note: consider not using a rug layer when bin[["within_strat"]]=TRUE,
 #' since the rugs plotted will not reflect the bins.
 #' @param bin \code{pmx_vpc_bin} object  \link{pmx_vpc_bin} specify within pmx_plot_vpc() e.g.: bin = pmx_vpc_bin(style = "kmeans", n = 10)
+#' @param predcorr \code{logical} if TRUE apply prediction-correction
+#' 
 #' @param is.legend \code{logical} if TRUE add legend
 #' @param is.footnote \code{logical} if TRUE add footnote
 #' @param dname added for compatibility with other ggPMX plots
@@ -761,6 +782,7 @@ pmx_plot_vpc <-
     ci,   # layer parameters via pmx_vpc_ci()
     rug,  # layer parameters via pmx_vpc_ci()
     bin,  # layer parameters via pmx_vpc_bin()
+    predcorr,    # apply prediction-correction?
 
     # minor pmx_vpc parameters
     is.legend,   # add legend?
