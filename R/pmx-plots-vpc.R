@@ -83,8 +83,11 @@ pmx_vpc <- function(type = c("percentile", "scatter"),
 #' 
 pmx_vpc_bin <-
   function(style, within_strat = TRUE, seed = 42, ...) { 
-    # within strat = TRUE, as default in order to avoid bugs
-    # Setting seed for random number generating, so plots are have reproducible binning.
+    # within strat = TRUE as default in order to avoid bugs
+  
+    # set seed for reproducible binning
+    # Danielle: would it make more sense to preserve the seed in the return value, and
+    # apply it at the time tidyvpc::binning() is called, rather than set the seed here?
     set.seed(seed)
     if (missing(style)) {
       return(NULL)
@@ -128,13 +131,11 @@ pmx_vpc_obs <-
 #'
 #' @param show  \code{character} how lines are displayed:
 #' \itemize{
-#' \item \strong{show=all} lines will be displayed for each of
-#' the 3 percentiles. with a shaded area.
+#' \item \strong{show=all} lines will be displayed for each of the 3 percentiles, with a shaded area.
 #' \item \strong{show=median} Show only median line.
 #' \item \strong{show=area} Show only median line and the shaded area
 #' }
-#' @param interval \code{numeric} quantiles values default
-#' to \code{c(.05,.95)}
+#' @param interval \code{numeric} quantiles values default to \code{c(.05, .95)}
 #' @param median \code{list} containing: \cr
 #' \itemize{
 #' \item \strong{color} \code{character}  Color of the median percentile line. Default: "#000000".
@@ -223,7 +224,7 @@ pmx_vpc_pi <-
 #' }
 #'
 #' @export
-#' @returns list with options for Confidence Interval layer
+#' @returns list with options for confidence interval layer
 #' @family vpc
 #' 
 pmx_vpc_ci <-
@@ -630,7 +631,8 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 #' @param x configuration object of class "pmx_vpc"
 #' @noRd
 .calculate_vpc_stats <- function(x) {
-  
+
+  # construct observed and simulated data sets for VPC
   observed_data <- x$input %>%
     dplyr::filter(!!sym(x$idv)!=0) %>%
     dplyr::arrange(ID, !!sym(x$idv))
@@ -644,50 +646,61 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     dplyr::ungroup() %>% 
     dplyr::select(PRED)
   
+  # extract/parse arguments needed for tidyvpc
   nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) # what should be a default values for nbins? 
   style <- ifelse(is.null(x$bin$style), 'kmeans', x$bin$style)
-
+  is_predcorr <- ifelse(is.null(x$predcorr), FALSE, x$predcorr) # default to FALSE to match previous
   pi_level <- x$pi$probs 
   ci_level <- x$ci$probs 
   facets   <- x$strat.facet
-
-  is_predcorr <- ifelse(is.null(x$predcorr), FALSE, x$predcorr)
-
   if (is.character(facets)) {
     facets <- stats::as.formula(paste0("~", paste0(facets, collapse = " + ")))
   }
   
+  # helper functions
   stratify_if <- function(object, facets) {
     if (is.null(facets)) return(object)
     tidyvpc::stratify(object, formula = facets)
+  }
+  binning_if <- function(object, is_binned, ...) {
+    if (is_binned) return(object) 
+    tidyvpc::binning(object, ...)
+  }
+  binless_if <- function(object, is_binless, ...) {
+    if (is_binless) return(object) 
+    tidyvpc::binless(object, ...)
   }
   predcorrect_if <- function(object, is_predcorr) {
     if (!is_predcorr) return(object)
     tidyvpc::predcorrect(object, pred = PRED)
   }
 
-  # calculate vpc. parameters are hardcoded for now.
-  vpc_stats <- tidyvpc::observed( 
-    # not yet implemented: blq, lloq, alq, uloq
-    observed_data, 
-    x = !!sym(x$idv), 
-    yobs = !!sym(x$dv),
-    pred = PRED
-  ) %>%
+  # compute VPC statistics 
+  vpc_stats <- observed_data %>% 
+    tidyvpc::observed( 
+      # tidyvpc args not yet implemented: blq, lloq, alq, uloq 
+      x = !!sym(x$idv), 
+      yobs = !!sym(x$dv),
+      pred = PRED
+    ) %>%
     tidyvpc::simulated(
       simulated_data,
       xsim = !!sym(x$idv), 
       ysim = !!sym(x$dv)
     ) %>%
     stratify_if(facets) %>%
-    tidyvpc::binning(
-      # not yet implemented: 
+    binning_if(
+      # tidyvpc args not yet implemented: 
       # - "breaks" for manual binning
       # - "centers" for manual binning
       # - "altx" but not sure if we want to? 
-      bin = style, 
+      is_binned = style != "binless",
+      bin = style,     # style arg from ggPMX becomes bins arg to tidybpc
       nbins = nbins,   # this should come from the user
       xbin = "xmedian" # tidyvpc default
+    ) %>%
+    binless_if(
+      is_binless = style == "binless"
     ) %>%
     predcorrect_if(is_predcorr) %>% # does not handle binless predcorr
     tidyvpc::vpcstats(
