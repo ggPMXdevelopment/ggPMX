@@ -663,11 +663,11 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     tidyvpc::stratify(object, formula = facets)
   }
   binning_if <- function(object, is_binned, ...) {
-    if (is_binned) return(object) 
+    if (!is_binned) return(object) 
     tidyvpc::binning(object, ...)
   }
   binless_if <- function(object, is_binless, ...) {
-    if (is_binless) return(object) 
+    if (!is_binless) return(object) 
     tidyvpc::binless(object, ...)
   }
   predcorrect_if <- function(object, is_predcorr) {
