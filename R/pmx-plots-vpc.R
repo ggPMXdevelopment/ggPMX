@@ -710,7 +710,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       vpc.type = "continuous", # do we support categorical?
       conf.level = abs(diff(ci_level))
     )
-  
+    
   return(vpc_stats)
 }
 
@@ -862,173 +862,173 @@ pmx_plot_vpc <-
 
 # OLD internal functions called during pmx_add_plot() pipeline --------------------
 
-.vpc_x_old <- function(x, self) {
-  if (x$ptype == "VPC") {
-    message("calling .vpc_x")
-    x$dv <- self$dv
-    idv <- self$sim[["idv"]]
-    rug <- bin <- brks <- NULL
-    if (!is.null(x$bin)) {
-      if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
-        x$bin$within_strat <- NULL
-        bins <- x$input[, list(brks = bin_idv(get(idv), x)), by = c(x$strat.facet)]
+# .vpc_x_old <- function(x, self) {
+#   if (x$ptype == "VPC") {
+#     message("calling .vpc_x")
+#     x$dv <- self$dv
+#     idv <- self$sim[["idv"]]
+#     rug <- bin <- brks <- NULL
+#     if (!is.null(x$bin)) {
+#       if (!is.null(x$strat.facet) && !is.null(x$bin$within_strat) && x$bin$within_strat) {
+#         x$bin$within_strat <- NULL
+#         bins <- x$input[, list(brks = bin_idv(get(idv), x)), by = c(x$strat.facet)]
         
-        x$input[, bin := {
-          grp <- mget(x$strat.facet)
-          find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
-        }, by = c(x$strat.facet)]
+#         x$input[, bin := {
+#           grp <- mget(x$strat.facet)
+#           find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
+#         }, by = c(x$strat.facet)]
         
-        x$dx[, bin := {
-          grp <- mget(x$strat.facet)
-          find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
-        }, by = c(x$strat.facet)]
+#         x$dx[, bin := {
+#           grp <- mget(x$strat.facet)
+#           find_interval(get(idv), bins[do.call(paste, c(grp, sep = "_")) == do.call(paste, c(mget(x$strat.facet), sep = "_")), brks])
+#         }, by = c(x$strat.facet)]
         
-      } else {
-        rugs <- x$input[, bin_idv(get(idv), x)]
-        x$input[, bin := find_interval(get(idv), rugs)]
-        x$dx[, bin := find_interval(get(idv), rugs)]
-        rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
-      }
-    }
+#       } else {
+#         rugs <- x$input[, bin_idv(get(idv), x)]
+#         x$input[, bin := find_interval(get(idv), rugs)]
+#         x$dx[, bin := find_interval(get(idv), rugs)]
+#         rug <- data.frame(x = rugs, y = NA_real_, stringsAsFactors = FALSE)
+#       }
+#     }
 
-    res <- vpc.data(
-      x[["type"]],
-      x$input,
-      x$dx,
-      x$pi$probs,
-      x$ci$probs,
-      idv = if (!is.null(x$bin)) "bin" else self$sim[["idv"]],
-      irun = self$sim[["irun"]],
-      dv = self$dv,
-      strat = x$strat.facet,
-      rug = rug
-    )
-    old_class <- class(x)
-    x$db <- res
-    class(x) <- old_class
-    x
-  } else {
-    x
-  }
-}
+#     res <- vpc.data(
+#       x[["type"]],
+#       x$input,
+#       x$dx,
+#       x$pi$probs,
+#       x$ci$probs,
+#       idv = if (!is.null(x$bin)) "bin" else self$sim[["idv"]],
+#       irun = self$sim[["irun"]],
+#       dv = self$dv,
+#       strat = x$strat.facet,
+#       rug = rug
+#     )
+#     old_class <- class(x)
+#     x$db <- res
+#     class(x) <- old_class
+#     x
+#   } else {
+#     x
+#   }
+# }
 
-quantile_dt <-
-  function(dx, grp = "time", ind = "y", probs = c(.05, .95), prefix = "p", wide = FALSE) {
-    percentile <- NULL
-    probs <- sort(unique(c(0.5, probs)))
-    fmt <- ifelse(probs < .1, paste0(prefix, "0%1.f"), paste0(prefix, "%1.f"))
-    probs.n <- sprintf(fmt, probs * 100)
-    if (wide) {
-      dd <- dx[, as.list(stats::quantile(get(ind), probs = probs, na.rm = TRUE)), grp]
-      setnames(dd, grep("%", names(dd)), probs.n)
-    } else {
-      ds <- dx[, stats::quantile(get(ind), probs = probs, na.rm = TRUE), grp]
-      ds[, percentile := rep(probs.n, .N / length(probs))]
-      setnames(ds, "V1", "value")
-    }
-  }
+# quantile_dt <-
+#   function(dx, grp = "time", ind = "y", probs = c(.05, .95), prefix = "p", wide = FALSE) {
+#     percentile <- NULL
+#     probs <- sort(unique(c(0.5, probs)))
+#     fmt <- ifelse(probs < .1, paste0(prefix, "0%1.f"), paste0(prefix, "%1.f"))
+#     probs.n <- sprintf(fmt, probs * 100)
+#     if (wide) {
+#       dd <- dx[, as.list(stats::quantile(get(ind), probs = probs, na.rm = TRUE)), grp]
+#       setnames(dd, grep("%", names(dd)), probs.n)
+#     } else {
+#       ds <- dx[, stats::quantile(get(ind), probs = probs, na.rm = TRUE), grp]
+#       ds[, percentile := rep(probs.n, .N / length(probs))]
+#       setnames(ds, "V1", "value")
+#     }
+#   }
 
-vpc.data <-
-  function(type = c("percentile", "scatter"),
-           dobs,
-           dsim,
-           probs.pi,
-           probs.ci,
-           idv = "time",
-           irun = "stu",
-           dv = "y",
-           strat = NULL,
-           rug = NULL) {
-    zmax <- zmin <- out_ <- value <- percentile <- NULL
-    bins <- unlist(unique(dobs[, idv, with = FALSE]))
-    if (type == "percentile") {
+# vpc.data <-
+#   function(type = c("percentile", "scatter"),
+#            dobs,
+#            dsim,
+#            probs.pi,
+#            probs.ci,
+#            idv = "time",
+#            irun = "stu",
+#            dv = "y",
+#            strat = NULL,
+#            rug = NULL) {
+#     zmax <- zmin <- out_ <- value <- percentile <- NULL
+#     bins <- unlist(unique(dobs[, idv, with = FALSE]))
+#     if (type == "percentile") {
 
-      #allow for input e.g. pmx_plot_vpc(strat.facet = ~SEX)
-      if(!is.character(strat)){
-        strat <- all.vars(strat)
-      }
+#       #allow for input e.g. pmx_plot_vpc(strat.facet = ~SEX)
+#       if(!is.character(strat)){
+#         strat <- all.vars(strat)
+#       }
 
-      pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
-      res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
-      ci <- quantile_dt(
-        res2,
-        probs = probs.ci, grp = c("percentile", idv, strat),
-        prefix = "CL", ind = "value", wide = TRUE
-      )
+#       pi <- quantile_dt(dobs, probs = probs.pi, grp = c(idv, strat), ind = dv)
+#       res2 <- quantile_dt(dsim, probs = probs.pi, grp = c(irun, idv, strat), ind = dv)
+#       ci <- quantile_dt(
+#         res2,
+#         probs = probs.ci, grp = c("percentile", idv, strat),
+#         prefix = "CL", ind = "value", wide = TRUE
+#       )
 
-      res <- list(ci_dt = ci,pi_dt = pi)
-      nn <- sum(grepl("CL", names(ci)))
-      if (nn==3){
-        #ALEX: this part of the code was causing errors in VPC when stratyfying by multiple variables.
-        # `out` is not used anywhere in the code as far as I can see, so I commented it out
-        #I keep it like this since we probably upgrade the vpc functionality anyway later
-        #out <- merge(ci, pi, by = c(idv, "percentile"))
-        nn <- grep("CL", names(ci), value = TRUE)[c(1, 3)]
-        #out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
-        #out[, zmax := pmax(get(nn[[2]]), value)]
-        #out[, zmin := pmin(get(nn[[1]]), value)]
-        #res$out <- out
-        res$out <- "DUMMY"
-      }
-    } else {
-      pi <- quantile_dt(dsim, probs = probs.pi, grp = c(idv, strat), ind = dv)
-      pi_area <- dcast(pi[percentile != "p50"],...~percentile)
-      res <- list(pi_area_dt = pi_area,pi_dt = pi)
-    }
-    if (is.null(rug)) {
-      rug <- data.frame(x = bins, y = NA_real_, stringsAsFactors = FALSE)
-    }
-    res$rug_dt <- rug
-    res
-  }
+#       res <- list(ci_dt = ci,pi_dt = pi)
+#       nn <- sum(grepl("CL", names(ci)))
+#       if (nn==3){
+#         #ALEX: this part of the code was causing errors in VPC when stratyfying by multiple variables.
+#         # `out` is not used anywhere in the code as far as I can see, so I commented it out
+#         #I keep it like this since we probably upgrade the vpc functionality anyway later
+#         #out <- merge(ci, pi, by = c(idv, "percentile"))
+#         nn <- grep("CL", names(ci), value = TRUE)[c(1, 3)]
+#         #out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
+#         #out[, zmax := pmax(get(nn[[2]]), value)]
+#         #out[, zmin := pmin(get(nn[[1]]), value)]
+#         #res$out <- out
+#         res$out <- "DUMMY"
+#       }
+#     } else {
+#       pi <- quantile_dt(dsim, probs = probs.pi, grp = c(idv, strat), ind = dv)
+#       pi_area <- dcast(pi[percentile != "p50"],...~percentile)
+#       res <- list(pi_area_dt = pi_area,pi_dt = pi)
+#     }
+#     if (is.null(rug)) {
+#       rug <- data.frame(x = bins, y = NA_real_, stringsAsFactors = FALSE)
+#     }
+#     res$rug_dt <- rug
+#     res
+#   }
 
-bin_idv <- function(idv, x) {
-  brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
-  if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv)
-  if (min(brks) <= min(idv)) brks[which.min(brks)] <- min(idv)
-  brks
-}
+# bin_idv <- function(idv, x) {
+#   brks <- do.call(classIntervals, append(list(var = idv), x$bin))$brks
+#   if (max(brks) >= max(idv)) brks[which.max(brks)] <- max(idv)
+#   if (min(brks) <= min(idv)) brks[which.min(brks)] <- min(idv)
+#   brks
+# }
 
-find_interval <- function(x, vec, labels = NULL, ...) {
-  levels <- seq_along(vec)
-  vals <- findInterval(x, vec, rightmost.closed = TRUE, ...)
-  if (!is.null(labels)) {
-    as.numeric(as.character(factor(vals, levels = unique(vals), labels = labels)))
-  } else {
-    stats::ave(x, vals, FUN = stats::median)
-  }
-}
+# find_interval <- function(x, vec, labels = NULL, ...) {
+#   levels <- seq_along(vec)
+#   vals <- findInterval(x, vec, rightmost.closed = TRUE, ...)
+#   if (!is.null(labels)) {
+#     as.numeric(as.character(factor(vals, levels = unique(vals), labels = labels)))
+#   } else {
+#     stats::ave(x, vals, FUN = stats::median)
+#   }
+# }
 
-.vpc.area <- function() {
+# .vpc.area <- function() {
 
-  # out <- list(color="red")
-  # out_layer <- if(!is.null(out)){
-  #   params <- append(
-  #     list(
-  #       mapping = aes_string(group="percentile",y="value"),
-  #       data=db$out[(out_)]),
-  #     out)
-  #   do.call(geom_point,params)
-  # }
-  # out_area <- list(fill="red",alpha=0.2)
-  # out_layer_area_min <- if(!is.null(out_area)){
-  #   ll <- list(
-  #     mapping = aes_string(group="percentile",ymin="zmin",ymax=nn[[1]]),
-  #     data=db$out
-  #   )
-  #   params <- append(ll,out_area)
-  #   do.call(geom_ribbon,params)
-  # }
-  #
-  # out_layer_area_max <- if(!is.null(out_area)){
-  #   ll1 <- list(
-  #     mapping = aes_string(group="percentile",ymax="zmax",ymin=nn[[2]]),
-  #     data=db$out
-  #   )
-  #   params <- append(ll1,out_area)
-  #   do.call(geom_ribbon,params)
-  # }
+#   # out <- list(color="red")
+#   # out_layer <- if(!is.null(out)){
+#   #   params <- append(
+#   #     list(
+#   #       mapping = aes_string(group="percentile",y="value"),
+#   #       data=db$out[(out_)]),
+#   #     out)
+#   #   do.call(geom_point,params)
+#   # }
+#   # out_area <- list(fill="red",alpha=0.2)
+#   # out_layer_area_min <- if(!is.null(out_area)){
+#   #   ll <- list(
+#   #     mapping = aes_string(group="percentile",ymin="zmin",ymax=nn[[1]]),
+#   #     data=db$out
+#   #   )
+#   #   params <- append(ll,out_area)
+#   #   do.call(geom_ribbon,params)
+#   # }
+#   #
+#   # out_layer_area_max <- if(!is.null(out_area)){
+#   #   ll1 <- list(
+#   #     mapping = aes_string(group="percentile",ymax="zmax",ymin=nn[[2]]),
+#   #     data=db$out
+#   #   )
+#   #   params <- append(ll1,out_area)
+#   #   do.call(geom_ribbon,params)
+#   # }
 
-  # list( out_layer , out_layer_area_min , out_layer_area_max )
-}
+#   # list( out_layer , out_layer_area_min , out_layer_area_max )
+# }
 
