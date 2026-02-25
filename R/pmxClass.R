@@ -1035,36 +1035,49 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         # Get the column names of sim_blq data
         column_names_sim <- colnames(self[["data"]][["sim_blq"]])
 
-        # Define the array of residual names
-        residual_names <- c("iwRes", "pwRes", "npde")
+        # Define the array of "residual" names (or indeed any other variables with simblq)
+        residual_names <- c("iwRes", "pwRes", "npde", "y")
 
-        # Get the names from the sim_blq_npde_iwres section of the config data
-        blq_names <- names(config[['data']][['sim_blq_npde_iwres']][['names']])
+        # Get the names from the config (this can appear in multiple places)
+        blq_names_npde <- names(config[['data']][['sim_blq_npde_iwres']][['names']])
+        blq_names_y <- names(config[['data']][['sim_blq_y']][['names']])
+        blq_names <- unique(c(blq_names_npde, blq_names_y))
 
         # Loop over each residual name
         for (residual in residual_names) {
+
           # Search for the residual name in the config names
           idx <- grep(residual, blq_names)
           # Get the corresponding column name from the config
           config_col_name <- blq_names[idx]
 
-          # If there is one match and the column name exists in our data,
-          # then replace the data column with the config column
+          # If there is exactly one match and the column name exists in our data,
+          # then replace the data column with the config column (e.g., in the test 
+          # data set, "iwRes_mode_simBlq" is unique match, as is "y_simBlq_mode")
           if (length(config_col_name) == 1 && config_col_name %in% column_names_sim) {
-            self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[config_col_name]]
+            self[["data"]][["sim_blq"]][[toupper(residual)]] <- self[["data"]][["sim_blq"]][[config_col_name]]
+          
+          # Otherwise, construct names that correspond to common patterns and search for those
           } else {
-            # Construct the column names for mode and simple scenarios
-            mode_simBlq <- paste0(residual, "_mode_simBlq")
-            simple_simBlq <- paste0(residual, "_simBlq")
 
-            # If "_mode_simBlq" column exists, use this column
+            # Common patterns:
+            mode_simBlq   <- paste0(residual, "_mode_simBlq") # sometimes suffix is "_mode_simBlq"
+            simple_simBlq <- paste0(residual, "_simBlq")      # other times it is "_simBlq"
+            simBlq_mode   <- paste0(residual, "_simBlq_mode") # it can also be "_simBlq_mode"
+
+            # If a "_mode_simBlq" column exists, use this column
             if (mode_simBlq %in% column_names_sim) {
               self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[mode_simBlq]]
 
-              # Otherwise if "_simBlq" column exists, use this column
+            # Otherwise if "_simBlq" column exists, use this column
             } else if (simple_simBlq %in% column_names_sim) {
               self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[simple_simBlq]]
-            }
+
+            # Finally if "_simBlq_mode" column exists, use this column
+            } else if (simple_simBlq %in% column_names_sim) {
+              self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[simBlq_mode]]
+
+            } 
           }
         }
       })
