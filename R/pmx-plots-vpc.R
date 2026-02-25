@@ -336,13 +336,17 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
     # the bug that breaks scatterplot vpcs is here
     pi_shaded_layer <- function() {
-      browser()
+      #browser()
       if (!is.null(pi) && pi$show %in% c("all", "area")) {
-        nn <- grep("^p\\d+$", names(db$pi_area_dt), value = TRUE)
+        #nn <- grep("^p\\d+$", names(db$pi_area_dt), value = TRUE)
+        nn <- grep("CL", names(db$ci_dt), value = TRUE)[c(1, 3)]
         params <- append(
           list(
             data = db$pi_area_dt,
-            mapping = aes(ymin = .data[[nn[[1]]]], ymax = .data[[nn[[2]]]])
+            mapping = aes(
+              ymin = .data[[nn[[1]]]], # CLLOW (p05)
+              ymax = .data[[nn[[2]]]]  # CLHIGH (p95)
+            )
           ),
           pi$area
         )
@@ -387,7 +391,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
               ymin = .data[[nn[[1]]]], 
               ymax = .data[[nn[[2]]]],
               group = .data$percentile,
-              fill=.data$percentile
+              fill = .data$percentile
             )
           ),
           ci$median
@@ -605,8 +609,31 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       percentile = as.numeric(percentile) * 100,
       percentile = paste0("p", percentile)
     ) 
-  
-  # should there be a pi_area here for scatter?
+    
+  # used for scatterplot (currently identical to pi_dt) 
+  pi_area_dt <- data.table(vpc_stats$stats) %>%
+    dplyr::rename(
+      percentile = 'qname',
+      TIME = 'xbin',
+      value = 'y'
+    ) %>%
+    dplyr::mutate(
+      bin = TIME,
+      percentile = as.character(percentile),
+      percentile = gsub("^q", "", percentile),
+      percentile = as.numeric(percentile) * 100,
+      percentile = paste0("p", percentile)
+    ) %>% 
+    dplyr::select(-lo, -hi, -value) %>% 
+    tidyr::pivot_wider(
+      names_from = "percentile",
+      values_from = "md"
+    ) %>%
+    dplyr::rename(
+      CLLOW = p5, # Danielle: probably not robust if user sets a different interval
+      CLMID = p50,
+      CLHIGH = p95
+    )
 
 
 
@@ -625,6 +652,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   x$db <- list(
     ci_dt = ci_dt,
     pi_dt = pi_dt,
+    pi_area_dt= pi_area_dt,
     # out = out, 
     rug_dt = rug_dt
   )
