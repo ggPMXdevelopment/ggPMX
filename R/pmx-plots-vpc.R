@@ -685,6 +685,9 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 #' @noRd
 .calculate_vpc_stats <- function(x) {
 
+  # Danielle: temporary bug fix (see pmx_plot_vpc)
+  x$predcorr <- x$gp$predcorr
+
   # construct observed and simulated data sets for VPC
   observed_data <- x$input %>%
     dplyr::filter(!!sym(x$idv)!=0) %>%
@@ -755,7 +758,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     binless_if(
       is_binless = style == "binless"
     ) %>%
-    predcorrect_if(is_predcorr) %>% # does not handle binless predcorr
+    predcorrect_if(is_predcorr) %>%
     tidyvpc::vpcstats(
       # not yet implemented: 
       # - "quantile.type"
@@ -763,7 +766,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       vpc.type = "continuous", # do we support categorical?
       conf.level = abs(diff(ci_level))
     )
-    
+  
   return(vpc_stats)
 }
 
@@ -897,6 +900,9 @@ pmx_plot_vpc <-
         )
       }
     }
+
+    # Danielle: there's a bug here where "predcorr" ends up treated like a graphical parameter, 
+    # i.e. x$gp$predcorr rather than x$predcorr
 
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params$is.smooth <- FALSE
