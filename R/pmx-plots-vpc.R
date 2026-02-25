@@ -334,7 +334,9 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       }
     }
 
+    # the bug that breaks scatterplot vpcs is here
     pi_shaded_layer <- function() {
+      browser()
       if (!is.null(pi) && pi$show %in% c("all", "area")) {
         nn <- grep("^p\\d+$", names(db$pi_area_dt), value = TRUE)
         params <- append(
@@ -603,7 +605,11 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       percentile = as.numeric(percentile) * 100,
       percentile = paste0("p", percentile)
     ) 
-    
+  
+  # should there be a pi_area here for scatter?
+
+
+
   #This was previosly in the list, but it's not used anyhow if I'm correct
   # out <- data.table(merge(ci_dt, pi_dt, by = c("TIME", "percentile")))
   # nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
