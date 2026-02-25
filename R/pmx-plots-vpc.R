@@ -334,11 +334,9 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       }
     }
 
-    # the bug that breaks scatterplot vpcs is here
+    # Danielle: this doesn't capture the styling for the ext lines yet
     pi_shaded_layer <- function() {
-      #browser()
       if (!is.null(pi) && pi$show %in% c("all", "area")) {
-        #nn <- grep("^p\\d+$", names(db$pi_area_dt), value = TRUE)
         nn <- grep("CL", names(db$ci_dt), value = TRUE)[c(1, 3)]
         params <- append(
           list(
@@ -351,6 +349,22 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
           pi$area
         )
         do.call(geom_ribbon, params)
+      }
+    }
+
+    pi_shaded_med_layer <- function() {
+      if (!is.null(pi) && pi$show %in% c("all", "area")) {
+        nn <- grep("CL", names(db$ci_dt), value = TRUE)[2]
+        params <- append(
+          list(
+            data = db$pi_area_dt,
+            mapping = aes(
+              y = .data[[nn]] # CLMED (p50)
+            )
+          ),
+          pi$median
+        )
+        do.call(geom_line, params)
       }
     }
 
@@ -429,14 +443,19 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
     pp <- pp +
       obs_layer() + 
-      pi_med_layer() + 
-      pi_ext_layer() + 
       rug_layer()
 
     if (type=="scatter") { 
-      pp <- pp + pi_shaded_layer()
+      pp <- pp + 
+        pi_shaded_layer() + 
+        pi_shaded_med_layer()
     } else {
-      pp <- pp + ci_med_layer() + ci_ext_layer()
+      pp <- pp + 
+        ci_med_layer() + 
+        ci_ext_layer() + 
+        pi_med_layer() + 
+        pi_ext_layer() 
+
     }
 
     if(!is.null(x$obs_legend)) {
@@ -652,7 +671,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   x$db <- list(
     ci_dt = ci_dt,
     pi_dt = pi_dt,
-    pi_area_dt= pi_area_dt,
+    pi_area_dt = pi_area_dt,
     # out = out, 
     rug_dt = rug_dt
   )
