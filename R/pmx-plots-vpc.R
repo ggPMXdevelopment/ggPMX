@@ -342,8 +342,8 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
           list(
             data = db$pi_area_dt,
             mapping = aes(
-              ymin = .data[[nn[[1]]]], # CLLOW (p05)
-              ymax = .data[[nn[[2]]]]  # CLHIGH (p95)
+              ymin = .data[[nn[[1]]]], # CLLOW (eg p05)
+              ymax = .data[[nn[[2]]]]  # CLHIGH (eg p95)
             )
           ),
           pi$area
@@ -596,7 +596,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   idv <- self$sim[["idv"]]
       
   vpc_stats <- .calculate_vpc_stats(x)
-    
+  
   # put VPC parameters into ggPMX list format (ci_dt, pi_dt, out, rug_dt)
   ci_dt <- data.table(vpc_stats$stats) %>%
     dplyr::rename(
@@ -647,14 +647,11 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     tidyr::pivot_wider(
       names_from = "percentile",
       values_from = "md"
-    ) %>%
-    dplyr::rename(
-      CLLOW = p5, # Danielle: probably not robust if user sets a different interval
-      CLMID = p50,
-      CLHIGH = p95
     )
-
-
+  
+  pi_area_dt$CLLOW <- pi_area_dt[[paste0("p", x$pi$probs[1] * 100)]]
+  pi_area_dt$CLMID <- pi_area_dt$p50
+  pi_area_dt$CLHIGH <- pi_area_dt[[paste0("p", x$pi$probs[2] * 100)]]
 
   #This was previosly in the list, but it's not used anyhow if I'm correct
   # out <- data.table(merge(ci_dt, pi_dt, by = c("TIME", "percentile")))
