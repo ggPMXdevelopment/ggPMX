@@ -690,14 +690,42 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     dplyr::filter(!!sym(x$idv)!=0) %>%
     dplyr::arrange(ID, !!sym(x$idv))
   
+  # Danielle. simulation column can sometimes be called REP, not rep: rename as needed
+  if (!("rep" %in% names(x$dx))) {
+    if ("REP" %in% names(x$dx)) { 
+      x$dx <- dplyr::rename(x$dx, rep = REP)
+    } 
+  }
+
+  # Danielle: is this needed?
   simulated_data <- x$dx %>%
     dplyr::arrange(rep, ID, !!sym(x$idv))
   
-  observed_data$PRED <- simulated_data %>% 
+  pred_data <- simulated_data %>% 
     dplyr::group_by(ID, !!sym(x$idv)) %>%
     dplyr::summarise(PRED = mean(!!sym(x$dv))) %>% 
-    dplyr::ungroup() %>% 
-    dplyr::select(PRED)
+    dplyr::ungroup() %>%
+    dplyr::select(ID, PRED, TIME)
+  
+  # Danielle: join rather than direct assignment, to handle
+  # cases where simulated data includes times not in the
+  # observed data
+  if ("PRED" %in% names(observed_data)) {
+    observed_data <- observed_data %>% dplyr::select(-PRED)
+  }
+  observed_data <- observed_data %>%
+    dplyr::left_join(
+      y = pred_data,
+      by = dplyr::join_by(ID, TIME)
+  )
+
+  # Danielle: filter out rows in simulated that are not in observed to prevent
+  # tidyvpc erroring
+  simulated_data <- simulated_data %>%
+    dplyr::semi_join(
+      y = observed_data,
+      by = dplyr::join_by(ID, TIME)
+    )
   
   # extract/parse arguments needed for tidyvpc
   nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) # what should be a default values for nbins? 
