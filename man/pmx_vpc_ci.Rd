@@ -40,7 +40,7 @@ pmx_vpc_ci(
 }}
 }
 \value{
-list with options for Confidence Interval layer
+list with options for confidence interval layer
 }
 \description{
 Sets vpc confidence interval layer

@@ -46,7 +46,7 @@ Authors:
   \item Amine Gassem \email{contact@ag-study.com}
   \item Bruno Bieth \email{biethb@hotmail.com}
   \item Irina Baltcheva \email{irina.baltcheva@gmail.com}
-  \item Thomas Dumortier \email{ thomas.dumortier@novartis.com}
+  \item Thomas Dumortier \email{thomas.dumortier@novartis.com}
   \item Christian Bartels \email{christian.bartels@novartis.com}
   \item Souvik Bhattacharya \email{souvik.bhattacharya@novartis.com}
   \item Inga Ludwig \email{inga.ludwig@novartis.com}

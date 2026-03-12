@@ -74,5 +74,5 @@ Suggests:
     lifecycle
 VignetteBuilder: knitr
 NeedsCompilation: no
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8

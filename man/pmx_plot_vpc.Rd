@@ -13,8 +13,9 @@ pmx_plot_vpc(
   ci,
   rug,
   bin,
+  predcorr,
   is.legend,
-  sim_blq,
+  is.footnote,
   dname,
   filter,
   strat.facet,
@@ -37,7 +38,7 @@ pmx_plot_vpc(
   scale_x_log10,
   scale_y_log10,
   color.scales,
-  is.footnote,
+  sim_blq,
   ...
 )
 }
@@ -60,9 +61,11 @@ since the rugs plotted will not reflect the bins.}
 
 \item{bin}{\code{pmx_vpc_bin} object  \link{pmx_vpc_bin} specify within pmx_plot_vpc() e.g.: bin = pmx_vpc_bin(style = "kmeans", n = 10)}
 
+\item{predcorr}{\code{logical} if TRUE apply prediction-correction}
+
 \item{is.legend}{\code{logical} if TRUE add legend}
 
-\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
+\item{is.footnote}{\code{logical} if TRUE add footnote}
 
 \item{dname}{added for compatibility with other ggPMX plots
 
@@ -116,7 +119,7 @@ the axis text (similar to ggplot2 axis.text theme)}
 
 \item{color.scales}{\code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}}
 
-\item{is.footnote}{\code{logical} if TRUE add footnote}
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 
 \item{...}{others graphics parameters passed :
 \itemize{

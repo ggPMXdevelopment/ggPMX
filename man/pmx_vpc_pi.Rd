@@ -15,14 +15,12 @@ pmx_vpc_pi(
 \arguments{
 \item{show}{\code{character} how lines are displayed:
 \itemize{
-\item \strong{show=all} lines will be displayed for each of
-the 3 percentiles. with a shaded area.
+\item \strong{show=all} lines will be displayed for each of the 3 percentiles, with a shaded area.
 \item \strong{show=median} Show only median line.
 \item \strong{show=area} Show only median line and the shaded area
 }}
 
-\item{interval}{\code{numeric} quantiles values default
-to \code{c(.05,.95)}}
+\item{interval}{\code{numeric} quantiles values default to \code{c(.05, .95)}}
 
 \item{median}{\code{list} containing: \cr
 \itemize{
