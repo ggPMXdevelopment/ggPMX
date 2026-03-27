@@ -1056,6 +1056,11 @@ pmx_initialize <- function(self, private, data_path, input, dv,
           # data set, "iwRes_mode_simBlq" is unique match, as is "y_simBlq_mode")
           if (length(config_col_name) == 1 && config_col_name %in% column_names_sim) {
             self[["data"]][["sim_blq"]][[toupper(residual)]] <- self[["data"]][["sim_blq"]][[config_col_name]]
+            if (residual == "y") {
+              # in the special case that we are looking for a "y_" prefixed column, we
+              # need to update both "Y" and "DV" (as some plots look for DV not Y) 
+              self[["data"]][["sim_blq"]][["DV"]] <- self[["data"]][["sim_blq"]][["Y"]]
+            }
           
           # Otherwise, construct names that correspond to common patterns and search for those
           } else {
