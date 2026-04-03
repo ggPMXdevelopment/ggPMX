@@ -1036,12 +1036,13 @@ pmx_initialize <- function(self, private, data_path, input, dv,
         column_names_sim <- colnames(self[["data"]][["sim_blq"]])
 
         # Define the array of "residual" names (or indeed any other variables with simblq)
-        residual_names <- c("iwRes", "pwRes", "npde", "y")
+        residual_names <- c("iwRes", "pwRes", "npde", "Y", "y")
 
         # Get the names from the config (this can appear in multiple places)
         blq_names_npde <- names(config[['data']][['sim_blq_npde_iwres']][['names']])
+        blq_names_ <- names(config[['data']][['sim_blq']][['names']])
         blq_names_y <- names(config[['data']][['sim_blq_y']][['names']])
-        blq_names <- unique(c(blq_names_npde, blq_names_y))
+        blq_names <- unique(c(blq_names_npde, blq_names_y,blq_names_))
 
         # Loop over each residual name
         for (residual in residual_names) {
@@ -1056,12 +1057,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
           # data set, "iwRes_mode_simBlq" is unique match, as is "y_simBlq_mode")
           if (length(config_col_name) == 1 && config_col_name %in% column_names_sim) {
             self[["data"]][["sim_blq"]][[toupper(residual)]] <- self[["data"]][["sim_blq"]][[config_col_name]]
-            if (residual == "y") {
-              # in the special case that we are looking for a "y_" prefixed column, we
-              # need to update both "Y" and "DV" (as some plots look for DV not Y) 
-              self[["data"]][["sim_blq"]][["DV"]] <- self[["data"]][["sim_blq"]][["Y"]]
-            }
-          
+           
           # Otherwise, construct names that correspond to common patterns and search for those
           } else {
 
@@ -1079,10 +1075,16 @@ pmx_initialize <- function(self, private, data_path, input, dv,
               self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[simple_simBlq]]
 
             # Finally if "_simBlq_mode" column exists, use this column
-            } else if (simple_simBlq %in% column_names_sim) {
+            } else if (simBlq_mode %in% column_names_sim) {
               self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[simBlq_mode]]
 
             } 
+            
+          }
+          if (residual == "y") {print("Hi")
+            # in the special case that we are looking for a "y_" prefixed column, we
+            # need to update both "Y" and "DV" (as some plots look for DV not Y) 
+            self[["data"]][["sim_blq"]][["DV"]] <- self[["data"]][["sim_blq"]][["Y"]]
           }
         }
       })
