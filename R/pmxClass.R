@@ -1081,11 +1081,10 @@ pmx_initialize <- function(self, private, data_path, input, dv,
             } 
             
           }
-          if (residual == "y") {print("Hi")
-            # in the special case that we are looking for a "y_" prefixed column, we
+           # in the special case that we are looking for a "y_" prefixed column, we
             # need to update both "Y" and "DV" (as some plots look for DV not Y) 
             self[["data"]][["sim_blq"]][["DV"]] <- self[["data"]][["sim_blq"]][["Y"]]
-          }
+          
         }
       })
     }
