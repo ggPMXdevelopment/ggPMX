@@ -377,21 +377,28 @@ parse_mlxtran <- function(file_name) {
   if (length(dvid) > 0) {
     res$dvid <- dvid
     aa <- dat[grepl("use=observation,", value), value]
-    mlx16 <- grepl("ytype", aa)
-    patt <- sprintf(".*name=(.*), %s=(.*), type.*", ifelse(mlx16, "ytype", "yname"))
-    yname <- gsub(patt, "\\1;\\2", aa)
-    yname <- unlist(strsplit(gsub("\\{|\\}|'| ", "", yname), ";"))
-    ep <- if (length(yname) > 1) {
-      if (grepl(",", yname[1])) {
-        code <- strsplit(yname[2], ",")[[1]]
-        files <- strsplit(yname[1], ",")[[1]]
-        pmx_endpoint(code = code[1], file.code = ifelse(mlx16, code[1], files[1]))
-      } else {
-        pmx_endpoint(code = yname[2])
-      }
-    } else {
-      pmx_endpoint(code = yname[1])
+    # Extract code segment after 'yname=' up to the first comma, brace, or end
+    codestr <- sub(".*yname=([\\{\\}'0-9, ]+).*", "\\1", aa)
+    # Remove curly braces, single/double quotes, and whitespace
+    codestr <- gsub("[\\{\\}'\" ]", "", codestr)
+    # Split into codes
+    codes <- unlist(strsplit(codestr, ","))
+    # Remove empty entries
+    codes <- codes[nzchar(codes)]
+    if (length(codes) > 1) {
+      stop(sprintf(
+        paste0(
+          "Model has multiple endpoints: %s.\n",
+          "You must specify an endpoint explicitly using the 'endpoint' parameter.\n",
+          "Example: pmx_mlxtran(file_name, endpoint = '%s')\n",
+          "Available endpoints: %s"
+        ),
+        paste(codes, collapse = ", "),
+        codes[1],
+        paste(codes, collapse = ", ")
+      ), call. = FALSE)
     }
+    ep <- pmx_endpoint(code = codes[1])
     res$endpoint <- ep
   }
   res
