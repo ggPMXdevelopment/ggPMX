@@ -594,7 +594,13 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
   x$dv <- self$dv
   idv <- self$sim[["idv"]]
-      
+  
+  .parse_percentile <- function(x) {
+    pct <- gsub("^q", "", as.character(x))
+    pct <- as.numeric(pct) * 100
+    paste0("p", pct)
+  }
+
   vpc_stats <- .calculate_vpc_stats(x)
   
   # put VPC parameters into ggPMX list format (ci_dt, pi_dt, out, rug_dt)
@@ -608,10 +614,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     ) %>%
     dplyr::mutate(
       bin = TIME,
-      percentile = as.character(percentile),
-      percentile = gsub("^q", "", percentile),
-      percentile = as.numeric(percentile) * 100,
-      percentile = paste0("p", percentile)
+      percentile = .parse_percentile(percentile)
     ) 
     
   # this is not real prediction interval, just a placeholder
@@ -623,10 +626,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     )  %>%
     dplyr::mutate(
       bin = TIME,
-      percentile = as.character(percentile),
-      percentile = gsub("^q", "", percentile),
-      percentile = as.numeric(percentile) * 100,
-      percentile = paste0("p", percentile)
+      percentile = .parse_percentile(percentile)
     ) 
     
   # used for scatterplot (currently identical to pi_dt) 
@@ -638,10 +638,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     ) %>%
     dplyr::mutate(
       bin = TIME,
-      percentile = as.character(percentile),
-      percentile = gsub("^q", "", percentile),
-      percentile = as.numeric(percentile) * 100,
-      percentile = paste0("p", percentile)
+      percentile = .parse_percentile(percentile)
     ) %>% 
     dplyr::select(-lo, -hi, -value) %>% 
     tidyr::pivot_wider(
