@@ -726,9 +726,8 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     )
   
   # extract/parse arguments needed for tidyvpc
-  nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) # what should be a default values for nbins? 
-  style <- ifelse(is.null(x$bin$style), 'kmeans', x$bin$style)
   is_predcorr <- ifelse(is.null(x$predcorr), FALSE, x$predcorr) # default to FALSE to match previous
+  style <- ifelse(is.null(x$bin$style), 'kmeans', x$bin$style)
   pi_level <- x$pi$probs 
   ci_level <- x$ci$probs 
   facets   <- x$strat.facet
@@ -741,12 +740,20 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     if (is.null(facets)) return(object)
     tidyvpc::stratify(object, formula = facets)
   }
-  binning_if <- function(object, is_binned, ...) {
-    if (!is_binned) return(object) 
-    tidyvpc::binning(object, ...)
+  binning_if <- function(object, style, x) {
+    if (style == "binless") return(object)
+    if (style == "fixed") {
+      return(tidyvpc::binning(
+        object,
+        bin = "fixed",
+        breaks = x$bin$fixedBreaks
+      ))
+    }
+    nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) 
+    tidyvpc::binning(object, bin = style, nbins = nbins)
   }
-  binless_if <- function(object, is_binless, ...) {
-    if (!is_binless) return(object) 
+  binless_if <- function(object, style, ...) {
+    if (style != "binless") return(object) 
     tidyvpc::binless(object, ...)
   }
   predcorrect_if <- function(object, is_predcorr) {
@@ -768,19 +775,8 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       ysim = !!sym(x$dv)
     ) %>%
     stratify_if(facets) %>%
-    binning_if(
-      # tidyvpc args not yet implemented: 
-      # - "breaks" for manual binning
-      # - "centers" for manual binning
-      # - "altx" but not sure if we want to? 
-      is_binned = style != "binless",
-      bin = style,     # style arg from ggPMX becomes bins arg to tidybpc
-      nbins = nbins,   # this should come from the user
-      xbin = "xmedian" # tidyvpc default
-    ) %>%
-    binless_if(
-      is_binless = style == "binless"
-    ) %>%
+    binning_if(style, x) %>%
+    binless_if(style, x) %>%
     predcorrect_if(is_predcorr) %>%
     tidyvpc::vpcstats(
       # not yet implemented: 
