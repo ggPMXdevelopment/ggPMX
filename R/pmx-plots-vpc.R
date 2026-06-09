@@ -664,9 +664,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   # out[, zmin := pmin(get(nn[[1]]), value)]
   
   rug_dt <- data.frame(x = as.numeric(vpc_stats$stats$xbin), y = 1)
-    
-  #Alex: I don't think this class reassignment makes sense
-  old_class <- class(x)
+  
   x$db <- list(
     ci_dt = ci_dt,
     pi_dt = pi_dt,
@@ -674,8 +672,6 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     # out = out, 
     rug_dt = rug_dt
   )
-  class(x) <- old_class
-  #x$bin <- as.numeric(x$bin)
   x
 
 }
@@ -757,9 +753,18 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) 
     tidyvpc::binning(object, bin = style, nbins = nbins)
   }
-  binless_if <- function(object, style, ...) {
-    if (style != "binless") return(object) 
-    tidyvpc::binless(object, ...)
+  binless_if <- function(object, style, x) {
+    if (style != "binless") return(object)
+    args <- list( # args as passed by user, otherwise use tidyvpc defaults
+      o = object,
+      optimize              = if (is.null(x$optimize)) TRUE else x$optimize,
+      optimization.interval = if (is.null(x$optimization.interval)) c(0, 7) else x$optimization.interval,
+      loess.ypc             = x$loess.ypc,
+      lambda                = x$lambda,
+      span                  = x$span,
+      sp                    = x$sp
+    )
+    do.call(tidyvpc::binless, args)
   }
   predcorrect_if <- function(object, is_predcorr) {
     if (!is_predcorr) return(object)
