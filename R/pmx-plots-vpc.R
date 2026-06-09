@@ -603,6 +603,11 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
   vpc_stats <- .calculate_vpc_stats(x)
   
+  # for binless VPC, the time column is named x not xbin
+  if (vpc_stats$vpc.method$method == "binless") {
+    vpc_stats$stats$xbin <- vpc_stats$stats$x
+  }
+
   # put VPC parameters into ggPMX list format (ci_dt, pi_dt, out, rug_dt)
   ci_dt <- data.table(vpc_stats$stats) %>%
     dplyr::rename(
