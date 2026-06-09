@@ -716,9 +716,10 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       by = dplyr::join_by(ID, TIME)
   )
 
-  # Danielle: filter out rows in simulated that are not in observed to prevent
-  # tidyvpc erroring
+  # Danielle: filter out rows in simulated that are not in observed and require
+  # TIME > 0 to prevent tidyvpc erroring
   simulated_data <- simulated_data %>%
+    dplyr::filter(TIME > 0) %>%
     dplyr::semi_join(
       y = observed_data,
       by = dplyr::join_by(ID, TIME)
