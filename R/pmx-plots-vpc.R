@@ -334,15 +334,14 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   }
 
   # Danielle: this doesn't capture the styling for the ext lines yet
-    pi_shaded_layer <- function() {
+  pi_shaded_layer <- function() {
     if (!is.null(x$pi) && x$pi$show %in% c("all", "area")) {
-      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[c(1, 3)]
       params <- append(
         list(
           data = x$db$pi_area_dt,
           mapping = aes(
-            ymin = .data[[nn[[1]]]], # CLLOW (eg p05)
-            ymax = .data[[nn[[2]]]]  # CLHIGH (eg p95)
+            ymin = .data$CLLOW, # (eg p05)
+            ymax = .data$CLHIGH  # (eg p95)
           )
         ),
         x$pi$area
@@ -353,12 +352,11 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
   pi_shaded_med_layer <- function() {
     if (!is.null(x$pi) && x$pi$show %in% c("all", "area")) {
-      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[2]
       params <- append(
         list(
           data = x$db$pi_area_dt,
           mapping = aes(
-            y = .data[[nn]] # CLMED (p50)
+            y = .data$CLMED 
           )
         ),
         x$pi$median
@@ -396,13 +394,12 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
   ci_med_layer <- function() {
     if (!is.null(x$ci)) {
-      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[c(1, 3)]
       params <- append(
         list(
           data = x$db$ci_dt[percentile == "p50"],
           mapping = aes(
-            ymin = .data[[nn[[1]]]], 
-            ymax = .data[[nn[[2]]]],
+            ymin = .data$CLLOW, 
+            ymax = .data$CLHIGH,
             group = .data$percentile,
             fill = .data$percentile
           )
@@ -416,13 +413,12 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 
   ci_ext_layer <- function() {
     if (!is.null(x$ci) && x$ci$show == "all") {
-      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[c(1, 3)]
       params <- append(
         list(
           data = x$db$ci_dt[percentile != "p50"],
           mapping = aes(
-            ymin  = .data[[nn[[1]]]], 
-            ymax  = .data[[nn[[2]]]],
+            ymin  = .data$CLLOW, 
+            ymax  = .data$CLHIGH,
             group = .data$percentile,
             fill  = .data$percentile
           )
@@ -599,13 +595,19 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   }
 
   vpc_stats <- .calculate_vpc_stats(x)
+
+  # cache the tidyvpc output. not used directly, but helpful for 
+  # debugging plots, as it gets stored in p$plot_env$x$vpc_stats,
+  # and the ggPMX plot output can be compared to the tidyvpc 
+  # default output via plot(p$plot_env$x$vpc_stats)
+  x$vpc_stats <- vpc_stats 
   
   # for binless VPC, the time column is named x not xbin
   if (vpc_stats$vpc.method$method == "binless") {
     vpc_stats$stats$xbin <- vpc_stats$stats$x
   }
 
-  # put VPC parameters into ggPMX list format (ci_dt, pi_dt, out, rug_dt)
+  # simulated percentiles and associated CI
   ci_dt <- data.table(vpc_stats$stats) %>%
     dplyr::rename(
       percentile = 'qname',
@@ -619,7 +621,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       percentile = .parse_percentile(percentile)
     ) 
     
-  # this is not real prediction interval, just a placeholder
+  # observed percentiles
   pi_dt <- data.table(vpc_stats$stats) %>%
     dplyr::rename(
       percentile = 'qname',
@@ -631,7 +633,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       percentile = .parse_percentile(percentile)
     ) 
     
-  # used for scatterplot (currently identical to pi_dt) 
+  # used for scatterplot
   pi_area_dt <- data.table(vpc_stats$stats) %>%
     dplyr::rename(
       percentile = 'qname',
@@ -651,14 +653,6 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   pi_area_dt$CLLOW <- pi_area_dt[[paste0("p", x$pi$probs[1] * 100)]]
   pi_area_dt$CLMID <- pi_area_dt$p50
   pi_area_dt$CLHIGH <- pi_area_dt[[paste0("p", x$pi$probs[2] * 100)]]
-
-  #This was previosly in the list, but it's not used anyhow if I'm correct
-  # out <- data.table(merge(ci_dt, pi_dt, by = c("TIME", "percentile")))
-  # nn <- grep("CL", names(out), value = TRUE)[c(1, 3)]
-  # #nn <- c('LOW', 'MID', 'HIGH')[c(1, 3)]
-  # out[, out_ := value < get(nn[[1]]) | value > get(nn[[2]])]
-  # out[, zmax := pmax(get(nn[[2]]), value)]
-  # out[, zmin := pmin(get(nn[[1]]), value)]
   
   rug_dt <- data.frame(x = as.numeric(vpc_stats$stats$xbin), y = 1)
   
@@ -666,7 +660,6 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     ci_dt = ci_dt,
     pi_dt = pi_dt,
     pi_area_dt = pi_area_dt,
-    # out = out, 
     rug_dt = rug_dt
   )
   x
