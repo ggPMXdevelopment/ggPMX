@@ -610,7 +610,8 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   # cache the tidyvpc output. not used directly, but helpful for 
   # debugging plots, as it gets stored in p$plot_env$x$vpc_stats,
   # and the ggPMX plot output can be compared to the tidyvpc 
-  # default output via plot(p$plot_env$x$vpc_stats)
+  # default output via plot(p$plot_env$x$vpc_stats); this is used
+  # in the unit
   x$vpc_stats <- vpc_stats 
   
   # for binless VPC, the time column is named x not xbin

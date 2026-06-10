@@ -305,12 +305,24 @@ if (helper_skip()) {
     p <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
     expect_true(is_ggplot(p))
 
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+
   })
 
-  test_that("ggpmx vpc matches tidyvpc: 15 bins, no predcorr", {
+  test_that("ggpmx vpc matches tidyvpc: 5 bins, no predcorr", {
 
-    p <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 15))
+    p <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 5))
     expect_true(is_ggplot(p))
+
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
 
   })
 
@@ -319,12 +331,24 @@ if (helper_skip()) {
     p <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
     expect_true(is_ggplot(p))
 
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+
   })
 
-  test_that("ggpmx vpc matches tidyvpc: 15 bins, with predcorr", {
+  test_that("ggpmx vpc matches tidyvpc: 5 bins, with predcorr", {
 
-    p <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 15))
+    p <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 5))
     expect_true(is_ggplot(p))
+
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
 
   })
 
@@ -332,13 +356,25 @@ if (helper_skip()) {
 
     p <- pmx_plot_vpc(ctr, type = "scatter", predcorr = FALSE)
     expect_true(is_ggplot(p))
-
+    
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+   
   })
 
   test_that("ggpmx vpc matches tidyvpc: scatter, with predcorr", {
 
     p <- pmx_plot_vpc(ctr, type = "scatter", predcorr = TRUE)
     expect_true(is_ggplot(p))
+
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
 
   })
 
@@ -347,12 +383,25 @@ if (helper_skip()) {
     p <-  pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "binless"))
     expect_true(is_ggplot(p))
 
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+
   })
 
   test_that("ggpmx vpc matches tidyvpc: binless, with predcorr", {
 
     p <-  pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "binless"))
     expect_true(is_ggplot(p))
+
+    expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+    expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+    expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+    expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+    expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+
 
   })
 
