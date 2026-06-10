@@ -355,9 +355,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       params <- append(
         list(
           data = x$db$pi_area_dt,
-          mapping = aes(
-            y = .data$CLMED 
-          )
+          mapping = aes(y = .data$CLMID)
         ),
         x$pi$median
       )
