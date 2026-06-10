@@ -4,7 +4,7 @@
 # in a single file
 
 # [temp fix for global bindings]
-utils::globalVariables(c("ID", "PRED", "TIME", "hi", "lo", "percentile", "REP"))
+utils::globalVariables(c("ID", "PRED", "TIME", "hi", "lo", "y", "percentile", "REP"))
 
 
 # class constructors for VPC plot configuration objects -----------------------
