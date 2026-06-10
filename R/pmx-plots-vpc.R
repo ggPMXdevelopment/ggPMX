@@ -74,12 +74,12 @@ pmx_vpc <- function(type = c("percentile", "scatter"),
 #'
 #' @param style \code{character} style	chosen on of the:\cr
 #'  "fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust" or "jenks"
-#' @param within_strat \code{logical} if TRUE compute the bining for each strat level. \cr
-#' By default t is false and bining are equal for all stratifications levels.
+#' @param within_strat \code{logical} if TRUE, compute the binning separately for each stratification level. \cr
+#' By default it is FALSE and binning is identical for all stratifications levels.
 #' @param seed \code{integer} used in \code{set.seed} call to ensure \cr
 #'    reproducibility if style is "kmeans". Set to NULL if this \cr
 #'    is not desired.
-#' @param ... other classInt::classIntervals parameters excpet \code{style} and \code{n}
+#' @param ... other classInt::classIntervals parameters except \code{style} and \code{n}
 #'
 #' @export
 #' @details
@@ -93,14 +93,20 @@ pmx_vpc_bin <-
     # within strat = TRUE as default in order to avoid bugs
   
     # set seed for reproducible binning
-    # Danielle: would it make more sense to preserve the seed in the return value, and
-    # apply it at the time tidyvpc::binning() is called, rather than set the seed here?
     set.seed(seed)
     if (missing(style)) {
       return(NULL)
     }
     rr <- as.list(match.call()[-1])
-    rr[!names(rr) == "seed"]
+    rr <- rr[!names(rr) == "seed"]
+
+    if (!is.null(rr$fixedBreaks)) {
+      lifecycle::deprecate_soft("1.3.2", "pmx_vpc_bin(fixedBreaks)", I("use `breaks=` instead of `fixedBreaks=`"))
+      rr$breaks <- rr$fixedBreaks
+      rr$fixedBreaks <- NULL
+    }
+
+    rr
   }
 
 #' Sets vpc observation layer
@@ -742,7 +748,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       return(tidyvpc::binning(
         object,
         bin = "fixed",
-        breaks = x$bin$fixedBreaks
+        breaks = x$bin$breaks
       ))
     }
     nbins <- ifelse(is.null(x$bin$n), 10, x$bin$n) 
