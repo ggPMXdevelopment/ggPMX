@@ -697,7 +697,6 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
     } 
   }
 
-  # Danielle: is this needed?
   simulated_data <- x$dx %>%
     dplyr::arrange(rep, ID, !!sym(x$idv))
   
