@@ -666,7 +666,7 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
   pi_area_dt$CLMID <- pi_area_dt$p50
   pi_area_dt$CLHIGH <- pi_area_dt[[paste0("p", x$pi$probs[2] * 100)]]
   
-  rug_dt <- data.frame(x = as.numeric(vpc_stats$stats$xbin), y = 1)
+  rug_dt <- data.frame(x = as.numeric(vpc_stats$stats$xbin), y = NA_real_)
   
   x$db <- list(
     ci_dt = ci_dt,
