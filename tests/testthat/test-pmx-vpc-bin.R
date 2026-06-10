@@ -28,19 +28,5 @@ if (helper_skip()) {
     p <- pmx_vpc_bin()
     expect_identical(p, NULL)
   })
-}
-
-# temporary
-if (FALSE) {
-
-  # vary number of bins, no prediction correction
-  p10 <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
-  p15 <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 15))
-
-  # vary number of bins, add prediction correction
-  pc10 <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
-  pc15 <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 15))
-
-
 
 }

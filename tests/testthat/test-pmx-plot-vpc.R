@@ -297,4 +297,67 @@ if (helper_skip()) {
   })
 
   #------------------- plot_pmx.pmx_vpc - end ------------------------------------
+
+  #------------------- tidyvpc integration - start -------------------------------
+
+  test_that("ggpmx vpc matches tidyvpc: 10 bins, no predcorr", {
+
+    p <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
+    expect_true(is_ggplot(p))
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: 15 bins, no predcorr", {
+
+    p <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 15))
+    expect_true(is_ggplot(p))
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: 10 bins, with predcorr", {
+
+    p <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
+    expect_true(is_ggplot(p))
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: 15 bins, with predcorr", {
+
+    p <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 15))
+    expect_true(is_ggplot(p))
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: scatter, no predcorr", {
+
+    p <- pmx_plot_vpc(ctr, type = "scatter", predcorr = FALSE)
+    expect_true(is_ggplot(p))
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: scatter, with predcorr", {
+
+    p <- pmx_plot_vpc(ctr, type = "scatter", predcorr = TRUE)
+    expect_true(is_ggplot(p))
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: binless, no predcorr", {
+
+    p <-  pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "binless"))
+    expect_true(is_ggplot(p))
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: binless, with predcorr", {
+
+    p <-  pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "binless"))
+    expect_true(is_ggplot(p))
+
+  })
+
+  #------------------- tidyvpc integration - end ---------------------------------
+
+
 }
+
