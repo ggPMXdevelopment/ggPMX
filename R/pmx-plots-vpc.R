@@ -3,9 +3,8 @@
 # for simplicity, code associated with the general type and the specific plot are merged
 # in a single file
 
-# [temp fix for global bindings]
+# global bindings for VPC plots to avoid CRAN note
 utils::globalVariables(c("ID", "PRED", "TIME", "hi", "lo", "y", "percentile", "REP"))
-
 
 # class constructors for VPC plot configuration objects -----------------------
 
@@ -56,8 +55,16 @@ pmx_vpc <- function(type = c("percentile", "scatter"),
       is.footnote = is.footnote,
       type = type,
       facets = facets,
-      obs = obs, pi = pi, ci = ci, rug = rug, bin = bin,
-      gp = pmx_gpar(labels = labels, is.legend = is.legend, ...)
+      obs = obs, 
+      pi = pi, 
+      ci = ci, 
+      rug = rug, 
+      bin = bin,
+      gp = pmx_gpar(
+        labels = labels, 
+        is.legend = is.legend, 
+        ...
+      )
     ),
     class = c("pmx_vpc", "pmx_gpar")
   )
@@ -924,7 +931,7 @@ pmx_plot_vpc <-
     params <- as.list(match.call(expand.dots = TRUE))[-1]
     params$is.smooth <- FALSE
 
-    # plot-specific params (eventually) end up passed to the S3 method pmx_plot.pmx_vpc(),
+    # plot-specific params end up passed to the S3 method pmx_plot.pmx_vpc(),
     # note also that .vpc_x() is called prior to arrival in pmx_plot()
     wrap_pmx_plot_generic(ctr, "pmx_vpc", params) 
   }
