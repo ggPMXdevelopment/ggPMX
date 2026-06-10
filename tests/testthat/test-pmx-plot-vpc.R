@@ -50,8 +50,8 @@ if (helper_skip()) {
   test_that("pmx_plot_vpc: params NULL result: identical type", {
     p <- ctr %>% pmx_plot_vpc()
     expect_true(is_ggplot(p))
-    expect_identical(p$plot_env$type, "percentile")
-    expect_identical(p$plot_env$idv, "TIME")
+    expect_identical(p$plot_env$x$type, "percentile")
+    expect_identical(p$plot_env$x$idv, "TIME")
   })
 
 
@@ -63,7 +63,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_vpc: params result: identical type", {
     p <- ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2), type = "scatter")
-    expect_identical(p$plot_env$type, "scatter")
+    expect_identical(p$plot_env$x$type, "scatter")
   })
 
 
@@ -74,8 +74,8 @@ if (helper_skip()) {
       ci = pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
     )
     expect_true(is_ggplot(vpc))
-    expect_true(identical(vpc$plot_env$pi$median$linetype, "dotted"))
-    expect_true(identical(vpc$plot_env$ci$median$fill, "red"))
+    expect_true(identical(vpc@plot_env$x$pi$median$linetype, "dotted"))
+    expect_true(identical(vpc@plot_env$x$ci$median$fill, "red"))
   })
   
   test_that("Test different ways to facet vpc pmx_plot_vpc", {

@@ -319,168 +319,165 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
 }
 
 .vpc_plot <- function(x) {
-  with(x, {
 
-    # layer functions
-    pi_med_layer <- function() {
-      if (!is.null(pi)) {
-        .vpc_pi_line(db$pi_dt[percentile == "p50"], pi$median)
-      }
+  # layer functions
+  pi_med_layer <- function() {
+    if (!is.null(x$pi)) {
+      .vpc_pi_line(x$db$pi_dt[percentile == "p50"], x$pi$median)
     }
+  }
 
-    pi_ext_layer <- function() {
-      if (!is.null(pi) && pi$show == "all") {
-        .vpc_pi_line(db$pi_dt[percentile != "p50"], pi$extreme)
-      }
+  pi_ext_layer <- function() {
+    if (!is.null(x$pi) && x$pi$show == "all") {
+      .vpc_pi_line(x$db$pi_dt[percentile != "p50"], x$pi$extreme)
     }
+  }
 
-    # Danielle: this doesn't capture the styling for the ext lines yet
+  # Danielle: this doesn't capture the styling for the ext lines yet
     pi_shaded_layer <- function() {
-      if (!is.null(pi) && pi$show %in% c("all", "area")) {
-        nn <- grep("CL", names(db$ci_dt), value = TRUE)[c(1, 3)]
-        params <- append(
-          list(
-            data = db$pi_area_dt,
-            mapping = aes(
-              ymin = .data[[nn[[1]]]], # CLLOW (eg p05)
-              ymax = .data[[nn[[2]]]]  # CLHIGH (eg p95)
-            )
-          ),
-          pi$area
-        )
-        do.call(geom_ribbon, params)
-      }
+    if (!is.null(x$pi) && x$pi$show %in% c("all", "area")) {
+      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[c(1, 3)]
+      params <- append(
+        list(
+          data = x$db$pi_area_dt,
+          mapping = aes(
+            ymin = .data[[nn[[1]]]], # CLLOW (eg p05)
+            ymax = .data[[nn[[2]]]]  # CLHIGH (eg p95)
+          )
+        ),
+        x$pi$area
+      )
+      do.call(geom_ribbon, params)
     }
+  }
 
-    pi_shaded_med_layer <- function() {
-      if (!is.null(pi) && pi$show %in% c("all", "area")) {
-        nn <- grep("CL", names(db$ci_dt), value = TRUE)[2]
-        params <- append(
-          list(
-            data = db$pi_area_dt,
-            mapping = aes(
-              y = .data[[nn]] # CLMED (p50)
-            )
-          ),
-          pi$median
-        )
-        do.call(geom_line, params)
-      }
+  pi_shaded_med_layer <- function() {
+    if (!is.null(x$pi) && x$pi$show %in% c("all", "area")) {
+      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[2]
+      params <- append(
+        list(
+          data = x$db$pi_area_dt,
+          mapping = aes(
+            y = .data[[nn]] # CLMED (p50)
+          )
+        ),
+        x$pi$median
+      )
+      do.call(geom_line, params)
     }
+  }
 
-    obs_layer <- function() {
-      if (!is.null(obs)) {
-        params <- append(
-          list(
-            mapping = aes(y = .data[[dv]], x = .data[[idv]]),
-            data = input
-          ),
-          obs
-        )
-        do.call(geom_point, params)
-      }
+  obs_layer <- function() {
+    if (!is.null(x$obs)) {
+      params <- append(
+        list(
+          mapping = aes(y = .data[[x$dv]], x = .data[[x$idv]]),
+          data = x$input
+        ),
+        x$obs
+      )
+      do.call(geom_point, params)
     }
+  }
 
-    rug_layer <- function() {
-      if ((!is.null(rug))) {
-        params <- append(
-          list(
-            mapping = aes(x = x, y = y),
-            sides = "t",
-            data = db$rug_dt
-          ),
-          rug
-        )
-        do.call(geom_rug, params)
-      }
+  rug_layer <- function() {
+    if ((!is.null(x$rug))) {
+      params <- append(
+        list(
+          mapping = aes(x = x, y = y),
+          sides = "t",
+          data = x$db$rug_dt
+        ),
+        x$rug
+      )
+      do.call(geom_rug, params)
     }
+  }
 
-    ci_med_layer <- function() {
-      if (!is.null(ci)) {
-        nn <- grep("CL", names(db$ci_dt), value = TRUE)[c(1, 3)]
-        params <- append(
-          list(
-            data = db$ci_dt[percentile == "p50"],
-            mapping = aes(
-              ymin = .data[[nn[[1]]]], 
-              ymax = .data[[nn[[2]]]],
-              group = .data$percentile,
-              fill = .data$percentile
-            )
-          ),
-          ci$median
-        )
-        params$fill <- NULL
-        do.call(geom_ribbon, params)
-      }
+  ci_med_layer <- function() {
+    if (!is.null(x$ci)) {
+      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[c(1, 3)]
+      params <- append(
+        list(
+          data = x$db$ci_dt[percentile == "p50"],
+          mapping = aes(
+            ymin = .data[[nn[[1]]]], 
+            ymax = .data[[nn[[2]]]],
+            group = .data$percentile,
+            fill = .data$percentile
+          )
+        ),
+        x$ci$median
+      )
+      params$fill <- NULL
+      do.call(geom_ribbon, params)
     }
+  }
 
-    ci_ext_layer <- function() {
-      if (!is.null(ci) && ci$show == "all") {
-        nn <- grep("CL", names(db$ci_dt), value = TRUE)[c(1, 3)]
-        params <- append(
-          list(
-            data = db$ci_dt[percentile != "p50"],
-            mapping = aes(
-              ymin = .data[[nn[[1]]]], 
-              ymax = .data[[nn[[2]]]],
-              group = .data$percentile,
-              fill=.data$percentile
-            )
-          ),
-          ci$extreme
-        )
-        params$fill <- NULL
-        do.call(geom_ribbon, params)
-      }
+  ci_ext_layer <- function() {
+    if (!is.null(x$ci) && x$ci$show == "all") {
+      nn <- grep("CL", names(x$db$ci_dt), value = TRUE)[c(1, 3)]
+      params <- append(
+        list(
+          data = x$db$ci_dt[percentile != "p50"],
+          mapping = aes(
+            ymin  = .data[[nn[[1]]]], 
+            ymax  = .data[[nn[[2]]]],
+            group = .data$percentile,
+            fill  = .data$percentile
+          )
+        ),
+        x$ci$extreme
+      )
+      params$fill <- NULL
+      do.call(geom_ribbon, params)
     }
+  }
 
-    # plot construction
-    pp <- ggplot(
-      data = db$pi_dt, 
-      mapping = aes(x = .data[[if (!is.null(bin)) "bin" else idv]])
-    )
+  # plot construction
+  pp <- ggplot(
+    data = x$db$pi_dt, 
+    mapping = aes(x = .data[[if (!is.null(x$bin)) "bin" else x$idv]])
+  )
 
-    pp <- pp +
-      obs_layer() + 
-      rug_layer()
+  pp <- pp +
+    obs_layer() + 
+    rug_layer()
 
-    if (type=="scatter") { 
-      pp <- pp + 
-        pi_shaded_layer() + 
-        pi_shaded_med_layer()
-    } else {
-      pp <- pp + 
-        ci_med_layer() + 
-        ci_ext_layer() + 
-        pi_med_layer() + 
-        pi_ext_layer() 
+  if (x$type == "scatter") { 
+    pp <- pp + 
+      pi_shaded_layer() + 
+      pi_shaded_med_layer()
+  } else {
+    pp <- pp + 
+      ci_med_layer() + 
+      ci_ext_layer() + 
+      pi_med_layer() + 
+      pi_ext_layer() 
+  }
 
+  if( !is.null(x$obs_legend)) {
+    pp <- pp + do.call("scale_linetype_manual", x$obs_legend)
+  }
+
+  if (!is.null(x$sim_legend) && x$type == "percentile") {
+    pp <- pp + do.call("scale_fill_manual", x$sim_legend)
+  }
+
+  strat.facet <- x[["strat.facet"]]
+
+  if (!is.null(strat.facet)) {
+    if (is.character(strat.facet)) {
+      strat.facet <- stats::as.formula(paste0('~', paste0(strat.facet, collapse = " + ")))
     }
+    pp <- pp + do.call("facet_wrap", c(strat.facet, x$facets))
+  }
 
-    if(!is.null(x$obs_legend)) {
-      pp <- pp + do.call("scale_linetype_manual", obs_legend)
-    }
+  if (x$is.footnote){
+    pp <- pp + labs(caption = x$footnote)
+  }
 
-    if(!is.null(x$sim_legend) && type=="percentile") {
-      pp <- pp + do.call("scale_fill_manual", sim_legend)
-    }
-
-    strat.facet <- x[["strat.facet"]]
-
-    if (!is.null(strat.facet)) {
-      if (is.character(strat.facet)) {
-        strat.facet <- stats::as.formula(paste0('~', paste0(strat.facet, collapse = " + ")))
-      }
-      pp <- pp + do.call("facet_wrap", c(strat.facet, facets))
-    }
-
-    if (is.footnote){
-      pp <- pp + labs(caption = x$footnote)
-    }
-
-    pp
-  })
+  pp
 }
 
 .vpc_footnote <- function(x) {
