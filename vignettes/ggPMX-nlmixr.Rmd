@@ -1,4 +1,4 @@
-++---
+---
 title: "ggPMX with nlmixr"
 output: rmarkdown::html_vignette
 vignette: >
@@ -20,16 +20,16 @@ options(crayon.enabled = FALSE)
 library(ggPMX)
 has_nlmixr <- FALSE
 if (R.version$major >= 4) {
-  library(nlmixr)
+  library(nlmixr2)
   has_nlmixr <- TRUE
 }
-``
+```
 
 It is simple to create a ggPMX controller for a nlmixr object.
 
 Using the theophylline example with a nlmixr model we have:
 
-```{r}
+```{r, eval=FALSE}
 one.compartment <- function() {
     ini({
         tka <- 0.45 # Log Ka
@@ -55,19 +55,18 @@ if (has_nlmixr) nlmixr(one.compartment)
 
 We run this model locally by:
 
-```{r}
+```{r, eval=FALSE}
 if (has_nlmixr) {
   fit <- nlmixr(one.compartment, theo_sd, est="saem", control=list(print=0))
 }
 ```
 
-
 The `fit` object is a nlmixr fit; You can read it into the nlmixr
 controller by:
 
-```{r}
+```{r, eval=FALSE}
 if (has_nlmixr) {
-fit %>%
+  fit %>%
     pmx_nlmixr(vpc = FALSE) -> ## VPC is turned on by default, can turn off.
     ctr ## Assigned to controller
 }
@@ -77,7 +76,7 @@ Once the controller is created, you can of course have the same types
 of diagnostic plots as the standard ggPMX package; Using the same
 examples as the user manual:
 
-```{r}
+```{r, eval=FALSE}
 if (has_nlmixr) {
   ctr %>% pmx_plot_dv_pred
   ctr %>% pmx_plot_npde_time
