@@ -1,4 +1,4 @@
-++---
+---
 title: "ggPMX with nlmixr"
 output: rmarkdown::html_vignette
 vignette: >
@@ -23,7 +23,7 @@ if (R.version$major >= 4) {
   library(nlmixr)
   has_nlmixr <- TRUE
 }
-``
+```
 
 It is simple to create a ggPMX controller for a nlmixr object.
 
