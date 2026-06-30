@@ -1,0 +1,316 @@
+---
+title: "Building PMX plots"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this article we provide a tutorial on the plot build pipeline within the ggPMX package. It is intended primarily for developers interested in understanding the internal workings of the package.
+
+```{r setup}
+library(ggPMX)
+```
+
+Consider what happens when we create a basic plot. To begin, let's consider the `theophylline` data that is supplied with the package. First, construct a PMX controller object using this data:
+
+```{r}
+#| results: hide
+ctr <- theophylline()
+```
+
+Inspect the object:
+
+```{r}
+ctr
+```
+
+This controller is an R6 object with class `pmxClass`. The print method provides three different summaries that tell us something about the internal structure of the object. The one that is relevant here is the third one, because it tells us the **name** and **type** of all plots that are stored by the controller. The distinction between plot name and plot type is conceptually relevant to the user. From the user perspective, it really does help to remember that `dv_pred` and `dv_ipred` are both examples of `SCATTER` plots, and as such the user can expect them to have different features to the `eta_hist` and `eta_box` plots, since these are both `DIS`tributional plots. 
+
+From a developer perspective the distinction matters rather more, because each plot type corresponds to a different internal S3 class. 
+
+## Plot API
+
+### Accessor function
+
+```{r}
+pmx_plot(ctr, pname = "dv_pred")
+```
+
+### R6 object method
+
+```{r}
+ctr$plots()
+```
+
+```{r}
+ctr$get_plot("dv_pred")
+```
+
+## Internals
+
+### The `$get_plot()` method
+
+Let's start by looking at the source code for the R6 `$get_plot()` method:
+
+```{r}
+ctr$get_plot
+```
+
+It's calling an internal function called `pmx_get_plot()`, so let's take a look at that:
+
+```{r}
+ggPMX:::pmx_get_plot
+```
+
+In other words, there's a private `.plots` list contained contained within the controller object, and what the `$get_plot()` method does is pull the plot from the private environment. By design, it's not easy to inspect the private environment of an R6 object, but for the purposes of a developer guide it's handy to be able to do so. With that in mind, we can define a function that does extracts the private environment, and then inspect it to see what it contains:
+
+```{r}
+R6_private <- function(x) {
+  x[[".__enclos_env__"]][["private"]]
+}
+pr <- R6_private(ctr)
+rlang::env_names(pr)
+```
+
+This is what is stored internally in the private fields of the `ctr` object. If we wanted to -- noting there is no good reason to ever do this except to illustrate the internal structure -- we could pull a plot object directly from the private storage, like this:
+
+```{r}
+dv_pred_plt <- pr$.plots$dv_pred
+dv_pred_plt
+```
+
+Unsurprisingly, this is a ggplot2 plot object:
+
+```{r}
+class(dv_pred_plt)
+```
+
+Looking at this list of classes, you can also infer that the ggplot2 version is at least 4.0.0 (i.e., after the switch from ggproto to S7), but that does not matter for our purposes. What you really need to take from this is that the `$private$.plots` field inside the `ctr` object stores the specifications for *every* plot. These specifications were built the moment that the controller object `ctr` was constructed. When the user calls `ctr$get_plot()`, the ggplot2 object is built into a plot (remember: when you define a plot with ggplot2, all it does is create the plot specification - it's only when you print/plot the object that this specification gets translated into a bundle of grobs via the grid package)
+
+Remember also that every R6 object is secretly an environment, and it has *reference* semantics. If we wanted do modify the plot we could do this:
+
+```{r}
+pr$.plots$dv_pred <- pr$.plots$dv_pred +
+  ggplot2::labs(x = "predicted", y = "observed")
+```
+
+Then we could do this:
+
+```{r}
+ctr$get_plot("dv_pred")
+```
+
+Because the `pr` environment that we pulled out using my `R6_privat()` function *is* the private environment for the controller object (that is, they're literally different names for the same data structure), modifying the plot within the `pr` environment is precisely the same as modifying the controller object itself. 
+
+Nevertheless, everything we have done there is considered extremely poor manners. Users should not do this. If the user wants to modify the stored plot using the R6 framework, the correct way to do it is via the *public* methods. Every `PMXclass` controller object has an `$update_plot()` method, and we can use *that* to do the work. Let's take a look at how this method is defined:
+
+```{r}
+ctr$update_plot
+```
+
+This is the same programming pattern that we saw earlier with the `$get_plot()` method. Internally, this pattern is used a lot within ggPMX: the R6 methods are almost always thin wrappers around an internal function, and the internal function for `ctr$some_public_method()` is `ggPMX:::pmx_some_public_method()`. It's not stated anywhere (that I can see) in the source code, but this convention appears to be part of the implicit "house style" for ggPMX. Let's look at the internal function next:
+
+```{r}
+ggPMX:::pmx_update_plot
+```
+
+This is one of the functions that does a lot of serious work. It applies the new settings, creates a new ggplot2 object, removes the old one from the internal `$private$.plots` storage, and then adds the new one. 
+
+We'll come back to the specifics later, because we'll encounter this function again. In the meantime, let's pivot to the `pmx_plot()` accessor function.
+
+### The `pmx_plot()` accessor
+
+Up to this point we've approached this from a developer perspective. If you're writing a pull request for ggPMX, it helps to remember that the controller object `ctr` is the thing that matters most. It provides the "single source of truth" for the PMX plots, and in some sense everything that the package does is construct and modify this object. 
+
+However, a typical R user does not work with R6 methods when writing analysis code. The "encapsulated" object-oriented programming style is useful for developers but for the most part analysts don't use it. They're much more likely to use the S3 generic function `pmx_plot()`.
+
+Let's trace out what happens when the user does this. 
+
+```{r}
+pmx_plot(ctr, "dv_pred")
+```
+
+Notice that when we do this, the modifications we created earlier have disappeared. Calling `pmx_plot()` has done something slightly different. Notice this:
+
+```{r}
+get_plot(ctr, "dv_pred")
+```
+
+This is an important distinction. The `get_plot()` function is a simple wrapper around the R6 `$get_plot()` method:
+
+```{r}
+get_plot
+```
+
+The key thing to notice here is that when the user constructs a plot using `get_plot()`, ggPMX pulls out the previously stored plot. It doesn't create a new plot specification.
+
+This is different to what happens when the user calls `pmx_plot()`. So let's have a look at that. The help documentation refers to this as the "generic pmx plot" function, but it's not actually an S3 generic, it's just a regular R function. 
+
+```{r}
+pmx_plot
+```
+
+This is a little odd to look at, but we can unpack it:
+
+```{r}
+ggPMX:::get_params_from_call
+```
+
+This is a little atypical for R packages: to see what happens when the internal `get_params_from_call()` function captures the arguments passed to `pmx_plot()`, we can do this:
+
+```{r}
+get_params <- function(ctr, pname, ...) {
+  ggPMX:::get_params_from_call()
+}
+get_params()
+get_params(is.draft = FALSE)
+```
+
+In other words, the `params` object returned by the internal `ggPMX:::get_params_from_call()` is a list of parameters that are passed down the the plot itself.
+
+```{r}
+ggPMX:::wrap_pmx_plot_generic
+```
+
+The key thing here is the call to `pmx_plot_generic()`:
+
+```{r}
+ggPMX:::pmx_plot_generic
+```
+
+What happens here is that a *copy* of the controller object gets created (i.e., `cctr` in the internal code), and using *that* controller object we have a call to `ggPMX:::pmx_update()` to modify the stored plot, then call `ggPMX:::get_plot()` to extract and then print the updated plot. 
+
+That's the reason why calling `pmx_plot()` doesn't update the internal store. The internal `ggPMX:::pmx_copy()` function uses the `$clone()` method that all R6 objects possess to briefly create a new controller.
+
+### Interim summary
+
+Despite superficial differences, the `$get_plot()` method and the `pmx_plot()` function work by the same principle. They both use `ggpmx:::pmx_update_plot()` to modify the internal plot storage of a PMX controller object, and then return that plot to the user. The difference between the two is that the `$get_plot()` method modifies the *original* PMX controller (changes to the plot will be persistent), whereas the accessor function works with a cloned *copy* of the PMX controller (changes to the plot are not retained). So now we look at how plot updating takes place. 
+
+## Plot updating
+
+Here's the source code for the R6 `$update_plot()` method:
+
+```{r}
+ctr$update_plot
+```
+
+For comparison, here's the user-facing function `pmx_update()`: 
+
+```{r}
+pmx_update
+```
+
+Notice that unlike `pmx_plot()` no cloning takes place. Apart from some minimal preprocessing, the `pmx_update()` function behaves identically to the `$update_plot()` method, and both of them farm out the real work to the internal function `ggPMX:::pmx_update_plot()`:
+
+```{r}
+ggPMX:::pmx_update_plot
+```
+
+This function is a little more complex so we have to work through it in stages.
+
+### Extracting plot config
+
+The first line in function is `x <- private$.plots_configs[[pname]]`. This is just the internal way of using the `$get_config()` method to extract plot configuration information from the PMX controller. To see this, let's look at the code for `$get_config()` and the `ggPMX:::pmx_get_config` internal function that it calls:
+
+```{r}
+ctr$get_config
+```
+
+```{r}
+ggPMX:::pmx_get_config
+```
+
+These are indeed the same. 
+
+### Examining plot config
+
+Let's now inspect the plot configuration for the `"dv_pred"` plot in the `ctr` object:
+
+```{r}
+dv_pred_config <- ctr$get_config("dv_pred")
+```
+
+This object is essentially a big list containing lots of settings. It is the data structure used for plot construction, and forms the basis for later processing. 
+
+```{r}
+names(dv_pred_config)
+```
+
+We don't need to look at all of them at this point, but as an example, the `ptype` element tells you what *type* of plot needs to be constructed:
+
+```{r}
+dv_pred_config$ptype
+```
+
+As expected, this is a scatter plot. The `dx` element contains the data:
+
+```{r}
+dv_pred_config$dx
+```
+
+The `gp` element is a list of general purpose graphical parameters that are used for styling purposes:
+
+```{r}
+names(dv_pred_config$gp)
+```
+
+Importantly, for the purposes of understanding the internal mechanics of ggPMX, the plot config is an S3 classed object:
+
+```{r}
+class(dv_pred_config)
+```
+
+Let's have a look at the classes associated with every plot in our `ctr` object:
+
+```{r}
+ctr$plots() |> 
+  purrr::map_dfr(\(x) {
+    cfg <- ctr$get_config(x)
+    data.frame(name = x, type = cfg$ptype, class = class(cfg)[1]) 
+  })
+```
+
+In other words: the data structure associated with a plot of type `"SCATTER"` is always an S3 object of class `residual`, a plot of type `"DIS"` is instantiated by an S3 object of type `distrib`, and so on. 
+
+### Interim summary
+
+Noting all this, we can see what the `ggPMX:::pmx_update_plot` function does is:
+
+1. Extract the plot configuration (first line)
+2. Modify the plot configuration using user input (most of the function)
+3. Remove the old plot from internal storage (via the `$remove_plot()` method)
+4. Add a plot to storage using the modified configuration (via the `$add_plot()` method)
+
+Therefore, the next thing we should look at is the `$add_plot()` method
+
+## Adding plots to controller
+
+To begin with let's look at the API: 
+
+```{r}
+ctr$add_plot
+```
+
+```{r}
+ggPMX:::pmx_add_plot
+```
+
+We pass in a plot configuration object (that's the `x` argument here), there's a whole pipeline of preprocessing steps which we'll ignore for now, except to note that these operations do modify the configuration. The updated configuration is stored internally within the controller object via the `$set_config()` function, the plot is then constructed using `plot_pmx()` (not to be confused with the `pmx_plot()` function we looked at earlier, they are very different) and added to the internal plot storage, and then the updated controller state is returned. 
+
+## Building plots
+
+We now arrive at `plot_pmx()`, which is the S3 generic function that is responsible for transforming a ggPMX plot configuration into a ggplot2 plot. It takes two arguments: `x` is the plot configuration itself, and `dx` is the data to plot. Usually when `plot_pmx()` is called by an internal ggPMX function, the data set `dx` will be the same data set as the `x$dx` data set stored within the plot configuration, but it doesn't have to be.
+
+Because this is an S3 generic, the work will then be passed out to the relevant method:
+
+- scatter plots are built using `plot_pmx.residual()`
+- distributional plots are built using `plot_pmx.distrib()`
+- etc
+
+When extending ggPMX to add a new plot, then, there is a general strategy. If the plot can be viewed as an instantiation of an existing plot type (e.g., it's just a scatter plot with different arguments) then no new data structures are needed. All that you need to do is give it a name and a plot configuration. If it can't be defined in this way, then you may need to define a new plot configuration class (e.g., the `pmx_param_history` class currently exists only to draw the SAEM convergence plots), and a `plot_pmx()` method for that new class. 
+
+
