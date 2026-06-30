@@ -74,8 +74,13 @@ if (helper_skip()) {
       ci = pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
     )
     expect_true(is_ggplot(vpc))
-    expect_true(identical(vpc@plot_env$x$pi$median$linetype, "dotted"))
-    expect_true(identical(vpc@plot_env$x$ci$median$fill, "red"))
+    if (inherits(vpc, "S7_object")) { # ggplot2 4.0.0 and later
+      expect_true(identical(vpc@plot_env$x$pi$median$linetype, "dotted"))
+      expect_true(identical(vpc@plot_env$x$ci$median$fill, "red"))
+    } else { # older versions of ggplot2
+      expect_true(identical(vpc$plot_env$x$pi$median$linetype, "dotted"))
+      expect_true(identical(vpc$plot_env$x$ci$median$fill, "red"))
+    }
   })
   
   test_that("Test different ways to facet vpc pmx_plot_vpc", {
