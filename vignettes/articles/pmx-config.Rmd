@@ -13,7 +13,6 @@ In this article we provide a tutorial on the structure of PMX configuration obje
 
 ```{r setup}
 library(ggPMX)
-library(fs)
 ```
 
 First, let's construct a PMX controller object manually, using the Monolix test data files supplied with the package. 
@@ -21,9 +20,9 @@ First, let's construct a PMX controller object manually, using the Monolix test 
 ```{r}
 # paths
 ggpmx_dir        <- system.file(package = "ggPMX")
-theophylline_dir <- path(ggpmx_dir, "testdata", "theophylline")
-work_dir         <- path(theophylline_dir, "Monolix")
-input_file       <- path(theophylline_dir, "data_pk.csv")
+theophylline_dir <- file.path(ggpmx_dir, "testdata", "theophylline")
+work_dir         <- file.path(theophylline_dir, "Monolix")
+input_file       <- file.path(theophylline_dir, "data_pk.csv")
 
 # identical to the example in the pmx() docs
 ctr <- pmx(
@@ -84,8 +83,8 @@ load_config
 These are both YAML files. The paths to the files for the default "standing" configuration are as follows: 
 
 ```{r}
-plots_template  <- path(ggpmx_dir, "init", "standing.ppmx")
-inputs_template <- path(ggpmx_dir, "init", "templates", "mlx", "standing.ipmx")
+plots_template  <- file.path(ggpmx_dir, "init", "standing.ppmx")
+inputs_template <- file.path(ggpmx_dir, "init", "templates", "mlx", "standing.ipmx")
 ```
 
 Internally the `load_config()` function passes the work to `ggPMX:::load_config_files()`, which in turn uses `yaml::yaml.load_file()` to parse the YAML file and return a list. Just to illustrate what it looks like, we'll read the raw plots file without any parsing and look at what it contains. The file specifies a list of plot names, and default argument values that should be applied when that plot is built (unless of course the user overrides them). 
@@ -112,8 +111,8 @@ It's not as relevant from the developer perspective, but worth noting that ggPMX
 
 ```{r}
 custom_config <- pmx_config(
-  plots = path(ggpmx_dir, "examples", "plots.yaml"),
-  inputs = path(ggpmx_dir, "examples", "custom_inputs.yaml")
+  plots = file.path(ggpmx_dir, "examples", "plots.yaml"),
+  inputs = file.path(ggpmx_dir, "examples", "custom_inputs.yaml")
 )
 custom_config
 ```
