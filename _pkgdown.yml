@@ -2,3 +2,12 @@ url: ~
 template:
   bootstrap: 5
 
+articles:
+  - title:
+    navbar:
+    contents: 
+      - ggPMX-guide
+      - ggPMX-nlmixr
+      - bloq
+      - articles/plot-build
+      - articles/plot-config
