@@ -3,11 +3,14 @@ template:
   bootstrap: 5
 
 articles:
-  - title:
-    navbar:
+  - title: User guides
+    navbar: User guides
     contents: 
       - ggPMX-guide
       - ggPMX-nlmixr
       - bloq
+  - title: Developer guides
+    navbar: Developer guides
+    contents: 
       - articles/plot-build
       - articles/pmx-config
