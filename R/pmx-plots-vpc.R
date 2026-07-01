@@ -717,8 +717,21 @@ plot_pmx.pmx_vpc <- function(x, dx, ...) {
       y = pred_data,
       by = dplyr::join_by(ID, TIME)
   )
+ 
+  # check simulation data for possible inclusion of dosing rows in the data: 
+  # checks may be fragile as they rely on NONMEM style names and values
+  sim_cols <- names(simulated_data) 
+  if ("EVID" %in% sim_cols) {
+    simulated_data <- simulated_data %>% dplyr::filter(EVID == 0)
+  }
+  if ("MDV" %in% sim_cols) {
+    simulated_data <- simulated_data %>% dplyr::filter(MDV == 0)
+  }
+  if ("AMT" %in% sim_cols) {
+    simulated_data <- simulated_data %>% dplyr::filter(AMT == 0)
+  }
 
-  # Danielle: filter out rows in simulated that are not in observed and require
+  # filter out rows in simulated that are not in observed, and require
   # TIME > 0 to prevent tidyvpc erroring
   simulated_data <- simulated_data %>%
     dplyr::filter(TIME > 0) %>%
