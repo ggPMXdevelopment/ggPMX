@@ -50,8 +50,8 @@ if (helper_skip()) {
   test_that("pmx_plot_vpc: params NULL result: identical type", {
     p <- ctr %>% pmx_plot_vpc()
     expect_true(is_ggplot(p))
-    expect_identical(p$plot_env$type, "percentile")
-    expect_identical(p$plot_env$idv, "TIME")
+    expect_identical(p$plot_env$x$type, "percentile")
+    expect_identical(p$plot_env$x$idv, "TIME")
   })
 
 
@@ -63,7 +63,7 @@ if (helper_skip()) {
 
   test_that("pmx_plot_vpc: params result: identical type", {
     p <- ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2), type = "scatter")
-    expect_identical(p$plot_env$type, "scatter")
+    expect_identical(p$plot_env$x$type, "scatter")
   })
 
 
@@ -74,8 +74,13 @@ if (helper_skip()) {
       ci = pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
     )
     expect_true(is_ggplot(vpc))
-    expect_true(identical(vpc$plot_env$pi$median$linetype, "dotted"))
-    expect_true(identical(vpc$plot_env$ci$median$fill, "red"))
+    if (inherits(vpc, "S7_object")) { # ggplot2 4.0.0 and later
+      expect_true(identical(vpc@plot_env$x$pi$median$linetype, "dotted"))
+      expect_true(identical(vpc@plot_env$x$ci$median$fill, "red"))
+    } else { # older versions of ggplot2
+      expect_true(identical(vpc$plot_env$x$pi$median$linetype, "dotted"))
+      expect_true(identical(vpc$plot_env$x$ci$median$fill, "red"))
+    }
   })
   
   test_that("Test different ways to facet vpc pmx_plot_vpc", {
@@ -242,7 +247,7 @@ if (helper_skip()) {
 
   test_that("vpc_footnote.: params: x; result: identical inherits", {
     vpc <- pmx_vpc()
-    vpc_f <- vpc_footnote.(vpc)
+    vpc_f <- .vpc_footnote(vpc)
     expect_true(inherits(vpc_f, c("pmx_vpc", "pmx_gpar")))
     expect_true(inherits(vpc_f$ci, c("pmx_vpc_ci", "list")))
     expect_true(inherits(vpc_f$footnote, "character"))
@@ -250,7 +255,7 @@ if (helper_skip()) {
 
   test_that("vpc_footnote.: params: x; result: identical structure", {
     vpc <- pmx_vpc()
-    vpc_f <- vpc_footnote.(vpc)
+    vpc_f <- .vpc_footnote(vpc)
     expect_identical(vpc_f$gp$smooth$linetype, 1)
     expect_identical(vpc_f$gp$legend.position, "right")
   })
@@ -266,20 +271,20 @@ if (helper_skip()) {
   #
   test_that("vpc_legend.: params: x; result: identical structure", {
     vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- vpc_legend.(vpc)
+    vpc_l <- .vpc_legend(vpc)
     expect_identical(vpc_l$ptype, "VPC")
     expect_identical(vpc_l$rug$alpha, 0.7)
   })
 
   test_that("vpc_legend.: params: x; result: identical inherits", {
     vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- vpc_legend.(vpc)
+    vpc_l <- .vpc_legend(vpc)
     expect_true(inherits(vpc_l, c("pmx_vpc", "pmx_gpar")))
   })
 
   test_that("vpc_legend.: params: x; result: identical names", {
     vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- vpc_legend.(vpc)
+    vpc_l <- .vpc_legend(vpc)
     vpslNames <- c(
       "ptype", "strat", "idv", "dname", "labels", "is.legend", "is.footnote",
       "type", "facets", "obs", "pi", "ci", "rug", "bin",
@@ -297,4 +302,145 @@ if (helper_skip()) {
   })
 
   #------------------- plot_pmx.pmx_vpc - end ------------------------------------
+
+  #------------------- tidyvpc integration - start -------------------------------
+
+
+  theophylline_dir <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+
+  ctrs <- list(
+    theophylline(),       # built-in controller 
+    pmx(                  # read theophylline from mlx files
+      sys = "mlx",
+      config = "standing",
+      directory = file.path(theophylline_dir, "Monolix"),
+      input = file.path(theophylline_dir, "data_pk.csv"),
+      dv = "Y",
+      dvid ="DVID",
+      sim = pmx_sim(
+        file = file.path(theophylline_dir, "sim.csv"),
+        irun = "rep",
+        idv = "TIME"
+      )
+    )
+  )
+    
+  test_that("ggpmx vpc matches tidyvpc: 10 bins, no predcorr", {
+
+    for(ctr in ctrs) {
+      p <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
+      expect_true(is_ggplot(p))
+
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: 5 bins, no predcorr", {
+    for(ctr in ctrs) {
+
+      p <- pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "quantile", nbins = 5))
+      expect_true(is_ggplot(p))
+
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: 10 bins, with predcorr", {
+    for(ctr in ctrs) {
+
+      p <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 10))
+      expect_true(is_ggplot(p))
+
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: 5 bins, with predcorr", {
+    for(ctr in ctrs) {
+
+      p <- pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "quantile", nbins = 5))
+      expect_true(is_ggplot(p))
+
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: scatter, no predcorr", {
+    for(ctr in ctrs) {
+
+      p <- pmx_plot_vpc(ctr, type = "scatter", predcorr = FALSE)
+      expect_true(is_ggplot(p))
+    
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: scatter, with predcorr", {
+    for(ctr in ctrs) {
+
+      p <- pmx_plot_vpc(ctr, type = "scatter", predcorr = TRUE)
+      expect_true(is_ggplot(p))
+
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: binless, no predcorr", {
+    for(ctr in ctrs) {
+
+      p <-  pmx_plot_vpc(ctr, predcorr = FALSE, bin = pmx_vpc_bin(style = "binless"))
+      expect_true(is_ggplot(p))
+
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+  })
+
+  test_that("ggpmx vpc matches tidyvpc: binless, with predcorr", {
+    for(ctr in ctrs) {
+
+      p <-  pmx_plot_vpc(ctr, predcorr = TRUE, bin = pmx_vpc_bin(style = "binless"))
+      expect_true(is_ggplot(p))
+
+      expect_equal(p$plot_env$x$db$ci_dt$CLLOW, p$plot_env$x$vpc_stats$stats$lo)
+      expect_equal(p$plot_env$x$db$ci_dt$CLHIGH, p$plot_env$x$vpc_stats$stats$hi)
+      expect_equal(p$plot_env$x$db$ci_dt$CLMID, p$plot_env$x$vpc_stats$stats$md)
+      expect_equal(as.numeric(as.factor(p$plot_env$x$db$ci_dt$percentile)), as.numeric(p$plot_env$x$vpc_stats$stats$qname))
+      expect_equal(p$plot_env$x$vpc_stats$stats$y, p$plot_env$x$vpc_stats$stats$y)
+    }
+
+  })
+
+  #------------------- tidyvpc integration - end ---------------------------------
+
+
 }
+

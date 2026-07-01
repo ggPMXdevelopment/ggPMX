@@ -13,8 +13,9 @@ pmx_plot_vpc(
   ci,
   rug,
   bin,
+  predcorr,
   is.legend,
-  sim_blq,
+  is.footnote,
   dname,
   filter,
   strat.facet,
@@ -37,16 +38,16 @@ pmx_plot_vpc(
   scale_x_log10,
   scale_y_log10,
   color.scales,
-  is.footnote,
+  sim_blq,
   ...
 )
 }
 \arguments{
 \item{ctr}{pmx controller}
 
-\item{type}{\code{charcater} can be either percentile or scatter}
+\item{type}{\code{character} can be either percentile or scatter}
 
-\item{idv}{\code{chracater} individual variable}
+\item{idv}{\code{character} individual variable}
 
 \item{obs}{\code{pmx_vpc_obs} object observation layer \link{pmx_vpc_obs}}
 
@@ -60,9 +61,11 @@ since the rugs plotted will not reflect the bins.}
 
 \item{bin}{\code{pmx_vpc_bin} object  \link{pmx_vpc_bin} specify within pmx_plot_vpc() e.g.: bin = pmx_vpc_bin(style = "kmeans", n = 10)}
 
+\item{predcorr}{\code{logical} if TRUE apply prediction-correction}
+
 \item{is.legend}{\code{logical} if TRUE add legend}
 
-\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
+\item{is.footnote}{\code{logical} if TRUE add footnote}
 
 \item{dname}{added for compatibility with other ggPMX plots
 
@@ -116,7 +119,7 @@ the axis text (similar to ggplot2 axis.text theme)}
 
 \item{color.scales}{\code{list} define scales parameter in case of strat.color \code{\link{pmx_settings}}}
 
-\item{is.footnote}{\code{logical} if TRUE add footnote}
+\item{sim_blq}{\code{logical} if TRUE uses sim_blq values for plotting. Only for Monolix 2018 and later.}
 
 \item{...}{others graphics parameters passed :
 \itemize{
@@ -141,17 +144,16 @@ binning can be different for each strat level (case \code{within_strat} equal to
 \donttest{
 library(ggPMX)
 
-theo_path <- file.path(
-  system.file(package = "ggPMX"), "testdata",
-  "theophylline"
-)
-WORK_DIR <- file.path(theo_path, "Monolix")
+# paths
+theo_path <- file.path(system.file(package = "ggPMX"), "testdata", "theophylline")
+work_dir <- file.path(theo_path, "Monolix")
 input_file <- file.path(theo_path, "data_pk.csv")
 vpc_file <- file.path(theo_path, "sim.csv")
 
+# set up controller
 ctr <- pmx_mlx(
   config = "standing",
-  directory = WORK_DIR,
+  directory = work_dir,
   input = input_file,
   dv = "Y",
   dvid = "dvid",
@@ -159,46 +161,49 @@ ctr <- pmx_mlx(
   conts = c("WT0", "AGE0"),
   strats = "STUD",
   settings = pmx_settings(
-    use.labels=TRUE,
-    cats.labels=list(
-      SEX=c("0"="Male","1"="Female")
-    )
+    use.labels = TRUE,
+    cats.labels = list(SEX = c("0" = "Male", "1" = "Female"))
   ),
   sim = pmx_sim(
     file = vpc_file,
-    irun ="rep",
-    idv="TIME"
+    irun = "rep",
+    idv = "TIME"
   )
 )
 
-
-ctr \%>\% pmx_plot_vpc(
-  strat.facet=~SEX,
-  facets=list(nrow=2),
-  type="percentile",
-  is.draft = FALSE,
-  pi = pmx_vpc_pi(interval = c(0.1,0.9),
-              median=list(color="green"),
-              extreme= list(color="green")),
-  obs = pmx_vpc_obs(color="blue",shape=18,size=2),
-  ci = pmx_vpc_ci(interval = c(0.1,0.9),
-              median=list(fill="pink")),
-  bin=pmx_vpc_bin("kmeans",n=5)
-)
-
+# example with plot customization
 ctr \%>\% 
-  pmx_plot_vpc(bin= pmx_vpc_bin(
-     style = "fixed",
-     fixedBreaks=c(-10,2, 5, 10,15,50))
-  )
+  pmx_plot_vpc(
+    strat.facet = ~SEX,
+    facets = list(nrow = 2),
+    type = "percentile",
+    is.draft = FALSE,
+    pi = pmx_vpc_pi(
+      interval = c(0.1, 0.9),
+      median = list(color = "green"),
+      extreme = list(color = "green")),
+    obs = pmx_vpc_obs(
+      color = "blue",
+      shape = 18,
+      size = 2
+    ),
+    ci = pmx_vpc_ci(
+      interval = c(0.1, 0.9),
+      median = list(fill = "pink")
+    ),
+    bin = pmx_vpc_bin("kmeans", n = 5)
+)
+
+# example with fixed breaks
+ctr \%>\% pmx_plot_vpc(bin = pmx_vpc_bin(style = "fixed", breaks = c(-10, 2, 5, 10, 15, 50)))
 
 # example with legend 
-
-ctr \%>\% pmx_plot_vpc(
-  is.legend = TRUE,
-  pi = pmx_vpc_pi(interval=c(0.02,0.98),median = list(linetype="dotted")),
-  ci = pmx_vpc_ci(interval = c(0.05,0.95),median=list(fill="red"))
-)
+ctr \%>\% 
+  pmx_plot_vpc(
+    is.legend = TRUE,
+    pi = pmx_vpc_pi(interval = c(0.02, 0.98), median = list(linetype = "dotted")),
+    ci = pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
+  )
 
 }
 }

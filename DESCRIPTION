@@ -57,7 +57,8 @@ Imports:
     readr,
     rlang,
     checkmate,
-    scales
+    scales,
+    tidyvpc
 License: GPL-2
 Suggests:
     testthat,
@@ -73,5 +74,5 @@ Suggests:
     lifecycle
 VignetteBuilder: knitr
 NeedsCompilation: no
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
