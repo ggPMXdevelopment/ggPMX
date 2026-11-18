@@ -92,7 +92,7 @@ Internally the `load_config()` function passes the work to `ggPMX:::load_config_
 Here's what it looks like:
 
 ```{r}
-plots_config_raw <- brio::read_lines(plots_template)
+plots_config_raw <- readLines(plots_template)
 cat(plots_config_raw[1:32], sep = "\n") # show first 32 lines only
 ```
 
