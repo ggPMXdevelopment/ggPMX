@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
+# ggPMX <img src="man/figures/logo.png" align="right" width="120" />
 
 **Authors**: Amine Gassem, Irina Baltcheva, Christian Bartels, Souvik
 Bhattacharya, Thomas Dumortier, Matthew Fidler, Seid Hamzic, Inga

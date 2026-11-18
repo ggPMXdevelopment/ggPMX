@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggPMX <img src="man/figures/logo.jpg" align="right" width="120" />
+# ggPMX <img src="man/figures/logo.png" align="right" width="120" />
 
 **Authors**:  Amine Gassem, Irina Baltcheva, Christian Bartels, Souvik Bhattacharya, Thomas Dumortier, Matthew Fidler, Seid Hamzic, Inga Ludwig, Ines Paule, Didier Renard, Bruno Bieth
 
