@@ -1,0 +1,134 @@
+---
+title: "PMX configuration objects"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this article we provide a tutorial on the structure of PMX configuration objects. It is intended primarily for developers interested in understanding the internal workings of the package.
+
+```{r setup}
+library(ggPMX)
+```
+
+First, let's construct a PMX controller object manually, using the Monolix test data files supplied with the package. 
+
+```{r}
+# paths
+ggpmx_dir        <- system.file(package = "ggPMX")
+theophylline_dir <- file.path(ggpmx_dir, "testdata", "theophylline")
+work_dir         <- file.path(theophylline_dir, "Monolix")
+input_file       <- file.path(theophylline_dir, "data_pk.csv")
+
+# identical to the example in the pmx() docs
+ctr <- pmx(
+  sys = "mlx",
+  config = "standing",
+  directory = work_dir,
+  input = input_file,
+  dv = "Y",
+  dvid ="DVID"
+)
+ctr
+```
+
+This article unpacks the `config` argument, showing the key data structures involved, and some notes that may assist when writing pull requests.
+
+## PMX configuration object
+
+The key role played by the `config` argument to `pmx()` is to construct the data with the (public) `$config` field of the controller object. As you might expect from the name, this is a data structure that stores configuration information about the plots. When printed, it produces this:
+
+```{r}
+ctr_config <- ctr$config
+ctr_config
+```
+
+The object itself is has S3 class `pmxConfig`: 
+
+```{r}
+class(ctr_config)
+```
+
+This object stores several kinds of configuration:
+
+```{r}
+names(ctr_config)
+```
+
+## Constructing a config object
+
+When calling `pmx()` to construct a controller, you *could* choose to pass a `pmxConfig` object directly, but it's not required. If you look at the source code for the `pmx()` function, you can see that if the user doesn't specify a `config` argument, ggPMX will apply the default "standing" configuration, and then loads it using the `load_config()` function before passing the configuration object to the initialiser function `pmxClass$new()`. 
+
+Here's what happens when we call `load_config()` directly:
+
+```{r}
+standing_config <- load_config("standing", sys = "mlx")
+standing_config
+```
+
+This is the configuration object that gets stored within the PMX controller.
+
+## YAML configuration files
+
+The next "layer" down in unpacking the configuration object is understanding where the configuration information is stored. If we look at the source code for `load_config`, we can see that it expects to find two configuration files: there is a "plot PMX" file that has a `.ppmx` file extension, and an "input PMX" file with a `.ipmx` extension:
+
+```{r}
+load_config
+```
+
+These are both YAML files. The paths to the files for the default "standing" configuration are as follows: 
+
+```{r}
+plots_template  <- file.path(ggpmx_dir, "init", "standing.ppmx")
+inputs_template <- file.path(ggpmx_dir, "init", "templates", "mlx", "standing.ipmx")
+```
+
+Internally the `load_config()` function passes the work to `ggPMX:::load_config_files()`, which in turn uses `yaml::yaml.load_file()` to parse the YAML file and return a list. Just to illustrate what it looks like, we'll read the raw plots file without any parsing and look at what it contains. The file specifies a list of plot names, and default argument values that should be applied when that plot is built (unless of course the user overrides them). 
+
+Here's what it looks like:
+
+```{r}
+plots_config_raw <- brio::read_lines(plots_template)
+cat(plots_config_raw[1:32], sep = "\n") # show first 32 lines only
+```
+
+Here's what that same config looks like after YAML parsing:
+
+```{r}
+plots_config <- yaml::yaml.load_file(plots_template)
+str(plots_config[1]) # show ABS_IWRES_IPRED only
+```
+
+From the developer perspective, this "standing" configuration represents a default that ggPMX will apply to most plots. If you introduce a new plot (or modify an existing one), you may need to modify the `standing.ppmx` file so that those changes are applied by default. 
+
+## Custom configuration
+
+It's not as relevant from the developer perspective, but worth noting that ggPMX also provides user facing functions to define their own configuration using `pmx_config()`. The package supplies an example of this:
+
+```{r}
+custom_config <- pmx_config(
+  plots = file.path(ggpmx_dir, "examples", "plots.yaml"),
+  inputs = file.path(ggpmx_dir, "examples", "custom_inputs.yaml")
+)
+custom_config
+```
+
+Having done this, you could pass the configuration object to `pmx()`, like this:
+
+```{r}
+ctr2 <- pmx(
+  sys = "mlx",
+  config = custom_config,
+  directory = work_dir,
+  input = input_file,
+  dv = "Y",
+  dvid ="DVID"
+)
+```
+
+As above. When changing a plot it may be necessary to alter the "examples" configuration files.
+

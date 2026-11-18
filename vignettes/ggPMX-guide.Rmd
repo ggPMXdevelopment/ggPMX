@@ -1,5 +1,5 @@
 ---
-title: "ggPMX - User Guide"
+title: "ggPMX user guide"
 output: 
   pdf_document:
     fig_caption: yes

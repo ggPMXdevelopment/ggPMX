@@ -28,7 +28,7 @@ Authors@R: c(
               person("Kyle T", "Baron", email = "kyleb@metrumrg.com",role ="ctb", comment = c(ORCID = "0000-0001-7252-5656")),
               person("Qing Xi", "Ooi", email="ooi.qingxi@gmail.com", role="ctb"),
               person("Aleksandr","Pogodaev", role = c("aut", "cre"), email = "alex.pogodaev@novartis.com", comment=c(ORCID="0000-0002-1371-207X")),
-              person("Danielle", "Navarro", role = c("aut"), email = "djnavarro@protonmail.com"),
+              person("Danielle", "Navarro", role = c("aut"), email = "djnavarro@protonmail.com", comment=c(ORCID="0000-0001-7648-6578")),
               person("Ibtissem", "Rebai", email="ibtissem.rebai@certara.com", role="ctb"),
               person("Mahmoud", "Ali", email="mahmoud.ali@certara.com", role="ctb"),
               person("Novartis Pharma AG", role = c("cph"))
@@ -75,3 +75,4 @@ VignetteBuilder: knitr
 NeedsCompilation: no
 RoxygenNote: 7.3.2
 Encoding: UTF-8
+Config/Needs/website: rmarkdown
