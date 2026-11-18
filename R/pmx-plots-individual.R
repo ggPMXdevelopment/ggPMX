@@ -117,7 +117,12 @@ pmx_plot_individual <-
       return(NULL)
     }
 
+    # The formal argument must also override settings on the cloned controller.
     cctr <- pmx_copy(ctr, ...)
+    if (!missing(is.draft)) {
+      checkmate::assert_logical(is.draft, len = 1, any.missing = FALSE)
+      cctr$settings$is.draft <- is.draft
+    }
 
     params <- get_params_from_call()
     defaults_ <- ctr$config$plots[[toupper("individual")]]

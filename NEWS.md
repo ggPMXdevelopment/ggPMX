@@ -5,6 +5,9 @@
 * Fixed bug resulting in missing points upon mergin observations and predictions
 
 * Changed labels in individual plots form accepted/ignored to observed/censored (Should be removed in the future)
+
+* `pmx_plot_individual()` now honors per-call `is.draft` settings without modifying the original controller (#416).
+
 # ggPMX 1.3.1
 
 * Fixed tests that were writing files in a non-temporary directory
