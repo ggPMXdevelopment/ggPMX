@@ -117,7 +117,7 @@ plot_pmx.individual <-
         point$data <- base::merge(point$data, max_y, by="ID")
         # Rounding because "predictions" data are rounded:
         point$data$isobserv <-
-          ifelse(round(point$data$TIME) <= point$data$maxValue, "accepted", "ignored")
+          ifelse(round(point$data$TIME, 4) <= round(point$data$maxValue, 4), " observed", "censored")
         points <- copy(point)
         points$colour <- NULL
         do.call(geom_point, points)
@@ -140,25 +140,25 @@ plot_pmx.individual <-
         }
       }
       if (!is.null(point)) {
-        n <- ifelse(any(point$data$isobserv == "ignored"), 3,
+        n <- ifelse(any(point$data$isobserv == "censored"), 3,
                     ifelse(length(point$data$isobserv) == 0L, 1, 2))
         linetype_values <- c(rep("solid", n), "dashed")
-        if (any(point$data$isobserv == "ignored")) {
-          linetype_labels <- c("accepted",
-                               "ignored",
+        if (any(point$data$isobserv == "censored")) {
+          linetype_labels <- c(" observed",
+                               "censored",
                                "individual predictions",
                                "population predictions")
         } else if (length(point$data$isobserv) == 0L) {
           linetype_labels <- c("individual predictions",
                                "population predictions")
         } else {
-          linetype_labels <- c("accepted",
+          linetype_labels <- c(" observed",
                                "individual predictions",
                                "population predictions")
         }
       } else {
         n <- 2
-        linetype_labels <- c("accepted",
+        linetype_labels <- c(" observed",
                              "individual predictions",
                              "population predictions")
       }
@@ -167,7 +167,7 @@ plot_pmx.individual <-
       shape_values <- c(rep(point.shape, n + 1))
       shape_values_leg <- c(rep(point.shape, n - 1), rep(20, 2))
       linewidth_values <- c(rep(1, n - 1), ipred_line$linewidth, pred_line$linewidth)
-      if (any(point$data$isobserv == "ignored"))
+      if (any(point$data$isobserv == "censored"))
         colour_values <- c(point$colour[1],
                            get_invcolor(point$colour),
                            ipred_line$colour,

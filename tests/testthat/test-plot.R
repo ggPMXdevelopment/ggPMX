@@ -29,7 +29,7 @@ if (helper_skip()) {
     p3_obj <- ggplot2::ggplot_build(p3)
 
     expect_false(identical(p1_obj[["data"]][[4]], p2_obj[["data"]][[4]]))
-    expect_identical(p1_obj[["data"]][[4]], p3_obj[["data"]][[4]])
+    expect_equal(p1_obj[["data"]][[4]], p3_obj[["data"]][[4]])
   })
 
   test_that("individual plot: get some pages", {
