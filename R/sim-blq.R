@@ -13,7 +13,11 @@ normalize_sim_blq <- function(data, config) {
     configured <- intersect(configured, column_names)
     candidates <- paste0(variable, c("_mode_simBlq", "_simBlq", "_simBlq_mode"))
     candidates <- intersect(candidates, column_names)
-    source <- if (length(configured) == 1L) configured else head(candidates, 1L)
+    source <- if (length(configured) == 1L) {
+      configured
+    } else {
+      utils::head(candidates, 1L)
+    }
 
     if (length(source) == 0L) {
       next
