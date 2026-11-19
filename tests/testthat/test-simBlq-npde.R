@@ -1,3 +1,4 @@
+skip_windows_integration()
 skip_if_not(file.exists(test_path("censoring1_project.zip")))
 .path <- normalizePath(test_path("censoring1_project.zip"))
 withr::with_tempdir({

@@ -1,3 +1,4 @@
+skip_windows_integration()
 if (helper_skip()) {
   library(ggPMX)
   library(ggplot2)
