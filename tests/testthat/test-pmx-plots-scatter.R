@@ -1,7 +1,15 @@
 if (helper_skip()) {
-
   context("Test Scatter residual plots")
   ctr <- theophylline()
+  mlxpath <- file.path(
+    system.file(package = "ggPMX"),
+    "testdata",
+    "1_popPK_model",
+    "project.mlxtran"
+  )
+  suppressWarnings({
+    ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
+  })
 
   #------------------- pmx_plot_dv_pred start -----------------------------------
   test_that("pmx_plot_dv_pred: params: controller result: gg, ggplot", {
@@ -13,10 +21,8 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_dv_pred: params: not controller result: error", {
-    ctr <- theophylline() %>% get_data("eta")
-    expect_error(pmx_plot_dv_pred(ctr = ctr))
+    expect_error(pmx_plot_dv_pred(ctr = get_data(ctr, "eta")))
   })
-
 
   test_that("pmx_plot_dv_pred: params: ctr; result: list", {
     p <- pmx_plot_dv_pred(ctr)
@@ -29,20 +35,9 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_dv_pred: params: ctr_mlx; result: identical scales inherits", {
-    mlxpath <- file.path(
-      system.file(package = "ggPMX"),
-      "testdata",
-      "1_popPK_model",
-      "project.mlxtran"
-    )
-    suppressWarnings({
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
-    })
-
     p <- pmx_plot_dv_pred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })
-
 
   test_that("pmx_plot_dv_pred: params: ctr, ylim; result: identical structure", {
     p <- pmx_plot_dv_pred(ctr) + ylim(-5, 5)
@@ -52,23 +47,13 @@ if (helper_skip()) {
     )
   })
 
-  test_that("pmx_plot_dv_pred: params: not controller result: error",
-  {
-    ctr <- theophylline() %>% get_data("eta")
-    expect_error(pmx_plot_dv_pred(ctr = ctr))
-  })
-
-
-  test_that("pmx_plot_dv_pred: params: ctrl result: x and y axes equal by default",
-  {
-    ctr <- theophylline()
+  test_that("pmx_plot_dv_pred: params: ctrl result: x and y axes equal by default", {
     p <- pmx_plot_dv_pred(ctr)
     expect_equal(
       p[["coordinates"]][["limits"]][["x"]],
       p[["coordinates"]][["limits"]][["y"]]
     )
-  }
-  )
+  })
 
   #------------------- pmx_plot_dv_pred end -------------------------------------
 
@@ -82,10 +67,8 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_iwres_time: params: not controller result: error", {
-    ctr <- theophylline() %>% get_data("eta")
-    expect_error(pmx_plot_iwres_time(ctr = ctr))
+    expect_error(pmx_plot_iwres_time(ctr = get_data(ctr, "eta")))
   })
-
 
   test_that("pmx_plot_iwres_time: params: ctr; result: list", {
     p <- pmx_plot_iwres_time(ctr)
@@ -98,20 +81,9 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_iwres_time: params: ctr_mlx; result: identical structure", {
-    mlxpath <- file.path(
-      system.file(package = "ggPMX"),
-      "testdata",
-      "1_popPK_model",
-      "project.mlxtran"
-    )
-    suppressWarnings({
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
-    })
-
     p <- pmx_plot_iwres_time(ctr_mlx)
     expect_identical(p$scales$scales[[1]]$limits, c(-3.7749, 3.7749))
   })
-
 
   test_that("pmx_plot_iwres_time: params: ctr, ylim; result: identical structure", {
     p <- pmx_plot_iwres_time(ctr) + ylim(-5, 5)
@@ -120,7 +92,6 @@ if (helper_skip()) {
       c(-5, 5)
     )
   })
-
 
   #------------------- pmx_plot_iwres_time end ----------------------------------
 
@@ -134,16 +105,13 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_npde_time: params: not controller result: error", {
-    ctr <- theophylline() %>% get_data("eta")
-    expect_error(pmx_plot_npde_time(ctr = ctr))
+    expect_error(pmx_plot_npde_time(ctr = get_data(ctr, "eta")))
   })
-
 
   test_that("pmx_plot_npde_time: params: ctr, explicit filter; result: identical type", {
     p <- ctr %>% pmx_plot_npde_time(filter = "STUD == 1")
     expect_true(is_ggplot(p))
   })
-
 
   test_that("pmx_plot_npde_time: params: ctr, implicit filter; result: identical type", {
     filter_string <- "STUD == 1"
@@ -164,8 +132,7 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_npde_pred: params: not controller result: error", {
-    ctr <- theophylline() %>% get_data("eta")
-    expect_error(pmx_plot_npde_pred(ctr = ctr))
+    expect_error(pmx_plot_npde_pred(ctr = get_data(ctr, "eta")))
   })
 
   test_that("pmx_plot_npde_pred: params: ctr; result: list", {
@@ -179,20 +146,9 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_npde_pred: params: ctr_mlx; result: identical scales inherits", {
-    mlxpath <- file.path(
-      system.file(package = "ggPMX"),
-      "testdata",
-      "1_popPK_model",
-      "project.mlxtran"
-    )
-    suppressWarnings({
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
-    })
-
     p <- pmx_plot_npde_pred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })
-
 
   test_that("pmx_plot_npde_pred: params: ctr, ylim; result: identical structure", {
     p <- pmx_plot_npde_pred(ctr) + ylim(-5, 5)
@@ -211,7 +167,6 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_abs_iwres_time: params: controller result: gg", {
-    ctr <- theophylline()
     expect_true(inherits(pmx_plot_abs_iwres_time(ctr = ctr), "gg"))
   })
 
@@ -219,14 +174,9 @@ if (helper_skip()) {
     expect_error(pmx_plot_abs_iwres_ipred())
   })
 
-  test_that(
-    "pmx_plot_abs_iwres_ipred: params: not controller result: error",
-    {
-      ctr <- theophylline() %>% get_data("eta")
-      expect_error(pmx_plot_abs_iwres_ipred(ctr = ctr))
-    }
-  )
-
+  test_that("pmx_plot_abs_iwres_ipred: params: not controller result: error", {
+    expect_error(pmx_plot_abs_iwres_ipred(ctr = get_data(ctr, "eta")))
+  })
 
   test_that("pmx_plot_abs_iwres_ipred: params: ctr; result: list", {
     p <- pmx_plot_abs_iwres_ipred(ctr)
@@ -239,20 +189,9 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_abs_iwres_ipred: params: ctr_mlx; result: identical structure", {
-    mlxpath <- file.path(
-      system.file(package = "ggPMX"),
-      "testdata",
-      "1_popPK_model",
-      "project.mlxtran"
-    )
-    suppressWarnings({
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
-    })
-
     p <- pmx_plot_abs_iwres_ipred(ctr_mlx)
     expect_identical(p$scales$scales, list())
   })
-
 
   test_that("pmx_plot_abs_iwres_ipred: params: ctr, ylim; result: identical structure", {
     p <- pmx_plot_abs_iwres_ipred(ctr) + ylim(-5, 5)
@@ -261,7 +200,6 @@ if (helper_skip()) {
       c(-5, 5)
     )
   })
-
 
   #------------------- pmx_plot_abs_iwres_ipred end ----------------------------
 
@@ -274,13 +212,9 @@ if (helper_skip()) {
     expect_error(pmx_plot_iwres_ipred())
   })
 
-  test_that(
-    "pmx_plot_iwres_ipred: params: not controller result: error",
-    {
-      ctr <- theophylline() %>% get_data("eta")
-      expect_error(pmx_plot_iwres_ipred(ctr = ctr))
-    }
-  )
+  test_that("pmx_plot_iwres_ipred: params: not controller result: error", {
+    expect_error(pmx_plot_iwres_ipred(ctr = get_data(ctr, "eta")))
+  })
 
   test_that("pmx_plot_iwres_ipred: params: ctr; result: list", {
     p <- pmx_plot_iwres_ipred(ctr)
@@ -296,23 +230,12 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_iwres_ipred: params: ctr_mlx; result: identical structure", {
-    mlxpath <- file.path(
-      system.file(package = "ggPMX"),
-      "testdata",
-      "1_popPK_model",
-      "project.mlxtran"
-    )
-    suppressWarnings({
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
-    })
-
     p <- pmx_plot_iwres_ipred(ctr_mlx)
     expect_identical(
       p$scales$scales[[1]]$limits,
       c(-3.7749, 3.7749)
     )
   })
-
 
   test_that("pmx_plot_iwres_ipred: params: ctr, ylim; result: identical structure", {
     p <- pmx_plot_iwres_ipred(ctr) + ylim(-5, 5)
@@ -321,7 +244,6 @@ if (helper_skip()) {
       c(-5, 5)
     )
   })
-
 
   #------------------- pmx_plot_iwres_ipred end --------------------------------
 
@@ -342,20 +264,9 @@ if (helper_skip()) {
   })
 
   test_that("pmx_plot_dv_ipred: params: ctr_mlx; result: identical scales inherits", {
-    mlxpath <- file.path(
-      system.file(package = "ggPMX"),
-      "testdata",
-      "1_popPK_model",
-      "project.mlxtran"
-    )
-    suppressWarnings({
-      ctr_mlx <- pmx_mlxtran(mlxpath, config = "standing")
-    })
-
     p <- pmx_plot_dv_ipred(ctr_mlx)
     expect_true(inherits(p$scales$scales, "list"))
   })
-
 
   test_that("pmx_plot_dv_ipred: params: ctr, ylim; result: identical structure", {
     p <- pmx_plot_dv_ipred(ctr) + ylim(-5, 5)
@@ -364,7 +275,6 @@ if (helper_skip()) {
       c(-5, 5)
     )
   })
-
 
   #------------------- pmx_plot_dv_ipred end ------------------------------------
 }

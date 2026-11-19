@@ -27,6 +27,7 @@
 ^CRAN-SUBMISSION$
 ^inst/testdata/extdata/for_testing$
 ^tests/testthat/_snaps$
+^tests/testthat/Rplots\.pdf$
 ^tests/testthat/censoring1_project.zip$
 ^vignettes/articles$
 ^_pkgdown\.yml$

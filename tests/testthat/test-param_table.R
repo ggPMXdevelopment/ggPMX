@@ -1,17 +1,14 @@
 if (helper_skip()) {
-
   context("Test param_table() with theophylline controller")
   ctr <- theophylline()
 
   test_that("can make param_table()", {
-    # Creating "pmxClass" controllers:
-    ctr <- theophylline()
-
-    nonmem_dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
-    ctr_nm <- pmx_nm(directory = nonmem_dir, runno = "001")
-
     ctr_nm <- pmx_nm(
-      directory = file.path(system.file(package = "ggPMX"), "testdata", "extdata"),
+      directory = file.path(
+        system.file(package = "ggPMX"),
+        "testdata",
+        "extdata"
+      ),
       runno = "001"
     )
 
@@ -22,7 +19,8 @@ if (helper_skip()) {
 
     # Check headers
     expect_true(
-      "|Parameter                                        |Value  |RSE   |Shrinkage |" %in% trimws(p_ctr)
+      "|Parameter                                        |Value  |RSE   |Shrinkage |" %in%
+        trimws(p_ctr)
     )
 
     expect_true(
@@ -31,12 +29,13 @@ if (helper_skip()) {
 
     # check a random row (here 5) of param_table
     expect_true(
-      "|Cl                                               |0.31   |8%    |          |" %in% trimws(p_ctr),
-      )
+      "|Cl                                               |0.31   |8%    |          |" %in%
+        trimws(p_ctr),
+    )
 
     expect_true(
       "|THETA1     |26     |3%     |              |" %in% trimws(p_ctr_nm),
-      )
+    )
 
     # Check class:
     expect_s3_class(p_ctr, "knitr_kable")
@@ -48,7 +47,6 @@ if (helper_skip()) {
     expect_length(p_ctr_sci, 23L)
 
     # Check scientific notation:
-    p_ctr_sci <- param_table(ctr, digits = 2, scientific = TRUE)
     expect_true(any(grepl("\\de\\+\\d", p_ctr_sci)))
     expect_true(any(grepl("\\de\\-\\d", p_ctr_sci)))
   })

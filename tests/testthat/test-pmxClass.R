@@ -1,5 +1,4 @@
 if (helper_skip()) {
-
   context("Test pmxClass")
   pmxClassHelpers <- test_pmxClass_helpers()
 
@@ -424,7 +423,8 @@ if (helper_skip()) {
 
   test_that("pmx_mlx: params; result: identical inherits", {
     theophylline <- file.path(
-      system.file(package = "ggPMX"), "testdata",
+      system.file(package = "ggPMX"),
+      "testdata",
       "theophylline"
     )
     WORK_DIR <- file.path(theophylline, "Monolix")
@@ -463,15 +463,15 @@ if (helper_skip()) {
 
   test_that("pmx_settings are applied to the plot", {
     my_settings <- pmx_settings(
-      effects=list(
-        levels=c("Cl","ka","V"),
-        labels=c("Clearance", "Absorption_rate", "Volume")
+      effects = list(
+        levels = c("Cl", "ka", "V"),
+        labels = c("Clearance", "Absorption_rate", "Volume")
       ),
-      covariates=pmx_cov(values=list("SEX"), labels=list("Sex"))
+      covariates = pmx_cov(values = list("SEX"), labels = list("Sex"))
     )
 
     theophylline <- file.path(
-      system.file(package="ggPMX"),
+      system.file(package = "ggPMX"),
       "testdata",
       "theophylline"
     )
@@ -480,14 +480,15 @@ if (helper_skip()) {
     input_file <- file.path(theophylline, "data_pk.csv")
 
     ctr <- pmx_mlx(
-      directory=WORK_DIR,
-      input=input_file,
-      dv="Y",
-      dvid="DVID",
-      conts=c("WT0", "AGE0"),
-      settings=my_settings,
-      cats=c("SEX"),
-      config="standing", strats=c("STUD")
+      directory = WORK_DIR,
+      input = input_file,
+      dv = "Y",
+      dvid = "DVID",
+      conts = c("WT0", "AGE0"),
+      settings = my_settings,
+      cats = c("SEX"),
+      config = "standing",
+      strats = c("STUD")
     )
 
     p <- ctr %>% pmx_plot_eta_cats()
@@ -497,7 +498,6 @@ if (helper_skip()) {
       c("Clearance", "Absorption_rate", "Volume")
     )
   })
-
 
   #------------------- formula_to_text - end -------------------------------------
 
@@ -572,7 +572,15 @@ if (helper_skip()) {
 
   test_that("pmx_bloq: params: cens, limit; result: identical names ", {
     bloq <- pmx_bloq(cens = "BLOQ_name", limit = "LIMIT_name")
-    blNames <- c("cens", "limit", "show", "colour", "size", "linewidth", "alpha")
+    blNames <- c(
+      "cens",
+      "limit",
+      "show",
+      "colour",
+      "size",
+      "linewidth",
+      "alpha"
+    )
     expect_identical(names(bloq), blNames)
   })
 
@@ -642,14 +650,18 @@ if (helper_skip()) {
 
   test_that("get_plot: params: ctr, nplot, which_pages  result: error nplot is not a character", {
     ctr <- pmxClassHelpers$ctr
-    expect_error(get_plot(ctr, nplot = list("individual", "eta_hist"), which_pages = 1))
+    expect_error(get_plot(
+      ctr,
+      nplot = list("individual", "eta_hist"),
+      which_pages = 1
+    ))
   })
 
   test_that("get_plot: params: ctr, nplot, which_pages  result: error which_pages
           is not an integer or 'all' or 1L", {
-            ctr <- pmxClassHelpers$ctr
-            expect_error(get_plot(ctr, nplot = "individual", which_pages = "one"))
-          })
+    ctr <- pmxClassHelpers$ctr
+    expect_error(get_plot(ctr, nplot = "individual", which_pages = "one"))
+  })
 
   test_that("get_plot: params: ctr, nplot, which_pages  result: error nplot is not valid plot name", {
     ctr <- pmxClassHelpers$ctr
@@ -758,17 +770,24 @@ if (helper_skip()) {
 
   test_that("set_data: params: ctr, eta result: identical names, inherits", {
     ctr <- theophylline()
-    sd <- set_data(ctr, eta = get_data(ctr, "eta")[, EFFECT := factor(
-      EFFECT,
-      levels = c("ka", "V", "Cl"),
-      labels = c("Concentration", "Volume", "Clearance")
-    )])
+    sd <- set_data(
+      ctr,
+      eta = get_data(ctr, "eta")[,
+        EFFECT := factor(
+          EFFECT,
+          levels = c("ka", "V", "Cl"),
+          labels = c("Concentration", "Volume", "Clearance")
+        )
+      ]
+    )
     expect_identical(names(sd), "eta")
     expect_true(inherits(sd, "list"))
     expect_true(inherits(sd$eta, c("data.table", "data.frame")))
   })
 
   #------------------- set_data - end --------------------------------------------
+
+  getter_ctr <- theophylline()
 
   #------------------- get_cats - start ------------------------------------------
 
@@ -782,13 +801,13 @@ if (helper_skip()) {
   })
 
   test_that("get_cats: params: ctr result: identical inherits", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gcats <- get_cats(ctr)
     expect_true(inherits(gcats, "character"))
   })
 
   test_that("Can get cats: params: ctr", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gcats <- get_cats(ctr)
     expect_identical(gcats, "SEX")
   })
@@ -805,13 +824,13 @@ if (helper_skip()) {
   })
 
   test_that("get_strats: params: ctr result: identical inherits", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gstrats <- get_strats(ctr)
     expect_true(inherits(gstrats, "character"))
   })
 
   test_that("Can get strats: params: ctr ", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gstrats <- get_strats(ctr)
     expect_identical(gstrats, "STUD")
   })
@@ -828,13 +847,13 @@ if (helper_skip()) {
   })
 
   test_that("get_covariates: params: ctr result: identical inherits", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gcov <- get_covariates(ctr)
     expect_true(inherits(gcov, "character"))
   })
 
   test_that("Can get covariates: params: ctr", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gcov <- get_covariates(ctr)
     expect_identical(gcov, c("SEX", "WT0", "AGE0"))
   })
@@ -852,13 +871,13 @@ if (helper_skip()) {
   })
 
   test_that("get_conts: params: ctr result: identical inherits", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gconst <- get_conts(ctr)
     expect_true(inherits(gconst, "character"))
   })
 
   test_that("Can get conts: params: ctr", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     gconst <- get_conts(ctr)
     expect_identical(gconst, c("WT0", "AGE0"))
   })
@@ -876,13 +895,13 @@ if (helper_skip()) {
   })
 
   test_that("get_occ: params: ctr result: identical inherits", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     g_occ <- get_occ(ctr)
     expect_true(inherits(g_occ, "character"))
   })
 
   test_that("Can get occ: params: ctr", {
-    ctr <- theophylline()
+    ctr <- getter_ctr
     g_occ <- get_occ(ctr)
     expect_identical(g_occ, "")
   })
@@ -891,7 +910,8 @@ if (helper_skip()) {
   #------------------- pmx_print - start -----------------------------------------
   ctr <- pmxClassHelpers$ctr
   theophylline <- file.path(
-    system.file(package = "ggPMX"), "testdata",
+    system.file(package = "ggPMX"),
+    "testdata",
     "theophylline"
   )
   private <- list(
@@ -932,44 +952,45 @@ if (helper_skip()) {
     expect_true(inherits(pmx_pr, "pmxConfig"))
   })
 
-
   test_that("pmx_shrink: params NULL result: list, pmxShrinkClass", {
     expect_true(inherits(pmx_shrink(), c("list", "pmxShrinkClass")))
   })
 
-
-  test_that(
-    "pmx_shrink: params: fun, size, color, vjust, hjust
+  test_that("pmx_shrink: params: fun, size, color, vjust, hjust
   result: list, pmxShrinkClass", {
     expect_true(
       inherits(
-        pmx_shrink(fun="sd", size=1, color="red", vjust=1, hjust=1),
+        pmx_shrink(fun = "sd", size = 1, color = "red", vjust = 1, hjust = 1),
         c("list", "pmxShrinkClass")
       )
-    )}
-  )
-
+    )
+  })
 
   test_that("pmx_shrink: params result: elements in the list", {
     sh_names <- c("fun", "size", "color", "vjust", "hjust")
     expect_true(all(sh_names %in% names(pmx_shrink())))
   })
 
-
   test_that("check_shrink: shrink_list result: logical ", {
     expect_true(
       inherits(
-        check_shrink(list(fun="sd", size=1, color="red", vjust=1, hjust=1)),
+        check_shrink(list(
+          fun = "sd",
+          size = 1,
+          color = "red",
+          vjust = 1,
+          hjust = 1
+        )),
         "logical"
       )
     )
   })
 
-
   test_that("check_shrink: shrink_list result: character ", {
     expect_true(
       inherits(
-        check_shrink(list(fun="sd", size=1, color="red")), "character"
+        check_shrink(list(fun = "sd", size = 1, color = "red")),
+        "character"
       )
     )
   })
@@ -1004,18 +1025,49 @@ if (helper_skip()) {
     expect_error(pmx_copy(ctr))
   })
 
-
   test_that("pmx_copy: params: ctr result: Creates a deep copy of the controller", {
     ctr <- pmxClassHelpers$ctr
     pmxNames <- c(
-      "warnings", "update_plot", "time", "strats", "sim_blq",
-      "sim", "settings", "set_config", "save_dir", "report_queue",
-      "report_n", "remove_plot", "re", "print", "post_load",
-      "plots", "plot_file_name", "occ", "input_file", "input",
-      "initialize", "id", "has_re", "get_plot", "get_config",
-      "footnote", "enqueue_plot", "endpoint", "dvid", "dv",
-      "dequeue_plot", "data", "conts", "config", "clone",
-      "cats", "bloq", "add_plot", "abbrev", ".__enclos_env__"
+      "warnings",
+      "update_plot",
+      "time",
+      "strats",
+      "sim_blq",
+      "sim",
+      "settings",
+      "set_config",
+      "save_dir",
+      "report_queue",
+      "report_n",
+      "remove_plot",
+      "re",
+      "print",
+      "post_load",
+      "plots",
+      "plot_file_name",
+      "occ",
+      "input_file",
+      "input",
+      "initialize",
+      "id",
+      "has_re",
+      "get_plot",
+      "get_config",
+      "footnote",
+      "enqueue_plot",
+      "endpoint",
+      "dvid",
+      "dv",
+      "dequeue_plot",
+      "data",
+      "conts",
+      "config",
+      "clone",
+      "cats",
+      "bloq",
+      "add_plot",
+      "abbrev",
+      ".__enclos_env__"
     )
     p_copy <- pmx_copy(ctr, is.draft = FALSE)
     expect_identical(names(p_copy), pmxNames)

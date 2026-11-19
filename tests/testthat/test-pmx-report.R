@@ -1,6 +1,5 @@
 if (helper_skip()) {
   withr::with_tempdir({
-
     library(rmarkdown)
     library(purrr)
 
@@ -8,13 +7,23 @@ if (helper_skip()) {
     ctr <- theophylline()
     tmp_dir <- tempdir(check = TRUE)
     ctr[['save_dir']] <- tmp_dir
-    template_path <- system.file("rmarkdown", "templates", "standing", package = "ggPMX")
+    template_path <- system.file(
+      "rmarkdown",
+      "templates",
+      "standing",
+      package = "ggPMX"
+    )
 
     # ---- pmx_fig_process tests ----
     context("Test pmx_fig_process function")
 
     test_that("pmx_fig_process: returns character and correct old_name", {
-      out <- pmx_fig_process(ctr, old_name = "gg", footnote = TRUE, out_ = tmp_dir)
+      out <- pmx_fig_process(
+        ctr,
+        old_name = "gg",
+        footnote = TRUE,
+        out_ = tmp_dir
+      )
       expect_true(inherits(out, "character"))
       expect_identical(out, "gg")
     })
@@ -31,7 +40,8 @@ if (helper_skip()) {
     })
 
     test_that("pmx_draft: error if template does not exist", {
-      expect_error(pmx_draft(ctr,
+      expect_error(pmx_draft(
+        ctr,
         name = "dr_Report_ggPMX",
         template = system.file("rm", package = "ggPMX"),
         edit = FALSE
@@ -39,7 +49,8 @@ if (helper_skip()) {
     })
 
     test_that("pmx_draft: returns character, creates and removes file", {
-      draft <- pmx_draft(ctr,
+      draft <- pmx_draft(
+        ctr,
         name = "dr_Report_ggPMX",
         template = template_path,
         edit = FALSE
@@ -79,13 +90,14 @@ if (helper_skip()) {
       skip_on_cran()
       work_dir <- file.path(tmp_dir, "report_plot")
       dir.create(work_dir, showWarnings = FALSE)
-      ctr %>% pmx_report(
-        name = "Report_ggPMX",
-        save_dir = work_dir,
-        template = template_path,
-        output = "all",
-        format = "word"
-      )
+      ctr %>%
+        pmx_report(
+          name = "Report_ggPMX",
+          save_dir = work_dir,
+          template = template_path,
+          output = "all",
+          format = "word"
+        )
       expect_true(file.exists(file.path(work_dir, "Report_ggPMX.docx")))
       remove_reports(output = "plots", work_dir)
       expect_false(file.exists(file.path(work_dir, "Report_ggPMX.docx")))
@@ -96,20 +108,26 @@ if (helper_skip()) {
 
     test_that("pmx_report: error on invalid save_dir", {
       skip_on_cran()
-      expect_error(ctr %>% pmx_report(
-        name = "Report_ggPMX",
-        save_dir = NULL,
-        template = template_path,
-        output = "report",
-        format = "html"
-      ))
-      expect_error(ctr %>% pmx_report(
-        name = "Report_ggPMX",
-        save_dir = file.path(tmp_dir, "nonexistent_dir"),
-        template = template_path,
-        output = "report",
-        format = "html"
-      ))
+      expect_error(
+        ctr %>%
+          pmx_report(
+            name = "Report_ggPMX",
+            save_dir = NULL,
+            template = template_path,
+            output = "report",
+            format = "html"
+          )
+      )
+      expect_error(
+        ctr %>%
+          pmx_report(
+            name = "Report_ggPMX",
+            save_dir = file.path(tmp_dir, "nonexistent_dir"),
+            template = template_path,
+            output = "report",
+            format = "html"
+          )
+      )
     })
 
     # ---- Single multi-output test per mode ----
@@ -120,35 +138,38 @@ if (helper_skip()) {
       on.exit(unlink(work_dir, recursive = TRUE), add = TRUE)
 
       # Only run once per output type, one format per output for speed!
-      ctr %>% pmx_report(
-        name = "Report_ggPMX",
-        save_dir = work_dir,
-        template = template_path,
-        output = "all",
-        format = "html"
-      )
+      ctr %>%
+        pmx_report(
+          name = "Report_ggPMX",
+          save_dir = work_dir,
+          template = template_path,
+          output = "all",
+          format = "html"
+        )
       expect_true(any(grepl("Report_ggPMX", list.files(work_dir))))
       expect_true(any(grepl("html", list.files(work_dir))))
       expect_true(file.exists(file.path(work_dir, "ggpmx_GOF")))
 
       unlink(list.files(work_dir, full.names = TRUE), recursive = TRUE)
-      ctr %>% pmx_report(
-        name = "Report_ggPMX",
-        save_dir = work_dir,
-        template = template_path,
-        output = "plots",
-        format = "html"
-      )
+      ctr %>%
+        pmx_report(
+          name = "Report_ggPMX",
+          save_dir = work_dir,
+          template = template_path,
+          output = "plots",
+          format = "html"
+        )
       expect_true(file.exists(file.path(work_dir, "ggpmx_GOF")))
 
       unlink(list.files(work_dir, full.names = TRUE), recursive = TRUE)
-      ctr %>% pmx_report(
-        name = "Report_ggPMX",
-        save_dir = work_dir,
-        template = template_path,
-        output = "report",
-        format = "html"
-      )
+      ctr %>%
+        pmx_report(
+          name = "Report_ggPMX",
+          save_dir = work_dir,
+          template = template_path,
+          output = "report",
+          format = "html"
+        )
       expect_true(any(grepl("Report_ggPMX", list.files(work_dir))))
     })
 
@@ -172,15 +193,37 @@ if (helper_skip()) {
     # ---- Error cases for illegal arguments ----
     test_that("pmx_report: illegal arguments throw errors", {
       skip_on_cran()
-      expect_error(pmx_report(contr = list(), name = "Report_ggPMX", save_dir = tmp_dir, format = "html", output = "all"))
-      expect_error(pmx_report(contr = list(), name = c("a", "b"), save_dir = tmp_dir, output = "all", format = "html"))
-      expect_error(pmx_report(contr = list(), name = "a", save_dir = tmp_dir, output = "all", format = "html", template = 1L))
+      expect_error(pmx_report(
+        contr = list(),
+        name = "Report_ggPMX",
+        save_dir = tmp_dir,
+        format = "html",
+        output = "all"
+      ))
+      expect_error(pmx_report(
+        contr = list(),
+        name = c("a", "b"),
+        save_dir = tmp_dir,
+        output = "all",
+        format = "html"
+      ))
+      expect_error(pmx_report(
+        contr = list(),
+        name = "a",
+        save_dir = tmp_dir,
+        output = "all",
+        format = "html",
+        template = 1L
+      ))
     })
 
     # ---- nlmixr controller test ----
     context("Test pmx_nlmixr controller")
 
-    if (requireNamespace("nlmixr2est", quietly = TRUE)) {
+    if (
+      .Platform$OS.type != "windows" &&
+        requireNamespace("nlmixr2est", quietly = TRUE)
+    ) {
       skip_on_os("windows")
       skip_on_cran()
       one.compartment <- function() {
@@ -203,19 +246,28 @@ if (helper_skip()) {
           cp ~ add(add.sd)
         })
       }
-      fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem", control = list(print = 0))
+      fit <- nlmixr2est::nlmixr(
+        one.compartment,
+        nlmixr2data::theo_sd,
+        "saem",
+        control = list(print = 0)
+      )
       nlmixr_ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
       nlmixr_ctr[['save_dir']] <- tmp_dir
       work_dir <- file.path(tmp_dir, "pmx_nlmixr_report")
       dir.create(work_dir)
       test_that("pmx_report: works with nlmixr controller", {
-        expect_error(nlmixr_ctr %>% pmx_report(
-          name = "Report_ggPMX",
-          save_dir = work_dir,
-          template = template_path,
-          output = "all",
-          format = "html"
-        ), NA)
+        expect_error(
+          nlmixr_ctr %>%
+            pmx_report(
+              name = "Report_ggPMX",
+              save_dir = work_dir,
+              template = template_path,
+              output = "all",
+              format = "html"
+            ),
+          NA
+        )
         unlink(work_dir, recursive = TRUE)
       })
     }

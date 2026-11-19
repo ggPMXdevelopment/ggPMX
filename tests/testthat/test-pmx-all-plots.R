@@ -1,5 +1,4 @@
 if (helper_skip()) {
-
   context("Test all plots")
   pmxClassHelpers <- test_pmxClass_helpers()
 
@@ -38,11 +37,22 @@ if (helper_skip()) {
   })
 
   test_that("We can call all pmx_plot_xx with title with success", {
-    ctr <- theophylline(settings=pmx_settings(use.titles = TRUE))
+    ctr <- theophylline(settings = pmx_settings(use.titles = TRUE))
     pmx_plots <- c(
-      "abs_iwres_ipred", "iwres_ipred", "iwres_time", "iwres_dens", "vpc",
-      "npde_time", "npde_pred", "dv_pred", "dv_ipred", "individual", "eta_hist",
-      "eta_box", "eta_cats", "eta_conts"
+      "abs_iwres_ipred",
+      "iwres_ipred",
+      "iwres_time",
+      "iwres_dens",
+      "vpc",
+      "npde_time",
+      "npde_pred",
+      "dv_pred",
+      "dv_ipred",
+      "individual",
+      "eta_hist",
+      "eta_box",
+      "eta_cats",
+      "eta_conts"
     )
 
     pmx_function_plots <- sprintf("pmx_plot_%s", pmx_plots)
@@ -71,7 +81,11 @@ if (helper_skip()) {
       }
     )
 
-    expect_true(all(vapply(res, function(x) x[["labels"]][["title"]] == "", TRUE)))
+    expect_true(all(vapply(
+      res,
+      function(x) x[["labels"]][["title"]] == "",
+      TRUE
+    )))
     p <- ctr %>% pmx_plot_eta_matrix(is.title = TRUE)
     expect_true(p[["title"]] != "")
   })
@@ -79,10 +93,24 @@ if (helper_skip()) {
   test_that("We can call all pmx_plot_xx without title with success", {
     ctr <- theophylline()
     pmx_plots <- c(
-      "abs_iwres_ipred", "iwres_ipred", "iwres_time", "iwres_dens",
-      "iwres_qq", "npde_time", "npde_pred", "vpc", "npde_qq", "dv_pred",
-      "dv_ipred", "individual", "eta_hist", "eta_box", "eta_cats", "eta_conts",
-      "eta_qq", "saem_convergence"
+      "abs_iwres_ipred",
+      "iwres_ipred",
+      "iwres_time",
+      "iwres_dens",
+      "iwres_qq",
+      "npde_time",
+      "npde_pred",
+      "vpc",
+      "npde_qq",
+      "dv_pred",
+      "dv_ipred",
+      "individual",
+      "eta_hist",
+      "eta_box",
+      "eta_cats",
+      "eta_conts",
+      "eta_qq",
+      "saem_convergence"
     )
 
     pmx_function_plots <- sprintf("pmx_plot_%s", pmx_plots)
@@ -97,16 +125,22 @@ if (helper_skip()) {
       }
     )
 
-    expect_true(all(vapply(res, function(x) x[["labels"]][["title"]] == "", TRUE)))
+    expect_true(all(vapply(
+      res,
+      function(x) x[["labels"]][["title"]] == "",
+      TRUE
+    )))
     p <- ctr %>% pmx_plot_eta_matrix(is.title = FALSE)
     expect_true(p[["title"]] == "")
   })
 
-
   context(" Test pmx_plot_generic function")
 
   #---------------------- pmx_plot_generic with nlmixr controller start ---------------------------------
-  if (requireNamespace("nlmixr2est", quietly = TRUE)) {
+  if (
+    .Platform$OS.type != "windows" &&
+      requireNamespace("nlmixr2est", quietly = TRUE)
+  ) {
     test_that("pmx_plot_generic with nlmixr controller: params: ctr, pname   result: identical inherits, names", {
       skip_on_os("windows")
       one.compartment <- function() {
@@ -129,17 +163,18 @@ if (helper_skip()) {
           cp ~ add(add.sd)
         })
       }
-      fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
-                             control = list(print = 0)
-                             )
+      fit <- nlmixr2est::nlmixr(
+        one.compartment,
+        nlmixr2data::theo_sd,
+        "saem",
+        control = list(print = 0)
+      )
       ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
       p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
 
       expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
       expect_true(is_ggplot(p))
-
     })
-
   }
 
   #---------------------- pmx_plot_generic with nlmixr controller end ---------------------------------
@@ -173,7 +208,6 @@ if (helper_skip()) {
     expect_true(inherits(p10, "ggmatrix"))
     expect_true(is_ggplot(p11))
     expect_true(is_ggplot(p12))
-
   })
 
   test_that("pmx_plot_generic: params: NULL result: error missing arguments", {
@@ -182,15 +216,13 @@ if (helper_skip()) {
 
   test_that("pmx_plot_generic: params: ctr, pname result: NULL (p name is not
           in ctr %>% plot_names())", {
-            expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
-          })
+    expect_true(is.null(pmx_plot_generic(ctr, pname = "abs")))
+  })
 
   test_that("pmx_plot_generic: params: ctr, pname result: identical names", {
     p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
     expect_true(is_ggplot(p))
-
   })
-
 
   test_that("pmx_plot_generic: params: ctr, pname result: identical structure", {
     p <- pmx_plot_generic(ctr, pname = "abs_iwres_ipred")
@@ -243,24 +275,20 @@ if (helper_skip()) {
     expect_error(pmx_plot_cats())
   })
 
-
   test_that("pmx_register_plot: params: ctr, pname  result: identical inherits", {
     p <- ctr %>% pmx_plot_cats("npde_time")
     expect_true(inherits(p, "list"))
   })
-
 
   test_that("pmx_register_plot: params: ctr, pname  result: identical inherits of the first ggplot", {
     p <- ctr %>% pmx_plot_cats("npde_time")
     expect_true(is_ggplot(p[[1]]))
   })
 
-
   test_that("pmx_register_plot: params: ctr, pname  result: identical ptype", {
     p <- ctr %>% pmx_plot_cats("npde_time")
     expect_identical(p[[1]]$plot_env$ptype, "SCATTER")
   })
-
 
   test_that("pmx_register_plot: params: ctr, pname  result: identical names", {
     p <- ctr %>% pmx_plot_cats("npde_time")

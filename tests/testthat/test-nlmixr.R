@@ -1,4 +1,8 @@
-if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
+if (
+  helper_skip() &&
+    .Platform$OS.type != "windows" &&
+    requireNamespace("nlmixr2est", quietly = TRUE)
+) {
   test_that("nlmixr test", {
     skip_on_cran()
     skip_on_os("windows") #fairly slow on Windows probably due to nlmixr compilation time
@@ -6,7 +10,20 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     # Data' purpose illustrates the error and my data set
     df <- dplyr::tibble(
       ID = c(rep(1, 6), rep(2, 6)),
-      TIME = c(0.00, 12.11, 18.41, 23.89, 36.00, 43.51, 0.00, 12.00, 20.00, 24.00, 36.80, 45.00),
+      TIME = c(
+        0.00,
+        12.11,
+        18.41,
+        23.89,
+        36.00,
+        43.51,
+        0.00,
+        12.00,
+        20.00,
+        24.00,
+        36.80,
+        45.00
+      ),
       AMT = c(1000, 1000, NA, 1000, 1000, NA, 1000, 2000, NA, 1000, 1000, NA),
       DUR = c(2.5, 2.5, NA, 2.5, 2.5, NA, 2.5, 2.5, NA, 2.5, 2.5, NA),
       DV = c(NA, NA, 3.0, NA, NA, 9.6, NA, NA, 7.0, NA, NA, 2.8),
@@ -38,7 +55,6 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     # fit <- nlmixr::nlmixr(fun, df, list(print=0), est="posthoc")
   })
 
-
   test_that("warfarin example", {
     skip_on_cran()
     skip_on_os("windows")
@@ -50,7 +66,6 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
         SEX = ifelse(sex == "male", 1, 0),
         SPARSE = ifelse(id %in% c(2, 10, 17:33), 1, 0)
       )
-
 
     One.comp.transit <- function() {
       ini({
@@ -80,22 +95,32 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     }
 
     fitOne.comp.transit_S <-
-      nlmixr2est::nlmixr(One.comp.transit,
-                      PKdata,
-                      est = "saem",
-                      nlmixr2est::saemControl(print = 100),
-                      nlmixr2est::tableControl(cwres = TRUE, npde = TRUE)
-                      )
+      nlmixr2est::nlmixr(
+        One.comp.transit,
+        PKdata,
+        est = "saem",
+        nlmixr2est::saemControl(print = 100),
+        nlmixr2est::tableControl(cwres = TRUE, npde = TRUE)
+      )
 
-    expect_error(pmx_nlmixr(fitOne.comp.transit_S,
-                            conts = c("wt", "age"),
-                            cats = c("SEX", "SPARSE"), vpc = FALSE, settings = pmx_settings(is.draft = FALSE)
-                            ), NA)
+    expect_error(
+      pmx_nlmixr(
+        fitOne.comp.transit_S,
+        conts = c("wt", "age"),
+        cats = c("SEX", "SPARSE"),
+        vpc = FALSE,
+        settings = pmx_settings(is.draft = FALSE)
+      ),
+      NA
+    )
 
-    ctl <- pmx_nlmixr(fitOne.comp.transit_S,
-                      conts = c("wt", "age"),
-                      cats = c("SEX", "SPARSE"), vpc = FALSE, settings = pmx_settings(is.draft = FALSE)
-                      )
+    ctl <- pmx_nlmixr(
+      fitOne.comp.transit_S,
+      conts = c("wt", "age"),
+      cats = c("SEX", "SPARSE"),
+      vpc = FALSE,
+      settings = pmx_settings(is.draft = FALSE)
+    )
 
     expect_error(ctl %>% pmx_plot_eta_conts(), NA)
 
@@ -111,12 +136,10 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     ## if (file.exists("ggPMX_report.docx")) unlink("ggPMX_report.docx")
   })
 
-
-
   test_that("integrated demo", {
     skip_on_cran()
     skip_on_os("windows")
-    
+
     dat <- xgxr::case1_pkpd %>%
       dplyr::rename(DV = LIDV) %>%
       dplyr::filter(CMT %in% 1:2) %>%
@@ -160,13 +183,24 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
       })
     }
 
-    cmt2fit.logn <- nlmixr2est::nlmixr(cmt2, dat2, "saem",
-                                    control = list(print = 0),
-                                    table = nlmixr2est::tableControl(cwres = TRUE, npde = TRUE)
-                                    )
+    cmt2fit.logn <- nlmixr2est::nlmixr(
+      cmt2,
+      dat2,
+      "saem",
+      control = list(print = 0),
+      table = nlmixr2est::tableControl(cwres = TRUE, npde = TRUE)
+    )
 
-    expect_warning({
-      ctr <- pmx_nlmixr(cmt2fit.logn, conts = c("WEIGHTB"), cats = "TRTACT", vpc = TRUE)
-    }, "disabling vpc")
+    expect_warning(
+      {
+        ctr <- pmx_nlmixr(
+          cmt2fit.logn,
+          conts = c("WEIGHTB"),
+          cats = "TRTACT",
+          vpc = TRUE
+        )
+      },
+      "disabling vpc"
+    )
   })
 }

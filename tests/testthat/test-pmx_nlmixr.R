@@ -1,7 +1,11 @@
-if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
+if (
+  helper_skip() &&
+    .Platform$OS.type != "windows" &&
+    requireNamespace("nlmixr2est", quietly = TRUE)
+) {
   skip_on_os("windows") #fairly slow on Windows probably due to nlmixr compilation time
   context("Test pmx_nlmixr controller")
-  
+
   one.compartment <- function() {
     ini({
       tka <- 0.45 # Log Ka
@@ -23,9 +27,12 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     })
   }
 
-  fit <- nlmixr2est::nlmixr(one.compartment, nlmixr2data::theo_sd, "saem",
-                         control = list(print = 0)
-                         )
+  fit <- nlmixr2est::nlmixr(
+    one.compartment,
+    nlmixr2data::theo_sd,
+    "saem",
+    control = list(print = 0)
+  )
 
   #------------------- pmx_nlmixr - start ---------------------------------------
   test_that("pmx_nlmixr: params: result:  equal inherits", {
@@ -42,7 +49,12 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     p9 <- ctr %>% pmx_plot_npde_time()
     p10 <- ctr %>% pmx_plot_eta_qq()
     p11 <- ctr %>% pmx_plot_vpc()
-    p12 <- ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2), type = "scatter")
+    p12 <- ctr %>%
+      pmx_plot_vpc(
+        strat.facet = "SEX",
+        facets = list(nrow = 2),
+        type = "scatter"
+      )
     p13 <- ctr %>% pmx_plot_eta_box()
     p14 <- ctr %>% pmx_plot_eta_hist()
     p15 <- ctr %>% pmx_plot_eta_matrix()
@@ -64,7 +76,6 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
     expect_true(inherits(p15, "ggmatrix"))
   })
 
-
   test_that("pmx_nlmixr: params result: elements in the list", {
     configNames <- c("sys", "plots", "omega", "finegrid", "eta")
     ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
@@ -73,11 +84,46 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
 
   test_that("pmx_nlmixr: params result: identical names", {
     pmxNames <- c(
-      ".__enclos_env__", "sim_blq", "time", "id", "bloq", "sim", "plot_file_name", "report_n",
-      "report_queue", "save_dir", "footnote", "warnings", "endpoint", "abbrev", "re", "has_re",
-      "settings", "strats", "occ", "conts", "cats", "dvid", "dv", "input_file",
-      "input", "config", "data", "clone", "post_load", "plots", "get_plot", "set_config",
-      "get_config", "remove_plot", "update_plot", "add_plot", "dequeue_plot", "enqueue_plot", "print", "initialize"
+      ".__enclos_env__",
+      "sim_blq",
+      "time",
+      "id",
+      "bloq",
+      "sim",
+      "plot_file_name",
+      "report_n",
+      "report_queue",
+      "save_dir",
+      "footnote",
+      "warnings",
+      "endpoint",
+      "abbrev",
+      "re",
+      "has_re",
+      "settings",
+      "strats",
+      "occ",
+      "conts",
+      "cats",
+      "dvid",
+      "dv",
+      "input_file",
+      "input",
+      "config",
+      "data",
+      "clone",
+      "post_load",
+      "plots",
+      "get_plot",
+      "set_config",
+      "get_config",
+      "remove_plot",
+      "update_plot",
+      "add_plot",
+      "dequeue_plot",
+      "enqueue_plot",
+      "print",
+      "initialize"
     )
     ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
     expect_equal(pmxNames, names(ctr))
@@ -85,48 +131,47 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
 
   test_that("pmx_nlmixr: params: fit, dvid, conts, cats, strats, ect.
             result:  identical value", {
-              ep <- pmx_endpoint(
-                code = "1",
-                file.code = "1"
-              )
-              ctr <- pmx_nlmixr(fit, dvid = "TIME", conts = c("cl", "v"), endpoint = ep)
-              expect_identical(ctr$endpoint$code, "1")
-              expect_identical(ctr$dvid, "TIME")
-            })
+    ep <- pmx_endpoint(
+      code = "1",
+      file.code = "1"
+    )
+    ctr <- pmx_nlmixr(fit, dvid = "TIME", conts = c("cl", "v"), endpoint = ep)
+    expect_identical(ctr$endpoint$code, "1")
+    expect_identical(ctr$dvid, "TIME")
+  })
 
   test_that("pmx_nlmixr: params: fit, dvid, conts, cats, strats, ect.
             result:  identical value", {
-              ep <- pmx_endpoint(
-                code = "1",
-                file.code = "1"
-              )
-              ctr <- pmx_nlmixr(fit, dvid = "TIME", conts = c("cl", "v"), endpoint = ep)
-              expect_identical(ctr$endpoint$code, "1")
-              expect_identical(ctr$dvid, "TIME")
-            })
+    ep <- pmx_endpoint(
+      code = "1",
+      file.code = "1"
+    )
+    ctr <- pmx_nlmixr(fit, dvid = "TIME", conts = c("cl", "v"), endpoint = ep)
+    expect_identical(ctr$endpoint$code, "1")
+    expect_identical(ctr$dvid, "TIME")
+  })
 
   test_that("pmx_nlmixr: params: fit, dvid, conts, cats, strats, ect.
             result: identical by default", {
-              ctr <- pmx_nlmixr(fit, conts = c("cl", "v"), vpc = FALSE)
+    ctr <- pmx_nlmixr(fit, conts = c("cl", "v"), vpc = FALSE)
 
-              expect_identical(ctr$config$sys, "nlmixr")
-              expect_true(inherits(ctr$config, "pmxConfig"))
-              expect_true(is.null(ctr$endpoint))
-              expect_true(is.null(ctr$sim))
-            })
+    expect_identical(ctr$config$sys, "nlmixr")
+    expect_true(inherits(ctr$config, "pmxConfig"))
+    expect_true(is.null(ctr$endpoint))
+    expect_true(is.null(ctr$sim))
+  })
 
   test_that("pmx_nlmixr: params: fit, dvid, conts, cats, strats, ect.
             result: identical conts", {
-              ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
-              expect_identical(ctr$conts, c("cl", "v"))
-            })
-
+    ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
+    expect_identical(ctr$conts, c("cl", "v"))
+  })
 
   test_that("pmx_nlmixr: params: fit, dvid, conts, cats, strats, ect.
             result:  pmxClass, R6", {
-              ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
-              expect_true(inherits(ctr, c("pmxClass", "R6")))
-            })
+    ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
+    expect_true(inherits(ctr, c("pmxClass", "R6")))
+  })
 
   test_that("pmx_nlmixr: params: NULL result:  error is_pmxclass(ctr) not TRUE", {
     ctr <- pmx_nlmixr()
@@ -177,16 +222,16 @@ if (helper_skip() && requireNamespace("nlmixr2est", quietly = TRUE)) {
 
   test_that("pmx_nlmixr: fit, dvid, endpoint = NULL(by default); result: error
           select a single endpoint", {
-            expect_error(pmx_nlmixr(fit, dvid = "TIME"))
-          })
+    expect_error(pmx_nlmixr(fit, dvid = "TIME"))
+  })
 
   test_that("pmx_nlmixr: fit, dvid, endpoint; result: error
           No observations data for endpoint 3", {
-            ep <- pmx_endpoint(
-              code = "3",
-              file.code = "1"
-            )
-            expect_error(ctr <- pmx_nlmixr(fit, dvid = "TIME", endpoint = ep))
-          })
+    ep <- pmx_endpoint(
+      code = "3",
+      file.code = "1"
+    )
+    expect_error(ctr <- pmx_nlmixr(fit, dvid = "TIME", endpoint = ep))
+  })
 }
 #------------------- pmx_nlmixr - end ---------------------------------------
