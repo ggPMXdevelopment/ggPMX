@@ -1,44 +1,42 @@
 if (helper_skip()) {
-
   context("Test structure of a graphic distribution object")
 
   #------------------- distrib start ------------------------------------------
   test_that("distrib: params: labels and facets etc. result:
           identical structure", {
-            labels <- list("EVID", "SEX")
-            facets <- list(nrow = 5, ncol = 5)
-            expect_identical(
-              distrib(
-                labels,
-                is.shrink = FALSE,
-                type = "hist",
-                facets = facets,
-                dname = "predictions"
-              ),
-              structure(
-                list(
-                  ptype = "DIS",
-                  strat = TRUE,
-                  dname = "predictions",
-                  aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
-                  type = "hist",
-                  is.jitter = FALSE,
-                  jitter = NULL,
-                  facets = facets,
-                  histogram = NULL,
-                  is.shrink = FALSE,
-                  shrink = NULL,
-                  gp = pmx_gpar(
-                    labels = labels,
-                    discrete = TRUE,
-                    is.smooth = FALSE
-                  )
-                ),
-                class = c("distrib", "pmx_gpar")
-              )
-            )
-          })
-
+    labels <- list("EVID", "SEX")
+    facets <- list(nrow = 5, ncol = 5)
+    expect_identical(
+      distrib(
+        labels,
+        is.shrink = FALSE,
+        type = "hist",
+        facets = facets,
+        dname = "predictions"
+      ),
+      structure(
+        list(
+          ptype = "DIS",
+          strat = TRUE,
+          dname = "predictions",
+          aess = list(x = "EFFECT", y = "VAR", z = "FUN"),
+          type = "hist",
+          is.jitter = FALSE,
+          jitter = NULL,
+          facets = facets,
+          histogram = NULL,
+          is.shrink = FALSE,
+          shrink = NULL,
+          gp = pmx_gpar(
+            labels = labels,
+            discrete = TRUE,
+            is.smooth = FALSE
+          )
+        ),
+        class = c("distrib", "pmx_gpar")
+      )
+    )
+  })
 
   test_that("distrib: params: labels and facets etc. result: distrib object", {
     labels <- list("EVID", "SEX")
@@ -116,30 +114,30 @@ if (helper_skip()) {
 
   test_that("jitter_layer: params: jitter and strat.color result:
           LayerInstance", {
-            expect_true(inherits(
-              jitter_layer(
-                jitter = list(alpha = 0.4, color = "red"),
-                strat.color = "SEX"
-              ),
-              "LayerInstance"
-            ))
-          })
+    expect_true(inherits(
+      jitter_layer(
+        jitter = list(alpha = 0.4, color = "red"),
+        strat.color = "SEX"
+      ),
+      "LayerInstance"
+    ))
+  })
 
   test_that("jitter_layer: params: strat.color equals NULL result:
           LayerInstance", {
-            expect_true(inherits(
-              jitter_layer(
-                jitter = list(alpha = 0.4, color = "red"),
-                strat.color = NULL
-              ),
-              "LayerInstance"
-            ))
-          })
+    expect_true(inherits(
+      jitter_layer(
+        jitter = list(alpha = 0.4, color = "red"),
+        strat.color = NULL
+      ),
+      "LayerInstance"
+    ))
+  })
 
   test_that("jitter_layer: params: jitter and strat.color equal NULL result:
           error", {
-            expect_error(jitter_layer(jitter = NULL, strat.color = NULL))
-          })
+    expect_error(jitter_layer(jitter = NULL, strat.color = NULL))
+  })
 
   test_that("jitter_layer: params: no result: error", {
     expect_error(jitter_layer())
@@ -147,9 +145,9 @@ if (helper_skip()) {
   #------------------- jitter_layer end ----------------------------------------
 
   #------------------- distrib.hist start --------------------------------------
+  distribution_ctr <- theophylline()
   test_that("distrib.hist: params: labels, type and etc. result: ggplot", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("eta")
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
     labels <- list("EVID", "SEX")
     x <-
       distrib(
@@ -171,8 +169,7 @@ if (helper_skip()) {
   })
 
   test_that("distrib.hist: params: x equals NULL result: error", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("eta")
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
     labels <- list("EVID", "SEX")
     x <- NULL
     expect_error(distrib.hist(
@@ -207,8 +204,7 @@ if (helper_skip()) {
   #------------------- distrib.box start --------------------------------------
 
   test_that("distrib.box: params: labels, type, etc. result: ggplot", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("eta")
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
     labels <- list("EVID", "SEX")
     x <-
       distrib(
@@ -225,8 +221,7 @@ if (helper_skip()) {
   })
 
   test_that("distrib.box: params: x equals NULL result: error", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("eta")
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
     labels <- list("EVID", "SEX")
     x <- NULL
     expect_error(distrib.box(
@@ -255,8 +250,7 @@ if (helper_skip()) {
   })
 
   test_that("distrib.box: params: strat.facet is not NULL result: gg", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("eta")
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
     labels <- list("EVID", "SEX")
     x <-
       distrib(
@@ -282,12 +276,11 @@ if (helper_skip()) {
   #------------------- shrinkage_layer start ----------------------------------
 
   test_that("shrinkage_layer: params: hist type result: LayerInstance", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("estimate")
+    dx <- data.table::copy(get_data(distribution_ctr, "estimate"))
     expect_true(inherits(
       shrinkage_layer(
         dx,
-        shrink=list(hjust=0.5, fun="var"),
+        shrink = list(hjust = 0.5, fun = "var"),
         type = "hist",
         strat.color = dx$SEX
       ),
@@ -296,8 +289,7 @@ if (helper_skip()) {
   })
 
   test_that("shrinkage_layer: params: dx contain eta data result: warning", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("eta")
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
     expect_warning(shrinkage_layer(
       dx,
       shrink = list(hjust = 0.5),
@@ -307,12 +299,11 @@ if (helper_skip()) {
   })
 
   test_that("shrinkage_layer: params: box type result: LayerInstance", {
-    ctr <- theophylline()
-    dx <- ctr %>% get_data("estimate")
+    dx <- data.table::copy(get_data(distribution_ctr, "estimate"))
     expect_true(inherits(
       shrinkage_layer(
         dx,
-        shrink=list(hjust=0.5, fun="var"),
+        shrink = list(hjust = 0.5, fun = "var"),
         type = "box",
         strat.color = dx$SEX
       ),
@@ -325,36 +316,34 @@ if (helper_skip()) {
   #------------------- plot_distribution start --------------------------------
   test_that("plot_distribution: params: dx contain eta data,
           x is distrib object result: error", {
-            ctr <- theophylline()
-            dx <- ctr %>% get_data("eta")
-            labels <- list("EVID", "SEX")
-            x <-
-              distrib(
-                labels,
-                is.shrink = FALSE,
-                type = "hist",
-                facets = list("SEX"),
-                dname = "predictions"
-              )
-            expect_error(plot_distribution(x, dx))
-          })
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
+    labels <- list("EVID", "SEX")
+    x <-
+      distrib(
+        labels,
+        is.shrink = FALSE,
+        type = "hist",
+        facets = list("SEX"),
+        dname = "predictions"
+      )
+    expect_error(plot_distribution(x, dx))
+  })
   #------------------- plot_distribution end ----------------------------------
 
   #------------------- plot_pmx.distrib start ---------------------------------
   test_that("plot_pmx.distrib: params: dx contain eta data,
           x is distrib object result: error", {
-            ctr <- theophylline()
-            dx <- ctr %>% get_data("eta")
-            labels <- list("EVID", "SEX")
-            x <-
-              distrib(
-                labels,
-                is.shrink = FALSE,
-                type = "hist",
-                facets = list("SEX"),
-                dname = "predictions"
-              )
-            expect_error(plot_pmx.distrib(x, dx))
-          })
+    dx <- data.table::copy(get_data(distribution_ctr, "eta"))
+    labels <- list("EVID", "SEX")
+    x <-
+      distrib(
+        labels,
+        is.shrink = FALSE,
+        type = "hist",
+        facets = list("SEX"),
+        dname = "predictions"
+      )
+    expect_error(plot_pmx.distrib(x, dx))
+  })
   #------------------- plot_pmx.distrib end ------------------------------------
 }
