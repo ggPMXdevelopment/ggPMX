@@ -1,4 +1,5 @@
 if (helper_skip()) {
+  skip_windows_integration()
   context("Test all plots")
   pmxClassHelpers <- test_pmxClass_helpers()
 

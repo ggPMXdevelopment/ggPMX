@@ -1,4 +1,5 @@
 if (helper_skip()) {
+  skip_windows_integration()
   context("Test config")
 
   # check return value of print(x) without writing output to console

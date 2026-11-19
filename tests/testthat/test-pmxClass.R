@@ -1,4 +1,5 @@
 if (helper_skip()) {
+  skip_windows_integration()
   context("Test pmxClass")
   pmxClassHelpers <- test_pmxClass_helpers()
 

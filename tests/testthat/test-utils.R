@@ -11,11 +11,13 @@ if (helper_skip()) {
   })
 
   test_that("pk_pd is working", {
+    skip_windows_integration()
     tmp <- capture.output(ctr <- pk_pd()) # assign ctr silently
     expect_s3_class(ctr, "pmxClass")
   })
 
   test_that("pk_pd params: code; result: identical structure", {
+    skip_windows_integration()
     tmp <- capture.output(ctr <- pk_pd(code = "4")) # assign ctr silently
     pk_pd_path <- file.path(
       system.file(package = "ggPMX"),

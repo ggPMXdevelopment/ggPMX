@@ -17,3 +17,11 @@ test_that("extended tests require explicit opt-in", {
     expect_identical(helper_run_slow_tests(), TRUE)
   }
 })
+
+test_that("Windows integrations remain active elsewhere and in extended CI", {
+  withr::local_envvar(GGPMX_RUN_SLOW_TESTS = "false")
+  expect_identical(helper_run_windows_integration("windows"), FALSE)
+  expect_identical(helper_run_windows_integration("unix"), TRUE)
+  withr::local_envvar(GGPMX_RUN_SLOW_TESTS = "true")
+  expect_identical(helper_run_windows_integration("windows"), TRUE)
+})
