@@ -145,7 +145,7 @@ if (helper_skip()) {
   #------------------- jitter_layer end ----------------------------------------
 
   #------------------- distrib.hist start --------------------------------------
-  distribution_ctr <- theophylline()
+  distribution_ctr <- test_controller()
   test_that("distrib.hist: params: labels, type and etc. result: ggplot", {
     dx <- data.table::copy(get_data(distribution_ctr, "eta"))
     labels <- list("EVID", "SEX")

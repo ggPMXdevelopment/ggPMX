@@ -1,6 +1,6 @@
 if (helper_skip()) {
   context("Test param_table() with theophylline controller")
-  ctr <- theophylline()
+  ctr <- test_controller()
 
   test_that("can make param_table()", {
     ctr_nm <- pmx_nm(

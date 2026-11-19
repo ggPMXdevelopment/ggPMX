@@ -11,7 +11,10 @@ test_that("individual draft arguments override settings without changing the con
   }
 
   for (controller_draft in c(TRUE, FALSE)) {
-    ctr <- theophylline(settings = pmx_settings(is.draft = controller_draft))
+    ctr <- test_controller(
+      "INDIVIDUAL",
+      settings = pmx_settings(is.draft = controller_draft)
+    )
     individual_plot <- function(...) {
       pmx_plot_individual(
         ctr,

@@ -261,7 +261,7 @@ if (helper_skip()) {
   #------------------- is_pmxconfig end------------------------------------------
 
   #------------------- is_pmxclass start-----------------------------------------
-  assertion_ctr <- theophylline()
+  assertion_ctr <- test_controller("ABS_IWRES_IPRED")
 
   test_that("is_pmxclass: pmxclass variable is pmxclass", {
     ctr <- assertion_ctr

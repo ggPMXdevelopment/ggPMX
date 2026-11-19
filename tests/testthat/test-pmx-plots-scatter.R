@@ -1,4 +1,5 @@
 if (helper_skip()) {
+  skip_windows_integration()
   context("Test Scatter residual plots")
   ctr <- theophylline()
   mlxpath <- file.path(
