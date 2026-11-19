@@ -182,6 +182,7 @@ if (helper_skip()) {
 
     if (requireNamespace("nlmixr2est", quietly = TRUE)) {
       skip_on_os("windows")
+      skip_on_cran()
       one.compartment <- function() {
         ini({
           tka <- 0.45 # Log Ka
@@ -208,7 +209,6 @@ if (helper_skip()) {
       work_dir <- file.path(tmp_dir, "pmx_nlmixr_report")
       dir.create(work_dir)
       test_that("pmx_report: works with nlmixr controller", {
-        skip_on_cran()
         expect_error(nlmixr_ctr %>% pmx_report(
           name = "Report_ggPMX",
           save_dir = work_dir,
