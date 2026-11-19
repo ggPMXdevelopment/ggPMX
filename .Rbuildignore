@@ -27,9 +27,11 @@
 ^CRAN-SUBMISSION$
 ^inst/testdata/extdata/for_testing$
 ^tests/testthat/_snaps$
+^tests/testthat/_problems$
 ^tests/testthat/Rplots\.pdf$
 ^tests/testthat/censoring1_project.zip$
 ^vignettes/articles$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^vignette-(chunk|stage)-timings\.csv$

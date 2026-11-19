@@ -37,6 +37,7 @@ if (helper_skip()) {
   })
 
   test_that("We can call all pmx_plot_xx with title with success", {
+    skip_slow_tests()
     ctr <- theophylline(settings = pmx_settings(use.titles = TRUE))
     pmx_plots <- c(
       "abs_iwres_ipred",
@@ -91,6 +92,7 @@ if (helper_skip()) {
   })
 
   test_that("We can call all pmx_plot_xx without title with success", {
+    skip_slow_tests()
     ctr <- theophylline()
     pmx_plots <- c(
       "abs_iwres_ipred",
@@ -134,11 +136,21 @@ if (helper_skip()) {
     expect_true(p[["title"]] == "")
   })
 
+  test_that("scatter plot titles can be enabled and disabled", {
+    ctr <- theophylline(settings = pmx_settings(use.titles = TRUE))
+    titled <- pmx_plot_dv_pred(ctr, is.title = TRUE)
+    untitled <- pmx_plot_dv_pred(ctr, is.title = FALSE)
+    expect_type(titled$labels$title, "character")
+    expect_gt(nchar(titled$labels$title), 0)
+    expect_identical(untitled$labels$title, "")
+  })
+
   context(" Test pmx_plot_generic function")
 
   #---------------------- pmx_plot_generic with nlmixr controller start ---------------------------------
   if (
-    .Platform$OS.type != "windows" &&
+    helper_run_slow_tests() &&
+      .Platform$OS.type != "windows" &&
       requireNamespace("nlmixr2est", quietly = TRUE)
   ) {
     test_that("pmx_plot_generic with nlmixr controller: params: ctr, pname   result: identical inherits, names", {
@@ -275,24 +287,20 @@ if (helper_skip()) {
     expect_error(pmx_plot_cats())
   })
 
-  test_that("pmx_register_plot: params: ctr, pname  result: identical inherits", {
-    p <- ctr %>% pmx_plot_cats("npde_time")
+  test_that("pmx_plot_cats returns categorical scatter plots", {
+    p <- pmx_plot_cats(ctr, "npde_time", print = FALSE)
     expect_true(inherits(p, "list"))
-  })
-
-  test_that("pmx_register_plot: params: ctr, pname  result: identical inherits of the first ggplot", {
-    p <- ctr %>% pmx_plot_cats("npde_time")
     expect_true(is_ggplot(p[[1]]))
-  })
-
-  test_that("pmx_register_plot: params: ctr, pname  result: identical ptype", {
-    p <- ctr %>% pmx_plot_cats("npde_time")
     expect_identical(p[[1]]$plot_env$ptype, "SCATTER")
   })
 
-  test_that("pmx_register_plot: params: ctr, pname  result: identical names", {
-    p <- ctr %>% pmx_plot_cats("npde_time")
-    expect_true(is_ggplot(p[[1]]))
+  test_that("pmx_plot_cats can print a categorical plot", {
+    expect_no_error(pmx_plot_cats(
+      ctr,
+      "npde_time",
+      cats = "SEX",
+      print = TRUE
+    ))
   })
 
   test_that("pmx_register_plot: params: ctr, pname, cats  result: NULL", {

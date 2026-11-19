@@ -15,6 +15,8 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       _R_CHECK_FORCE_SUGGESTS_: false
+      GGPMX_RUN_SLOW_TESTS: "true"
+      NOT_CRAN: "true"
 
     steps:
       - uses: actions/checkout@v4

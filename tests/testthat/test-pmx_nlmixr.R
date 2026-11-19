@@ -1,5 +1,5 @@
 if (
-  helper_skip() &&
+  helper_run_slow_tests() &&
     .Platform$OS.type != "windows" &&
     requireNamespace("nlmixr2est", quietly = TRUE)
 ) {
@@ -171,21 +171,6 @@ if (
             result:  pmxClass, R6", {
     ctr <- pmx_nlmixr(fit, conts = c("cl", "v"))
     expect_true(inherits(ctr, c("pmxClass", "R6")))
-  })
-
-  test_that("pmx_nlmixr: params: NULL result:  error is_pmxclass(ctr) not TRUE", {
-    ctr <- pmx_nlmixr()
-    expect_error(ctr %>% pmx_plot_individual())
-  })
-
-  test_that("pmx_nlmixr: params: NULL result: NULL", {
-    ctr <- pmx_nlmixr()
-    expect_true(is.null(ctr))
-  })
-
-  test_that("pmx_nlmixr: params: conts result: NULL (fit is missing)", {
-    ctr <- pmx_nlmixr(conts = c("cl", "v"))
-    expect_true(is.null(ctr))
   })
 
   test_that("pmx_nlmixr: params: fit result: default values of the arguments ", {

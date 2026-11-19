@@ -1,5 +1,5 @@
 if (
-  helper_skip() &&
+  helper_run_slow_tests() &&
     .Platform$OS.type != "windows" &&
     requireNamespace("nlmixr2est", quietly = TRUE)
 ) {

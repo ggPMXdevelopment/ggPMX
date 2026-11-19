@@ -1,5 +1,4 @@
 if (helper_skip()) {
-
   context("Test config")
 
   # check return value of print(x) without writing output to console
@@ -7,7 +6,7 @@ if (helper_skip()) {
     tmp <- capture.output(y <- print(x))
     y
   }
-  
+
   #-------------pmx_config START --------------------------------------------
   test_that("pmx_config params: inputs result: error", {
     input_dir <-
@@ -93,7 +92,6 @@ if (helper_skip()) {
     expect_identical(get_conf$sys, "mlx")
   })
 
-
   #-------------pmx_get_configs END ----------------------------------------
 
   #-------------print.configs START ----------------------------------------
@@ -113,11 +111,9 @@ if (helper_skip()) {
 
   #-------------load_config START ------------------------------------------
 
-
   test_that("load_config params: NULL result: error missing arguments", {
     expect_error(load_config())
   })
-
 
   test_that("load_config params: x, sys result: error x is not a string", {
     sys <- "mlx"
@@ -129,7 +125,6 @@ if (helper_skip()) {
     conf <- load_config_files(ifile, pfile, sys)
     expect_error(load_config(conf$name[1], sys))
   })
-
 
   test_that("can load configs", {
     conf <- pmx_get_configs()
@@ -144,7 +139,6 @@ if (helper_skip()) {
     expect_output(print(cfig), "plot_name")
   })
 
-
   test_that("return NULL if bad config name is provided", {
     expect_identical(load_config("BAD_CONFIG_NAME"), NULL)
   })
@@ -152,7 +146,8 @@ if (helper_skip()) {
 
   #-------------pmx_mlx START ------------------------------------------
   theophylline <- file.path(
-    system.file(package = "ggPMX"), "testdata",
+    system.file(package = "ggPMX"),
+    "testdata",
     "theophylline"
   )
 
@@ -161,88 +156,107 @@ if (helper_skip()) {
 
   test_that("pmx_mlx params: my_settings with cats.labels, effects and covariates;
           result: identical labels", {
+    my_settings <- pmx_settings(
+      use.labels = TRUE,
+      cats.labels = list(
+        SEX = c("0" = "Male", "1" = "Female"),
+        STUD = c("1" = "S", "2" = "D")
+      ),
+      effects = list(
+        levels = c("ka", "V", "Cl"),
+        labels = c("Absorption_rate", "Volume", "Clearance")
+      ),
+      covariates = pmx_cov(
+        values = list("WT0", "AGE0"),
+        labels = list("Weight", "Age")
+      )
+    )
 
-            my_settings <- pmx_settings(
-              use.labels = TRUE,
-              cats.labels = list(SEX = c("0" = "Male", "1" = "Female"), STUD = c("1" = "S", "2" = "D")),
-              effects = list(levels = c("ka", "V", "Cl"), labels = c("Absorption_rate", "Volume", "Clearance")),
-              covariates = pmx_cov(
-                values = list("WT0", "AGE0"),
-                labels = list("Weight", "Age")
-              )
-            )
+    ctr <- pmx_mlx(
+      config = "standing",
+      directory = WORK_DIR,
+      input = input_file,
+      dv = "Y",
+      dvid = "DVID",
+      cats = c("SEX"),
+      conts = c("WT0", "AGE0"),
+      strats = "SEX",
+      settings = my_settings,
+    )
 
-            ctr <- pmx_mlx(
-              config = "standing",
-              directory = WORK_DIR,
-              input = input_file,
-              dv = "Y",
-              dvid = "DVID",
-              cats = c("SEX"),
-              conts = c("WT0", "AGE0"),
-              strats = "SEX",
-              settings = my_settings,
-              )
+    p0 <- ctr %>% pmx_plot_eta_hist(strat.facet = ~STUD)
+    rlang::quo_text(p0$facet$params$rows) ==
+      "structure(list(EFFECT = ~EFFECT), class = c(\"quosures\", \"list\"\n))"
 
-            p0 <- ctr %>% pmx_plot_eta_hist(strat.facet = ~STUD)
-            rlang::quo_text(p0$facet$params$rows) == "structure(list(EFFECT = ~EFFECT), class = c(\"quosures\", \"list\"\n))"
+    p <- ctr %>% pmx_plot_eta_box(strat.facet = SEX ~ STUD)
+    expect_true(inherits(p$facet$params$rows, "quosures"))
 
-            p <- ctr %>% pmx_plot_eta_box(strat.facet = SEX ~ STUD)
-            expect_true(inherits(p$facet$params$rows, "quosures"))
+    expect_true(
+      rlang::quo_text(p$facet$params$rows) ==
+        "structure(list(SEX = ~SEX), class = c(\"quosures\", \"list\"))"
+    )
+    expect_true(
+      rlang::quo_text(p$facet$params$cols) ==
+        "structure(list(STUD = ~STUD), class = c(\"quosures\", \"list\"))"
+    )
 
-            expect_true(rlang::quo_text(p$facet$params$rows) == "structure(list(SEX = ~SEX), class = c(\"quosures\", \"list\"))")
-            expect_true(rlang::quo_text(p$facet$params$cols) == "structure(list(STUD = ~STUD), class = c(\"quosures\", \"list\"))")
+    expect_true(all(
+      unique(p$data$EFFECT) %in% c("Absorption_rate", "Volume", "Clearance")
+    ))
 
-            expect_true(all(unique(p$data$EFFECT) %in% c("Absorption_rate", "Volume", "Clearance")))
+    # this label came from the my_settings object
+    p_effect <- ctr %>% pmx_plot_eta_conts()
+    expect_true(all(unique(p_effect$data$variable) %in% c("Weight", "Age")))
 
-            # this label came from the my_settings object
-            p_effect <- ctr %>% pmx_plot_eta_conts()
-            expect_true(all(unique(p_effect$data$variable) %in% c("Weight", "Age")))
-
-            p_cov <- ctr %>% pmx_plot_eta_conts(
-              covariates = pmx_cov(
-                values = list("WT0", "AGE0"),
-                labels = list("Weight", "Age")
-              )
-            )
-            expect_true(all(unique(p_cov$data$variable) %in% c("Weight", "Age")))
-          })
+    p_cov <- ctr %>%
+      pmx_plot_eta_conts(
+        covariates = pmx_cov(
+          values = list("WT0", "AGE0"),
+          labels = list("Weight", "Age")
+        )
+      )
+    expect_true(all(unique(p_cov$data$variable) %in% c("Weight", "Age")))
+  })
 
   test_that("pmx_mlx params: my_settings with cats.labels and without effects and covariates;
           result: identical labels", {
-            my_settings <- pmx_settings(
-              use.labels = TRUE,
-              cats.labels = list(SEX = c("0" = "Male", "1" = "Female"), STUD = c("1" = "S", "2" = "D")),
-              )
+    my_settings <- pmx_settings(
+      use.labels = TRUE,
+      cats.labels = list(
+        SEX = c("0" = "Male", "1" = "Female"),
+        STUD = c("1" = "S", "2" = "D")
+      ),
+    )
 
-            ctr <- pmx_mlx(
-              config = "standing",
-              directory = WORK_DIR,
-              input = input_file,
-              dv = "Y",
-              dvid = "DVID",
-              cats = c("SEX"),
-              conts = c("WT0", "AGE0"),
-              strats = "SEX",
-              settings = my_settings,
-              )
+    ctr <- pmx_mlx(
+      config = "standing",
+      directory = WORK_DIR,
+      input = input_file,
+      dv = "Y",
+      dvid = "DVID",
+      cats = c("SEX"),
+      conts = c("WT0", "AGE0"),
+      strats = "SEX",
+      settings = my_settings,
+    )
 
-            p <- ctr %>% pmx_plot_eta_box(strat.facet = SEX ~ STUD)
-            expect_true(inherits(p$facet$params$rows, "quosures"))
+    p <- ctr %>% pmx_plot_eta_box(strat.facet = SEX ~ STUD)
+    expect_true(inherits(p$facet$params$rows, "quosures"))
 
-            expect_true(all(unique(p$data$EFFECT) %in% c("ka", "V", "Cl")))
+    expect_true(all(unique(p$data$EFFECT) %in% c("ka", "V", "Cl")))
 
-            p_effect <- ctr %>% pmx_plot_eta_conts()
-            expect_true(all(unique(p_effect$data$variable) %in% c("WT0", "AGE0")))
+    p_effect <- ctr %>% pmx_plot_eta_conts()
+    expect_true(all(unique(p_effect$data$variable) %in% c("WT0", "AGE0")))
 
-            p_cov <- ctr %>% pmx_plot_eta_conts(
-              covariates = pmx_cov(
-                values = list("WT0", "AGE0"),
-                labels = list("Weight", "Age")
-              )
-            )
-            expect_true(all(unique(p_cov$data$variable) %in% c("Weight", "Age")))
-          })
+    p_cov <- ctr %>%
+      pmx_plot_eta_conts(
+        covariates = pmx_cov(
+          values = list("WT0", "AGE0"),
+          labels = list("Weight", "Age")
+        )
+      )
+    expect_true(all(unique(p_cov$data$variable) %in% c("Weight", "Age")))
+  })
   #-------------pmx_mlx END ---------------------------------------------------
 
   #-------------pmx_warnings START --------------------------------------------
@@ -252,14 +266,12 @@ if (helper_skip()) {
     expect_true(is.null(pmx_w))
   })
 
-
   test_that("pmx_warnings: x, warn; result: error x is not a pmxClass", {
     ctr <- ""
     expect_error(pmx_warnings(ctr, "MISSING_FINEGRID"))
   })
 
   test_that("pmx_warnings: x, warn; result: error missing arguments", {
-    ctr <- theophylline()
     expect_error(pmx_warnings())
   })
 
@@ -288,7 +300,6 @@ if (helper_skip()) {
   pfile <- file.path(plot_dir, sprintf("%s.ppmx", "standing"))
   config <- load_config_files(ifile, pfile, sys)
 
-
   test_that("print.pmxConfig : x; result: identical structure", {
     ignore <- capture.output({
       pr <- print.pmxConfig(config)
@@ -307,18 +318,32 @@ if (helper_skip()) {
     expect_identical(prNames, names(pr))
 
     plotNames <- c(
-      "ABS_IWRES_IPRED", "IWRES_IPRED", "IWRES_TIME", "IWRES_DENS",
-      "IWRES_QQ", "NPDE_TIME", "NPDE_PRED", "NPDE_QQ",
-      "DV_PRED", "DV_IPRED", "INDIVIDUAL", "ETA_HIST",
-      "ETA_BOX", "ETA_MATRIX", "ETA_CATS", "ETA_CONTS", "ABS_IWRES_TIME",
-      "ETA_QQ", "PMX_VPC", "SAEM_CONVERGENCE"
+      "ABS_IWRES_IPRED",
+      "IWRES_IPRED",
+      "IWRES_TIME",
+      "IWRES_DENS",
+      "IWRES_QQ",
+      "NPDE_TIME",
+      "NPDE_PRED",
+      "NPDE_QQ",
+      "DV_PRED",
+      "DV_IPRED",
+      "INDIVIDUAL",
+      "ETA_HIST",
+      "ETA_BOX",
+      "ETA_MATRIX",
+      "ETA_CATS",
+      "ETA_CONTS",
+      "ABS_IWRES_TIME",
+      "ETA_QQ",
+      "PMX_VPC",
+      "SAEM_CONVERGENCE"
     )
 
     dataNames <- c("predictions", "estimates", "eta", "finegrid", "saem")
     expect_setequal(plotNames, names(pr$plots))
     expect_setequal(dataNames, names(pr$data))
   })
-
 
   test_that("print.pmxConfig : x; result: identical inherits", {
     ignore <- capture.output({
@@ -344,7 +369,6 @@ if (helper_skip()) {
   test_that("load_config_files : params: NULL; result: error misssing arguments", {
     expect_error(load_config_files())
   })
-
 
   test_that("load_config_files : ifile, pfile, sys; result:  ifile do not exist", {
     sys <- "mlx"

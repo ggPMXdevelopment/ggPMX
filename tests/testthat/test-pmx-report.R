@@ -87,6 +87,7 @@ if (helper_skip()) {
     context("Test remove_reports function")
 
     test_that("remove_reports: removes report files", {
+      skip_slow_tests()
       skip_on_cran()
       work_dir <- file.path(tmp_dir, "report_plot")
       dir.create(work_dir, showWarnings = FALSE)
@@ -132,6 +133,7 @@ if (helper_skip()) {
 
     # ---- Single multi-output test per mode ----
     test_that("pmx_report: creates expected files for all output modes (minimal set)", {
+      skip_slow_tests()
       skip_on_cran()
       work_dir <- file.path(tmp_dir, "pmx_report_test")
       dir.create(work_dir, showWarnings = FALSE)
@@ -175,6 +177,7 @@ if (helper_skip()) {
 
     # ---- Custom template test (optional, can skip if coverage not needed) ----
     test_that("pmx_report: can use custom template", {
+      skip_slow_tests()
       skip_on_cran()
       custom_template_file <- system.file(
         file.path("examples", "templates", "custom_report.Rmd"),
@@ -221,7 +224,8 @@ if (helper_skip()) {
     context("Test pmx_nlmixr controller")
 
     if (
-      .Platform$OS.type != "windows" &&
+      helper_run_slow_tests() &&
+        .Platform$OS.type != "windows" &&
         requireNamespace("nlmixr2est", quietly = TRUE)
     ) {
       skip_on_os("windows")

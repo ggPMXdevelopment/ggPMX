@@ -34,6 +34,8 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       _R_CHECK_FORCE_SUGGESTS_: false
+      GGPMX_RUN_SLOW_TESTS: "true"
+      NOT_CRAN: "true"
 
     steps:
       - name: Install deps on MacOS
