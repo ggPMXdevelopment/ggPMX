@@ -1,5 +1,4 @@
 if (helper_skip()) {
-
   context("Test assertions")
 
   #------------------- is_string start ------------------------------------------
@@ -95,30 +94,24 @@ if (helper_skip()) {
 
   test_that("is_string_or_expression:
           vector of characters is not string or expr", {
-            str <- c("A", "B")
-            expect_false(is_string_or_expression(str))
-          })
+    str <- c("A", "B")
+    expect_false(is_string_or_expression(str))
+  })
   #------------------- is_string_or_expression end-------------------------------
 
   #------------------- is_string_or_expression_or_null start---------------------
 
-  test_that(
-    "is_string_or_expression_or_null:
-  character variable is string or expr or null",
-    {
-      str <- "hello"
-      expect_true(is_string_or_expression_or_null(str))
-    }
-  )
+  test_that("is_string_or_expression_or_null:
+  character variable is string or expr or null", {
+    str <- "hello"
+    expect_true(is_string_or_expression_or_null(str))
+  })
 
-  test_that(
-    "is_string_or_expression_or_null:
-  numeric variable is not string or expr or null",
-    {
-      str <- 123
-      expect_false(is_string_or_expression_or_null(str))
-    }
-  )
+  test_that("is_string_or_expression_or_null:
+  numeric variable is not string or expr or null", {
+    str <- 123
+    expect_false(is_string_or_expression_or_null(str))
+  })
 
   test_that("is_string_or_expression_or_null: NULL variable is null", {
     str <- NULL
@@ -140,15 +133,15 @@ if (helper_skip()) {
 
   test_that("is_string_or_formula_or_null:
           character variable is string, formula or null", {
-            str <- "hello"
-            expect_true(is_string_or_formula_or_null(str))
-          })
+    str <- "hello"
+    expect_true(is_string_or_formula_or_null(str))
+  })
 
   test_that("is_string_or_formula_or_null:
           numeric variable is not string or formula or null", {
-            str <- 123
-            expect_false(is_string_or_formula_or_null(str))
-          })
+    str <- 123
+    expect_false(is_string_or_formula_or_null(str))
+  })
 
   test_that("is_string_or_formula_or_null: formula variable is formula", {
     x <- 10
@@ -187,9 +180,9 @@ if (helper_skip()) {
 
   test_that("is_null_or_named_vector:
           character unnamed vector is not named vector", {
-            vec <- c("one", "two", "three")
-            expect_false(is_null_or_named_vector(vec))
-          })
+    vec <- c("one", "two", "three")
+    expect_false(is_null_or_named_vector(vec))
+  })
   #------------------- is_null_or_named_vector start-----------------------------
 
   #------------------- is_pmx_gpar start-----------------------------------------
@@ -268,15 +261,16 @@ if (helper_skip()) {
   #------------------- is_pmxconfig end------------------------------------------
 
   #------------------- is_pmxclass start-----------------------------------------
+  assertion_ctr <- test_controller("ABS_IWRES_IPRED")
 
   test_that("is_pmxclass: pmxclass variable is pmxclass", {
-    ctr <- theophylline()
+    ctr <- assertion_ctr
     expect_true(is_pmxclass(ctr))
   })
 
   test_that("is_pmxclass: numeric variable is not pmxclass", {
     ctr <- 123
-    expect_false(is_pmxclass(str))
+    expect_false(is_pmxclass(ctr))
   })
 
   test_that("is_pmxclass: NA variable is not pmxclass", {
@@ -293,8 +287,7 @@ if (helper_skip()) {
   #------------------- is_ggplot start-------------------------------------------
 
   test_that("is_ggplot: ggplot variable is ggplot", {
-    ctr <- theophylline()
-    p <- pmx_plot_abs_iwres_ipred(ctr)
+    p <- ggplot2::ggplot()
     expect_true(is_ggplot(p))
   })
 
@@ -431,21 +424,21 @@ if (helper_skip()) {
   #------------------- is_valid_plot_name start----------------------------------
 
   test_that("is_valid_plot_name: variable is valid plot name", {
-    ctr <- theophylline()
+    ctr <- assertion_ctr
     plots <- ctr %>% plot_names()
     x <- "abs_iwres_ipred"
     expect_true(is_valid_plot_name(x, plots))
   })
 
   test_that("is_valid_plot_name: variable is not valid plot name", {
-    ctr <- theophylline()
+    ctr <- assertion_ctr
     plots <- ctr %>% plot_names()
     x <- "test_iwres_ipred"
     expect_false(is_valid_plot_name(x, plots))
   })
 
   test_that("is_valid_plot_name: NA is not valid plot name", {
-    ctr <- theophylline()
+    ctr <- assertion_ctr
     plots <- ctr %>% plot_names()
     x <- NA
     expect_false(is_valid_plot_name(x, plots))

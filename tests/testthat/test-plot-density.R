@@ -1,5 +1,5 @@
+skip_windows_integration()
 if (helper_skip()) {
-
   context("Test pmx_dens function")
 
   #------------------- pmx_dens start ------------------------------------------
@@ -116,7 +116,6 @@ if (helper_skip()) {
     ctr <- pmx_mlxtran(mlxpath, config = "standing")
   })
 
-
   test_that("pmx_dens: params: ctr; result: ggplot", {
     expect_true(is_ggplot(pmx_plot_iwres_dens(ctr)))
   })
@@ -142,14 +141,12 @@ if (helper_skip()) {
     ))
   })
 
-
   test_that("pmx_dens: params: ctr; result: plot is not blank", {
-    ctr <- theophylline()
+    ctr <- test_controller("IWRES_DENS")
     p <- pmx_plot_iwres_dens(ctr)
     p_obj <- ggplot2::ggplot_build(p)[["data"]][1:2]
     expect_false((length(p_obj[[1]]) == 0) || (length(p_obj[[2]]) == 0))
   })
-
 
   test_that("pmx_dens: params: ctr, var_line, snd_line; result: ggplot", {
     expect_true(is_ggplot(

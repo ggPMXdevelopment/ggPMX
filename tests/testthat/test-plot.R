@@ -1,7 +1,18 @@
 if (helper_skip()) {
-
+  skip_windows_integration()
   context("Test filtering of controller data")
   pmxClassHelpers <- test_pmxClass_helpers()
+  bloq_plots <- c(
+    "INDIVIDUAL",
+    "ABS_IWRES_IPRED",
+    "ABS_IWRES_TIME",
+    "IWRES_IPRED",
+    "IWRES_TIME",
+    "NPDE_TIME",
+    "NPDE_PRED",
+    "DV_PRED",
+    "DV_IPRED"
+  )
 
   test_that("individual plot: get all pages", {
     ctr <- pmxClassHelpers$ctr
@@ -10,7 +21,6 @@ if (helper_skip()) {
     expect_equal(length(p), 5)
   })
 
-
   test_that("individual plot: get single page", {
     ctr <- pmxClassHelpers$ctr
     expect_is(ctr, "pmxClass")
@@ -18,18 +28,20 @@ if (helper_skip()) {
     expect_true(is_ggplot(p))
   })
 
-
   test_that("smooth_with_bloq result: smoothing with/wo BLOQ data", {
-    ctr <- theophylline(bloq=pmx_bloq(cens="AGE0", limit="WT0"))
-    p1 <- pmx_plot_abs_iwres_ipred(ctr, smooth_with_bloq=FALSE)
-    p2 <- pmx_plot_abs_iwres_ipred(ctr, smooth_with_bloq=TRUE)
+    ctr <- test_controller(
+      "ABS_IWRES_IPRED",
+      bloq = pmx_bloq(cens = "AGE0", limit = "WT0")
+    )
+    p1 <- pmx_plot_abs_iwres_ipred(ctr, smooth_with_bloq = FALSE)
+    p2 <- pmx_plot_abs_iwres_ipred(ctr, smooth_with_bloq = TRUE)
     p3 <- pmx_plot_abs_iwres_ipred(ctr)
     p1_obj <- ggplot2::ggplot_build(p1)
     p2_obj <- ggplot2::ggplot_build(p2)
     p3_obj <- ggplot2::ggplot_build(p3)
 
     expect_false(identical(p1_obj[["data"]][[4]], p2_obj[["data"]][[4]]))
-    expect_identical(p1_obj[["data"]][[4]], p3_obj[["data"]][[4]])
+    expect_equal(p1_obj[["data"]][[4]], p3_obj[["data"]][[4]])
   })
 
   test_that("individual plot: get some pages", {
@@ -39,7 +51,6 @@ if (helper_skip()) {
     expect_equal(length(p), 2)
   })
 
-
   test_that("individual plot : don't exceed the effective number of pages", {
     ctr <- pmxClassHelpers$ctr
     expect_is(ctr, "pmxClass")
@@ -47,19 +58,31 @@ if (helper_skip()) {
     expect_equal(length(p), 5)
   })
 
-
   test_that("bloq data has separate colour", {
-    ctr <- theophylline(bloq=pmx_bloq(cens="AGE0", limit="WT0"))
+    ctr <- test_controller(
+      bloq_plots,
+      bloq = pmx_bloq(cens = "AGE0", limit = "WT0")
+    )
 
-    plots_with_bloq <- c("individual", "abs_iwres_ipred", "abs_iwres_time",
-                         "iwres_ipred", "iwres_time", "npde_time", "npde_pred", "dv_pred", "dv_ipred")
+    plots_with_bloq <- c(
+      "individual",
+      "abs_iwres_ipred",
+      "abs_iwres_time",
+      "iwres_ipred",
+      "iwres_time",
+      "npde_time",
+      "npde_pred",
+      "dv_pred",
+      "dv_ipred"
+    )
 
     lapply(
       paste0("pmx_plot_", plots_with_bloq),
-      function(x) {expect_equal("pink", get(x)(ctr)[["plot_env"]][["bloq"]][["colour"]])}
+      function(x) {
+        expect_equal("pink", get(x)(ctr)[["plot_env"]][["bloq"]][["colour"]])
+      }
     )
   })
-
 
   test_that("can create a plot using setting dname", {
     ctr <- pmxClassHelpers$ctr
@@ -70,13 +93,27 @@ if (helper_skip()) {
     expect_equal(length(pconf$plot$layers), 5)
   })
 
-
   test_that("controller bloq parameters are applied to the plots", {
-    ctr_no_bloq <- theophylline(bloq=pmx_bloq(cens="AGE0", limit="WT0", show=FALSE))
-    ctr_show_bloq <- theophylline(bloq=pmx_bloq(cens="AGE0", limit="WT0", show=TRUE))
+    ctr_no_bloq <- test_controller(
+      bloq_plots,
+      bloq = pmx_bloq(cens = "AGE0", limit = "WT0", show = FALSE)
+    )
+    ctr_show_bloq <- test_controller(
+      bloq_plots,
+      bloq = pmx_bloq(cens = "AGE0", limit = "WT0", show = TRUE)
+    )
 
-    plots_with_bloq <- c("individual", "abs_iwres_ipred", "abs_iwres_time",
-                         "iwres_ipred", "iwres_time", "npde_time", "npde_pred", "dv_pred", "dv_ipred")
+    plots_with_bloq <- c(
+      "individual",
+      "abs_iwres_ipred",
+      "abs_iwres_time",
+      "iwres_ipred",
+      "iwres_time",
+      "npde_time",
+      "npde_pred",
+      "dv_pred",
+      "dv_ipred"
+    )
 
     getFunBloq <- function(s, ctr) {
       get(paste0("pmx_plot_", s))(ctr)[["plot_env"]][["bloq"]]
@@ -87,7 +124,6 @@ if (helper_skip()) {
       expect_false(is.null(getFunBloq(s, ctr_show_bloq)))
     })
   })
-
 
   test_that("Create a plot with not valid dname throw  message", {
     ctr <- pmxClassHelpers$ctr

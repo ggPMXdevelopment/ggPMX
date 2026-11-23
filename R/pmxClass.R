@@ -968,7 +968,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     self$input <- setDT(input)
   }
   # Always add isobserv to address issue #235
-  self$input$isobserv <- "accepted"
+  self$input$isobserv <- " observed"
 
   self[["data"]] <- load_source(
     sys = config[["sys"]],
@@ -1030,44 +1030,7 @@ pmx_initialize <- function(self, private, data_path, input, dv,
     # Needed same treatment for "sim_blq" as for "sim_blq_y"
     if(!is.null(self[["data"]][["sim_blq"]])){
 
-      suppressWarnings({
-
-        # Get the column names of sim_blq data
-        column_names_sim <- colnames(self[["data"]][["sim_blq"]])
-
-        # Define the array of residual names
-        residual_names <- c("iwRes", "pwRes", "npde")
-
-        # Get the names from the sim_blq_npde_iwres section of the config data
-        blq_names <- names(config[['data']][['sim_blq_npde_iwres']][['names']])
-
-        # Loop over each residual name
-        for (residual in residual_names) {
-          # Search for the residual name in the config names
-          idx <- grep(residual, blq_names)
-          # Get the corresponding column name from the config
-          config_col_name <- blq_names[idx]
-
-          # If there is one match and the column name exists in our data,
-          # then replace the data column with the config column
-          if (length(config_col_name) == 1 && config_col_name %in% column_names_sim) {
-            self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[config_col_name]]
-          } else {
-            # Construct the column names for mode and simple scenarios
-            mode_simBlq <- paste0(residual, "_mode_simBlq")
-            simple_simBlq <- paste0(residual, "_simBlq")
-
-            # If "_mode_simBlq" column exists, use this column
-            if (mode_simBlq %in% column_names_sim) {
-              self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[mode_simBlq]]
-
-              # Otherwise if "_simBlq" column exists, use this column
-            } else if (simple_simBlq %in% column_names_sim) {
-              self[["data"]][["sim_blq"]][[toupper(residual)]] <-  self[["data"]][["sim_blq"]][[simple_simBlq]]
-            }
-          }
-        }
-      })
+      self$data$sim_blq <- normalize_sim_blq(self$data$sim_blq, config$data)
     }
 
     # Needed same treatment for "sim_blq_npde_iwres" as for "sim_blq_y"

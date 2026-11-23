@@ -277,7 +277,7 @@ mlx18_iwres <- function(x) {
 #' @import data.table
 
 read_mlx_pred <- function(path, x, ...) {
-  ID <- OCC <- id <- NULL
+  ID <- OCC <- id <- TIME <- NULL
   if (!file.exists(path)) {
     message(sub(".txt", "", x[["file"]]), " file do not exist")
     return(NULL)
@@ -318,8 +318,20 @@ read_mlx_pred <- function(path, x, ...) {
   }
   res <- setnames(xx[, nn, with = FALSE], names.nn)
 
-  ## select columns
+  ## Normalize TIME and ID column names and round TIME to match read_input()
+  tcol <- grep("^time$", names(res), ignore.case = TRUE, value = TRUE)
+  if (length(tcol) > 0) {
+    if (tcol != "TIME") setnames(res, tcol, "TIME")
+    # coerce numeric then round same precision as read_input()
+    res[, TIME := round(as.numeric(TIME), 4)]
+  }
 
+  # Ensure ID column is uppercase to match read_input() expectations
+  idcol <- grep("^id$", names(res), ignore.case = TRUE, value = TRUE)
+  if (length(idcol) > 0) {
+    if (idcol != "ID") setnames(res, idcol, "ID")
+  }
+  ## select columns
 
 
   res
@@ -413,7 +425,7 @@ if(NA %in% ids){
 }
 
 read_mlx18_pred <- function(path, x, ...) {
-  ID <- NULL
+  ID <- TIME <- NULL
   if (exists("subfolder", x) && !file.exists(path)) {
     path <- file.path(dirname(path), x$subfolder)
     finegrid_file <- file.path(path, x$file)
@@ -439,6 +451,12 @@ read_mlx18_pred <- function(path, x, ...) {
     if (!inherits(ds$ID, "factor") & inherits(resi$ID, "factor")) {
       ds[, ID := factor(ID, levels = levels(ID))]
     }
+    #Workaround for mlx18 prec
+    # Round TIME in both data frames (in place)
+    ds$TIME   <- round(ds$TIME, 4)
+    resi$TIME <- round(resi$TIME, 4)
+
+    # Merge by ID and TIME
     ds <- merge(ds, resi, by = c("ID", "TIME"))
 
   }

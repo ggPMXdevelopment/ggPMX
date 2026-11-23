@@ -1,5 +1,4 @@
 if (helper_skip()) {
-
   context("Test pmx_list_nm_tables")
 
   dir <- file.path(system.file(package = "ggPMX"), "testdata", "extdata")
@@ -7,15 +6,16 @@ if (helper_skip()) {
     file = "run001.lst",
     dir = dir
   )
+  ctr <- test_controller()
 
   #-------------pmx_list_nm_tables START -----------------------------------------
   test_that("pmx_manual_import: params: nm_model object;
           result: identical class and structure", {
-            s <- pmx_list_nm_tables(model_code)
-            expect_true(inherits(s, "nm_table_list"))
-            expect_true(typeof(s) == "list")
-            expect_true(all(names(s) %in% c("problem", "file", "firstonly", "simtab")))
-          })
+    s <- pmx_list_nm_tables(model_code)
+    expect_true(inherits(s, "nm_table_list"))
+    expect_true(typeof(s) == "list")
+    expect_true(all(names(s) %in% c("problem", "file", "firstonly", "simtab")))
+  })
 
   test_that("pmx_list_nm_tables: params: no; result: error", {
     expect_error(pmx_list_nm_tables())
@@ -28,7 +28,6 @@ if (helper_skip()) {
   })
 
   test_that("pmx_is.nm.model: params: nm_model object; result: TRUE", {
-    ctr <- theophylline()
     expect_false(pmx_is.nm.model(ctr))
   })
   #-------------pmx_is.nm.model END ----------------------------------------------
@@ -40,7 +39,6 @@ if (helper_skip()) {
   })
 
   test_that("pmx_as.nm.table.list: params: theophylline; result: TRUE", {
-    ctr <- theophylline()
     expect_true(inherits(pmx_as.nm.table.list(ctr), "nm_table_list"))
   })
   #-------------pmx_as.nm.table.list END -----------------------------------------
@@ -52,18 +50,21 @@ if (helper_skip()) {
   })
 
   test_that("pmx_read_nm_model: params: nm_model object; result: identical structure", {
-    expect_true(all(names(model_code) %in% c(
-      "problem", "level", "subroutine",
-      "code", "comment"
-    )))
+    expect_true(all(
+      names(model_code) %in%
+        c(
+          "problem",
+          "level",
+          "subroutine",
+          "code",
+          "comment"
+        )
+    ))
   })
   test_that("pmx_read_nm_model: params: no; result: error", {
     expect_error(pmx_read_nm_model())
   })
   #-------------pmx_read_nm_model END --------------------------------------------
-
-
-
 
   #-------------pmx_is.nm.table.list START ---------------------------------------
   test_that("pmx_is.nm.table.list: params: nm_table_list object; result: TRUE", {

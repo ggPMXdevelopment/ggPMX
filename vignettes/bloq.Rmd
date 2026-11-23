@@ -1,5 +1,5 @@
 ---
-title: "bloq"
+title: "BLOQ data in ggPMX"
 author: "Amine Gassem"
 date: "June 27, 2018"
 output:
@@ -70,12 +70,12 @@ This will create a `pmxBLOQ` object that defines the censoring and column defini
 
 ## Left censored data
 
-```{r}
+```{r, eval=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring1log_project.mlxtran"
 ctr <- pmx_mlxtran(file_name=mlx_file)
 ```
 
-```{r}
+```{r, eval=FALSE}
 ctr %>% pmx_plot_individual(
   is.draft = FALSE,
   facets=list(ncol=3,nrow=2),
@@ -88,13 +88,13 @@ ctr %>% pmx_plot_dv_ipred(bloq=pmx_bloq(color="white"))
 
 ## Interval censored data
 
-```{r}
+```{r, eval=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring1_project.mlxtran"
 ctr <- pmx_mlxtran(file_name=mlx_file)
 ```
 
 
-```{r, echo =FALSE}
+```{r, echo=FALSE, eval=FALSE}
 ctr %>% pmx_plot_individual(
   is.draft = FALSE,
   facets=list(ncol=3,nrow=2),
@@ -110,14 +110,14 @@ ctr %>% pmx_plot_individual(
 
 
 
-```{r}
+```{r, eval=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring2_project.mlxtran"
 ctr <- pmx_mlxtran(file_name=mlx_file)
 
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 ctr %>% pmx_plot_individual(
   is.draft = FALSE,
   facets=list(ncol=3,nrow=2),
@@ -128,14 +128,14 @@ ctr %>% pmx_plot_individual(
 
 # PK data below a lower limit of quantification and PD data above an upper limit of quantification
 
-```{r,message=FALSE}
+```{r, message=FALSE, eval=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring3_project.mlxtran"
 ctr <- pmx_mlxtran(file_name=mlx_file,endpoint="2")
 
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 ctr %>% pmx_plot_individual(
   is.draft = FALSE,
   facets=list(ncol=3,nrow=2),
@@ -146,14 +146,14 @@ ctr %>% pmx_plot_individual(
 
 #Combination of interval censored PK and PD data
 ## Pk data
-```{r,message=FALSE}
+```{r, message=FALSE, eval=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring4_project.mlxtran"
 ctr <- pmx_mlxtran(file_name=mlx_file,endpoint="1")
 
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 ctr %>% pmx_plot_individual(
   is.draft = FALSE,
   facets=list(ncol=3,nrow=2),
@@ -162,14 +162,14 @@ ctr %>% pmx_plot_individual(
 ```
 
 ## PD data
-```{r,message=FALSE}
+```{r, message=FALSE, eval=FALSE}
 mlx_file <- "/home/agstudy/Downloads/2.2.censored_data/censoring4_project.mlxtran"
 ctr <- pmx_mlxtran(file_name=mlx_file,endpoint="2")
 
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 ctr %>% pmx_plot_individual(
   is.draft = FALSE,
   facets=list(ncol=3,nrow=2),

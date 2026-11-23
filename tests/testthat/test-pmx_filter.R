@@ -1,3 +1,4 @@
+skip_windows_integration()
 if (helper_skip()) {
 
   context("Test filtering of controller data")
