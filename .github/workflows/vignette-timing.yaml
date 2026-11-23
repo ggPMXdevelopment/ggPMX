@@ -2,12 +2,6 @@ name: Windows vignette timing
 
 on:
   workflow_dispatch:
-  push:
-    branches: [release_133]
-    paths:
-      - ".github/workflows/vignette-timing.yaml"
-      - "tools/profile-vignette.R"
-      - "vignettes/ggPMX-guide.Rmd"
 
 jobs:
   profile:
