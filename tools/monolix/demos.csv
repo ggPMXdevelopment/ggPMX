@@ -1,0 +1,5 @@
+name,project,endpoint
+theophylline,1.creating_and_using_models/1.1.libraries_of_models/theophylline_project.mlxtran,
+warfarin_pk,1.creating_and_using_models/1.1.libraries_of_models/warfarinPK_project.mlxtran,
+warfarin_pkpd_pk,1.creating_and_using_models/1.1.libraries_of_models/warfarinPKPD_project.mlxtran,1
+warfarin_pkpd_pd,1.creating_and_using_models/1.1.libraries_of_models/warfarinPKPD_project.mlxtran,2

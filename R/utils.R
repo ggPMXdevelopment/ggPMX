@@ -259,6 +259,20 @@ ggpmx_split_first_equal <- function(x) {
 is_mlxtran <- function(file_name)
   identical(tools::file_ext(file_name), "mlxtran")
 
+mlxtran_data_path <- function(value) {
+  value <- trimws(value)
+  modern <- regexec(
+    "^\\{\\s*path\\s*=\\s*(['\"])(.*?)\\1\\s*(?:,.*)?\\}\\s*$",
+    value,
+    perl = TRUE
+  )
+  matched <- regmatches(value, modern)
+  vapply(seq_along(value), function(i) {
+    if (length(matched[[i]]) > 0L) return(matched[[i]][3L])
+    sub("^(['\"])(.*)\\1$", "\\2", value[i], perl = TRUE)
+  }, character(1), USE.NAMES = FALSE)
+}
+
 #' Parse MONOLIX mlxtran file
 #'
 #' @param file_name absolute path to mlxtran file
@@ -325,7 +339,7 @@ parse_mlxtran <- function(file_name) {
   }
   setwd(dir)
   ### input
-  input <- gsub("'", "", dat[key == "file" & section == "DATAFILE", value])
+  input <- mlxtran_data_path(dat[key == "file" & section == "DATAFILE", value])
   input <- normalizePath(input)
   ### dv
   dv <- dat[grepl("use=observation,", value), key]
@@ -378,6 +392,13 @@ parse_mlxtran <- function(file_name) {
     res$dvid <- dvid
     aa <- dat[grepl("use=observation,", value), value]
     mlx16 <- grepl("ytype", aa)
+    # Modern projects can omit the separate observation name field.
+    if (!mlx16 && !grepl("(^|[,{[:space:]])name\\s*=", aa)) {
+      codes <- sub(".*yname\\s*=\\s*(\\{[^}]*\\}|'[^']*'|\"[^\"]*\").*", "\\1", aa)
+      codes <- strsplit(gsub("[{}'\"[:space:]]", "", codes), ",")[[1]]
+      res$endpoint <- pmx_endpoint(code = codes[1])
+      return(res)
+    }
     patt <- sprintf(".*name=(.*), %s=(.*), type.*", ifelse(mlx16, "ytype", "yname"))
     yname <- gsub(patt, "\\1;\\2", aa)
     yname <- unlist(strsplit(gsub("\\{|\\}|'| ", "", yname), ";"))

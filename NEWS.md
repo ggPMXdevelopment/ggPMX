@@ -1,3 +1,7 @@
+# ggPMX (development version)
+
+* `parse_mlxtran()` supports modern Monolix `file={path='...'}` data declarations and default endpoint selection without a separate observation name, while retaining legacy quoted file paths (Monolix demo regression tests).
+
 # ggPMX 1.3.3
 
 * Simulated BLOQ responses support additional column naming conventions while preserving existing responses when no simulated response is available.
