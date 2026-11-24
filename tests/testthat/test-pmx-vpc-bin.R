@@ -1,7 +1,6 @@
 if (helper_skip()) {
-
   library(ggPMX)
-  ctr <- theophylline()
+  ctr <- test_controller()
 
   context("Test pmx_vpc_bin function")
 
@@ -11,18 +10,26 @@ if (helper_skip()) {
     expect_identical(pmx_vpc_bin(), NULL)
   })
 
-
   test_that("pmx_vpc_bin: params result:  ", {
     p <- ctr %>% pmx_vpc_bin(style = "equal")
-    styles <- c("fixed", "sd", "equal", "pretty", "quantile", "kmeans", "hclust", "jenks")
+    styles <- c(
+      "fixed",
+      "sd",
+      "equal",
+      "pretty",
+      "quantile",
+      "kmeans",
+      "hclust",
+      "jenks"
+    )
     expect_true(is.element(p$style, styles))
   })
 
-
   test_that("pmx_vpc_bin: params result: error", {
-    expect_error(ctr %>% pmx_vpc_bin(style = c("sd", "jenks"), within_strat = FALSE))
+    expect_error(
+      ctr %>% pmx_vpc_bin(style = c("sd", "jenks"), within_strat = FALSE)
+    )
   })
-
 
   test_that("pmx_vpc_bin: params result: identical type", {
     p <- pmx_vpc_bin()

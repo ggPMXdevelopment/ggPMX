@@ -1,3 +1,4 @@
+skip_windows_integration()
 if (helper_skip()) {
   context("Test spliting facet_wrap over multiple plots")
 

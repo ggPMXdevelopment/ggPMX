@@ -13,3 +13,4 @@ cont.sh
 inst/doc
 tests/testthat/_snaps/*
 tests/testthat/Rplots.pdf
+docs

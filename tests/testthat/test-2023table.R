@@ -1,3 +1,4 @@
+skip_windows_integration()
 if (helper_skip()) {
   test_that("Monolix 2023 tables read in correctly (Issue #369)", {
     skip_if_not(file.exists(test_path("warfarin_PD_project.zip")))

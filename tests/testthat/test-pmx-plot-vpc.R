@@ -1,5 +1,5 @@
+skip_windows_integration()
 if (helper_skip()) {
-
   library(ggPMX)
   library(ggplot2)
   library(purrr)
@@ -19,9 +19,11 @@ if (helper_skip()) {
     expect_s3_class(p, "ggplot")
   })
 
-  test_that("pmx_plot_vpc: params: ctr; result: ggplot", {
+  test_that("pmx_plot_vpc returns a default percentile plot over time", {
     p <- pmx_plot_vpc(ctr)
     expect_s3_class(p, "ggplot")
+    expect_identical(p$plot_env$type, "percentile")
+    expect_identical(p$plot_env$idv, "TIME")
   })
 
   test_that("pmx_plot_vpc: params: ctr, bin; result: ggplot", {
@@ -55,24 +57,27 @@ if (helper_skip()) {
   })
 
 
-  test_that("pmx_plot_vpc: params result: ggplot", {
-    p <- ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2), type = "scatter")
-    expect_true(is_ggplot(p))
+  test_that("pmx_plot_vpc returns a stratified scatter plot", {
+    p <- pmx_plot_vpc(
+      ctr,
+      strat.facet = "SEX",
+      facets = list(nrow = 2),
+      type = "scatter"
+    )
+    expect_s3_class(p, "ggplot")
+    expect_identical(p$plot_env$type, "scatter")
   })
-
-
-  test_that("pmx_plot_vpc: params result: identical type", {
-    p <- ctr %>% pmx_plot_vpc(strat.facet = "SEX", facets = list(nrow = 2), type = "scatter")
-    expect_identical(p$plot_env$x$type, "scatter")
-  })
-
 
   test_that("pmx_plot_vpc: params result: ggplot, identical median", {
-    vpc <- ctr %>% pmx_plot_vpc(
-      is.legend = TRUE,
-      pi = pmx_vpc_pi(interval = c(0.02, 0.98), median = list(linetype = "dotted")),
-      ci = pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
-    )
+    vpc <- ctr %>%
+      pmx_plot_vpc(
+        is.legend = TRUE,
+        pi = pmx_vpc_pi(
+          interval = c(0.02, 0.98),
+          median = list(linetype = "dotted")
+        ),
+        ci = pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
+      )
     expect_true(is_ggplot(vpc))
     if (inherits(vpc, "S7_object")) { # ggplot2 4.0.0 and later
       expect_true(identical(vpc@plot_env$x$pi$median$linetype, "dotted"))
@@ -82,13 +87,19 @@ if (helper_skip()) {
       expect_true(identical(vpc$plot_env$x$ci$median$fill, "red"))
     }
   })
-  
+
   test_that("Test different ways to facet vpc pmx_plot_vpc", {
     p1 <- ctr %>% pmx_plot_vpc(strat.facet = c("SEX", "STUD"))
-    p2 <- ctr %>% pmx_plot_vpc(strat.facet = SEX~STUD)
-    p3 <- ctr %>% pmx_plot_vpc(strat.facet = ~SEX+STUD)
-    expect_identical(sort(as.character(p1$facet$params$facets)), sort(as.character(p2$facet$params$facets)))
-    expect_identical(sort(as.character(p2$facet$params$facets)), sort(as.character(p3$facet$params$facets)))
+    p2 <- ctr %>% pmx_plot_vpc(strat.facet = SEX ~ STUD)
+    p3 <- ctr %>% pmx_plot_vpc(strat.facet = ~ SEX + STUD)
+    expect_identical(
+      sort(as.character(p1$facet$params$facets)),
+      sort(as.character(p2$facet$params$facets))
+    )
+    expect_identical(
+      sort(as.character(p2$facet$params$facets)),
+      sort(as.character(p3$facet$params$facets))
+    )
   })
 
   #------------------- pmx_plot_vpc - end ---------------------------------------
@@ -98,22 +109,22 @@ if (helper_skip()) {
   context("Test pmx_vpc_pi function")
 
   test_that("pmx_vpc_pi: params result: 'pmx_vpc_pi', 'list'", {
-    pi <- pmx_vpc_pi(interval = c(0.02, 0.98), median = list(linetype = "dotted"))
+    pi <- pmx_vpc_pi(
+      interval = c(0.02, 0.98),
+      median = list(linetype = "dotted")
+    )
     expect_true(inherits(pi, c("pmx_vpc_pi", "list")))
   })
-
 
   test_that("pmx_vpc_pi: params NULL result: 'pmx_vpc_pi', 'list'", {
     pi <- pmx_vpc_pi()
     expect_true(inherits(pi, c("pmx_vpc_pi", "list")))
   })
 
-
   test_that("pmx_vpc_pi: params result: elements in the list", {
     piNames <- c("show", "probs", "median", "extreme", "area")
     expect_true(all(piNames %in% names(pmx_vpc_pi())))
   })
-
 
   test_that("pmx_vpc_pi: params result: identical structure", {
     pi <- pmx_vpc_pi()
@@ -128,22 +139,25 @@ if (helper_skip()) {
   context("Test pmx_vpc_obs function")
 
   test_that("pmx_vpc_obs: params result: 'pmx_vpc_obs', 'list'", {
-    obs <- pmx_vpc_obs(show = TRUE, color = "#000000", size = 1, alpha = 0.7, shape = 1)
+    obs <- pmx_vpc_obs(
+      show = TRUE,
+      color = "#000000",
+      size = 1,
+      alpha = 0.7,
+      shape = 1
+    )
     expect_true(inherits(obs, c("pmx_vpc_obs", "list")))
   })
-
 
   test_that("pmx_vpc_obs: params NULL result: 'pmx_vpc_obs', 'list'", {
     obs <- pmx_vpc_obs()
     expect_true(inherits(obs, c("pmx_vpc_obs", "list")))
   })
 
-
   test_that("pmx_vpc_obs: params result: elements in the list", {
     obsNames <- c("color", "size", "alpha", "shape")
     expect_true(all(obsNames %in% names(pmx_vpc_obs())))
   })
-
 
   test_that("pmx_vpc_obs: params result: NULL", {
     expect_true(is.null(names(pmx_vpc_obs(show = FALSE))))
@@ -160,18 +174,15 @@ if (helper_skip()) {
     expect_true(inherits(ci, c("pmx_vpc_ci", "list")))
   })
 
-
   test_that("pmx_vpc_ci: params NULL result: 'pmx_vpc_ci', 'list'", {
     ci <- pmx_vpc_ci()
     expect_true(inherits(ci, c("pmx_vpc_ci", "list")))
   })
 
-
   test_that("pmx_vpc_ci: params NULL result: elements in the list", {
     ciNames <- c("show", "probs", "method", "median", "extreme")
     expect_true(all(ciNames %in% names(pmx_vpc_ci())))
   })
-
 
   test_that("pmx_vpc_ci: params result: elements in the list", {
     ci <- pmx_vpc_ci(interval = c(0.05, 0.95), median = list(fill = "red"))
@@ -190,22 +201,24 @@ if (helper_skip()) {
   context("Test pmx_vpc_rug function")
 
   test_that("pmx_vpc_rug: params result: 'pmx_vpc_rug', 'list'", {
-    obs <- pmx_vpc_rug(show = TRUE, color = "#000000", linewidth = 1, alpha = 0.7)
+    obs <- pmx_vpc_rug(
+      show = TRUE,
+      color = "#000000",
+      linewidth = 1,
+      alpha = 0.7
+    )
     expect_true(inherits(obs, c("pmx_vpc_rug", "list")))
   })
-
 
   test_that("pmx_vpc_rug: params NULL result: 'pmx_vpc_rug', 'list'", {
     obs <- pmx_vpc_rug()
     expect_true(inherits(obs, c("pmx_vpc_rug", "list")))
   })
 
-
   test_that("pmx_vpc_rug: params result: elements in the list", {
     obsNames <- c("color", "linewidth", "alpha")
     expect_true(all(obsNames %in% names(pmx_vpc_rug())))
   })
-
 
   test_that("pmx_vpc_rug: params result: NULL", {
     expect_true(is.null(names(pmx_vpc_rug(show = FALSE))))
@@ -228,7 +241,6 @@ if (helper_skip()) {
     expect_true(inherits(vpc, c("pmx_vpc", "pmx_gpar")))
     expect_true(inherits(vpc$pi, c("pmx_vpc_pi", "list")))
   })
-
 
   test_that("pmx_vpc: params: NULL; result: identical structure", {
     vpc <- pmx_vpc()
@@ -270,25 +282,39 @@ if (helper_skip()) {
   #------------------- vpc_legend. - start ---------------------------------------
   #
   test_that("vpc_legend.: params: x; result: identical structure", {
-    vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- .vpc_legend(vpc)
+    vpc <- pmx_vpc(labels = list(title = "x"))
+    vpc_l <- vpc_legend.(vpc)
     expect_identical(vpc_l$ptype, "VPC")
     expect_identical(vpc_l$rug$alpha, 0.7)
   })
 
   test_that("vpc_legend.: params: x; result: identical inherits", {
-    vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- .vpc_legend(vpc)
+    vpc <- pmx_vpc(labels = list(title = "x"))
+    vpc_l <- vpc_legend.(vpc)
     expect_true(inherits(vpc_l, c("pmx_vpc", "pmx_gpar")))
   })
 
   test_that("vpc_legend.: params: x; result: identical names", {
-    vpc <- pmx_vpc(labels=list(title="x"))
-    vpc_l <- .vpc_legend(vpc)
+    vpc <- pmx_vpc(labels = list(title = "x"))
+    vpc_l <- vpc_legend.(vpc)
     vpslNames <- c(
-      "ptype", "strat", "idv", "dname", "labels", "is.legend", "is.footnote",
-      "type", "facets", "obs", "pi", "ci", "rug", "bin",
-      "gp", "obs_legend", "sim_legend"
+      "ptype",
+      "strat",
+      "idv",
+      "dname",
+      "labels",
+      "is.legend",
+      "is.footnote",
+      "type",
+      "facets",
+      "obs",
+      "pi",
+      "ci",
+      "rug",
+      "bin",
+      "gp",
+      "obs_legend",
+      "sim_legend"
     )
 
     expect_identical(names(vpc_l), vpslNames)

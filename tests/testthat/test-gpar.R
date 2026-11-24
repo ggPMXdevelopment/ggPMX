@@ -1,3 +1,4 @@
+skip_windows_integration()
 if (helper_skip()) {
 
   # check return value of print(x) without writing output to console
