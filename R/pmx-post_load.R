@@ -72,6 +72,29 @@ post_load_eta <- function(ds, input, sys, occ) {
   ds
 }
 
+merge_monolix_records <- function(x, y, keys) {
+  x <- data.table::copy(data.table::as.data.table(x))
+  y <- data.table::copy(data.table::as.data.table(y))
+  if (anyDuplicated(x[, keys, with = FALSE]) || anyDuplicated(y[, keys, with = FALSE])) {
+    counts <- merge(x[, .N, by = keys], y[, .N, by = keys], by = keys)
+    if (any(counts$N.x != counts$N.y)) {
+      warning(
+        "Repeated Monolix observation counts differ at shared keys; matching by within-key order and dropping unmatched records. Observation pairing may be ambiguous.",
+        call. = FALSE
+      )
+    }
+    # Monolix exports preserve observation order within subject/time/occasion.
+    record <- ".pmx_record"
+    stopifnot(!record %in% c(names(x), names(y)))
+    x[, (record) := seq_len(.N), by = keys]
+    y[, (record) := seq_len(.N), by = keys]
+    result <- merge(x, y, by = c(keys, record))
+    result[, (record) := NULL]
+    return(result)
+  }
+  merge(x, y, by = keys)
+}
+
 post_load <- function(dxs, input, sys, dplot, occ) {
   ## avoid RCMDCHECK
   DVID <- ID <- NULL
@@ -82,13 +105,13 @@ post_load <- function(dxs, input, sys, dplot, occ) {
     if (occ != "") keys <- c(keys, if (length(occ) == 1) "OCC" else sprintf("OCC%s", seq_along(occ)))
     
     if (!is.null(dxs[["predictions"]]) & !is.null(dxs[["sim_blq_npde_iwres"]]) & !is.null(dxs[["sim_blq_y"]])) {
-      dxs[["sim_blq"]] <- merge(dxs[["sim_blq_npde_iwres"]], dxs[["sim_blq_y"]], by = keys)
-      dxs[["sim_blq"]] <- merge(dxs[["sim_blq"]], input, by = keys)
-      dxs[["sim_blq"]] <- merge(dxs[["sim_blq"]], dxs[["predictions"]], by = keys)
+      dxs[["sim_blq"]] <- merge_monolix_records(dxs[["sim_blq_npde_iwres"]], dxs[["sim_blq_y"]], keys)
+      dxs[["sim_blq"]] <- merge_monolix_records(dxs[["sim_blq"]], input, keys)
+      dxs[["sim_blq"]] <- merge_monolix_records(dxs[["sim_blq"]], dxs[["predictions"]], keys)
     }
     
     if (!is.null(dxs[["predictions"]])) {
-      dxs[["predictions"]] <- merge(dxs[["predictions"]], input, by = keys)
+      dxs[["predictions"]] <- merge_monolix_records(dxs[["predictions"]], input, keys)
     }
     
     if (!is.null(dxs[["finegrid"]])) {

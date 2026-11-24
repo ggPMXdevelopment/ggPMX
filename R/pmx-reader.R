@@ -418,7 +418,9 @@ if(NA %in% ids){
   ds <- NULL
 } else {
   setnames(ds, ids, new_vars)
-  ds[, new_vars, with = FALSE]
+  result <- ds[, new_vars, with = FALSE]
+  if ("TIME" %in% names(result)) result[, TIME := round(as.numeric(TIME), 4)]
+  result
 }
 
 
@@ -441,7 +443,7 @@ read_mlx18_pred <- function(path, x, ...) {
   if (exists("residuals", x)) {
     x$residuals$endpoint <- x$endpoint
     x$residuals$id <- x$id
-    resi <- read_mlx18_res(path, x$residuals)
+    resi <- read_mlx18_res(path, x$residuals, ...)
     if (is.null(resi)) {
       return(NULL)
     }
@@ -457,7 +459,8 @@ read_mlx18_pred <- function(path, x, ...) {
     resi$TIME <- round(resi$TIME, 4)
 
     # Merge by ID and TIME
-    ds <- merge(ds, resi, by = c("ID", "TIME"))
+    keys <- c("ID", "TIME", intersect(grep("^OCC[0-9]*$", names(ds), value = TRUE), names(resi)))
+    ds <- merge_monolix_records(ds, resi, keys)
 
   }
   ds

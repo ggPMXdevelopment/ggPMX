@@ -12,4 +12,5 @@ cont.sh
 .Rbuildignore
 inst/doc
 tests/testthat/_snaps/*
+!tests/testthat/_snaps/monolix-records.md
 docs
