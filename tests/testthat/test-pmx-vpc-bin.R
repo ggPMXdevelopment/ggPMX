@@ -35,4 +35,5 @@ if (helper_skip()) {
     p <- pmx_vpc_bin()
     expect_identical(p, NULL)
   })
+
 }
