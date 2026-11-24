@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${CI:-false}" == "true" || "${GITHUB_ACTIONS:-false}" == "true" || "${_R_CHECK_PACKAGE_NAME_:-}" != "" ]]; then
+  echo "Monolix integration tests are local-only; CI and package checks are not supported." >&2
+  exit 1
+fi
+
 # Only trusted local code is sent to the licensed host. No CI credentials are used.
 host=${GGPMX_SSH_HOST:?Set GGPMX_SSH_HOST to your licensed host}
 modules=${GGPMX_REMOTE_MODULES:?Set GGPMX_REMOTE_MODULES to your site module names}
 mode=${GGPMX_MONOLIX_MODE:-regenerate}
 output=${1:?Usage: bash tools/monolix/run-ssh.sh NEW_LOCAL_OUTPUT_DIRECTORY}
-scratch=${PA_SCRATCH_DIR:?Set PA_SCRATCH_DIR to a scratch directory}
+scratch=${GGPMX_SCRATCH_DIR:-${PA_SCRATCH_DIR:-}}
+[[ -d "$scratch" ]] || { echo "Set GGPMX_SCRATCH_DIR to an existing scratch directory" >&2; exit 1; }
 [[ ! -e "$output" ]] || { echo "Output path already exists" >&2; exit 1; }
 root=$(git rev-parse --show-toplevel)
 staging=$(mktemp -d "$scratch/monolix.XXXXXX")

@@ -36,6 +36,8 @@ param_table <- function(ctr, fun, return_table=FALSE, scientific=FALSE, digits=2
   rownames(pop_pars) <- trimws(as.character(pop_pars[["PARAM"]]))
 
   if(return_table) {return(as.data.table(pop_pars))}
+  # Missing uncertainty is unavailable, not evidence that a parameter was fixed.
+  if (!"RSE" %in% names(pop_pars)) pop_pars$RSE <- Inf
 
   config_sys_nm <- ctr[["config"]][["sys"]] == "nm"
 

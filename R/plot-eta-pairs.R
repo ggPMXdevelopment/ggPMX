@@ -134,9 +134,12 @@ upper.plot <- function(data, x, y, text_color, gp) {
           z <- strsplit(z, ";")[[1]]
           lower.plot(
             dx,
-            x = z[1], y = z[2], point = point,
+            x = z[2], y = z[1], point = point,
             is.smooth = is.smooth, smooth = smooth, gp = gp,
-            is.hline, hline, max(dx[, z[2], with = FALSE], na.rm = TRUE)
+            is.hline, hline, {
+              values <- dx[[z[1]]]
+              max(c(0, abs(values[is.finite(values)])))
+            }
           )
         }
       )

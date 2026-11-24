@@ -1,6 +1,10 @@
 # ggPMX (development version)
 
+* `param_table()` formats estimates without RSE values as unavailable rather than failing (Monolix diagnostic audit).
+
 * `parse_mlxtran()` supports modern Monolix `file={path='...'}` data declarations and default endpoint selection without a separate observation name, while retaining legacy quoted file paths (Monolix demo regression tests).
+
+* `pmx_plot_eta_matrix()` retains negative random-effect extremes and aligns scatter coordinates with matrix axis labels; `pmx_plot_eta_qq()` uses distinct subject-level conditional modes rather than repeated observations mixed with conditional means (Monolix diagnostic audit).
 
 # ggPMX 1.3.3
 

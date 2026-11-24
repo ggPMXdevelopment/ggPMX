@@ -167,6 +167,14 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
 
   grp <- c(vec.color, vec.facet)
   if (sum(nchar(grp)) == 0) grp <- NULL
+  if ("EFFECT" %in% names(dx)) {
+    # Eta data are joined to observation rows and can include mean and mode.
+    if ("FUN" %in% names(dx) && any(dx[["FUN"]] == "mode")) {
+      dx <- dx[dx[["FUN"]] == "mode"]
+    }
+    cols <- unique(c("ID", "EFFECT", x$x, grp, grep("^OCC[0-9]*$", names(dx), value = TRUE)))
+    dx <- unique(dx[, intersect(cols, names(dx)), with = FALSE])
+  }
   dx.ref <- if ("EFFECT" %in% names(dx)) {
     dx[, pmx_qq_stats(get(x$x)), c("EFFECT", grp)]
   } else {
