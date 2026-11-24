@@ -51,6 +51,47 @@ test_that("eta matrix keeps negative extremes in lower panels", {
   }
 })
 
+test_that("eta matrices render shrinkage with ten effects and without shrinkage data", {
+  ctr <- test_controller("ETA_MATRIX")
+  eta <- unique(get_data(ctr, "eta")[,
+    c("ID", "EFFECT", "VALUE", "FUN", "SEX"),
+    with = FALSE
+  ])
+  eta <- eta[eta$EFFECT == "V" & eta$FUN == "mode"]
+  expanded <- data.table::rbindlist(lapply(seq_len(10), function(i) {
+    effect <- data.table::copy(eta)
+    effect$EFFECT <- paste0("effect", i)
+    effect$VALUE <- effect$VALUE * i
+    effect
+  }))
+  set_data(ctr, eta = expanded)
+  set_data(
+    ctr,
+    omega = data.table::data.table(EFFECT = unique(expanded$EFFECT), OMEGA = 1)
+  )
+  matrix <- pmx_plot_eta_matrix(ctr, is.smooth = FALSE)
+  file <- tempfile(fileext = ".pdf")
+  on.exit(unlink(file))
+  grDevices::pdf(file)
+  on.exit(grDevices::dev.off(), add = TRUE)
+  print(matrix)
+  expect_equal(matrix$nrow, 11)
+  expect_equal(
+    matrix$yAxisLabels,
+    c("Shrinkage", paste0("effect", c(1, 10, 2:9)))
+  )
+  plain <- pmx_plot_eta_matrix(ctr, is.shrink = FALSE, is.smooth = FALSE)
+  print(plain)
+  expect_equal(plain$nrow, 10)
+  params <- get_plot_config(ctr, "eta_matrix")
+  params$shrink.dx <- NULL
+  params$is.smooth <- FALSE
+  result <- plot_pmx(params, expanded)
+  expect_equal(result$is.shrink, FALSE)
+  expect_equal(result$nrow, 10)
+  print(result)
+})
+
 test_that("parameter formatting allows missing uncertainty without labelling it fixed", {
   ctr <- test_controller()
   estimates <- get_data(ctr, "estimates")

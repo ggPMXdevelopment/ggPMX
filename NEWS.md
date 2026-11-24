@@ -8,6 +8,8 @@
 
 * `pmx_plot_eta_matrix()` retains negative random-effect extremes and aligns scatter coordinates with matrix axis labels; `pmx_plot_eta_qq()` uses distinct subject-level conditional modes rather than repeated observations mixed with conditional means (Monolix diagnostic audit).
 
+* `pmx_plot_eta_matrix()` renders matrices with ten or more random effects without confusing shrinkage and effect strips, and omits the shrinkage row when shrinkage data are unavailable (additional Monolix diagnostic audit).
+
 # ggPMX 1.3.3
 
 * Simulated BLOQ responses support additional column naming conventions while preserving existing responses when no simulated response is available.

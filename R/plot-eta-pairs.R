@@ -259,7 +259,8 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
       vreference_line = vreference_line
     )
 
-    if (is.shrink && !is.null(x[["shrink.dx"]])) {
+    is.shrink <- is.shrink && !is.null(x[["shrink.dx"]])
+    if (is.shrink) {
       dd <- x[["shrink.dx"]]
       ll <- lapply(nn, plot_shrink, shrink.dx, shrink)
       plots <- c(ll, plots)
@@ -281,7 +282,7 @@ plot_pmx.eta_pairs <- function(x, dx, ...) {
     )
   })
   p <- p + labs(title = x$gp$labels$title, subtitle = x$gp$labels$subtitle)
-  p$is.shrink <- x$is.shrink
+  p$is.shrink <- x$is.shrink && !is.null(x[["shrink.dx"]])
   class(p) <- c("pmx_eta_matrix", class(p))
   p +
     theme(
@@ -309,7 +310,7 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   eta_gtable <- ggmatrix_gtable(x, ...)
   if (x$is.shrink) {
     eta_gtable <- gtable_remove_grobs(eta_gtable, "axis-l-1")
-    strip_r_1 <- gtable::gtable_filter(eta_gtable, "strip-r-1")
+    strip_r_1 <- gtable::gtable_filter(eta_gtable, "^strip-r-1$")
     ## make all table wider
     strip_r_1$grobs[[1]]$widths <- unit(4, "cm")
     ## change text position,rot
@@ -318,8 +319,8 @@ print.pmx_eta_matrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
     text_shrink$hjust <- 0.8
     text_shrink$gp$font <- 1L
     strip_r_1$grobs[[1]]$grobs[[1]]$children[[2]]$children[[1]] <- text_shrink
-    matches <- grepl("strip-r-1", eta_gtable$layout$name, fixed = TRUE)
-    eta_gtable$grobs[[which(matches)]] <- strip_r_1
+    matches <- eta_gtable$layout$name == "strip-r-1"
+    eta_gtable$grobs[[which(matches)]] <- strip_r_1$grobs[[1]]
   }
 
 
