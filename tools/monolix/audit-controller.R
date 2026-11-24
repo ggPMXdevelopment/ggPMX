@@ -168,12 +168,14 @@ audit_monolix_controller <- function(
       stopifnot(isTRUE(all.equal(actual, expected, tolerance = 1e-8)))
     })
   }
-  record("data:eta QQ has one value per subject and effect", {
+  record("data:eta QQ has distinct conditional modes", {
     plot <- ggPMX::pmx_plot(ctr, "eta_qq")
     points <- ggplot2::ggplot_build(plot)$data[[1]]
-    expected <- length(unique(eta$ID)) * length(unique(eta$EFFECT))
+    mode <- eta
+    if ("FUN" %in% names(mode)) mode <- mode[mode$FUN == "mode"]
+    expected <- nrow(unique(mode[, c("ID", "EFFECT", "VALUE"), with = FALSE]))
     if (nrow(points) != expected) {
-      stop("Expected ", expected, " subject/effect points, got ", nrow(points))
+      stop("Expected ", expected, " distinct conditional modes, got ", nrow(points))
     }
   })
   record("data:eta matrix retains every subject in scatter panels", {

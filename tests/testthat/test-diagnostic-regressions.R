@@ -51,6 +51,32 @@ test_that("eta matrix keeps negative extremes in lower panels", {
   }
 })
 
+test_that("eta QQ distinguishes occasion effects without repeating subject effects", {
+  ctr <- test_controller("ETA_QQ")
+  mode <- unique(get_data(ctr, "eta")[,
+    c("ID", "EFFECT", "VALUE", "SEX"),
+    with = FALSE
+  ])
+  mode$FUN <- "mode"
+  mode$OCC <- 1L
+  second <- data.table::copy(mode)
+  second$OCC <- 2L
+  second$VALUE[second$EFFECT == "V"] <- second$VALUE[second$EFFECT == "V"] + 1
+  set_data(ctr, eta = data.table::rbindlist(list(mode, second)))
+  expected <- unique(get_data(ctr, "eta")[,
+    c("ID", "EFFECT", "VALUE"),
+    with = FALSE
+  ])
+  points <- ggplot2::ggplot_build(pmx_plot_eta_qq(ctr))$data[[1]]
+  expect_equal(nrow(points), nrow(expected))
+  expect_equal(sort(points$y), sort(expected$VALUE))
+  stratified <- pmx_plot_eta_qq(ctr, strat.facet = ~OCC)
+  expect_equal(
+    nrow(ggplot2::ggplot_build(stratified)$data[[1]]),
+    2L * nrow(mode)
+  )
+})
+
 test_that("eta matrices render shrinkage with ten effects and without shrinkage data", {
   ctr <- test_controller("ETA_MATRIX")
   eta <- unique(get_data(ctr, "eta")[,

@@ -172,7 +172,7 @@ plot_pmx.pmx_qq <- function(x, dx, ...) {
     if ("FUN" %in% names(dx) && any(dx[["FUN"]] == "mode")) {
       dx <- dx[dx[["FUN"]] == "mode"]
     }
-    cols <- unique(c("ID", "EFFECT", x$x, grp, grep("^OCC[0-9]*$", names(dx), value = TRUE)))
+    cols <- unique(c("ID", "EFFECT", x$x, grp))
     dx <- unique(dx[, intersect(cols, names(dx)), with = FALSE])
   }
   dx.ref <- if ("EFFECT" %in% names(dx)) {
